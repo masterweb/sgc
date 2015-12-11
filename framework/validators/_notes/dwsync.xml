@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="CFilterValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CSafeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CStringValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CFilterValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CCompareValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="CCaptchaValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CRequiredValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CDateValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CTypeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CNumberValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CNumberValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CCompareValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CUrlValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CRangeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CUniqueValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CEmailValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CRangeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CBooleanValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CBooleanValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CRequiredValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CEmailValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CSafeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CDateValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CFileValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CInlineValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="CUrlValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CUnsafeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CExistValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CCaptchaValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CRegularExpressionValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CExistValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="._CTypeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CFileValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CUniqueValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="._CValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CRegularExpressionValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="CStringValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CUnsafeValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+<file name="CInlineValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996590000000" remote="130728996590000000" Dst="0" />
+<file name="._CDefaultValueValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996570000000" remote="130728996570000000" Dst="0" />
+<file name="CDefaultValueValidator.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130728996580000000" remote="130728996580000000" Dst="0" />
+</dwsync>

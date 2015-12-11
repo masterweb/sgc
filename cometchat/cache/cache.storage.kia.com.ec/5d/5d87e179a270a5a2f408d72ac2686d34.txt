@@ -1,0 +1,1 @@
+a:4:{s:5:"value";s:87:"a:3:{s:2:"id";s:4:"5002";s:2:"an";s:18:"Hola es una prueba";s:1:"t";s:10:"1428442799";}";s:10:"write_time";s:10:"1448583964";s:10:"expired_in";i:3600;s:12:"expired_time";i:1448587564;}

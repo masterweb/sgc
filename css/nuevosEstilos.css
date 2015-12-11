@@ -1,0 +1,100 @@
+.btnCrear{
+	padding:5px;
+	margin-bottom:5px;
+}
+.row.flash-error {
+    font-size: 12px;
+}
+.textoFEnlace {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 0;
+    width: 110px !important;
+}
+.qir-btn,.boletines-btn,.causal-btn,.modelospv-btn,.naturaleza-btn,.vin-btn,.accesos-btn,.cargos-btn,.usuarios-btn,.contactos-btn{
+    background: url('../images/posventa/qir.png') no-repeat;
+    display: block;
+    height: 33px;
+    width: 36px;
+    padding-left: 42px;
+    padding-top: 7px;
+	background-size:75% !important;
+	margin-bottom:10px;
+}
+.links-footer{
+	margin-top:15px;
+}
+.boletines-btn{
+    background: url('../images/posventa/boletines.png') no-repeat;
+  
+}
+
+.causal-btn{
+    background: url('../images/posventa/causal.png') no-repeat;
+}
+
+.modelospv-btn{
+    background: url('../images/posventa/modelospv.png') no-repeat;
+}
+
+.naturaleza-btn{
+    background: url('../images/posventa/naturaleza.png') no-repeat;
+}
+
+.vin-btn{
+    background: url('../images/posventa/vin.png') no-repeat;
+}
+
+.accesos-btn{
+    background: url('../images/usuarios/access.png') no-repeat;
+}
+.cargos-btn{
+    background: url('../images/usuarios/roles.png') no-repeat;
+}
+.usuarios-btn{
+    background: url('../images/usuarios/usuarios.png') no-repeat;
+}
+.contactos-btn{
+    background: url('../images/usuarios/contactos.png') no-repeat; 
+}
+table.detail-view {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+    border-collapse: collapse;
+    margin: 0;
+    width: 100%;
+}
+.odd {
+    background: none !important;
+}
+.even {
+    background: none !important;
+}
+.menu .wrapper {
+    margin-top: 10px;
+}
+.moverIzq{
+	margin-left:16px;
+}
+.file {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+}
+
+/*************************************************/
+#modelos {
+    height: 250px;
+    width: 100%;
+}
+#modelos >option{
+    font-size:12px;
+}
+.cabeceraTabla{
+	border:1px solid #fff;
+}
+.cabeceraTabla thead th{
+	background: none repeat scroll 0 0 #dedede;
+}
+.cabeceraTabla td{
+	border:1px solid #fff;
+}
