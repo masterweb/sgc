@@ -57,7 +57,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         <div class="col-md-12">
             <div class="highlight">
                 <div class="form">
-                    <h4>Filtros de búsqueda</h4>
+                    <h4>Filtros de búsqueda </h4>
                     <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'gestion-nueva-cotizacion-form',
@@ -325,6 +325,58 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         </div>
     </div>
     <br />
+
+    <!--NICOLAS VELA-->
+    <div class="row">
+        <div class="col-md-12">
+            <style type="text/css">
+                .barra{
+                    /*height: 20px;*/
+                    margin-bottom: 10px;
+                    color: #fff;
+                    padding: 5px;
+                    font-size: 9px;
+                }
+                .roja{
+                    background: red;
+                }
+                .azul{
+                    background: blue;
+                }
+            </style>
+            <?php
+                $valores = array($trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior);
+                //$valores = array(22, 8, 7, 7, 4, 5, 0, 5);
+                $valormax = max($valores);
+                $keymax = array_keys($valores, $valormax);
+
+                porcentGraph($valormax, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior);
+
+                function porcentGraph($maxvalue, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior){        
+                    $tmac = ($trafico_mes_actual * 100)/$maxvalue;
+                    $tman = ($trafico_mes_anterior * 100)/$maxvalue;
+                    $pmac = ($proforma_mes_actual * 100)/$maxvalue;
+                    $pman = ($proforma_mes_anterior * 100)/$maxvalue;
+                    $tdmac = ($td_mes_actual * 100)/$maxvalue;
+                    $tdman = ($td_mes_anterior * 100)/$maxvalue;
+                    $vmac = ($vh_mes_actual * 100)/$maxvalue;
+                    $vman = ($vh_mes_anterior * 100)/$maxvalue;
+           
+                    echo '<b>Tráfico MAC</b><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
+                     '<b>Tráfico MAN</b><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div>'.
+                     '<b>Proforma MAC</b><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
+                     '<b>Proforma MAN</b><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div>'.
+                     '<b>Test Drive MAC</b><div class="barra roja" style="width:'.$tdmac.'%;">'.$td_mes_actual.'</div>'.
+                     '<b>Test Drive MAN</b><div class="barra azul" style="width:'.$tdman.'%;">'.$td_mes_anterior.'</div>'.
+                     '<b>Ventas MAC</b><div class="barra roja" style="width:'.$vmac.'%;">'.$vh_mes_actual.'</div>'.
+                     '<b>Ventas MAN</b><div class="barra azul" style="width:'.$vman.'%;">'.$vh_mes_anterior.'</div><br/><br/>';
+                }
+
+            ?>
+        </div>
+    </div>
+    <!--FIN NICOLAS VELA-->
+
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
