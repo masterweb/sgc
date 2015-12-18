@@ -2439,10 +2439,26 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
 
         $con = Yii::app()->db;
 
+         // NICOLAS VELA - GET MODELOS PARA BUSCADOR
+            $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos";
+            $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+            $modelos_car = $requestModelos_nv->queryAll();
+
+            //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
+            $lista_datos = array();
+            if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
+            if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
+
+            function SQLconstructor($lista_datos){
+                $SQLexecute = "";
+            }
+        // FIN NICOLAS VELA
+
         switch ($cargo_id) {
             case 71: // asesor de ventas
                 $titulo = 'Búsqueda entre ' . $fecha_inicial_actual_titulo . ' / ' . $fecha_actual_titulo . ', y ' . $fecha_inicial_anterior_titulo . ' / ' . $fecha_anterior_titulo;
                 //$titulo = 'Búsqueda entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual;
+
                 // BUSQUEDA POR TRAFICO
                 $sqlTrafico = "SELECT nombres, apellidos, responsable, fecha from gestion_informacion 
 WHERE responsable = {$id_responsable} AND DATE(fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}'";
@@ -2740,6 +2756,7 @@ GROUP BY gv.id_informacion";
                 break;
         }
 
+        
 
         if (isset($_GET['GestionInformacion'])) {
 //            echo '<pre>';
@@ -2835,7 +2852,11 @@ GROUP BY gv.id_informacion";
                     'vhckd1' => $vhckd1,
                     'vhcbu1' => $vhcbu1,
                     'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2));
+                    'vhcbu2' => $vhcbu2,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+                ));
                 exit();
             }
 
@@ -2925,7 +2946,11 @@ GROUP BY gv.id_informacion";
                     'vhckd1' => $vhckd1,
                     'vhcbu1' => $vhcbu1,
                     'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2));
+                    'vhcbu2' => $vhcbu2,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+                ));
                 exit();
             }
 
@@ -3015,7 +3040,11 @@ GROUP BY gv.id_informacion";
                     'vhckd1' => $vhckd1,
                     'vhcbu1' => $vhcbu1,
                     'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2));
+                    'vhcbu2' => $vhcbu2,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+                ));
                 exit();
             }
             // ===========================BUSQUEDA POR FECHAS, CONCESIONARIO EN USUARIO GERENTE COMERCIAL============================
@@ -3104,7 +3133,11 @@ GROUP BY gv.id_informacion";
                     'vhckd1' => $vhckd1,
                     'vhcbu1' => $vhcbu1,
                     'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2));
+                    'vhcbu2' => $vhcbu2,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+                ));
                 exit();
             }
 
@@ -3196,7 +3229,11 @@ GROUP BY gv.id_informacion";
                     'vhckd1' => $vhckd1,
                     'vhcbu1' => $vhcbu1,
                     'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2));
+                    'vhcbu2' => $vhcbu2,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+                ));
                 exit();
             }
 
@@ -3289,7 +3326,11 @@ GROUP BY gv.id_informacion";
                     'td_mes_anterior' => $td_mes_anterior,
                     'td_mes_actual' => $td_mes_actual,
                     'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual));
+                    'vh_mes_actual' => $vh_mes_actual,
+                    // NICOLAS VELA - GET MODELOS
+                    'modelos_car' => $modelos_car
+                    // FIN NICOLAS VELA
+            ));
                 exit();
             }
         }
@@ -3320,8 +3361,12 @@ GROUP BY gv.id_informacion";
             'vhckd1' => $vhckd1,
             'vhcbu1' => $vhcbu1,
             'vhckd2' => $vhckd2,
-            'vhcbu2' => $vhcbu2
+            'vhcbu2' => $vhcbu2,
+            // NICOLAS VELA - GET MODELOS
+            'modelos_car' => $modelos_car
+            // FIN NICOLAS VELA
         ));
+
     }
 
     private function getNombreMes($mes) {
@@ -4156,5 +4201,4 @@ GROUP BY gv.id_informacion";
                 break;
         }
     }
-
 }

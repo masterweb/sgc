@@ -71,7 +71,9 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                             'autocomplete' => 'off'
                         ),
                     ));
+                    
                     ?>
+
                     <div class="row">
                         <div class="col-md-6">
                             <label for="">Fecha 1</label>
@@ -80,6 +82,57 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                         <div class="col-md-6">
                             <label for="">Fecha 2</label>
                             <input type="text" name="GestionInformacion[fecha2]" class="form-control" id="fecha-range2"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="">Modelo</label>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    
+                                    <!--NICOLAS VELA Filtro de versiones-->
+                                    <?php                                        
+                                        foreach ($modelos_car as $key => $value) {                                             
+                                             echo '<div class="col-md-4">
+                                                        <div class="checkbox contcheck">
+                                                            <label>
+                                                                <input class="checkbox" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="'.$value['id_modelos'].'" >
+                                                                '.$value['nombre_modelo'].'
+                                                            </label>
+                                                            <div id="result" class="result"></div>
+                                                        </div>
+                                                    </div>';                                             
+                                         }
+                                         echo '<script>$(".checkbox").on("change", function(e) {
+                                                if(this.checked === true) {
+                                                    if(this.checked) {
+                                                        if (window.XMLHttpRequest) {
+                                                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                                                        xmlhttp = new XMLHttpRequest();
+                                                    } else {
+                                                        // code for IE6, IE5
+                                                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                                                    }
+                                                    xmlhttp.onreadystatechange = function() {
+                                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                                            e.target.parentNode.parentNode.children[1].style.display = "block";
+                                                            e.target.parentNode.parentNode.children[1].innerHTML = xmlhttp.responseText;                                                            
+                                                        }
+                                                    };
+                                                    var id = e.target.value;
+                                                    xmlhttp.open("GET","/index.php/ajax/modelos?id="+id);
+                                                    xmlhttp.send();
+                                                    }
+                                                }else if(this.checked === false) {                              
+                                                    e.target.parentNode.parentNode.children[1].style.display = "none";
+                                                    var children = e.target.parentNode.parentNode.children[1].children[0].childNodes;
+                                                    for(child in children){children[child].children[0].checked = false;}
+                                                }
+                                                });</script>';
+                                    ?> 
+                                    <!--FIN NICOLAS VELA-->                                  
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <?php
@@ -359,27 +412,31 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 $valormax = max($valores);
                 $keymax = array_keys($valores, $valormax);
 
-                porcentGraph($valormax, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior);
-
-                function porcentGraph($maxvalue, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior){        
-                    $tmac = ($trafico_mes_actual * 100)/$maxvalue;
-                    $tman = ($trafico_mes_anterior * 100)/$maxvalue;
-                    $pmac = ($proforma_mes_actual * 100)/$maxvalue;
-                    $pman = ($proforma_mes_anterior * 100)/$maxvalue;
-                    $tdmac = ($td_mes_actual * 100)/$maxvalue;
-                    $tdman = ($td_mes_anterior * 100)/$maxvalue;
-                    $vmac = ($vh_mes_actual * 100)/$maxvalue;
-                    $vman = ($vh_mes_anterior * 100)/$maxvalue;
-           
-                    echo '<span class="barratit trojo">Tráfico mes actual</span><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
-                     '<span class="barratit tazul">Tráfico mes anterior</span><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div><hr/>'.
-                     '<span class="barratit trojo">Proforma mes actual</span><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
-                     '<span class="barratit tazul">Proforma mes anterior</span><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div><hr/>'.
-                     '<span class="barratit trojo">Test Drive mes actual</span><div class="barra roja" style="width:'.$tdmac.'%;">'.$td_mes_actual.'</div>'.
-                     '<span class="barratit tazul">Test Drive mes anterior</span><div class="barra azul" style="width:'.$tdman.'%;">'.$td_mes_anterior.'</div><hr/>'.
-                     '<span class="barratit trojo">Ventas mes actual</span><div class="barra roja" style="width:'.$vmac.'%;">'.$vh_mes_actual.'</div>'.
-                     '<span class="barratit tazul">Ventas mes anterior</span><div class="barra azul" style="width:'.$vman.'%;">'.$vh_mes_anterior.'</div><br/><br/>';
-                }
+                    porcentGraph($valormax, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior);
+                
+                    function porcentGraph($maxvalue, $trafico_mes_actual, $trafico_mes_anterior, $proforma_mes_actual, $proforma_mes_anterior, $td_mes_actual, $td_mes_anterior, $vh_mes_actual, $vh_mes_anterior){
+                        if($maxvalue >= 1){     
+                            $tmac = ($trafico_mes_actual * 100)/$maxvalue;
+                            $tman = ($trafico_mes_anterior * 100)/$maxvalue;
+                            $pmac = ($proforma_mes_actual * 100)/$maxvalue;
+                            $pman = ($proforma_mes_anterior * 100)/$maxvalue;
+                            $tdmac = ($td_mes_actual * 100)/$maxvalue;
+                            $tdman = ($td_mes_anterior * 100)/$maxvalue;
+                            $vmac = ($vh_mes_actual * 100)/$maxvalue;
+                            $vman = ($vh_mes_anterior * 100)/$maxvalue;
+                   
+                            echo '<span class="barratit trojo">Tráfico mes actual</span><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
+                             '<span class="barratit tazul">Tráfico mes anterior</span><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div><hr/>'.
+                             '<span class="barratit trojo">Proforma mes actual</span><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
+                             '<span class="barratit tazul">Proforma mes anterior</span><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div><hr/>'.
+                             '<span class="barratit trojo">Test Drive mes actual</span><div class="barra roja" style="width:'.$tdmac.'%;">'.$td_mes_actual.'</div>'.
+                             '<span class="barratit tazul">Test Drive mes anterior</span><div class="barra azul" style="width:'.$tdman.'%;">'.$td_mes_anterior.'</div><hr/>'.
+                             '<span class="barratit trojo">Ventas mes actual</span><div class="barra roja" style="width:'.$vmac.'%;">'.$vh_mes_actual.'</div>'.
+                             '<span class="barratit tazul">Ventas mes anterior</span><div class="barra azul" style="width:'.$vman.'%;">'.$vh_mes_anterior.'</div><br/><br/>';
+                        }else{
+                            echo '<h3>Estos valores no pueden ser graficados</h3>';
+                        }
+                    }
 
             ?>
         </div>
