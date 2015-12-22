@@ -11,7 +11,7 @@ class AjaxController extends Controller {
 
         echo '<ul class="versiones">';
         foreach ($versiones_car as $key => $value) {                                             
-	        echo '<li style="font-size:10px;"><input class="checkbox" type="checkbox" name="version[]" value="'.$value['id_versiones'].'" >'.$value['nombre_version'].'</li>';                                             
+	        echo '<li style="font-size:10px;"><input class="subcheckbox" type="checkbox" name="version[]" value="'.$value['id_versiones'].'" >'.$value['nombre_version'].'</li>';                                             
 	    }
 	    echo '</ul>';
 

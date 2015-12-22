@@ -2,15 +2,27 @@
 
 class GestionInformacionController extends Controller {
 
+    /**
+     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+     * using two-column layout. See 'protected/views/layouts/column2.php'.
+     */
     public $layout = '//layouts/call';
 
+    /**
+     * @return array action filters
+     */
     public function filters() {
         return array(
-            'accessControl',
-            'postOnly + delete',
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
     public function accessRules() {
         return array(
             array('allow', // allow all users to perform 'index' and 'view' actions
@@ -32,17 +44,32 @@ class GestionInformacionController extends Controller {
         );
     }
 
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
     public function actionView($id) {
         $this->render('view', array(
             'model' => $this->loadModel($id),
         ));
     }
 
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
     public function actionCreate($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
 
-        if (isset($_POST['GestionInformacion'])) {
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+        //die('fuente: '.$fuente);
 
+        if (isset($_POST['GestionInformacion'])) {
+//            echo '<pre>';
+//            print_r($_POST);
+//            echo '</pre>';
+//            die();
             $historial = new GestionHistorial;
             $model->attributes = $_POST['GestionInformacion'];
             if (isset($_POST['GestionInformacion']['tipo_form_web']))
@@ -255,6 +282,19 @@ class GestionInformacionController extends Controller {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
                 if ($_POST['tipo'] == 'gestion') {
+                    //die('enter gestion');
+                    /* $gestion = new GestionDiaria;
+                      $gestion->id_informacion = $model->id;
+                      $gestion->id_vehiculo = 0;
+                      $gestion->observaciones = 'Primera visita';
+                      $gestion->medio_contacto = 'visita';
+                      $gestion->fuente_contacto = $fuente;
+                      $gestion->codigo_vehiculo = 0;
+                      $gestion->primera_visita = 1;
+                      $gestion->status = 1;
+                      $gestion->fecha = date("Y-m-d H:i:s");
+                      $gestion->save() ; */
+
                     $historial->id_responsable = Yii::app()->user->getId();
                     $historial->id_informacion = $model->id;
                     $historial->observacion = 'Nuevo registro de usuario';
@@ -274,11 +314,22 @@ class GestionInformacionController extends Controller {
         ));
     }
 
-
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     */
     public function actionCreate2($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
 
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+        //die('fuente: '.$fuente);
+
         if (isset($_POST['GestionInformacion'])) {
+            /* echo '<pre>';
+              print_r($_POST);
+              echo '</pre>';
+              die(); */
             $historial = new GestionHistorial;
             $model->attributes = $_POST['GestionInformacion'];
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
@@ -2353,15 +2404,18 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $this->render('calendar');
     }
 
-    // Empieza optimización de código
-    function SQLconstructor($selection, $table, $join, $where, $group = null){
+    // NICOLAS VELA CONSULTAS PRIMERA PARTE 
+    function SQLconstructor($join, $selection, $table, $id_responsable, $fecha_inicial_anterior, $fecha_variable, $modelos){
         $con = Yii::app()->db;
-        $sql_cons = "SELECT {$selection} from {$table} {$join}
-        WHERE {$where} {$group}";
+        $sql_cons = "SELECT {$selection} from {$table}
+        WHERE responsable = {$id_responsable} AND DATE(fecha) BETWEEN '{$fecha_inicial_anterior}' 
+        AND '{$fecha_variable}'";
+        echo $sql_cons.'<br>XXXXXX<br>';
 
         $request_cons = $con->createCommand($sql_cons);
         return  $request_cons->queryAll();
     }
+    // FIN NICOLAS VELA CONSULTAS
 
     public function actionReportes($id_informacion = null, $id_vehiculo = null) {
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
@@ -2371,166 +2425,356 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $titulo = '';
         $concesionario = 2000;
 
-        date_default_timezone_set('America/Guayaquil'); 
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador`
         $dt = time();
-        setlocale(LC_TIME, 'es_ES.UTF-8');
         $fecha_actual = strftime("%Y-%m-%d", $dt);
-        $fecha_actual2 = strtotime('+1 day', strtotime($fecha_actual));  
-        $fecha_actual2 = date('Y-m-d', $fecha_actual2);        
-        $fecha_inicial_actual = (new DateTime('first day of this month'))->format('Y-m-d');
-        $fecha_anterior = strftime( "%Y-%m-%d", strtotime( '-1 month', $dt ) );
-        $fecha_inicial_anterior = strftime( "%Y-%m", strtotime( '-1 month', $dt ) ). '-01';
-        $nombre_mes_actual = strftime("%B - %Y", $dt);
-        $nombre_mes_anterior = strftime( "%B - %Y", strtotime( '-1 month', $dt ) );
+        $fecha_actual2 = strftime("%Y-%m-%d", $dt);
+        $fecha_actual2 = strtotime('+1 day', strtotime($fecha_actual2));
+        $fecha_actual2 = date('Y-m-d', $fecha_actual2);
+        //die('fecha actual: '.$fecha_actual2);
+        //$fecha_actual = date('Y-m-d', $fecha_actual);
+        $mes_actual = strftime("%m", $dt);
+        $nombre_mes_actual = $this->getNombreMes($mes_actual);
+        $year_actual = strftime("%Y", $dt);
+        $fecha_inicial_actual = '2015-' . $mes_actual . '-01';
+        $fecha_inicial_actual_titulo = '01-' . $mes_actual . '-2015';
+        $fecha_actual_titulo = strftime("%d-%m-%Y", $dt);
+
+        $mes_anterior = strftime("%m", $dt);
+        $mes_anterior--;
+        $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
+
+        $dia_actual = strftime("%d", $dt);
+        $fecha_anterior = '2015-' . $mes_anterior . '-' . $dia_actual;
+        $fecha_anterior_titulo = $dia_actual . '-' . $mes_anterior . '-2015';
+        $fecha_inicial_anterior = '2015-' . $mes_anterior . '-01';
+        $fecha_inicial_anterior_titulo = '01-' . $mes_anterior . '-2015';
 
         $con = Yii::app()->db;
 
-     	//GET MODELOS Y VERSIONES PARA BUSCADOR
-        $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos";
-        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
-        $modelos_car = $requestModelos_nv->queryAll();
+         // NICOLAS VELA - GET MODELOS Y VERSIONES PARA BUSCADOR
+            $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos";
+            $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+            $modelos_car = $requestModelos_nv->queryAll();
 
-        //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
-        $lista_datos = array();
-        if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
-        if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
+            //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
+            $lista_datos = array();
+            if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
+            if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
 
-        foreach ($lista_datos as $key => $value) {
-            foreach ($value as $key => $carros) {               
-                $id_carros_nv[$key] = implode(', ', $carros);
-                $SQLexecute[$key][0] = " AND modelo IN (".$id_carros_nv[$key].")";
-                $SQLexecute[$key][1] = " AND gi.modelo IN (".$id_carros_nv[$key].")";
+            foreach ($lista_datos as $key => $value) {
+                foreach ($value as $key => $carros) {               
+                    $id_carros_nv[$key] = implode(', ', $carros);
+                    $SQLexecute[$key][0] = " AND modelo IN (".$id_carros_nv[$key].")";
+                    $SQLexecute[$key][1] = " AND gi.modelo IN (".$id_carros_nv[$key].")";
+                }
             }
-        }       
-        
-        $tit_ext = '';
-        $join_ext = null;
-        $group_ext = null;
-        $select_ext = null;
+                  
+        // FIN NICOLAS VELA
+
         switch ($cargo_id) {
-            case 71: // asesor de ventas 
-            	$id_persona = "gi.responsable = ".$id_responsable;
-            	$tit_init = 'Búsqueda entre ';
-            	break;
-            case 70: // jefe de sucursal 
-            	$id_persona = "gi.dealer_id = ".$dealer_id;
-            	$tit_init = 'Búsqueda entre ';            	
-            	break;
+            case 71: // asesor de ventas
+                $titulo = 'Búsqueda entre ' . $fecha_inicial_actual_titulo . ' / ' . $fecha_actual_titulo . ', y ' . $fecha_inicial_anterior_titulo . ' / ' . $fecha_anterior_titulo;
+                //$titulo = 'Búsqueda entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual;
+
+                // BUSQUEDA POR TRAFICO
+
+                // NICOLAS VELA OPTIMIZACION CONSULTAS FUNSION SQLconstructor()
+                //(NO ENTIENDO PARA QUE CONSULTA ACA SI ABAJO CAMBIA EL VALOR DE LAS VARIABLES)
+                $trafico_mes_anterior = $this->SQLconstructor(null, 'nombres, apellidos, responsable, fecha', 'gestion_informacion', $id_responsable, $fecha_inicial_anterior, $fecha_anterior, 'modelo '.$SQLexecute ['modelos'][0]);
+                $trafico_mes_anterior = count($trafico_mes_anterior);
+
+                $trafico_mes_actual = $this->SQLconstructor(null, 'nombres, apellidos, responsable, fecha', 'gestion_informacion', $id_responsable, $fecha_inicial_anterior, $fecha_actual, null);
+                $trafico_mes_actual = count($trafico_mes_actual);
+                //FIN NICOLAS VELA OPTIMIZACION              
+
+                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
+
+                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
+
+                // BUSQUEDA POR PROFORMA
+                $sql = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id 
+                    FROM gestion_financiamiento gf 
+                    INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND gi.responsable = {$id_responsable} AND gf.order = 1 GROUP BY gf.id_vehiculo ";
+                $sql2 = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id 
+                    FROM gestion_financiamiento gf 
+                    INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}' AND gi.responsable = {$id_responsable}  AND gf.order = 1 GROUP BY gf.id_vehiculo ";
+                //die($sql);
+                $request = $con->createCommand($sql);
+                $proforma_mes_anterior = $request->queryAll();
+                $proforma_mes_anterior = count($proforma_mes_anterior);
+
+                $request2 = $con->createCommand($sql2);
+                $proforma_mes_actual = $request2->queryAll();
+                $proforma_mes_actual = count($proforma_mes_actual);
+
+                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
+
+                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
+                // BUSQUEDA POR TEST DRIVE
+                $sqlTd1 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha FROM gestion_test_drive  gt 
+INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion
+WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND gt.order = 1 AND gi.responsable = {$id_responsable}
+GROUP BY gt.id_vehiculo";
+
+                $sqlTd2 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha FROM gestion_test_drive  gt 
+INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion
+WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}' AND gt.order = 1 AND gi.responsable = {$id_responsable}
+GROUP BY gt.id_vehiculo";
+//die($sqlTd2);
+
+                $requestd1 = $con->createCommand($sqlTd1);
+                $td_mes_anterior = $requestd1->queryAll();
+                $td_mes_anterior = count($td_mes_anterior);
+
+                $requestd2 = $con->createCommand($sqlTd2);
+                $td_mes_actual = $requestd2->queryAll();
+                $td_mes_actual = count($td_mes_actual);
+
+                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
+
+                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
+                // BUSQUEDA POR VENTAS
+                $sqlvh1 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre FROM gestion_vehiculo gv 
+INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion
+WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}') AND gi.responsable = {$id_responsable}
+GROUP BY gv.id_informacion";
+                $sqlvh2 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre FROM gestion_vehiculo gv 
+INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion
+WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}') AND gi.responsable = {$id_responsable}
+GROUP BY gv.id_informacion";
+//die($sqlvh2);
+
+                $requesvh1 = $con->createCommand($sqlvh1);
+                $vh_mes_anterior = $requesvh1->queryAll();
+                $vh_mes_anterior = count($vh_mes_anterior);
+
+                $requesvh2 = $con->createCommand($sqlvh2);
+                $vh_mes_actual = $requesvh2->queryAll();
+                $vh_mes_actual = count($vh_mes_actual);
+                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
+
+                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
+
+                break;
+            case 70: // jefe de sucursal
+                $titulo = 'Búsqueda entre ' . $fecha_inicial_actual_titulo . ' / ' . $fecha_actual_titulo . ', y ' . $fecha_inicial_anterior_titulo . ' / ' . $fecha_anterior_titulo;
+                // BUSQUEDA POR TRAFICO
+                $sqlTrafico = "SELECT nombres, apellidos, responsable, fecha from gestion_informacion 
+WHERE dealer_id = {$dealer_id} AND DATE(fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}'";
+
+                $sqlTrafico2 = "SELECT nombres, apellidos, responsable, fecha from gestion_informacion 
+WHERE dealer_id = {$dealer_id} AND DATE(fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}'";
+//die('sql actual: '.$sqlTrafico2);
+                $requestr1 = $con->createCommand($sqlTrafico);
+                $trafico_mes_anterior = $requestr1->queryAll();
+                $trafico_mes_anterior = count($trafico_mes_anterior);
+
+                $requestr2 = $con->createCommand($sqlTrafico2);
+                $trafico_mes_actual = $requestr2->queryAll();
+                $trafico_mes_actual = count($trafico_mes_actual);
+
+                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
+
+                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                //die('trafico ckd2: '.$traficockd2);
+                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
+                // BUSQUEDA POR PROFORMA
+                $sql = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id 
+                    FROM gestion_financiamiento gf 
+                    INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND gi.dealer_id = {$dealer_id}  AND gf.order = 1 GROUP BY gf.id_vehiculo ";
+                $sql2 = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id 
+                    FROM gestion_financiamiento gf 
+                    INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}' AND gi.dealer_id = {$dealer_id}  AND gf.order = 1 GROUP BY gf.id_vehiculo ";
+                //die($sql2);
+                $request = $con->createCommand($sql);
+                $proforma_mes_anterior = $request->queryAll();
+                $proforma_mes_anterior = count($proforma_mes_anterior);
+
+                $request2 = $con->createCommand($sql2);
+                $proforma_mes_actual = $request2->queryAll();
+                $proforma_mes_actual = count($proforma_mes_actual);
+
+                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
+
+                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
+                // BUSQUEDA POR TEST DRIVE
+                $sqlTd1 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha FROM gestion_test_drive  gt 
+INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion
+WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND gt.order = 1 AND gi.dealer_id = {$dealer_id}
+GROUP BY gt.id_vehiculo";
+                $sqlTd2 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha FROM gestion_test_drive  gt 
+INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion
+WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_actual}'  AND '{$fecha_actual}' AND gt.order = 1 AND gi.dealer_id = {$dealer_id}
+GROUP BY gt.id_vehiculo";
+
+//die('sqlTd1: '.$sqlTd1);
+
+                $requestd1 = $con->createCommand($sqlTd1);
+                $td_mes_anterior = $requestd1->queryAll();
+                $td_mes_anterior = count($td_mes_anterior);
+
+                $requestd2 = $con->createCommand($sqlTd2);
+                $td_mes_actual = $requestd2->queryAll();
+                $td_mes_actual = count($td_mes_actual);
+
+                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
+
+                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
+                // BUSQUEDA POR VENTAS
+                $sqlvh1 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre FROM gestion_vehiculo gv 
+INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion
+WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}') AND gi.dealer_id = {$dealer_id}
+GROUP BY gv.id_informacion";
+                $sqlvh2 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre FROM gestion_vehiculo gv 
+INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion
+WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}') AND gi.dealer_id = {$dealer_id}
+GROUP BY gv.id_informacion";
+
+                $requesvh1 = $con->createCommand($sqlvh1);
+                $vh_mes_anterior = $requesvh1->queryAll();
+                $vh_mes_anterior = count($vh_mes_anterior);
+
+                $requesvh2 = $con->createCommand($sqlvh2);
+                $vh_mes_actual = $requesvh2->queryAll();
+                $vh_mes_actual = count($vh_mes_actual);
+
+                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
+
+                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
+
+
+                break;
             case 69: // GERENTE COMERCIAL
-            	$id_persona = 'u.grupo_id = '.$grupo_id;
-            	$tit_init = 'Búsqueda por defecto entre ';
-            	$tit_ext = ', Grupo: ' . $this->getNombreGrupo($grupo_id);
-            	$join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
-		        $group_ext = null;
-		        $select_ext = ', u.grupo_id ';
-            	break;
+                $titulo = 'Búsqueda por defecto entre ' . $fecha_inicial_anterior_titulo . ' / ' . $fecha_anterior_titulo . ', y ' . $fecha_inicial_actual_titulo . ' / ' . $fecha_actual_titulo . ', Grupo: ' . $this->getNombreGrupo($grupo_id);
+                // BUSQUEDA POR TRAFICO
+                $sqlTrafico = "SELECT gi.nombres, gi.apellidos, gi.responsable, gi.fecha, u.grupo_id from gestion_informacion gi 
+                    INNER JOIN usuarios u ON u.id = gi.responsable 
+                    WHERE u.grupo_id = {$grupo_id} AND DATE(gi.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}'";
+
+                $sqlTrafico2 = "SELECT gi.nombres, gi.apellidos, gi.responsable, gi.fecha, u.grupo_id from gestion_informacion gi 
+                    INNER JOIN usuarios u ON u.id = gi.responsable  
+                    WHERE u.grupo_id = {$grupo_id} AND DATE(gi.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}'";
+                //die($sqlTrafico2);
+                $requestr1 = $con->createCommand($sqlTrafico);
+                $trafico_mes_anterior = $requestr1->queryAll();
+                $trafico_mes_anterior = count($trafico_mes_anterior);
+
+                $requestr2 = $con->createCommand($sqlTrafico2);
+                $trafico_mes_actual = $requestr2->queryAll();
+                $trafico_mes_actual = count($trafico_mes_actual);
+
+                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
+
+                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
+                // BUSQUEDA POR PROFORMAS
+                $sql = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, u.grupo_id FROM gestion_financiamiento gf 
+                        INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                        INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND u.grupo_id = {$grupo_id} GROUP BY gf.id_vehiculo ";
+                $sql2 = "SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, u.grupo_id FROM gestion_financiamiento gf 
+                        INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                        INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE DATE(gf.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}' AND u.grupo_id = {$grupo_id} GROUP BY gf.id_vehiculo ";
+                $request = $con->createCommand($sql);
+                $proforma_mes_anterior = $request->queryAll();
+                $proforma_mes_anterior = count($proforma_mes_anterior);
+
+                $request2 = $con->createCommand($sql2);
+                $proforma_mes_actual = $request2->queryAll();
+                $proforma_mes_actual = count($proforma_mes_actual);
+
+
+                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
+
+                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
+                // BUSQUEDA POR TEST DRIVE
+                $sqlTd1 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id FROM gestion_test_drive  gt 
+                    INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
+                    INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}' AND gt.order = 1 AND u.grupo_id = {$grupo_id}
+                    GROUP BY gt.id_vehiculo";
+                $sqlTd2 = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id FROM gestion_test_drive  gt 
+                    INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
+                    INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '{$fecha_inicial_actual}'  AND '{$fecha_actual}' AND gt.order = 1 AND u.grupo_id = {$grupo_id}
+                    GROUP BY gt.id_vehiculo";
+
+                $requestd1 = $con->createCommand($sqlTd1);
+                $td_mes_anterior = $requestd1->queryAll();
+                $td_mes_anterior = count($td_mes_anterior);
+
+                $requestd2 = $con->createCommand($sqlTd2);
+                $td_mes_actual = $requestd2->queryAll();
+                $td_mes_actual = count($td_mes_actual);
+
+                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
+
+                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
+                // BUSQUEDA POR VENTAS
+                $sqlvh1 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id FROM gestion_vehiculo gv 
+                    INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
+                    INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_anterior}' AND '{$fecha_anterior}') AND u.grupo_id = {$grupo_id}
+                    GROUP BY gv.id_informacion";
+                $sqlvh2 = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id FROM gestion_vehiculo gv 
+                    INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
+                    INNER JOIN usuarios u ON u.id = gi.responsable
+                    WHERE gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '{$fecha_inicial_actual}' AND '{$fecha_actual}') AND u.grupo_id = {$grupo_id}
+                    GROUP BY gv.id_informacion";
+
+                $requesvh1 = $con->createCommand($sqlvh1);
+                $vh_mes_anterior = $requesvh1->queryAll();
+                $vh_mes_anterior = count($vh_mes_anterior);
+
+                $requesvh2 = $con->createCommand($sqlvh2);
+                $vh_mes_actual = $requesvh2->queryAll();
+                $vh_mes_actual = count($vh_mes_actual);
+
+                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
+
+                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
+                break;
+
+            default:
+
+                break;
         }
-        $titulo = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
-                     
-        // BUSQUEDA POR TRAFICO      
-        $trafico_mes_anterior = $this->SQLconstructor(
-        	'gi.nombres '.$select_ext, 
-        	'gestion_informacion gi', 
-        	$join_ext, 
-        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'", 
-        	$group_ext
-        );
-
-        $trafico_mes_anterior = count($trafico_mes_anterior);                                
-        
-        $trafico_mes_actual = $this->SQLconstructor(
-        	'gi.nombres '.$select_ext, 
-        	'gestion_informacion gi', 
-        	$join_ext, 
-        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'", 
-        	$group_ext
-        );
-        $trafico_mes_actual = count($trafico_mes_actual);
 
         
-        $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
-        $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
-
-        $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
-        $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-
-        // BUSQUEDA POR PROFORMA
-        $proforma_mes_anterior = $this->SQLconstructor(
-        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-        	'gestion_financiamiento gf', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND gf.order = 1", 
-        	"GROUP BY gf.id_vehiculo"
-        );
-        $proforma_mes_anterior = count($proforma_mes_anterior);
-       
-        $proforma_mes_actual = $this->SQLconstructor(
-        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-        	'gestion_financiamiento gf', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona."  AND gf.order = 1", 
-        	"GROUP BY gf.id_vehiculo"
-        );                
-        $proforma_mes_actual = count($proforma_mes_actual);
-
-        $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
-        $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
-
-        $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
-        $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
-        
-        // BUSQUEDA POR TEST DRIVE
-		$td_mes_anterior = $this->SQLconstructor(
-        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-        	'gestion_test_drive  gt', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND gt.order = 1 AND ".$id_persona, 
-        	"GROUP BY gt.id_vehiculo"
-        );
-        $td_mes_anterior = count($td_mes_anterior);
-
-		$td_mes_actual = $this->SQLconstructor(
-        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-        	'gestion_test_drive  gt', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND gt.order = 1 AND ".$id_persona, 
-        	"GROUP BY gt.id_vehiculo"
-        );
-        $td_mes_actual = count($td_mes_actual);
-
-        $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
-        $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
-
-        $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
-        $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
-        
-        // BUSQUEDA POR VENTAS 
-        $vh_mes_anterior = $this->SQLconstructor(
-        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-        	'gestion_vehiculo gv', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona, 
-        	"GROUP BY gv.id_informacion"
-        );
-        $vh_mes_anterior = count($vh_mes_anterior);
-        
-		$vh_mes_actual = $this->SQLconstructor(
-        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-        	'gestion_vehiculo gv', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona, 
-        	"GROUP BY gv.id_informacion"
-        );
-        $vh_mes_actual = count($vh_mes_actual);
-
-        $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
-        $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
-
-        $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
-        $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
-    
 
         if (isset($_GET['GestionInformacion'])) {
+//            echo '<pre>';
+//            print_r($_GET);
+//            echo '</pre>';
+//            die();
             //===========================BUSQUEDA POR FECHAS================================
             if ($_GET['GestionInformacion']['tipousuario'] == 1) {
                 //die('enter busqueda fechas');

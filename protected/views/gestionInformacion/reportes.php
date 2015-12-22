@@ -91,21 +91,40 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                                 <div class="panel-body">
                                     
                                     <!--NICOLAS VELA Filtro de versiones-->
-                                    <?php                                        
-                                        foreach ($modelos_car as $key => $value) {                                             
+                                    <?php
+                                        //print_r($lista_datos[1]['versiones']);
+                                        //print_r($lista_datos[0]['modelos']);
+                                        $activos = array();                                
+                                        foreach ($modelos_car as $key => $value) {
+                                            $checked = '';
+                                            if ($lista_datos) {
+                                                if (in_array($value['id_modelos'], $lista_datos[0]['modelos'])) {
+                                                    $activos[] = $value['id_modelos'];
+                                                    $checked = 'checked';
+                                                } 
+                                            }                                         
                                              echo '<div class="col-md-4">
                                                         <div class="checkbox contcheck">
                                                             <label>
-                                                                <input class="checkbox" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="'.$value['id_modelos'].'" >
+                                                                <input class="checkboxmain" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="cc'.$value['id_modelos'].'" '.$checked.'>
                                                                 '.$value['nombre_modelo'].'
                                                             </label>
                                                             <div id="result" class="result"></div>
                                                         </div>
                                                     </div>';                                             
                                          }
-                                         echo '<script>$(".checkbox").on("change", function(e) {
-                                                if(this.checked === true) {
-                                                    if(this.checked) {
+                                         echo '<script>
+                                           $(document).ready(function () {';
+                                                foreach ($activos as $key3 => $value3) {
+                                                    //echo 'checkboxes(document.getElementById("cc10"));';
+                                                    //echo 'checkboxes(document.getElementById("cc23"));';
+                                                }
+                                         echo '});
+                                            $(".checkboxmain").on("change", function(e) {checkboxes(e.target);});
+
+                                            function checkboxes(e){                                              
+                                                if(e.checked === true) {                                                             
+                                                    if(e.checked) {
                                                         if (window.XMLHttpRequest) {
                                                         // code for IE7+, Firefox, Chrome, Opera, Safari
                                                         xmlhttp = new XMLHttpRequest();
@@ -114,21 +133,26 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                                                         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                                                     }
                                                     xmlhttp.onreadystatechange = function() {
-                                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                                                            e.target.parentNode.parentNode.children[1].style.display = "block";
-                                                            e.target.parentNode.parentNode.children[1].innerHTML = xmlhttp.responseText;                                                            
+                                                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {                                                            
+                                                            e.parentNode.parentNode.children[1].style.display = "block";
+                                                            e.parentNode.parentNode.children[1].innerHTML = xmlhttp.responseText;                                                                                                                    
                                                         }
                                                     };
-                                                    var id = e.target.value;
+                                                    var id = e.value;
                                                     xmlhttp.open("GET","/index.php/ajax/modelos?id="+id);
                                                     xmlhttp.send();
                                                     }
-                                                }else if(this.checked === false) {                              
-                                                    e.target.parentNode.parentNode.children[1].style.display = "none";
-                                                    var children = e.target.parentNode.parentNode.children[1].children[0].childNodes;
-                                                    for(child in children){children[child].children[0].checked = false;}
+                                                }else if(e.checked === false) {                            
+                                                    e.parentNode.parentNode.children[1].style.display = "none";
+                                                    var children = e.parentNode.parentNode.children[1].children[0].childNodes;
+                                                    if(children != 0){
+                                                        for(child in children){
+                                                            children[child].children[0].checked = false;
+                                                        }
+                                                    }                                                    
                                                 }
-                                                });</script>';
+                                            }
+                                            </script>';
                                     ?> 
                                     <!--FIN NICOLAS VELA-->                                  
                                 </div>
@@ -236,8 +260,8 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     <thead>
                         <tr>
                             <th></th>
-                            <th><?php echo $nombre_mes_actual . '-2015'; ?></th>
-                            <th><?php echo $nombre_mes_anterior . '-2015'; ?></th>
+                            <th><?= $nombre_mes_actual; ?></th>
+                            <th><?= $nombre_mes_anterior; ?></th>
                             <th>VAR</th>
                             <th>DIF</th>
                         </tr>
