@@ -2771,6 +2771,7 @@ GROUP BY gv.id_informacion";
         
 
         if (isset($_GET['GestionInformacion'])) {
+            
 //            echo '<pre>';
 //            print_r($_GET);
 //            echo '</pre>';

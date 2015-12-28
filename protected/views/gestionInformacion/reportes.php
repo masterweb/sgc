@@ -587,7 +587,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     <thead>
                         <tr>
                             <th width="45%" scope="col">&nbsp;</th>
-                            <th colspan="2" scope="col"><?php echo $nombre_mes_actual . '-2015'; ?></th>
+                            <th colspan="2" scope="col"><?php echo $nombre_mes_actual; ?></th>
                         </tr>
                     </thead>  
                     <tbody>
@@ -706,7 +706,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="2" scope="col"><?php echo $nombre_mes_anterior . '-2015'; ?></th>
+                            <th colspan="2" scope="col"><?php echo $nombre_mes_anterior ; ?></th>
                         </tr>
                     </thead>
                     <tbody>

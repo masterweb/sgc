@@ -2426,590 +2426,243 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             	break;
         }
         $titulo = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
-                     
-        // BUSQUEDA POR TRAFICO      
-        $trafico_mes_anterior = $this->SQLconstructor(
-        	'gi.nombres '.$select_ext, 
-        	'gestion_informacion gi', 
-        	$join_ext, 
-        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'", 
-        	$group_ext
-        );
+        if (!isset($_GET['GestionInformacion'])) {           
+	        // BUSQUEDA POR TRAFICO      
+	        $trafico_mes_anterior = $this->SQLconstructor(
+	        	'gi.nombres '.$select_ext, 
+	        	'gestion_informacion gi', 
+	        	$join_ext, 
+	        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'", 
+	        	$group_ext
+	        );
 
-        $trafico_mes_anterior = count($trafico_mes_anterior);                                
-        
-        $trafico_mes_actual = $this->SQLconstructor(
-        	'gi.nombres '.$select_ext, 
-        	'gestion_informacion gi', 
-        	$join_ext, 
-        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'", 
-        	$group_ext
-        );
-        $trafico_mes_actual = count($trafico_mes_actual);
+	        $trafico_mes_anterior = count($trafico_mes_anterior);                                
+	        
+	        $trafico_mes_actual = $this->SQLconstructor(
+	        	'gi.nombres '.$select_ext, 
+	        	'gestion_informacion gi', 
+	        	$join_ext, 
+	        	$id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'", 
+	        	$group_ext
+	        );
+	        $trafico_mes_actual = count($trafico_mes_actual);
 
-        
-        $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
-        $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
+	        
+	        $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+	        $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
 
-        $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
-        $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
+	        $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 1, 0); // cerato forte, sportage active
+	        $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
 
-        // BUSQUEDA POR PROFORMA
-        $proforma_mes_anterior = $this->SQLconstructor(
-        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-        	'gestion_financiamiento gf', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND gf.order = 1", 
-        	"GROUP BY gf.id_vehiculo"
-        );
-        $proforma_mes_anterior = count($proforma_mes_anterior);
-       
-        $proforma_mes_actual = $this->SQLconstructor(
-        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-        	'gestion_financiamiento gf', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona."  AND gf.order = 1", 
-        	"GROUP BY gf.id_vehiculo"
-        );                
-        $proforma_mes_actual = count($proforma_mes_actual);
+	        // BUSQUEDA POR PROFORMA
+	        $proforma_mes_anterior = $this->SQLconstructor(
+	        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
+	        	'gestion_financiamiento gf', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
+	        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND gf.order = 1", 
+	        	"GROUP BY gf.id_vehiculo"
+	        );
+	        $proforma_mes_anterior = count($proforma_mes_anterior);
+	       
+	        $proforma_mes_actual = $this->SQLconstructor(
+	        	'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
+	        	'gestion_financiamiento gf', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
+	        	"DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona."  AND gf.order = 1", 
+	        	"GROUP BY gf.id_vehiculo"
+	        );                
+	        $proforma_mes_actual = count($proforma_mes_actual);
 
-        $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
-        $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
+	        $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+	        $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 2, 0); // resto de modelos
 
-        $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
-        $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
-        
-        // BUSQUEDA POR TEST DRIVE
-		$td_mes_anterior = $this->SQLconstructor(
-        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-        	'gestion_test_drive  gt', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND gt.order = 1 AND ".$id_persona, 
-        	"GROUP BY gt.id_vehiculo"
-        );
-        $td_mes_anterior = count($td_mes_anterior);
+	        $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 2, 0); // cerato forte, sportage active
+	        $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 2, 0); // resto de modelos
+	        
+	        // BUSQUEDA POR TEST DRIVE
+			$td_mes_anterior = $this->SQLconstructor(
+	        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
+	        	'gestion_test_drive  gt', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
+	        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND gt.order = 1 AND ".$id_persona, 
+	        	"GROUP BY gt.id_vehiculo"
+	        );
+	        $td_mes_anterior = count($td_mes_anterior);
 
-		$td_mes_actual = $this->SQLconstructor(
-        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-        	'gestion_test_drive  gt', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND gt.order = 1 AND ".$id_persona, 
-        	"GROUP BY gt.id_vehiculo"
-        );
-        $td_mes_actual = count($td_mes_actual);
+			$td_mes_actual = $this->SQLconstructor(
+	        	'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
+	        	'gestion_test_drive  gt', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
+	        	"gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND gt.order = 1 AND ".$id_persona, 
+	        	"GROUP BY gt.id_vehiculo"
+	        );
+	        $td_mes_actual = count($td_mes_actual);
 
-        $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
-        $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
+	        $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+	        $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 3, 0); // resto de modelos
 
-        $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
-        $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
-        
-        // BUSQUEDA POR VENTAS 
-        $vh_mes_anterior = $this->SQLconstructor(
-        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-        	'gestion_vehiculo gv', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona, 
-        	"GROUP BY gv.id_informacion"
-        );
-        $vh_mes_anterior = count($vh_mes_anterior);
-        
-		$vh_mes_actual = $this->SQLconstructor(
-        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-        	'gestion_vehiculo gv', 
-        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona, 
-        	"GROUP BY gv.id_informacion"
-        );
-        $vh_mes_actual = count($vh_mes_actual);
+	        $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 3, 0); // cerato forte, sportage active
+	        $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 3, 0); // resto de modelos
+	        
+	        // BUSQUEDA POR VENTAS 
+	        $vh_mes_anterior = $this->SQLconstructor(
+	        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
+	        	'gestion_vehiculo gv', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
+	        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona, 
+	        	"GROUP BY gv.id_informacion"
+	        );
+	        $vh_mes_anterior = count($vh_mes_anterior);
+	        
+			$vh_mes_actual = $this->SQLconstructor(
+	        	'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
+	        	'gestion_vehiculo gv', 
+	        	'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
+	        	"gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona, 
+	        	"GROUP BY gv.id_informacion"
+	        );
+	        $vh_mes_actual = count($vh_mes_actual);
 
-        $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
-        $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
+	        $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+	        $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, 4, 0); // resto de modelos
 
-        $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
-        $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
-    
-
-        if (isset($_GET['GestionInformacion'])) {
-            //===========================BUSQUEDA POR FECHAS================================
-            if ($_GET['GestionInformacion']['tipousuario'] == 1) {
-                //die('enter busqueda fechas');
-                $fecha1 = $_GET['GestionInformacion']['fecha1'];
-                $fecha2 = $_GET['GestionInformacion']['fecha2'];
+	        $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 4, 0); // cerato forte, sportage active
+	        $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, 4, 0); // resto de modelos
+    	
+        }else if (isset($_GET['GestionInformacion'])) {
+            $tit_ext = '';
+            $tip_us = $_GET['GestionInformacion']['tipousuario'];
+            $tipo_busqueda_trafico = '';
+            $tipo_busqueda_trafico2 = '';
+            $tipo_busqueda_proforma = '';
+            $tipo_busqueda_proforma2 = '';
+            $tipo_busqueda_testdrive = '';
+            $tipo_busqueda_testdrive2 = '';
+            $tipo_busqueda_ventas = '';
+            $tipo_busqueda_ventas2 = '';
+            //===========================VARIABLES BUSQUEDA POR FECHAS================================
+             if ($tip_us == 1) {
                 $responsable = 0;
-                $params1 = explode('-', $fecha1);
-                $fecha_inicial_anterior = trim($params1[0] . '-' . $params1[1] . '-' . $params1[2]);
-                $fecha_anterior = trim($params1[3] . '-' . $params1[4] . '-' . $params1[5]);
-                $fecha_inicial_anterior_titulo = trim($params1[2] . '-' . $params1[1] . '-' . $params1[0]);
-                $fecha_anterior_titulo = trim($params1[5] . '-' . $params1[4] . '-' . $params1[3]);
-
-                $params2 = explode('-', $fecha2);
-                $fecha_inicial_actual = trim($params2[0] . '-' . $params2[1] . '-' . $params2[2]);
-                $fecha_inicial_actual_titulo = trim($params2[2] . '-' . $params2[1] . '-' . $params2[0]);
-                $fecha_actual = trim($params2[3] . '-' . $params2[4] . '-' . $params2[5]);
-                $fecha_actual_titulo = trim($params2[5] . '-' . $params2[4] . '-' . $params2[3]);
-                $mes_anterior = $params1[1];
-                $mes_actual = $params2[1];
-                $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
-                $nombre_mes_actual = $this->getNombreMes($mes_actual);
-
-                $titulo = 'Búsqueda entre ' . $fecha_inicial_actual_titulo . ' / ' . $fecha_actual_titulo . ', y ' . $fecha_inicial_anterior_titulo . ' / ' . $fecha_anterior_titulo;
-                // BUSQUEDA POR TRAFICO
-                $trafico_mes_anterior = $this->getSelect($cargo_id, 1, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-                
-                $trafico_mes_actual = $this->getSelect($cargo_id, 1, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-
-                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 1, $concesionario); // cerato forte, sportage active
-                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
-
-
-                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 1, $concesionario); // cerato forte, sportage active
-                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-                // BUSQUEDA POR PROFORMA
-                $proforma_mes_anterior = $this->getSelect($cargo_id, 2, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $proforma_mes_actual = $this->getSelect($cargo_id, 2, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 2, $concesionario); // cerato forte, sportage active
-                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 2, $concesionario); // resto de modelos
-
-                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 2, $concesionario); // cerato forte, sportage active
-                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 2, $concesionario); // resto de modelos
-                // BUSQUEDA POR TEST DRIVE
-                $td_mes_anterior = $this->getSelect($cargo_id, 3, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $td_mes_actual = $this->getSelect($cargo_id, 3, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                //die('mes anterior: '.$td_mes_anterior.', mes actual: '.$td_mes_actual);
-
-                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 3, $concesionario); // cerato forte, sportage active
-                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 3, $concesionario); // resto de modelos
-
-                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 3, $concesionario); // cerato forte, sportage active
-                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 3, $concesionario); // resto de modelos
-                // BUSQUEDA POR VENTAS
-                $vh_mes_anterior = $this->getSelect($cargo_id, 4, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $vh_mes_actual = $this->getSelect($cargo_id, 4, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 4, $concesionario); // cerato forte, sportage active
-                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 4, $concesionario); // resto de modelos
-
-                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 4, $concesionario); // cerato forte, sportage active
-                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 4, $concesionario); // resto de modelos
-
-                $this->render('reportes', array(
-                    'titulo' => $titulo,
-                    'nombre_mes_anterior' => $nombre_mes_anterior,
-                    'nombre_mes_actual' => $nombre_mes_actual,
-                    'trafico_mes_anterior' => $trafico_mes_anterior,
-                    'trafico_mes_actual' => $trafico_mes_actual,
-                    'proforma_mes_anterior' => $proforma_mes_anterior,
-                    'proforma_mes_actual' => $proforma_mes_actual,
-                    'td_mes_anterior' => $td_mes_anterior,
-                    'td_mes_actual' => $td_mes_actual,
-                    'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual,
-                    'traficockd1' => $traficockd1,
-                    'traficocbu1' => $traficocbu1,
-                    'traficockd2' => $traficockd2,
-                    'traficocbu2' => $traficocbu2,
-                    'proformackd1' => $proformackd1,
-                    'proformacbu1' => $proformacbu1,
-                    'proformackd2' => $proformackd2,
-                    'proformacbu2' => $proformacbu2,
-                    'tdckd1' => $tdckd1,
-                    'tdcbu1' => $tdcbu1,
-                    'tdckd2' => $tdckd2,
-                    'tdcbu2' => $tdcbu2,
-                    'vhckd1' => $vhckd1,
-                    'vhcbu1' => $vhcbu1,
-                    'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2,
-                    // NICOLAS VELA - GET MODELOS
-                    'modelos_car' => $modelos_car,
-                    'lista_datos' => $lista_datos
-                    // FIN NICOLAS VELA
-                ));
-                exit();
-            }
+                $tipo_busqueda_trafico = 1;
+                $tipo_busqueda_proforma = 2;
+                $tipo_busqueda_testdrive = 3;
+                $tipo_busqueda_ventas = 4;
 
             //===========================BUSQUEDA POR FECHAS Y RESPONSABLE================================
-            if ($_GET['GestionInformacion']['tipousuario'] == 2 &&
-                    !empty($_GET['GestionDiaria']['responsable'])) {
-                //die('enter fecha y responsable, jefe de almacen');
-                $fecha1 = $_GET['GestionInformacion']['fecha1'];
-                $fecha2 = $_GET['GestionInformacion']['fecha2'];
+             }else if (($tip_us == 2 || $tip_us == 3) && !empty($_GET['GestionDiaria']['responsable'])) {              
                 $responsable = $_GET['GestionDiaria']['responsable'];
-                $params1 = explode('-', $fecha1);
-                $fecha_inicial_anterior = trim($params1[0] . '-' . $params1[1] . '-' . $params1[2]);
-                $fecha_anterior = trim($params1[3] . '-' . $params1[4] . '-' . $params1[5]);
+                $tipo_busqueda_trafico = 5;
+                $tipo_busqueda_proforma = 6;
+                $tipo_busqueda_testdrive = 7;
+                $tipo_busqueda_ventas = 8;
 
-                $params2 = explode('-', $fecha2);
-                $fecha_inicial_actual = trim($params2[0] . '-' . $params2[1] . '-' . $params2[2]);
-                $fecha_actual = trim($params2[3] . '-' . $params2[4] . '-' . $params2[5]);
-                $mes_anterior = $params1[1];
-                $mes_actual = $params2[1];
-                $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
-                $nombre_mes_actual = $this->getNombreMes($mes_actual);
-
-                $titulo = 'Búsqueda entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual . '. Asesor: ' . $this->getResponsableNombres($responsable, $concesionario);
-
-                // BUSQUEDA POR TRAFICO
-                $trafico_mes_anterior = $this->getSelect($cargo_id, 5, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-                $trafico_mes_actual = $this->getSelect($cargo_id, 5, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-
-                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 5, $concesionario); // cerato forte, sportage active
-                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
-
-                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 5, $concesionario); // cerato forte, sportage active
-                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-                //
-                // BUSQUEDA POR PROFORMA
-                $proforma_mes_anterior = $this->getSelect($cargo_id, 6, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $proforma_mes_actual = $this->getSelect($cargo_id, 6, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 6, $concesionario); // cerato forte, sportage active
-                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 6, $concesionario); // resto de modelos
-
-                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 6, $concesionario); // cerato forte, sportage active
-                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 6, $concesionario); // resto de modelos
-                // BUSQUEDA POR TEST DRIVE
-                $td_mes_anterior = $this->getSelect($cargo_id, 7, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $td_mes_actual = $this->getSelect($cargo_id, 7, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 7, $concesionario); // cerato forte, sportage active
-                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 7, $concesionario); // resto de modelos
-
-                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 7, $concesionario); // cerato forte, sportage active
-                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 7, $concesionario); // resto de modelos
-                // BUSQUEDA POR VENTAS
-                $vh_mes_anterior = $this->getSelect($cargo_id, 8, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $vh_mes_actual = $this->getSelect($cargo_id, 8, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 8, $concesionario); // cerato forte, sportage active
-                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 8, $concesionario); // resto de modelos
-
-                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 8, $concesionario); // cerato forte, sportage active
-                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 8, $concesionario); // resto de modelos
-
-                $this->render('reportes', array(
-                    'titulo' => $titulo,
-                    'nombre_mes_anterior' => $nombre_mes_anterior,
-                    'nombre_mes_actual' => $nombre_mes_actual,
-                    'trafico_mes_anterior' => $trafico_mes_anterior,
-                    'trafico_mes_actual' => $trafico_mes_actual,
-                    'proforma_mes_anterior' => $proforma_mes_anterior,
-                    'proforma_mes_actual' => $proforma_mes_actual,
-                    'td_mes_anterior' => $td_mes_anterior,
-                    'td_mes_actual' => $td_mes_actual,
-                    'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual,
-                    'traficockd1' => $traficockd1,
-                    'traficocbu1' => $traficocbu1,
-                    'traficockd2' => $traficockd2,
-                    'traficocbu2' => $traficocbu2,
-                    'proformackd1' => $proformackd1,
-                    'proformacbu1' => $proformacbu1,
-                    'proformackd2' => $proformackd2,
-                    'proformacbu2' => $proformacbu2,
-                    'tdckd1' => $tdckd1,
-                    'tdcbu1' => $tdcbu1,
-                    'tdckd2' => $tdckd2,
-                    'tdcbu2' => $tdcbu2,
-                    'vhckd1' => $vhckd1,
-                    'vhcbu1' => $vhcbu1,
-                    'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2,
-                    // NICOLAS VELA - GET MODELOS
-                    'modelos_car' => $modelos_car,
-                    'lista_datos' => $lista_datos
-                    // FIN NICOLAS VELA
-                ));
-                exit();
-            }
-
-            //===========================BUSQUEDA POR FECHAS, CONCESIONARIO y RESPONSABLE================================
-            if ($_GET['GestionInformacion']['tipousuario'] == 3 &&
-                    !empty($_GET['GestionDiaria']['responsable'])) {
-                //die('enter conc responsable fecha');
-                $fecha1 = $_GET['GestionInformacion']['fecha1'];
-                $fecha2 = $_GET['GestionInformacion']['fecha2'];
+                //===========================BUSQUEDA POR FECHAS, CONCESIONARIO y RESPONSABLE================================
+                if ($tip_us == 3) {
+                    $concesionario = $_GET['GestionInformacion']['concesionario'];
+                    $tit_ext = '. Asesor: ' . $this->getResponsableNombres($responsable) . ', Concesionario: ' . $this->getNameConcesionarioById($concesionario);
+                }else{
+                    $tit_ext = '. Asesor: ' . $this->getResponsableNombres($responsable, $concesionario);
+                }
+            }else if ($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])) {
                 $responsable = $_GET['GestionDiaria']['responsable'];
                 $concesionario = $_GET['GestionInformacion']['concesionario'];
-                $params1 = explode('-', $fecha1);
-                $fecha_inicial_anterior = trim($params1[0] . '-' . $params1[1] . '-' . $params1[2]);
-                $fecha_anterior = trim($params1[3] . '-' . $params1[4] . '-' . $params1[5]);
-
-                $params2 = explode('-', $fecha2);
-                $fecha_inicial_actual = trim($params2[0] . '-' . $params2[1] . '-' . $params2[2]);
-                $fecha_actual = trim($params2[3] . '-' . $params2[4] . '-' . $params2[5]);
-                $mes_anterior = $params1[1];
-                $mes_actual = $params2[1];
-                $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
-                $nombre_mes_actual = $this->getNombreMes($mes_actual);
-
-                $titulo = 'Búsqueda entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual . '. Asesor: ' . $this->getResponsableNombres($responsable) . ', Concesionario: ' . $this->getNameConcesionarioById($concesionario);
-
-                // BUSQUEDA POR TRAFICO
-                $trafico_mes_anterior = $this->getSelect($cargo_id, 5, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-                $trafico_mes_actual = $this->getSelect($cargo_id, 5, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-
-                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 5, $concesionario); // cerato forte, sportage active
-                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
-
-                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 5, $concesionario); // cerato forte, sportage active
-                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-                // BUSQUEDA POR PROFORMA
-                $proforma_mes_anterior = $this->getSelect($cargo_id, 6, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $proforma_mes_actual = $this->getSelect($cargo_id, 6, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 6, $concesionario); // cerato forte, sportage active
-                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 6, $concesionario); // resto de modelos
-
-                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 6, $concesionario); // cerato forte, sportage active
-                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 6, $concesionario); // resto de modelos
-                // BUSQUEDA POR TEST DRIVE
-                $td_mes_anterior = $this->getSelect($cargo_id, 7, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $td_mes_actual = $this->getSelect($cargo_id, 7, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 7, $concesionario); // cerato forte, sportage active
-                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 7, $concesionario); // resto de modelos
-
-                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 7, $concesionario); // cerato forte, sportage active
-                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 7, $concesionario); // resto de modelos
-                // BUSQUEDA POR VENTAS
-                $vh_mes_anterior = $this->getSelect($cargo_id, 8, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $vh_mes_actual = $this->getSelect($cargo_id, 8, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 8, $concesionario); // cerato forte, sportage active
-                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 8, $concesionario); // resto de modelos
-
-                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 8, $concesionario); // cerato forte, sportage active
-                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 8, $concesionario); // resto de modelos
-
-                $this->render('reportes', array(
-                    'titulo' => $titulo,
-                    'nombre_mes_anterior' => $nombre_mes_anterior,
-                    'nombre_mes_actual' => $nombre_mes_actual,
-                    'trafico_mes_anterior' => $trafico_mes_anterior,
-                    'trafico_mes_actual' => $trafico_mes_actual,
-                    'proforma_mes_anterior' => $proforma_mes_anterior,
-                    'proforma_mes_actual' => $proforma_mes_actual,
-                    'td_mes_anterior' => $td_mes_anterior,
-                    'td_mes_actual' => $td_mes_actual,
-                    'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual,
-                    'traficockd1' => $traficockd1,
-                    'traficocbu1' => $traficocbu1,
-                    'traficockd2' => $traficockd2,
-                    'traficocbu2' => $traficocbu2,
-                    'proformackd1' => $proformackd1,
-                    'proformacbu1' => $proformacbu1,
-                    'proformackd2' => $proformackd2,
-                    'proformacbu2' => $proformacbu2,
-                    'tdckd1' => $tdckd1,
-                    'tdcbu1' => $tdcbu1,
-                    'tdckd2' => $tdckd2,
-                    'tdcbu2' => $tdcbu2,
-                    'vhckd1' => $vhckd1,
-                    'vhcbu1' => $vhcbu1,
-                    'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2,
-                    // NICOLAS VELA - GET MODELOS
-                    'modelos_car' => $modelos_car,
-                    'lista_datos' => $lista_datos
-                    // FIN NICOLAS VELA
-                ));
-                exit();
+                $tipo_busqueda_trafico = 9;
+                $tipo_busqueda_proforma = 10;
+                $tipo_busqueda_testdrive = 11;
+                $tipo_busqueda_ventas = 12;
+                $tit_ext = '. Concesionario: ' . $this->getNameConcesionarioById($concesionario);
             }
-            // ===========================BUSQUEDA POR FECHAS, CONCESIONARIO EN USUARIO GERENTE COMERCIAL============================
-            if ($_GET['GestionInformacion']['tipousuario'] == 3 &&
-                    !empty($_GET['GestionInformacion']['concesionario'])) {
-                //die('enter busqueda general por concesionario');
-                $fecha1 = $_GET['GestionInformacion']['fecha1'];
-                $fecha2 = $_GET['GestionInformacion']['fecha2'];
-                $responsable = 0;
-                $concesionario = $_GET['GestionInformacion']['concesionario'];
-                $params1 = explode('-', $fecha1);
-                $fecha_inicial_anterior = trim($params1[0] . '-' . $params1[1] . '-' . $params1[2]);
-                $fecha_anterior = trim($params1[3] . '-' . $params1[4] . '-' . $params1[5]);
 
-                $params2 = explode('-', $fecha2);
-                $fecha_inicial_actual = trim($params2[0] . '-' . $params2[1] . '-' . $params2[2]);
-                $fecha_actual = trim($params2[3] . '-' . $params2[4] . '-' . $params2[5]);
-                $mes_anterior = $params1[1];
-                $mes_actual = $params2[1];
-                $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
-                $nombre_mes_actual = $this->getNombreMes($mes_actual);
-
-                $titulo = 'Búsqueda entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual . ', Concesionario: ' . $this->getNameConcesionarioById($concesionario);
-
-                // BUSQUEDA POR TRAFICO
-                $trafico_mes_anterior = $this->getSelect($cargo_id, 9, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-                $trafico_mes_actual = $this->getSelect($cargo_id, 9, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-
-                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, 9, $concesionario); // cerato forte, sportage active
-                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
-
-                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, 9, $concesionario); // cerato forte, sportage active
-                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-                // BUSQUEDA POR PROFORMA
-                $proforma_mes_anterior = $this->getSelect($cargo_id, 10, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $proforma_mes_actual = $this->getSelect($cargo_id, 10, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 10, $concesionario); // cerato forte, sportage active
-                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 10, $concesionario); // resto de modelos
-
-                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 10, $concesionario); // cerato forte, sportage active
-                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 10, $concesionario); // resto de modelos
-                // BUSQUEDA POR TEST DRIVE
-                $td_mes_anterior = $this->getSelect($cargo_id, 11, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $td_mes_actual = $this->getSelect($cargo_id, 11, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 11, $concesionario); // cerato forte, sportage active
-                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 11, $concesionario); // resto de modelos
-
-                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 11, $concesionario); // cerato forte, sportage active
-                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 11, $concesionario); // resto de modelos
-                // BUSQUEDA POR VENTAS
-                $vh_mes_anterior = $this->getSelect($cargo_id, 12, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $vh_mes_actual = $this->getSelect($cargo_id, 12, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-
-                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 12, $concesionario); // cerato forte, sportage active
-                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 12, $concesionario); // resto de modelos
-
-                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 12, $concesionario); // cerato forte, sportage active
-                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 12, $concesionario); // resto de modelos
-
-                $this->render('reportes', array(
-                    'titulo' => $titulo,
-                    'nombre_mes_anterior' => $nombre_mes_anterior,
-                    'nombre_mes_actual' => $nombre_mes_actual,
-                    'trafico_mes_anterior' => $trafico_mes_anterior,
-                    'trafico_mes_actual' => $trafico_mes_actual,
-                    'proforma_mes_anterior' => $proforma_mes_anterior,
-                    'proforma_mes_actual' => $proforma_mes_actual,
-                    'td_mes_anterior' => $td_mes_anterior,
-                    'td_mes_actual' => $td_mes_actual,
-                    'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual,
-                    'traficockd1' => $traficockd1,
-                    'traficocbu1' => $traficocbu1,
-                    'traficockd2' => $traficockd2,
-                    'traficocbu2' => $traficocbu2,
-                    'proformackd1' => $proformackd1,
-                    'proformacbu1' => $proformacbu1,
-                    'proformackd2' => $proformackd2,
-                    'proformacbu2' => $proformacbu2,
-                    'tdckd1' => $tdckd1,
-                    'tdcbu1' => $tdcbu1,
-                    'tdckd2' => $tdckd2,
-                    'tdcbu2' => $tdcbu2,
-                    'vhckd1' => $vhckd1,
-                    'vhcbu1' => $vhcbu1,
-                    'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2,
-                    // NICOLAS VELA - GET MODELOS
-                    'modelos_car' => $modelos_car,
-                    'lista_datos' => $lista_datos
-                    // FIN NICOLAS VELA
-                ));
-                exit();
-            }
+            $tipo_busqueda_trafico2 = $tipo_busqueda_trafico;
+            $tipo_busqueda_proforma2 = $tipo_busqueda_proforma;
+            $tipo_busqueda_testdrive2 = $tipo_busqueda_testdrive;
+            $tipo_busqueda_ventas2 = $tipo_busqueda_ventas;
 
             // ===========================BUSQUEDA GENERAL TOTAL GERENTE COMERCIAL==========================================
-            if ($_GET['GestionInformacion']['tipousuario'] == 3 &&
-                    ($_GET['GestionInformacion']['concesionario'] == 0) &&
-                    empty($_GET['GestionDiaria']['responsable'])) {
-                //die('enter busqueda general total');
-                $fecha1 = $_GET['GestionInformacion']['fecha1'];
-                $fecha2 = $_GET['GestionInformacion']['fecha2'];
-
-                $responsable = 0;
+            if ($tip_us == 3 && ($_GET['GestionInformacion']['concesionario'] == 0) && empty($_GET['GestionDiaria']['responsable'])) {
+                die();
+                $responsable = $_GET['GestionDiaria']['responsable'];
                 $concesionario = $_GET['GestionInformacion']['concesionario'];
-                $params1 = explode('-', $fecha1);
-                $fecha_inicial_anterior = trim($params1[0] . '-' . $params1[1] . '-' . $params1[2]);
-                $fecha_anterior = trim($params1[3] . '-' . $params1[4] . '-' . $params1[5]);
+                $tipo_busqueda_trafico = 9;
+                $tipo_busqueda_proforma = 10;
+                $tipo_busqueda_testdrive = 11;
+                $tipo_busqueda_ventas = 12;
 
-                $params2 = explode('-', $fecha2);
-                $fecha_inicial_actual = trim($params2[0] . '-' . $params2[1] . '-' . $params2[2]);
-                $fecha_actual = trim($params2[3] . '-' . $params2[4] . '-' . $params2[5]);
-                $mes_anterior = $params1[1];
-                $mes_actual = $params2[1];
-                $nombre_mes_anterior = $this->getNombreMes($mes_anterior);
-                $nombre_mes_actual = $this->getNombreMes($mes_actual);
+                $tipo_busqueda_trafico2 = 13;
+                $tipo_busqueda_proforma2 = 14;
+                $tipo_busqueda_testdrive2 = 15;
+                $tipo_busqueda_ventas2 = 16;
+                $tit_ext = '. Grupo: ' . $this->getNombreGrupo($grupo_id);
+            }else if ($tip_us == 3 && empty($_GET['GestionInformacion']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+                $responsable = $_GET['GestionDiaria']['responsable'];
+                $concesionario = $_GET['GestionInformacion']['concesionario'];
+                $tipo_busqueda_trafico = 9;
+                $tipo_busqueda_proforma = 10;
+                $tipo_busqueda_testdrive = 11;
+                $tipo_busqueda_ventas = 12;
 
-                $titulo = 'Búsqueda total entre ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . ', y ' . $fecha_inicial_actual . ' / ' . $fecha_actual . ', Grupo: ' . $this->getNombreGrupo($grupo_id);
+                $tipo_busqueda_trafico2 = 13;
+                $tipo_busqueda_proforma2 = 14;
+                $tipo_busqueda_testdrive2 = 15;
+                $tipo_busqueda_ventas2 = 16;
+                $tit_ext = '. Grupo: ' . $this->getNombreGrupo($grupo_id);
+            }            
 
-                // BUSQUEDA POR TRAFICO
-                $trafico_mes_anterior = $this->getSelect($cargo_id, 9, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
-                $trafico_mes_actual = $this->getSelect($cargo_id, 9, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
+            $fecha1 = explode(' - ', $_GET['GestionInformacion']['fecha1']);
+            $fecha2 = explode(' - ', $_GET['GestionInformacion']['fecha2']);
+            $responsable = 0;
 
-                $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 13, $concesionario); // cerato forte, sportage active
-                $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
+            $fecha_inicial_anterior = trim($fecha1[0]);
+            $fecha_anterior = trim($fecha1[1]);
 
-                $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 13, $concesionario); // cerato forte, sportage active
-                $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
-                // BUSQUEDA POR PROFORMA
-                $proforma_mes_anterior = $this->getSelect($cargo_id, 10, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $proforma_mes_actual = $this->getSelect($cargo_id, 10, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $fecha_inicial_actual = trim($fecha2[0]);                
+            $fecha_actual = trim($fecha2[0]);
 
-                $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 14, $concesionario); // cerato forte, sportage active
-                $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 14, $concesionario); // resto de modelos
+            $nombre_mes_actual = strftime( "%B - %Y", strtotime($fecha_inicial_anterior));
+            $nombre_mes_anterior = strftime( "%B - %Y", strtotime($fecha_inicial_actual));            
 
-                $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 14, $concesionario); // cerato forte, sportage active
-                $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 14, $concesionario); // resto de modelos
-                // BUSQUEDA POR TEST DRIVE
-                $td_mes_anterior = $this->getSelect($cargo_id, 11, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $td_mes_actual = $this->getSelect($cargo_id, 11, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $titulo = 'Búsqueda entre ' . $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
+            
+            // BUSQUEDA POR TRAFICO
+            $trafico_mes_anterior = $this->getSelect($cargo_id, $tipo_busqueda_trafico, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
+            $trafico_mes_actual = $this->getSelect($cargo_id, $tipo_busqueda_trafico, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][0]);
 
-                $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 15, $concesionario); // cerato forte, sportage active
-                $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 15, $concesionario); // resto de modelos
+            $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, $tipo_busqueda_trafico2, $concesionario); // cerato forte, sportage active
+            $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
 
-                $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 15, $concesionario); // cerato forte, sportage active
-                $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 15, $concesionario); // resto de modelos
-                // BUSQUEDA POR VENTAS
-                $vh_mes_anterior = $this->getSelect($cargo_id, 12, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
-                $vh_mes_actual = $this->getSelect($cargo_id, 12, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, $tipo_busqueda_trafico2, $concesionario); // cerato forte, sportage active
+            $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
+            
+            // BUSQUEDA POR PROFORMA
+            $proforma_mes_anterior = $this->getSelect($cargo_id, $tipo_busqueda_proforma, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $proforma_mes_actual = $this->getSelect($cargo_id, $tipo_busqueda_proforma, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
 
-                $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, 16, $concesionario); // cerato forte, sportage active
-                $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, 16, $concesionario); // resto de modelos
+            $proformackd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, $tipo_busqueda_proforma2, $concesionario); // cerato forte, sportage active
+            $proformacbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, $tipo_busqueda_proforma2, $concesionario); // resto de modelos
 
-                $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, 16, $concesionario); // cerato forte, sportage active
-                $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, 16, $concesionario); // resto de modelos
+            $proformackd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, $tipo_busqueda_proforma2, $concesionario); // cerato forte, sportage active
+            $proformacbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, $tipo_busqueda_proforma2, $concesionario); // resto de modelos
+            
+            // BUSQUEDA POR TEST DRIVE
+            $td_mes_anterior = $this->getSelect($cargo_id, $tipo_busqueda_testdrive, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $td_mes_actual = $this->getSelect($cargo_id, $tipo_busqueda_testdrive, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
 
-                $this->render('reportes', array(
-                    'titulo' => $titulo,
-                    'nombre_mes_anterior' => $nombre_mes_anterior,
-                    'nombre_mes_actual' => $nombre_mes_actual,
-                    'trafico_mes_anterior' => $trafico_mes_anterior,
-                    'trafico_mes_actual' => $trafico_mes_actual,
-                    'proforma_mes_anterior' => $proforma_mes_anterior,
-                    'proforma_mes_actual' => $proforma_mes_actual,
-                    'td_mes_anterior' => $td_mes_anterior,
-                    'td_mes_actual' => $td_mes_actual,
-                    'vh_mes_anterior' => $vh_mes_anterior,
-                    'vh_mes_actual' => $vh_mes_actual,
-                    'traficockd1' => $traficockd1,
-                    'traficocbu1' => $traficocbu1,
-                    'traficockd2' => $traficockd2,
-                    'traficocbu2' => $traficocbu2,
-                    'proformackd1' => $proformackd1,
-                    'proformacbu1' => $proformacbu1,
-                    'proformackd2' => $proformackd2,
-                    'proformacbu2' => $proformacbu2,
-                    'tdckd1' => $tdckd1,
-                    'tdcbu1' => $tdcbu1,
-                    'tdckd2' => $tdckd2,
-                    'tdcbu2' => $tdcbu2,
-                    'vhckd1' => $vhckd1,
-                    'vhcbu1' => $vhcbu1,
-                    'vhckd2' => $vhckd2,
-                    'vhcbu2' => $vhcbu2,
-                    // NICOLAS VELA - GET MODELOS
-                    'modelos_car' => $modelos_car,
-                    'lista_datos' => $lista_datos
-                    // FIN NICOLAS VELA
-                ));
-                exit();
-            }
+            $tdckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, $tipo_busqueda_testdrive2, $concesionario); // cerato forte, sportage active
+            $tdcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, $tipo_busqueda_testdrive2, $concesionario); // resto de modelos
+
+            $tdckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, $tipo_busqueda_testdrive2, $concesionario); // cerato forte, sportage active
+            $tdcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, $tipo_busqueda_testdrive2, $concesionario); // resto de modelos
+            
+            // BUSQUEDA POR VENTAS
+            $vh_mes_anterior = $this->getSelect($cargo_id, $tipo_busqueda_ventas, $fecha_inicial_anterior, $fecha_anterior, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+            $vh_mes_actual = $this->getSelect($cargo_id, $tipo_busqueda_ventas, $fecha_inicial_actual, $fecha_actual, $responsable, $concesionario, $SQLexecute ['modelos'][1]);
+
+            $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 1, $tipo_busqueda_ventas2, $concesionario); // cerato forte, sportage active
+            $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $responsable, 2, $tipo_busqueda_ventas2, $concesionario); // resto de modelos
+
+            $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 1, $tipo_busqueda_ventas2, $concesionario); // cerato forte, sportage active
+            $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $responsable, 2, $tipo_busqueda_ventas2, $concesionario); // resto de modelos
+
 
             if ($_GET['GestionInformacion']['tipousuario'] == 3 &&
                     empty($_GET['GestionInformacion']['concesionario']) &&
@@ -3142,52 +2795,6 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'lista_datos' => $lista_datos
             // FIN NICOLAS VELA
         ));
-
-    }
-
-    private function getNombreMes($mes) {
-        switch ($mes) {
-            case '01':
-                $nombre_mes_anterior = 'ENERO';
-                break;
-            case '02':
-                $nombre_mes_anterior = 'FEBRERO';
-                break;
-            case '03':
-                $nombre_mes_anterior = 'MARZO';
-                break;
-            case '04':
-                $nombre_mes_anterior = 'ABRIL';
-                break;
-            case '05':
-                $nombre_mes_anterior = 'MAYO';
-                break;
-            case '06':
-                $nombre_mes_anterior = 'JUNIO';
-                break;
-            case '07':
-                $nombre_mes_anterior = 'JULIO';
-                break;
-            case '08':
-                $nombre_mes_anterior = 'AGOSTO';
-                break;
-            case '09':
-                $nombre_mes_anterior = 'SEPTIEMBRE';
-                break;
-            case '10':
-                $nombre_mes_anterior = 'OCTUBRE';
-                break;
-            case '11':
-                $nombre_mes_anterior = 'NOVIEMBRE';
-                break;
-            case '12':
-                $nombre_mes_anterior = 'DICIEMBRE';
-                break;
-
-            default:
-                break;
-        }
-        return $nombre_mes_anterior;
     }
 
     private function getSelect($cargo_id, $tipo_busqueda, $fecha1, $fecha2, $responsable, $concesionario, $modelos = null) {
