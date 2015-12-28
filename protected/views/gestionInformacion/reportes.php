@@ -163,14 +163,6 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                     if ($cargo_id == 70):
                         ?>
-                        <?php
-                        // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 17 Y EL DEALER ID -> concesionarioid
-                        $mod = new GestionDiaria;
-                        $cre = new CDbCriteria();
-                        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
-                        $cre->order = " nombres ASC";
-                        $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
-                        ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="">Asesor</label>
