@@ -36,11 +36,11 @@ class SiteController extends Controller {
         }
         if (Yii::app()->user->id > 0) {
             $this->render('menu', array('opcion' => $opcion, 'tipo' => $tipo));
-			$user = Usuarios::model()->findByPk( Yii::app()->user->id);
-			if($user->cargo->codigo == Constantes::CDG){
-				$this->traercotizaciones();
-				$this->traernocompradores();
-			}
+            $user = Usuarios::model()->findByPk(Yii::app()->user->id);
+            if ($user->cargo->codigo == Constantes::CDG) {
+                $this->traercotizaciones();
+                $this->traernocompradores();
+            }
         } else {
             //throw new CHttpException(404,'Lo sentimos no se puede desplegar esta '.utf8_decode(utf8_encode("información")).', usted debe estar registrado en el sistema.');
             $this->redirect(array('site/login'));
@@ -137,22 +137,21 @@ class SiteController extends Controller {
                     //die();
                 }
                 //$this->redirect(Yii::app()->user->returnUrl);
-				
-				//FUNCION PARA CALL CENTER SI TIENE COTIZACIONES AUTOMATICAS.
-				
-				$user = Usuarios::model()->findByPk( Yii::app()->user->id);
-				if($user->cargo->codigo == Constantes::CDG){
-					$this->traercotizaciones();
-				}
-				
-				$user = Usuarios::model()->findByPk( Yii::app()->user->id);
-				if($user->cargo->codigo == Constantes::CDG){
-					$this->traercotizaciones();
-					$this->traernocompradores();
-				}
-				
-				
-				
+                //FUNCION PARA CALL CENTER SI TIENE COTIZACIONES AUTOMATICAS.
+
+                $user = Usuarios::model()->findByPk(Yii::app()->user->id);
+                if ($user->cargo->codigo == Constantes::CDG) {
+                    $this->traercotizaciones();
+                }
+
+                $user = Usuarios::model()->findByPk(Yii::app()->user->id);
+                if ($user->cargo->codigo == Constantes::CDG) {
+                    $this->traercotizaciones();
+                    $this->traernocompradores();
+                }
+
+
+
                 //Actualizar entrada del usuario
                 $user = Usuarios::model()->find(array('condition' => "id=:match", 'params' => array(':match' => (int) Yii::app()->user->id)));
                 if (empty($user->ultimavisita)) {
@@ -162,8 +161,6 @@ class SiteController extends Controller {
                     if ($user->update())
                         $this->redirect($this->createUrl('site/menu'));
                 }
-				
-				
             }
         }
         // display the login form
@@ -176,6 +173,10 @@ class SiteController extends Controller {
     public function actionLogout() {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
+    }
+
+    public function actionConsulta($id_informacion = NULL, $tipo = NULL, $fuente = NULL) {
+        $this->render('consulta', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente));
     }
 
     public function actionBusqueda() {
@@ -319,12 +320,19 @@ class SiteController extends Controller {
 
 
                 require_once 'email/mail_func.php';
-                $asunto = 'Confirmaci&oacute;n de Correo de Usuario';
+                $asunto = 'Kia Motors Ecuador SGC - Confirmaci&oacute;n de Registro de Usuario';
                 $token = md5($model->correo . '--' . $model->id . '--' . $model->usuario);
                 $general = '<body style="margin: 10px;">
                             <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/header_mail.jpg"/></div>';
-                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">Estimad@: <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su registro en la intranet de Kia ha sido realizado exitosamente, por favor para continuar con el proceso usted debe confirmar su correo electrónico realizando un clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/confirmar/t/' . $token . '-' . md5($model->id) . '">aqu&iacute;.</a>.<br></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">Señor(a): <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su registro en el SGC de Kia ha sido realizado exitosamente. <br /><br />Para continuar con el proceso usted debe confirmar su correo electrónico realizando clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/confirmar/t/' . $token . '-' . md5($model->id) . '">aqu&iacute;.</a>.<br></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">'
+                        . '<br /><br />Saludos cordiales <br />SGC <br />Kia Motors Ecuador <br /><br /></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">'
+                        . '<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+
+</p></div>';
                 $general.=' <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/footer_mail.jpg"/></div>
                             
                             </div>
@@ -335,7 +343,8 @@ class SiteController extends Controller {
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $model->correo; //email administrador
 
-                if (sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                if ($send = sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                    //die('send email: '.$send);
                     Yii::app()->user->setFlash('success', '<div class="exitoRegistro"><img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/><br>Tu usuario ha sido creado exitosamente, por favor revisa la bandeja de entrada de tu correo electr&oacute;nico para activar la cuenta.</div>');
                     $this->redirect(array('site/registro'));
                 }
@@ -350,13 +359,14 @@ class SiteController extends Controller {
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
+        //die('valor:'.$valor);
         $concesionarios = GrConcesionarios::model()->findAll(array('order' => 'nombre ASC', 'condition' => "id_grupo=:match", 'params' => array(':match' => (int) $valor)));
         $html = "";
         if (!empty($concesionarios)) {
-            $html .='<select title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
+            $html .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
             //$html .="<option>Seleccione >></option>";
             foreach ($concesionarios as $c) {
-                $html .="<option value='" . $c->id . "'>" . $c->nombre . "</option>";
+                $html .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
             }
             $html .="</select>";
             echo $html;
@@ -373,7 +383,7 @@ class SiteController extends Controller {
         $concesionarios = Dealers::model()->findAll(array('order' => 'name ASC', 'condition' => "cityid=:match", 'params' => array(':match' => (int) $valor)));
         $html = "";
         if (!empty($concesionarios)) {
-            $html .='<select name="Usuarios[dealers_id]" id="Usuarios_dealers_id" class="form-control cccc" onchange="validarPersonas()">';
+            $html .='<select required name="Usuarios[dealers_id]" id="Usuarios_dealers_id" class="form-control cccc" onchange="validarPersonas()">';
             $html .="<option value='0'>Seleccione >></option>";
             foreach ($concesionarios as $c) {
                 $html .="<option value='" . $c->id . "'>" . $c->name . "</option>";
@@ -393,7 +403,7 @@ class SiteController extends Controller {
         $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match", 'params' => array(':match' => (int) $valor)));
         $html = "";
         if (!empty($concesionarios)) {
-            $html .='<select name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control">';
+            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control">';
             $html .="<option>Seleccione >></option>";
             foreach ($concesionarios as $c) {
                 $html .="<option value='" . $c->id . "'>" . $c->descripcion . "</option>";
@@ -476,8 +486,11 @@ class SiteController extends Controller {
                     $asunto = 'Confirmaci&oacute;n de Cambio de password';
                     $general = '<body style="margin: 10px;">
                             <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto"></div>
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/header_mail.jpg"/></div>';
-                    $general .= '<div style="width:600px;margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">Estimad@: <b>' . utf8_decode(utf8_encode($user->nombres)) . ' ' . utf8_decode(utf8_encode($user->apellido)) . '</b> su solicitud de cambio de contrase&ntilde;a ha sido realizado exitosamente, por favor para continuar con el proceso usted debe confirmar su correo electrónico realizando un clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/Restablecerpassword/t/' . $token . '/pz/' . md5($user->id) . '">aqu&iacute;.</a>.<br></div>';
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <img src="images/header_mail.jpg"/></div>';
+                    $general .= '<div style="width:600px;margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">'
+                            . 'Estimad@: <b>' . utf8_decode(utf8_encode($user->nombres)) . ' ' . utf8_decode(utf8_encode($user->apellido)) . '</b> su solicitud de cambio de contrase&ntilde;a ha sido realizado exitosamente, '
+                            . 'por favor para continuar con el proceso usted debe confirmar su correo electrónico realizando clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/Restablecerpassword/t/' . $token . '/pz/' . md5($user->id) . '">aqu&iacute;.</a>.<br></div>';
                     $general.=' <div style="width:600px;margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/footer_mail.jpg"/></div>
 	                            
 	                            </div>
@@ -794,7 +807,8 @@ class SiteController extends Controller {
     public function actionTraerciudadcon() {
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
-        $model = GrConcesionarios::model()->find(array('condition' => 'id=' . $valor));
+        //die($valor);
+        $model = GrConcesionarios::model()->find(array('condition' => 'dealer_id=' . $valor));
         if ($model->provincia > 0 && $model->dealer_id > 0) {
             $provincia = TblProvincias::model()->find(array('condition' => 'id_provincia=' . $model->provincia));
             $dealer = Dealers::model()->findByPk($model->dealer_id);
@@ -2343,6 +2357,59 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
      * @param type $id_informacion
      * @param type $id_vehiculo
      */
+    public function actionProformaClienteExo($id_informacion, $id_vehiculo) {
+        $this->layout = '//layouts/call-print';
+        $responsable_id = $this->getResponsableId($id_informacion);
+        $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
+        $nombreproforma = $this->getNombreProforma($concesionarioid);
+        $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
+        //die('concesionario id: '.$concesionarioid);
+        //die('enter prof');
+
+        $con = Yii::app()->db;
+        $sql = "SELECT gi.id,gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa,gi.responsable, gv.modelo, gv.version, gf.forma_pago, 
+gf.precio_vehiculo,  gf.precio_normal,gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, gf.entidad_financiera, gf.id as id_financiamiento,gf.ts,  
+gf.observaciones, gf.cuota_mensual, gv.accesorios
+FROM gestion_informacion gi 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN gestion_financiamiento gf ON gf.id_informacion = gi.id 
+WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
+//die('sql:'.$sql);
+        $request = $con->createCommand($sql)->queryAll();
+        $num_proforma = $this->getProformaCliente($id_informacion, $id_vehiculo);
+        //die('num proforma: '.$num_proforma);
+        //$proforma = new GestionProforma;
+        //$proforma->id_vehiculo = $id_vehiculo;
+        //date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        //$proforma->fecha = date("Y-m-d H:i:s");
+        //$proforma->save();
+        # mPDF
+        $mPDF1 = Yii::app()->ePdf->mpdf();
+        $mPDF1->SetTitle('Proforma Cliente');
+
+        # You can easily override default constructor's params
+        $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+
+        //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
+        $mPDF1->WriteHTML($stylesheet, 1);
+        # renderPartial (only 'view' of current controller)
+        $mPDF1->WriteHTML($this->renderPartial('proformaclientexo', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
+
+        # Renders image
+        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
+        # Outputs ready PDF
+        $mPDF1->SetFooter($nombreproforma);
+        $mPDF1->Output($nombreproforma, 'I');
+    }
+    
+    /**
+     * Generate a pdf document with vehicle accesories and charts
+     * @param type $id_informacion
+     * @param type $id_vehiculo
+     */
     public function actionProformaCliente($id_informacion, $id_vehiculo) {
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
@@ -2585,7 +2652,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $sql = "UPDATE gestion_vehiculo SET cierre = 'ACTIVO' WHERE id = {$id_vehiculo}";
 
         // ACTUALIZAR EN GESTION DIARIA EL STATUS DE CIERRE A 1
-        $sql2 = "UPDATE gestion_diaria SET cierre = 1 WHERE id_informacion = {$id_informacion}";
+        $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 8 WHERE id_informacion = {$id_informacion}";
         //die('sql: '.$sql);
         $request = $con->createCommand($sql)->query();
         $request2 = $con->createCommand($sql2)->query();
@@ -2594,19 +2661,39 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         ));
         //    die('vec');
         $vec = GestionVehiculo::model()->findAll($criteria);
+        $factura = new GestionFactura;
+        $factura->id_informacion = $_POST['id_informacion'];
+        $factura->id_vehiculo = $_POST['id_vehiculo'];
+        $factura->observaciones = 'Venta realizada';
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $factura->fecha = date("Y-m-d H:i:s");
+        $factura->save();
+        
         $this->redirect(array('site/cierre/' . $id_informacion));
         //$this->render('cierre',  array('id' => $id_informacion, 'vec' => $vec));
     }
 
     public function actionFacturaIncorrecta($id_informacion = NULL, $id_vehiculo = NULL) {
+        /*echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
+        die();*/
         $con = Yii::app()->db;
         $sql = "UPDATE gestion_vehiculo SET cierre = 'ACTIVO' WHERE id = {$id_vehiculo}";
 
         // ACTUALIZAR EN GESTION DIARIA EL STATUS DE CIERRE A 1
-        $sql2 = "UPDATE gestion_diaria SET cierre = 1 WHERE id_informacion = {$id_informacion}";
+        $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 8 WHERE id_informacion = {$id_informacion}";
         //die('sql: '.$sql);
         $request = $con->createCommand($sql)->query();
         $request2 = $con->createCommand($sql2)->query();
+        $factura = new GestionFactura;
+        $factura->id_informacion = $_POST['id_informacion'];
+        $factura->id_vehiculo = $_POST['id_vehiculo'];
+        $factura->observaciones = $_POST['Factura']['observaciones'];
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $factura->fecha = date("Y-m-d H:i:s");
+        $factura->save();
+        
         $this->redirect(array('site/cierre/' . $id_informacion));
     }
 
@@ -2679,7 +2766,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             //die('numero coincidencias: '.$count_vh);
             if ($count_vh > 1) { // si el numero de coincidecias es mayor a 1
                 $ght = $count_vh; // tomamos la longitud del array de $coincidencias_vh
-                $ght--;// restamos un valor para el array de $coincidencias_vh
+                $ght--; // restamos un valor para el array de $coincidencias_vh
                 //die('ght: '.$ght);
                 $ini = $coincidencias_vh[0][$ght][1]; // valor mas actual del array $coincidencias_vh
                 $fin = $coincidencias2_vh[0][$ght][1]; // valor mas actual del array $coincidencias2_vh
@@ -2903,6 +2990,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                               <td><strong style="color:#AB1F2C;">W</strong> www.kia.com.ec </td>
                                             </tr>
                                         </table>
+                                        <br /><br /><p style="margin: 2px 0;">Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+</p>
                                 </div>
                             </body>';
                 //die('table: '.$general);
@@ -2923,15 +3013,15 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <img src="images/header_mail.jpg">
                                     <br>
                                         <p>Quito, 5 de agosto del 2015</p><br /><br />
-                                        <p>Apreciado Cliente</p>
+                                        <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
-                                        <p>Ciudad.-</p>
+                                        <p>Quito.-</p>
                                         <br />
                                         <p>
                                         KIA MOTORS le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
                                         </p><br />
                                         <p>
-                                        Le recordamos que para mantener su vehículo cuenta con una';
+                                        Le recordamos que su vehículo cuenta con una';
                 if ($modelo == 86) {
                     $general .= ' garantía de 7 años o 120.000 Km, ';
                 } else {
@@ -2940,7 +3030,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $general .= 'para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro concesionario KIA a nivel nacional. 
                                         </p><br />
                                         <p>
-                                        Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA, donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.
+                                        Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA (1800 542 542), donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.
                                         </p><br />
                                         <p>
                                         Para complementar nuestro servicio hemos incorporado para usted, totalmente gratis por un año, un producto denominado “Asistencia KIA” el cual le asiste ante cualquier desperfecto mecánico, las 24 horas del día, los 365 días del año. La cobertura del producto “Asistencia KIA” comprende de:
@@ -2959,8 +3049,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                         <p>Para KIA MOTORS es importante poner a su disposición productos de calidad para poder brindarle el mejor servicio.</p>
                                         
                                         <p><strong>Atentamente</strong></p>
-                                        <p><strong>KIA MOTORS</strong></p>
+                                        <p><strong>KIA MOTORS ECUADOR</strong></p>
                                         <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/hojaentregacliente?id_informacion=' . $_POST['GestionEntrega']['id_informacion'] . '&id_vehiculo=' . $_POST['GestionEntrega']['id_vehiculo'] . '">Hoja de Entrega</a>
+                                            <br /><br /><p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+</p>
                                         <img src="images/footer.png">
                                     </div>
                                 </div>
@@ -3087,7 +3180,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             'order' => 'nombre asc'
         ));
         $conc = Concesionarios::model()->findAll($criteria);
-        $data = '';
+        $data = '<option value="">--Seleccione concesionario--</option>';
         foreach ($conc as $ciudad) {
             $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
         }
@@ -3211,7 +3304,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         }
         // header('Location: '.$_POST['return_url']);
     }
-    
+
     public function actionGrabarFirmaAjax() {
         $rnd = rand(0, 9999);
         $date = date("Ymdhis");
@@ -3226,7 +3319,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $fileName = $_POST['id_informacion'] . md5($rnd . $date) . "_firma.png";
         $file = $ruta . $_POST['id_informacion'] . md5($rnd . $date) . "_firma.png";
 
-        
+
         $model = new GestionFirma;
         $model->firma = $fileName;
         $model->id_informacion = $_POST['id_informacion'];
@@ -3251,7 +3344,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         echo json_encode($options);
         //return $firma->firma;
     }
-    
+
     public function actionGetfirmaAjax() {
         $criteria = new CDbCriteria(array(
             'condition' => "id={$_POST['id']}"
@@ -3261,7 +3354,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         echo json_encode($options);
         //return $firma->firma;
     }
-    
+
     public function loadModelFirma($id) {
         $model = GestionFirma::model()->findByPk($id);
         if ($model === null)
@@ -3280,12 +3373,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $p = new CHtmlPurifier();
         $id = $p->purify($_POST["rs"]);
         if ($id > 0) {
-            $cotizacion =  Cotizacionesnodeseadas::model()->find(array('condition'=>'id='.$id));
-            $cotizacion->fecha = date('Y-m-d h:i:s');
+            $cotizacion = Cotizacionesnodeseadas::model()->find(array('condition' => 'id=' . $id));
+            $cotizacion->fecharealizado = date('Y-m-d H:i:s');
             $cotizacion->realizado = 'NO';
             if ($cotizacion->save()) {
                 //if (Yii::app()->db2->createCommand("UPDATE atencion_detalle SET encuestado=1 WHERE id_atencion_detalle=:RListID")->bindValues(array(':RListID' => $id))->execute()) {
-                    echo 1;
+                echo 1;
                 //}
             } else {
                 echo 0;
@@ -3340,6 +3433,90 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         }else {
             echo 0;
         }
+    }
+
+    public function actionGetfinanciamiento() {
+        $type = isset($_POST["type"]) ? $_POST["type"] : "";
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        switch ($type) {
+            case 'first':
+                $cri5 = new CDbCriteria;
+                $cri5->condition = "id={$id}";
+                $gf = GestionFinanciamiento::model()->find($cri5);
+                $options = array('valor' => $gf->precio_vehiculo, 'monto_financiar' => $gf->valor_financiamiento, 'entrada' => $gf->cuota_inicial, 'plazo' => $gf->plazos, 'tasa' => $gf->tasa, 'cuota_mensual' => $gf->cuota_mensual);
+                echo json_encode($options);
+                break;
+            case 'second':
+                $cri5 = new CDbCriteria;
+                $cri5->condition = "id={$id}";
+                $gf = GestionFinanciamientoOp::model()->find($cri5);
+                $options = array('valor' => $gf->precio_vehiculo, 'monto_financiar' => $gf->valor_financiamiento, 'entrada' => $gf->cuota_inicial, 'plazo' => $gf->plazos, 'tasa' => $gf->tasa, 'cuota_mensual' => $gf->cuota_mensual);
+                echo json_encode($options);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function actionGetversiones() {
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_modelos = '{$id}'",
+        ));
+        $modelo = Versiones::model()->findAll($criteria);
+        $data = '';
+        if ($modelo) {
+            foreach ($modelo as $value) {
+                $data .= '<div class="col-md-4">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="' . $value['id_versiones'] . '" name="version[]" id="">
+                                ' . $value['nombre_version'] . '
+                            </label>
+                        </div>
+                    </div>';
+            }
+        } else {
+            $data .= 'NA';
+        }
+        $options = array('options' => $data);
+        echo json_encode($options);
+    }
+    
+    public function actionCotizacion($id_informacion, $id_vehiculo) {
+        $this->layout = '//layouts/call-print';
+        //die('enter prof');
+        $con = Yii::app()->db;
+        $num_solicitud = $this->getLastSolicitudCotizacion();
+        //die('num solicitud:'.$num_solicitud);
+        $hoja_solicitud = new GestionSolicitud;
+        $hoja_solicitud->id_vehiculo = $id_vehiculo;
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $hoja_solicitud->fecha = date("Y-m-d H:i:s");
+        $hoja_solicitud->save();
+
+
+
+        # mPDF
+        $mPDF1 = Yii::app()->ePdf->mpdf();
+        $mPDF1->setFooter('{PAGENO}');
+        $mPDF1->SetTitle('Solicitud de Crédito');
+
+        # You can easily override default constructor's params
+        $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+
+        //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
+        $mPDF1->WriteHTML($stylesheet, 1);
+        # renderPartial (only 'view' of current controller)
+        //$this->render('cotizacion', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo, 'id_hoja' => $num_solicitud));
+        $mPDF1->WriteHTML($this->renderPartial('cotizacion', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo, 'id_hoja' => $num_solicitud), true));
+
+        # Renders image
+        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
+        # Outputs ready PDF
+        $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
 
     //

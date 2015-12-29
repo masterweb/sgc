@@ -2390,9 +2390,11 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
         $SQLmodelos = '';
         foreach ($lista_datos as $key => $value) {
-            foreach ($value as $key => $carros) {               
+            foreach ($value as $key => $carros) {
+                if($key == 'modelos'){$campo_car= 'modelo';}
+                else{$campo_car= 'version';}              
                 $id_carros_nv[$key] = implode(', ', $carros);
-                $SQLmodelos[$key] = " AND gi.modelo IN (".$id_carros_nv[$key].") ";
+                $SQLmodelos[$key] = " AND gi.".$campo_car." IN (".$id_carros_nv[$key].") ";
             }
         }
 
@@ -2560,7 +2562,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-        echo $sql_cons.'<br><br>';
+        //echo $sql_cons.'<br><br>';
 
         $request_cons = $con->createCommand($sql_cons);
         return  $request_cons->queryAll();
@@ -2602,13 +2604,26 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $retorno[] = $trafico_mes_actual;
 
         
-        $traficockd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, $tipos[0], $concesionario); // cerato forte, sportage active
+        $traficockd1 = $this->SQLconstructor(
+            'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo '.$select_ext.' as modinfo, gv.modelo', 
+            'gestion_informacion gi', 
+            $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
+            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            $group_ext
+        );
+        $traficockd1 = count($traficockd1);
         $retorno[] = $traficockd1;
         $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
         $retorno[] = $traficocbu1;
 
-
-        $traficockd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, $tipos[0], $concesionario); // cerato forte, sportage active
+        $traficockd2 = $this->SQLconstructor(
+            'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo '.$select_ext.' as modinfo, gv.modelo', 
+            'gestion_informacion gi', 
+            $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
+            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            $group_ext
+        );
+        $traficockd2 = count($traficockd2);
         $retorno[] = $traficockd2;
 
         $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
@@ -2807,6 +2822,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
                 LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
                 WHERE gi.dealer_id = {$responsable_dealer_id} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
                 AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
+                echo $sql;
                         //die('sql jefe almacen: '.$sql);
                         $requestr1 = $con->createCommand($sql);
                         $result = $requestr1->queryAll();
