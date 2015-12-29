@@ -2388,12 +2388,11 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $lista_datos = array();
         if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
         if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
-
+        $SQLmodelos = '';
         foreach ($lista_datos as $key => $value) {
             foreach ($value as $key => $carros) {               
                 $id_carros_nv[$key] = implode(', ', $carros);
-                $SQLexecute[$key][0] = " AND modelo IN (".$id_carros_nv[$key].")";
-                $SQLexecute[$key][1] = " AND gi.modelo IN (".$id_carros_nv[$key].")";
+                $SQLmodelos[$key] = " AND gi.modelo IN (".$id_carros_nv[$key].") ";
             }
         }
 
@@ -2505,7 +2504,22 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             array_push($tipos, $tipo_busqueda_trafico2, $tipo_busqueda_proforma2, $tipo_busqueda_testdrive2, $tipo_busqueda_ventas2);  
         }      
   
-        $retorno = $this->buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos);
+        $retorno = $this->buscar(
+            $cargo_id, 
+            $id_responsable, 
+            $select_ext, 
+            $join_ext, 
+            $id_persona, 
+            $group_ext, 
+            $fecha_inicial_anterior, 
+            $fecha_anterior, 
+            $fecha_inicial_actual, 
+            $fecha_actual, 
+            $concesionario, 
+            $tipos, 
+            $SQLmodelos
+        );
+
         $titulo = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
 
         $this->render('reportes', array(
@@ -2546,13 +2560,18 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-        //echo $sql_cons.'<br><br>';
+        echo $sql_cons.'<br><br>';
 
         $request_cons = $con->createCommand($sql_cons);
         return  $request_cons->queryAll();
     }
 
-    function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null){
+    function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros){
+        $modelos = null;
+        $versiones = null;
+        if(!empty($carros['modelos'])){ $modelos = $carros['modelos'];  }
+        if(!empty($carros['versiones'])){ $versiones = $carros['versiones'];}
+
         if(empty($tipos)){
             $tipos = array();
             array_push($tipos,1,2,3,4);       
@@ -2565,7 +2584,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gi.nombres '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext, 
-            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'", 
+            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'".$modelos.$versiones, 
             $group_ext
         );
 
@@ -2576,7 +2595,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gi.nombres '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext, 
-            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'", 
+            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'".$modelos.$versiones, 
             $group_ext
         );
         $trafico_mes_actual = count($trafico_mes_actual);
@@ -2601,7 +2620,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
             'gestion_financiamiento gf', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND gf.order = 1", 
+            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND gf.order = 1", 
             "GROUP BY gf.id_vehiculo"
         );
         $proforma_mes_anterior = count($proforma_mes_anterior);
@@ -2611,7 +2630,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
             'gestion_financiamiento gf', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona."  AND gf.order = 1", 
+            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones."  AND gf.order = 1", 
             "GROUP BY gf.id_vehiculo"
         );                
         $proforma_mes_actual = count($proforma_mes_actual);
@@ -2634,7 +2653,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
             'gestion_test_drive  gt', 
             'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND gt.order = 1 AND ".$id_persona, 
+            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' ".$modelos.$versiones." AND gt.order = 1 AND ".$id_persona, 
             "GROUP BY gt.id_vehiculo"
         );
         $td_mes_anterior = count($td_mes_anterior);
@@ -2644,7 +2663,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
             'gestion_test_drive  gt', 
             'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND gt.order = 1 AND ".$id_persona, 
+            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' ".$modelos.$versiones." AND gt.order = 1 AND ".$id_persona, 
             "GROUP BY gt.id_vehiculo"
         );
         $td_mes_actual = count($td_mes_actual);
@@ -2667,7 +2686,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
             'gestion_vehiculo gv', 
             'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona, 
+            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones, 
             "GROUP BY gv.id_informacion"
         );
         $vh_mes_anterior = count($vh_mes_anterior);
@@ -2677,7 +2696,7 @@ WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' ORDER BY gi.
             'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
             'gestion_vehiculo gv', 
             'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona, 
+            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones, 
             "GROUP BY gv.id_informacion"
         );
         $vh_mes_actual = count($vh_mes_actual);
