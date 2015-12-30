@@ -103,7 +103,7 @@ class GestionMatriculaController extends Controller {
                                     <img src="images/header_mail.jpg">
                                     <br>
                                         <table width="600">
-                                            <tr><td><p><strong>Status de Entrega:</strong>  Entrega de Factura e Ingreso de los datos de Chasis y Motor al SRI</p></td></tr>
+                                            <tr><td><p><strong>Status de Entrega:</strong>  Envío de Factura Electrónica para Pago de matrícula, revisión vehicular y otros en entidades bancarias autorizadas.</p></td></tr>
                                             <tr><td><p><strong>Fecha de Entrega:</strong>  '.$_POST['GestionMatricula']['agendamiento1'].'</p></td></tr>
                                         </table>
                                     </div>

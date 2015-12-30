@@ -146,11 +146,11 @@ class GestionTestDriveController extends Controller {
                                         <p style="margin: 2px 0;">Señor(a): ' . $nombre_cliente . '</p>
                                         <p></p> <br />   
 
-                                        <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p><br /><br />
+                                        <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p><br /> 
                                         <p style="margin: 2px 0;">Este email es una notificación electrónica de que su prueba de manejo se ha efectuado con éxito.</p>
                                         <p></p> <br />   
                                         <p style="margin: 2px 0;">A continuación le presentamos el detalle:</p><br /><br />
-                                        <p></p>
+                                        
                                         <table width="600">
                                         <tr><td><strong>Asesor Comercial:</strong></td><td>' . $this->getResponsable($id_asesor) . '</td></tr>
                                         <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
@@ -161,7 +161,7 @@ class GestionTestDriveController extends Controller {
                                         <br/><br />
                                         <p style="margin: 2px 0;">En las próximas horas nuestro Call Center se contactará con Ud. para conocer su experiencia.</p>
                                         <p></p>
-                                        <p style="margin: 2px 0;">De antemano agradecemos su tiempo,</p><br />
+                                        <p style="margin: 2px 0;">De antemano agradecemos por su tiempo,</p><br />
                                         <p>Kia Motors Ecuador</p><br /><br />
 
                                         <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
@@ -187,19 +187,23 @@ class GestionTestDriveController extends Controller {
                                             </tr>
                                         </table>
                                     </div>
+                                    <br /><br />
+                                    <p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+</p>
                                 </div>
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $email = $emailCliente; //email cliente registrado
-                //$email = 'alkanware@gmail.com'; //email administrador
+                //$email = $emailCliente; //email cliente registrado
+                $email = 'alkanware@gmail.com'; //email administrador
 
-                sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
-                //die('after email');
+                $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                //die('send: '.$send);
                 //---- SEND EMAIL JEFE DE CONCESIONARIO Y ASESOR COMERCIAL
-                $asunto = 'Prueba de Manejo ID: ' . $_POST['GestionTestDrive']['id_informacion'] . ' – Kia Motors Ecuador';
+                $asunto = 'Kia Motors Ecuador SGC - Prueba de Manejo ID Cliente # ' . $_POST['GestionTestDrive']['id_informacion'];
                 $cri = new CDbCriteria(array(
                     'condition' => "id={$_POST['GestionTestDrive']['id_informacion']}"
                 ));
@@ -221,15 +225,20 @@ class GestionTestDriveController extends Controller {
                                 <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
                                 <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionTestDrive']['id_vehiculo']) . '</td></tr>
                                 <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
-                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
+                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>'; 
                 }
                 $general .= ' </table>
                                 <br/>
-                                <p style="margin: 2px 0;">Por favor realizar llamada de seguimiento.</p>
+                                <p style="margin: 2px 0;">Por favor realizar llamada de presentaci&oacute;n seguimiento.</p>
                                 <p></p>
                                 <p style="margin: 2px 0;">Saludos cordiales,</p>
                                 <p style="margin: 2px 0;">SGC</p>
                                 <p style="margin: 2px 0;">Kia Motors Ecuador</p>
+					<p>Saludos Cordales.<br>
+					SCG<br>
+					Kia Motors Ecuador</p>			
+								<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
                                 <img src="images/footer.png">
                               </div>
                               </div>

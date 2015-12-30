@@ -30,8 +30,8 @@ class GestionVehiculoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('admin', 'create', 'update', 'createAjax', 'createAjax2', 'negociacion',
-                    'proforma', 'negociacionAjax', 'hojaEntrega', 'solicitud', 'pago', 'sendProforma', 'modProforma'),
+                'actions' => array('admin', 'create', 'update', 'createAjax', 'createAjax2', 'negociacion', 'negociacionup','proformaexo',
+                    'proforma', 'negociacionAjax', 'hojaEntrega', 'solicitud', 'pago', 'sendProforma', 'modProforma', 'negociacionex'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -264,15 +264,7 @@ class GestionVehiculoController extends Controller {
      * @param type $id_vehiculo
      */
     public function actionNegociacion($id_informacion = NULL, $id_vehiculo = NULL) {
-        $criteria = new CDbCriteria;
-        $criteria->condition = "id_informacion={$id_informacion}";
-        $ct = GestionFinanciamiento::model()->count($criteria);
-        if($ct > 0){
-            $negociacion = GestionFinanciamiento::model()->find($criteria);
-            $id_financiamiento = $negociacion->id;
-            $model = $this->loadModelFinanciamiento($id_financiamiento);
-            $this->render('negociacionup', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo,'model' => $model));exit();
-        }
+        
         if (isset($_POST['GestionFinanciamiento'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -296,6 +288,60 @@ class GestionVehiculoController extends Controller {
             }
         }
         $this->render('negociacion', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+    }
+
+    public function actionNegociacionup($id_informacion = NULL, $id_vehiculo = NULL) {
+        
+        if (isset($_POST['GestionFinanciamiento'])) {
+//            echo '<pre>';
+//            print_r($_POST);
+//            echo '</pre>';
+//            die();
+            $model = new GestionFinanciamiento;
+            $model->attributes = $_POST['GestionFinanciamiento'];
+            $model->precio_vehiculo = $_POST['GestionFinanciamiento']['precio'];
+            $model->tasa = $_POST['GestionFinanciamiento']['tasa'];
+            $model->plazos = $_POST['GestionFinanciamiento']['plazo'];
+            $model->seguro = $_POST['GestionFinanciamiento']['seguro'];
+            $model->valor_financiamiento = $_POST['GestionFinanciamiento']['valor_financiamiento'];
+            $model->forma_pago = $_POST['GestionFinanciamiento']['tipo']; // forma de pago
+            $model->entidad_financiera = $_POST['GestionFinanciamiento']['entidad_financiera'];
+            $model->observaciones = $_POST['GestionFinanciamiento']['observaciones'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $model->fecha = date("Y-m-d H:i:s");
+            if ($model->save()) {
+                //$this->render('proforma',array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+                $this->redirect(array('proforma', 'id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+            }
+        }
+        $this->render('negociacionup', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+    }
+    
+    public function actionNegociacionex($id_informacion = NULL, $id_vehiculo = NULL) {
+        
+        if (isset($_POST['GestionFinanciamiento'])) {
+//            echo '<pre>';
+//            print_r($_POST);
+//            echo '</pre>';
+//            die();
+            $model = new GestionFinanciamiento;
+            $model->attributes = $_POST['GestionFinanciamiento'];
+            $model->precio_vehiculo = $_POST['GestionFinanciamiento']['precio'];
+            $model->tasa = $_POST['GestionFinanciamiento']['tasa'];
+            $model->plazos = $_POST['GestionFinanciamiento']['plazo'];
+            $model->seguro = $_POST['GestionFinanciamiento']['seguro'];
+            $model->valor_financiamiento = $_POST['GestionFinanciamiento']['valor_financiamiento'];
+            $model->forma_pago = $_POST['GestionFinanciamiento']['tipo']; // forma de pago
+            $model->entidad_financiera = $_POST['GestionFinanciamiento']['entidad_financiera'];
+            $model->observaciones = $_POST['GestionFinanciamiento']['observaciones'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $model->fecha = date("Y-m-d H:i:s");
+            if ($model->save()) {
+                //$this->render('proforma',array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+                $this->redirect(array('proforma', 'id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+            }
+        }
+        $this->render('negociacionex', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
     }
 
     public function actionModProforma($id_financiamiento = NULL) {
@@ -507,33 +553,37 @@ class GestionVehiculoController extends Controller {
             $result = FALSE;
             $numCotizaciones = $_POST['options-cont'];
             $tipoFinanciamiento = $_POST['GestionFinanciamiento1']['tipo_financiamiento'];
-            
+
             $model = new GestionFinanciamiento;
-            
+
             $id_informacion = $_POST['GestionFinanciamiento1']['id_informacion'];
             $criteria = new CDbCriteria(array(
                 'condition' => "id_informacion={$id_informacion}"
             ));
             $td = GestionFinanciamiento::model()->count($criteria);
             //die('count td:'.$td);
-            if($td > 0){
+            if ($td > 0) {
                 $model->order = 2;
             }
 
             if ($tipoFinanciamiento == 0) {// financiamiento al contado
-                
                 $model->attributes = $_POST['GestionFinanciamiento1'];
                 $model->id_pdf = $this->getLastProforma();
 
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado']);
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
                 $precio_vehiculo = (int) str_replace('$', "", $precio_vehiculo);
+                
+                $precio_normal = str_replace(',', "", $_POST['precio_normal']);
+                $precio_normal = str_replace('.', ",", $precio_normal);
+                $precio_normal = (int) str_replace('$', "", $precio_normal);
 
                 $seguro = str_replace(',', "", $_POST['GestionFinanciamiento1']['seguro_contado']);
                 $seguro = str_replace('.', ",", $seguro);
                 $seguro = (int) str_replace('$', "", $seguro);
 
                 $model->precio_vehiculo = $precio_vehiculo;
+                $model->precio_normal = $precio_normal;
                 $model->ts = $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'];
                 if (!empty($_POST['GestionFinanciamiento1']['tiempo_seguro_contado']) && $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'] != 0) {
                     $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado_total']);
@@ -618,6 +668,7 @@ class GestionVehiculoController extends Controller {
                 $precio_cuota_mensual2 = '';
                 $precio_cuota_mensual3 = '';
                 if (isset($_POST['GestionFinanciamiento2']) && $numCotizaciones == 3) {// segundacotizacion
+                    //die('enter cotizacion 3');
                     $model2 = new GestionFinanciamientoOp;
                     $model2->attributes = $_POST['GestionFinanciamiento2'];
 
@@ -960,7 +1011,7 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $codigo_asesor = $this->getAsesorCodigo($id_asesor);
 //echo $this->getResponsable($id_asesor);
         $mpdf = Yii::app()->ePdf->mpdf();
-        
+
         //die('enter prof');
         $con = Yii::app()->db;
         $sql = "SELECT gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa,gi.responsable, gv.modelo, gv.version, gf.forma_pago, 
@@ -1010,6 +1061,76 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         # Outputs ready PDF
         $mPDF1->Output($nombreproforma, 'I');
     }
+    
+    /**
+     * Generate a pdf document with vehicle accesories and charts
+     * @param type $id_informacion
+     * @param type $id_vehiculo
+     */
+    public function actionProformaexo($id_informacion, $id_vehiculo) {
+        $this->layout = '//layouts/call-print';
+        $id_asesor = Yii::app()->user->getId();
+        $responsable_id = $this->getResponsableId($id_informacion);
+        $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+        $nombreproforma = $this->getNombreProforma($concesionarioid);
+        $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
+        //die('conc id: '.$concesionarioid);
+        $telefono = $this->getAsesorTelefono($id_asesor);
+        $celular = $this->getAsesorCelular($id_asesor);
+        $codigo_asesor = $this->getAsesorCodigo($id_asesor);
+//echo $this->getResponsable($id_asesor);
+        $mpdf = Yii::app()->ePdf->mpdf();
+
+        //die('enter prof');
+        $con = Yii::app()->db;
+        $sql = "SELECT gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa,gi.responsable, gv.modelo, gv.version, gf.forma_pago, 
+gf.precio_vehiculo, gf.precio_normal, gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, gf.entidad_financiera, gf.id as id_financiamiento,gf.ts,  
+gf.observaciones, gf.cuota_mensual, gv.accesorios
+FROM gestion_informacion gi 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN gestion_financiamiento gf ON gf.id_informacion = gi.id 
+WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
+//die('sql:'.$sql);
+        $request = $con->createCommand($sql)->queryAll();
+        $num_proforma = $this->getLastProforma();
+        // grabar numero de proforma en la base de datos segun idvehiculo
+        $con = Yii::app()->db;
+        $sql = "UPDATE gestion_vehiculo SET num_pdf = {$num_proforma} WHERE id_informacion = {$id_informacion} AND id = {$id_vehiculo}";
+        $req = $con->createCommand($sql)->query();
+
+        //die('num proforma: '.$num_proforma);
+        //die('id vehiculo: ' . $id_vehiculo);
+        $proforma = new GestionProforma;
+        $proforma->id_vehiculo = $id_vehiculo;
+        $proforma->id_informacion = $id_informacion;
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $proforma->fecha = date("Y-m-d H:i:s");
+        /* if ($proforma->validate()) {
+          die('save success');
+          } else {
+          print_r($proforma->getErrors);
+          } */
+        $proforma->save();
+        # mPDF
+        $mPDF1 = Yii::app()->ePdf->mpdf();
+        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
+
+        # You can easily override default constructor's params
+        $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+
+        //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
+        $mPDF1->WriteHTML($stylesheet, 1);
+        # renderPartial (only 'view' of current controller)
+        $mPDF1->WriteHTML($this->renderPartial('proformaexo', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
+
+        # Renders image
+        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
+        # Outputs ready PDF
+        $mPDF1->Output($nombreproforma, 'I');
+    }
 
     public function actionSendProforma() {
         $id_informacion = isset($_POST["id_informacion"]) ? $_POST["id_informacion"] : "";
@@ -1042,16 +1163,16 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                             proforma de su nuevo vehículo Kia. </p>
                             <p></p><br /><br />
                             <p style="margin: 2px 0;">Modelo: <strong>' . $this->getModeloTestDrive($id_vehiculo) . '</strong></p> 
-                            <br /><br />
+                            <br />
+                            <p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>
+                            <p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
+                                <br />
                             <p style="margin: 2px 0;">Estaremos gustosos de servirle.</p><br />
-                            <p style="margin: 2px 0;">Kia Motors Ecuador</p>
+                            <p style="margin: 2px 0;">Saludos Cordiales.</p>
                             <p></p><br /><br />';
 
 
-        $general .= '<p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>'
-                . '<p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
-                                
-                            </div>
+        $general .= '</div>
                             <br />
                            <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
                                 <tr>
@@ -1089,7 +1210,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                     . 'Las especificaciones y precios pueden variar sin previo aviso.'
                     . '* Precios y/o observaciones sujetos a cambio sin previo aviso </p>';
         }
-        $general .= '</div>
+        $general .= '<br /><br /><p style="margin: 2px 0;">Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+</p></div>
                     </body>';
         //die('table: '.$general);
         $codigohtml = $general;
@@ -1115,7 +1238,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $id_asesor = Yii::app()->user->getId();
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        $asunto = 'Proforma ID. ' . $this->getNumProforma($id_vehiculo) . ' – Kia Motors Ecuador ';
+        $asunto = 'Kia Motors Ecuador SGC - Proforma ID. ' . $this->getNumProforma($id_vehiculo);
         $general = '<body style="margin: 10px;">
                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
                             <div align="">
@@ -1140,17 +1263,21 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
             $general .= '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr> 
                             </table>';
         }
+		
 
-        $general .= '<p></p><br />
+        $general .= '<p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>
+		<p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
+                            </div>
+		<p></p><br />
                             <p style="margin: 2px 0;">Por favor realizar llamada de Presentación al cliente.</p>
                             <p></p><br />
                             <p style="margin: 2px 0;">Saludos cordiales,</p>
                             <p style="margin: 2px 0;">SGC</p>
                             <p style="margin: 2px 0;">Kia Motors Ecuador</p><br /><br />
-                            
-
-                                <p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>
-                                <p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
+							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
+La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
+</p>
+                                
                             </div>
                             <img src="images/footer.png">
                         </div>
@@ -1160,10 +1287,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $headers = 'From: info@kia.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         //$email = $emailCliente; //email administrador
-        $email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
+        //$email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
+        $email = 'gansaldo72@hotmail.com';
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
         $send = sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
+        
     }
 
     /**

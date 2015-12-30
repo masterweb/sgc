@@ -139,7 +139,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                                                         }
                                                     };
                                                     var id = e.value;
-                                                    xmlhttp.open("GET","/index.php/ajax/modelos?id="+id);
+                                                    xmlhttp.open("GET","https://www.kia.com.ec/intranet/usuario/index.php/ajax/modelos?id="+id);
                                                     xmlhttp.send();
                                                     }
                                                 }else if(e.checked === false) {                            

@@ -323,17 +323,17 @@ class SiteController extends Controller {
                 $asunto = 'Kia Motors Ecuador SGC - Confirmaci&oacute;n de Registro de Usuario';
                 $token = md5($model->correo . '--' . $model->id . '--' . $model->usuario);
                 $general = '<body style="margin: 10px;">
-                            <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/header_mail.jpg"/></div>';
-                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">Señor(a): <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su registro en el SGC de Kia ha sido realizado exitosamente. <br /><br />Para continuar con el proceso usted debe confirmar su correo electrónico realizando clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/confirmar/t/' . $token . '-' . md5($model->id) . '">aqu&iacute;.</a>.<br></div>';
-                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">'
-                        . '<br /><br />Saludos cordiales <br />SGC <br />Kia Motors Ecuador <br /><br /></div>';
-                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">'
+                            <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;"><img src="images/header_mail.jpg"/></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">Señor(a): <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su registro en el SGC de Kia ha sido realizado exitosamente. <br /><br />Para continuar con el proceso debe confirmar su correo electrónico realizando clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/confirmar/t/' . $token . '-' . md5($model->id) . '">aqu&iacute;.</a>.<br></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">'
+                        . '<br /><br />Saludos cordiales, <br />SGC <br />Kia Motors Ecuador <br /><br /></div>';
+                $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">'
                         . '<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
 
 </p></div>';
-                $general.=' <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/footer_mail.jpg"/></div>
+                $general.=' <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;"><img src="images/footer_mail.jpg"/></div>
                             
                             </div>
                         </body>';
@@ -2939,6 +2939,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 $emailCliente = $this->getEmailCliente($_POST['GestionEntrega']['id_informacion']);
+				$ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']) . ' ' . $this->getVersionTestDrive($_POST['GestionEntrega']['id_vehiculo']);
                 $general = '<body style="margin: 10px;">
@@ -2957,15 +2958,17 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']) . '</td></tr>
                                     <tr><td><strong>Fecha:</strong></td><td>' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                     <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</p></td></tr>
-                                    </table>    
+                                    </table> 
+									<p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su Asesor Comercial antes de acercarse al Concesionario. </p>
 
-                                    <p style="margin: 2px 0;">Estaremos gustosos de servirle,</p>
+                                    <p style="margin: 2px 0;">Saludos cordiales,<br>
+SGC<br>
+Kia Motors Ecuador
+</p>
 
-                                    <p style="margin: 2px 0;">Kia Motors Ecuador</p>
                                     <br /><br />
 
-                                    <p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su 
-                                    Asesor Comercial antes de acercarse al Concesionario. </p>    
+                                        
                                     </div>
                                     <br />
                                     <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
@@ -3000,25 +3003,26 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
+				$ciudad = $ciudadCliente;
 
                 $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $modelo = $this->getModeloInfo($_POST['GestionEntrega']['id_vehiculo']);
                 // ENVIAR EMAIL CON CARTA DE BIENVENIDA AL CLIENTE
-                $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia';
+                $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia Motors Ecuador';
                 $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <br>
-                                        <p>Quito, 5 de agosto del 2015</p><br /><br />
+                                        <p>'.$ciudad.', 5 de agosto del 2015</p><br /><br />
                                         <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
-                                        <p>Quito.-</p>
+                                        <p>'.$ciudad.'.-</p>
                                         <br />
                                         <p>
-                                        KIA MOTORS le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
+                                        KIA MOTORS ECUADOR le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
                                         </p><br />
                                         <p>
                                         Le recordamos que su vehículo cuenta con una';
@@ -3046,11 +3050,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                         <p>
                                         Si desea obtener mayor información le invitamos a visitar y registrarse en nuestra página Web en www.kia.com.ec o comunicándose a 1800KIAKIA.
                                         </p>
-                                        <p>Para KIA MOTORS es importante poner a su disposición productos de calidad para poder brindarle el mejor servicio.</p>
+                                        <p>Para KIA MOTORS ECUADOR es importante poner a su disposición productos de calidad para poder brindarle el mejor servicio.</p>
+										
+										<a href="https://www.kia.com.ec/intranet/usuario/index.php/site/hojaentregacliente?id_informacion=' . $_POST['GestionEntrega']['id_informacion'] . '&id_vehiculo=' . $_POST['GestionEntrega']['id_vehiculo'] . '">Hoja de Entrega</a>
                                         
                                         <p><strong>Atentamente</strong></p>
                                         <p><strong>KIA MOTORS ECUADOR</strong></p>
-                                        <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/hojaentregacliente?id_informacion=' . $_POST['GestionEntrega']['id_informacion'] . '&id_vehiculo=' . $_POST['GestionEntrega']['id_vehiculo'] . '">Hoja de Entrega</a>
+                                        
                                             <br /><br /><p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
 </p>

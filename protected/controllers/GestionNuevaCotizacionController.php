@@ -63,7 +63,7 @@ class GestionNuevaCotizacionController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        
+
         if (isset($_POST['GestionNuevaCotizacion'])) {
             //die('enter nueva coti');
 //            echo '<pre>';
@@ -346,7 +346,6 @@ class GestionNuevaCotizacionController extends Controller {
 
                     break;
                 case 'showroom':
-                case 'web':
                     //die('enter showroom');
 
                     $model->setscenario('consulta');
@@ -381,22 +380,39 @@ class GestionNuevaCotizacionController extends Controller {
                         } else {
                             if ($_POST['GestionNuevaCotizacion']['tipo'] == 'Usado') {
                                 $model->setscenario('prospeccion');
-                                $tipo = 'prospeccion';
+                                $tipo = 'trafico';
                                 if ($model->save()) {
                                     //die('enter save');
-                                    $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
+                                    $this->redirect(array('gestionInformacion/usados', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
                                 }
                             }
-                            if (($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Taxi') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Conadis') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Diplomatico')
-                            ) {
-                                $model->setscenario('prospeccion');
-                                $tipo = 'exonerado';
-                                if ($model->save()) {
-                                    //die('enter save');
-                                    $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
-                                }
+                            switch ($_POST['GestionNuevaCotizacion']['tipo']) {
+                                case 'Exonerado Taxi':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Conadis':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/conadis', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Diplomatico':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/diplomaticos', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
                             if ($model->save()) {
                                 $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'fuente' => $_POST['GestionNuevaCotizacion']['fuente'], 'iden' => $ident));
@@ -418,22 +434,39 @@ class GestionNuevaCotizacionController extends Controller {
                         } else {
                             if ($_POST['GestionNuevaCotizacion']['tipo'] == 'Usado') {
                                 $model->setscenario('prospeccion');
-                                $tipo = 'prospeccion';
+                                $tipo = 'trafico';
                                 if ($model->save()) {
                                     //die('enter save');
-                                    $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
+                                    $this->redirect(array('gestionInformacion/usados', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
                                 }
                             }
-                            if (($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Taxi') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Conadis') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Diplomatico')
-                            ) {
-                                $model->setscenario('prospeccion');
-                                $tipo = 'exonerado';
-                                if ($model->save()) {
-                                    //die('enter save');
-                                    $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
-                                }
+                            switch ($_POST['GestionNuevaCotizacion']['tipo']) {
+                                case 'Exonerado Taxi':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Conadis':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/conadis', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Diplomatico':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/diplomaticos', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
                             if ($model->save()) {
                                 $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'fuente' => $_POST['GestionNuevaCotizacion']['fuente'], 'iden' => $ident));
@@ -442,7 +475,7 @@ class GestionNuevaCotizacionController extends Controller {
                     }
 
                     if ($_POST['GestionNuevaCotizacion']['pasaporte'] != '') {
-                        //die('enter pass');
+                       
                         $ident = 'pasaporte';
                         //die('enter pasaporte');
                         $model->pasaporte = $_POST['GestionNuevaCotizacion']['pasaporte'];
@@ -456,22 +489,39 @@ class GestionNuevaCotizacionController extends Controller {
                         } else {
                             if ($_POST['GestionNuevaCotizacion']['tipo'] == 'Usado') {
                                 $model->setscenario('prospeccion');
-                                $tipo = 'prospeccion';
+                                $tipo = 'trafico';
                                 if ($model->save()) {
                                     //die('enter save');
-                                    $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
+                                    $this->redirect(array('gestionInformacion/usados', 'tipo' => $tipo, 'id' => $model->id, 'tipo_fuente' => 'usado', 'iden' => $ident));
                                 }
                             }
-                            if (($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Taxi') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Conadis') ||
-                                    ($_POST['GestionNuevaCotizacion']['tipo'] == 'Exonerado Diplomatico')
-                            ) {
-                                $model->setscenario('prospeccion');
-                                $tipo = 'exonerado';
-                                if ($model->save()) {
-                                    //die('enter save');
-                                    $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
-                                }
+                            switch ($_POST['GestionNuevaCotizacion']['tipo']) {
+                                case 'Exonerado Taxi':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/exonerados', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Conadis':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/conadis', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                case 'Exonerado Diplomatico':
+                                    $model->setscenario('prospeccion');
+                                    $tipo = 'exonerado';
+                                    if ($model->save()) {
+                                        //die('enter save');
+                                        $this->redirect(array('gestionInformacion/diplomaticos', 'tipo' => 'gestion', 'id' => $model->id, 'tipo_fuente' => 'exonerado', 'iden' => $ident));
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
                             if ($model->save()) {
                                 //die('enter save');
