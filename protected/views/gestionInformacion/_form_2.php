@@ -585,6 +585,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                                             'name' => 'Casos[provincia]',
                                             'id' => 'Casos_provincia',
                                             'data' => array(
+                                                "" => '--Seleccione provincia--',
                                                 "1" => 'Azuay',
                                                 "5" => 'Chimborazo',
                                                 "7" => 'El Oro',

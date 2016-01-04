@@ -985,7 +985,10 @@ $dealer_id = $this->getDealerId($id_responsable);
                                     }
                                     ?> 
                                 </td>
-                                <td> <?php echo $c['fuente']; ?> </td>
+                                <td>
+                                    <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
+                                    else{ echo $c['fuente']; } ?>  
+                                </td>
                                 <td>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
                                     <?php if ($c['status'] == 1): ?>

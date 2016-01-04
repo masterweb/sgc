@@ -156,7 +156,9 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                     </div>
                     <div class="row">
                         <div class="col-md-9">
-                            <?php foreach ($users as $key => $value): ?>
+
+                            <?php                          
+                            foreach ($users as $key => $value): ?>
                                 <table class="table">
                                     <tr>
                                         <td><strong>Nombres:</strong> <?php echo $value['nombres']; ?></td>
@@ -193,10 +195,26 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                         <td><strong>Teléfono Domicilio:</strong> <?php echo $value['telefono_casa']; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Fuente de Contacto:</strong> <?php echo ucfirst($this->getFuente($value['id_cotizacion'])); ?></td>
+                                        <td><strong>Fuente de Contacto:</strong> 
+                                            <?php if($this->getFuente($value['id_cotizacion']) == 'showroom'){ echo 'Tráfico'; }
+                                            else{ echo ucfirst($this->getFuente($value['id_cotizacion'])); } ?> 
+                                         </td>
                                     </tr>
                                     <tr>
                                         <td><strong>Responsable:</strong> <?php echo $this->getResponsable($value['resp']); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tipo:</strong>  
+                                            <?php 
+                                            $crit = new CDbCriteria();
+                                            $crit->select = 'id, tipo';
+                                            $crit->condition = 'id = '.$value['id_cotizacion'];
+                                            $tipo_nv = GestionNuevaCotizacion::model()->findAll($crit);
+                                            foreach ($tipo_nv as $llave => $valor){
+                                                echo $valor['tipo'];
+                                            }
+                                            ?>
+                                        </td>
                                     </tr>
                                 </table>                       
                             <?php endforeach; ?>

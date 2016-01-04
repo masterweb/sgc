@@ -45,8 +45,8 @@ $count = count($users);
         //$('#toolinfo').tooltip();
         $('#toolinfo').tooltipster({
             content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
-<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>\n\
-<p style="text-align:left;" class="tool">Showroom:  10 Pasos de Ventas</p>\n\
+<!--p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p-->\n\
+<p style="text-align:left;" class="tool">Tráfico:  10 Pasos de Ventas</p>\n\
 <p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
 '),
             position: 'right',
@@ -1056,7 +1056,10 @@ $count = count($users);
                                     }
                                     ?> 
                                 </td>
-                                <td> <?php echo $c['fuente']; ?> </td>
+                                <td> 
+                                <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
+                                    else{ echo $c['fuente']; } ?> 
+                                </td>
                                 <td>
                                     <?php if($c['bdc'] == 0){ ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>

@@ -904,7 +904,10 @@ if ($cargo_id != 46)
                                 <td><?php echo $this->getResponsable($c['resp']) ?></td>
                                 <td><?php echo $this->getResponsable($c['resp']).' - '.$this->getNameConcesionario($c['resp']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
-                                <td> <?php echo $c['fuente']; ?> </td>
+                                <td> 
+                                    <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
+                                    else{ echo $c['fuente']; } ?> 
+                                </td>
                                 <td>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
 
