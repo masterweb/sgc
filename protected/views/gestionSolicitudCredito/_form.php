@@ -39,52 +39,83 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
-        
-        $('#GestionSolicitudCredito_apellido_paterno_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_select_cotizacion').change(function(){
+           var value = $(this).attr('value');
+           var tipo = value.split("-");
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getfinanciamiento"); ?>',
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    $('#info3').show();  // #info must be defined somehwere
+                },
+                type: 'post',
+                data: {type: tipo[0], id:tipo[1]},
+                success: function (data) {
+                    //alert(data.options)
+                    var valor = parseInt(data.valor);
+                    valor = format2(valor, '$');
+                    var monto_financiar = parseInt(data.monto_financiar);
+                    monto_financiar = format2(monto_financiar, '$');
+                    var entrada = parseInt(data.entrada);
+                    entrada = format2(entrada, '$');
+                    var cuota_mensual = parseInt(data.cuota_mensual);
+                    cuota_mensual = format2(cuota_mensual, '$');
+                    $('#GestionSolicitudCredito_valor').val(valor);
+                    $('#GestionSolicitudCredito_monto_financiar').val(monto_financiar);
+                    $('#GestionSolicitudCredito_entrada').val(entrada);
+                    $('#GestionSolicitudCredito_plazo').val(data.plazo);
+                    $('#GestionSolicitudCredito_taza').val(data.tasa);
+                    $('#GestionSolicitudCredito_cuota_mensual').val(cuota_mensual);
+                    $('#info3').hide();
+                }
+            });
+        });
+
+        $('#GestionSolicitudCredito_apellido_paterno_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_apellido_paterno_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_nombres_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_nombres_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_nombres_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_nombres_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_cedula_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_cedula_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_cedula_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_cedula_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').click(function(){
+        $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').click(function () {
             $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_empresa_trabajo_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_empresa_trabajo_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_empresa_trabajo_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_telefono_trabajo_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').click(function(){
+        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').click(function () {
             $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_meses_trabajo_conyugue').click(function(){
+        $('#GestionSolicitudCredito_meses_trabajo_conyugue').click(function () {
             $('#GestionSolicitudCredito_meses_trabajo_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_cargo_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_cargo_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_cargo_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_cargo_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_direccion_empresa_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_direccion_empresa_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_direccion_empresa_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').hide();
         });
-        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').keyup(function(){
+        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_sueldo_mensual_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').hide();
         });
@@ -119,28 +150,28 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {
             getvalortotal();
         });
-        
+
         $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").keyup(function () {
             getvalortotal();
         });
-        
+
         $("[name='GestionSolicitudCredito[vehiculo_valor2]']").keyup(function () {
             getvalortotal();
         });
-        
-        
+
+
         $("[name='GestionSolicitudCredito[valor_inversion]']").keyup(function () {
             getvalortotal();
         });
-        
+
         $("[name='GestionSolicitudCredito[valor_otros_activos1]']").keyup(function () {
             getvalortotal();
         });
-        
+
         $("[name='GestionSolicitudCredito[valor_otros_activos2]']").keyup(function () {
             getvalortotal();
         });
-        
+
         $("#GestionSolicitudCredito_fecha_nacimiento").datepicker({
             changeMonth: true,
             changeYear: true,
@@ -161,13 +192,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             switch (value) {
                 case 'Soltero':
                 case 'Viudo':
-                case 'Divorciado':  
-                case 'Casado con separación de bienes': 
+                case 'Divorciado':
+                case 'Casado con separación de bienes':
                     //validateCasado();
-                    $('.conyugue').slideUp();$('#GestionSolicitudCredito_sueldo_mensual_conyugue').val('');
+                    $('.conyugue').slideUp();
+                    $('#GestionSolicitudCredito_sueldo_mensual_conyugue').val('');
                     break;
                 case 'Casado sin separación de bienes':
-                case 'Casado':   
+                case 'Casado':
                 case 'Union Libre':
                     //validateSoltero();    
                     $('.conyugue').slideDown();
@@ -238,7 +270,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         });
     });
     function validateCasado() {
-    console.log('enter val casa');
+        console.log('enter val casa');
         $("#GestionSolicitudCredito_apellido_paterno_conyugue").rules("add", "required");
         $("#GestionSolicitudCredito_apellido_materno_conyugue").rules("add", "required");
         $("#GestionSolicitudCredito_nombres_conyugue").rules("add", "required");
@@ -313,73 +345,73 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 switch (estado_civil) {
                     case 'Soltero':
                     case 'Viudo':
-                    case 'Divorciado':  
-                    case 'Casado con separación de bienes': 
+                    case 'Divorciado':
+                    case 'Casado con separación de bienes':
                         //validateCasado();
                         break;
                     case 'Casado sin separación de bienes':
-                    case 'Casado':   
+                    case 'Casado':
                     case 'Union Libre':
                         //validateSoltero();
-                        if($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
-                           $('#GestionSolicitudCredito_apellido_paterno_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
+                            $('#GestionSolicitudCredito_apellido_paterno_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_nombres_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_nombres_conyugue_error').show();
-                           $('#GestionSolicitudCredito_nombres_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_nombres_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_nombres_conyugue_error').show();
+                            $('#GestionSolicitudCredito_nombres_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_cedula_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_cedula_conyugue_error').show();
-                           $('#GestionSolicitudCredito_cedula_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_cedula_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_cedula_conyugue_error').show();
+                            $('#GestionSolicitudCredito_cedula_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').show();
-                           $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').show();
+                            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
-                           $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
+                            $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
-                           $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                            $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
-                           $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
+                            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
-                           $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
+                            $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_cargo_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_cargo_conyugue_error').show();
-                           $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_cargo_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_cargo_conyugue_error').show();
+                            $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
-                           $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
+                            $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
-                           $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
+                            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
+                            error++;
                         }
-                        if($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val() == ''){
-                           $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').show();
-                           $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
-                           error++;
+                        if ($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                            error++;
                         }
                         break;
                 }
@@ -424,7 +456,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         alert('Cédula inválida de cónyugue');
                         $('#GestionSolicitudCredito_cedula_conyugue').focus();
                     }
-                } else if(error == 0) {
+                } else if (error == 0) {
                     console.log('enter no cony');
                     $.ajax({
                         url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax"); ?>',
@@ -451,8 +483,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             }
         });
     }
-    
-    function getvalortotal(){
+
+    function getvalortotal() {
         var valorcomercial1 = $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").val();
         var valorcomercial2 = $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").val();
         var vehiculovalor2 = $("[name='GestionSolicitudCredito[vehiculo_valor2]']").val();
@@ -467,23 +499,23 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         valoriotrosactivos2 = formatnumber(valoriotrosactivos2);
         var valuetotal = $("[name='GestionSolicitudCredito[total_activos]']").val();
         valueft = formatnumber(valuetotal);
-        total = valorcomercial1 + valorcomercial2 + vehiculovalor2 + valorinversion + valoriotrosactivos1+ valoriotrosactivos2;
+        total = valorcomercial1 + valorcomercial2 + vehiculovalor2 + valorinversion + valoriotrosactivos1 + valoriotrosactivos2;
         total = format2(total, '$');
 
         $("[name='GestionSolicitudCredito[total_activos]']").val(total);
     }
-    
-    function formatnumber(precioanterior){
-        if(precioanterior == ''){
+
+    function formatnumber(precioanterior) {
+        if (precioanterior == '') {
             return 0;
-        }else{
+        } else {
             precioanterior = precioanterior.replace(',', '');
             precioanterior = precioanterior.replace('.', ',');
             precioanterior = precioanterior.replace('$', '');
             precioanterior = parseInt(precioanterior);
             return precioanterior;
         }
-        
+
     }
     function CedulaValida(cedula) {
 
@@ -567,28 +599,28 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     ));
                     ?>
                     <p class="note">Campos con <span class="required">*</span> son requeridos.</p>
-                            <?php //echo $form->errorSummary($model); ?>
+                    <?php //echo $form->errorSummary($model); ?>
 
                     <div class="row">
                         <div class="col-md-3">
-<?php //echo $form->labelEx($model, 'concesionario');  ?>
-<?php //echo $form->textField($model, 'concesionario', array('class' => 'form-control', 'value' => 'Asiauto Mariana de Jesús', 'disabled' => 'true'));  ?>
+                            <?php //echo $form->labelEx($model, 'concesionario');  ?>
+                            <?php //echo $form->textField($model, 'concesionario', array('class' => 'form-control', 'value' => 'Asiauto Mariana de Jesús', 'disabled' => 'true'));  ?>
                             <?php //echo $form->error($model, 'concesionario');  ?>
                             <label for="GestionSolicitudCredito_concesionario">Concesionario</label>
                             <input class="form-control" value="<?php echo $nombre_concesionario; ?>" disabled="disabled" name="GestionSolicitudCredito[concesionarioh]" id="GestionSolicitudCredito_concesionarioh" type="text">       
                         </div>
 
                         <div class="col-md-3">
-<?php //echo $form->labelEx($model, 'vendedor');  ?>
+                            <?php //echo $form->labelEx($model, 'vendedor');  ?>
                             <?php //echo $form->textField($model, 'vendedor', array('class' => 'form-control'));  ?>
                             <?php //echo $form->error($model, 'vendedor'); ?>
                             <label for="GestionSolicitudCredito_concesionario">Vendedor</label>
                             <input class="form-control" value="<?php echo $this->getResponsable($id_responsable); ?>" disabled="disabled" name="GestionSolicitudCredito[vendedorh]" id="GestionSolicitudCredito_vendedorh" type="text">       
                         </div>
                         <div class="col-md-3">
-<?php echo $form->labelEx($model, 'fecha'); ?>
-<?php echo $form->textField($model, 'fecha', array('class' => 'form-control', 'value' => date("d") . "/" . date("m") . "/" . date("Y"))); ?>
-<?php echo $form->error($model, 'fecha'); ?></div>
+                            <?php echo $form->labelEx($model, 'fecha'); ?>
+                            <?php echo $form->textField($model, 'fecha', array('class' => 'form-control', 'value' => date("d") . "/" . date("m") . "/" . date("Y"))); ?>
+                            <?php echo $form->error($model, 'fecha'); ?></div>
                         <div class="col-md-3"></div>
                         <input type="hidden" name="GestionSolicitudCredito[concesionario]" id="GestionSolicitudCredito_concesionario" value="<?php echo $dealer_id; ?>"/>
                         <input type="hidden" name="GestionSolicitudCredito[vendedor]" id="GestionSolicitudCredito_vendedor" value="<?php echo $id_responsable; ?>"/>
@@ -612,6 +644,37 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
+                    
+                    <div class="row">
+                        <h1 class="tl_seccion_rf">Seleccione Cotización</h1>
+                    </div>
+                    <div class="row">
+                        <?php
+                        $cri5 = new CDbCriteria;
+                        $cri5->condition = "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}";
+                        $fin1 = GestionFinanciamiento::model()->find($cri5);
+                        
+                        $cri6 = new CDbCriteria;
+                        $cri6->condition = "id_financiamiento={$fin1->id}";
+                        $fin2count = GestionFinanciamientoOp::model()->count($cri6);
+                        $data = '';
+                        $count = 2;
+                        if($fin2count > 0):
+                            $fin2 = GestionFinanciamientoOp::model()->findAll($cri6);
+                            foreach ($fin2 as $key => $value) {
+                                $data .= '<option value="second-'.$value['id'].'">Opción '.$count.': $ '.$value['cuota_mensual'].'</option>';
+                                $count++;
+                            }
+                        endif;
+                        ?>
+                        <div class="col-md-4">
+                            <select name="" id="GestionSolicitudCredito_select_cotizacion" class="form-control">
+                                <option value="">--Seleccione una opción--</option>
+                                <option value="first-<?php echo $fin1->id ?>"><?php echo 'Opción 1: $ '.$fin1->cuota_mensual; ?></option>
+                                <?php echo $data; ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="row">
                         <h1 class="tl_seccion_rf">Datos del Vehículo</h1>
                     </div>  
@@ -626,7 +689,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                       print_r($vec);
                       echo '</pre>'; */
                     ?>
-                            <?php foreach ($vec as $value) { ?>
+                    <?php foreach ($vec as $value) { ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'modelo'); ?>
@@ -639,14 +702,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'valor'); ?>
                             </div>
                             <div class="col-md-3">
-    <?php echo $form->labelEx($model, 'monto_financiar'); ?>
-    <?php echo $form->textField($model, 'monto_financiar', array('class' => 'form-control', 'value' => ($credito == 1) ? $value['valor_financiamiento'] : 0)); ?>
-    <?php echo $form->error($model, 'monto_financiar'); ?>
+                                <?php echo $form->labelEx($model, 'monto_financiar'); ?>
+                                <?php echo $form->textField($model, 'monto_financiar', array('class' => 'form-control', 'value' => ($credito == 1) ? $value['valor_financiamiento'] : 0)); ?>
+                                <?php echo $form->error($model, 'monto_financiar'); ?>
                             </div>
-                            <div class="col-md-2">
+<!--                            <div class="col-md-2">
                                 <br />
                                 <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacion', array('id_informacion' => $value['id_informacion'], 'id_vehiculo' => $value['id_vehiculo'])); ?>" class="btn btn-primary btn-xs">Modificar</a>
-                            </div>
+                            </div>-->
 
                         </div>
                         <div class="row">
@@ -671,9 +734,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'taza'); ?>
                             </div>
                             <div class="col-md-2">
-                        <?php echo $form->labelEx($model, 'cuota_mensual'); ?>
-                        <?php echo $form->textField($model, 'cuota_mensual', array('size' => 25, 'maxlength' => 25, 'class' => 'form-control', 'value' => ($credito == 1) ? $value['cuota_mensual'] : 0)); ?>
-    <?php echo $form->error($model, 'cuota_mensual'); ?>
+                                <?php echo $form->labelEx($model, 'cuota_mensual'); ?>
+                                <?php echo $form->textField($model, 'cuota_mensual', array('size' => 25, 'maxlength' => 25, 'class' => 'form-control', 'value' => ($credito == 1) ? $value['cuota_mensual'] : 0)); ?>
+                                <?php echo $form->error($model, 'cuota_mensual'); ?>
                             </div>
 
                         </div>
@@ -689,7 +752,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         ));
                         $inf = GestionInformacion::model()->findAll($criteria2);
                         ?>
-                                <?php foreach ($inf as $val) { ?>
+                        <?php foreach ($inf as $val) { ?>
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'apellido_paterno'); ?>
@@ -702,9 +765,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->error($model, 'apellido_materno'); ?>
                                 </div>
                                 <div class="col-md-3">
-        <?php echo $form->labelEx($model, 'nombres'); ?>
-        <?php echo $form->textField($model, 'nombres', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => ucfirst($val['nombres']))); ?>
-                                <?php echo $form->error($model, 'nombres'); ?>
+                                    <?php echo $form->labelEx($model, 'nombres'); ?>
+                                    <?php echo $form->textField($model, 'nombres', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => ucfirst($val['nombres']))); ?>
+                                    <?php echo $form->error($model, 'nombres'); ?>
                                 </div>
 
                             </div>
@@ -712,34 +775,34 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
                                 <?php if ($val['cedula'] != '') { ?>
                                     <div class="col-md-3">
-                                    <?php echo $form->labelEx($model, 'cedula'); ?>
+                                        <?php echo $form->labelEx($model, 'cedula'); ?>
                                         <?php echo $form->textField($model, 'cedula', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => $val['cedula'])); ?>
                                         <?php echo $form->error($model, 'cedula'); ?>
                                     </div>
-                                    <?php } ?>
+                                <?php } ?>
                                 <?php if ($val['ruc'] != '') { ?>
                                     <div class="col-md-3">
-                                    <?php echo $form->labelEx($model, 'ruc'); ?>
+                                        <?php echo $form->labelEx($model, 'ruc'); ?>
                                         <?php echo $form->textField($model, 'ruc', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => $val['ruc'])); ?>
                                         <?php echo $form->error($model, 'ruc'); ?>
                                     </div>
-                                    <?php } ?>
+                                <?php } ?>
                                 <?php if ($val['pasaporte'] != '') { ?>
                                     <div class="col-md-3">
-            <?php echo $form->labelEx($model, 'pasaporte'); ?>
+                                        <?php echo $form->labelEx($model, 'pasaporte'); ?>
                                         <?php echo $form->textField($model, 'pasaporte', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => $val['pasaporte'])); ?>
                                         <?php echo $form->error($model, 'pasaporte'); ?>
                                     </div>
-                                    <?php } ?>
+                                <?php } ?>
 
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento'); ?>
                                     <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control')); ?>
-        <?php echo $form->error($model, 'fecha_nacimiento'); ?>
+                                    <?php echo $form->error($model, 'fecha_nacimiento'); ?>
                                 </div>
                                 <div class="col-md-3">
-        <?php echo $form->labelEx($model, 'nacionalidad'); ?>
-        <?php //echo $form->dropDownList($model, 'nacionalidad', array('' => '--Seleccione--', 'ecuador' => 'Ecuador', 'colombia' => 'Colombia', 'peru' => 'Perú'), array('class' => 'form-control'));  ?>
+                                    <?php echo $form->labelEx($model, 'nacionalidad'); ?>
+                                    <?php //echo $form->dropDownList($model, 'nacionalidad', array('' => '--Seleccione--', 'ecuador' => 'Ecuador', 'colombia' => 'Colombia', 'peru' => 'Perú'), array('class' => 'form-control'));  ?>
                                     <select name="GestionSolicitudCredito[nacionalidad]" id="GestionSolicitudCredito_nacionalidad" class="form-control">
                                         <option value="EC">Ecuador</option>
                                         <option value="CO">Colombia</option>
@@ -1015,10 +1078,10 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         'Divorciado' => 'Divorciado/a',
                                         'Union Libre' => 'Union Libre'), array('class' => 'form-control'));
                                     ?>
-        <?php echo $form->error($model, 'estado_civil'); ?>
+                                    <?php echo $form->error($model, 'estado_civil'); ?>
                                 </div>
                             </div>
-                                <?php } ?>
+                        <?php } ?>
                         <div class="row">
                             <h1 class="tl_seccion_rf">Empleo/Actividad Actual del Solicitante</h1>
                         </div> 
@@ -1048,7 +1111,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     '8' => 'Más de 7 años',
                                         ), array('class' => 'form-control'));
                                 ?>
-    <?php echo $form->error($model, 'tiempo_trabajo'); ?>
+                                <?php echo $form->error($model, 'tiempo_trabajo'); ?>
                             </div>
                             <div class="col-md-2">
                                 <label for="GestionSolicitudCredito_meses_trabajo" class="required">Meses de Trabajo <span class="required">*</span></label>
@@ -1069,9 +1132,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </select>
                             </div>
                             <div class="col-md-2">
-    <?php echo $form->labelEx($model, 'cargo'); ?>
-    <?php echo $form->textField($model, 'cargo', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
-    <?php echo $form->error($model, 'cargo'); ?>
+                                <?php echo $form->labelEx($model, 'cargo'); ?>
+                                <?php echo $form->textField($model, 'cargo', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'cargo'); ?>
                             </div>
 
                         </div>
@@ -1103,9 +1166,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'email'); ?>
                             </div>
                             <div class="col-md-4">
-    <?php echo $form->labelEx($model, 'actividad_empresa'); ?>
-    <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
-    <?php echo $form->error($model, 'actividad_empresa'); ?>
+                                <?php echo $form->labelEx($model, 'actividad_empresa'); ?>
+                                <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'actividad_empresa'); ?>
                             </div>
                         </div>
                         <div class="conyugue">
@@ -1146,8 +1209,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_fecha_nacimiento_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
                                 <div class="col-md-3">
-                                <?php echo $form->labelEx($model, 'nacionalidad_conyugue'); ?>
-                                <?php //echo $form->textField($model, 'nacionalidad_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control'));  ?>
+                                    <?php echo $form->labelEx($model, 'nacionalidad_conyugue'); ?>
+                                    <?php //echo $form->textField($model, 'nacionalidad_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control'));  ?>
                                     <select name="GestionSolicitudCredito[nacionalidad_conyugue]" id="GestionSolicitudCredito_nacionalidad_conyugue" class="form-control">
                                         <option value="EC">Ecuador</option>
                                         <option value="CO">Colombia</option>
@@ -1408,7 +1471,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         <option value="ZM">Zambia</option>
                                         <option value="ZW">Zimbabue</option>
                                     </select>
-                                <?php echo $form->error($model, 'nacionalidad_conyugue'); ?>
+                                    <?php echo $form->error($model, 'nacionalidad_conyugue'); ?>
                                 </div>
 
                             </div>
@@ -1519,9 +1582,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'valor_arriendo'); ?>
                             </div>
                             <div class="col-md-3" id="cont-avaluo" style="display: none;">
-    <?php echo $form->labelEx($model, 'avaluo_propiedad'); ?>
-    <?php echo $form->textField($model, 'avaluo_propiedad', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-    <?php echo $form->error($model, 'avaluo_propiedad'); ?>
+                                <?php echo $form->labelEx($model, 'avaluo_propiedad'); ?>
+                                <?php echo $form->textField($model, 'avaluo_propiedad', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'avaluo_propiedad'); ?>
                             </div>
 
 
@@ -1585,7 +1648,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'calle'); ?>
                             </div>
                             <div class="col-md-4">
-    <?php echo $form->labelEx($model, 'numero'); ?>
+                                <?php echo $form->labelEx($model, 'numero'); ?>
                                 <?php echo $form->textField($model, 'numero', array('size' => 60, 'maxlength' => 15, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'numero'); ?>
                             </div>
@@ -1602,13 +1665,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'telefono_residencia'); ?>
                             </div>
                             <div class="col-md-4">
-                        <?php echo $form->labelEx($model, 'celular'); ?>
-                        <?php echo $form->textField($model, 'celular', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['celular'])); ?>
-    <?php echo $form->error($model, 'celular'); ?>
+                                <?php echo $form->labelEx($model, 'celular'); ?>
+                                <?php echo $form->textField($model, 'celular', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['celular'])); ?>
+                                <?php echo $form->error($model, 'celular'); ?>
                             </div>
 
                         </div>
-<?php } ?>    
+                    <?php } ?>    
                     <div class="row">
                         <h1 class="tl_seccion_rf">Ingresos</h1>
                     </div>
@@ -1626,9 +1689,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_conyugue_error" style="display: none;">Este campo es requerido.</label>
                         </div>
                         <div class="col-md-4">
-<?php echo $form->labelEx($model, 'otros_ingresos'); ?>
-<?php echo $form->textField($model, 'otros_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-<?php echo $form->error($model, 'otros_ingresos'); ?>
+                            <?php echo $form->labelEx($model, 'otros_ingresos'); ?>
+                            <?php echo $form->textField($model, 'otros_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                            <?php echo $form->error($model, 'otros_ingresos'); ?>
                         </div>
                     </div>
                     <div class="row">
@@ -1644,10 +1707,10 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
                             $bancos = CHtml::listData(GestionBancos::model()->findAll($criteria2), "id", "nombre");
                             ?>
-<?php
-echo $form->dropDownList($model, 'banco1', $bancos, array('class' => 'form-control', 'empty' => '---Seleccione---'));
-?>
-<?php echo $form->error($model, 'banco1'); ?>
+                            <?php
+                            echo $form->dropDownList($model, 'banco1', $bancos, array('class' => 'form-control', 'empty' => '---Seleccione---'));
+                            ?>
+                            <?php echo $form->error($model, 'banco1'); ?>
                         </div>
                         <div class="otro-bn-1" style="display: none;">
                             <div class="col-md-3">
@@ -1662,19 +1725,19 @@ echo $form->dropDownList($model, 'banco1', $bancos, array('class' => 'form-contr
                             <?php echo $form->error($model, 'cuenta_ahorros1'); ?>
                         </div>
                         <div class="col-md-3">
-<?php echo $form->labelEx($model, 'cuenta_corriente1'); ?>
-<?php echo $form->textField($model, 'cuenta_corriente1', array('size' => 50, 'maxlength' => 12, 'class' => 'form-control')); ?>
+                            <?php echo $form->labelEx($model, 'cuenta_corriente1'); ?>
+                            <?php echo $form->textField($model, 'cuenta_corriente1', array('size' => 50, 'maxlength' => 12, 'class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'cuenta_corriente1'); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-3">
-<?php echo $form->labelEx($model, 'banco2'); ?>
-<?php
-echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-control', 'empty' => '---Seleccione---'));
-?>
-<?php echo $form->error($model, 'banco2'); ?>
+                            <?php echo $form->labelEx($model, 'banco2'); ?>
+                            <?php
+                            echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-control', 'empty' => '---Seleccione---'));
+                            ?>
+                            <?php echo $form->error($model, 'banco2'); ?>
                         </div>
                         <div class="otro-bn-2" style="display: none;">
                             <div class="col-md-3">
@@ -1689,9 +1752,9 @@ echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-contr
                             <?php echo $form->error($model, 'cuenta_ahorros2'); ?>
                         </div>
                         <div class="col-md-3">
-<?php echo $form->labelEx($model, 'cuenta_corriente2'); ?>
-<?php echo $form->textField($model, 'cuenta_corriente2', array('size' => 50, 'maxlength' => 12, 'class' => 'form-control')); ?>
-<?php echo $form->error($model, 'cuenta_corriente2'); ?>
+                            <?php echo $form->labelEx($model, 'cuenta_corriente2'); ?>
+                            <?php echo $form->textField($model, 'cuenta_corriente2', array('size' => 50, 'maxlength' => 12, 'class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'cuenta_corriente2'); ?>
                         </div>
                     </div>
 
@@ -1721,8 +1784,8 @@ echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-contr
                             <?php echo $form->error($model, 'parentesco1'); ?>
                         </div>
                         <div class="col-md-4">
-<?php echo $form->labelEx($model, 'telefono_referencia1'); ?>
-<?php echo $form->textField($model, 'telefono_referencia1', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                            <?php echo $form->labelEx($model, 'telefono_referencia1'); ?>
+                            <?php echo $form->textField($model, 'telefono_referencia1', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'telefono_referencia1'); ?>
                         </div>
                     </div>
@@ -1749,9 +1812,9 @@ echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-contr
                             <?php echo $form->error($model, 'parentesco2'); ?>
                         </div>
                         <div class="col-md-4">
-<?php echo $form->labelEx($model, 'telefono_referencia2'); ?>
-<?php echo $form->textField($model, 'telefono_referencia2', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-<?php echo $form->error($model, 'telefono_referencia2'); ?>
+                            <?php echo $form->labelEx($model, 'telefono_referencia2'); ?>
+                            <?php echo $form->textField($model, 'telefono_referencia2', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                            <?php echo $form->error($model, 'telefono_referencia2'); ?>
                         </div>
                     </div>
                     <div class="row">
@@ -1882,10 +1945,10 @@ echo $form->dropDownList($model, 'banco2', $bancos, array('class' => 'form-contr
                                     <label for="">Valor Comercial</label>
                                     <input type="text" maxlength="14" id="GestionSolicitudCreditovehiculo_valor1" name="GestionSolicitudCredito[vehiculo_valor1]" class="form-control" onkeypress="return validateNumbers(event)"/>
                                 </div>
-        <?php
-    endif;
-endforeach;
-?>
+                                <?php
+                            endif;
+                        endforeach;
+                        ?>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
@@ -1978,7 +2041,7 @@ endforeach;
                             <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="continue" style="display: none;">Continuar</a>
                         </div>
                     </div>
-<?php $this->endWidget(); ?>
+                    <?php $this->endWidget(); ?>
 
                 </div><!-- form -->
             </div>

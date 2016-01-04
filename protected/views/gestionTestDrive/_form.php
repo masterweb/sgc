@@ -553,11 +553,6 @@ $firma = GestionFirma::model()->count($cri);
                                         </div>
                                     </div>
 
-                                    <!--                                    <div class="row cont-bot-form-manejo">
-                                                                            <div class="col-md-3"><button type="button" class="btn btn-primary btn-ing-form">Ingresar Formulario</button></div>
-                                                                            <div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id)); ?>" class="btn btn-primary btn-des-form" target="_blank">Descargar Formulario</a></div>
-                                                                        </div>-->
-
                                 </div>
                                 <div class="row">
                                     <div class="cont-form-manejo well well-sm col-md-8">
@@ -693,6 +688,7 @@ $firma = GestionFirma::model()->count($cri);
                                                             ));
                                                     $firmaasesor = Usuarios::model()->find($cri2);
                                                     $firma = $firmaasesor->firma;
+                                                    
                                                     ?>
                                                     <?php if(!empty($firma)): ?>
                                                         <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $firma; ?>" alt="" width="200" height="100"/>
@@ -738,7 +734,21 @@ $firma = GestionFirma::model()->count($cri);
 
                                                 </div>
                                                 <div class="col-md-4">
+                                                    <?php 
+                                                    $id_responsable = Yii::app()->user->getId();
+                                                    $cri2 = new CDbCriteria(array(
+                                                                'condition' => "id={$id_responsable}"
+                                                            ));
+                                                    $firmaasesor = Usuarios::model()->find($cri2);
+                                                    $firma = $firmaasesor->firma;
+                                                    
+                                                    ?>
+                                                    <?php if(!empty($firma)): ?>
+                                                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $firma; ?>" alt="" width="200" height="100"/>
+                                                    <?php else: ?>
                                                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/firma3.png" alt="" width="200" height="100"/>
+                                                    <?php endif; ?>
+                                                    
                                                     <hr>
                                                     Firma Asesor
                                                 </div>

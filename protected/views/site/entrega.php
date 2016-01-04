@@ -204,7 +204,7 @@ $credito = $consulta->preg6;
 
         }
     }
-    function send() {
+    function send(){
         //console.log('enter send');
         $('#gestion-entrega-form').validate({
             submitHandler: function (form) {
@@ -1154,6 +1154,15 @@ $credito = $consulta->preg6;
             </div>
         </div>
     </div>
+        <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-8  col-xs-12 links-tabs">
+                        <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
+                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
+                    </div>
+                </div>
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">

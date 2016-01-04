@@ -30,7 +30,7 @@ class CencuestadoscquestionarioController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('nocompradoresadmin','search','atenciondetalle','nocotizacionok','nocompradores','cotizaciones','create','cotizacionok', 'update', 'admin', 'generar', 'encuestas', 'encuestar', 'encuestarusuario', 'finalizarencuesta', 'seleccionar'),
+                'actions' => array('nocompradoresadminencuestados','atenciondetalleencuestado','nocompradoresadmin','search','atenciondetalle','nocotizacionok','nocompradores','cotizaciones','create','cotizacionok', 'update', 'admin', 'generar', 'encuestas', 'encuestar', 'encuestarusuario', 'finalizarencuesta', 'seleccionar'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1104,19 +1104,19 @@ class CencuestadoscquestionarioController extends Controller {
         
         if(!empty($_POST)){
             //grbar los datos en gestion informacion y gestion diaria
-print_r($_POST);
+//print_r($_POST);
 //die();
             $informacion->nombres = $p->purify($_POST["data"]['nombre']);
             $informacion->apellidos = $p->purify($_POST["data"]['apellido']);
             $informacion->cedula = $p->purify($_POST["data"]['cedula']);
             $informacion->identificacion = $p->purify($_POST["data"]['cedula']);
             $informacion->direccion = $p->purify($_POST["data"]['direccion']);
-            $informacion->provincia_domicilio = $p->purify($_POST["data"]['provincia']);
-            $informacion->ciudad_domicilio = $p->purify($_POST["data"]['ciudaddo']);
+            //$informacion->provincia_domicilio = $p->purify($_POST["data"]['provincia']);
+            //$informacion->ciudad_domicilio = $p->purify($_POST["data"]['ciudaddo']);
             $informacion->email = $p->purify($_POST["data"]['email']);
             $informacion->celular=$p->purify($_POST["data"]['celular']);
             $informacion->telefono_oficina = $p->purify($_POST["data"]['telefono']);
-            $informacion->telefono_casa = $p->purify($_POST["data"]['telefonocasa']);
+            //$informacion->telefono_casa = $p->purify($_POST["data"]['telefonocasa']);
             $informacion->provincia_conc =0;
             $informacion->ciudad =0;
             $informacion->ciudad_conc = $p->purify($_POST["data"]['ciudad']);
@@ -1154,18 +1154,18 @@ print_r($_POST);
                            // if(Yii::app()->db2->createCommand("UPDATE atencion_detalle SET encuestado=1 WHERE id_atencion_detalle=:RListID")->bindValues(array( ':RListID' => $_POST['data']['id_atencion']))->execute()){
 								
 								$cotizacion = Cotizacionesnodeseadas::model()->find(array('condition'=>'id='.(int)$_POST['data']['id_atencion']));
-								$cotizacion->fecha = date('Y-m-d h:i:s');
+								$cotizacion->fecharealizado = date('Y-m-d H:i:s');
 								$cotizacion->realizado = 'SI';
                                 $cotizacion->nombre = $p->purify($_POST["data"]['nombre']);
                                 $cotizacion->apellido = $p->purify($_POST["data"]['apellido']);
                                 $cotizacion->cedula = $p->purify($_POST["data"]['cedula']);
                                 $cotizacion->direccion = $p->purify($_POST["data"]['direccion']);
-                                $cotizacion->provincia = $p->purify($_POST["data"]['provincia']);
-                                $cotizacion->ciudad = $p->purify($_POST["data"]['ciudaddo']);
+                                $cotizacion->provincia = '0';
+                                $cotizacion->ciudad = '0';
                                 $cotizacion->email = $p->purify($_POST["data"]['email']);
                                 $cotizacion->celular=$p->purify($_POST["data"]['celular']);
                                 $cotizacion->trabajo = $p->purify($_POST["data"]['telefono']);
-                                $cotizacion->telefono = $p->purify($_POST["data"]['telefonocasa']);
+                                $cotizacion->telefono =  $p->purify($_POST["data"]['telefono']);
                                 $cotizacion->ciudadconcesionario_id = $p->purify($_POST["data"]['ciudad']);
                                 $cotizacion->concesionario_id = $p->purify($_POST["data"]['concesionario']);
                                 
@@ -1267,7 +1267,7 @@ print_r($_POST);
 			if(isset($_POST['datos']['lugarcompra']))
 				$noc->donde = $_POST['datos']['lugarcompra'];
 			
-			$noc->fecha = date('Y-m-d h:i:s');
+			$noc->fecha = date('Y-m-d H:i:s');
 			//$noc->usuario_id = (int) Yii::app()->user->id;
 			if($noc->update()){
 				$gd = GestionDiaria::model()->find(array('condition'=>'id='.(int)$_POST['datos']['id']));
@@ -1399,12 +1399,67 @@ print_r($_POST);
 			
 			
 		}*/
+		$name = '';
 		$this->traercotizaciones();
 		$criteria = new CDbCriteria;
         $criteria->distinct = true;
-        $criteria->condition = "realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
+		$criteria->condition = "realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
+        //$criteria->condition = "realizado=0 and usuario_id=" . (int) Yii::app()->user->id;
         //$criteria->condition ='';
 //        $criteria->order = 'id desc';
+		if(!empty($_POST['nombre'])){
+			$p = new CHtmlPurifier();
+            $name = $p->purify($_POST['nombre']);
+			$criteria = new CDbCriteria;
+			$criteria->distinct = true;
+			$criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
+			
+		}
+
+
+
+        // Count total records
+        $pages = new CPagination(Cotizacionesnodeseadas::model()->count($criteria));
+
+        // Set Page Limit
+        $pages->pageSize = 10;
+
+        // Apply page criteria to CDbCriteria
+        $pages->applyLimit($criteria);
+       // $pages ='';
+        // Grab the records
+        $posts = Cotizacionesnodeseadas::model()->findAll($criteria);
+		
+		
+		
+        // Render the view
+        $this->render('atenciondetalle', array(
+            'model' => $posts,
+            'pages' => $pages, 
+            'busqueda' => $name,
+                )
+        );
+		
+	}	
+	public function actionAtenciondetalleencuestado(){
+		date_default_timezone_set("America/Bogota");
+		$name = '';
+		$this->traercotizaciones();
+		$criteria = new CDbCriteria;
+        $criteria->distinct = true;
+		$criteria->condition = "realizado!='0' and usuario_id=" . (int) Yii::app()->user->id;
+		$criteria->order = 'fecharealizado DESC';
+        
+		if(!empty($_POST['nombre'])){
+
+			$p = new CHtmlPurifier();
+            $name = $p->purify($_POST['nombre']);
+			$criteria = new CDbCriteria;
+			$criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and fecharealizado is not null and usuario_id=" . (int) Yii::app()->user->id;
+			$criteria->order = 'fecharealizado DESC';
+			
+		}
+
 
 
 
@@ -1417,15 +1472,15 @@ print_r($_POST);
 
         // Apply page criteria to CDbCriteria
         $pages->applyLimit($criteria);
-
+       // $pages ='';
         // Grab the records
         $posts = Cotizacionesnodeseadas::model()->findAll($criteria);
 
         // Render the view
-        $this->render('atenciondetalle', array(
+        $this->render('atenciondetalleencuestado', array(
             'model' => $posts,
-            'pages' => $pages,
-            'busqueda' => '',
+            'pages' => $pages, 
+            'busqueda' => $name,
                 )
         );
 		
@@ -1489,10 +1544,19 @@ print_r($_POST);
             
             
         }*/
+		$name = '';
 		$this->traernocompradores();
          $criteria = new CDbCriteria;
         $criteria->distinct = true;
         $criteria->condition = "fecha is null and usuario_id=" . (int) Yii::app()->user->id;
+		if(!empty($_POST['nombre'])){
+			$p = new CHtmlPurifier();
+            $name = $p->purify($_POST['nombre']);
+			 $criteria = new CDbCriteria;
+			$criteria->distinct = true;
+			$criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and fecha is null and usuario_id=" . (int) Yii::app()->user->id;
+			
+		}
         //$criteria->condition ='';
 //        $criteria->order = 'id desc';
 
@@ -1516,7 +1580,50 @@ print_r($_POST);
         $this->render('nocompradoresadmin', array(
             'model' => $posts,
             'pages' => $pages,
-            'busqueda' => '',
+            'busqueda' =>$name,
+                )
+        );
+        
+    }
+	public function actionNocompradoresadminencuestados(){
+        date_default_timezone_set("America/Bogota");
+     	$name = '';
+		$this->traernocompradores();
+         $criteria = new CDbCriteria;
+        $criteria->distinct = true;
+        $criteria->condition = "fecha is not null and usuario_id=" . (int) Yii::app()->user->id;
+		if(!empty($_POST['nombre'])){
+			$p = new CHtmlPurifier();
+            $name = $p->purify($_POST['nombre']);
+			 $criteria = new CDbCriteria;
+			$criteria->distinct = true;
+			$criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and fecha is not null and usuario_id=" . (int) Yii::app()->user->id;
+	        $criteria->order = 'fecha desc';
+			
+		}
+        //$criteria->condition ='';
+
+
+
+
+        // Count total records
+        $pages = new CPagination(Nocompradores::model()->count($criteria));
+
+        // Set Page Limit
+        $pages->pageSize = 10;
+
+        // Apply page criteria to CDbCriteria
+        $pages->applyLimit($criteria);
+
+        // Grab the records
+        $posts = Nocompradores::model()->findAll($criteria);
+
+        // Render the view
+      
+        $this->render('nocompradoresadminencuestados', array(
+            'model' => $posts,
+            'pages' => $pages,
+            'busqueda' =>$name,
                 )
         );
         

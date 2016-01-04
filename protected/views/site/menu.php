@@ -261,7 +261,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                 <?php } // ?>
                 <?php if (($a->accesoSistema->controlador) == 'cencuestadoscquestionario' && ($a->accesoSistema->accion) == 'atenciondetalle' && $opcion == md5(($a->accesoSistema->modulo_id))) { 
-					$verifica = Cotizacionesnodeseadas::model()->count(array("condition"=>'usuario_id='.Yii::app()->user->id));
+					$verifica = Cotizacionesnodeseadas::model()->count(array("condition"=>'realizado ="0" and usuario_id='.Yii::app()->user->id));
 					$stylo = '';
 					$stylol = '';
 					$num = '';
@@ -284,7 +284,7 @@ $rol = Yii::app()->user->getState('roles');
                 <?php } // ?>
 				<?php if (($a->accesoSistema->controlador) == 'cencuestadoscquestionario' && ($a->accesoSistema->accion) == 'nocompradoresadmin' && $opcion == md5(($a->accesoSistema->modulo_id))) { 
 				
-					$verifica = Nocompradores::model()->count(array("condition"=>'usuario_id='.Yii::app()->user->id));
+					$verifica = Nocompradores::model()->count(array("condition"=>'preguntauno is null and usuario_id='.Yii::app()->user->id));
 					$stylo = '';
 					$stylol = '';
 					$num = '';

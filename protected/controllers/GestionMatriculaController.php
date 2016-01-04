@@ -98,7 +98,7 @@ class GestionMatriculaController extends Controller {
                 $asunto = 'Kia Motors Ecuador - Status de Entrega de Vehículo';
                 if(isset($_POST['GestionMatricula']['factura_ingreso']) && !empty($_POST['GestionMatricula']['factura_ingreso'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -113,7 +113,7 @@ class GestionMatriculaController extends Controller {
                 }
                 if(isset($_POST['GestionMatricula']['envio_factura']) && !empty($_POST['GestionMatricula']['envio_factura'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -129,7 +129,7 @@ class GestionMatriculaController extends Controller {
                 
                 if(isset($_POST['GestionMatricula']['pago_consejo']) && !empty($_POST['GestionMatricula']['pago_consejo'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -144,7 +144,7 @@ class GestionMatriculaController extends Controller {
                 }
                 if(isset($_POST['GestionMatricula']['venta_credito']) && !empty($_POST['GestionMatricula']['venta_credito'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -159,7 +159,7 @@ class GestionMatriculaController extends Controller {
                 }
                 if(isset($_POST['GestionMatricula']['entrega_documentos_gestor']) && !empty($_POST['GestionMatricula']['entrega_documentos_gestor'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -174,7 +174,7 @@ class GestionMatriculaController extends Controller {
                 }
                 if(isset($_POST['GestionMatricula']['ente_regulador_placa']) && !empty($_POST['GestionMatricula']['ente_regulador_placa'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>
@@ -189,7 +189,7 @@ class GestionMatriculaController extends Controller {
                 }
                 if(isset($_POST['GestionMatricula']['vehiculo_matricula_placas']) && !empty($_POST['GestionMatricula']['vehiculo_matricula_placas'])){
                     $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="center">
                                     <img src="images/header_mail.jpg">
                                     <br>

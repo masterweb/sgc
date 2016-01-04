@@ -218,6 +218,14 @@ class GestionAgendamientoController extends Controller {
 //            print_r($_POST);
 //            echo '</pre>';
 //            die();
+            $categorizacion = new GestionCategorizacion;
+            $categorizacion->id_informacion = $_POST['GestionAgendamiento']['id_informacion'];
+            $categorizacion->categorizacion = $_POST['GestionAgendamiento']['categorizacion'];
+            $categorizacion->paso = $_POST['GestionAgendamiento']['paso'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $categorizacion->fecha = date("Y-m-d H:i:s");
+            $categorizacion->save();
+
 
             $connection = Yii::app()->db;
             $sql = "UPDATE gestion_consulta SET preg7 = '{$_POST['GestionAgendamiento']['categorizacion']}' "

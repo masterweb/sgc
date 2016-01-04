@@ -54,7 +54,7 @@ class Cotizacionesnodeseadas extends CActiveRecord
 		return array(
 			array('atencion_detalle_id, fecha, usuario_id, realizado, modelo_id', 'required'),
 			array('atencion_detalle_id, usuario_id, modelo_id, version_id, ciudadconcesionario_id, concesionario_id', 'numerical', 'integerOnly'=>true),
-			array('fecha, realizado', 'length', 'max'=>45),
+			array('fecha, realizado,fecharealizado', 'length', 'max'=>45),
 			array('nombre, apellido, email', 'length', 'max'=>250),
 			array('cedula', 'length', 'max'=>25),
 			array('provincia, ciudad, telefono, celular, trabajo', 'length', 'max'=>50),
@@ -118,6 +118,7 @@ class Cotizacionesnodeseadas extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('atencion_detalle_id',$this->atencion_detalle_id);
 		$criteria->compare('fecha',$this->fecha,true);
+		$criteria->compare('fecharealizado',$this->fecharealizado,true);
 		$criteria->compare('usuario_id',$this->usuario_id);
 		$criteria->compare('realizado',$this->realizado,true);
 		$criteria->compare('nombre',$this->nombre,true);

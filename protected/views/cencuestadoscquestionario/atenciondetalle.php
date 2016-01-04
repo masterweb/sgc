@@ -95,19 +95,31 @@ $rol = Yii::app()->user->getState('roles');
             ?>
         </div>
     </div>
-    <div class="row ">
+    <div class="row "> 
+		<div class="col-md-12 pad-all">
+			<a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/atenciondetalleencuestado'); ?>"><input type="button" value="Encuestados" id="encuestadosbtn" class="pad-all btn btn-success btn-sm"></a>
+		</div>
+	</div>
+
+	<div class="row ">
         <div class="table-responsive col-md-12">
-             <div class="input-group"> <span class="input-group-addon">Filtrar por Apellidos y Nombres</span>
-                <input id="filter" type="text" class="form-control" placeholder="Ingrese aqu&iacute;">
-            </div>
+			<div class="row">
+				<form class="form-inline" method="post" action="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/atenciondetalle'); ?>">
+				  <div class="form-group">
+					<input type="text" value="<?php echo $busqueda?>" class="form-control" name="nombre" id="exampleInputName2" placeholder="Ingrese los nombres &oacute; apellidos que desea buscar">
+				  </div>
+				  <button type="submit" class="btn btn-default">Buscar</button>
+				</form>
+			</div>
             <table class="tables tablesorter" id="keywords">
                 <thead>
                     <tr>
-                        <th><span>#</span></th>
+                       
                         <th><span>Nombre</span></th>
                         <th><span>Apellido</span></th>
-                        <th>Cedula</th>
+                        <th>C&eacute;dula</th>
                         <th>Tel&eacute;fono</th>
+                        <th>Fecha</th>
                         <th colspan="2">Opciones</th>
                     </tr>
                 </thead>
@@ -119,11 +131,12 @@ $rol = Yii::app()->user->getState('roles');
                     	$cont++;
                         ?>
                         <tr>
-                            <td><?php echo $cont; ?> </td>
+                            
                             <td><?php echo utf8_decode(($c->nombre)) ?> </td>
                             <td><?php echo $c->apellido ?> </td>
                             <td><?php echo $c->cedula ?> </td>
                             <td><?php echo $c->telefono ?> </td>
+                            <td><?php echo $c->fecha ?> </td>
                             <td><a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/cotizaciones', array('id' => $c->id)); ?>" class="btn btn-primary btn-xs btn-danger">Realizar Encuesta</a></a></td>
                             <?php 
 								/*if(!empty($accesosUser)){

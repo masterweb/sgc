@@ -18,9 +18,30 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 //echo 'dealer id: '.$dealer_id;
 $count = count($users);
 //echo 'count: '.$count;
+//echo '<pre>';
+//print_r($_GET);
+//echo '</pre>';
 ?>
 <script>
     $(function () {
+        $('#GestionDiaria_concesionario').change(function () {
+            var value = $(this).attr('value');
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {dealer_id: value},
+                success: function (data) {
+                    //$('#info-3').hide();
+                    //alert(data);
+                    $('#GestionDiaria_responsable').html(data);
+
+                }
+            });
+        });
         //$('#toolinfo').tooltip();
         $('#toolinfo').tooltipster({
             content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
@@ -151,6 +172,9 @@ $count = count($users);
                                     else {
                                         form.submit();
                                     }
+                                },
+                                error: function (error) {
+                                    form.submit();
                                 }
                             });
                         } else if (identificacion == 'ruc') {
@@ -183,6 +207,9 @@ $count = count($users);
                                     else {
                                         form.submit();
                                     }
+                                },
+                                error: function (error) {
+                                    form.submit();
                                 }
                             });
                         } else if (identificacion == 'pasaporte'){
@@ -200,6 +227,9 @@ $count = count($users);
                                     } else {
                                         form.submit();
                                     }
+                                },
+                                error: function (error) {
+                                    form.submit();
                                 }
                             });
                         }
@@ -314,7 +344,9 @@ $count = count($users);
         .container {
             max-width: 1170px;
         }
+        em{margin-bottom: 3px;display: block;}
     }
+    
 </style>
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div class="container">
@@ -345,18 +377,17 @@ $count = count($users);
                             <?php
                             echo $form->dropDownList($model, 'fuente', array(
                                 '' => '--Seleccione--',
-                                //'prospeccion' => 'Prospección',
-                                'trafico' => 'Tráfico',
-                                'showroom' => 'Showroom',
+                                'prospeccion' => 'Prospección',
+                                //'trafico' => 'Tráfico',
+                                'showroom' => 'Tráfico',
                                 'exhibicion' => 'Exhibición',
                                 //'web' => 'Web',
                                 //'exonerados' => 'Exonerados'
                                     ), array('class' => 'form-control'));
                             ?>
                             <?php echo $form->error($model, 'fuente'); ?>
-                            <button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="right" title="Info" id="toolinfo">Info</button>
+                            <button type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="right" title="Info" id="toolinfo">Info</button>
                         </div>
-                        
                     </div>
                     <div class="row tipo-cont">
                         <div class="col-md-12">
@@ -636,7 +667,7 @@ $count = count($users);
 
                     </div>
                     
-                    <?php if($cargo_id == 69): ?>
+                    <?php if($cargo_id == 69 || $cargo_id == 46 ): ?>
                     <hr />
                     <div class="row">
                         <div class="col-md-6">
@@ -696,34 +727,33 @@ $count = count($users);
                         </div>
                     </div>
                     <div class="row">
+                            <div class="col-md-6">
+                                <label for="">Responsable</label>
+                                    <select name="GestionDiaria[responsable]" id="GestionDiaria_responsable" class="form-control">
+                                        <option value="">--Seleccione responsable--</option>
+                                </select>
+                        </div>    
+                    </div>
+                    <hr />
+                    <div class="row">
                         <div class="col-md-6">
                             <label for="">Provincia</label>
                             <select name="GestionDiaria[provincia]" id="GestionDiaria_provincia" class="form-control">
                                 <option value="">---Seleccione una provincia---</option>
                                 <option value="1">Azuay</option>
-                                <option value="2">Bolívar</option>
-                                <option value="3">Cañar</option>
-                                <option value="4">Carchi</option>
                                 <option value="5">Chimborazo</option>
-                                <option value="6">Cotopaxi</option>
                                 <option value="7">El Oro</option>
                                 <option value="8">Esmeraldas</option>
-                                <option value="9">Galápagos</option>
                                 <option value="10">Guayas</option>
                                 <option value="11">Imbabura</option>
                                 <option value="12">Loja</option>
                                 <option value="13">Los Ríos</option>
                                 <option value="14">Manabí</option>
-                                <option value="15">Morona Santiago</option>
                                 <option value="16">Napo</option>
-                                <option value="17">Orellana</option>
                                 <option value="18">Pastaza</option>
                                 <option value="19">Pichincha</option>
-                                <option value="20">Santa Elena</option>
-                                <option value="22">Sucumbíos</option>
                                 <option value="21">Tsachilas</option>
                                 <option value="23">Tungurahua</option>
-                                <option value="24">Zamora Chinchipe</option>
                             </select>      
                         </div>   
                     </div>
@@ -732,8 +762,38 @@ $count = count($users);
                         <div class="col-md-6">
                             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
                         </div>
+                        
                     </div>
                     <?php $this->endWidget(); ?>
+                    <div class="row">
+                         <?php if($cargo_id == 70 || $cargo_id == 46): ?>
+                        <?php
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'id' => 'casos-form',
+                        'method' => 'get',
+                        'action' => Yii::app()->createUrl('gestionInformacion/seguimientoexcel'),
+                        'enableAjaxValidation' => true,
+                        'htmlOptions' => array(
+                            'class' => 'form-horizontal form-search'
+                        ),
+                    ));
+                    ?>
+                    <div class="col-md-6">
+                        <input type="submit" name="" id="" value="Descargar Excel" class="btn btn-warning"/>
+                        <input type="hidden" value="<?php print_r($_GET); ?>" name="Seguimiento[search]" />
+                        <input type="hidden" name="GestionDiaria2[general]" id="GestionDiaria2_general" value="<?php echo isset($_GET["GestionDiaria"]['general']) ? $_GET["GestionDiaria"]['general'] : "" ?>"/>
+                        <input type="hidden" name="GestionDiaria2[categorizacion]" id="" value="<?php echo isset($_GET["GestionDiaria"]['categorizacion']) ? $_GET["GestionDiaria"]['categorizacion'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[status]" id="" value="<?php echo isset($_GET["GestionDiaria"]['status']) ? $_GET["GestionDiaria"]['status'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[responsable]" id="" value="<?php echo isset($_GET["GestionDiaria"]['responsable']) ? $_GET["GestionDiaria"]['responsable'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[fecha]" id="" value="<?php echo isset($_GET["GestionDiaria"]['fecha']) ? $_GET["GestionDiaria"]['fecha'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[fuente]" id="" value="<?php echo isset($_GET["GestionDiaria"]['fuente']) ? $_GET["GestionDiaria"]['fuente'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[grupo]" id="" value="<?php echo isset($_GET["GestionDiaria"]['grupo']) ? $_GET["GestionDiaria"]['grupo'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[concesionario]" id="" value="<?php echo isset($_GET["GestionDiaria"]['concesionario']) ? $_GET["GestionDiaria"]['concesionario'] : "" ?>">
+                        <input type="hidden" name="GestionDiaria2[provincia]" id="" value="<?php echo isset($_GET["GestionDiaria"]['provincia']) ? $_GET["GestionDiaria"]['provincia'] : "" ?>">
+                    </div>
+                    <?php $this->endWidget(); ?>
+                    <?php endif; ?>   
+                    </div>
                 </div>
             </div>
         </div>
@@ -742,7 +802,7 @@ $count = count($users);
 
     </div>
     <div class="cont-createc">
-
+        
     </div>
     <div class="cont-createc-tg36">
 
@@ -842,7 +902,7 @@ $count = count($users);
                                             $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
                                             break;
                                         case '3':
-                                            $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '4':
                                             $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
@@ -857,7 +917,7 @@ $count = count($users);
                                             $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id_info']));
                                             break;
                                         case '8':
-                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
                                             break;
                                         case '9':
                                             $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
@@ -889,6 +949,11 @@ $count = count($users);
                                     <?php 
                                     if($c['bdc'] == 1){
                                         echo '<button type="button" class="btn btn-xs btn-success">BDC</button>'; 
+                                    }
+                                    ?>
+                                    <?php 
+                                    if($c['desiste'] == 1){
+                                        echo '<button type="button" class="btn btn-xs btn-success">Desiste</button>'; 
                                     }
                                     ?>
                                 </td>
@@ -994,24 +1059,23 @@ $count = count($users);
                                 <td> <?php echo $c['fuente']; ?> </td>
                                 <td>
                                     <?php if($c['bdc'] == 0){ ?>
-                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
-                                   
-                                    <?php if ($c['status'] == 1): ?>
-                                        <?php if ($c['paso'] == '1-2') { ?>
-                                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
-                                        <?php } else { ?>
-                                            <?php if($cargo_id != 70): ?> 
-                                            <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
-                                            <?php endif; ?>
-                                        <?php } ?>
-                                    <?php endif; ?>
-                                    <?php if ($c['status'] == 3) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
+                                        <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1): ?>
+                                            <?php if ($c['paso'] == '1-2') { ?>
                                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
-                                    <?php } ?>
+                                            <?php } else { ?>
+                                                <?php if($cargo_id != 70){ ?> 
+                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        <?php endif; ?>
+                                        <?php if ($c['status'] == 3) { ?>
+                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                        <?php } ?>
                                     <?php } ?>            
                                 </td>
                             </tr>
-<?php endforeach; ?>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
 

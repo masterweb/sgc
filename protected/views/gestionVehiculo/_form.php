@@ -530,6 +530,8 @@ if (isset($id)) {
                                             <th><span>Modelo</span></th>
                                             <th><span>Versión</span></th>
                                             <th><span>Necesidad</span></th>
+                                            <th><span>Consulta</span></th>
+                                            <th><span>Lista de Precios</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -540,6 +542,8 @@ if (isset($id)) {
                                                 <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                                 <td><?php echo $this->getVersion($c['version']); ?> </td>
                                                 <td><?php echo $this->getNecesidad($c['id_informacion']); ?> </td>
+                                                <td><button class="btn btn-xs btn-success">Consulta</button> </td>
+                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                                             </tr>
                                             <?php
                                         endforeach;
@@ -788,7 +792,7 @@ if (isset($id)) {
         <div class="col-md-8 col-xs-12 links-tabs">
             <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
             <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-            <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">Seguimiento</a></div>
+            <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
         </div>
     </div>
 </div>

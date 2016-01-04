@@ -198,18 +198,7 @@
                         <label class = 'col-sm-2 control-label'>Concesionario</label>
                         <div class="col-sm-4">
                             <label><?php
-                                if ($model->concesionario_id > 0 && !empty($model->concesionario_id))
-                                    echo $model->consecionario->nombre;
-                                else {
-                                    $concesionarios = Grupoconcesionariousuario::model()->findAll(array('condition' => 'usuario_id =' . (int) $model->id));
-                                    if (!empty($concesionarios)) {
-                                        echo '<ul>';
-                                        foreach ($concesionarios as $c) {
-                                            echo '<li> - ' . $c->consecionario->nombre . '</li>';
-                                        }
-                                        echo '</ul>';
-                                    }
-                                }
+                               echo  ($model->concesionario_id>0)?$this->traerConcesionariosGR($model->concesionario_id,1):$this->traerConcesionariosU($model->id,1);
                                 ?></label>	
 
                         </div>

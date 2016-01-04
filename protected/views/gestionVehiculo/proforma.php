@@ -140,13 +140,20 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         <?php
         $paramAutos = explode('@', $value['accesorios']);
         $strinAcc = '';
+        $valAcc = 0;
         foreach ($paramAutos as $val) {
             $strD = explode('-', $val);
             $strinAcc .= $strD[1].',';
+            $valAcc += (int) $strD[0];
         }
         $strinAcc = substr($strinAcc, 0, -1);
         $precioNormal = $this->getPrecioNormal($value['version']);
-        $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
+        if(count($paramAutos) > 0){
+            $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
+        }else{
+            $precioAccesorios = 0;
+        }
+        
         ?>
 
         <div class="row">
@@ -157,7 +164,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($precioAccesorios); ?></div>    
+            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($valAcc); ?></div>    
         </div>
         <div class="row">
             <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($value['precio_vehiculo']); ?></div>

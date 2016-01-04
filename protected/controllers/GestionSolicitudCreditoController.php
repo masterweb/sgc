@@ -93,6 +93,8 @@ class GestionSolicitudCreditoController extends Controller {
 //            echo '</pre>';
 //            die();
             //die('enter post');
+            $nombre_cliente = $this->getNombresInfo($_POST['GestionSolicitudCredito']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionSolicitudCredito']['id_informacion']);
+            $id_asesor = Yii::app()->user->getId();
             $result = FALSE;
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->attributes = $_POST['GestionSolicitudCredito'];
@@ -150,8 +152,8 @@ class GestionSolicitudCreditoController extends Controller {
                 $otros_ingresos = (int) str_replace('$', "", $otros_ingresos);
                 $model->otros_ingresos = $otros_ingresos;
             }
-            
-            
+
+
 
             $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
             switch ($tipo_vivienda) {
@@ -176,7 +178,7 @@ class GestionSolicitudCreditoController extends Controller {
                 default:
                     break;
             }
-            
+
             if (isset($_POST['GestionSolicitudCredito']['otros_activos1']) && !empty($_POST['GestionSolicitudCredito']['otros_activos1'])) {
                 $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos1'];
             }
@@ -202,6 +204,46 @@ class GestionSolicitudCreditoController extends Controller {
                 print_r($model->getErrors());
             }
             if ($model->save()) {
+                require_once 'email/mail_func.php';
+                //---- SEND EMAIL ASESOR DE CREDITO
+                $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito: ';
+                
+
+                $general = '<body style="margin: 10px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                    <div align="">
+                                    <img src="images/header_mail.jpg">
+                                    <p></p>
+                                    <p style="margin: 2px 0;">Estimado/a Asesor de Crédito</p><br />
+                                    <p style="margin: 2px 0;">Se ha realizado una solicitud de crédito:</p>
+
+                                    <br>
+                                        <table width="600" cellpadding="">';
+                
+                    $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
+                            . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
+                                <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
+                                <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionSolicitudCredito']['id_vehiculo']) . '</td></tr>
+                                <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
+                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
+                
+                $general .= ' </table>
+                                <br/>
+                                <p style="margin: 2px 0;"><a href="https://www.kia.com.ec/intranet/usuario/index.php/site/cotizacion?id_informacion=' . $_POST['GestionSolicitudCredito']['id_informacion'] . '&amp;id_vehiculo=' . $_POST['GestionSolicitudCredito']['id_vehiculo'] . '">Ver Solicitud de Crédito</a></p>
+                                <p></p>
+                                <p style="margin: 2px 0;">Saludos cordiales,</p>
+                                <p style="margin: 2px 0;">SGC</p>
+                                <p style="margin: 2px 0;">Kia Motors Ecuador</p>
+                                <img src="images/footer.png">
+                              </div>
+                              </div>
+                            </body>';
+                //die('table: '.$general);
+                $codigohtml = $general;
+                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers .= 'Content-type: text/html' . "\r\n";
+                $emailAsesorCredito = $this->getAsesorCredito($id_asesor);
+                sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
                 $result = TRUE;
                 $arr = array('result' => $result, 'id' => $model->id);

@@ -85,10 +85,10 @@ foreach ($cr as $c) {
             function verN(num) {
                 if (num > 0) {
                     if (abrir == 0) {
-                        $("#lNotificaciones").show();
+                        $("#lNotificaciones").slideUp("slow");
                         abrir = 1;
                     } else {
-                        $("#lNotificaciones").hide();
+                        $("#lNotificaciones").slideDown("slow");
                         abrir = 0;
 
                     }
@@ -98,6 +98,7 @@ foreach ($cr as $c) {
         </script>
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
         <style>
+            .cometchat_trayiconimage {display: none !important;}
         </style>
         <link type="text/css" href="/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
         <script type="text/javascript" src="/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php" charset="utf-8"></script>

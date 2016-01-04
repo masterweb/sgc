@@ -733,20 +733,20 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     require_once 'email/mail_func.php';
                     $asunto = 'Kia Motors Ecuador SGC - Actualizaci&oacute;n de Contrase&ntilde;a';
                     $general = '<body style="margin: 10px;">
-                            <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;"><img src="images/header_mail.jpg"/></div>';
-                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Señor(a): <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su contrase&ntilde;a ha sido actualizada exitosamente.</div>';
-                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Recuerde que sus credenciales de acceso son las siguientes:</div>';
-                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left"><ul  style="text-align:left"><li>Usuario: ' . $model->usuario . '</li>';
+                            <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;"><img src="images/header_mail.jpg"/></div>';
+                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left">Señor(a): <b>' . utf8_decode(utf8_encode($model->nombres)) . ' ' . utf8_decode(utf8_encode($model->apellido)) . '</b> su contrase&ntilde;a ha sido actualizada exitosamente.</div>';
+                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left">Recuerde que sus credenciales de acceso son las siguientes:</div>';
+                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left"><ul  style="text-align:left"><li>Usuario: ' . $model->usuario . '</li>';
                     $general .= '<li>Contrase&ntilde;a: ' . $pass . '</li></ul></div>';
-                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Para acceder al sistema realice clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/login">aqu&iacute;.</a></div>';
-                    $general .= '<div  style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">'
+                    $general .= '<div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left">Para acceder al sistema realice clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/login">aqu&iacute;.</a></div>';
+                    $general .= '<div  style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left">'
                                 . 'Saludos cordiales,<br />SGC <br />Kia Motors Ecuador <br /></div>';
-                        $general .= '<div  style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">'
+                        $general .= '<div  style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left">'
                                 . '<br /><br />Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
 </div>';
-                    $general.=' <div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left"><img src="images/footer_mail.jpg"/></div>
+                    $general.=' <div style="width:600px;  margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;margin:auto;text-align:left"><img src="images/footer_mail.jpg"/></div>
 									</div>
 								</body>';
                     $codigohtml = $general;

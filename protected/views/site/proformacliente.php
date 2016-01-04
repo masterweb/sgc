@@ -4,6 +4,7 @@
 //echo '</pre>';
 //echo 'num proforma: '.$id_hoja;
 $id_asesor = $this->getResponsableId($id_informacion);
+//echo $id_asesor;
 //$id_asesor = Yii::app()->user->getId();
 $emailAsesor = $this->getAsesorEmail($responsable_id);
 $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
@@ -141,13 +142,16 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         <?php
         $paramAutos = explode('@', $value['accesorios']);
         $strinAcc = '';
+        $valAcc = 0;
         foreach ($paramAutos as $val) {
             $strD = explode('-', $val);
             $strinAcc .= $strD[1].',';
+            $valAcc += (int) $strD[0];
         }
         $strinAcc = substr($strinAcc, 0, -1);
         $precioNormal = $this->getPrecioNormal($value['version']);
         $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
+        
         ?>
 
         <div class="row">
@@ -158,7 +162,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($precioAccesorios); ?></div>    
+            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($valAcc); ?></div>    
         </div>
         <div class="row">
             <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($value['precio_vehiculo']); ?></div>

@@ -140,7 +140,7 @@ class GestionTestDriveController extends Controller {
                 require_once 'email/mail_func.php';
                 $asunto = 'Kia Motors Ecuador - Gracias por realizar una Prueba de Manejo con Nosotros.';
                 $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="">
                                     <img src="images/header_mail.jpg"><br>
                                         <p style="margin: 2px 0;">Señor(a): ' . $nombre_cliente . '</p>
@@ -164,7 +164,7 @@ class GestionTestDriveController extends Controller {
                                         <p style="margin: 2px 0;">De antemano agradecemos por su tiempo,</p><br />
                                         <p>Kia Motors Ecuador</p><br /><br />
 
-                                        <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
+                                        <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:11px;">
                                             <tr>
                                               <td width="228">&nbsp;</td>
                                               <td width="228" style="color:#1f497d">' . $this->getResponsable($id_asesor) . ' - Asesor Ventas Kia</td>
@@ -210,7 +210,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $art = GestionInformacion::model()->findAll($cri);
 
                 $general = '<body style="margin: 10px;">
-                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <p></p>
@@ -229,14 +229,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
                 $general .= ' </table>
                                 <br/>
-                                <p style="margin: 2px 0;">Por favor realizar llamada de presentaci&oacute;n seguimiento.</p>
+                                <p style="margin: 2px 0;">Por favor realizar llamada de presentaci&oacute;n y seguimiento.</p>
                                 <p></p>
                                 <p style="margin: 2px 0;">Saludos cordiales,</p>
                                 <p style="margin: 2px 0;">SGC</p>
-                                <p style="margin: 2px 0;">Kia Motors Ecuador</p>
-					<p>Saludos Cordales.<br>
-					SCG<br>
-					Kia Motors Ecuador</p>			
+                                <p style="margin: 2px 0;">Kia Motors Ecuador</p>			
 								<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
                                 <img src="images/footer.png">

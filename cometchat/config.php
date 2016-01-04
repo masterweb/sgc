@@ -67,7 +67,7 @@ $trayicon = array();
 
 /* ICONS START */
 
-$trayicon[] = array('announcements','Announcements','modules/announcements/index.php','_popup','280','300','','1','');
+
 
 /* ICONS END */
 

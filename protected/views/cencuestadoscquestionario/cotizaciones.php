@@ -58,12 +58,14 @@ $rol = Yii::app()->user->getState('roles');
 		<h4>Datos Informativos de la persona</h4>
 		<hr>
 		<ul>
-			<li><label style="width: 80px;font-weight:bold;padding: 0px;font-size:13px">Oficina:</label> <?php echo $datos->trabajo?></li>
+			
+			<li><label style="width: 80px;font-weight:bold;padding: 0px;font-size:13px">Nombre:</label> <?php echo utf8_decode($datos['nombre'].' '.$datos['apellido'])?></li>
 			<li><label style="width: 80px;font-weight:bold;padding: 0px;font-size:13px">Teléfono:</label> <?php echo $datos->telefono?></li>
 			<li><label style="width: 80px;font-weight:bold;padding: 0px;font-size:13px">Celular:</label> <?php echo $datos->celular?></li>
-		</ul>
+			
+		</ul> 
 	</div>
-    <p>Buenos días me  comunica por favor con el Sr./a <b><?php echo utf8_decode($datos['nombre'])?></b>, mucho gusto Sr/a <b><?php echo utf8_decode($datos['nombre'])?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>.  el motivo de mi llamada es validar la información que ingresó en nuestra página WEB para enviarle la cotización solicitada con mayor efectividad.</p>
+    <p>Buenos días me  comunica por favor con el Sr./a <b><?php echo utf8_decode($datos['nombre'].' '.$datos['apellido'])?></b>, mucho gusto Sr/a <b><?php echo utf8_decode($datos['nombre'].' '.$datos['apellido'])?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>.  el motivo de mi llamada es validar la información que ingresó en nuestra página WEB para enviarle la cotización solicitada con mayor efectividad.</p>
     <p>¿Me permite un minuto de su tiempo?:</p>
     	<div class="radio">
 	        <label>
@@ -107,18 +109,18 @@ $rol = Yii::app()->user->getState('roles');
 					<input type="text" required value="<?php echo $datos['direccion'] ?>"  name="data[direccion]" id="data_direccion" class = 'form-control'>
 				</div>
 			</div>
-			<div class="form-group">
+			<!--<div class="form-group">
 				<label class = 'col-sm-2 control-label'>Provincia Domicilio:</label>
 				<div class="col-sm-4">
 					<?php 
-						$pr = Provincias::model()->findAll();
+						/*$pr = Provincias::model()->findAll();
 						if(!empty($pr)){
 							echo '<select required   name="data[provincia]" id="data_provincia" class = "form-control">';
 							foreach($pr as $p){
 								echo '<option value="'.$p->nombre.'">'.$p->nombre.'</option>';
 							}
 							echo '</select>';
-						}
+						}*/
 					?>
 					
 				</div>
@@ -126,25 +128,29 @@ $rol = Yii::app()->user->getState('roles');
 				<div class="col-sm-4">
 					<input type="text" required value=""  name="data[ciudaddo]" id="data_ciudaddo" class = 'form-control'>
 				</div>
-			</div>
+			</div>-->
 			<div class="form-group">
-				<label class = 'col-sm-2 control-label'>Teléfono Trabajo:</label>
+				<label class = 'col-sm-2 control-label'>Teléfono:</label>
 				<div class="col-sm-4">
 					<input type="text" required maxlength="9" onkeypress="return numeros(event);" value="<?php echo $datos['telefono'] ?>"  name="data[telefono]" id="data_telefono" class = 'form-control'>
 				</div>
 				<label class = 'col-sm-2 control-label'>Celular:</label>
 				<div class="col-sm-4">
-					<input type="text" required maxlength="10" onkeypress="return numeros(event);" value="<?php echo '09'.$datos['celular'] ?>"  name="data[celular]" id="data_celular" class = 'form-control'>
+					<input type="text" required maxlength="10" onkeypress="return numeros(event);" value="<?php echo $datos['celular'] ?>"  name="data[celular]" id="data_celular" class = 'form-control'>
 				</div>
+				
+				
+				
 			</div>
 			<div class="form-group">
-				<label class = 'col-sm-2 control-label'>Teléfono Domicilio:</label>
+				<!--<label class = 'col-sm-2 control-label'>Teléfono:</label>
 				<div class="col-sm-4">
-					<input type="text" required value="" maxlength="9" onkeypress="return numeros(event);" name="data[telefonocasa]" id="data_telefonocasa" class = 'form-control'>
-				</div>
+					<input type="text" required value="" maxlength="9" onkeypress="return numeros(event);" name="data[telefonocasa]" value="<?php echo $datos['telefono'] ?>"  id="data_telefonocasa" class = 'form-control'>
+				</div>-->
+				
 			
 				<label class = 'col-sm-2 control-label'>Email:</label>
-				<div class="col-sm-4">
+				<div class="col-sm-10">
 					<input type="text" required value="<?php echo $datos['email'] ?>"  name="data[email]" id="data_email" class = 'form-control'>
 				</div>
 			</div>

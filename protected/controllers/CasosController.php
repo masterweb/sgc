@@ -320,8 +320,8 @@ class CasosController extends Controller {
                     //die('subtema: '.$_POST['Casos']['subtema']);
                     if ($_POST['Casos']['subtema'] == 9) {
                         // CONECCION A LA BASE DE DATOS DE KIA ADMINKIA
-                        DEFINE('DB_USER', 'root');
-                        DEFINE('DB_PASSWORD', '');
+                        DEFINE('DB_USER', 'jrodriguez');
+                        DEFINE('DB_PASSWORD', '@admin.1');
                         DEFINE('DB_HOST', 'localhost');
                         DEFINE('DB_NAME', 'adminkia_b4s3k1');
                         $connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)

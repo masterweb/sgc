@@ -15,9 +15,25 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sketch.js"></script>
 <script type="text/javascript">
     $(function () {
+        $('#Usuarios_usuario').keyup(function(){
+            this.value = this.value.toLowerCase();
+        });
         $('#usuarios-form').validate({
             submitHandler: function (form) {
                 //console.log('enter submit');
+				if($("#Usuarios_cargo_id").val() >0){
+					//return true;
+				}else{
+					alert('Debe seleccionar un cargo.');
+					return false;
+				}
+				if($("#Usuarios_grupo_id").val() >0){
+					//return true;
+				}else{
+					alert('Debe seleccionar un grupo de concesionarios.');
+					return false;
+				}
+
                 var firma = $('#Usuarios_firma').val();
                 if (firma == '') { // debe firma
                     alert('Debe ingresar y seleccionar una firma');
@@ -120,6 +136,7 @@
     .form-control{
         color:#555555 !important;
     }
+    .ui-datepicker th {color: white !important;}
 </style><style>
     #cometchat {
         display: none;
@@ -149,7 +166,7 @@
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'usuarios-form',
-        'enableAjaxValidation' => true,
+        'enableAjaxValidation' => false,
         'clientOptions' => array(
             'validateOnSubmit' => false,
             'validateOnChange' => false,
@@ -165,7 +182,7 @@
         <label class="col-sm-2 control-label" for="Cargo_area_id">Ubicaci&oacute;n</label>
         <div class="col-sm-4">
             <?php
-            echo '<select class="form-control" onchange="traerArea(this.value)">';
+            echo '<select required id="cboAreaP" class="form-control" onchange="traerArea(this.value)">';
             echo '<option value="0">--Seleccione la Ubicaci&oacute;n--</option>';
             echo '<option value="1">AEKIA</option>';
             echo '<option value="2">CONCESIONARIO</option>';
@@ -178,7 +195,6 @@
             <div id="dArea"> <p style="font-size:13px;font-weight:bold;padding-top:5px">-- Seleccione una Ubicaci&oacute;n --</p></div>
             <?php echo $form->error($model, 'area_id'); ?>
         </div>
-
     </div>
     <div class="form-group">
         <?php echo $form->labelEx($model, 'cargo_id', array('class' => 'col-sm-2 control-label')); ?>
@@ -249,7 +265,7 @@
 
     </div>
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'usuario', array('class' => 'col-sm-2 control-label')); ?>
+        <?php echo $form->labelEx($model, 'usuario', array('class' => 'col-sm-2 control-label', 'style' => 'text-transform: lowercase;')); ?>
         <div class="col-sm-4">
             <?php echo $form->textField($model, 'usuario', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
             <div id="errorUser" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">Ya existe ese nombre de usuario. Vuelva a intentarlo.</div>
@@ -338,7 +354,7 @@
     </div>
 
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', array('class' => 'btn btn-danger')); ?>
+        <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', array('class' => 'btn btn-danger','id'=>'btnSubmit')); ?>
         <input type="hidden" name="Usuarios[firma]" id="Usuarios_firma" value=""/>
     </div>
 
@@ -353,6 +369,7 @@
                     bootbox.alert(vl);
                 }
                 $(function () {
+					$("#btnSubmit").hide();
                     $("#Usuarios_cedula").mask('9999999999');
                     //$("#Usuario_fechaNacimiento").mask('99/99/1999');
                     $(".datepicker").datepicker({
@@ -381,6 +398,7 @@
                             $("#rcorreo").css({"border": "1px solid red"});
                             eee = 1;
                         }
+						
                         if (eee == 0 && eeec == 0) {
                             return true;
 
@@ -582,6 +600,7 @@
                                 if (result != 0) {
                                     $("#dArea").html(result);
                                     buscarCargo($("#Cargo_area_id").val());
+									$("#btnSubmit").show();
                                 } else {
                                     $("#dArea").html('Seleccione una Ubicacion por favor.');
                                 }

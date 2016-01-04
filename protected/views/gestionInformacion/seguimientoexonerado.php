@@ -5,12 +5,14 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/tooltip/css/tooltipster.css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/tooltip/js/jquery.tooltipster.min.js"></script>
 <?php
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $identificacion = '';
 if (isset($model->identificacion))
     $identificacion = $model->identificacion;
 //echo '-----------identificacion: '.$identificacion;
 $id_responsable = Yii::app()->user->getId();
-$dealer_id = $this->getDealerId($id_responsable);
+if ($cargo_id != 46)
+    $dealer_id = $this->getDealerId($id_responsable);
 //echo 'RESPONSABLE ID: '.$id_responsable;
 ?>
 <script>
@@ -899,12 +901,12 @@ $dealer_id = $this->getDealerId($id_responsable);
                                     ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable(Yii::app()->user->getId()) ?></td>
+                                <td><?php echo $this->getResponsable($c['resp']) ?></td>
                                 <td><?php echo $this->getResponsable($c['resp']).' - '.$this->getNameConcesionario($c['resp']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td> <?php echo $c['fuente']; ?> </td>
                                 <td>
-                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
 
                                     <?php if ($c['paso'] == '1-2') { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'exonerados')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    

@@ -35,6 +35,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
 ?>
 <style>
     .answers .col-md-8{margin-left: 18px;}.text-danger{font-weight: bold;font-size: 14px;}
+    .tl_seccion_rf{margin-left: 0px !important;}
 </style>
 <script type="text/javascript">
     $(function () {
@@ -204,378 +205,452 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                     </div>
                     <div class="row">
                         <h1 class="tl_seccion_rf">Status</h1>
-                    </div>    
-                    <div class="form">
-                        <?php
-                        $form = $this->beginWidget('CActiveForm', array(
-                            'id' => 'gestion-diaria-form',
-                            'enableAjaxValidation' => false,
-                            'htmlOptions' => array('enctype' => 'multipart/form-data'),
-                        ));
-                        ?>
+                    </div>  
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<!--                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                          <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              Prospección
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                          <div class="panel-body">
+                            
+                          </div>
+                        </div>
+                      </div>-->
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                              Primera Visita
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                          <div class="panel-body">
+                            <?php 
+                            $pv = GestionInformacion::model()->findAll(array(
+                                'condition' => "id=:match",
+                                'params' => array(':match' => $_GET['id']))
+                            );
+                            
+                            ?>
+                            <?php
+                            foreach ($pv as $vpv) {
+                                echo '<div class="col-md-6">Primera Visita el: </div>'
+                                . '<div class="col-md-6">'.$vpv['fecha'].'</div>';
+                            }
+                            ?>
+                          </div>
+                        </div>
+                      </div>
+                      <?php $cseg = GestionAgendamiento::model()->count(array('condition' => "id_informacion=:match AND paso IN (4,5,6,7)",'params' => array(':match' => $_GET['id'])));?>
+                      <?php if($cseg > 0){ ?>
+                      <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingThree">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                              Seguimiento
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                          <div class="panel-body">
+                            <?php 
+                            $seg = GestionAgendamiento::model()->findAll(array(
+                                'condition' => "id_informacion=:match AND paso IN (4,5,6,7)",
+                                'params' => array(':match' => $_GET['id']))
+                            );
+                            ?>
+                              <table class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>Paso</th>
+                                          <th>Fecha seguimiento</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                              <?php
+                            foreach ($seg as $vseg) {
+                                echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
+                                . '<td>'.$vseg['agendamiento'].'</td></tr>';
+                            }
+                            ?>
+                            </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php $cr = GestionFactura::model()->count(array('condition' => "id_informacion=:match",'params' => array(':match' => $_GET['id'])));?>
+                      <?php if($cr > 0){ ?>
+                        <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseTwo">
+                              Cierre
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                          <div class="panel-body">
+                            <?php 
+                            $cr = GestionFactura::model()->findAll(array(
+                                'condition' => "id_informacion=:match",
+                                'params' => array(':match' => $_GET['id']))
+                            );
+                            
+                            ?>
+                            <div class="col-md-6"><strong>Fecha de Venta</strong></div>
+                            <div class="col-md-6"><strong>Observación</strong></div>
+                            <br />
+                            <?php
+                            foreach ($cr as $vcr) {
+                                echo '<div class="col-md-6">'.$vcr['fecha'].'</div>'
+                                . '<div class="col-md-6">'.$vcr['observaciones'].'</div>';
+                            }
+                            ?>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                      <?php $cde = GestionAgendamiento::model()->count(array('condition' => "id_informacion=:match AND observaciones = 'Desiste' ",'params' => array(':match' => $_GET['id'])));?>
+                      <?php if($cde > 0){ ?>
+                        <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFour">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseTwo">
+                              Desiste
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                          <div class="panel-body">
+                            <?php 
+                            $de = GestionAgendamiento::model()->findAll(array('condition' => "id_informacion=:match AND observaciones = 'Desiste' ",'params' => array(':match' => $_GET['id'])));
+                            
+                            ?>
+                            <div class="col-md-6"><strong>Fecha</strong></div>
+                            <div class="col-md-6"><strong>Observación</strong></div>
+                            <br />
+                            <?php
+                            foreach ($de as $vde) {
+                                echo '<div class="col-md-6">'.$vde['fecha'].'</div>'
+                                . '<div class="col-md-6">'.$vde['observaciones'].'</div>';
+                            }
+                            ?>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                        <?php $cent = GestionEntrega::model()->count(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));?>
+                      <?php if($cent > 0){ ?>
+                        <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingFive">
+                          <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseTwo">
+                              Entrega
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+                          <div class="panel-body">
+                            <?php 
+                            $ent = GestionEntrega::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));
+                            
+                            ?>
+                            <div class="col-md-6"><strong>Fecha de Entrega</strong></div>
+                            <div class="col-md-6"><strong>Observación</strong></div>
+                            <br />
+                            <?php
+                            foreach ($ent as $vent) {
+                                echo '<div class="col-md-6">'.$vent['fecha'].'</div>'
+                                . '<div class="col-md-6">'.$vent['observaciones'].'</div>';
+                            }
+                            ?>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                    </div>
+                    <?php $ctc = GestionCategorizacion::model()->count(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id']))); ?>
+                    <?php if($ctc > 0): ?>
+                    <div class="row">
+                        <h1 class="tl_seccion_rf">Categorización</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Paso</th>
+                                        <th>Categorización</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <?php $ct = GestionCategorizacion::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id']))); ?>
+                                   <?php foreach ($ct as $vct) { ?>
+                                    <tr>
+                                        <td><?php echo $this->getPasoSeguimiento($vct['paso']); ?></td>
+                                        <td><?php echo $vct['categorizacion']; ?></td>
+                                        <td><?php echo $vct['fecha']; ?></td>
+                                    </tr>                            
+                                   <?php } ?> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <?php endif; ?>
 
-                        <?php //echo $form->errorSummary($model);    ?>
-                        <div class="row">
-                            <input type="hidden" name="GestionDiaria[id_informacion]" id="GestionDiaria_id_informacion" value="<?php echo $id_informacion; ?>">
-                            <input type="hidden" name="GestionDiaria[id_vehiculo]" id="GestionDiaria_id_vehiculo" value="<?php echo $id; ?>">
-                        </div>
-                        <div class="row radio-but">
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input value="1" name="GestionDiaria[status][]" id="GestionDiaria_status_0" type="checkbox" disabled <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 1) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>>
-                                        <label for="GestionDiaria_status_0">Prospección</label>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input value="5" name="GestionDiaria[status][]" id="GestionDiaria_status_5" type="checkbox" disabled <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 5) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>>
-                                        <label for="GestionDiaria_status_5">Entrega</label>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input value="2" name="GestionDiaria[status][]" id="GestionDiaria_status_2" type="checkbox" disabled <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 2) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>>
-                                        <label for="GestionDiaria_status_2">Primera Visita</label>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input value="6" name="GestionDiaria[status][]" id="GestionDiaria_status_6" type="checkbox" disabled>
-                                        <label for="GestionDiaria_status_6">Seguimiento de Entrega</label>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input value="3" name="GestionDiaria[status][]" id="GestionDiaria_status_3" type="checkbox" disabled 
-                                            <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 3) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>>
-                                        <label for="GestionDiaria_status_3">Seguimiento</label>
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input value="7" name="GestionDiaria[status][]" id="GestionDiaria_status_7" type="checkbox" disabled
-                                               <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 6) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>
-                                               >
-                                        <label for="GestionDiaria_status_7">Desiste</label>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="radio">
-                                    <label>
-                                        <input value="4" name="GestionDiaria[status][]" id="GestionDiaria_status_4" type="checkbox" disabled <?php
-                                        if ($this->getStatusGestion($_GET['id_gt'], 4) == 1) {
-                                            echo 'checked';
-                                        }
-                                        ?>>
-                                        <label for="GestionDiaria_status_4">Cierre</label>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row buttons">
-                            <div class="col-md-2">
-                                <input type="hidden" name="GestionDiaria[calendar]" id="GestionDiaria_calendar" value="0">
-                                <input type="hidden" name="GestionDiaria[timenow]" id="GestionDiaria_time_now" value="<?php echo $fechaActual; ?>">
-                                <input type="hidden" name="GestionDiaria[check]" id="GestionDiaria_check" value="1">
-                                <?php //echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Save', array('class' => 'btn btn-danger'));     ?>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="calendar-content" style="display: none;">
-                                    <a href="" class="btn btn-primary" id="event-download">Descargar Evento</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php $this->endWidget(); ?>
-                    </div><!-- form -->
                 </div><!-- END OF HIGHLIGHT-->
             </div>
-            <div class="row answers">
-                <div class="">
-                    <?php if ($this->getAnswer(1, $id) > 0): ?>
-                        <div class="col-md-9">
-                            <h3 class="tl_seccion_rf" id="prospeccion">
-                                <span><img src="/intranet/usuario/images/prospeccion_on.png" alt=""></span> - Paso 1/2 - Prospección/Cita
-                            </h3>
-                        </div>
-                        <!--  ==========================          PASO 1-2   =========================    -->
-                        <?php
-                        $criteria4 = new CDbCriteria(array(
-                            'condition' => "id_informacion={$_GET['id']}"
-                        ));
-                        $art = GestionProspeccionRp::model()->findAll($criteria4);
-                        foreach ($art as $c):
-                            if ($c['preg1'] == 1) {
-                                ?>
-                                <div class="col-md-8"><h3>No estoy interesado</h3></div>
-                                <?php
-                            }
-                            if ($c['preg1'] == 2) {
-                                ?>
-                                <div class="col-md-8"><h3>Falta de dinero</h3></div>
-                                <?php
-                            }
-                            if ($c['preg1'] == 3) { // COMPRO OTRO VEHICULO
-                                $params = explode('@', $c['preg3_sec3']);
-                                //print_r($params);
-                                $modelo_auto = $params[1] . ' ' . $params[2];
-                                ?>
-                                <div class="col-md-8"><h3>Compró otro vehículo</h3></div>
-                                <div class="col-md-4">
-                                    <p><strong>Marca:</strong> <?php echo $c['preg3_sec2']; ?> </p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong>Modelo:</strong> <?php echo $modelo_auto; ?></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong>Año:</strong> <?php echo $c['preg3_sec4']; ?></p>
-                                </div>
-                                <?php
-                            }
-                            if ($c['preg1'] == 4) { // SI ESTOY INTERESADO 
-                                ?>
-                                <div class="col-md-8"><h3>Si estoy interesado</h3></div>
-                                <div class="col-md-8">
-                                    <p><strong>Fecha de agendamiento:</strong> <?php echo $c['preg4_sec1']; ?></p>
-                                </div>
-                                <div class="col-md-8">
-                                    <?php if ($c['preg4_sec2'] == 0) { // SI LA CITA ES EN EL CONCESIONARIO  ?>
-                                        <p><strong>Lugar de encuentro: </strong><?php echo $this->getConcesionario($c['preg4_sec4']); ?></p>
-                                    </div>
-                                <?php } else { // ELSE ES LUGAR DE TRABAJO O DIRECCION ?>
-                                    <p><strong>Lugar de encuentro: </strong><?php echo $c['preg4_sec5']; ?></p>
-                                </div>
-                                <?php
-                            }
+            <?php if ($this->getAnswer(1, $id) > 0){?>
+                    <div class="col-md-9">
+                        <h3 class="tl_seccion_rf" id="prospeccion">
+                            <span><img src="/intranet/usuario/images/prospeccion_on.png" alt=""></span> - Paso 1/2 - Prospección/Cita
+                        </h3>
+                    </div>
+                    <!--  ==========================          PASO 1-2   =========================    -->
+                    <?php
+                    $criteria4 = new CDbCriteria(array(
+                        'condition' => "id_informacion={$_GET['id']}"
+                    ));
+                    $art = GestionProspeccionRp::model()->findAll($criteria4);
+                    foreach ($art as $c){
+                        if ($c['preg1'] == 1) {
+                            ?>
+                            <div class="col-md-8"><h3>No estoy interesado</h3></div>
+                            <?php
+                        }
+                        if ($c['preg1'] == 2) {
+                            ?>
+                            <div class="col-md-8"><h3>Falta de dinero</h3></div>
+                            <?php
+                        }
+                        if ($c['preg1'] == 3) { // COMPRO OTRO VEHICULO
+                            $params = explode('@', $c['preg3_sec3']);
+                            //print_r($params);
+                            $modelo_auto = $params[1] . ' ' . $params[2];
+                            ?>
+                            <div class="col-md-8"><h3>Compró otro vehículo</h3></div>
+                            <div class="col-md-4">
+                                <p><strong>Marca:</strong> <?php echo $c['preg3_sec2']; ?> </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Modelo:</strong> <?php echo $modelo_auto; ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Año:</strong> <?php echo $c['preg3_sec4']; ?></p>
+                            </div>
+                        <?php } if ($c['preg1'] == 4) { // SI ESTOY INTERESADO ?>
+                            <div class="col-md-8"><h3>Si estoy interesado</h3></div>
+                            <div class="col-md-8">
+                                <p><strong>Fecha de agendamiento:</strong> <?php echo $c['preg4_sec1']; ?></p>
+                            </div>
+                            <div class="col-md-8">
+                                <?php if ($c['preg4_sec2'] == 0) { // SI LA CITA ES EN EL CONCESIONARIO  ?>
+                                <p><strong>Lugar de encuentro: </strong><?php echo $this->getConcesionario($c['preg4_sec4']); ?></p>
+                            </div>
+                            <?php } else { // ELSE ES LUGAR DE TRABAJO O DIRECCION ?>
+                                <p><strong>Lugar de encuentro: </strong><?php echo $c['preg4_sec5']; ?></p>
+                            <?php }
                         }
                         if ($c['preg1'] == 5) { // NO CONTESTA 
-                            ?>
-                            <div class="col-md-8"><h3>No contesta</h3></div>
-                            <div class="col-md-8">
-                                <p><strong>Re agendar llamada :</strong> <?php echo $c['preg5_sec1']; ?></p>
-                            </div>
-                            <?php
+                        ?>
+                        <div class="col-md-8"><h3>No contesta</h3></div>
+                        <div class="col-md-8">
+                            <p><strong>Re agendar llamada :</strong> <?php echo $c['preg5_sec1']; ?></p>
+                        </div>
+                        <?php
                         }
                         if ($c['preg1'] == 6) { // TELEFONO EQUIVOCADO 
                             ?>
                             <div class="col-md-8"><h3>Teléfono equivocado</h3></div>
                             <?php
                         }
-                    endforeach;
-                    ?>
-                <?php endif; ?>
-                <?php if ($this->getAnswer(2, $id) > 0): ?>
-                    <div class="col-md-9">
-                        <h3 class="tl_seccion_rf" id="consulta"><span><img src="/intranet/ventas/images/consulta_on.png" alt=""></span> - Paso 4 - Consulta</h3>
-                    </div>
-                    <!--  =========================          PASO 3-4   =========================    -->
-                    <?php
-                    $criteria4 = new CDbCriteria(array(
-                        'condition' => "id_informacion={$_GET['id']}"
-                    ));
-                    $art = GestionConsulta::model()->findAll($criteria4);
-                    foreach ($art as $c):
-                        if ($c['preg1_sec5'] == 0): // SI TIENE VEHICULO
-                            $params = explode('@', $c['preg1_sec2']);
-                            //print_r($params);
-                            $modelo_auto = $params[1] . ' ' . $params[2];
-                            ?>
-                            <div class="col-md-8">
-                                <h4 class="text-danger">1. ¿Qué clase de vehículo conduce en la actualidad?</h4>
-                                <div class="col-md-4">
-                                    <p><strong>Marca:</strong> <?php echo $c['preg1_sec1']; ?></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong>Modelo:</strong> <?php echo $modelo_auto; ?></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong>Año:</strong> <?php echo $c['preg1_sec3']; ?></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong>Kilometraje:</strong> <?php echo $c['preg1_sec4']; ?></p>
-                                </div>
+                    }// end foreach
+                ?>
+                <?php } // end if ?>
+            <?php if ($this->getAnswer(2, $id) > 0){ ?>
+                <div class="col-md-9">
+                    <h3 class="tl_seccion_rf" id="consulta"><span><img src="/intranet/ventas/images/consulta_on.png" alt=""></span> - Paso 4 - Consulta</h3>
+                </div>
+                <!--  =========================          PASO 3-4   =========================    -->
+                <?php
+                $criteria4 = new CDbCriteria(array(
+                    'condition' => "id_informacion={$_GET['id']}"
+                ));
+                $art = GestionConsulta::model()->findAll($criteria4);
+                foreach ($art as $c){
+                    if ($c['preg1_sec5'] == 0 && !empty($c['preg1_sec5'])){ // SI TIENE VEHICULO
+                        $params = explode('@', $c['preg1_sec2']);
+                        //print_r($params);
+                        $modelo_auto = $params[1] . ' ' . $params[2];
+                        ?>
+                        <div class="col-md-8">
+                            <h4 class="text-danger">1. ¿Qué clase de vehículo conduce en la actualidad?</h4>
+                            <div class="col-md-4">
+                                <p><strong>Marca:</strong> <?php echo $c['preg1_sec1']; ?></p>
                             </div>
-                            <div class="col-md-8">
-                                <h4 class="text-danger">2. ¿Qué tiene pensado hacer con su vehículo actual?</h4>
-                                <?php if ($c['preg2'] == 0) { ?>
-                                    <div class="col-md-4"><p>Vender</p></div>
-                                    <?php
-                                }
-                                if ($c['preg2'] == 1) {
-                                    ?>
-                                    <div class="col-md-12"><p>Utilizar como parte de pago</p></div>
-                                    <?php
-                                    if ($c['preg2_sec1'] != '') {
-                                        $stringAutos = $c['preg2_sec1'];
-                                        $stringAutos = trim($stringAutos);
-                                        $stringAutos = substr($stringAutos, 0, strlen($stringAutos) - 1);
-                                        $paramAutos = explode('@', $stringAutos);
-                                        ?>        
-                                        <div class="row">
-                                            <?php foreach ($paramAutos as $value) { ?>
-                                                <div class="col-md-3">
-                                                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $value; ?>" alt="" width="125" class="img-thumbnail">
-                                                </div>
-                                            <?php } ?>
-                                        </div>
-                                    <?php } else { ?>
-                                        <div class="col-md-5"><a href="<?php $c['link']; ?>" target="_blank">Link de fotos auto usado</a></div>
-                                        <?php
-                                    }
-                                }
-                                if ($c['preg2'] == 2) {
-                                    ?>
-                                    <div class="col-md-4"><p>Mantenerlo</p></div>
-                                    <?php
-                                }
-                            endif; // END SI TIENE VEHICULO 
-                            ?>
+                            <div class="col-md-4">
+                                <p><strong>Modelo:</strong> <?php echo $modelo_auto; ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Año:</strong> <?php echo $c['preg1_sec3']; ?></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Kilometraje:</strong> <?php echo $c['preg1_sec4']; ?></p>
+                            </div>
                         </div>
                         <div class="col-md-8">
-                            <h4 class="text-danger">3. ¿Para qué utilizará el nuevo vehículo?</h4>
-                            <?php if ($c['preg3'] == 0) { ?>
-                                <div class="col-md-4"><p>Primer vehículo del hogar</p></div>
-                                <?php if ($c['preg3_sec1'] == 0) { ?>
-                                    <div class="col-md-4"><p>Familiar</p></div>
-                                <?php } else { ?>
-                                    <div class="col-md-4"><p>Trabajo</p></div>
-                                    <?php
-                                }
-                            }
-                            if ($c['preg3'] == 1) {
-                                ?>
-                                <div class="col-md-4"><p>Segundo vehículo del hogar</p></div>
-                                <?php if ($c['preg3_sec2'] == 0) { ?>
-                                    <div class="col-md-4"><p>Familiar</p></div>
-                                <?php } else { ?>
-                                    <div class="col-md-4"><p>Trabajo</p></div>
-                                    <?php
-                                }
-                            }
-                            if ($c['preg3'] == 2) {
-                                ?>
-                                <div class="col-md-4"><p>Renovación de vehículo</p></div>
-                            <?php } ?>
-                        </div>
-                        <div class="col-md-8"><h4 class="text-danger">4. ¿Quién más participa en la decisión de compra?</h4>
-                            <?php if ($c['preg4'] == 0) { ?>
-                                <div class="col-md-4"><p>Esposa/o</p></div>
+                            <h4 class="text-danger">2. ¿Qué tiene pensado hacer con su vehículo actual?</h4>
+                            <?php if ($c['preg2'] == 0) { ?>
+                                <div class="col-md-4"><p>Vender</p></div>
                                 <?php
                             }
-                            if ($c['preg4'] == 1) {
+                            if ($c['preg2'] == 1) {
                                 ?>
+                                <div class="col-md-12"><p>Utilizar como parte de pago</p></div>
+                                <?php
+                                if ($c['preg2_sec1'] != '') {
+                                    $stringAutos = $c['preg2_sec1'];
+                                    $stringAutos = trim($stringAutos);
+                                    $stringAutos = substr($stringAutos, 0, strlen($stringAutos) - 1);
+                                    $paramAutos = explode('@', $stringAutos);
+                                    ?>        
+                                    <div class="row">
+                                        <?php foreach ($paramAutos as $value) { ?>
+                                            <div class="col-md-3">
+                                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $value; ?>" alt="" width="125" class="img-thumbnail">
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="col-md-5"><a href="<?php $c['link']; ?>" target="_blank">Link de fotos auto usado</a></div>
+                                    <?php
+                                }
+                            }
+                            if ($c['preg2'] == 2) {
+                                ?>
+                                <div class="col-md-4"><p>Mantenerlo</p></div>
+                                <?php
+                            }
+                    } // END SI TIENE VEHICULO 
+                        ?>
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="text-danger">3. ¿Para qué utilizará el nuevo vehículo?</h4>
+                        <?php if ($c['preg3'] == 0) { ?>
+                            <div class="col-md-4"><p>Primer vehículo del hogar</p></div>
+                            <?php if ($c['preg3_sec1'] == 0) { ?>
                                 <div class="col-md-4"><p>Familiar</p></div>
+                            <?php } else { ?>
+                                <div class="col-md-4"><p>Trabajo</p></div>
                                 <?php
                             }
-                            if ($c['preg4'] == 2) {
-                                ?>
-                                <div class="col-md-4"><p>Departamento de compras</p></div>
-                            <?php } ?>
-                        </div>
-                        <div class="col-md-8"><h4 class="text-danger">5. ¿Qué clase de presupuesto tiene previsto para su nuevo vehículo?</h4>
-                            <div class="col-md-4"><p>$ <?php echo number_format($c['preg5'], 2); ?></p></div>
-                        </div>
-                        <div class="col-md-8"><h4 class="text-danger">6. ¿Cuál sería su forma de pago para su nuevo vehículo?</h4>
-                            <?php if ($c['preg6'] == 0) { ?>
-                                <div class="col-md-4"><p>Contado</p></div>
-                                <?php
-                            }
-                            if ($c['preg6'] == 1) {
-                                ?>
-                                <div class="col-md-4"><p>Financiado</p></div>
-                            <?php } ?>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">7. ¿En qué tiempo estima realizar su compra?</h4>
-                            <div class="col-md-4"><p><?php echo $c['preg7']; ?></p></div>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">8. ¿Cuál es su necesidad básica?</h4>
-                            <div class="col-md-4"><p><?php echo $this->getArg($c['preg8']); ?></p></div>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Vehículos Recomendados</h4>
-                            <?php
-                            $crit = new CDbCriteria(array(
-                                'condition' => "id_informacion={$id}"
-                            ));
-                            $vh = GestionVehiculo::model()->findAll($crit);
-                            foreach ($vh as $val) {
-                                ?>
-                                <div class="row">
-                                    <div class="col-md-4"><strong>Modelo: </strong><?php echo $this->getModel($val['modelo']); ?></div>
-                                    <div class="col-md-4"><strong>Versión: </strong><?php echo $this->getVersion($val['version']); ?></div>
-                                    <div class="col-md-4"><strong>Precio: </strong>$ <?php echo number_format($val['precio'], 2); ?></div>
-                                </div>
-                            <?php } ?>
-                        </div>
-                        <?php
-                        $crit = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 4"));
-                        $agen = GestionAgendamiento::model()->count($crit);
-                        $ag = GestionAgendamiento::model()->findAll($crit);
-                        if ($agen > 0) {
+                        }
+                        if ($c['preg3'] == 1) {
                             ?>
-                            <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                            <div class="col-md-4"><p>Segundo vehículo del hogar</p></div>
+                            <?php if ($c['preg3_sec2'] == 0) { ?>
+                                <div class="col-md-4"><p>Familiar</p></div>
+                            <?php } else { ?>
+                                <div class="col-md-4"><p>Trabajo</p></div>
                                 <?php
                             }
-                            foreach ($ag as $a) {
-                                ?>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                    <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    <?php endforeach;
-                    ?> 
-                <?php endif; ?>
-                <?php if ($this->getAnswer(3, $id) > 0): ?> 
+                        }
+                        if ($c['preg3'] == 2) {
+                            ?>
+                            <div class="col-md-4"><p>Renovación de vehículo</p></div>
+                        <?php } ?>
+                    </div>
+                    <div class="col-md-8"><h4 class="text-danger">4. ¿Quién más participa en la decisión de compra?</h4>
+                        <?php if ($c['preg4'] == 0) { ?>
+                            <div class="col-md-4"><p>Esposa/o</p></div>
+                            <?php
+                        }
+                        if ($c['preg4'] == 1) {
+                            ?>
+                            <div class="col-md-4"><p>Familiar</p></div>
+                            <?php
+                        }
+                        if ($c['preg4'] == 2) {
+                            ?>
+                            <div class="col-md-4"><p>Departamento de compras</p></div>
+                        <?php } ?>
+                    </div>
+                    <div class="col-md-8"><h4 class="text-danger">5. ¿Qué clase de presupuesto tiene previsto para su nuevo vehículo?</h4>
+                        <div class="col-md-4"><p>$ <?php echo number_format($c['preg5'], 2); ?></p></div>
+                    </div>
+                    <div class="col-md-8"><h4 class="text-danger">6. ¿Cuál sería su forma de pago para su nuevo vehículo?</h4>
+                        <?php if ($c['preg6'] == 0) { ?>
+                            <div class="col-md-4"><p>Contado</p></div>
+                            <?php
+                        }
+                        if ($c['preg6'] == 1) {
+                            ?>
+                            <div class="col-md-4"><p>Financiado</p></div>
+                        <?php } ?>
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="text-danger">7. ¿En qué tiempo estima realizar su compra?</h4>
+                        <div class="col-md-4"><p><?php echo $c['preg7']; ?></p></div>
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="text-danger">8. ¿Cuál es su necesidad básica?</h4>
+                        <div class="col-md-4"><p><?php echo $this->getArg($c['preg8']); ?></p></div>
+                    </div>
+                    <div class="col-md-8">
+                        <h4 class="text-danger">Vehículos Recomendados</h4>
+                        <?php
+                        $crit = new CDbCriteria(array(
+                            'condition' => "id_informacion={$id}"
+                        ));
+                        $vh = GestionVehiculo::model()->findAll($crit);
+                        foreach ($vh as $val) {
+                            ?>
+                            <div class="row">
+                                <div class="col-md-4"><strong>Modelo: </strong><?php echo $this->getModel($val['modelo']); ?></div>
+                                <div class="col-md-4"><strong>Versión: </strong><?php echo $this->getVersion($val['version']); ?></div>
+                                <div class="col-md-4"><strong>Precio: </strong>$ <?php echo number_format($val['precio'], 2); ?></div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <?php
+                    $crit = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 4"));
+                    $agen = GestionAgendamiento::model()->count($crit);
+                    $ag = GestionAgendamiento::model()->findAll($crit);
+                    if ($agen > 0) {
+                        ?>
+                    <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                        <?php } foreach ($ag as $a) { ?>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
+                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } //endforeach ?> 
+            <?php } //End - Paso 4 - Consulta ?>
+                
+                <?php if ($this->getAnswer(3, $id) > 0){ ?> 
                     <div class="col-md-9" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
+                    <div class="col-md-8">
+                        <?php //$modelos = $this->getModelosPr($id); ?>
+                        <div class="col-md-2"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php //echo $this->getPdf($c['modelo']); ?>" class="btn btn-xs btn-success" target="_blank">Catálogo</a></div>
+                    </div>
                     <?php
                     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}"
                     ));
                     $art2 = GestionPresentacion::model()->findAll($criteria8);
-                    foreach ($art2 as $c):
+                    foreach ($art2 as $c){
                         ?>
-<!--                        <div class="col-md-8">
-                            <h4 class="text-danger">1. ¿Le queda alguna duda con respecto a las características y beneficios del vehículo?</h4>
-                            <div class="col-md-4"><p><?php echo $c['preg1_duda']; ?></p></div>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">2. ¿Satisface el vehículo sus necesidades y deseos?</h4>
-                            <div class="col-md-4"><p><?php echo $c['preg2_necesidades']; ?></p></div>
-                        </div> 
-                        <div class="col-md-8">
-                            <h4 class="text-danger">3. ¿Está satisfecho con el vehículo recomendado?</h4>
-                            <div class="col-md-4"><p><?php echo $c['preg3_satisfecho']; ?></p></div>
-                        </div>-->
+
                         <?php
                         $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 5"));
                         $agen5 = GestionAgendamiento::model()->count($crit5);
@@ -585,27 +660,27 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                             ?>
                             <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
                                 <?php
-                            }
+                            
                             foreach ($ag5 as $a) {
                                 ?>
                                 <div class="row">
                                     <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                     <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
                                 </div>
-                            <?php } ?>
-                        </div>
+                                </div>
+                    <?php }} ?>
+                        
                         <?php
-                    endforeach;
-                endif;
+                    } // endforeach
+                } //End - Paso 5 - Presentación
                 ?>
-                <?php
-                if ($this->getAnswer(4, $id) > 0):
-                    echo '<div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>';
-                    $criteria8 = new CDbCriteria(array(
+            <?php if ($this->getAnswer(4, $id) > 0){ ?>
+                    <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
+                <?php     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}"
                     ));
                     $art3 = GestionDemostracion::model()->findAll($criteria8);
-                    foreach ($art3 as $c):
+                    foreach ($art3 as $c){
                         ?> 
                         <div class="col-md-8">
                             <h4 class="text-danger">1. ¿Desea realizar una prueba de manejo?</h4>
@@ -620,6 +695,8 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                 <div class="col-md-4"><p><?php echo $this->getNoTest($c['preg1_observaciones']); ?></p></div>
                             <?php } ?>
                         </div>
+                        
+                        <?php } // endforeach?>
                         <?php
                         $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 6"));
                         $agen5 = GestionAgendamiento::model()->count($crit5);
@@ -628,20 +705,17 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                         if ($agen5 > 0) {
                             ?>
                             <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
-                                <?php
-                            }
-                            foreach ($ag5 as $a) {
-                                ?>
+                            <?php foreach ($ag5 as $a) { ?>
                                 <div class="row">
                                     <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                     <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
                                 </div>
-                            <?php } ?>
-                        </div>
-                        <?php
-                    endforeach;
-                endif;
-                ?>     
+                            </div>    
+                        <?php }// end foreach
+                        
+                            } // endif ?>
+                        
+                <?php } // End - Paso 6 - Demostración ?>
                 <?php if ($this->getAnswer(5, $id) > 0) { ?>
                     <div class="col-md-9" id="negociacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/negociacion_on.png" alt=""></span> - Paso 7 - Negociación</h3></div>
                     <?php
@@ -712,37 +786,28 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                         ?>
                         <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
                             <?php
-                        }
+                        
                         foreach ($ag5 as $a) {
                             ?>
                             <div class="row">
                                 <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                 <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
                             </div>
-                        <?php } ?>
+                <?php } }?>
                     </div>
                 <?php } // end if paso 7 negogociacion  ?>
-                <?php if ($this->getAnswer(6, $id) > 0): ?>
+                <?php if ($this->getAnswer(6, $id) > 0){ ?>
                     <div class="col-md-9" id="cierre"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/cierre_on.png" alt=""></span> - Paso 8 - Cierre</h3></div>
-                    <?php
-                    $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 8"));
-                    $agen5 = GestionAgendamiento::model()->count($crit5);
-
-                    $ag5 = GestionAgendamiento::model()->findAll($crit5);
-                    if ($agen5 > 0) {
-                        ?>
-                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
-                            <?php
-                        }
-                        foreach ($ag5 as $a) {
-                            ?>
-                            <div class="row">
-                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                            </div>
-                        <?php } ?>
-                    </div>
-                <?php endif; ?>
+                    <?php $cr = GestionFactura::model()->findAll(array('condition' => "id_informacion=:match",'params' => array(':match' => $id))); ?>
+                    <?php foreach ($cr as $vc) { ?>
+                         <div class="col-md-8">
+                            <h4 class="text-danger">Cierre</h4>
+                            <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
+                            <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
+                        </div> 
+                    <?php } ?>
+                    
+                <?php } // End - Paso 8 - Cierre  ?>
                 <?php if ($this->getAnswer(7, $id) > 0): ?>
                     <div class="col-md-9" id="entrega"><h3 class="tl_seccion_rf" id="entrega"><span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 9 - Entrega</h3></div>
                     <?php
@@ -789,25 +854,31 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                         <?php
                     endforeach;
                 endif;
-                ?>
-                <div class="row">
+                ?> 
+                    <div class="row">
                     <div class="col-md-9">
                         <hr style="border-top: 1px solid #AE5858;" />
                     </div>
                 </div>
                 <div class="row" style="padding-left: 15px;">
+                    <?php 
+                    $tipo = $this->getExonerado($id);
+                    ?>
                     <div class="col-md-2">
+                        <?php if($tipo > 0){ ?>
+                        <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>" type="button" class="btn btn-danger">RGD</a>
+                        <?php }else{ ?>
                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" type="button" class="btn btn-danger">RGD</a>
+                        <?php } ?>
                     </div>
                     <?php
                     switch ($_GET['paso']) {
                         case '1-2':
-
                             $status = $this->getStatusGD($_GET['id_gt']);
                             if ($status == 1) {
                                 $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'gestion'));
                                 echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
-                            } else if ($status == 3) {
+                            } else if ($status == 3 || $status == 4) {
                                 $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'prospeccion'));
                                 echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
                             }
@@ -842,7 +913,6 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                     ?>
 
                 </div>
-            </div><!--  END OF ANSWERS -->
         </div>
 
     </div><!-- END OF TAB CONTENT --> 

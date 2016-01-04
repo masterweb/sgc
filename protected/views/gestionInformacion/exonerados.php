@@ -355,6 +355,7 @@ if ($ced != '') {
     function sendInfo() {
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();
+        var tipo_fuente = $('#tipo_fuente').val();
         //console.log('tipo: '+tipo);
         if (tipo == 'gestion' || tipo == 'trafico') {
             //console.log('enter gestion');
@@ -413,7 +414,13 @@ if ($ced != '') {
                      //$("#telefono").val("");
                      return false
                      }*/
-                    form.submit();
+                    if(tipo_fuente ==  'exonerado'){
+                        
+                       form.submit(); 
+                    }else{
+                       form.submit(); 
+                    }
+                    
                 }
             });
         } else if (tipo == 'prospeccion') {
@@ -979,7 +986,8 @@ if ($ced != '') {
                             <input name="GestionInformacion[paso]" id="GestionInformacion_paso" type="hidden" value="1-2">
                             <input name="GestionInformacion[tipo_form_web]" id="GestionInformacion_tipo_form_web" type="hidden" value="exonerados">
                             <input type="hidden" name="GestionProspeccionPr[pregunta]" id="GestionProspeccionPr_pregunta" value="15"/>
-                            <input type="hidden" name="tipo_fuente" id="tipo_fuente" value="<?php //echo $_GET['tipo_fuente'];       ?>">
+                            <input type="hidden" name="tipo_fuente" id="tipo_fuente" value="<?php echo $_GET['tipo_fuente'];?>">
+                            <input name="GestionInformacion[tipo_ex]" id="GestionInformacion_tipo_exb" type="hidden" value="Exonerado Taxi">
                             <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php echo isset($_GET['tipo']) ? $_GET['tipo'] : '' ?>">
                             <input name="GestionInformacion[iden]" id="GestionInformacion_iden" type="hidden" value="<?php echo isset($_GET['iden']) ? $_GET['iden'] : '' ?>">
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
@@ -990,6 +998,22 @@ if ($ced != '') {
 
                 <?php $this->endWidget(); ?>
             </div><!-- form -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">SGC</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Tu proceso se ha ido a exonerados</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
         <div role="tabpanel" class="tab-pane" id="profile"></div>
         <div role="tabpanel" class="tab-pane" id="settings"></div>

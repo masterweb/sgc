@@ -9,7 +9,7 @@
 //die('id vehiculo = '.$_GET['id_vehiculo']);
 $id_informacion = $this->getinformacion($id_vehiculo);
 $id_modelo = $this->getIdModelo($id_vehiculo);
-//echo $id_modelo;die();
+//echo 'id modelo: '.$id_modelo;die();
 ?>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -120,9 +120,10 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
                     'order' => 'orden ASC'
                 ));
                 $pres = GestionFichaPresentacion::model()->findAll($criteria);
-                /* echo '<pre>';
-                  print_r($pres);
-                  echo '</pre>'; */
+//                 echo '<pre>';
+//                  print_r($pres);
+//                  echo '</pre>'; 
+//                  die();
                 ?>
                 <br />
                 <table class="table table-bordered table-striped">

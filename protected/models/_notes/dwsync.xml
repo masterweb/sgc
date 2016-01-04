@@ -21,7 +21,7 @@
 <file name="Copcionpregunta.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322950000000" remote="130912322950000000" Dst="0" />
 <file name="Fuente.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322960000000" remote="130912322960000000" Dst="0" />
 <file name="GestionAmortizacion.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322970000000" remote="130912322970000000" Dst="0" />
-<file name="GestionHistorial.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322990000000" remote="130912322990000000" Dst="0" />
+<file name="GestionHistorial.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130947579800000000" remote="130947579800000000" Dst="0" />
 <file name="Ccampana.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322930000000" remote="130912322930000000" Dst="0" />
 <file name="CodigoCausal.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322940000000" remote="130912322940000000" Dst="0" />
 <file name="GestionPro.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912323000000000" remote="130912323000000000" Dst="0" />
@@ -64,7 +64,7 @@
 <file name="Cencuestados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322930000000" remote="130912322930000000" Dst="0" />
 <file name="Accesosistema.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322910000000" remote="130912322910000000" Dst="0" />
 <file name="Cargofuente.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322930000000" remote="130912322930000000" Dst="0" />
-<file name="GestionConsulta.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322970000000" remote="130912322970000000" Dst="0" />
+<file name="GestionConsulta.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130947482410000000" remote="130947482410000000" Dst="0" />
 <file name="GestionProspeccionPr.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912323010000000" remote="130912323010000000" Dst="0" />
 <file name="Cobservacionesencuesta.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322940000000" remote="130912322940000000" Dst="0" />
 <file name="ContactForm.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912322950000000" remote="130912322950000000" Dst="0" />
@@ -84,14 +84,16 @@
 <file name="util.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130916697520000000" remote="130916697520000000" Dst="0" />
 <file name="GestionCodigocc.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130916716280000000" remote="130916716280000000" Dst="0" />
 <file name="GestionEntrega.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130917563270000000" remote="130917563270000000" Dst="0" />
-<file name="Grupoconcesionariousuario.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130927905940000000" remote="130927905940000000" Dst="0" />
+<file name="Grupoconcesionariousuario.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130949345470000000" remote="130949345470000000" Dst="0" />
 <file name="Seguimientoatencioncliente.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130928116720000000" remote="130928116720000000" Dst="0" />
-<file name="Cotizacionesnodeseadas.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130933923270000000" remote="130933923270000000" Dst="0" />
+<file name="Cotizacionesnodeseadas.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948468470000000" remote="130948468470000000" Dst="0" />
 <file name="Nocompradores.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934155880000000" remote="130934155880000000" Dst="0" />
 <file name="GestionTestDrive.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130931035670000000" remote="130931035670000000" Dst="0" />
 <file name="Usuarios.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130952961720000000" remote="130952961720000000" Dst="0" />
 <file name="GestionSolicitudCredito.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936314460000000" remote="130936314460000000" Dst="0" />
-<file name="GestionFinanciamiento.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130933879800000000" remote="130933879800000000" Dst="0" />
+<file name="GestionFinanciamiento.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130958783040000000" remote="130958783040000000" Dst="0" />
 <file name="GrGrupo.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934601510000000" remote="130934601510000000" Dst="0" />
-<file name="GestionInformacion.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936339870000000" remote="130936339870000000" Dst="0" />
+<file name="GestionInformacion.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130958077340000000" remote="130958077340000000" Dst="0" />
+<file name="GestionCategorizacion.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948567290000000" remote="130948567290000000" Dst="0" />
+<file name="GestionFactura.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130947756830000000" remote="130947756830000000" Dst="0" />
 </dwsync>

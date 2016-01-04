@@ -432,11 +432,12 @@ $id_version = $this->getIdVersion($id_vehiculo);
         //acc1.length = 0;
         //acc2.length = 0;
         //acc3.length = 0;
-        //console.log('enter op');
+        console.log('enter op');
         var counter = $('#options-cont').val();
         var accesorioscont = $('#accesorioscont').val();
         var precionormal = $('#precio_normal').val();
         var flag = $('#GestionFinanciamiento_flag').val();
+        var tipoFinanc = $('#GestionFinanciamiento_tipo_financiamiento').val();
         var stracc1 = '';
         var stracc2 = '';
         var stracc3 = '';
@@ -449,12 +450,17 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 if(flag == 0){ // Se llena por primera vez
                     for (var i = 1; i <= accesorioscont; i++) {
                         if ($('#accesorio-' + i).prop('checked')) {
-                            //console.log('Accesorio '+i+', checked');
+                            console.log('Accesorio checked '+i+', checked');
                             acc1.push(i);
                             sat = $('#accesorio-' + i).val();
                             param = sat.split('-');
                             stracc1 += sat + '@';
                             if (param[1] != 'Kit Satelital') {
+                                //console.log('enter kit1');
+                                $('#accesorio-' + i).attr('checked', false);
+                                $('#accspan-' + i).removeClass('label-price');
+                            }
+                            if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
                             }
@@ -466,7 +472,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $('#GestionFinanciamiento_entrada').attr('disabled', true);
                 $('#GestionFinanciamiento_tiempo_seguro').attr('disabled', true);
                 $('#GestionFinanciamiento_plazo').attr('disabled', true);
-                console.log('array accesorios 1: '+acc1);
+                console.log('array accesorios op 1: '+acc1);
                 break;
             case '3':
                 acc2.length = 0;
@@ -484,6 +490,10 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
                             }
+                            if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
+                                $('#accesorio-' + i).attr('checked', false);
+                                $('#accspan-' + i).removeClass('label-price');
+                            }
                         }
                     }
                 }
@@ -492,7 +502,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $('#GestionFinanciamiento_entrada2').attr('disabled', true);
                 $('#GestionFinanciamiento_tiempo_seguro2').attr('disabled', true);
                 $('#GestionFinanciamiento_plazo2').attr('disabled', true);
-                console.log('array accesorios 2: '+acc2);
+                console.log('array accesorios op 2: '+acc2);
                 break;
             case '4':
                 acc3.length = 0;
@@ -508,11 +518,14 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
                             }
-
+                            if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
+                                $('#accesorio-' + i).attr('checked', false);
+                                $('#accspan-' + i).removeClass('label-price');
+                            }
                         }
                     }
                     $('#GestionFinanciamiento_acc3').val(stracc3);
-                    console.log('array accesorios 3: '+acc3);
+                    console.log('array accesorios op 3: '+acc3);
                 }
                 break;
         }
@@ -550,6 +563,10 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         $('#accesorio-' + j).attr('checked', false);
                         $('#accspan-' + j).removeClass('label-price');
                     }
+                    if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
+                        $('#accesorio-' + j).attr('checked', false);
+                        $('#accspan-' + j).removeClass('label-price');
+                    }
                 }
                 console.log('array accesorios cancelar 1: '+acc1.toString());
                 var lt = acc1.length;
@@ -575,6 +592,10 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     sat = $('#accesorio-' + j).val();
                     param = sat.split('-');
                     if (param[1] != 'Kit Satelital') {
+                        $('#accesorio-' + j).attr('checked', false);
+                        $('#accspan-' + j).removeClass('label-price');
+                    }
+                    if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
                         $('#accesorio-' + j).attr('checked', false);
                         $('#accspan-' + j).removeClass('label-price');
                     }
@@ -725,7 +746,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
             success: function (data) {
                 alert('Email enviado satisfactoriamente');
                 $('#bg_negro').hide();
-                $('#btnsendprof').hide();$('#btnagendamiento').hide();
+                $('#btnsendprof').hide();//$('#btnagendamiento').hide();
             }
         });
     }
@@ -979,7 +1000,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
     var valorVehiculo = $('#GestionFinanciamiento_precio_contado').val();
     //var plazo = $('#GestionFinanciamiento_plazo3').val();
     var seguro = $('#GestionFinanciamiento_tiempo_seguro_contado').val();
-    console.log('valor vehiculo contado: ' + valorVehiculo);
+    //console.log('valor vehiculo contado: ' + valorVehiculo);
 
     valorVehiculo = valorVehiculo.replace(',', '');
     valorVehiculo = valorVehiculo.replace('.', ',');
@@ -1912,13 +1933,9 @@ function deleter(id){
                                 </div>
                             </div>
                             <br />
-                            <?php if ($tipo == 1): // credito            ?>
-<!-- ==================================INICIO COTIZACION A CREDITO===================================-->
-                            <div class="cont-financ">
-                                <div class="row">
+                            <div class="row">
                                     <h1 class="tl_seccion">Proforma</h1>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-success btn-xs" onclick="op();" id="btn-opt">+ Agregar opción</button>
@@ -1930,6 +1947,10 @@ function deleter(id){
                                         <button type="button" class="btn btn-info btn-inverse btn-xs" onclick="opcanc();">− Eliminar opción</button>
                                     </div>
                                 </div>
+                            <?php if ($tipo == 1): // credito            ?>
+<!-- ==================================INICIO COTIZACION A CREDITO===================================-->
+                            <div class="cont-financ">
+                                
                                 <div class="row">
                                     <div class="col-md-4 cont-options1">
                                         <div class="row">
@@ -2215,25 +2236,13 @@ function deleter(id){
                                     </div>
                                 </div>
                             </div>
+                                
 <!-- ==================================FIN COTIZACION A CREDITO======================================-->
                             <?php else: ?>    
 
 <!-- ==================================INICIO COTIZACION CONTADO=====================================-->
                             <div class="cont-contado">
-                                <div class="row">
-                                    <h1 class="tl_seccion">Proforma</h1>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-success btn-xs" onclick="op();" id="btn-opt">+ Agregar opción</button>
-                                        <input type="hidden" name="options-cont" id="options-cont" value="2" />
-                                        <input type="hidden" name="options-cont-pass" id="options-cont-pass" value="2" />
-                                        <input type="hidden" name="accesorioscont" id="accesorioscont" value="<?php echo $cn; ?>"/>
-                                    </div>
-                                    <div class="col-md-2 btn-canc" style="display: none;">
-                                        <button type="button" class="btn btn-info btn-inverse btn-xs" onclick="opcanc();">− Eliminar opción</button>
-                                    </div>
-                                </div>
+                                
                                 <div class="row">
                                     <div class="col-md-4 cont-options1">
                                         <div class="row">
@@ -2435,7 +2444,6 @@ function deleter(id){
                                         <a class="btn btn-success" href="<?php echo Yii::app()->createUrl('site/proformaCliente/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" target="_blank" id="btnverprf" style="display: none;">Ver Proforma</a>
                                     </div>
                                     <div class="col-md-4">
-                                        
                                         <button type="button" class="btn btn-success" onclick="sendProforma();" id="btnsendprof" style="display: none;">Enviar proforma al cliente</button>
                                     </div>
                                 </div>
@@ -2450,6 +2458,14 @@ function deleter(id){
                         <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="btnagendamiento" style="display: none;">Agendar Seguimiento</a>
                         <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/create/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger" style="display: none;" id="btn-continuar">Generar Solicitud de Crédito</a>
                         <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" style="display: none;" id="btn-continuar-ct">Continuar</a>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-8  col-xs-12 links-tabs">
+                        <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
+                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
                     </div>
                 </div>
             </div>   

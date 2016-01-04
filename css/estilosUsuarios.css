@@ -79,3 +79,10 @@
 .opciones_no_compradores li .radio{
 	font-size:14px;
 }
+#encuestadosbtn {
+    margin: 10px;
+}
+input#exampleInputName2 {
+    height: 31px !important;
+    width: 350px !Important;
+}

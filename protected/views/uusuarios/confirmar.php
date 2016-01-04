@@ -59,7 +59,8 @@ $this->menu = array(
 						'value' => $model->grupo->nombre_grupo
 					),array(
 					'label' => 'Concesionario',
-						'value' => ($model->concesionario_id>0)?$model->consecionario->nombre:$this->traerConcesionariosU($model->id,1)
+						//'value' => ($model->concesionario_id>0)?$model->dealer->name:$this->traerConcesionariosU($model->id,1)
+						'value' => ($model->concesionario_id>0)?$this->traerConcesionariosGR($model->concesionario_id,1):$this->traerConcesionariosU($model->id,1)
 					),
 					array(
 					'label' => 'Direcci&oacute;n',

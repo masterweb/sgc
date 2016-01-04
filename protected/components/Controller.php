@@ -123,19 +123,33 @@ class Controller extends CController {
         ));
         $dealer = Usuarios::model()->find($criteria);
         //return $dealer->concesionario_id;
-        $id_conc = $dealer->consecionario->dealer->id;
-        $criteria2 = new CDbCriteria(array(
-            'condition' => "id={$id_conc}"
-        ));
-        $deal = Dealers::model()->find($criteria2);
-        return $deal->direccion;
+        if ($dealer->concesionario_id == 0) {
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "usuario_id={$id}"
+            ));
+            $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+            $id_conc = $usuario->concesionario_id;
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "id={$id_conc}"
+            ));
+            $deal = Dealers::model()->find($criteria2);
+            return $deal->direccion;
+        } else {
+            $id_conc = $dealer->consecionario->dealer->id;
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "id={$id_conc}"
+            ));
+            $deal = Dealers::model()->find($criteria2);
+            return $deal->direccion;
+        }
+
     }
-    
+
     public function getNombreGrupo($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
-        $dealer = GrGrupo::model()->find($criteria);  
+        $dealer = GrGrupo::model()->find($criteria);
         return $dealer->nombre_grupo;
     }
 
@@ -154,6 +168,33 @@ class Controller extends CController {
             return $dealers->correo;
         } else {
             return 'NA';
+        }
+    }
+    
+   public function getAsesorCredito($id) {
+        $dealers = Usuarios::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            $concesionario_id = $dealers->concesionario_id;
+            if ($concesionario_id == 0) {
+                $criteria2 = new CDbCriteria(array(
+                    'condition' => "usuario_id={$id}"
+                ));
+                $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+                $concesionario_id = $usuario->concesionario_id;
+                //die('conc: '.$concesionario_id);
+                $criteria3 = new CDbCriteria(array(
+                    'condition' => "cargo_id=74 AND dealers_id={$concesionario_id}"
+                ));
+                $asesor_credito =  Usuarios::model()->find($criteria3);
+//                echo '<pre>';
+//                print_r($asesor_credito);
+//                echo '</pre>'; 
+//                die();
+                return $asesor_credito->correo;
+            }else{
+                $asesor_credito =  Usuarios::model()->find($criteria3);
+                return $asesor_credito->correo;
+            }
         }
     }
 
@@ -728,11 +769,37 @@ class Controller extends CController {
             $usuario = Grupoconcesionariousuario::model()->find($criteria2);
             return $usuario->concesionario_id;
         } else {
-            return $dealer->consecionario->dealer->id;
+            return $dealer->concesionario_id;
         }
     }
 
     public function getNameConcesionario($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $dealer = Usuarios::model()->find($criteria);
+        if ($dealer->concesionario_id == 0) {
+            //die('enter no conc');
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "usuario_id={$id}"
+            ));
+            $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+            $cri = new CDbCriteria(array(
+                'condition' => "id={$usuario->concesionario_id}"
+            ));
+            $deal = Dealers::model()->find($cri);
+            return $deal->name;
+        } else {
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "id={$dealer->concesionario_id}"
+            ));
+            $deal = Dealers::model()->find($criteria2);
+            return $deal->name;
+        }
+
+
+
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
@@ -774,7 +841,7 @@ class Controller extends CController {
         $usuarios = Usuarios::model()->find($criteria);
         return $usuarios->dealers_id;
     }
-    
+
     public function getConcesionarioGrupoRuc($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
@@ -782,7 +849,7 @@ class Controller extends CController {
         ));
         $usuarios = Usuarios::model()->find($criteria);
         $grupo_id = $usuarios->grupo_id;
-        
+
         $criteria2 = new CDbCriteria(array(
             'condition' => "id={$grupo_id}"
         ));
@@ -866,6 +933,39 @@ class Controller extends CController {
         ));
         $ps = GestionNotificaciones::model()->find($criteria);
         return $ps->paso;
+    }
+
+    public function getPasoSeguimiento($id) {
+        switch ($id) {
+            case '1-2':
+                $paso = '1/2 - Prospección';
+                break;
+            case '3':
+                $paso = '3 - Recepción';
+                break;
+            case '4':
+                $paso = '4 - Consulta';
+                break;
+            case '5':
+                $paso = '5 - Presentación';
+                break;
+            case '6':
+                $paso = '6 - Demostración';
+                break;
+            case '7':
+                $paso = '7 - Negociación';
+                break;
+            case '8':
+                $paso = '8 - Cierre';
+                break;
+            case '9':
+                $paso = '9 - Entrega';
+                break;
+
+            default:
+                break;
+        }
+        return $paso;
     }
 
     public function getFuente($id) {
@@ -980,7 +1080,7 @@ class Controller extends CController {
                 break;
             case 2: // preguntas paso 3-4 recepcion consulta
                 $criteria = new CDbCriteria(array(
-                    'condition' => "id_informacion={$id} AND status = 'ACTIVO'"
+                    'condition' => "id_informacion={$id} AND status = 'ACTIVO' AND preg7 <> ''"
                 ));
                 $pr = GestionConsulta::model()->count($criteria);
                 if ($pr > 0) {
@@ -1018,6 +1118,10 @@ class Controller extends CController {
                 }
                 break;
             case 6:
+                $cr = GestionFactura::model()->count(array('condition' => "id_informacion=:match",'params' => array(':match' => $id)));
+                if ($cr > 0) {
+                    return TRUE;
+                }
                 break;
             case 7:
                 $criteria = new CDbCriteria(array(
@@ -1327,7 +1431,30 @@ class Controller extends CController {
             if ($solodatos == 1) {
                 $imp = '';
                 foreach ($model as $m) {
-                    $imp.=$m->consecionario->nombre . ' -- ';
+					
+					$d = Dealers::model()->find(array("condition"=>"id =".$m->concesionario_id));
+                    //$imp.=$m->consecionario->nombre . ' -- ';
+					if(!empty($d))
+                    $imp.=$d->name . ' -- ';
+                }
+                return $imp;
+            } else { 
+                return $model;
+            }
+            /* FIN */
+        }
+    }
+	public function traerConcesionariosGR($usuario, $solodatos) {
+        $model = GrConcesionarios::model()->findAll(array("condition" => 'id = ' . (int) $usuario));
+        if (!empty($model)) {
+            /* VERIFICAMOS SI PIDE SOLO DATOS EN LA VARIABLE $solodatos == 1 */
+            if ($solodatos == 1) {
+                $imp = '';
+                foreach ($model as $m) {
+					$d = Dealers::model()->find(array("condition"=>"id =".$m->dealer_id));
+                    //$imp.=$m->consecionario->nombre . ' -- ';
+					if(!empty($d))
+                    $imp.=$d->name . ' -- ';
                 }
                 return $imp;
             } else {
@@ -1336,114 +1463,109 @@ class Controller extends CController {
             /* FIN */
         }
     }
-
     public function redondear_dos_decimal($valor) {
         $float_redondeado = round($valor * 100) / 100;
         return $float_redondeado;
     }
-	
-	public function traercotizaciones(){
-		date_default_timezone_set("America/Bogota");
-		$sql = 'SELECT * FROM atencion_detalle WHERE encuestado = 0 and id_modelos is not null limit 100';
+
+    public function traercotizaciones() {
+        date_default_timezone_set("America/Bogota");
+        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2015-12-09" and encuestado = 0 and id_modelos is not null limit 100';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
-		$cargo_id = Cargo::model()->find(array('condition'=>'codigo = "'.Constantes::CDG.'"'));
-		$usuarios = Usuarios::model()->findAll(array('condition'=>'cargo_id ='.$cargo_id->id));
-		
-		if(!empty($datosC)){
-			$maximo =number_format(count($datosC)/count($usuarios),0);
-			$actual = 0;
-			$contactual = 0;
-			$posicion = 0;
-			$usuario_list = array();
-			foreach($usuarios as $u){
-				$usuario_list[$actual++] = $u->id;
-			}
-			
-				
-			foreach($datosC as $d){
-				
-				if($contactual == $maximo){
-					$contactual = 0;
-					$posicion++;
-					 
-				}
-				if($posicion <= count($usuarios) && !empty($usuario_list[$posicion])){
-					
-					$cotizacion = new Cotizacionesnodeseadas();
-					$cotizacion->atencion_detalle_id = (int) $d['id_atencion'];
-					
-					$cotizacion->usuario_id =  $usuario_list[$posicion];
-					$cotizacion->fecha = date('Y-m-d h:i:s');
-					$cotizacion->realizado = '0';
-					$cotizacion->nombre = $d['nombre'];
-					$cotizacion->apellido = $d['apellido'];
-					$cotizacion->cedula = $d['cedula'];
-					$cotizacion->direccion = $d['direccion'];
-					$cotizacion->telefono = $d['telefono'];
-					$cotizacion->celular = $d['celular'];
-					$cotizacion->email = $d['email'];
-					$cotizacion->modelo_id = $d['id_modelos'];
-					$cotizacion->version_id = $d['id_version'];
-					$cotizacion->ciudadconcesionario_id = $d['cityid'];
-					$cotizacion->concesionario_id = $d['dealerid'];
-					if($cotizacion->save()){
-						//echo $usuario_list[$posicion];
-						Yii::app()->db2
-						->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='".date("Y-m-d h:i:s")."' WHERE id_atencion_detalle=:RListID")
-						->bindValues(array( ':RListID' => $d['id_atencion_detalle']))
-						->execute();
-					}
-				}
-                $contactual++;
-			}
-				
-			
-			
-		}
-	}
-	public function traernocompradores(){
-		  date_default_timezone_set("America/Bogota");
-        
-        $datosC = GestionDiaria::model()->findAll(array('condition'=>'desiste = 1 and encuestado=0'));
-        
+        $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
 
-
-
-        $cargo_id = Cargo::model()->find(array('condition'=>'codigo = "'.Constantes::CDG.'"'));
-        $usuarios = Usuarios::model()->findAll(array('condition'=>'cargo_id ='.$cargo_id->id));
-        
-        if(!empty($datosC)){
-            $maximo =number_format(count($datosC)/count($usuarios),0);
+        if (!empty($datosC)) {
+            $maximo = number_format(count($datosC) / count($usuarios), 0);
             $actual = 0;
             $contactual = 0;
             $posicion = 0;
             $usuario_list = array();
-            foreach($usuarios as $u){
+            foreach ($usuarios as $u) {
                 $usuario_list[$actual++] = $u->id;
             }
-            
 
-            foreach($datosC as $d){
-                
-                if($contactual == $maximo){
-                    
+
+            foreach ($datosC as $d) {
+
+                if ($contactual == $maximo) {
                     $contactual = 0;
                     $posicion++;
-                     
                 }
-                
-                if($posicion <= count($usuarios) && !empty($usuario_list[$posicion])){
+                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
+
+                    $cotizacion = new Cotizacionesnodeseadas();
+                    $cotizacion->atencion_detalle_id = (int) $d['id_atencion'];
+
+                    $cotizacion->usuario_id = $usuario_list[$posicion];
+                    $cotizacion->fecha = $d['fecha_form'];
+                    $cotizacion->realizado = '0';
+                    $cotizacion->nombre = $d['nombre'];
+                    $cotizacion->apellido = $d['apellido'];
+                    $cotizacion->cedula = $d['cedula'];
+                    $cotizacion->direccion = $d['direccion'];
+                    $cotizacion->telefono = $d['telefono'];
+                    $cotizacion->celular = $d['celular'];
+                    $cotizacion->email = $d['email'];
+                    $cotizacion->modelo_id = $d['id_modelos'];
+                    $cotizacion->version_id = $d['id_version'];
+                    $cotizacion->ciudadconcesionario_id = $d['cityid'];
+                    $cotizacion->concesionario_id = $d['dealerid'];
+                    if ($cotizacion->save()) {
+                        //echo $usuario_list[$posicion];
+                        Yii::app()->db2
+                                ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
+                                ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
+                                ->execute();
+                    }
+                }
+                $contactual++;
+            }
+        }
+    }
+
+    public function traernocompradores() {
+        date_default_timezone_set("America/Bogota");
+
+        $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));
+
+
+
+
+        $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
+
+        if (!empty($datosC)) {
+            $maximo = number_format(count($datosC) / count($usuarios), 0);
+            $actual = 0;
+            $contactual = 0;
+            $posicion = 0;
+            $usuario_list = array();
+            foreach ($usuarios as $u) {
+                $usuario_list[$actual++] = $u->id;
+            }
+
+
+            foreach ($datosC as $d) {
+
+                if ($contactual == $maximo) {
+
+                    $contactual = 0;
+                    $posicion++;
+                }
+
+                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
                     //echo $usuario_list[$posicion].'<br>';
-                    $cotizacion = new Nocompradores();     
+                    $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
-                    $cotizacion->usuario_id =  $usuario_list[$posicion];
+                    $cotizacion->usuario_id = $usuario_list[$posicion];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
                     $cotizacion->cedula = $d->gestioninformacion->cedula;
                     $cotizacion->email = $d->gestioninformacion->email;
                     $cotizacion->ceular = $d->gestioninformacion->celular;
-                    
-                   if($cotizacion->save()){
+
+                    if ($cotizacion->save()) {
                         $d->encuestado = 1;
                         $d->realizado = date('Y-m-d h:i:s');
                         $d->update();
@@ -1451,34 +1573,102 @@ class Controller extends CController {
                 }
                 $contactual++;
             }
-                
-            
-            
         }
-	}
-        
-        public function getCheckedAcc($nombre, $stringAccesorios) {
-           // echo $stringAccesorios;
-           $paramAcc = explode('@', $stringAccesorios);
-           if(in_array($nombre,$paramAcc)){
-               echo 'checked="checked"';
-           }else{
-               echo 'none';
-           }
+    }
+
+    public function getCheckedAcc($nombre, $stringAccesorios) {
+        // echo $stringAccesorios;
+        $paramAcc = explode('@', $stringAccesorios);
+        if (in_array($nombre, $paramAcc)) {
+            echo 'checked="checked"';
+        } else {
+            echo 'none';
+        }
 //           echo '<pre>';
 //           print_r($paramAcc);
 //           echo '</pre>';
+    }
+
+    public function getLabelAcc($nombre, $stringAccesorios) {
+        // echo $stringAccesorios;
+        $paramAcc = explode('@', $stringAccesorios);
+        if (in_array($nombre, $paramAcc)) {
+            echo 'label-price';
         }
-        
-        public function getLabelAcc($nombre, $stringAccesorios) {
-           // echo $stringAccesorios;
-           $paramAcc = explode('@', $stringAccesorios);
-           if(in_array($nombre,$paramAcc)){
-               echo 'label-price';
-           }
 //           echo '<pre>';
 //           print_r($paramAcc);
 //           echo '</pre>';
+    }
+
+    /**
+     * Funcion que devuelve el array de accesorios indexados por numeros
+     * @param int $id_vehiculo
+     * @param int $id_version
+     * @param string $string_accesorios
+     * @return array
+     */
+    public function getListAccesorios($id_vehiculo, $id_version, $string_accesorios) {
+        //die($string_accesorios);
+        $criteria2 = new CDbCriteria(array('condition' => "id_vehiculo = {$id_vehiculo} AND id_version = {$id_version} AND status = 1 AND opcional = 0",
+                'order' => 'accesorio'));
+        $cn = GestionAccesorios::model()->count($criteria2);
+        $listAcc = array();
+        $count = 1;
+        if ($cn > 0) {
+            $acc = GestionAccesorios::model()->findAll($criteria2);
+            foreach ($acc as $value) {
+                $pos = strpos($string_accesorios, $value['accesorio']);
+                if ($pos) {
+                    array_push($listAcc, $count);
+                }
+                $count++;
+            }
         }
+        return $listAcc;
+    }
+    
+    public function getFinanciamientoExo($id_informacion) {
+        $dealers = GestionInformacion::model()->findByPk($id_informacion);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->tipo_form_web;
+        }else{
+            return 'NA';
+        }
+    }
+    
+    public function getTipoExo($id) {
+        $dealers = GestionNuevaCotizacion::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->tipo;
+        }else{
+            return 'NA';
+        }
+    }
+    
+    public function getTipoExoInfo($id) {
+        $dealers = GestionInformacion::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->tipo_ex;
+        }else{
+            return 'NA';
+        }
+    }
+    public function getTipoExoPorcentaje($id) {
+        $dealers = GestionInformacion::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->porcentaje_discapacidad;
+        }else{
+            return 'NA';
+        }
+    }
+    
+    public function getExonerado($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id} AND tipo_form_web = 'exonerados'",
+        ));
+        $dealers = GestionInformacion::model()->count($criteria);
+        return $dealers;
+    }
 
 }

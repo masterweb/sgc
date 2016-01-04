@@ -3097,7 +3097,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         // ENVIAR EMAIL CON CARTA DE BIENVENIDA AL CLIENTE
         require_once 'email/mail_func.php';
         $emailCliente = $this->getEmailCliente($id_informacion);
-        $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia';
+        $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia  Motors Ecuador';
         $general = '<body style="margin: 10px;">
                     <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
                         <div align=""><br>

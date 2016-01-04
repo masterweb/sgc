@@ -1,8 +1,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#Factura_tipo').change(function(){
+        $('#Factura_tipo').change(function () {
             var value = $(this).attr('value');
-            switch(value){
+            switch (value) {
                 case 'cedula':
                     $('.cont-cedula').show();
                     $('.cont-ruc').hide();
@@ -12,14 +12,14 @@
                     $('.cont-cedula').hide();
                     $('.cont-ruc').show();
                     $('.cont-chasis').hide();
-                    break;            
+                    break;
                 case 'chasis':
                     $('.cont-cedula').hide();
                     $('.cont-ruc').hide();
                     $('.cont-chasis').show();
-                    break;            
+                    break;
             }
-            
+
         });
     });
 </script>
@@ -40,8 +40,8 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="profile">
-                
-                    <div class="highlight">
+
+                <div class="highlight">
                     <div class="row">
                         <h1 class="tl_seccion">Datos de Cliente</h1>
                     </div>
@@ -75,101 +75,119 @@
                             </table>
                         </div>
                     </div>
-                    </div>
-                
+                </div>
+
                 <br />
                 <div class="highlight">
-                        <div class="row">
-                            <h1 class="tl_seccion">Datos de Cliente Createc</h1>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?php
-                                    $res = $result;
-                                    //echo $res;
-                                    switch ($result) {
-                                        case 'nofind': ?>                                            
-                                            <div class="alert alert-warning" role="alert">
-                                                <strong>FACTURA NO REGISTRADA</strong>
+                    <div class="row">
+                        <h1 class="tl_seccion">Datos de Cliente Createc</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <?php
+                            $res = $result;
+                            //echo $res;
+                            switch ($result) {
+                                case 'nofind':
+                                    ?>                                            
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong>FACTURA NO REGISTRADA</strong>
+                                    </div>
+                                    <a href="<?php echo Yii::app()->createUrl('site/facturaNoRegistered', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
+                                    <?php
+                                    break;
+                                case 'equal':
+                                    ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/check.fw.png" />
+                                        <strong>Venta Realizada</strong>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <tbody><?php echo $data; ?></tbody>
+                                    </table>
+                                    <?php
+                                    $form = $this->beginWidget('CActiveForm', array(
+                                        'id' => 'form-id',
+                                        'method' => 'post',
+                                        'action' => Yii::app()->createUrl('site/facturaCorrecta', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)), //<- your form action here
+                                    ));
+                                    ?>
+                                    <div class="row">
+                                            <div class="col-md-3">
+                                                <input type="submit" name="send" value="Continuar" class="btn btn-primary"/>
+                                                <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
+                                                <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
                                             </div>
-                                            <a href="<?php echo Yii::app()->createUrl('site/facturaNoRegistered',array('id_informacion' =>  $id_informacion,'id_vehiculo' =>  $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
-                                        <?php    break;
-                                        case 'equal': ?>
-                                           <div class="alert alert-success" role="alert">
-                                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/check.fw.png" />
-                                            <strong>Venta Realizada</strong>
-                                          </div>
-                                           <table class="table table-striped">
-                                                <tbody><?php echo $data; ?></tbody>
-                                            </table>
-                                            <a href="<?php echo Yii::app()->createUrl('site/facturaCorrecta/' ,array('id_informacion' =>  $id_informacion,'id_vehiculo' =>  $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
-                                        <?php    break;
-                                        case 'noequal': 
-                                             ?>
-                                           
-                                                    <div class="alert alert-warning" role="alert">
-                                                        <strong>No coincide identificación</strong>
-                                                      </div>
-                                                <table class="table table-striped">
-                                                <tbody><?php echo $data; ?></tbody>
-                                            </table>
-                                                <div class="form">
-                                                    <?php
-                                                $form = $this->beginWidget('CActiveForm', array(
-                                                    'id' => 'form-id',
-                                                    'method' => 'post',
-                                                    'action' => Yii::app()->createUrl('site/facturaIncorrecta',array('id_informacion' =>  $id_informacion,'id_vehiculo' =>  $id_vehiculo)), //<- your form action here
-                                                ));
-                                                ?>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                        <label for="observaciones">Ingrese observación</label>
-                                                        <select name="Factura[observaciones]" id="Factura_observaciones" class="form-control">
-                                                        <option value="">--Seleccione--</option>
-                                                        <option value="">Factura a Nombre de Familiar</option>
-                                                        <option value="">Factura a Nombre de 3ra Persona</option>
-                                                        <option value="">Factura a Nombre de Empresa</option>
-                                                    </select> 
-                                                    </div> 
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <input type="submit" name="send" value="Aceptar" class="btn btn-primary"/>
-                                                            <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                    <?php $this->endWidget(); ?>
+                                    <?php
+                                    break;
+                                case 'noequal':
+                                    ?>
 
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong>No coincide identificación</strong>
+                                    </div>
+                                    <table class="table table-striped">
+                                        <tbody><?php echo $data; ?></tbody>
+                                    </table>
+                                    <div class="form">
+                                        <?php
+                                        $form = $this->beginWidget('CActiveForm', array(
+                                            'id' => 'form-id',
+                                            'method' => 'post',
+                                            'action' => Yii::app()->createUrl('site/facturaIncorrecta', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)), //<- your form action here
+                                        ));
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="observaciones">Ingrese observación</label>
+                                                <select name="Factura[observaciones]" id="Factura_observaciones" class="form-control">
+                                                    <option value="">--Seleccione--</option>
+                                                    <option value="Factura a Nombre de Familiar">Factura a Nombre de Familiar</option>
+                                                    <option value="Factura a Nombre de 3ra Persona">Factura a Nombre de 3ra Persona</option>
+                                                    <option value="Factura a Nombre de Empresa">Factura a Nombre de Empresa</option>
+                                                </select> 
+                                            </div> 
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <input type="submit" name="send" value="Aceptar" class="btn btn-primary"/>
+                                                <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
+                                                <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
+                                            </div>
+                                        </div>
+        <?php $this->endWidget(); ?>
+                                    </div>
+                                    <br />
+                                    <?php
+                                    break;
+                                default:
+                                    break;
+                            }
+                            ?>
 
-                                                <?php $this->endWidget(); ?>
-                                                </div>
-                                                <br />
-                                        <?php break; 
-                                        default:
-                                            break;
-                                    }
-                                ?>
-                                
-                            </div>
                         </div>
                     </div>
-                
-                <?php if($search): ?>
-                
-                <?php else: ?>
-                
-                
-<!--                <div class="row">
-                    <div class="col-md-3">
-                        <a href="<?php echo Yii::app()->createUrl('site/factura/' . $id_informacion); ?>" class="btn btn-danger">Ingresar Chasis</a>
-                    </div>
-                </div>-->
-                <?php endif; ?>
+                </div>
+
+                <?php if ($search): ?>
+
+<?php else: ?>
+
+
+                    <!--                <div class="row">
+                                        <div class="col-md-3">
+                                            <a href="<?php echo Yii::app()->createUrl('site/factura/' . $id_informacion); ?>" class="btn btn-danger">Ingresar Chasis</a>
+                                        </div>
+                                    </div>-->
+<?php endif; ?>
                 <br />
                 <div class="row">
                     <div class="col-md-8  col-xs-12 links-tabs">
                         <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
                         <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">Seguimiento</a></div>
+                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
                     </div>
                 </div>
             </div>

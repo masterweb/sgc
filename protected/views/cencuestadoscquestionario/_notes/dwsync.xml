@@ -14,10 +14,12 @@
 <file name="_view.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130842355100000000" remote="130842355100000000" Dst="0" />
 <file name="update.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130842355130000000" remote="130842355130000000" Dst="0" />
 <file name="_form.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130842355100000000" remote="130842355100000000" Dst="0" />
-<file name="cotizaciones.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130935748110000000" remote="130935748110000000" Dst="0" />
+<file name="cotizaciones.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948468760000000" remote="130948468760000000" Dst="0" />
 <file name="cotizacionok.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934147060000000" remote="130934147060000000" Dst="0" />
 <file name="nocompradores.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130935743530000000" remote="130935743530000000" Dst="0" />
 <file name="nocotizacionok.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934995070000000" remote="130934995070000000" Dst="0" />
-<file name="atenciondetalle.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934178250000000" remote="130934178250000000" Dst="0" />
-<file name="nocompradoresadmin.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130934997580000000" remote="130934997580000000" Dst="0" />
+<file name="atenciondetalle.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948574010000000" remote="130948574010000000" Dst="0" />
+<file name="nocompradoresadmin.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948586460000000" remote="130948586460000000" Dst="0" />
+<file name="atenciondetalleencuestado.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948575620000000" remote="130948575620000000" Dst="0" />
+<file name="nocompradoresadminencuestados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948586930000000" remote="130948586930000000" Dst="0" />
 </dwsync>

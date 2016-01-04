@@ -382,6 +382,17 @@ $id = $_GET['id_informacion'];
             }
         });
     });
+    function validateNumbers(c) {
+        var d = (document.all) ? c.keyCode : c.which;
+        if (d < 48 || d > 57) {
+            if (d == 8) {
+                return true
+            } else {
+                return false
+            }
+        }
+        return true
+    }
     function sendInfo() {
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();
@@ -707,7 +718,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                                     </div>
                                     <div class="col-md-3">
                                         <label for="kilometraje">Kilometraje</label>
-                                        <?php echo $form->textField($consulta, 'preg1_sec4', array('class' => 'form-control')); ?>
+                                        <?php echo $form->textField($consulta, 'preg1_sec4', array('class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                         <label for="kilometraje" generated="true" class="error" style="display: none;">Este campo es requerido</label>
                                     </div>
                                 </div>
@@ -843,11 +854,24 @@ $provincia_id = $this->getProvinciaId($city_id);
                             <label for="">6. ¿Cuál sería su forma de pago para su nuevo vehículo?</label>
                             <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
                             <input name="GestionInformacion[id_informacion]" id="GestionConsulta_id_informacion" type="hidden" value="<?php echo $id_informacion; ?>">
+                            <?php $fin = $this->getFinanciamientoExo($id_informacion); ?>
+                            <?php if($fin == 'exonerados'){ ?>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <select class="form-control" name="GestionConsulta[preg6]" id="GestionConsulta_preg6">
+                                    <option value="0" selected="">Contado</option>
+                                </select>
+                                </div>
+                                
+                            </div>
+                            <?php }else{ ?>
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->dropDownList($consulta, 'preg6', array('' => '-Seleccione-', '0' => 'Contado', '1' => 'Financiado'), array('class' => 'form-control')); ?>
                                 </div>
                             </div>
+                            <?php } ?>
+                            
                         </div>
                         <div class="row">
                             <label for="">7. ¿En qué tiempo estima realizar su compra?</label>
@@ -958,11 +982,13 @@ $provincia_id = $this->getProvinciaId($city_id);
                                         "88" => "Quoris",
                                         "20" => "Carens R",
                                         "11" => "Grand Carnival",
+                                        "80" => "Soul",
+                                        "93" => "Soul EV",
                                         "21" => "Sportage Active",
                                         "83" => "Sportage R",
-                                        "10" => "Sorento",
-                                        "25" => "K 2700 Cabina Simple",
-                                        "87" => "K 2700 Cabina Doble",
+                                        //"10" => "Sorento",
+                                        //"25" => "K 2700 Cabina Simple",
+                                        //"87" => "K 2700 Cabina Doble",
                                         "86" => "K 3000"), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($vehiculo, 'modelo'); ?>
@@ -1203,6 +1229,15 @@ $provincia_id = $this->getProvinciaId($city_id);
                                 </div>  END OF HIGHLIGHT 
                                 <br />-->
             </div>
+            <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-8  col-xs-12 links-tabs">
+                        <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
+                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>

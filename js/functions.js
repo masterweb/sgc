@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    
-$('#GestionFinanciamiento_tiempo_seguro').change(function () {
+
+    $('#GestionFinanciamiento_tiempo_seguro').change(function () {
         var valorFin = $('#GestionFinanciamiento_entrada').val();
         if (valorFin != '') {
             calcFinanciamiento();
@@ -212,18 +212,16 @@ $('#GestionFinanciamiento_tiempo_seguro').change(function () {
     $('#GestionNuevaCotizacion_fuente').change(function () {
         var value = $(this).attr('value');
         var datausado = '<option value="">--Seleccione--</option>\n\
-<option value="Nuevo">Nuevo</option>\n\
-<option value="Exonerado Taxi">Exonerado Taxi</option>\n\
-<option value="Exonerado Conadis">Exonerado Conadis</option>\n\
-<option value="Exonerado Diplomatico">Exonerado Diplomático</option>\n\
-<option value="Flota">Flota</option>';
-        var data = '<option value="">--Seleccione--</option>\n\
-<option value="Nuevo">Nuevo</option>\n\
+<option value="Nuevo">Nuevo</option>\n\\n\
 <option value="Usado">Usado</option>\n\
 <option value="Exonerado Taxi">Exonerado Taxi</option>\n\
 <option value="Exonerado Conadis">Exonerado Conadis</option>\n\
-<option value="Exonerado Diplomatico">Exonerado Diplomático</option>\n\
-<option value="Flota">Flota</option>';
+<option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
+        var dataprospeccion = '<option value="">--Seleccione--</option>\n\
+<option value="Nuevo">Nuevo</option>';
+        var data = '<option value="">--Seleccione--</option>\n\
+<option value="Nuevo">Nuevo</option>\n\
+<option value="Usado">Usado</option>';
         var datatrafico = '<option value="">--Seleccione--</option>\n\
 <option value="Nuevo">Nuevo</option>\n\
 <option value="Usado">Usado</option>\n\
@@ -252,7 +250,7 @@ $('#GestionFinanciamiento_tiempo_seguro').change(function () {
                 $('.empresa-cont').hide();
                 break;
             case 'prospeccion':
-                $("#GestionNuevaCotizacion_tipo").html(datausado);
+                $("#GestionNuevaCotizacion_tipo").html(dataprospeccion);
                 $('.tipo-cont').show();
                 $('#cont-ident').hide();
                 $('.exh-cont').hide();
@@ -441,123 +439,48 @@ $('#GestionFinanciamiento_tiempo_seguro').change(function () {
         //$('#Casos_tema').attr("disabled",false);$('#Casos_subtema').attr("disabled",false);$('#Casos_provincia_domicilio').attr("disabled",false);
         //$('#Casos_ciudad_domicilio').attr("disabled",false);$('#Casos_tipo_venta').attr('disabled',false);
         //$('#Casos_provincia').attr("disabled",false);
-        $(".highlight .form-control").removeAttr("readonly");
+        $(".highlight #precio_normal").removeAttr("readonly");
         //$("#Casos_tema").prop("disabled", false);
         //$("#Casos_subtema").prop("disabled", false);
-        $(".highlight .form-control").css('background-color', 'white');
+        $(".highlight #precio_normal").css('background-color', 'white');
     });
     $('#save-btn').click(function () {
         //console.log('enter cancel button');
-        var tema = $('#tema').val();
-        var subtema = $('#subtema').val();
-        var provinciaDom = $('#provinciadomicilio').val();
-        var ciudadDom = $('#ciudaddomicilio').val();
-        var provinciaConc = $('#provinciaconc').val();
-        var ciudadConc = $('#ciudadconc').val();
-        var concesionario = $('#conc').val();
-        $('#Casos_nombres').val($('#nombre').val());
-        $('#Casos_apellidos').val($('#apellido').val());
-        $('#Casos_cedula').val($('#cedula').val());
-        $('#Casos_provincia_domicilio select').val($('#provinciadomicilio').val());
-        $('#Casos_email').val($('#email').val());
-        $('#Casos_telefono').val($('#telefono').val());
-        $('#Casos_celular').val($('#celular').val());
-        $('#Casos_comentario').val($('#comentario').val());
-        $('#Casos_responsable').val($('#responsable').val());
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getTemas',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: tema
-            },
-            success: function (data) {
-                $('#Casos_tema').html(data.options);
-            }
-        });
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getSubTemas',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: tema,
-                sid: subtema
-            },
-            success: function (data) {
-                $('#Casos_subtema').html(data.options);
-            }
-        });
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getProvinciasDom',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: provinciaDom
-            },
-            success: function (data) {
-                $('#Casos_provincia_domicilio').html(data.options);
-            }
-        });
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getCiudadDom',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: provinciaDom,
-                ciudad: ciudadDom
-            },
-            success: function (data) {
-                $('#Casos_ciudad_domicilio').html(data.options);
-            }
-        });
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getProvinciaConc',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: provinciaConc
-            },
-            success: function (data) {
-                $('#Casos_provincia').html(data.options);
-            }
-        });
 
-        $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getCiudadConc',
-            dataType: "json",
-            type: 'post',
-            data: {
-                id: provinciaConc,
-                ciudad: ciudadConc
-            },
-            success: function (data) {
-                $('#Casos_ciudad').html(data.options);
-            }
-        });
-        //console.log('concesionario: '+concesionario);
-        if (concesionario != 0) {
-            $.ajax({
-                url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getConc',
-                dataType: "json",
-                type: 'post',
-                data: {
-                    id: provinciaConc,
-                    ciudad: ciudadConc,
-                    conc: concesionario
-                },
-                success: function (data) {
-                    $('#Casos_concesionario').html(data.options);
-                }
-            });
-        } else {
-            $('#Casos_concesionario').html('');
-        }
         $('#save-btn').hide();
         $('#edit-btn').show();
-        $(".highlight .form-control").attr('readonly', true);
+        //$(".highlight #precio_normal").attr('readonly', true);
         //$("#Casos_tema").prop("disabled", true);
         //$("#Casos_subtema").prop("disabled", true);
-        $(".highlight .form-control").css('background-color', '#E4E4E4');
+        $(".highlight #precio_normal").css('background-color', '#DCD8D9');
+        // cogo precio anterior desde la base de datos
+        var precio_accesorios_anterior = $('#precio_accesorios_anterior').val();
+        var precioaccesorios = $('#precio_accesorios').val();
+        // parseamos el valor a integer
+        precioaccesorios = precioaccesorios.replace(',', '');
+        precioaccesorios = precioaccesorios.replace('.', ',');
+        precioaccesorios = precioaccesorios.replace('$', '');
+        precioaccesorios = parseInt(precioaccesorios);
+        var precionormal = $('#precio_normal').val();
+        
+        precionormal = precionormal.replace(',', '');
+        precionormal = precionormal.replace('.', ',');
+        precionormal = precionormal.replace('$', '');
+        precionormal = parseInt(precionormal);
+        //console.log('precio normal: '+precionormal);
+        //console.log('precio accesorios: '+precioaccesorios);
+        
+        var difprecioaccesorios = precioaccesorios - precio_accesorios_anterior;
+        console.log('diferencia: ' + difprecioaccesorios);
+        precioaccesorios = precionormal + difprecioaccesorios;
+        precioaccesorios = format2(precioaccesorios, '$');
+        precionormal = format2(precionormal, '$');
+        //console.log('precio normal: '+precionormal);
+        $('#GestionFinanciamiento_precio_contado').val(precioaccesorios);
+        $('#precio_accesorios').val(precioaccesorios);
+        $('#precio_normal_anterior').val(precionormal);
+
+        calcFinanciamientoContadoExo();
     });
     $('#Casos_provincia_domicilio').change(function () {
         var value = $(this).attr('value');

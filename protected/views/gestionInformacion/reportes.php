@@ -139,7 +139,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                                                         }
                                                     };
                                                     var id = e.value;
-                                                    xmlhttp.open("GET","https://www.kia.com.ec/intranet/usuario/index.php/ajax/modelos?id="+id);
+                                                    xmlhttp.open("GET","/intranet/usuario/index.php/ajax/modelos?id="+id);
                                                     xmlhttp.send();
                                                     }
                                                 }else if(e.checked === false) {                            
@@ -258,7 +258,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                             <th>DIF</th>
                         </tr>
                     <tbody>
-                        <tr><td>TRÁFICO</td>
+                        <tr><td>TRÃFICO</td>
                             <td><?php echo $trafico_mes_actual; ?></td>
                             <td><?php echo $trafico_mes_anterior; ?></td>
                             <td>
@@ -441,8 +441,8 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                             $vmac = ($vh_mes_actual * 100)/$maxvalue;
                             $vman = ($vh_mes_anterior * 100)/$maxvalue;
                    
-                            echo '<span class="barratit trojo">Tráfico mes actual</span><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
-                             '<span class="barratit tazul">Tráfico mes anterior</span><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div><hr/>'.
+                            echo '<span class="barratit trojo">TrÃ¡fico mes actual</span><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
+                             '<span class="barratit tazul">TrÃ¡fico mes anterior</span><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div><hr/>'.
                              '<span class="barratit trojo">Proforma mes actual</span><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
                              '<span class="barratit tazul">Proforma mes anterior</span><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div><hr/>'.
                              '<span class="barratit trojo">Test Drive mes actual</span><div class="barra roja" style="width:'.$tdmac.'%;">'.$td_mes_actual.'</div>'.
@@ -930,4 +930,3 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         </div>
     </div>
 </div>
-

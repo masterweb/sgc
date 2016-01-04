@@ -16,6 +16,7 @@
  * @property string $avaluo
  * @property string $observaciones
  * @property string $precio_vehiculo
+ * @property string $precio_normal
  * @property string $tasa
  * @property string $seguro
  * @property string $valor_financiamiento
@@ -89,6 +90,7 @@ class GestionFinanciamiento extends CActiveRecord {
             'fecha_cita' => 'Fecha Agendamiento',
             'observaciones' => 'Observaciones',
             'precio_vehiculo' => 'Precio Vehiculo',
+            'precio_normal' => 'Precio Normal',
             'tasa' => 'Tasa',
             'seguro' => 'Seguro',
             'valor_financiamiento' => 'valor Financiamiento',

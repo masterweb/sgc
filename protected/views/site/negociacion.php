@@ -210,13 +210,15 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     <?php
                                                     $test = $this->getNegociacion($c['id_informacion'], $c['id']);
                                                     ?>
+                                                    <?php $fin = $this->getFinanciamientoExo($c['id_informacion']); ?>
+                                                    <?php if($fin == 'exonerados'){ ?>
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacionex', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Negociación</a>
+                                                    <?php }else{ ?>
                                                     <?php if ($test > 0): ?>
-
-                                                        <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacion', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Negociación</a>
-                                                    <?php else: ?>    
-
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacionup', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Negociación</a>
+                                                    <?php else: ?>
                                                         <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacion', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Negociación</a>
-                                                    <?php endif; ?>
+                                                    <?php endif; }?>
                                                 </td>
                                                 <td>
                                                     <?php
@@ -441,7 +443,7 @@ foreach ($ag5 as $a) {
                     <div class="col-md-8 col-xs-12 links-tabs">
                         <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
                         <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">Seguimiento</a></div>
+                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
                     </div>
                 </div>
             </div>

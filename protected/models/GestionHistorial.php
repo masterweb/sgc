@@ -11,6 +11,7 @@
  * @property integer $status
  * @property string $observacion
  * @property string $paso
+ * @property string $seguimiento
  * @property string $fecha
  */
 class GestionHistorial extends CActiveRecord {
@@ -44,7 +45,7 @@ class GestionHistorial extends CActiveRecord {
             array('fecha', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, id_responsable, id_vehiculo, status, observacion, paso, fecha', 'safe', 'on' => 'search'),
+            array('id, id_responsable, id_vehiculo, status, observacion, paso, fecha, seguimiento', 'safe', 'on' => 'search'),
         );
     }
 
@@ -71,6 +72,7 @@ class GestionHistorial extends CActiveRecord {
             'observacion' => 'Observacion',
             'paso' => 'Paso',
             'fecha' => 'Fecha',
+            'seguimiento' => 'Seguimiento',
         );
     }
 

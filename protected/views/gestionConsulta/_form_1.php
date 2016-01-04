@@ -836,11 +836,13 @@ $provincia_id = $this->getProvinciaId($city_id);
                                         "88" => "Quoris",
                                         "20" => "Carens R",
                                         "11" => "Grand Carnival",
+                                        "80" => "Soul",
+                                        "93" => "Soul EV",
                                         "21" => "Sportage Active",
                                         "83" => "Sportage R",
-                                        "10" => "Sorento",
-                                        "25" => "K 2700 Cabina Simple",
-                                        "87" => "K 2700 Cabina Doble",
+                                        //"10" => "Sorento",
+                                        //"25" => "K 2700 Cabina Simple",
+                                        //"87" => "K 2700 Cabina Doble",
                                         "86" => "K 3000"), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($vehiculo, 'modelo'); ?>

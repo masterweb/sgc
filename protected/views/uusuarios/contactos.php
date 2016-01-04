@@ -181,7 +181,14 @@ $rol = Yii::app()->user->getState('roles');
 							echo $c->nombres ?> </td>
                             <td><?php echo $c->apellido ?> </td>
                             <td><?php echo (!empty($c->grupo_id))?$c->grupo->nombre_grupo:'--'; ?> </td>
-                            <td><?php echo (!empty($c->concesionario_id))?$c->consecionario->nombre:'--'; ?> </td>
+                            <td><?php 
+							//echo $c->concesionario_id;
+							//if(!empty($c->concesionario_id))
+								//echo $c->concesionario_id;
+								echo ($c->concesionario_id>=1)?$this->traerConcesionariosGR($c->concesionario_id,1):$this->traerConcesionariosU($c->id,1);
+							//else
+								//echo '--';
+							?> </td>
                             <td><a href="tel://<?php echo $c->telefono ?>"><?php echo $c->telefono ?></a> </td>
                             <td><?php echo $c->extension ?> </td>
                             <td><?php echo $c->correo ?> </td>

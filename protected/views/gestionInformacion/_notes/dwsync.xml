@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="_form_2.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912310760000000" remote="130912310760000000" Dst="0" />
+<file name="_form_2.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130943371690000000" remote="130943371690000000" Dst="0" />
 <file name="_form_respaldo.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130899972800000000" remote="130899972800000000" Dst="0" />
-<file name="usados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912310710000000" remote="130912310710000000" Dst="0" />
-<file name="view.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130899972780000000" remote="130899972780000000" Dst="0" />
+<file name="usados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959434560000000" remote="130959434560000000" Dst="0" />
+<file name="view.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959263700000000" remote="130959263700000000" Dst="0" />
 <file name="usadoscr.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912310750000000" remote="130912310750000000" Dst="0" />
 <file name="index.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130899972770000000" remote="130899972770000000" Dst="0" />
 <file name="create.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130899972770000000" remote="130899972770000000" Dst="0" />
@@ -15,11 +15,15 @@
 <file name="update.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130899972780000000" remote="130899972780000000" Dst="0" />
 <file name="exoneradoscr.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912310690000000" remote="130912310690000000" Dst="0" />
 <file name="seguimientobdc.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130912310700000000" remote="130912310700000000" Dst="0" />
-<file name="seguimientoexonerado.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130925304500000000" remote="130925304500000000" Dst="0" />
-<file name="_form.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936343250000000" remote="130936343250000000" Dst="0" />
-<file name="reportes.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130941434710000000" remote="130941434710000000" Dst="0" />
-<file name="_form_1.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130913011670000000" remote="130913011670000000" Dst="0" />
-<file name="_form_usados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936347990000000" remote="130936347990000000" Dst="0" />
-<file name="exonerados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936350670000000" remote="130936350670000000" Dst="0" />
-<file name="seguimiento.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130936370970000000" remote="130936370970000000" Dst="0" />
+<file name="seguimientoexonerado.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959048340000000" remote="130959048340000000" Dst="0" />
+<file name="_form.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130953826490000000" remote="130953826490000000" Dst="0" />
+<file name="reportes.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959439680000000" remote="130959439680000000" Dst="0" />
+<file name="_form_1.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130943366640000000" remote="130943366640000000" Dst="0" />
+<file name="_form_usados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959437580000000" remote="130959437580000000" Dst="0" />
+<file name="exonerados.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130958836660000000" remote="130958836660000000" Dst="0" />
+<file name="seguimiento.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130959075510000000" remote="130959075510000000" Dst="0" />
+<file name="diplomaticos.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130958086950000000" remote="130958086950000000" Dst="0" />
+<file name="conadis.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130958084290000000" remote="130958084290000000" Dst="0" />
+<file name="reportes_1.php" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948471080000000" remote="130948471080000000" Dst="0" />
+<file name="reportes.php.bak" server="52.0.105.46//var/www/html/kia.com.ec/site/" local="130948473480000000" remote="130948473480000000" Dst="0" />
 </dwsync>

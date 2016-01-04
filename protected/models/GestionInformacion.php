@@ -36,6 +36,10 @@
  * @property string $marca_usado
  * @property string $modelo_usado
  * @property integer $bdc
+ * @property string $img
+ * @property integer $porcentaje_discapacidad
+ * @property integer $senae
+ * @property string $tipo_ex
  * 
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
@@ -140,6 +144,10 @@ class GestionInformacion extends CActiveRecord {
             'marca_usado' => 'Marca Usado',
             'modelo_usado' => 'Modelo Usado',
             'bdc' => 'BDC',
+            'img' => 'Img',
+            'porcentaje_discapacidad' => 'porcentaje_discapacidad',
+            'senae' => 'senae',
+            'tipo_ex' => 'Tipo Ex',
         );
     }
 

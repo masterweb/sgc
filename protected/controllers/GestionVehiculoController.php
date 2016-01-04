@@ -1150,7 +1150,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
             $asunto = 'Kia Motors Ecuador – Cotización de Vehículo Kia ' . $this->getModeloTestDrive($id_vehiculo);
 
         $general = '<body style="margin: 10px;">
-                        <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                        <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                             <div align="">
                             <img src="images/header_mail.jpg">
                             <br><br>
@@ -1168,13 +1168,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                             <p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
                                 <br />
                             <p style="margin: 2px 0;">Estaremos gustosos de servirle.</p><br />
-                            <p style="margin: 2px 0;">Saludos Cordiales.</p>
+                            <p style="margin: 2px 0;">Kia Motors Ecuador</p>
                             <p></p><br /><br />';
 
 
         $general .= '</div>
                             <br />
-                           <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
+                           <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:11px;">
                                 <tr>
                                   <td width="228">&nbsp;</td>
                                   <td width="228" style="color:#1f497d">' . $this->getResponsable($id_asesor) . ' - Asesor Ventas Kia</td>
@@ -1238,9 +1238,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id_asesor = Yii::app()->user->getId();
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        $asunto = 'Kia Motors Ecuador SGC - Proforma ID. ' . $this->getNumProforma($id_vehiculo);
+        $asunto = 'Kia Motors Ecuador SGC - Proforma ID Cliente # ' . $this->getNumProforma($id_vehiculo);
         $general = '<body style="margin: 10px;">
-                        <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                        <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                             <div align="">
                             <img src="images/header_mail.jpg">
                             <br><br>
@@ -1269,7 +1269,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 		<p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
                             </div>
 		<p></p><br />
-                            <p style="margin: 2px 0;">Por favor realizar llamada de Presentación al cliente.</p>
                             <p></p><br />
                             <p style="margin: 2px 0;">Saludos cordiales,</p>
                             <p style="margin: 2px 0;">SGC</p>

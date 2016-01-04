@@ -186,7 +186,7 @@ class GestionConsultaController extends Controller {
                           print_r($paramString);
                           echo '<pre>';
                           die(); */
-						$usr = new CDbCriteria;
+						/*$usr = new CDbCriteria;
 						$usr->select = (['telefono_casa', 'celular']);
 						$usr->condition = "id = '".$id_info."'";
 						$usertelf = Gestioninformacion::model()->findAll($usr);
@@ -194,7 +194,7 @@ class GestionConsultaController extends Controller {
 						foreach($usertelf as $row)
 						{
 							$return[] = $row->attributes;
-						}
+						}*/
                         $asunto = 'Kia Motors Ecuador SGC -  Solicitud de Pre Avalúo Vehículo Usado ID Cliente # ' . $id_info;
                         $general = '<body style="margin: 10px;">
                                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
@@ -225,7 +225,7 @@ class GestionConsultaController extends Controller {
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
                             <p style="margin: 2px 0;"><strong>Tlf. Concesionario: </strong>'.$this->getConcesionarioTlf($this->getDealerId(Yii::app()->user->getId())).'</p>
-                            <p style="margin: 2px 0;"><strong>Celular: '.$return[0]['celular'].'</strong></p><p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> '.$return[0]['telefono_casa'].'</p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong></p><p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> </p>
                             <p style="margin: 2px 0;"><strong>Celular: </strong></p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
@@ -487,16 +487,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         /* echo '<pre>';
                           print_r($paramString);
                           echo '<pre>';
-                          die(); */
+                          die(); 
+						$model2 = new Gestioninformacion();
 						$usr = new CDbCriteria;
 						$usr->select = (['telefono_casa', 'celular']);
 						$usr->condition = "id = '".$id_info."'";
-						$usertelf = Gestioninformacion::model()->findAll($usr);
+						$usertelf = $model2->findAll($usr);
 						$return = array();
 						foreach($usertelf as $row)
 						{
 							$return[] = $row->attributes;
-						}
+						}*/
                         $asunto = 'Kia Motors Ecuador SGC -  Solicitud de Pre Avalúo Vehículo Usado ID Cliente # ' . $id_info ;
                         $general = '<body style="margin: 10px;">
                                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
@@ -525,8 +526,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
-                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> '.$return[0]['telefono_casa'].'</p>
-                            <p style="margin: 2px 0;"><strong>Celular: </strong>'.$return[0]['celular'].'</p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> </p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong></p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
@@ -538,7 +539,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         $codigohtml = $general;
                         $headers = 'From: info@kia.com.ec' . "\r\n";
                         $headers .= 'Content-type: text/html' . "\r\n";
-                        $email = 'alkanware@gmail.com'; //email administrador
+                        $email = 'nicolasvelah@gmail.com'; //email administrador
 
                         sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                         //die('after send email');

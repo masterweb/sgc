@@ -4,16 +4,17 @@ include("class.phpmailer1.php");
 
 function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $body, $cc, $cco, $cu) {
     $mail = new PHPMailer();
-    $mail->SMTPDebug = 1;  // enables SMTP debug information (for testing)
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->IsSMTP(); // telling the class to use SMTP
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
+    $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
     $mail->MsgHTML($body);
@@ -53,15 +54,15 @@ function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $bo
 function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -90,16 +91,15 @@ function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $sub
 function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'utf-8', $mails, $cc, $cco) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = $charset;
-	$mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -137,15 +137,15 @@ function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'u
 function sendEmailFunctionConc($from, $fromname, $to, $subject, $body, $charset = 'utf-8', $mails, $cc, $cco, $emailVP, $emailCallCenter) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = $charset;
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -190,11 +190,16 @@ function sendEmailFunctionExonerados($from, $fromname, $to, $names, $subject, $b
     //die('antra a sendEmailExonerados');
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "mail.ariadna.us"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "envios@ariadna.com.co"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "envio9685"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = $charset;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
+
+    $mail->From = $from;
+    $mail->FromName = $fromname;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -246,15 +251,15 @@ function sendEmailFunctionExonerados($from, $fromname, $to, $names, $subject, $b
 function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('callcenter@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -263,7 +268,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
 
     $mail->AddAddress($to);
     $mail->AddAddress('vlondono@kia.com.ec'); // call center
-    //$mail->AddAddress('carli-c@hotmail.com'); // call center
+    $mail->AddAddress('gansaldo72@hotmail.com'); // call center
     
     if (!$mail->Send()) {
         return false;
@@ -275,15 +280,15 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
 function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('callcenter@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -304,15 +309,15 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
 function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('info@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
@@ -334,15 +339,15 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
 function sendEmailCliente($from, $fromname, $to, $subject, $body, $tipo) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "kiamail.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "comunidad"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "@comunidad2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
-    $mail->Port = 587;
+    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->Port = 587;
+
+    $mail->From = $from;
     $mail->FromName = $fromname;
 
     $mail->Subject = $subject;
