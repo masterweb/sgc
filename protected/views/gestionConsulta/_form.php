@@ -18,6 +18,7 @@ $id = $_GET['id_informacion'];
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
+        numerar();
         $("input[name='colores[]']").click(function () {
 
         });
@@ -174,18 +175,37 @@ $id = $_GET['id_informacion'];
             if (value === '0') {// primer vehiculo
                 $('#tipovehiculo').hide();
                 $('.cont-fv').hide();
+                $('.cont-fv .pos').remove();
                 $('.cont-vec-new').hide();
+                $('.cont-vec-new .pos').remove();
                 $("#GestionConsulta_preg3 option[value=0]").attr('selected', 'selected');
                 $("#GestionConsulta_preg3 option[value=1]").removeAttr('selected');
                 $('#GestionConsulta_vec').removeClass('error');
             } else {
                 $('#tipovehiculo').hide();
                 $('.cont-fv').show();
+                $('.cont-fv .pos').remove();
+                $('.cont-fv label').first().prepend('<span class="pos"></span>')
                 $('.cont-vec-new').show();
+                $('.cont-vec-new .pos').remove();
+                $('.cont-vec-new label').first().prepend( '<span class="pos"></span>' )
                 $("#GestionConsulta_preg3 option[value=1]").attr('selected', 'selected');
                 $("#GestionConsulta_preg3 option[value=0]").removeAttr('selected');$('#GestionConsulta_vec').removeClass('error');
             }
-        })
+            numerar();
+        });
+
+        function numerar(){
+            var totalLen = $('.pos').length;
+            $("*[class*=pos]").each(
+                function(index) {
+                    $(this).empty();
+                    $(this).append((index + 1) + ".");
+                    if(index === totalLen - 1){index = 0;}
+                }
+            );
+            
+        }
         /*$('#gestion-informacion-form').validate({
          submitHandler: function(form) { 
          //alert('enter submit handler');
@@ -555,28 +575,26 @@ $provincia_id = $this->getProvinciaId($city_id);
                         <div class="row">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <label for="">¿El cliente vino interesado por el siguiente modelo?</label>
+                                    <label for=""><span class="pos"></span> ¿El cliente vino interesado por el siguiente modelo?</label>
                                     <select name="GestionConsulta[modelo_intersado]" id="GestionConsulta_modelo_interesado" class="form-control">
                                         <option value="">--Escoja un Modelo</option>
-                                        <option value="Carens R">Carens R</option>
-                                        <option value="Carnival R">Carnival R</option> 
-                                        <option value="Cerato Forte">Cerato Forte</option>
-                                        <option value="Cerato R">Cerato R</option>
-                                        <option value="K 3000">K 2700</option>
-                                        <option value="K 3000">K 3000</option>
-                                        <option value="Koup">Koup</option>
-                                        <option value="Mohave">Mohave</option>
-                                        <option value="Óptima R">Óptima R</option>
-                                        <option value="Picanto R">Picanto R</option>
-                                        <option value="Pregio">Pregio</option>
-                                        <option value="Quoris">Quoris</option>
-                                        <option value="Rio R">Rio R</option>
-                                        <option value="Rio Stylus">Rio Stylus</option>
-                                        <option value="Rio Taxi">Rio Taxi</option>
-                                        <option value="Sorento">Sorento</option>
-                                        <option value="Soul R">Soul R</option>
-                                        <option value="Sportage Active">Sportage Active</option>
-                                        <option value="Sportage R">Sportage R</option>
+                                         <option value="Picanto R">Picanto R</option>
+                                         <option value="Rio R 4p">Rio R 4p</option>
+                                         <option value="Rio R 5p">Rio R 5p</option>
+                                         <option value="Rio R Taxi">Rio R Taxi</option>
+                                         <option value="Cerato Forte">Cerato Forte</option>
+                                         <option value="Cerato Forte Koup">Cerato Forte Koup</option>
+                                         <option value="Cerato R">Cerato R</option>
+                                         <option value="Optima Híbrido">Optima Híbrido</option>
+                                         <option value="Quoris">Quoris</option>
+                                         <option value="Soul R">Soul R</option>
+                                         <option value="Sportage Active">Sportage Active</option>
+                                         <option value="Sportage R">Sportage R</option>
+                                         <option value="Sorento">Sorento</option>
+                                         <option value="Carens R">Carens R</option>
+                                         <option value="Carnival R">Carnival R</option>
+                                         <option value="K2700">K2700</option>
+                                         <option value="K3000">K3000</option>                                        
                                     </select>
                                 </div>
                             </div>
@@ -593,7 +611,7 @@ $provincia_id = $this->getProvinciaId($city_id);
 
                             </div>
                             <div class="cont-fv">
-                                <label for="">1. ¿Qué clase de vehículo conduce en la actualidad?</label>
+                                <label for=""><span class="pos"></span> ¿Qué clase de vehículo conduce en la actualidad?</label>
 
                                 <div class="row">
                                     <div class="col-md-3">
@@ -725,7 +743,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             </div>    
                         </div>
                         <div class="row cont-vec-new">
-                            <label for="">2. ¿Qué tiene pensado hacer con su vehículo actual?</label>
+                            <label for=""><span class="pos"></span> ¿Qué tiene pensado hacer con su vehículo actual?</label>
                             <div class="row">
                                 <div class="col-md-4">
                                     <?php echo $form->dropDownList($consulta, 'preg2', array('' => '--Seleccione--', '0' => 'Vender', '1' => 'Entrega de vehículo usado como parte de pago', '2' => 'Mantenerlo'), array('class' => 'form-control')); ?>
@@ -820,7 +838,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             </div>
                         </div>
                         <div class="row">
-                            <label for="">3. ¿Para qué utilizará el nuevo vehículo?</label>
+                            <label for=""><span class="pos"></span> ¿Para qué utilizará el nuevo vehículo?</label>
                             <div class="row">
                                 <div class="col-md-4">
                                     <?php echo $form->dropDownList($consulta, 'preg3', array('0' => 'Primer Vehículo del hogar', '1' => 'Segundo Vehículo del hogar', '2' => 'Renovación de vehículo'), array('class' => 'form-control', 'options' => array('1' => array('selected' => true)))); ?>
@@ -833,7 +851,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             </div>
                         </div>
                         <div class="row">
-                            <label for="">4. ¿Quién más participa en la decisión de compra?</label>
+                            <label for=""><span class="pos"></span> ¿Quién más participa en la decisión de compra?</label>
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->dropDownList($consulta, 'preg4', array('' => '-Seleccione-', '0' => 'Esposa/o', '1' => 'Familiar', '2' => 'Departamento de compras', '3' => 'Ninguno'), array('class' => 'form-control')); ?>
@@ -841,17 +859,17 @@ $provincia_id = $this->getProvinciaId($city_id);
                             </div>
                         </div>
                         <div class="row">
-                            <label for="">5. ¿Cuánto es el presupuesto que tiene previsto para su nuevo vehículo?</label>
+                            <label for=""><span class="pos"></span> ¿Cuánto es el presupuesto que tiene previsto para su nuevo vehículo?</label>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <?php echo $form->textField($consulta, 'preg5', array('size' => 10, 'maxlength' => 20, 'class' => 'form-control')); ?>
+                                    <?php echo $form->textField($consulta, 'preg5', array('size' => 10, 'maxlength' => 11, 'class' => 'form-control')); ?>
                                     <label for="GestionConsulta_preg5" generated="true" class="error" id="consulta_preg5"></label>
                                 </div>
                             </div>
 
                         </div>
                         <div class="row">
-                            <label for="">6. ¿Cuál sería su forma de pago para su nuevo vehículo?</label>
+                            <label for=""><span class="pos"></span> ¿Cuál sería su forma de pago para su nuevo vehículo?</label>
                             <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
                             <input name="GestionInformacion[id_informacion]" id="GestionConsulta_id_informacion" type="hidden" value="<?php echo $id_informacion; ?>">
                             <?php $fin = $this->getFinanciamientoExo($id_informacion); ?>
@@ -874,7 +892,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             
                         </div>
                         <div class="row">
-                            <label for="">7. ¿En qué tiempo estima realizar su compra?</label>
+                            <label for=""><span class="pos"></span> ¿En qué tiempo estima realizar su compra?</label>
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php
@@ -890,7 +908,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             </div>
                         </div>
                         <div class="row">
-                            <label for="">8. ¿Qué busca en su nuevo vehículo?</label>
+                            <label for=""><span class="pos"></span> ¿Qué busca en su nuevo vehículo?</label>
 
                         </div>
                         <div class="row">

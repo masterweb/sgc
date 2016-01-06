@@ -288,6 +288,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $demostracion->preg1_observaciones = $_POST['GestionTestDrive']['preg1_observaciones'];
                 $demostracion->preg1_agendamiento = $_POST['GestionTestDrive']['preg1_agendamiento'];
                 $demostracion->id_informacion = $_POST['GestionTestDrive']['id_informacion'];
+                $demostracion->id_vehiculo = $_POST['GestionTestDrive']['id_vehiculo'];
                 $demostracion->save();
             }
 

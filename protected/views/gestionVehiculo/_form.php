@@ -16,6 +16,14 @@ if (isset($id)) {
     ));
     $vec = GestionVehiculo::model()->findAll($criteria);
     $count = count($vec);
+
+    $modelos_user = array();
+    foreach ($vec as $key => $carro) {
+        $modelos_user[] = $carro['modelo'];
+    } 
+
+    $tipo = $_GET["tipo"];
+    $fuente  = $_GET["fuente"];  
 }
 ?>
 <style>
@@ -542,7 +550,17 @@ if (isset($id)) {
                                                 <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                                 <td><?php echo $this->getVersion($c['version']); ?> </td>
                                                 <td><?php echo $this->getNecesidad($c['id_informacion']); ?> </td>
-                                                <td><button class="btn btn-xs btn-success">Consulta</button> </td>
+                                                <td>
+                                                    <?php
+                                                    //print_r($modelos_user);
+                                                    //echo 'm = '.$c['modelo'];
+                                                    if(in_array($c['modelo'], $modelos_user)){
+                                                        echo '<button class="btn btn-xs btn-success">Consulta</button> ';
+                                                    }else{
+                                                        echo '<a href="'.Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente)).'" class="btn btn-danger btn-xs">Consulta</a>';
+                                                    }                                                    
+                                                    ?> 
+                                                </td>
                                                 <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                                             </tr>
                                             <?php
@@ -634,6 +652,7 @@ if (isset($id)) {
             echo 'style="display: none;"';
         }
         ?>><div class="col-md-3"><a class="btn btn-success" style="margin: 20px 0px;" onclick="createVec(<?php echo $id; ?>)">Agregar otro vehículo</a></div>
+
         </div>
         <div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('site/presentacion', array('id' => $id)); ?>" class="btn btn-danger" style="margin: 20px 0px;">Continuar</a></div>
     </div>

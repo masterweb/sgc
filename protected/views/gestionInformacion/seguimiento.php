@@ -905,7 +905,7 @@ $count = count($users);
                                             $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '4':
-                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '5':
                                             $url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id_info']));

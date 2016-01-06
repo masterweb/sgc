@@ -215,13 +215,27 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                             <td>
                                                 <?php
                                                 $test = $this->getTestDrive($c['id_informacion'], $c['id']);
+                                                $preg1 = $this->getTestDemostracion($c['id_informacion'], $c['id']);
+                                                $preg_fin = $preg1['preg1'];
+                                                //echo $preg_fin;
                                                 ?>
-                                                <?php if ($test > 0): ?>
+                                                <?php 
+                                                if($preg_fin === 'Si'){
+                                                    $class_activa = 'btn-warning';
+                                                    $resp = 'Si';
+                                                }else if($preg_fin === 'No'){
+                                                    $class_activa = 'btn-tomate';
+                                                    $resp = 'No';
+                                                }else{
+                                                    $class_activa = 'btn-danger';
+                                                    $resp = 'Test Drive';
+                                                }
+                                                if ($test > 0): ?>
                                                     <!--                                            <a class="btn btn-success btn-xs btn-rf">Test Drive</a>-->
                                                                                                 <!--<a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacion', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Test Drive</a>-->
-                                                    <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn btn-warning btn-xs btn-rf">Test Drive</a>
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn <?= $class_activa ?> btn-xs btn-rf"><?= $resp ?></a>
                                                 <?php else: ?>    
-                                                    <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Test Drive</a>
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn <?= $class_activa ?> btn-xs btn-rf"><?= $resp ?></a>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>

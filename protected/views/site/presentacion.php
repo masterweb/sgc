@@ -156,7 +156,11 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
         $('#btn-pres' + id).removeAttr('disabled');
         $('#btn-pres' + id).removeClass('btn-primary');
     }
+
+    //incia cliente_nv antes de llamar a presionados_nv.js 
+    var cliente_nv = <?= $id ?>
 </script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/presionados_nv.js"></script>
 <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -229,7 +233,8 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($vec as $c): ?>
+                                <?php
+                                foreach ($vec as $c): ?>
                                     <tr>
                                         <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                         <td><?php echo $this->getVersion($c['version']); ?> </td>
@@ -240,13 +245,15 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                                         $countpr = GestionPresentacion::model()->count($criteria5);
                                         //echo 'num count: '.$countpr;
                                         ?>
-                                        <?php if ($countp > 0): ?>
-                                            <td><a  href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-success btn-xs btn-cat<?php echo $c['id']; ?>" target="_blank" id="btn-cat">Catálogo</a>
+
+                                        <?php
+                                        if ($countp > 0): ?>
+                                            <td><a  href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-xs btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" usados="<?php echo $c['id']; ?>">Catálogo</a>
                                             </td>
-                                            <td><a  href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs" id="btn-pres<?php echo $c['id']; ?>">Presentación</a>
+                                            <td><a  href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-xs btn-pres" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a>
                                         <?php else: ?>
-                                            <td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-primary btn-xs btn-cat<?php echo $c['id']; ?>" target="_blank" id="btn-cat" onclick="cat(<?php echo $c['id']; ?>)">Catálogo</a></td>
-                                            <td><a href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs" disabled="disabled" id="btn-pres<?php echo $c['id']; ?>">Presentación</a></td>
+                                            <td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-primary btn-xs btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" onclick="cat(<?php echo $c['id']; ?>)" usados="<?php echo $c['id']; ?>">Catálogo</a></td>
+                                            <td><a href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs" disabled="disabled" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a></td>
                                         <?php endif; ?>
 
                                         <?php
