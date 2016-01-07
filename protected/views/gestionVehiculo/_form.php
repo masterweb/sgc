@@ -21,9 +21,9 @@ if (isset($id)) {
     foreach ($vec as $key => $carro) {
         $modelos_user[] = $carro['modelo'];
     } 
-    if($_GET["tipo"]){
-        $tipo = $_GET["tipo"];
-        $fuente  = $_GET["fuente"]; 
+    if($_POST["tipo"]){
+        $tipo = $_POST["tipo"];
+        $fuente  = $_POST["fuente"]; 
     }else{
         $tipo = '';
         $fuente  = '';  
