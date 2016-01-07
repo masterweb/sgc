@@ -1082,6 +1082,8 @@ $provincia_id = $this->getProvinciaId($city_id);
                                     echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="primera_visita">';
                                 endif;
                                 ?>
+                                <input type="hidden" name="tipo" value="<?=$tipo?>">
+                                <input type="hidden" name="fuente" value="<?=$id?>">
                                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                                 <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                             </div>
