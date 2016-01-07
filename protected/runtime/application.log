@@ -33458,3 +33458,126 @@ Stack trace:
 REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
 HTTP_REFERER=http://local.intranet.kia.com/index.php/site/negociacion/1918
 ---
+2016/01/07 10:56:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/negociacion?id_informacion=1918&id_vehiculo=298
+---
+2016/01/07 10:56:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/negociacion?id_informacion=1918&id_vehiculo=298
+---
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "precio_contado" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "tiempo_seguro_contado" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "seguro_contado" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "precio_contado_total" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "observaciones_contado" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "id_financiamiento" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "flag" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "mod" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "acc1" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "acc2" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "acc3" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:44 [warning] [application] Error al establecer unsafe al atributo "tipo_financiamiento" de "GestionFinanciamiento".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (570)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:45 [warning] [application] Error al establecer unsafe al atributo "precio_contado" de "GestionFinanciamientoOp".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (673)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:45 [warning] [application] Error al establecer unsafe al atributo "tiempo_seguro_contado" de "GestionFinanciamientoOp".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (673)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:45 [warning] [application] Error al establecer unsafe al atributo "seguro_contado" de "GestionFinanciamientoOp".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (673)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:45 [warning] [application] Error al establecer unsafe al atributo "precio_contado_total" de "GestionFinanciamientoOp".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (673)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:57:45 [warning] [application] Error al establecer unsafe al atributo "observaciones_contado" de "GestionFinanciamientoOp".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionVehiculoController.php (673)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/01/07 10:58:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/negociacion/1918
+---
+2016/01/07 10:58:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/negociacion/1918
+---
+2016/01/07 10:58:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/cierre/1918
+---
+2016/01/07 10:58:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/cierre/1918
+---
+2016/01/07 10:59:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/factura?id_informacion=1918&id_vehiculo=298
+---
+2016/01/07 10:59:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/factura?id_informacion=1918&id_vehiculo=298
+---
