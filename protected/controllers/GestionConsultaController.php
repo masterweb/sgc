@@ -376,6 +376,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
      * If update is successful, the browser will be redirected to the 'view' page.
      */
     public function actionUpdate($id_informacion = NULL, $tipo = NULL, $fuente = NULL) {
+
         $id = $this->getIdConsulta($id_informacion);
 
         $model = $this->loadModel($id);
@@ -661,7 +662,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $historial->fecha = date("Y-m-d H:i:s");
             $historial->save();
 
-            $this->redirect(array('gestionVehiculo/create/' . $id_info));
+            if($_POST["tipo"]){
+                $tipo2 = $_POST["tipo"];
+                $fuente2  = $_POST["fuente"]; 
+            }else{
+                $tipo2 = '';
+                $fuente2  = '';  
+            }
+
+
+            $this->redirect(array('gestionVehiculo/create/' . $id_info. '?tipo='. $tipo2. '&fuente='. $fuente2));
 
             //if ($model->save())
             //    $this->redirect(array('view', 'id' => $model->id));
