@@ -1700,6 +1700,7 @@ function deleter(id){
                     <h1 class="tl_seccion">Negociación</h1>
                 </div>
                 <div class="highlight">
+                    <button type="button" class="btn btn-success btn-xs" onclick="history.go(-1);"><< Regresar</button>
                     <div class="form">
                         <?php
                         $form = $this->beginWidget('CActiveForm', array(

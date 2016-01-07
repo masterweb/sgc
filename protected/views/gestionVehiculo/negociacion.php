@@ -1716,10 +1716,12 @@ function deleter(id){
         <!-- Tab panels -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="profile">
+
                 <div class="row">
                     <h1 class="tl_seccion">Negociación</h1>
                 </div>
                 <div class="highlight">
+                    <button type="button" class="btn btn-success btn-xs" onclick="history.go(-1);"><< Regresar</button>
                     <div class="form">
                         <?php
                         $form = $this->beginWidget('CActiveForm', array(

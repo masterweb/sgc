@@ -2010,6 +2010,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $id_asesor = Yii::app()->user->getId();
                 $emailCliente = $this->getEmailCliente($_POST['GestionEntrega']['id_informacion']);
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
+                $id_responsable = Yii::app()->user->getId();
+                $dealer_id = $this->getDealerId($id_responsable);
+                $concesionario_m = $this->getConcesionario($dealer_id);
                 $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']) . ' ' . $this->getVersionTestDrive($_POST['GestionEntrega']['id_vehiculo']);
                 $general = '<body style="margin: 10px;">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
@@ -2020,7 +2023,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p>
 
                                     <p style="margin: 2px 0;">La fecha de entrega de su vehículo está fijada para el ' . date("d") . "/" . date("m") . "/" . date("Y") . ' 
-                                        en el concesionario Asiauto Mariana de Jesus por:</p>
+                                        en el concesionario '.$concesionario_m.' por:</p>
                                         <br />
                                     <table width="600" cellpadding="">
                                     <tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>

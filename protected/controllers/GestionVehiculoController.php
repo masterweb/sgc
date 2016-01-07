@@ -1002,6 +1002,9 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $id_asesor = Yii::app()->user->getId();
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_strtolower($nombre_responsable);
+        $nombre_responsable = ucwords($nombre_responsable);
+
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -1072,6 +1075,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $id_asesor = Yii::app()->user->getId();
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_strtolower($nombre_responsable);
+        $nombre_responsable = ucwords($nombre_responsable);
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -1188,8 +1193,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                                   <td colspan="2">' . $this->getConcesionarioDireccion($id_asesor) . '</td>
                                 </tr>
                                 <tr>
-                                  <td><strong style="color:#AB1F2C;">T</strong> (593) ' . $this->getAsesorTelefono($id_asesor) . ' ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
-                                  <td><strong style="color:#AB1F2C;">M</strong> (593 9) ' . $this->getAsesorCelular($id_asesor) . '</td>
+                                  <td><strong style="color:#AB1F2C;">T</strong> (593) <a href="tel:' . $this->getAsesorTelefono($id_asesor) . '">' . $this->getAsesorTelefono($id_asesor) . '</a> ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
+                                  <td><strong style="color:#AB1F2C;">M</strong> (593) <a href="tel:' . $this->getAsesorCelular($id_asesor) . '">' . $this->getAsesorCelular($id_asesor) . '</a></td>
                                 </tr>
                                 <tr>
                                   <td><strong style="color:#AB1F2C;">E</strong> ' . $this->getAsesorEmail($id_asesor) . ' </td>
@@ -1268,7 +1273,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $general .= '<p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>
 		<p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
                             </div>
-		<p></p><br />
+		<p>Por favor realizar llamada de Presentación al cliente.</p><br />
                             <p></p><br />
                             <p style="margin: 2px 0;">Saludos cordiales,</p>
                             <p style="margin: 2px 0;">SGC</p>

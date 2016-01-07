@@ -72,7 +72,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
     <div class="row">
         <div class="col-xs-3"><strong>MODELO: </strong><?php echo $this->getModel($value['modelo']); ?></div>
         <div class="col-xs-7"><strong>VERSIÓN: </strong><?php echo $this->getVersion($value['version']); ?></div>
-        <div class="col-xs-3"><strong>AÑO: </strong>2015</div>
+        <!--div class="col-xs-3"><strong>AÑO: </strong>2015</div-->
     </div>
     <div class="row">
         <div class="col-xs-6"><strong>FORMA DE PAGO: </strong><?php echo $value['forma_pago']; ?></div>

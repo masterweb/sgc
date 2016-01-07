@@ -70,7 +70,7 @@ foreach ($data as $key => $value) :
             
         </div>
         <div class="row">
-            <div class="col-xs-3"><strong>AÑO: </strong>2015</div>
+            <!--div class="col-xs-3"><strong>AÑO: </strong>2015</div-->
         </div>
         <div class="row">
             <div class="col-xs-6"><strong>FORMA DE PAGO: </strong>' . $value['forma_pago'] . '</div>

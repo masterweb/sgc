@@ -2361,6 +2361,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_strtolower($nombre_responsable);
+        $nombre_responsable = ucwords($nombre_responsable);
         $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -2414,6 +2416,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_strtolower($nombre_responsable);
+        $nombre_responsable = ucwords($nombre_responsable);
         $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -2985,8 +2989,8 @@ Kia Motors Ecuador
                                               <td colspan="2">' . $this->getConcesionarioDireccion($id_asesor) . '</td>
                                             </tr>
                                             <tr>
-                                              <td><strong style="color:#AB1F2C;">T</strong> (593) ' . $this->getAsesorTelefono($id_asesor) . ' ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
-                                              <td><strong style="color:#AB1F2C;">M</strong> (593 9) ' . $this->getAsesorCelular($id_asesor) . '</td>
+                                              <td><strong style="color:#AB1F2C;">T</strong> (593) <a href="tel:' . $this->getAsesorTelefono($id_asesor) . '">' . $this->getAsesorTelefono($id_asesor) . '</a> ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
+                                              <td><strong style="color:#AB1F2C;">M</strong> (593) <a href="tel:' . $this->getAsesorCelular($id_asesor) . '">' . $this->getAsesorCelular($id_asesor) . '</a></td>
                                             </tr>
                                             <tr>
                                               <td><strong style="color:#AB1F2C;">E</strong> ' . $this->getAsesorEmail($id_asesor) . ' </td>
@@ -3003,7 +3007,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
-				$ciudad = $ciudadCliente;
+				$ciudad = $this->getCiudad($id_asesor);
+                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                $fecha_m = date("Y-m-d");
 
                 $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
@@ -3016,7 +3022,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <br>
-                                        <p>'.$ciudad.', 5 de agosto del 2015</p><br /><br />
+                                        <p>'.$ciudad.', '.$fecha_m.'</p><br /><br />
                                         <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
                                         <p>'.$ciudad.'.-</p>

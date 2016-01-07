@@ -223,27 +223,38 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                 <td>
                                                     <?php
                                                     $status = $this->getStatusSolicitud($c['id_informacion'], $c['id']);
-                                                    switch ($status) {
-                                                        case 'na':
-                                                            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
-                                                            break;
-                                                        case 1:
-                                                            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
-                                                            break;
-                                                        case 2:
-                                                            echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
-                                                            break;
-                                                        case 3:
-                                                            echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>';
 
-                                                            break;
-                                                        case 4:
-                                                            echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>';
+                                                    $criteria2 = new CDbCriteria(array(
+                                                        "condition" => "id_informacion = ".$c['id_informacion'].' AND id_vehiculo = '.$c['id']
+                                                    ));
+                                                    $status = GestionFinanciamiento::model()->find($criteria2);
 
-                                                            break;
+                                                    if($status->forma_pago == 'Contado'){
+                                                        echo '<a class="btn btn-tomate btn-xs" target="_blank">Contado</a>';
+                                                    }else if($status->forma_pago == null){
+                                                        //echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
+                                                    }else{                                                    
+                                                        switch ($status) {
+                                                            case 'na':
+                                                                echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
+                                                                break;                                                             
+                                                            case 1:
+                                                                echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
+                                                                break;
+                                                            case 2:
+                                                                echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+                                                                break;
+                                                            case 3:
+                                                                echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>';
+                                                                break;
+                                                            case 4:
+                                                                echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>';
 
-                                                        default:
-                                                            break;
+                                                                break;
+
+                                                            default:
+                                                                break;
+                                                        }
                                                     }
                                                     ?>
                                                 </td>

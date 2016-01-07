@@ -253,7 +253,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                                             <td><a  href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-xs btn-pres" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a>
                                         <?php else: ?>
                                             <td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-primary btn-xs btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" onclick="cat(<?php echo $c['id']; ?>)" usados="<?php echo $c['id']; ?>">Catálogo</a></td>
-                                            <td><a href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs" disabled="disabled" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a></td>
+                                            <td><a href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-pres" disabled="disabled" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a></td>
                                         <?php endif; ?>
 
                                         <?php

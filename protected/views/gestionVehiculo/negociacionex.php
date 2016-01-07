@@ -1798,6 +1798,7 @@ function deleter(id){
                         ?>
 
                         <div class="cont-proforma">
+                            <button type="button" class="btn btn-success btn-xs" onclick="history.go(-1);"><< Regresar</button>
                             <div class="row">
                                 <h1 class="tl_seccion">Datos de Cliente</h1>
                             </div>
