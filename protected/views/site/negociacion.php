@@ -228,8 +228,8 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                         "condition" => "id_informacion = ".$c['id_informacion'].' AND id_vehiculo = '.$c['id']
                                                     ));
                                                     $status = GestionFinanciamiento::model()->find($criteria2);
-
-                                                    if($status->forma_pago == 'Contado'){
+                                                    
+                                                    if($status->forma_pago === 'Contado'){
                                                         echo '<a class="btn btn-tomate btn-xs" target="_blank">Contado</a>';
                                                     }else if($status->forma_pago == null){
                                                         //echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
