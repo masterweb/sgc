@@ -763,7 +763,7 @@ $dealer_id = $this->getDealerId($id_responsable);
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span>Responsable Exonerados</span></th>
+                            <th><span><!--Responsable Exonerados--> Asesor Comercial Origen</span></th>
                             <th><span>Responsable Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Categorización</span></th>
