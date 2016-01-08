@@ -1,3 +1,2 @@
 upload/*
-protected/**/runtime/aplication.log
-protected/**/runtime/._aplication.log
+protected/**/runtime/*
