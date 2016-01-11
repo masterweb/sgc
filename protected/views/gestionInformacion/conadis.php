@@ -437,7 +437,7 @@ if ($ced != '') {
                      }*/
                     if (tipo_fuente == 'exonerado') {
                         $('#myModal').modal('show');
-                        form.submit();
+                        setTimeout(function(){ form.submit(); }, 5000);                        
                     } else {
                         form.submit();
                     }
@@ -917,7 +917,7 @@ if ($ced != '') {
                             </div>
                         </div>
                         <div class="row cont-img">
-                            <div class="col-md-4">
+                            <div class="col-md-8">
                                 <label for="">Foto Carnet CONADIS</label>
                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                     <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
@@ -937,8 +937,8 @@ if ($ced != '') {
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="checkbox">
-                                    <label>
-                                        <?php echo $form->checkBox($model, 'senae', array('value' => 1, 'uncheckValue' => 0)); ?> SENAE
+                                    <label>                                        
+                                        <?php echo $form->checkBox($model, 'senae', array('value' => 1, 'uncheckValue' => 0)); ?> Declaración aduanera de importación "SENAE"
                                     </label>
                                 </div>
                             </div>
@@ -1087,11 +1087,11 @@ if ($ced != '') {
                                 <h4 class="modal-title">SGC</h4>
                             </div>
                             <div class="modal-body">
-                                <h4>Tu proceso se ha ido a exonerados</h4>
+                                <h4>Tu proceso se está enviando a exonerados... Por favor espere...</h4>
                             </div>
-                            <div class="modal-footer">
+                            <!--div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
-                            </div>
+                            </div-->
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->

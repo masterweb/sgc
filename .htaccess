@@ -8,7 +8,3 @@ RewriteCond %{REQUEST_FILENAME} !-d
  
 # otherwise forward it to index.php
 RewriteRule . index.php
-
-php_flag display_startup_errors off
-php_flag display_errors off
-php_flag html_errors off

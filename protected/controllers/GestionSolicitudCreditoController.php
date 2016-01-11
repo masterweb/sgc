@@ -433,7 +433,6 @@ class GestionSolicitudCreditoController extends Controller {
         $hoja_solicitud->save();
 
 
-
         # mPDF
         $mPDF1 = Yii::app()->ePdf->mpdf();
         $mPDF1->setFooter('{PAGENO}');

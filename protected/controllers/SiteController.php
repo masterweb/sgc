@@ -1225,7 +1225,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         <th><span>Modelo</span></th>
                         <th><span>Versión</span></th>
                         <th><span>Necesidad</span></th>
-                        <!--<th><span>Edición</span></th>-->
+                        <th><span>Consulta</span></th>
+                        <th><span>Lista de Precios</span></th>
                     </tr>
                 </thead>
                 <tbody>';
@@ -1241,7 +1242,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 <td>' . $this->getNecesidad($m['id_informacion']) . '</td>    
                 <!--<td><a href="' . Yii::app()->createUrl('gestionVehiculo/update', array('id' => $m['id'], 'id_informacion' => $m['id_informacion'])) . '" class="btn btn-primary btn-xs btn-danger">Editar</a>                              
                 </td>-->
-                
+                <td><button class="btn btn-xs btn-success">Consulta</button></td>
+                <td><a href="/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                 </tr>';
         endforeach;
         $data .= '</tbody></table></div>';

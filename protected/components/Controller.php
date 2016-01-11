@@ -842,6 +842,15 @@ class Controller extends CController {
         return $dealer->dealer_id;
     }
 
+    public function getResponsableId_gerent($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $dealer = GestionInformacion::model()->find($criteria);
+        return $dealer->responsable;
+    }
+
     public function getConcesionarioDealerId($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(

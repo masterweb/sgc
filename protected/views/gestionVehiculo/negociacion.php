@@ -1980,7 +1980,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
-                                                <input type="text" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control"/>
+                                                <input type="text" maxlength="11" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control"/>
                                                 <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                             </div>
                                         </div>

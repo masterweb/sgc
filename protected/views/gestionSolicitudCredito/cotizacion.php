@@ -9,7 +9,11 @@ $dealer_id = $this->getConcesionarioId($id_informacion);
 $id_modelo = $this->getIdModelo($id_vehiculo);
 $emailAsesor = $this->getAsesorEmail($id_asesor);
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-//die('id informacion: '.$id_informacion);
+if(empty($concesionarioid)){
+    $id_asesor = $this->getResponsableId_gerent($id_informacion);
+    $concesionarioid = $this->getConcesionarioDealerId($id_asesor); 
+}
+
 
 $telefono = $this->getAsesorTelefono($id_asesor);
 $celular = $this->getAsesorCelular($id_asesor);
@@ -17,6 +21,7 @@ $codigo_asesor = $this->getAsesorCodigo($id_asesor);
 //echo $this->getResponsable($id_asesor);
 $mpdf = Yii::app()->ePdf->mpdf();
 $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
+
 ?>
 <?php
 $criteria = new CDbCriteria(array(

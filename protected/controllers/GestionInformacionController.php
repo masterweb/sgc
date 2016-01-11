@@ -2318,16 +2318,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
 
-        if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS
+        if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS            
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $dealer_id = $this->getDealerId($id_responsable);
+            //die($dealer_id);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados'
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id = $dealer_id
                 ORDER BY gd.id DESC";
+            //die($sql);
         }
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA

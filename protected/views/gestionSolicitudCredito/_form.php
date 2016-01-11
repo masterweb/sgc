@@ -598,6 +598,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         ),
                     ));
                     ?>
+                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/site/negociacion/<?= $id_informacion ?>" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" >Regresar</a>
+                    <br><br>
                     <p class="note">Campos con <span class="required">*</span> son requeridos.</p>
                     <?php //echo $form->errorSummary($model); ?>
 
@@ -1092,7 +1094,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'empresa_trabajo'); ?></div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'telefonos_trabajo'); ?>
-                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['telefono_oficina'])); ?>
+                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['telefono_oficina'])); ?>
                                 <?php echo $form->error($model, 'telefonos_trabajo'); ?></div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'tiempo_trabajo'); ?>
