@@ -15,7 +15,7 @@
         </div>
     <?php endif; ?>
     <div class="row">
-        <h1 class="tl_seccion">Tabla de datos</h1>
+        <h1 class="tl_seccion">Embudo</h1>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -26,8 +26,8 @@
                             <th></th>
                             <th><?= $varView['nombre_mes_actual']; ?></th>
                             <th><?= $varView['nombre_mes_anterior']; ?></th>
-                            <th>VAR</th>
-                            <th>DIF</th>
+                            <th>Variación</th>
+                            <th>Diferencia</th>
                         </tr>
                     <tbody>
                         <tr><td>TRÁFICO</td>
@@ -39,81 +39,20 @@
                         <tr><td>PROFORMA</td>
                             <td><?= $varView['proforma_mes_actual']; ?></td>
                             <td><?= $varView['proforma_mes_anterior']; ?></td>
-                            <td><?=  $varView['var_pr']?></td>
-                            <td>
-                                <?php
-                                $dif = $varView['proforma_mes_actual'] - $varView['proforma_mes_anterior'];
-                                if ($dif > 0) {
-                                    echo '<span>' . $dif . '</span>';
-                                } else {
-                                    echo '<span class="dif">(' . abs($dif) . ')</span>';
-                                }
-                                ?> 
-                            </td>
+                            <td><?= $varView['var_pr']?></td>
+                            <td><?= $varView['dif_pr']?></td>
                         </tr>
                         <tr><td>TESTDRIVE</td>
                             <td><?= $varView['td_mes_actual']; ?></td>
                             <td><?= $varView['td_mes_anterior']; ?></td>
-                            <td>
-                                <?php
-                                $dif = $varView['td_mes_actual'] - $varView['td_mes_anterior'];
-                                if ($varView['td_mes_anterior'] == 0) {
-                                    $df = '100%';
-                                } else {
-                                    $df = ($dif * 100) / $varView['td_mes_anterior'];
-                                    if ($df > 0) {
-                                        $df = round((($dif * 100) / $varView['td_mes_anterior']), 2);
-                                        $df = '<span>' . $df . '%</span>';
-                                    } else {
-                                        $df = round((($dif * 100) / $varView['td_mes_anterior']), 2);
-                                        $df = '<span class="dif">(' . abs($df) . '%)</span>';
-                                    }
-                                }
-                                echo $df;
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                $dif = $varView['td_mes_actual'] - $varView['td_mes_anterior'];
-                                if ($dif > 0) {
-                                    echo '<span>' . $dif . '</span>';
-                                } else {
-                                    echo '<span class="dif">(' . abs($dif) . ')</span>';
-                                }
-                                ?>   
-                            </td>
+                            <td><?= $varView['var_td']?></td>
+                            <td><?= $varView['dif_td']?></td>
                         </tr>
                         <tr><td>VENTAS</td>
                             <td><?= $varView['vh_mes_actual']; ?></td>
                             <td><?= $varView['vh_mes_anterior']; ?></td>
-                            <td>
-                                <?php
-                                $dif = $varView['vh_mes_actual'] - $varView['vh_mes_anterior'];
-                                if ($varView['vh_mes_anterior'] == 0) {
-                                    $df = '100%';
-                                } else {
-                                    $df = ($dif * 100) / $varView['vh_mes_anterior'];
-                                    if ($df > 0) {
-                                        $df = round((($dif * 100) / $varView['vh_mes_anterior']), 2);
-                                        $df = '<span>' . $df . '%</span>';
-                                    } else {
-                                        $df = round((($dif * 100) / $varView['vh_mes_anterior']), 2);
-                                        $df = '<span class="dif">(' . abs($df) . '%)</span>';
-                                    }
-                                }
-                                echo $df;
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                $dif = $varView['vh_mes_actual'] - $varView['vh_mes_anterior'];
-                                if ($dif > 0) {
-                                    echo '<span>' . $dif . '</span>';
-                                } else {
-                                    echo '<span class="dif">(' . abs($dif) . ')</span>';
-                                }
-                                ?>
-                            </td>
+                            <td><?= $varView['var_ve']; ?></td>
+                            <td><?= $varView['dif_ve']; ?></td>
                         </tr>
                     </tbody>
                     </thead>
@@ -162,7 +101,11 @@
                             <td>
                                 <?php
                                 $dfpr = $ts1 - $ts2;
-                                if($df > 0){echo $dfpr.' %';}else{echo '<span class="dif">('.abs($dfpr).' %)</span>';}
+                                if($df > 0){
+                                    echo $dfpr.' %';
+                                }else{
+                                    echo '<span class="dif">('.abs($dfpr).' %)</span>';
+                                }
                                 ?>
                             </td>
                             
