@@ -3755,37 +3755,41 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     // Empieza optimización de código por Nicolás Vela 12-2015
 
     public function actionReportes($id_informacion = null, $id_vehiculo = null) {
-        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
-        $id_responsable = Yii::app()->user->getId();
-        $dealer_id = $this->getDealerId($id_responsable);
-        $titulo = '';
-        $concesionario = 2000;
-        $tipos = null;
+        $varView = array();
+
+        $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
+        $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
+        $varView['id_responsable'] = Yii::app()->user->getId();
+        $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
+        $varView['titulo'] = '';
+        $varView['concesionario'] = 2000;
+        $varView['tipos'] = null;
 
         date_default_timezone_set('America/Guayaquil'); 
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
-        $fecha_actual = strftime("%Y-%m-%d", $dt);
-        $fecha_actual2 = strtotime('+1 day', strtotime($fecha_actual));  
-        $fecha_actual2 = date('Y-m-d', $fecha_actual2);        
-        $fecha_inicial_actual = (new DateTime('first day of this month'))->format('Y-m-d');
-        $fecha_anterior = strftime( "%Y-%m-%d", strtotime( '-1 month', $dt ) );
-        $fecha_inicial_anterior = strftime( "%Y-%m", strtotime( '-1 month', $dt ) ). '-01';
-        $nombre_mes_actual = strftime("%B - %Y", $dt);
-        $nombre_mes_anterior = strftime( "%B - %Y", strtotime( '-1 month', $dt ) );
+
+        $varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
+        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
+        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
+        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
+        $varView['fecha_anterior'] = strftime( "%Y-%m-%d", strtotime( '-1 month', $dt ) );
+        $varView['fecha_inicial_anterior'] = strftime( "%Y-%m", strtotime( '-1 month', $dt ) ). '-01';
+        $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
+        $varView['nombre_mes_anterior'] = strftime( "%B - %Y", strtotime( '-1 month', $dt ) );
 
         $con = Yii::app()->db;
 
      	//GET MODELOS Y VERSIONES PARA BUSCADOR
         $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos";
         $requestModelos_nv = $con->createCommand($sqlModelos_nv);
-        $modelos_car = $requestModelos_nv->queryAll();
+        $varView['modelos_car'] = $requestModelos_nv->queryAll();
 
         //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
         $lista_datos = array();
         if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
         if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
+
         $SQLmodelos = '';
         foreach ($lista_datos as $key => $value) {
             foreach ($value as $key => $carros) {
@@ -3799,11 +3803,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         //GET Asesores
         $mod = new GestionDiaria;
         $cre = new CDbCriteria();
-        $dealer_resp = $this->getConcesionarioDealerId($id_responsable);
+        $varView['dealer_resp']= $this->getConcesionarioDealerId($varView['id_responsable']);
         if(!empty($dealer_resp)){
-            $dealer_id = $dealer_resp;
+            $varView['dealer_id'] = $varView['dealer_resp'];
         }
-        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id}";
+        $cre->condition = " cargo_id = 71 AND dealers_id = ".$varView['dealer_id'];
         $cre->order = " nombres ASC";
         $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
 
@@ -3813,24 +3817,25 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $group_ext = null;
         $select_ext = null;
         $tit_init = 'Búsqueda entre ';
-        switch ($cargo_id) { 
+        switch ($varView['cargo_id']) { 
             case 71: // asesor de ventas 
-            	$id_persona = "gi.responsable = ".$id_responsable;
+            	$id_persona = "gi.responsable = ".$varView['id_responsable'];
             	$tit_init = 'Búsqueda entre ';
             	break;
             case 70: // jefe de sucursal 
-            	$id_persona = "gi.dealer_id = ".$dealer_id;
+            	$id_persona = "gi.dealer_id = ".$varView['dealer_id'];
             	$tit_init = 'Búsqueda entre ';          	
             	break;
             case 69: // GERENTE COMERCIAL
-            	$id_persona = 'u.grupo_id = '.$grupo_id;
+            	$id_persona = 'u.grupo_id = '.$varView['grupo_id'];
             	$tit_init = 'Búsqueda por defecto entre ';                
-            	$tit_ext = ', Grupo: ' . $this->getNombreGrupo($grupo_id);
+            	$tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
             	$join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
 		        $group_ext = null;
 		        $select_ext = ', u.grupo_id ';
             	break;
-        }        
+        }
+
        
         if (isset($_GET['GestionInformacion'])) {
             $tit_ext = '';            
@@ -3846,12 +3851,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $responsable = $_GET['GestionDiaria']['responsable'];
                 $tit_ext = '. Asesor: ' . $this->getResponsableNombres($responsable);
                 $id_persona = 'gi.responsable = '.$responsable;
-                $id_persona .= " AND gi.dealer_id = ".$dealer_id.' ';
+                $id_persona .= " AND gi.dealer_id = ".$varView['dealer_id'].' ';
             }else if($tip_us != 1 && $tip_us != 3 && empty($_GET['GestionDiaria']['responsable'])){       
                 $responsable = key($usu);
                 $tit_ext .= '. Asesor: ' . reset($usu);
                 $id_persona = 'gi.responsable = '.$responsable;
-                $id_persona .= " AND gi.dealer_id = ".$dealer_id.' ';
+                $id_persona .= " AND gi.dealer_id = ".$varView['dealer_id'].' ';
             }else if($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])){
                 $responsable = $_GET['GestionDiaria']['responsable'];
                 if($responsable){
@@ -3860,7 +3865,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 $tit_ext .= '. Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionInformacion']['concesionario']);
-            }            
+            }
+                       
 
             //===========================VARIABLES para getSelectCKDCBU()================================
             if ($tip_us == 1) {
@@ -3884,78 +3890,102 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $tipo_busqueda_proforma2 = 14;
                 $tipo_busqueda_testdrive2 = 15;
                 $tipo_busqueda_ventas2 = 16;
-                $tit_ext .= '. Grupo: ' . $this->getNombreGrupo($grupo_id);
+                $tit_ext .= '. Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
             }
 
-            $fecha1 = explode(' - ', $_GET['GestionInformacion']['fecha1']);
-            $fecha2 = explode(' - ', $_GET['GestionInformacion']['fecha2']);
+            $varView['fecha1'] = explode(' - ', $_GET['GestionInformacion']['fecha1']);
+            $varView['fecha2'] = explode(' - ', $_GET['GestionInformacion']['fecha2']);
             $responsable = 0;
 
-            $fecha_inicial_anterior = trim($fecha1[0]);
-            $fecha_anterior = trim($fecha1[1]);
+            $varView['fecha_inicial_anterior'] = trim($varView['fecha1'][0]);
+            $varView['fecha_anterior'] = trim($varView['fecha1'][1]);
 
-            $fecha_inicial_actual = trim($fecha2[0]);                
-            $fecha_actual = trim($fecha2[1]);            
+            $varView['fecha_inicial_actual'] = trim($varView['fecha2'][0]);                
+            $varView['fecha_actual'] = trim($varView['fecha2'][1]);            
 
-            $nombre_mes_actual = strftime( "%B - %Y", strtotime($fecha_inicial_actual));
-            $nombre_mes_anterior = strftime( "%B - %Y", strtotime($fecha_inicial_anterior));
+            $varView['nombre_mes_actual'] = strftime( "%B - %Y", strtotime($varView['fecha_inicial_actual']));
+            $varView['nombre_mes_anterior'] = strftime( "%B - %Y", strtotime($varView['fecha_inicial_anterior']));
 
             $tipos = array();
             array_push($tipos, $tipo_busqueda_trafico2, $tipo_busqueda_proforma2, $tipo_busqueda_testdrive2, $tipo_busqueda_ventas2);  
         }      
-  
+    
         $retorno = $this->buscar(
-            $cargo_id, 
-            $id_responsable, 
+            $varView['cargo_id'], 
+            $varView['id_responsable'], 
             $select_ext, 
             $join_ext, 
             $id_persona, 
             $group_ext, 
-            $fecha_inicial_anterior, 
-            $fecha_anterior, 
-            $fecha_inicial_actual, 
-            $fecha_actual, 
-            $concesionario, 
+            $varView['fecha_inicial_anterior'], 
+            $varView['fecha_anterior'], 
+            $varView['fecha_inicial_actual'], 
+            $varView['fecha_actual'], 
+            $varView['$concesionario'], 
             $tipos, 
             $SQLmodelos
         );
+        $varView['trafico_mes_anterior'] = $retorno[0];
+        $varView['trafico_mes_actual'] = $retorno[1];
+        $varView['vhcbu2'] = $retorno[2];
+        $varView['vhckd2'] = $retorno[3];
+        $varView['vhcbu1'] = $retorno[4];
+        $varView['vhckd1'] = $retorno[5];
+        $varView['vh_mes_actual']= $retorno[6];
+        $varView['vh_mes_anterior'] = $retorno[7];
+        $varView['tdcbu2'] = $retorno[8];
+        $varView['tdckd2'] = $retorno[9];
+        $varView['tdcbu1'] = $retorno[10];
+        $varView['tdckd1'] = $retorno[11];
+        $varView['td_mes_actual'] = $retorno[12];
+        $varView['td_mes_anterior'] = $retorno[13];
+        $varView['proformacbu2'] = $retorno[14];
+        $varView['proformackd2'] = $retorno[15];
+        $varView['proformacbu1'] = $retorno[16];
+        $varView['proformackd1'] = $retorno[17];
+        $varView['proforma_mes_actual'] = $retorno[18];
+        $varView['proforma_mes_anterior'] = $retorno[19];
+        $varView['traficocbu2'] = $retorno[20];
+        $varView['traficockd2'] = $retorno[21];
+        $varView['traficocbu1'] = $retorno[22];            
+        $varView['traficockd1'] = $retorno[23];
+        $varView['lista_datos'] = $lista_datos;
+        $varView['usu'] = $usu;
+        $varView['mod'] = $mod;
 
-        $titulo = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
+        //set diferencias
+        $varView['var_tr'] = $this->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'var');
+        $varView['dif_tr'] = $this->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'dif');
 
-        $this->render('reportes', array(
-            'titulo' => $titulo,
-            'nombre_mes_anterior' => $nombre_mes_anterior, //segundo
-            'nombre_mes_actual' => $nombre_mes_actual, // primero
-            'trafico_mes_anterior' => $retorno[0],
-            'trafico_mes_actual' => $retorno[1],
-            'vhcbu2' => $retorno[2],
-            'vhckd2' => $retorno[3],
-            'vhcbu1' => $retorno[4],
-            'vhckd1' => $retorno[5],
-            'vh_mes_actual' => $retorno[6],
-            'vh_mes_anterior' => $retorno[7],
-            'tdcbu2' => $retorno[8],
-            'tdckd2' => $retorno[9],
-            'tdcbu1' => $retorno[10],
-            'tdckd1' => $retorno[11],
-            'td_mes_actual' => $retorno[12],
-            'td_mes_anterior' => $retorno[13],
-            'proformacbu2' => $retorno[14],
-            'proformackd2' => $retorno[15],
-            'proformacbu1' => $retorno[16],
-            'proformackd1' => $retorno[17],
-            'proforma_mes_actual' => $retorno[18],
-            'proforma_mes_anterior' => $retorno[19],
-            'traficocbu2' => $retorno[20],
-            'traficockd2' => $retorno[21],
-            'traficocbu1' => $retorno[22],            
-            'traficockd1' => $retorno[23],
-            'modelos_car' => $modelos_car,
-            'lista_datos' => $lista_datos,
-            'usu' => $usu,
-            'mod' => $mod
-        ));
+        $varView['var_pr'] = $this->DIFconstructor($varView['proforma_mes_actual'], $varView['proforma_mes_anterior'], 'var');
+
+        $varView['titulo'] = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
+
+        $this->render('reportes', array('varView' => $varView));
     }
+
+    
+    function DIFconstructor($var1, $var2, $tipo){
+        $dif = $var1 - $var2;
+        $unidad = '';
+        if($tipo == 'var'){
+            $unidad = '%';
+            if($var2 == 0){$var2 = $var1;}       
+            $dif = ($dif * 100) / $var2;
+            $dif = round($dif, 2);            
+        }
+
+        $resp = '<span';
+        if ($dif >= 0) {
+            $resp .= '>' . $dif.$unidad;
+        } else {
+            $resp .= ' class="dif">(' . abs($dif) . $unidad. ')';
+        }
+        $resp .= '</span>';
+
+        return $resp;
+    }
+
     function SQLconstructor($selection, $table, $join, $where, $group = null){
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}

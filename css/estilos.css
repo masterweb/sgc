@@ -555,3 +555,32 @@ img.cometchat_userscontentavatarimage {
   background-color: #ff4e00;
   border-color: #ff4e00;
 }
+
+/*REPORTES */
+
+.alert{margin-bottom: -5px !important;font-size: 16px;}
+.dif{color: red;}
+.calendar-table th{color: black;}
+
+.barra{
+    /*height: 20px;*/
+    margin-bottom: 5px;
+    color: #fff;
+    padding: 5px;
+    font-size: 9px;
+}
+.barratit{
+    font-size: 12px;
+    font-style: italic;
+}
+.trojo{color: red;}
+.tazul{color: blue;}
+.roja{
+    background: red;
+}
+.azul{
+    background: blue;
+}
+hr{
+    border-color: #dedede;
+}

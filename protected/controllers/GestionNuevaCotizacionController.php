@@ -324,6 +324,19 @@ class GestionNuevaCotizacionController extends Controller {
                     //die('ente pros');
                     $model->setscenario('prospeccion');
                     $tipo = 'prospeccion';
+                    $documento = $_POST['GestionNuevaCotizacion']['identificacion'];
+                    switch ($documento) {
+                        case 'ruc':
+                            $model->setscenario('ruc');
+                            break;
+                        case 'pasaporte':
+                            //die('apps');
+                            $model->setscenario('pasaporte');
+                            break;
+
+                        default:
+                            break;
+                    }
                     if ($model->save()) {
                         //die('enter save');
                         $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id,));
