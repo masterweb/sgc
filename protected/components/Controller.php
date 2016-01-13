@@ -695,8 +695,17 @@ class Controller extends CController {
             'select' => 'preg1',
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
-        $preg1 = GestionDemostracion::model()->find($criteria);
-        return $preg1;
+        $resp['preg1'] = GestionDemostracion::model()->find($criteria);
+
+        $criteria = new CDbCriteria(array(
+            'select' => 'fecha',
+            'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
+        ));
+        $fecha = GestionTestDrive::model()->find($criteria);
+
+        $resp['fecha'] = $fecha;
+
+        return $resp;
     }
 
     public function getNegociacion($id_informacion, $id_vehiculo) {

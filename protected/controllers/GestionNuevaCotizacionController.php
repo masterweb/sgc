@@ -321,17 +321,19 @@ class GestionNuevaCotizacionController extends Controller {
                     }
                     break;
                 case 'prospeccion':
-                    //die('ente pros');
                     $model->setscenario('prospeccion');
                     $tipo = 'prospeccion';
                     $documento = $_POST['GestionNuevaCotizacion']['identificacion'];
+                    //die('ente pros ' . $documento);
                     switch ($documento) {
+                        case 'ci':
+                            $model->cedula = $_POST['GestionNuevaCotizacion']['cedula'];
+                            break;
                         case 'ruc':
-                            $model->setscenario('ruc');
+                            $model->ruc = $_POST['GestionNuevaCotizacion']['ruc'];
                             break;
                         case 'pasaporte':
-                            //die('apps');
-                            $model->setscenario('pasaporte');
+                            $model->pasaporte = $_POST['GestionNuevaCotizacion']['pasaporte'];
                             break;
 
                         default:

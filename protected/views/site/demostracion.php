@@ -216,13 +216,14 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                                 <?php
                                                 $test = $this->getTestDrive($c['id_informacion'], $c['id']);
                                                 $preg1 = $this->getTestDemostracion($c['id_informacion'], $c['id']);
-                                                $preg_fin = $preg1['preg1'];
+                                                $preg_fin = $preg1['preg1'] ['preg1'];                                                
                                                 //echo $preg_fin;
                                                 ?>
                                                 <?php 
                                                 if($preg_fin === 'Si'){
                                                     $class_activa = 'btn-warning';
-                                                    $resp = 'Si';
+                                                    $fecha_fin = $preg1['fecha'] ['fecha'];
+                                                    $resp = '<b>Si</b> / '.$fecha_fin;
                                                 }else if($preg_fin === 'No'){
                                                     $class_activa = 'btn-tomate';
                                                     $resp = 'No';

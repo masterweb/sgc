@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskMoney.js" type="text/javascript"></script>
 <?php
 /* @var $this GestionInformacionController */
 /* @var $model GestionInformacion */
@@ -279,6 +278,7 @@ if ($ced != '') {
                     $('.cont-vec').hide();
                     $('.cont-nocont').hide();
                     $('.cont-int-price').hide();
+                    $('.cont-interesado').hide();
                     break;
                 default:
                     break;
@@ -615,24 +615,11 @@ if ($ced != '') {
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div role="tabpanel">
 
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <?php if ($tipo == 'prospeccion'): ?>
-            <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion_on.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita_on.png" alt="" /></span> Cita</a></li>
-            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
-            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
-        <?php else: ?>
-            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
-            <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
-            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
-        <?php endif; ?>
-        <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
-        <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
-        <li role="presentation"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion.png" alt="" /></span> Negociación</a></li>
-        <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cierre.png" alt="" /></span> Cierre</a></li>
-        <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/entrega.png" alt="" /></span> Entrega</a></li>
-        <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/seguimiento.png" alt="" /></span>Seguimiento</a></li>
-    </ul>
+    <!-- Nav tabs -->  
+    <?php 
+        $identificacion = $this->getIdentificacion($id);
+        $this->renderPartial('//layouts/rgd/header', array('tipo' => $tipo));
+    ?>
 
     <!-- Tab panes -->
     <div class="tab-content">
@@ -1281,3 +1268,8 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
         <div role="tabpanel" class="tab-pane" id="messages"></div>
     </div>
 </div>
+
+<!-- Nav tabs -->  
+    <?php 
+        $this->renderPartial('//layouts/rgd/footer', array('tipo' => $tipo));
+    ?>
