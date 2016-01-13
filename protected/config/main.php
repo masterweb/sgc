@@ -95,20 +95,21 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=callcenter',
             'emulatePrepare' => true,
-            //'username' => 'root',
-            //'password' => 'k143c89?4Fg&2',
-			'username' => 'root',
-            'password' => '',
+          'username' => 'root',
+          'password' => 'k143c89?4Fg&2',
+	//		'username' => 'root',
+            //'password' => '',
+
             'charset' => 'utf8',
         ),
          'db2' => array(
           'connectionString' => 'mysql:host=localhost;dbname=adminkia_b4s3k1',
           'class'=>'CDbConnection',
           'emulatePrepare' => true,
-          'username' => 'root',
-          'password' => '',
           //'username' => 'root',
-          //'password' => 'k143c89?4Fg&2',
+          //'password' => '',
+          'username' => 'root',
+          'password' => 'k143c89?4Fg&2',
           'charset' => 'utf8',
           ), 
 

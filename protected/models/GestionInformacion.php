@@ -79,7 +79,7 @@ class GestionInformacion extends CActiveRecord {
                 . 'telefono_casa', 'required','on' => 'rucusado'),
             array('nombres, apellidos, pasaporte, direccion, provincia_domicilio,ciudad_domicilio,email, celular, '
                 . 'telefono_casa', 'required','on' => 'pasaporteusado'),
-            array('nombres, apellidos, email, cedula, celular', 'required','on' => 'prospeccion'),
+            array('nombres, apellidos, email, celular', 'required','on' => 'prospeccion'),
             array('nombres, apellidos, cedula, celular', 'required','on' => 'trafico'),
             array('nombres, direccion', 'required','on' => 'createc'),
             array('concesionario, modelo, version', 'numerical', 'integerOnly' => true),

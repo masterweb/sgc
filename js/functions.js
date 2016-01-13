@@ -252,7 +252,7 @@ $(document).ready(function () {
             case 'prospeccion':
                 $("#GestionNuevaCotizacion_tipo").html(dataprospeccion);
                 $('.tipo-cont').show();
-                $('#cont-ident').hide();
+                $('#cont-ident').show();
                 $('.exh-cont').hide();
                 $('.motivo-cont').hide();
                 $('.empresa-cont').hide();

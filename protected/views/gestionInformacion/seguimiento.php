@@ -900,6 +900,8 @@ $count = count($users);
                                     switch ($c['paso']) {
                                         case '1-2':
                                             $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
+                                            if($c['fuente'] == 'prospeccion')
+                                               $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
                                             break;
                                         case '3':
                                             $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -1064,7 +1066,7 @@ $count = count($users);
                                     <?php if($c['bdc'] == 0){ ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                         <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1): ?>
-                                            <?php if ($c['paso'] == '1-2') { ?>
+                                            <?php if ($c['paso'] == '1-2' && $c['fuente'] == 'showroom') { ?>
                                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                             <?php } else { ?>
                                                 <?php if($cargo_id != 70){ ?> 
