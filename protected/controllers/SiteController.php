@@ -2363,8 +2363,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
-        $nombre_responsable = mb_strtolower($nombre_responsable);
-        $nombre_responsable = ucwords($nombre_responsable);
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_TITLE, "UTF-8");
         $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -2418,8 +2417,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
-        $nombre_responsable = mb_strtolower($nombre_responsable);
-        $nombre_responsable = ucwords($nombre_responsable);
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_TITLE, "UTF-8");
+
         $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
@@ -2455,8 +2454,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
         $mPDF1->WriteHTML($stylesheet, 1);
         # renderPartial (only 'view' of current controller)
-        $mPDF1->WriteHTML($this->renderPartial('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
 
+        $mPDF1->WriteHTML($this->renderPartial('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
+        
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
@@ -2519,6 +2519,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $this->layout = '//layouts/call-print';
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_TITLE, "UTF-8");
         $con = Yii::app()->db;
         $sql = "SELECT gi.id,gi.nombres, gi.apellidos, gi.direccion, gi.telefono_casa, gv.modelo, gv.version, gv.forma_pago, 
 gv.precio, gv.seguro, gv.total, gv.accesorios, gt.firma

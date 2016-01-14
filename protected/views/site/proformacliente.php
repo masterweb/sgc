@@ -32,10 +32,11 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
 </style>
 
 <div class="container cont-print">
-    <?php foreach ($data as $key => $value) : ?>
+    <?php  foreach ($data as $key => $value) : ?>
         <?php
         $credito = $this->getFinanciamiento($id_informacion);
         // echo 'credito: '.$credito;
+
         ?>
         <div class="row title">
             <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
