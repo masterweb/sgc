@@ -223,7 +223,7 @@ if (isset($id)) {
                     success: function (data) {
                         $('#bg_negro').hide();
                         //alert('Datos grabados');
-                        $('.vehicle-cont').remove();
+                        $('.vehicle-cont').hide;
                         $.ajax({
                             url: '<?php echo Yii::app()->createAbsoluteUrl("site/getVec"); ?>',
                             type: 'post', dataType: 'json', data: {id:<?php echo $id; ?>},
