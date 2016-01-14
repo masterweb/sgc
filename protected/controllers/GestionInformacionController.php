@@ -3274,7 +3274,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if ($model->save()) {
                 //die('enter save');
                 if ($_POST['tipo'] == 'gestion' && $_POST['yt0'] == 'Continuar') {
-                    //die('enter continuar');
+                    die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
                     $gestion = new GestionDiaria;

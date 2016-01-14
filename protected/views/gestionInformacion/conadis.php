@@ -1072,7 +1072,7 @@ if ($ced != '') {
                                 <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php echo isset($_GET['tipo']) ? $_GET['tipo'] : '' ?>">
                                 <input name="GestionInformacion[iden]" id="GestionInformacion_iden" type="hidden" value="<?php echo isset($_GET['iden']) ? $_GET['iden'] : '' ?>">
                                 <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
-                                <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
+                                <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Continuar">
                             </div>
                         </div>
                     <?php } ?>
