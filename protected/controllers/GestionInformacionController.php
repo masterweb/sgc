@@ -3420,7 +3420,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($_POST['tipo'] == 'trafico') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
-                $this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
+                //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
+                $this->redirect(array('gestionInformacion/seguimiento'));
             }
         }
         $this->render('conadis', array(

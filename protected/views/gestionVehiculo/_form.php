@@ -312,7 +312,7 @@ if (isset($id)) {
         //$('#gestion-vehiculo-form').remove();
         //console.log('enter cancel vec');
         $('.form-content').hide();
-        $('#gestion-vehiculo-form').validate().currentForm = '';
+        //$('#gestion-vehiculo-form').validate().currentForm = '';
         //$('#gestion-vehiculo-form').get(0).reset();
     }
     function cancelVec2() {
@@ -644,7 +644,7 @@ if (isset($id)) {
 
                                 <div class="col-md-5">
                                     <input class="btn btn-danger" onclick="send(2);" type="submit" name="yt0" value="Crear">
-                                    <input class="btn btn-primary" style="margin-left: 14px;" onclick="cancelVec();" type="submit" name="yt0" value="Cancelar">
+                                    <input class="btn btn-primary" style="margin-left: 14px;" onclick="cancelVec();" name="yt0" value="Cancelar">
                                 </div>
 
                             </div>
