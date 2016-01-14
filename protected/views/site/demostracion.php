@@ -14,6 +14,8 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
 }
 $testAll = $this->getTestDriveOnly($id_informacion);
 //echo 'id informacion: '.$id_informacion;
+//print_r($vec);
+//die();
 ?>
 <script type="text/javascript">
     $(function () {
@@ -216,13 +218,16 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                                 <?php
                                                 $test = $this->getTestDrive($c['id_informacion'], $c['id']);
                                                 $preg1 = $this->getTestDemostracion($c['id_informacion'], $c['id']);
-                                                $preg_fin = $preg1['preg1'] ['preg1'];                                                
+                                                $totalresp1 = count($preg1['preg1']) -1; 
+                                                $totalresp2 = count($preg1['fecha']) -1;    
+                                                
+                                                $preg_fin = $preg1['preg1'][$totalresp1]['preg1'];                                                
                                                 //echo $preg_fin;
                                                 ?>
                                                 <?php 
                                                 if($preg_fin === 'Si'){
                                                     $class_activa = 'btn-warning';
-                                                    $fecha_fin = $preg1['fecha'] ['fecha'];
+                                                    $fecha_fin = $preg1['fecha'][$totalresp2]['fecha'];
                                                     $resp = '<b>Si</b> / '.$fecha_fin;
                                                 }else if($preg_fin === 'No'){
                                                     $class_activa = 'btn-tomate';

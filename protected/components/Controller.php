@@ -695,13 +695,13 @@ class Controller extends CController {
             'select' => 'preg1',
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
-        $resp['preg1'] = GestionDemostracion::model()->find($criteria);
+        $resp['preg1'] = GestionDemostracion::model()->findAll($criteria);
 
         $criteria = new CDbCriteria(array(
             'select' => 'fecha',
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
-        $fecha = GestionTestDrive::model()->find($criteria);
+        $fecha = GestionTestDrive::model()->findAll($criteria);
 
         $resp['fecha'] = $fecha;
 

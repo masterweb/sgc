@@ -584,3 +584,6 @@ img.cometchat_userscontentavatarimage {
 hr{
     border-color: #dedede;
 }
+.select2-container{
+    width: 100%;
+}
