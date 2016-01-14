@@ -436,8 +436,8 @@ if ($ced != '') {
                      return false
                      }*/
                     if (tipo_fuente == 'exonerado') {
-                        $('#myModal').modal('show');
-                        setTimeout(function(){ form.submit(); }, 5000);                        
+                        form.submit();
+                        $('#myModal').show();                
                     } else {
                         form.submit();
                     }
