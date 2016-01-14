@@ -190,6 +190,7 @@ if (isset($id)) {
 
             }
         });
+    
     });
     function send(n)
     {
@@ -223,7 +224,10 @@ if (isset($id)) {
                     success: function (data) {
                         $('#bg_negro').hide();
                         //alert('Datos grabados');
-                        $('.vehicle-cont').hide;
+                        //$('.vehicle-cont').hide;                        
+                        $('.vehicle-cont .cont-vc').hide();
+                        $('.vehicle-cont .form-content').hide();                        
+                        
                         $.ajax({
                             url: '<?php echo Yii::app()->createAbsoluteUrl("site/getVec"); ?>',
                             type: 'post', dataType: 'json', data: {id:<?php echo $id; ?>},
