@@ -417,7 +417,7 @@ if ($ced != '') {
                     if(tipo_fuente ==  'exonerado'){
                         
                        form.submit();
-                       $('#myModal').show();
+                       $('#myModal').modal('show'); 
                     }else{
                        form.submit(); 
                     }

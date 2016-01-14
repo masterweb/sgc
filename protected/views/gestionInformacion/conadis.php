@@ -437,7 +437,7 @@ if ($ced != '') {
                      }*/
                     if (tipo_fuente == 'exonerado') {
                         form.submit();
-                        $('#myModal').show();                
+                        $('#myModal').modal('show');              
                     } else {
                         form.submit();
                     }
@@ -661,7 +661,7 @@ if ($ced != '') {
                                 <h4 class="modal-title">SGC</h4>
                             </div>
                             <div class="modal-body">
-                                <h4>Proceso enviado a Exonerados</h4>
+                                <h4>Tu proceso se está enviando a exonerados... Por favor espere...</h4>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
