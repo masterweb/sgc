@@ -1032,21 +1032,14 @@ $provincia_id = $this->getProvinciaId($city_id);
                                 <div class="">
                                     <div class="col-md-6 well well-sm">
                                         <ul class="list-accesorios">
-                                            <li><u><input type="checkbox" value="blanco" name="colores[]" id="color-1"/><span class="color" style="background: rgb(255, 255, 255);"></span>UD_ Clear White / Solid</u></li>
-                                            <li><u><input type="checkbox" value="plata" name="colores[]" id="color-2"/><span class="color" style="background: rgb(251, 251, 252);"></span>SWP_ Snow White Pearl / Pearl</u></li>
-                                            <li><u><input type="checkbox" value="negro" name="colores[]" id="color-3"/><span class="color" style="background: rgb(189, 190, 193);"></span>3D_ Bright Silver / Metallic</u></li>
-                                            <li><u><input type="checkbox" value="rojo" name="colores[]" id="color-4"/><span class="color" style="background: rgb(110, 110, 112);"></span>MST_ Metal Stream / Metallic</u></li>
-
+                                           <ul class="list-accesorios">
+                                            <li><u><input type="checkbox" value="blanco" name="colores[]" id="color-1"/><span class="color" style="background: rgb(245, 245, 249);"></span>Blanco</u></li>
+                                            <li><u><input type="checkbox" value="plata" name="colores[]" id="color-2"/><span class="color" style="background: rgb(205, 210, 216);"></span>Plata</u></li>
+                                            <li><u><input type="checkbox" value="negro" name="colores[]" id="color-3"/><span class="color" style="background: rgb(0, 0, 0);"></span>Negro</u></li>
+                                            <li><u><input type="checkbox" value="rojo" name="colores[]" id="color-4"/><span class="color" style="background: rgb(213, 42, 44);"></span>Rojo</u></li>
+                                            <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-5"/><span class="color" style="background: rgb(50, 52, 55);"></span>Plomo</u></li>
                                         </ul>
-                                    </div>
-                                    <div class="col-md-6 well well-sm">
-                                        <ul class="list-accesorios">
-                                            <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-5"/><span class="color" style="background: rgb(210, 35, 43);"></span>DRR_ Racing Red / Solid</u></li>
-                                            <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-6"/><span class="color" style="background: rgb(24, 57, 115);"></span>K3U_ Abyss Blue / Metallic</u></li>
-                                            <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-7"/><span class="color" style="background: rgb(49, 68, 95);"></span>D7U_ Planet Blue / Metallic</u></li>
-                                            <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-8"/><span class="color" style="background: rgb(5, 6, 7);"></span>ABP_ Aurora Black Pearl / Pearl</u></li>
-                                        </ul>
-                                    </div>
+                                    </div>                                    
                                 </div>
                             </div>
                             <div class="row">
