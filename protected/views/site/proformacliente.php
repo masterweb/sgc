@@ -1,59 +1,67 @@
 <?php
-//echo '<pre>';
-//print_r($data);
-//echo '</pre>';
-//echo 'num proforma: '.$id_hoja;
 $id_asesor = $this->getResponsableId($id_informacion);
-//echo $id_asesor;
-//$id_asesor = Yii::app()->user->getId();
 $emailAsesor = $this->getAsesorEmail($responsable_id);
 $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
-//die('concesionario id: '.$concesionarioid);
-
 $telefono = $this->getAsesorTelefono($responsable_id);
 $celular = $this->getAsesorCelular($responsable_id);
 $codigo_asesor = $this->getAsesorCodigo($responsable_id);
-//echo $this->getResponsable($id_asesor);
-$mpdf = Yii::app()->ePdf->mpdf();
 $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
-
 ?>
-<style>
-    /*.container{width: 800px;}*/
-    .row{margin-bottom: 1px !important;margin-left: 20px !important;margin-right: 20px !important;}
-    h4{font-weight: bold;margin-top: 5px !important;}
-    hr{margin-top: 3px !important;margin-bottom: 3px !important;}
-    .target{font-size: 12px !important;}
-    .target strong{color:#911714 !important;}
-    .target p{margin: 0 !important;}
-    .container{margin-left: -3% !important;}
-    .title .col-xs-3{width: 24% !important;}
-    .img-logo{position: relative; right: 150px;}
-</style>
+<html>
+    <head>
+        <style>
+        .tit-lab{font-weight: bold !important;font-style: italic !important;min-width: 129px !important;display: inline-block !important;margin-right: 3px !important;}
+        .row{margin-bottom: 1px !important;margin-left: 20px !important;margin-right: 20px !important;}
+        h4{font-weight: bold;margin-top: 5px !important;}
+        hr{margin-top: 0px !important;margin-bottom: 3px !important;}
+        .target{font-size: 12px !important;}
+        .target strong{color:#911714 !important;}
+        .target p{margin: 0 !important;}
+        .container{margin-left: -3% !important;}
+        .title .col-xs-3{width: 24% !important;}
+        .img-logo{position: relative; right: 150px;}
+        @page {
+          size: auto;
+          margin-top:4cm;
+          margin-bottom:3cm;
+          odd-header-name: html_myHeader1;
+          odd-footer-name: html_myFooter1;
+        }
+        </style>
+    </head>
+    <body>
+        <htmlpageheader name="myHeader1" style="display:none">
+            <div class="row title">
+                    <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
+                    <div class="col-xs-8" style="border-left:1px solid #888890;">
+                        <h4><?= strtoupper($this->getNameConcesionario($responsable_id)) ?></h4>
+                        <div class="target">
 
-<div class="container cont-print">
-    <?php  foreach ($data as $key => $value) : ?>
-        <?php
-        $credito = $this->getFinanciamiento($id_informacion);
-        // echo 'credito: '.$credito;
-
-        ?>
-        <div class="row title">
-            <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
-            <div class="col-xs-8" style="border-left:1px solid #888890;">
-                <h4><?php echo strtoupper($this->getNameConcesionario($id_asesor)); ?></h4>
-                <div class="target">
-
-                    <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
-                    <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
-                    <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
-                    <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
-                    <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
-                    <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
+                            <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
+                            <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($responsable_id); ?></strong></div>
+                            <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
+                            <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
+                            <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
+                            <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+        </htmlpageheader>
+        <htmlpagefooter name="myFooter1" style="display:none">
+            <table width="100%" style="vertical-align: bottom; font-family: sans; font-size: 8pt; 
+                color: #9A9A9A; font-weight: normal; font-style: italic; borde-top:1px solid #9A9A9A; pading-top:0.3mm;">
+                <tr>
+                    <td width="33%"><span style="font-weight: bold; font-style: italic;">{DATE j-m-Y}</span></td>
+                    <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
+                    <td width="33%" style="text-align: right; ">Proforma Cliente</td>
+                </tr>
+            </table>
+        </htmlpagefooter>
+    
+    <!-- CONTENIDO -->
+    <?php  foreach ($data as $key => $value) : 
+        $credito = $this->getFinanciamiento($id_informacion); ?>
         </div>
-    </div>
     <br />
     <div class="row">
         <div class="col-xs-5"><h5><strong>PROFORMA No. <?php echo $codigoconcesionario; ?>-P-<?php echo $codigo_asesor; ?>-<?php echo $id_hoja; ?></strong></h5></div>
@@ -183,7 +191,6 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         <br />
     <?php endif; ?>
     <?php
-    $mpdf->AddPage();
     $criteria = new CDbCriteria(array(
         'condition' => "id_financiamiento='{$value['id_financiamiento']}' AND status = 'ACTIVO'"
     ));
@@ -351,4 +358,12 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         <div class="row"><div class="col-xs-12"><em>Proforma válida por 48 horas, precios sujetos a cambios sin previo aviso</em></div></div>
     </div>
 <?php
-endforeach;
+endforeach;?>
+
+<!-- FIN CONTENIDO -->
+</html>
+
+
+
+
+

@@ -29,7 +29,43 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
     .container{margin-left: -3% !important;}
     .title .col-xs-3{width: 24% !important;}
     .img-logo{position: relative; right: 150px;}
+    @page {
+          size: auto;
+          margin-top:4cm;
+          margin-bottom:3cm;
+          odd-header-name: html_myHeader1;
+          odd-footer-name: html_myFooter1;
+        }
 </style>
+<htmlpageheader name="myHeader1" style="display:none">
+                <div class="row title">
+                    <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
+                    <div class="col-xs-8" style="border-left:1px solid #888890;">
+                        <h4><?php echo strtoupper($this->getNameConcesionario($id_asesor)); ?></h4>
+                        <div class="target">
+
+                            <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
+                            <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
+                            <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
+                            <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
+                            <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
+                            <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
+                        </div>
+                    </div>
+                </div>
+        </htmlpageheader>
+        <htmlpagefooter name="myFooter1" style="display:none">
+            <table width="100%" style="vertical-align: bottom; font-family: sans; font-size: 8pt; 
+                color: #9A9A9A; font-weight: normal; font-style: italic; borde-top:1px solid #9A9A9A; pading-top:0.3mm;">
+                <tr>
+                    <td width="33%"><span style="font-weight: bold; font-style: italic;">{DATE j-m-Y}</span></td>
+                    <td width="33%" align="center" style="font-weight: bold; font-style: italic;">{PAGENO}/{nbpg}</td>
+                    <td width="33%" style="text-align: right; ">Proforma Exonerados</td>
+                </tr>
+            </table>
+        </htmlpagefooter>
+    
+    <!-- CONTENIDO -->
 
 <div class="container cont-print">
     <?php foreach ($data as $key => $value) : ?>
@@ -37,21 +73,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         $credito = $this->getFinanciamiento($id_informacion);
         // echo 'credito: '.$credito;
         ?>
-        <div class="row title">
-            <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
-            <div class="col-xs-8" style="border-left:1px solid #888890;">
-                <h4><?php echo strtoupper($this->getNameConcesionario($id_asesor)); ?></h4>
-                <div class="target">
-
-                    <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
-                    <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
-                    <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
-                    <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
-                    <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
-                    <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
-                </div>
-            </div>
-        </div>
+       
     </div>
     <br />
     <div class="row">

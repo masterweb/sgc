@@ -972,12 +972,11 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $hoja_entrega->fecha = date("Y-m-d H:i:s");
         $hoja_entrega->save();
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Hoja de Entrega');
+        # mPDF        
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Hoja de Entrega');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet
@@ -1012,8 +1011,6 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $celular = $this->getAsesorCelular($id_asesor);
         $codigo_asesor = $this->getAsesorCodigo($id_asesor);
 //echo $this->getResponsable($id_asesor);
-        $mpdf = Yii::app()->ePdf->mpdf();
-
         //die('enter prof');
         $con = Yii::app()->db;
         $sql = "SELECT gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa,gi.responsable, gv.modelo, gv.version, gf.forma_pago, 
@@ -1044,12 +1041,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
           print_r($proforma->getErrors);
           } */
         $proforma->save();
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
+        # mPDF        
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet

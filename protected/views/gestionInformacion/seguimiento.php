@@ -23,7 +23,27 @@ $count = count($users);
 //echo '</pre>';
 ?>
 <script>
+    function validateruc(e){
+        if(e.val().length < 13){
+            return false;
+        }else{
+            if(e.val().substr(e.val().length - 3) == '001'){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
     $(function () {
+
+         $('#GestionNuevaCotizacion_ruc').change(function() {
+            var resp = validateruc($(this));
+            if(resp != true){
+                alert('Por favor ingrese correctamente el RUC.');
+            }
+        });
+
         $('#GestionDiaria_concesionario').change(function () {
             var value = $(this).attr('value');
             $.ajax({
@@ -179,39 +199,44 @@ $count = count($users);
                             });
                         } else if (identificacion == 'ruc') {
                             var ruc = $('#GestionNuevaCotizacion_ruc').val();
-                            $.ajax({
-                                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getRuc"); ?>',
-                                beforeSend: function (xhr) {
-                                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
-                                },
-                                type: 'POST', dataType: 'json', data: {id: ruc, fuente: fuente},
-                                success: function (data) {
-                                    //alert(data.flagttga35);
-                                    $('#bg_negro').hide();
-                                    if (data.result == true) {
-                                        $('.cont-existente').html(data.data);
-                                    }
-                                    if (data.flagttga35 == true) {
-                                        //alert('enter ttga35');
-                                        $('.cont-createc').html(data.datattga35);
-                                    }
-                                    if (data.flagttga36 == true) {
-                                        $('.cont-createc-tg36').html(data.datattga36);
-                                    }
-                                    if (data.flagvh01 == true) {
-                                        $('.cont-createc-vh01').html(data.datavh01);
-                                    }if(data.id_informacion != 0 && data.result != false){
-                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/update/'+data.id_informacion+'?tipo=gestion" class="btn btn-danger">Continuar</a>';
-                                        $('.cont-createc-but').html(dt);
-                                    }
-                                    else {
+                            var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
+                            if(resp != true){
+                                alert('Por favor ingrese correctamente el RUC.');
+                            }else{   
+                                $.ajax({
+                                    url: '<?php echo Yii::app()->createAbsoluteUrl("site/getRuc"); ?>',
+                                    beforeSend: function (xhr) {
+                                        $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                                    },
+                                    type: 'POST', dataType: 'json', data: {id: ruc, fuente: fuente},
+                                    success: function (data) {
+                                        //alert(data.flagttga35);
+                                        $('#bg_negro').hide();
+                                        if (data.result == true) {
+                                            $('.cont-existente').html(data.data);
+                                        }
+                                        if (data.flagttga35 == true) {
+                                            //alert('enter ttga35');
+                                            $('.cont-createc').html(data.datattga35);
+                                        }
+                                        if (data.flagttga36 == true) {
+                                            $('.cont-createc-tg36').html(data.datattga36);
+                                        }
+                                        if (data.flagvh01 == true) {
+                                            $('.cont-createc-vh01').html(data.datavh01);
+                                        }if(data.id_informacion != 0 && data.result != false){
+                                            var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/update/'+data.id_informacion+'?tipo=gestion" class="btn btn-danger">Continuar</a>';
+                                            $('.cont-createc-but').html(dt);
+                                        }
+                                        else {
+                                            form.submit();
+                                        }
+                                    },
+                                    error: function (error) {
                                         form.submit();
                                     }
-                                },
-                                error: function (error) {
-                                    form.submit();
-                                }
-                            });
+                                }); 
+                            }
                         } else if (identificacion == 'pasaporte'){
                             var pasaporte = $('#GestionNuevaCotizacion_pasaporte').val();
                             $.ajax({
@@ -305,7 +330,12 @@ $count = count($users);
                         'GestionNuevaCotizacion[tipo]': {required: true}
                     },
                     submitHandler: function (form) {
-                        form.submit();
+                        var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
+                        if(resp != true){
+                            alert('Por favor ingrese correctamente el RUC.');
+                        }else{ 
+                            form.submit();
+                        }
                     }
                 });
                 break;
@@ -479,21 +509,21 @@ $count = count($users);
                             </div>
                             <div class="row" id="cont-doc" style="display: none;">
                                 <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
+                                    <label for="GestionNuevaCotizacion_cedula">Número 1</label>
                                     <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                     <?php echo $form->error($model, 'cedula'); ?>
                                 </div>
                             </div>
                             <div class="row" id="cont-ruc">
                                 <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
+                                    <label for="GestionNuevaCotizacion_cedula">Número 2</label>
                                     <?php echo $form->textField($model, 'ruc', array('size' => 40, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                     <?php echo $form->error($model, 'ruc'); ?>
                                 </div>
                             </div>
                             <div class="row" id="cont-pasaporte" style="display: none;">
                                 <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
+                                    <label for="GestionNuevaCotizacion_cedula">Número 3</label>
                                     <?php echo $form->textField($model, 'pasaporte', array('size' => 40, 'maxlength' => 40, 'class' => 'form-control')); ?>
                                     <?php echo $form->error($model, 'pasaporte'); ?>
                                 </div>

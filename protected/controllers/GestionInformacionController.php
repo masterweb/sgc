@@ -333,7 +333,7 @@ class GestionInformacionController extends Controller {
                 $this->redirect(array('site/consulta', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
             }
         }
-
+        
         $this->render('create', array(
             'model' => $model, 'tipo' => $tipo, 'id' => $id, 'fuente' => $fuente
         ));

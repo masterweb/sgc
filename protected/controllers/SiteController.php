@@ -2387,12 +2387,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         //date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         //$proforma->fecha = date("Y-m-d H:i:s");
         //$proforma->save();
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Proforma Cliente');
+        # mPDF        
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Proforma Cliente');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet
@@ -2404,7 +2403,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->SetFooter($nombreproforma);
         $mPDF1->Output($nombreproforma, 'I');
     }
     
@@ -2422,8 +2420,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
-        //die('concesionario id: '.$concesionarioid);
-        //die('enter prof');
 
         $con = Yii::app()->db;
         $sql = "SELECT gi.id,gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa,gi.responsable, gv.modelo, gv.version, gf.forma_pago, 
@@ -2436,32 +2432,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
         $num_proforma = $this->getProformaCliente($id_informacion, $id_vehiculo);
-        //die('num proforma: '.$num_proforma);
-        //$proforma = new GestionProforma;
-        //$proforma->id_vehiculo = $id_vehiculo;
-        //date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-        //$proforma->fecha = date("Y-m-d H:i:s");
-        //$proforma->save();
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Proforma Cliente');
-
-        # You can easily override default constructor's params
+        
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
-
-        //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
-        # Load a stylesheet
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
         $mPDF1->WriteHTML($stylesheet, 1);
-        # renderPartial (only 'view' of current controller)
-
-        $mPDF1->WriteHTML($this->renderPartial('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
-        
-        # Renders image
-        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
-        # Outputs ready PDF
-        $mPDF1->SetFooter($nombreproforma);
+        $mPDF1->WriteHTML($this->render('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));       
         $mPDF1->Output($nombreproforma, 'I');
+
     }
 
     /**
@@ -2478,14 +2455,11 @@ INNER JOIN gestion_informacion gi on gi.id = ge.id_informacion
 WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
-        $num_entrega = $this->getHojaEntregaCliente($id_informacion, $id_vehiculo);
-
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Hoja de Entrega');
+        $num_entrega = $this->getHojaEntregaCliente($id_informacion, $id_vehiculo);        
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Hoja de Entrega');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet
@@ -2532,13 +2506,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $criteria = new CDbCriteria(array(
             'condition' => "id='{$id_informacion}'"
         ));
-        $request = GestionInformacion::model()->findAll($criteria);
-        # mPDF
-        $mPDF1 = Yii::app()->ePdf->mpdf();
-        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
+        $request = GestionInformacion::model()->findAll($criteria);        
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet
