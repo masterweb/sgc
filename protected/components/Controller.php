@@ -1698,4 +1698,51 @@ class Controller extends CController {
         return $dealers;
     }
 
+    // profile
+    public function getSelectProfile($cargo_id, $dealer_id) {
+        $id_responsable = Yii::app()->user->getId();
+        $criteria2 = new CDbCriteria(array(
+            'condition' => "id={$id_responsable}"
+        ));
+        $idgr = Usuarios::model()->find($criteria2);
+        $id_grupo = $idgr->grupo_id;
+        $data_select = array();
+        switch ($cargo_id) {
+            case 69: // gerente comercial
+                // select de grupo
+                $grupo = Grupo::model()->findAll();
+                // select de concesionarios
+                $datas = '<option value="">--Seleccione grupo--</option>';
+                foreach ($grupo as $value) {
+                    $datas .= '<option value="' . $value['id'].'"';
+                    if($value['id'] == $id_grupo){
+                        $datas .= ' selected >';
+                    }else{
+                        $datas .= '>';
+                    }
+                    $datas .= $value['nombre_grupo'] . '</option>';
+                }
+                $data_select[0] = $datas;
+                $criteria = new CDbCriteria(array(
+                    'condition' => "id_grupo={$id_grupo}",
+                    'order' => 'nombre asc'
+                ));
+                $conc = Concesionarios::model()->findAll($criteria);
+                $data = '<option value="">--Seleccione concesionario--</option>';
+                foreach ($conc as $ciudad) {
+                    $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
+                }
+                $data_select[1] = $data;
+                
+                break;
+            case 46: // super administrador
+                
+                break;
+
+            default:
+                break;
+        }
+        return $data_select;
+    }
+
 }

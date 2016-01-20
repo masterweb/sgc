@@ -696,72 +696,32 @@ $count = count($users);
                         </div>
 
                     </div>
-                    
-                    <?php if($cargo_id == 69 || $cargo_id == 46 ): ?>
                     <hr />
+                    <?php if($cargo_id == 69 ){ ?>
+                    <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
+                    
                     <div class="row">
+                        
                         <div class="col-md-6">
                             <label for="">Grupo</label>
-                            <?php
-//                            $criteria = new CDbCriteria(array(
-//                                'order' => 'nombre_grupo'
-//                            ));
-//                            $grupos = CHtml::listData(Grupo::model()->findAll($criteria), "id", "nombre_grupo");
-                            ?>
-                            <select name="GestionDiaria[grupo]" id="GestionDiaria_grupo" class="form-control">
-                                <option value="">--Seleccione grupo--</option>
-                                <option value="1">AEKIA S.A.</option>
-                                <option value="6">AUTHESA</option>
-                                <option value="7">AUTOSCOREA</option>
-                                <option value="2">GRUPO ASIAUTO</option>
-                                <option value="5">GRUPO EMPROMOTOR</option>
-                                <option value="3">GRUPO KMOTOR</option>
-                                <option value="8">GRUPO MERQUIAUTO</option>
-                                <option value="9">GRUPO MOTRICENTRO</option>
-                                <option value="4">IOKARS</option>
+                            <select name="GestionDiaria[grupo]" id="GestionDiaria_grupo" class="form-control" <?php echo $cargo_id == 69 ? 'disabled="true"' : ''; ?> >
+                                <?php echo $select[0]; ?>
                             </select>
                         </div>
+                        
                         <div class="col-md-6">
                             <label for="">Concesionario</label>
                             <select name="GestionDiaria[concesionario]" id="GestionDiaria_concesionario" class="form-control">
-                                <option value="">--Seleccione concesionario--</option>
-                                <option value="0">AEKIA S.A.</option>
-                                <option value="60">ASIAUTO CONDADO</option>
-                                <option value="7">ASIAUTO CUMBAYA</option>
-                                <option value="6">ASIAUTO SUR</option>
-                                <option value="2">ASIAUTO ORELLANA'</option>
-                                <option value="76">ASIAUTO LOS CHILLOS</option>
-                                <option value="5">ASIAUTO MDJ</option>
-                                <option value="62">ASIAUTO 6 DIC</option>
-                                <option value="63">ASIAUTO LATACUNGA</option>
-                                <option value="20">ASIAUTO MANTA</option>
-                                <option value="65">ASIAUTO PORTOVIEJO</option>
-                                <option value="38">ASIAUTO RIOBAMBA</option>
-                                <option value="72">KMOTOR ORELLANA</option>
-                                <option value="77">KMOTOR SUR</option>
-                                <option value="81">KMOTOR MILAGRO</option>
-                                <option value="10">KMOTOR AMERICA</option>
-                                <option value="80">KMOTOR MACHALA</option>
-                                <option value="78">IOKARS</option>
-                                <option value="22">EMPROMOTOR CENTRO</option>
-                                <option value="68">EMPROMOTOR DOS</option>
-                                <option value="73">EMPROMOTOR ESMERALDAS</option>
-                                <option value="19">AUTHESA</option>
-                                <option value="14">AUTOSCOREA</option>
-                                <option value="59">MERQUIAUTO PUYO</option>
-                                <option value="74">MERQUIAUTO QUEVEDO</option>
-                                <option value="79">MERQUIAUTO TENA</option>
-                                <option value="70">MOTRICENTRO LOJA</option>
-                                <option value="12">MOTRICENTRO CUE</option>
+                                <?php echo $select[1]; ?>
                             </select>
                         </div>
                     </div>
                     <div class="row">
-                            <div class="col-md-6">
-                                <label for="">Responsable</label>
-                                    <select name="GestionDiaria[responsable]" id="GestionDiaria_responsable" class="form-control">
-                                        <option value="">--Seleccione responsable--</option>
-                                </select>
+                        <div class="col-md-6">
+                            <label for="">Responsable</label>
+                                <select name="GestionDiaria[responsable]" id="GestionDiaria_responsable" class="form-control">
+                                    <option value="">--Seleccione responsable--</option>
+                            </select>
                         </div>    
                     </div>
                     <hr />
@@ -787,7 +747,7 @@ $count = count($users);
                             </select>      
                         </div>   
                     </div>
-                    <?php endif; ?>
+                    <?php } ?>
                     <div class="row">
                         <div class="col-md-6">
                             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
