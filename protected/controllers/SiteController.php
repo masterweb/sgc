@@ -1243,7 +1243,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 <!--<td><a href="' . Yii::app()->createUrl('gestionVehiculo/update', array('id' => $m['id'], 'id_informacion' => $m['id_informacion'])) . '" class="btn btn-primary btn-xs btn-danger">Editar</a>                              
                 </td>-->
                 <td><button class="btn btn-xs btn-success">Consulta</button></td>
-                <td><a href="/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                <td><a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                 </tr>';
         endforeach;
         $data .= '</tbody></table></div>';

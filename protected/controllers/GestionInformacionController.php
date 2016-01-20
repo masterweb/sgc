@@ -1,5 +1,4 @@
 <?php
-//Prueba GIT
 
 class GestionInformacionController extends Controller {
 
