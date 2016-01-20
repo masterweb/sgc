@@ -1,3 +1,4 @@
 upload/*
 protected/**/runtime/*
 protected/**/config/*
+/nbproject/private/
