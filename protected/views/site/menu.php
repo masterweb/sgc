@@ -224,7 +224,7 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu">RGD BDC</div></a>
                         </div>
                     </li>
-                <?php } ?>
+                <?php } // perfil asesor de credito?>
                 <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">
