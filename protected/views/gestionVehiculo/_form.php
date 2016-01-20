@@ -563,7 +563,7 @@ if (isset($id)) {
                                                     //print_r($modelos_user);
                                                     //echo 'm = '.$c['modelo'];
                                                     if(in_array($c['modelo'], $modelos_user)){
-                                                        echo '<button class="btn btn-xs btn-success">Consulta</button> ';
+                                                        echo '<button class="btn btn-xs btn-success nocursor">Consulta</button> ';
                                                     }else{
                                                         echo '<a href="'.Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente)).'" class="btn btn-danger btn-xs">Consulta</a>';
                                                     }                                                    

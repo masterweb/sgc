@@ -624,7 +624,10 @@ if ($ced != '') {
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="home">
+            
+
             <div class="form">
+
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'gestion-informacion-form',
@@ -637,6 +640,7 @@ if ($ced != '') {
                 ));
                 ?>
                 <div class="highlight"><!--=========DATOS DEL CLIENTE Y CONCESIONARIO===============-->
+                    <button type="button" class="btn btn-success btn-xs" onclick="history.go(-1);">&lt;&lt; Regresar</button>
                     <div class="row">
                         <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                     </div>  
