@@ -765,7 +765,7 @@ if ($cargo_id != 46)
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span><!--Responsable Exonerados--> Asesor Comercial</span></th>
+                            <th><span><!--Responsable Exonerados--> Asesor Comercial Origen</span></th>
                             <th><span>Responsable Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>

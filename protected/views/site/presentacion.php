@@ -218,8 +218,13 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                     <h1 class="tl_seccion_rf">Presentación de Vehículos</h1>
                 </div>
                 <div class="row">
+                    
                     <div class="col-md-12">
                         <div class="highlight">
+                            <div class="pull-right">
+                                <a href="https://www.kia.com.ec/images/Manual-Comparativo-Noviembre-2015.pdf" class="btn btn-default" target="_blank" style="color:#fff; background:#2e6ab1;">Manual Comparativo y Pricing</a>
+                            </div>
+                            <br>
                     <div class="table-responsive">
                         <table class="tables tablesorter" id="keywords">
                             <thead>
@@ -288,9 +293,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                         <div class="col-md-3">
                             <a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
-                        <div class="col-md-offset-5 col-md-4">
-                            <a href="https://www.kia.com.ec/images/Manual-Comparativo-Noviembre-2015.pdf" class="btn btn-default" target="_blank">Manual Comparativo y Pricing</a>
-                        </div>
+                        
                     </div>
                 <?php endif; ?>
                 <br />

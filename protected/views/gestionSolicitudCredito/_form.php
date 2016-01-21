@@ -722,7 +722,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'year'); ?>
-                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'year'); ?>
                             </div>
                             <div class="col-md-2">
@@ -1214,6 +1214,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->labelEx($model, 'nacionalidad_conyugue'); ?>
                                     <?php //echo $form->textField($model, 'nacionalidad_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control'));  ?>
                                     <select name="GestionSolicitudCredito[nacionalidad_conyugue]" id="GestionSolicitudCredito_nacionalidad_conyugue" class="form-control">
+                                        <option value="" selected="selected">--Seleccione--</option>
                                         <option value="EC">Ecuador</option>
                                         <option value="CO">Colombia</option>
                                         <option value="PE">Perú</option>

@@ -373,12 +373,52 @@ if ($ced != '') {
                 break;
         }
     }
+
+    //Hay que trabajar esta función para que sea el validador global en un archivo externo al cual se conecten todos los formularios
+    function vallocal(mainform, lista_val){
+        $(mainform).validate({
+            submitHandler: function () {
+                $('#GestionInformacion_provincia_conc').removeAttr('disabled');
+                $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
+                $('#GestionInformacion_concesionario').removeAttr('disabled');
+                var num_cel = $('#GestionInformacion_celular').val();
+                var num_tel = $('#GestionInformacion_telefono_oficina').val();
+                var num_casa = $('#GestionInformacion_telefono_casa').val();
+                
+                form.submit();
+                $('#myModal').modal('show');
+            }
+        });
+
+        $.each( lista_val, function( i, val ) {
+            var extraval = '';
+            alert(val[3]);
+            if(val[3] != 'undefined'){alert('extra val'); extraval = ', '+val[3]}
+            $(val[2]+"[name*='"+val[0]+"']").rules("add", {required: true, messages: {required: val[1] + extraval}});
+        });
+    }
+
     function sendInfo() {
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();
         var tipo_fuente = $('#tipo_fuente').val();
-        //console.log('tipo: '+tipo);
-        if (tipo == 'gestion' || tipo == 'trafico') {
+        var lista_val = [            
+            ['GestionVehiculo[modelo]', 'Campo obligatorio', 'select'],
+            ['GestionVehiculo[version]', 'Campo obligatorio', 'select'],
+            ['GestionInformacion[nombres]', 'Campo obligatorio', 'input'],
+            ['GestionInformacion[apellidos]', 'Campo obligatorio', 'input'],
+            ['GestionInformacion[direccion]', 'Campo obligatorio', 'input'],
+            ['GestionInformacion[provincia_domicilio]', 'Campo obligatorio', 'select'],
+            ['GestionInformacion[ciudad_domicilio]', 'Campo obligatorio', 'select'],
+            ['GestionInformacion[email]', 'Campo obligatorio', 'input'],
+            ['GestionInformacion[celular]', 'Campo obligatorio', 'input', "minlength: 'Ingrese 10 dígitos'"],
+            ['GestionInformacion[telefono_casa]', 'Campo obligatorio', 'input']            
+        ];
+        if(tipo_fuente = 'exonerado' && tipo == 'gestion'){ 
+            lista_val.push(['GestionInformacion[porcentaje_discapacidad]', 'Campo obligatorio', 'select']);
+            vallocal('#gestion-informacion-form', lista_val);
+        }
+        else if (tipo == 'gestion' || tipo == 'trafico') {
             //console.log('enter gestion');
             $('#gestion-informacion-form').validate({
                 rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
@@ -423,22 +463,7 @@ if ($ced != '') {
                         //$('#telefono').val('');
                         return false;
                     }
-                    /*var k = validateCantNumbers(num_tel);
-                     if (k == false) {
-                     $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese correctamente su teléfono</label>');
-                     //$("#telefono").val("");
-                     return false
-                     }*/
-                    /*var k = validateCantNumbers(num_casa);
-                     if (k == false) {
-                     $('#GestionInformacion_telefono_casa').after('<label for="telefono3" generated="true" class="error" style="display: block;" id="telefono3">Ingrese correctamente su teléfono</label>');
-                     //$("#telefono").val("");
-                     return false
-                     }*/
-                    if (tipo_fuente == 'exonerado') {
-                        form.submit();
-                        $('#myModal').modal('show');              
-                    } else {
+                    else {
                         form.submit();
                     }
 
@@ -903,14 +928,21 @@ if ($ced != '') {
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="">Porcentaje de Discapacidad</label>
-                                <select name="GestionInformacion[porcentaje_discapacidad]" id="GestionInformacion_porcentaje_discapacidad" class="form-control">
-                                    <option value="">--Seleccione un porcentaje--</option>
-                                    <option value="6">Del 40% al 49%</option>
-                                    <option value="7">Del 50% al 74%</option>
-                                    <option value="8">Del 75% al 84%</option>
-                                    <option value="10">Del 85% al 100%</option>
-                                </select>
+                                <label for="">Porcentaje de Discapacidad <?php
+                                    if ($_GET['tipo'] == 'gestion') {
+                                        echo '<span class="required">*</span>';
+                                    }
+                                    ?></label>
+                                <?php
+                                echo $form->dropDownList($model, 'porcentaje_discapacidad', array(
+                                    '' => '--Seleccione un porcentaje--',
+                                    '6' => 'Del 40% al 49%',
+                                    '7' => 'Del 50% al 74%',
+                                    '8' => 'Del 75% al 84%',
+                                    '10' => 'Del 85% al 100%'
+                                        ), array('class' => 'form-control', 'name' => 'GestionInformacion[porcentaje_discapacidad]', 'id' => 'GestionInformacion_porcentaje_discapacidad'));
+                                ?>
+                                <?php echo $form->error($model, 'porcentaje_discapacidad'); ?>
                             </div>
                             <div class="col-md-3">
                                 <div class="info-dis"></div>
@@ -979,7 +1011,7 @@ if ($ced != '') {
                                     </div>
                                     <div class="col-md-6">
                                         <div id="info2" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
-                                        <?php echo $form->labelEx($vehiculo, 'version'); ?>
+                                        <?php echo $form->labelEx($vehiculo, 'versión'); ?>
                                         <?php echo $form->dropDownList($vehiculo, 'version', array('' => 'Escoja una versión'), array('class' => 'form-control')); ?>
                                         <?php echo $form->error($vehiculo, 'version'); ?>
                                     </div>
@@ -994,8 +1026,9 @@ if ($ced != '') {
                                 </div>
                                 <br />
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="">Color de Preferencia</label>
+                                    <label for="">Color de Preferencia</label>
+                                    <div class="col-md-12">
+                                        
                                         <div class="col-md-6 well well-sm">
                                         <ul class="list-accesorios">
                                            <ul class="list-accesorios">                                            

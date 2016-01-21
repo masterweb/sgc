@@ -330,10 +330,14 @@ $count = count($users);
                         'GestionNuevaCotizacion[tipo]': {required: true}
                     },
                     submitHandler: function (form) {
-                        var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
-                        if(resp != true){
-                            alert('Por favor ingrese correctamente el RUC.');
-                        }else{ 
+                        if($('#GestionNuevaCotizacion_identificacion').val() == 'ruc'){
+                            var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
+                            if(resp != true){
+                                alert('Por favor ingrese correctamente el RUC.');
+                            }else{ 
+                                form.submit();
+                            }
+                        }else{
                             form.submit();
                         }
                     }

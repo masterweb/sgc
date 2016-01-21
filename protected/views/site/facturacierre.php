@@ -61,7 +61,7 @@
                                             <th>Cédula</th><td><?php echo $cl[0]['cedula']; ?></td>
                                         <?php endif; ?>
                                         <?php if ($cl[0]['ruc'] != ''): ?>
-                                            <th>Ruc</th><td><?php echo $cl[0]['ruc']; ?></td>
+                                            <th>RUC</th><td><?php echo $cl[0]['ruc']; ?></td>
                                         <?php endif; ?>
                                         <?php if ($cl[0]['pasaporte'] != ''): ?>
                                             <th>Pasaporte</th><td><?php echo $cl[0]['pasaporte']; ?></td>
