@@ -21138,3 +21138,858 @@ Stack trace:
 REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
 HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento
 ---
+2016/01/21 11:56:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/Reportes/Inicio
+---
+2016/01/21 12:25:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/dashboard
+---
+2016/01/21 12:25:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/dashboard
+---
+2016/01/21 12:26:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/01/21 12:26:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/01/21 12:26:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento
+---
+2016/01/21 12:26:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento
+---
+2016/01/21 12:26:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/negociacion/1944
+---
+2016/01/21 12:26:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/negociacion/1944
+---
+2016/01/21 12:27:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:27:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:27:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 12:27:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 12:28:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:28:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:29:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/presentacion/1928
+---
+2016/01/21 12:29:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/presentacion/1928
+---
+2016/01/21 12:29:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 12:29:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 12:29:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 12:29:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 12:30:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 12:30:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/presentacion/1928
+---
+2016/01/21 12:30:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/presentacion/1928
+---
+2016/01/21 12:31:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:31:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 12:31:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 12:31:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:20:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/Reportes/Inicio
+---
+2016/01/21 15:20:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/Reportes/Inicio
+---
+2016/01/21 15:29:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1944
+---
+2016/01/21 15:29:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1944
+---
+2016/01/21 15:29:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1944
+---
+2016/01/21 15:29:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1944
+---
+2016/01/21 15:32:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:32:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:38:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:38:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:39:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:39:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:39:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:39:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:39:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:39:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet/callcenter/images/ajax-loader.gif"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet/callce...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet/callcenter/images/ajax-loader.gif
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionVehiculo/create/1928
+---
+2016/01/21 15:40:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:40:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:40:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:40:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:40:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:40:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:41:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:41:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:42:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/337?id_informacion=1928
+---
+2016/01/21 15:42:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/337?id_informacion=1928
+---
+2016/01/21 15:42:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:42:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:43:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:43:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:43:39 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:45:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:45:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:45:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:45:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:46:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:46:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:47:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:47:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:49:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:49:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:49:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:49:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:50:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:50:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1944
+---
+2016/01/21 15:50:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:50:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:50:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/337?id_informacion=1928
+---
+2016/01/21 15:50:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/337?id_informacion=1928
+---
+2016/01/21 15:51:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:51:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:51:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/338?id_informacion=1928
+---
+2016/01/21 15:51:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/338?id_informacion=1928
+---
+2016/01/21 15:51:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:51:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:52:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/339?id_informacion=1928
+---
+2016/01/21 15:52:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionTestDrive/create/339?id_informacion=1928
+---
+2016/01/21 15:53:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:53:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:53:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---
+2016/01/21 15:53:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/site/demostracion/1928
+---

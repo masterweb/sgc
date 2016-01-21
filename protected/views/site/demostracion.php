@@ -211,7 +211,9 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($vec as $c): ?>
+                                    <?php 
+                                    $continuar_status = 0; 
+                                    foreach ($vec as $c): ?>
                                         <tr>
                                             <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                             <td><?php echo $this->getVersion($c['version']); ?> </td>
@@ -220,7 +222,7 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                                 $test = $this->getTestDrive($c['id_informacion'], $c['id']);
                                                 $preg1 = $this->getTestDemostracion($c['id_informacion'], $c['id']);
                                                 $totalresp1 = count($preg1['preg1']) -1; 
-                                                $totalresp2 = count($preg1['fecha']) -1;    
+                                                $totalresp2 = count($preg1['fecha']) -1;                                                  
                                                 
                                                 $preg_fin = $preg1['preg1'][$totalresp1]['preg1'];
                                                 $ob_num = $preg1['preg1'][$totalresp1]['preg1_observaciones'];
@@ -233,9 +235,11 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                                     $fecha_fin = $preg1['fecha'][$totalresp2]['fecha'];
                                                     $resp = '<b>Si</b>';
                                                     $ob = $fecha_fin;
+                                                    $continuar_status ++;
                                                 }else if($preg_fin === 'No'){
                                                     $class_activa = 'btn-tomate';
                                                     $resp = 'No';
+                                                    $continuar_status++;
                                                     switch ($ob_num) {
                                                         case 0:
                                                             $ob = 'No tiene licencia';
@@ -285,8 +289,9 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                 </div>
                 <div class="row"></div>
                 <br />
-                <?php
-                if ($testAll == count($vec)):
+                <?php                
+                //echo $continuar_status.' = '.count($vec);
+                if ($continuar_status == count($vec)):
                     ?>
                     <div class="row">
                         <div class="col-md-3">
