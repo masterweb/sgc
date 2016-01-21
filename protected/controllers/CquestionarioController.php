@@ -235,7 +235,7 @@ class CquestionarioController extends Controller
 		$encuesta = Cquestionario::model()->findByPk($id);
 		
 		if(!empty($encuesta) && !empty($_POST)){
-
+		
 			$modelE = new Cquestionario();
 			$modelE->descripcion = $encuesta->descripcion;
 			$modelE->nombre = (!empty($_POST['campana_nombre']))?$p->purify($_POST['campana_nombre']):'Copia - '.$encuesta->nombre;
@@ -244,7 +244,7 @@ class CquestionarioController extends Controller
 			$modelE->fecha = date('Y-m-d');
 			$modelE->estado = 'ACTIVO';
 			$modelE->ccampana_id =(int)$_POST['campana_item']; //$c;
-			$modelE->guion = $encuesta->guion;
+			$modelE->guion = (!empty($encuesta->guion))?$encuesta->guion:'Ingrese el guión para el encuestador@';
 			$modelE->cbasedatos_id = $encuesta->cbasedatos_id;
 			
 			if($modelE->save()){
