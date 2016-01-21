@@ -11,6 +11,7 @@ if (isset($model->identificacion))
 //echo '-----------identificacion: '.$identificacion;
 $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getDealerId($id_responsable);
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
 //echo 'REPONSABLE ID: '.$id_responsable;
 ?>
 <script>
@@ -550,13 +551,21 @@ $dealer_id = $this->getDealerId($id_responsable);
                                 <option value="SeguimientoEntrega">Seguimiento Entrega</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <?php if($cargo_id == 73): ?>
+                        <?php  
+                        // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 17 Y EL DEALER ID -> concesionarioid
+                        $mod = new GestionDiaria;
+                        $cre = new CDbCriteria();
+                        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
+                        $cre->order = " nombres ASC";
+                        //$usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
+                        ?>
+<!--                        <div class="col-md-6">
                             <label for="">Responsable</label>
-                            <select name="GestionDiaria[responsable]" id="" class="form-control">
-                                <option value="">--Seleccione responsable--</option>
-                                <option value="Jorge Rodriguez">Jorge Rodriguez</option>
-                            </select>
-                        </div>
+                            <?php //echo $form->dropDownList($mod, 'responsable', $usu, array('class' => 'form-control', 'empty' => 'Seleccione un responsable')); ?>
+                            
+                        </div>-->
+                        <?php endif; ?>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -589,63 +598,57 @@ $dealer_id = $this->getDealerId($id_responsable);
 
                     </div>
                     <hr />
+                    <?php if($cargo_id == 69 ){ ?>
+                    <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
+                    
                     <div class="row">
+                        
                         <div class="col-md-6">
                             <label for="">Grupo</label>
-                            <?php
-//                            $criteria = new CDbCriteria(array(
-//                                'order' => 'nombre_grupo'
-//                            ));
-//                            $grupos = CHtml::listData(Grupo::model()->findAll($criteria), "id", "nombre_grupo");
-                            ?>
-                            <select name="GestionDiaria[grupo]" id="GestionDiaria_grupo" class="form-control">
-                                <option value="">--Seleccione grupo--</option>
-                                <option value="1">AEKIA S.A.</option>
-                                <option value="6">AUTHESA</option>
-                                <option value="7">AUTOSCOREA</option>
-                                <option value="2">GRUPO ASIAUTO</option>
-                                <option value="5">GRUPO EMPROMOTOR</option>
-                                <option value="3">GRUPO KMOTOR</option>
-                                <option value="8">GRUPO MERQUIAUTO</option>
-                                <option value="9">GRUPO MOTRICENTRO</option>
-                                <option value="4">IOKARS</option>
+                            <select name="GestionDiaria[grupo]" id="GestionDiaria_grupo" class="form-control" <?php echo $cargo_id == 69 ? 'disabled="true"' : ''; ?> >
+                                <?php echo $select[0]; ?>
                             </select>
                         </div>
+                        
                         <div class="col-md-6">
                             <label for="">Concesionario</label>
                             <select name="GestionDiaria[concesionario]" id="GestionDiaria_concesionario" class="form-control">
-                                <option value="">--Seleccione concesionario--</option>
-                                <option value="0">AEKIA S.A.</option>
-                                <option value="60">ASIAUTO CONDADO</option>
-                                <option value="7">ASIAUTO CUMBAYA</option>
-                                <option value="6">ASIAUTO SUR</option>
-                                <option value="2">ASIAUTO ORELLANA'</option>
-                                <option value="76">ASIAUTO LOS CHILLOS</option>
-                                <option value="5">ASIAUTO MDJ</option>
-                                <option value="62">ASIAUTO 6 DIC</option>
-                                <option value="63">ASIAUTO LATACUNGA</option>
-                                <option value="20">ASIAUTO MANTA</option>
-                                <option value="65">ASIAUTO PORTOVIEJO</option>
-                                <option value="38">ASIAUTO RIOBAMBA</option>
-                                <option value="72">KMOTOR ORELLANA</option>
-                                <option value="77">KMOTOR SUR</option>
-                                <option value="81">KMOTOR MILAGRO</option>
-                                <option value="10">KMOTOR AMERICA</option>
-                                <option value="80">KMOTOR MACHALA</option>
-                                <option value="78">IOKARS</option>
-                                <option value="22">EMPROMOTOR CENTRO</option>
-                                <option value="68">EMPROMOTOR DOS</option>
-                                <option value="73">EMPROMOTOR ESMERALDAS</option>
-                                <option value="19">AUTHESA</option>
-                                <option value="14">AUTOSCOREA</option>
-                                <option value="59">MERQUIAUTO PUYO</option>
-                                <option value="74">MERQUIAUTO QUEVEDO</option>
-                                <option value="79">MERQUIAUTO TENA</option>
-                                <option value="70">MOTRICENTRO LOJA</option>
-                                <option value="12">MOTRICENTRO CUE</option>
+                                <?php echo $select[1]; ?>
                             </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Responsable</label>
+                                <select name="GestionDiaria[responsable]" id="GestionDiaria_responsable" class="form-control">
+                                    <option value="">--Seleccione responsable--</option>
+                            </select>
+                        </div>    
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Provincia</label>
+                            <select name="GestionDiaria[provincia]" id="GestionDiaria_provincia" class="form-control">
+                                <option value="">---Seleccione una provincia---</option>
+                                <option value="1">Azuay</option>
+                                <option value="5">Chimborazo</option>
+                                <option value="7">El Oro</option>
+                                <option value="8">Esmeraldas</option>
+                                <option value="10">Guayas</option>
+                                <option value="11">Imbabura</option>
+                                <option value="12">Loja</option>
+                                <option value="13">Los Ríos</option>
+                                <option value="14">Manabí</option>
+                                <option value="16">Napo</option>
+                                <option value="18">Pastaza</option>
+                                <option value="19">Pichincha</option>
+                                <option value="21">Tsachilas</option>
+                                <option value="23">Tungurahua</option>
+                            </select>      
+                        </div>   
+                    </div>
+                    
                     <div class="row">
                         <div class="col-md-6">
                             <label for="">Provincia</label>
@@ -678,6 +681,7 @@ $dealer_id = $this->getDealerId($id_responsable);
                             </select>      
                         </div>   
                     </div>
+                    <?php } ?>
                     <div class="row">
                         <div class="col-md-6">
                             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
@@ -763,8 +767,8 @@ $dealer_id = $this->getDealerId($id_responsable);
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span><!--Responsable Exonerados--> Asesor Comercial Origen</span></th>
-                            <th><span>Responsable Concesionario</span></th>
+                            <th><span>Responsable</span></th>
+                            <th><span>Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
@@ -902,8 +906,8 @@ $dealer_id = $this->getDealerId($id_responsable);
                                 ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable(Yii::app()->user->getId()) ?></td>
-                                <td><?php echo $this->getResponsable($c['responsable']); ?></td>
+                                <td><?php echo $this->getResponsable($c['id_resp']); ?></td>
+                                <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td> <?php echo $c['categorizacion']; ?> </td>
                                 <td> 

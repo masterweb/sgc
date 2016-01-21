@@ -652,6 +652,8 @@ class GestionInformacionController extends Controller {
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupoConc($grupo_id);
+        $dealerList = implode(', ', $array_dealers);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
 
@@ -1257,6 +1259,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         //die('cargo id:'.$cargo_id);
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupoConc($grupo_id);
+        $dealerList = implode(', ', $array_dealers);
         //die('responsable id: '.$id_responsable);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
@@ -1904,12 +1908,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionSeguimientoBdc() {
         //$this->layout = '//layouts/callventas';
         $cargo = Yii::app()->user->getState('usuario');
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupo($id_responsable);
+        $dealerList = implode(', ', $array_dealers);
         $dealer_id = $this->getDealerId($id_responsable);
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
 
-        if ($cargo == 'gerente') {
+        if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, 
@@ -1920,7 +1927,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.bdc = 1
                 ORDER BY gd.id DESC";
-        } else {
+        }
+        if ($cargo_id == 73) { // ASESOR BDC
+            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $sql = "SELECT u.id as id_resp, gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
+                ORDER BY gd.id DESC";
+            //die($sql);
+        }
+        else {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, 
@@ -3828,6 +3850,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $tit_init = 'Búsqueda entre ';              
                 break;
             case 69: // GERENTE COMERCIAL
+            case 46: // SUPER ADMINISTRADOR
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];
                 $tit_init = 'Búsqueda por defecto entre ';                
                 $tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);

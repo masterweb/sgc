@@ -697,7 +697,7 @@ $count = count($users);
 
                     </div>
                     <hr />
-                    <?php if($cargo_id == 69 ){ ?>
+                    <?php if($cargo_id == 69 || $cargo_id == 46){ ?>
                     <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
                     
                     <div class="row">

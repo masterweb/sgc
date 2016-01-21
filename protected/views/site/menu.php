@@ -225,7 +225,7 @@ $rol = Yii::app()->user->getState('roles');
                         </div>
                     </li>
                 <?php } // perfil asesor de credito?>
-                <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id)) && $cargo_id != 46) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
