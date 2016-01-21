@@ -114,13 +114,13 @@ foreach ($cr as $c) {
         
         <header>
             <div class="logo">
-                <a href="<?php echo Yii::app()->createUrl('site/menu'); ?>">
+                <!--a href="<?php echo Yii::app()->createUrl('site/menu'); ?>"-->
                 <?php if((Yii::app()->user->getState('area_id') == 1887) && ($controller != 'site') && ($action != 'dashboard')): ?>
                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo_SGC_nuevo.png" class="img-responsive" id="imglogo">
                 <?php else: ?>
                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/intranet.png" class="img-responsive" id="imglogo">
                 <?php endif; ?>
-                </a>
+                <!--/a-->
             </div>
             <div class="sesion">
             <?php if (Yii::app()->user->id > 0) { ?>

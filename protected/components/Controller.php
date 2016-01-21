@@ -692,7 +692,7 @@ class Controller extends CController {
 
     public function getTestDemostracion($id_informacion, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
-            'select' => 'preg1',
+            'select' => 'preg1, preg1_observaciones',
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
         $resp['preg1'] = GestionDemostracion::model()->findAll($criteria);
@@ -714,6 +714,15 @@ class Controller extends CController {
         ));
         $test = GestionFinanciamiento::model()->count($criteria);
         return $test;
+    }
+
+    public function getVehiculosInterados($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion='{$id}'"
+        ));
+        $vec = GestionVehiculo::model()->findAll($criteria);
+        $count = count($vec);
+        return $count;
     }
 
     public function getTestDriveOnly($id_informacion) {

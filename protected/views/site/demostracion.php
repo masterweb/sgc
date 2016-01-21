@@ -207,10 +207,13 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                         <th><span>Versión</span></th>
                                         <!--<th><span>Precio</span></th>-->
                                         <th><span>Test Drive</span></th>
+                                        <th><span>Observación</span></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($vec as $c): ?>
+                                    <?php 
+                                    $continuar_status = 0; 
+                                    foreach ($vec as $c): ?>
                                         <tr>
                                             <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                             <td><?php echo $this->getVersion($c['version']); ?> </td>
@@ -219,29 +222,61 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                                                 $test = $this->getTestDrive($c['id_informacion'], $c['id']);
                                                 $preg1 = $this->getTestDemostracion($c['id_informacion'], $c['id']);
                                                 $totalresp1 = count($preg1['preg1']) -1; 
-                                                $totalresp2 = count($preg1['fecha']) -1;    
+                                                $totalresp2 = count($preg1['fecha']) -1;                                                  
                                                 
-                                                $preg_fin = $preg1['preg1'][$totalresp1]['preg1'];                                                
+                                                $preg_fin = $preg1['preg1'][$totalresp1]['preg1'];
+                                                $ob_num = $preg1['preg1'][$totalresp1]['preg1_observaciones'];
+                                                         
                                                 //echo $preg_fin;
                                                 ?>
                                                 <?php 
                                                 if($preg_fin === 'Si'){
                                                     $class_activa = 'btn-warning';
                                                     $fecha_fin = $preg1['fecha'][$totalresp2]['fecha'];
-                                                    $resp = '<b>Si</b> / '.$fecha_fin;
+                                                    $resp = '<b>Si</b>';
+                                                    $ob = $fecha_fin;
+                                                    $continuar_status ++;
                                                 }else if($preg_fin === 'No'){
                                                     $class_activa = 'btn-tomate';
                                                     $resp = 'No';
+                                                    $continuar_status++;
+                                                    switch ($ob_num) {
+                                                        case 0:
+                                                            $ob = 'No tiene licencia';
+                                                            break;
+                                                        case 1:
+                                                            $ob = 'No tiene tiempo';
+                                                            break;
+                                                        case 2:
+                                                            $ob = 'No desea';
+                                                            break;
+                                                        case 4:
+                                                            $ob = 'No, pero realizará en el futuro';
+                                                            break;
+                                                        case 5:
+                                                            $ob = 'Modelo no disponible';
+                                                            break;
+                                                        default:
+                                                            $ob = '';
+                                                            break;
+                                                    }
                                                 }else{
                                                     $class_activa = 'btn-danger';
                                                     $resp = 'Test Drive';
+                                                    $ob = '';
                                                 }
                                                 if ($test > 0): ?>
                                                     <!--                                            <a class="btn btn-success btn-xs btn-rf">Test Drive</a>-->
                                                                                                 <!--<a href="<?php echo Yii::app()->createUrl('gestionVehiculo/negociacion', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Test Drive</a>-->
                                                     <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn <?= $class_activa ?> btn-xs btn-rf"><?= $resp ?></a>
+                                                    </td>                                                        
+                                                    <td>
+                                                        <?= $ob ?>
                                                 <?php else: ?>    
                                                     <a href="<?php echo Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])); ?>" class="btn <?= $class_activa ?> btn-xs btn-rf"><?= $resp ?></a>
+                                                    </td>
+                                                    <td>
+                                                        <?= $ob ?>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -254,10 +289,9 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                 </div>
                 <div class="row"></div>
                 <br />
-                <?php
-                
-                //echo 'test drive: '.$testAll;
-                if ($testAll > 0):
+                <?php                
+                //echo $continuar_status.' = '.count($vec);
+                if ($continuar_status == count($vec)):
                     ?>
                     <div class="row">
                         <div class="col-md-3">

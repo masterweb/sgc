@@ -230,25 +230,25 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     $status = GestionFinanciamiento::model()->find($criteria2);
                                                     
                                                     if($status->forma_pago === 'Contado'){
-                                                        echo '<a class="btn btn-tomate btn-xs" target="_blank">Contado</a>';
+                                                        echo '<a class="btn btn-tomate btn-xs nocursor" target="_blank">Contado</a>';
                                                     }else if($status->forma_pago == null){
                                                         //echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
                                                     }else{                                                    
                                                         switch ($status) {
                                                             case 'na':
-                                                                echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
+                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">Sin Satus</a>';
                                                                 break;                                                             
                                                             case 1:
-                                                                echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
+                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">En Análisis</a>';
                                                                 break;
                                                             case 2:
-                                                                echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+                                                                echo '<a class="btn btn-success btn-xs nocursor" target="_blank">Aprobado</a>';
                                                                 break;
                                                             case 3:
-                                                                echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>';
+                                                                echo '<a class="btn btn-danger btn-xs nocursor" target="_blank">Negado</a>';
                                                                 break;
                                                             case 4:
-                                                                echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>';
+                                                                echo '<a class="btn btn-danger btn-xs nocursor" target="_blank">Condicionado</a>';
 
                                                                 break;
 

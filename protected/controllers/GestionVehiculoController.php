@@ -1001,7 +1001,7 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $id_asesor = Yii::app()->user->getId();
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
-        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_TITLE, "UTF-8");
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
 
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
@@ -1070,7 +1070,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $id_asesor = Yii::app()->user->getId();
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
-        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_TITLE, "UTF-8");
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);

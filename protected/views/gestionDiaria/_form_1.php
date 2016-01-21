@@ -170,7 +170,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                     <?php endif; ?>
                                     <?php if($value['ruc'] != ''): ?>
                                     <tr>
-                                        <td><strong>Ruc:</strong> <?php echo $value['ruc']; ?></td>
+                                        <td><strong>RUC:</strong> <?php echo $value['ruc']; ?></td>
                                     </tr>
                                     <?php endif; ?>
                                     <?php if($value['pasaporte'] != ''): ?>
