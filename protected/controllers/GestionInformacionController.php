@@ -31,7 +31,7 @@ class GestionInformacionController extends Controller {
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('create', 'update', 'seguimiento', 'seguimientobdc', 'seguimientoexonerados', 'seguimientoexcel',
-                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos','admin'),
+                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos', 'admin'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -333,7 +333,7 @@ class GestionInformacionController extends Controller {
                 $this->redirect(array('site/consulta', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
             }
         }
-        
+
         $this->render('create', array(
             'model' => $model, 'tipo' => $tipo, 'id' => $id, 'fuente' => $fuente
         ));
@@ -560,7 +560,7 @@ class GestionInformacionController extends Controller {
                             } else if ($_POST['yt0'] == 'Continuar') {
                                 $sql = "UPDATE gestion_diaria SET status = 1, proximo_seguimiento = '', paso = '3' WHERE id_informacion = {$id}";
                                 $request = $con->createCommand($sql)->query();
-                                $this->redirect(array('gestionConsulta/create', 'id_informacion' => $id, 'tipo' => 'gestion','fuente' => 'prospeccion'));
+                                $this->redirect(array('gestionConsulta/create', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
                             }
                             break;
                     }
@@ -652,6 +652,8 @@ class GestionInformacionController extends Controller {
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupoConc($grupo_id);
+        $dealerList = implode(', ', $array_dealers);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
 
@@ -1257,6 +1259,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         //die('cargo id:'.$cargo_id);
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupoConc($grupo_id);
+        $dealerList = implode(', ', $array_dealers);
         //die('responsable id: '.$id_responsable);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
@@ -1904,12 +1908,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionSeguimientoBdc() {
         //$this->layout = '//layouts/callventas';
         $cargo = Yii::app()->user->getState('usuario');
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupo($id_responsable);
+        $dealerList = implode(', ', $array_dealers);
         $dealer_id = $this->getDealerId($id_responsable);
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
 
-        if ($cargo == 'gerente') {
+        if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, 
@@ -1920,6 +1927,20 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.bdc = 1
                 ORDER BY gd.id DESC";
+        }
+        if ($cargo_id == 73) { // ASESOR BDC
+            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $sql = "SELECT u.id as id_resp, gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
+                ORDER BY gd.id DESC";
+            //die($sql);
         } else {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
@@ -2756,7 +2777,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             if (isset($_POST['GestionInformacion']['presupuesto']))
                 $model->presupuesto = $_POST['GestionInformacion']['presupuesto'];
-            
+
             if (isset($_POST['GestionInformacion']['tipo_ex']))
                 $model->tipo_ex = $_POST['GestionInformacion']['tipo_ex'];
 
@@ -3198,7 +3219,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $model->attributes = $_POST['GestionInformacion'];
             if (isset($_POST['GestionInformacion']['tipo_form_web']))
                 $model->tipo_form_web = $_POST['GestionInformacion']['tipo_form_web'];
-            
+
             if (isset($_POST['GestionInformacion']['tipo_ex']))
                 $model->tipo_ex = $_POST['GestionInformacion']['tipo_ex'];
 
@@ -3440,7 +3461,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $model->attributes = $_POST['GestionInformacion'];
             if (isset($_POST['GestionInformacion']['tipo_form_web']))
                 $model->tipo_form_web = $_POST['GestionInformacion']['tipo_form_web'];
-            
+
             if (isset($_POST['GestionInformacion']['tipo_ex']))
                 $model->tipo_ex = $_POST['GestionInformacion']['tipo_ex'];
 
@@ -3484,7 +3505,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
                 $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
             endif;
-            
+
             $archivoThumb = CUploadedFile::getInstance($model, 'img');
             $fileName = "{$archivoThumb}";  // file name
             if ($archivoThumb != "") {
@@ -3737,13 +3758,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
         }
-
-        $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
+        if ($cargo_id == 46) {
+            $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
             WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' 
+            ORDER BY gi.id DESC";
+        } else {
+            $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
+            left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+            WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
             AND gi.dealer_id = {$dealer_id}
             ORDER BY gi.id DESC";
             //die($sql);
+        }
         $request = $con->createCommand($sql);
         $users = $request->queryAll();
         $this->render('usados', array('users' => $users));
@@ -3766,7 +3793,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $varView['concesionario'] = 2000;
         $varView['tipos'] = null;
 
-        date_default_timezone_set('America/Guayaquil'); 
+        date_default_timezone_set('America/Guayaquil');
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
 
@@ -3774,10 +3801,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
         $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
         $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
-        $varView['fecha_anterior'] = strftime( "%Y-%m-%d", strtotime( '-1 month', $dt ) );
-        $varView['fecha_inicial_anterior'] = strftime( "%Y-%m", strtotime( '-1 month', $dt ) ). '-01';
+        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-1 month', $dt));
+        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-1 month', $dt)) . '-01';
         $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
-        $varView['nombre_mes_anterior'] = strftime( "%B - %Y", strtotime( '-1 month', $dt ) );
+        $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));
 
         $con = Yii::app()->db;
 
@@ -3788,27 +3815,34 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
         $lista_datos = array();
-        if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
-        if (isset($_GET['version'])) {array_push($lista_datos, array('versiones' =>$_GET['version']));}
+        if (isset($_GET['modelo'])) {
+            array_push($lista_datos, array('modelos' => $_GET['modelo']));
+        }
+        if (isset($_GET['version'])) {
+            array_push($lista_datos, array('versiones' => $_GET['version']));
+        }
 
         $SQLmodelos = '';
         foreach ($lista_datos as $key => $value) {
             foreach ($value as $key => $carros) {
-                if($key == 'modelos'){$campo_car= 'modelo';}
-                else{$campo_car= 'version';}              
+                if ($key == 'modelos') {
+                    $campo_car = 'modelo';
+                } else {
+                    $campo_car = 'version';
+                }
                 $id_carros_nv[$key] = implode(', ', $carros);
-                $SQLmodelos[$key] = " AND gi.".$campo_car." IN (".$id_carros_nv[$key].") ";
+                $SQLmodelos[$key] = " AND gi." . $campo_car . " IN (" . $id_carros_nv[$key] . ") ";
             }
         }
 
         //GET Asesores
         $mod = new GestionDiaria;
         $cre = new CDbCriteria();
-        $varView['dealer_resp']= $this->getConcesionarioDealerId($varView['id_responsable']);
-        if(!empty($dealer_resp)){
+        $varView['dealer_resp'] = $this->getConcesionarioDealerId($varView['id_responsable']);
+        if (!empty($dealer_resp)) {
             $varView['dealer_id'] = $varView['dealer_resp'];
         }
-        $cre->condition = " cargo_id = 71 AND dealers_id = ".$varView['dealer_id'];
+        $cre->condition = " cargo_id = 71 AND dealers_id = " . $varView['dealer_id'];
         $cre->order = " nombres ASC";
         $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
 
@@ -3818,18 +3852,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $group_ext = null;
         $select_ext = null;
         $tit_init = 'Búsqueda entre ';
-        switch ($varView['cargo_id']) { 
+        switch ($varView['cargo_id']) {
             case 71: // asesor de ventas 
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+                $id_persona = "gi.responsable = " . $varView['id_responsable'];
                 $tit_init = 'Búsqueda entre ';
                 break;
             case 70: // jefe de sucursal 
-                $id_persona = "gi.dealer_id = ".$varView['dealer_id'];
-                $tit_init = 'Búsqueda entre ';              
+                $id_persona = "gi.dealer_id = " . $varView['dealer_id'];
+                $tit_init = 'Búsqueda entre ';
                 break;
             case 69: // GERENTE COMERCIAL
-                $id_persona = 'u.grupo_id = '.$varView['grupo_id'];
-                $tit_init = 'Búsqueda por defecto entre ';                
+            case 46: // SUPER ADMINISTRADOR
+                $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
+                $tit_init = 'Búsqueda por defecto entre ';
                 $tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
                 $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $group_ext = null;
@@ -3837,9 +3872,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 break;
         }
 
-       
+
         if (isset($_GET['GestionInformacion'])) {
-            $tit_ext = '';            
+            $tit_ext = '';
             $tipo_busqueda_trafico2 = '';
             $tipo_busqueda_proforma2 = '';
             $tipo_busqueda_testdrive2 = '';
@@ -3851,23 +3886,23 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria']['responsable']) && $tip_us != 3) {
                 $responsable = $_GET['GestionDiaria']['responsable'];
                 $tit_ext = '. Asesor: ' . $this->getResponsableNombres($responsable);
-                $id_persona = 'gi.responsable = '.$responsable;
-                $id_persona .= " AND gi.dealer_id = ".$varView['dealer_id'].' ';
-            }else if($tip_us != 1 && $tip_us != 3 && empty($_GET['GestionDiaria']['responsable'])){       
+                $id_persona = 'gi.responsable = ' . $responsable;
+                $id_persona .= " AND gi.dealer_id = " . $varView['dealer_id'] . ' ';
+            } else if ($tip_us != 1 && $tip_us != 3 && empty($_GET['GestionDiaria']['responsable'])) {
                 $responsable = key($usu);
                 $tit_ext .= '. Asesor: ' . reset($usu);
-                $id_persona = 'gi.responsable = '.$responsable;
-                $id_persona .= " AND gi.dealer_id = ".$varView['dealer_id'].' ';
-            }else if($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])){
+                $id_persona = 'gi.responsable = ' . $responsable;
+                $id_persona .= " AND gi.dealer_id = " . $varView['dealer_id'] . ' ';
+            } else if ($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])) {
                 $responsable = $_GET['GestionDiaria']['responsable'];
-                if($responsable){
-                    $id_persona .= " AND gi.responsable = ".$responsable.' ';
+                if ($responsable) {
+                    $id_persona .= " AND gi.responsable = " . $responsable . ' ';
                     $tit_ext .= '. Asesor: ' . $this->getResponsableNombres($responsable);
                 }
 
                 $tit_ext .= '. Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionInformacion']['concesionario']);
             }
-                       
+
 
             //===========================VARIABLES para getSelectCKDCBU()================================
             if ($tip_us == 1) {
@@ -3875,18 +3910,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $tipo_busqueda_proforma2 = 2;
                 $tipo_busqueda_testdrive2 = 3;
                 $tipo_busqueda_ventas2 = 4;
-             }else if (($tip_us == 2) && !empty($_GET['GestionDiaria']['responsable'])) {
+            } else if (($tip_us == 2) && !empty($_GET['GestionDiaria']['responsable'])) {
                 $tipo_busqueda_trafico2 = 5;
                 $tipo_busqueda_proforma2 = 6;
                 $tipo_busqueda_testdrive2 = 7;
                 $tipo_busqueda_ventas2 = 8;
-
-            }else if ($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])) {
+            } else if ($tip_us == 3 && !empty($_GET['GestionInformacion']['concesionario'])) {
                 $tipo_busqueda_trafico2 = 9;
                 $tipo_busqueda_proforma2 = 10;
                 $tipo_busqueda_testdrive2 = 11;
                 $tipo_busqueda_ventas2 = 12;
-            }else if ($tip_us == 3 && (($_GET['GestionInformacion']['concesionario'] == 0) || empty($_GET['GestionInformacion']['concesionario'])) && empty($_GET['GestionDiaria']['responsable'])) {
+            } else if ($tip_us == 3 && (($_GET['GestionInformacion']['concesionario'] == 0) || empty($_GET['GestionInformacion']['concesionario'])) && empty($_GET['GestionDiaria']['responsable'])) {
                 $tipo_busqueda_trafico2 = 13;
                 $tipo_busqueda_proforma2 = 14;
                 $tipo_busqueda_testdrive2 = 15;
@@ -3901,30 +3935,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $varView['fecha_inicial_anterior'] = trim($varView['fecha1'][0]);
             $varView['fecha_anterior'] = trim($varView['fecha1'][1]);
 
-            $varView['fecha_inicial_actual'] = trim($varView['fecha2'][0]);                
-            $varView['fecha_actual'] = trim($varView['fecha2'][1]);            
+            $varView['fecha_inicial_actual'] = trim($varView['fecha2'][0]);
+            $varView['fecha_actual'] = trim($varView['fecha2'][1]);
 
-            $varView['nombre_mes_actual'] = strftime( "%B - %Y", strtotime($varView['fecha_inicial_actual']));
-            $varView['nombre_mes_anterior'] = strftime( "%B - %Y", strtotime($varView['fecha_inicial_anterior']));
+            $varView['nombre_mes_actual'] = strftime("%B - %Y", strtotime($varView['fecha_inicial_actual']));
+            $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime($varView['fecha_inicial_anterior']));
 
             $tipos = array();
-            array_push($tipos, $tipo_busqueda_trafico2, $tipo_busqueda_proforma2, $tipo_busqueda_testdrive2, $tipo_busqueda_ventas2);  
-        }      
-    
+            array_push($tipos, $tipo_busqueda_trafico2, $tipo_busqueda_proforma2, $tipo_busqueda_testdrive2, $tipo_busqueda_ventas2);
+        }
+
         $retorno = $this->buscar(
-            $varView['cargo_id'], 
-            $varView['id_responsable'], 
-            $select_ext, 
-            $join_ext, 
-            $id_persona, 
-            $group_ext, 
-            $varView['fecha_inicial_anterior'], 
-            $varView['fecha_anterior'], 
-            $varView['fecha_inicial_actual'], 
-            $varView['fecha_actual'], 
-            $varView['$concesionario'], 
-            $tipos, 
-            $SQLmodelos
+                $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['$concesionario'], $tipos, $SQLmodelos
         );
         $varView['trafico_mes_anterior'] = $retorno[0];
         $varView['trafico_mes_actual'] = $retorno[1];
@@ -3932,7 +3954,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $varView['vhckd2'] = $retorno[3];
         $varView['vhcbu1'] = $retorno[4];
         $varView['vhckd1'] = $retorno[5];
-        $varView['vh_mes_actual']= $retorno[6];
+        $varView['vh_mes_actual'] = $retorno[6];
         $varView['vh_mes_anterior'] = $retorno[7];
         $varView['tdcbu2'] = $retorno[8];
         $varView['tdckd2'] = $retorno[9];
@@ -3948,7 +3970,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $varView['proforma_mes_anterior'] = $retorno[19];
         $varView['traficocbu2'] = $retorno[20];
         $varView['traficockd2'] = $retorno[21];
-        $varView['traficocbu1'] = $retorno[22];            
+        $varView['traficocbu1'] = $retorno[22];
         $varView['traficockd1'] = $retorno[23];
         $varView['lista_datos'] = $lista_datos;
         $varView['usu'] = $usu;
@@ -3967,85 +3989,78 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $varView['var_ve'] = $this->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'var');
         $varView['dif_ve'] = $this->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'dif');
 
-        $varView['titulo'] = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
+        $varView['titulo'] = $tit_init . $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . $tit_ext;
 
         $this->render('reportes', array('varView' => $varView));
     }
 
-    
-    function DIFconstructor($var1, $var2, $tipo){
+    function DIFconstructor($var1, $var2, $tipo) {
         $dif = $var1 - $var2;
         $unidad = '';
-        if($tipo == 'var'){
+        if ($tipo == 'var') {
             $unidad = '%';
-            if($var2 == 0){$var2 = $var1;}       
+            if ($var2 == 0) {
+                $var2 = $var1;
+            }
             $dif = ($dif * 100) / $var2;
-            $dif = round($dif, 2);            
+            $dif = round($dif, 2);
         }
 
         $resp = '<span';
         if ($dif >= 0) {
-            $resp .= '>' . $dif.$unidad;
+            $resp .= '>' . $dif . $unidad;
         } else {
-            $resp .= ' class="dif">(' . abs($dif) . $unidad. ')';
+            $resp .= ' class="dif">(' . abs($dif) . $unidad . ')';
         }
         $resp .= '</span>';
 
         return $resp;
     }
 
-    function SQLconstructor($selection, $table, $join, $where, $group = null){
+    function SQLconstructor($selection, $table, $join, $where, $group = null) {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
         //echo $sql_cons.'<br><br>';
 
         $request_cons = $con->createCommand($sql_cons);
-        return  $request_cons->queryAll();
+        return $request_cons->queryAll();
     }
 
-    function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros){
+    function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros) {
         $modelos = null;
         $versiones = null;
-        if(!empty($carros['modelos'])){ $modelos = $carros['modelos'];  }
-        if(!empty($carros['versiones'])){ $versiones = $carros['versiones'];}
+        if (!empty($carros['modelos'])) {
+            $modelos = $carros['modelos'];
+        }
+        if (!empty($carros['versiones'])) {
+            $versiones = $carros['versiones'];
+        }
 
-        if(empty($tipos)){
+        if (empty($tipos)) {
             $tipos = array();
-            array_push($tipos,1,2,3,4);       
+            array_push($tipos, 1, 2, 3, 4);
         }
 
         $retorno = array();
-        
+
         //BUSQUEDA POR TRAFICO      
         $trafico_mes_anterior = $this->SQLconstructor(
-            'gi.nombres '.$select_ext, 
-            'gestion_informacion gi', 
-            $join_ext, 
-            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."'".$modelos.$versiones, 
-            $group_ext
+                'gi.nombres ' . $select_ext, 'gestion_informacion gi', $join_ext, $id_persona . " AND DATE(gi.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "'" . $modelos . $versiones, $group_ext
         );
 
         $trafico_mes_anterior = count($trafico_mes_anterior);
-        $retorno[] = $trafico_mes_anterior;                               
-        
+        $retorno[] = $trafico_mes_anterior;
+
         $trafico_mes_actual = $this->SQLconstructor(
-            'gi.nombres '.$select_ext, 
-            'gestion_informacion gi', 
-            $join_ext, 
-            $id_persona." AND DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."'".$modelos.$versiones, 
-            $group_ext
+                'gi.nombres ' . $select_ext, 'gestion_informacion gi', $join_ext, $id_persona . " AND DATE(gi.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "'" . $modelos . $versiones, $group_ext
         );
         $trafico_mes_actual = count($trafico_mes_actual);
         $retorno[] = $trafico_mes_actual;
 
-        
+
         $traficockd1 = $this->SQLconstructor(
-            'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo '.$select_ext.' as modinfo, gv.modelo', 
-            'gestion_informacion gi', 
-            $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
-            $group_ext
+                'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo ' . $select_ext . ' as modinfo, gv.modelo', 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', "DATE(gi.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "' AND " . $id_persona . $modelos . $versiones . " AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", $group_ext
         );
         $traficockd1 = count($traficockd1);
         $retorno[] = $traficockd1;
@@ -4053,11 +4068,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $retorno[] = $traficocbu1;
 
         $traficockd2 = $this->SQLconstructor(
-            'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo '.$select_ext.' as modinfo, gv.modelo', 
-            'gestion_informacion gi', 
-            $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
-            $group_ext
+                'gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo ' . $select_ext . ' as modinfo, gv.modelo', 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', "DATE(gi.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "' AND " . $id_persona . $modelos . $versiones . " AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", $group_ext
         );
         $traficockd2 = count($traficockd2);
         $retorno[] = $traficockd2;
@@ -4068,22 +4079,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         // BUSQUEDA POR PROFORMA
         $proforma_mes_anterior = $this->SQLconstructor(
-            'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-            'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND gf.order = 1", 
-            "GROUP BY gf.id_vehiculo"
+                'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext, "DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "' AND " . $id_persona . $modelos . $versiones . " AND gf.order = 1", "GROUP BY gf.id_vehiculo"
         );
         $proforma_mes_anterior = count($proforma_mes_anterior);
-        $retorno[] = $proforma_mes_anterior;        
-       
+        $retorno[] = $proforma_mes_anterior;
+
         $proforma_mes_actual = $this->SQLconstructor(
-            'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id '.$select_ext, 
-            'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones."  AND gf.order = 1", 
-            "GROUP BY gf.id_vehiculo"
-        );                
+                'gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext, "DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "' AND " . $id_persona . $modelos . $versiones . "  AND gf.order = 1", "GROUP BY gf.id_vehiculo"
+        );
         $proforma_mes_actual = count($proforma_mes_actual);
         $retorno[] = $proforma_mes_actual;
 
@@ -4101,21 +4104,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         // BUSQUEDA POR TEST DRIVE
         $td_mes_anterior = $this->SQLconstructor(
-            'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-            'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' ".$modelos.$versiones." AND gt.order = 1 AND ".$id_persona, 
-            "GROUP BY gt.id_vehiculo"
+                'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext, "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "' " . $modelos . $versiones . " AND gt.order = 1 AND " . $id_persona, "GROUP BY gt.id_vehiculo"
         );
         $td_mes_anterior = count($td_mes_anterior);
         $retorno[] = $td_mes_anterior;
 
         $td_mes_actual = $this->SQLconstructor(
-            'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 
-            'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' ".$modelos.$versiones." AND gt.order = 1 AND ".$id_persona, 
-            "GROUP BY gt.id_vehiculo"
+                'gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gi.responsable, gi.dealer_id', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext, "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "' " . $modelos . $versiones . " AND gt.order = 1 AND " . $id_persona, "GROUP BY gt.id_vehiculo"
         );
         $td_mes_actual = count($td_mes_actual);
         $retorno[] = $td_mes_actual;
@@ -4134,21 +4129,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         // BUSQUEDA POR VENTAS 
         $vh_mes_anterior = $this->SQLconstructor(
-            'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-            'gestion_vehiculo gv', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones, 
-            "GROUP BY gv.id_informacion"
+                'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 'gestion_vehiculo gv', 'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion ' . $join_ext, "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND " . $id_persona . $modelos . $versiones, "GROUP BY gv.id_informacion"
         );
         $vh_mes_anterior = count($vh_mes_anterior);
         $retorno[] = $vh_mes_anterior;
-        
+
         $vh_mes_actual = $this->SQLconstructor(
-            'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 
-            'gestion_vehiculo gv', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones, 
-            "GROUP BY gv.id_informacion"
+                'gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre, gi.dealer_id', 'gestion_vehiculo gv', 'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion ' . $join_ext, "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND " . $id_persona . $modelos . $versiones, "GROUP BY gv.id_informacion"
         );
         $vh_mes_actual = count($vh_mes_actual);
         $retorno[] = $vh_mes_actual;

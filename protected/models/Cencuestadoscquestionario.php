@@ -40,7 +40,8 @@ class Cencuestadoscquestionario extends CActiveRecord
 			array('cencuestados_id, cquestionario_id, usuarios_id, estado', 'required'),
 			array('cencuestados_id, cquestionario_id, usuarios_id', 'numerical', 'integerOnly'=>true),
 			array('audio', 'length', 'max'=>250), 
-			array('estado, tiempo, sugerido', 'length', 'max'=>45),   
+			//array('estado, tiempo, sugerido', 'length', 'max'=>45),   
+			array('estado, tiempo', 'length', 'max'=>45),   
 			array('tiempoinicio, tiempofinal, observaciones', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -78,7 +79,7 @@ class Cencuestadoscquestionario extends CActiveRecord
 			'estado' => 'Estado',
 			'tiempo' => 'Tiempo',
 			'observaciones' => 'Observaciones',
-			'sugerido' => 'Sugerido',
+			//'sugerido' => 'Sugerido',
 		);
 	}
 
@@ -109,7 +110,7 @@ class Cencuestadoscquestionario extends CActiveRecord
 		$criteria->compare('tiempofinal',$this->tiempofinal,true);
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('tiempo',$this->tiempo,true);
-		$criteria->compare('sugerido',$this->sugerido,true);
+		//$criteria->compare('sugerido',$this->sugerido,true);
 		$criteria->compare('observaciones',$this->observaciones,true);
 
 		return new CActiveDataProvider($this, array(

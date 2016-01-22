@@ -463,7 +463,12 @@ class Controller extends CController {
             "condition" => "id = {$id_informacion}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        return ucfirst($gestion->nombres);
+        if($gestion){
+            return ucfirst($gestion->nombres);
+        }else{
+            return 'NA';
+        }
+        
     }
 
     public function getModeloInfo($id_informacion) {
@@ -479,7 +484,11 @@ class Controller extends CController {
             "condition" => "id = {$id_vehiculo}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        return $gestion->apellidos;
+        if($gestion){
+            return ucfirst($gestion->apellidos);
+        }else{
+            return 'NA';
+        }
     }
 
     public function getIdentificacion($id) {
@@ -790,6 +799,37 @@ class Controller extends CController {
             return $dealer->concesionario_id;
         }
     }
+    
+    public function getDealerGrupo($usuario_id) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "usuario_id={$usuario_id}"
+        ));
+        $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
+
+    public function getDealerGrupoConc($grupo_id) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_grupo={$grupo_id}"
+        ));
+        $dealers = GrConcesionarios::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['dealer_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
+
 
     public function getNameConcesionario($id) {
         //die('id: '.$id);
@@ -839,7 +879,12 @@ class Controller extends CController {
         ));
         $dealer = Dealers::model()->find($criteria);
         //return $dealer->concesionario_id;
-        return $dealer->name;
+        if($dealer){
+            return $dealer->name;
+        }else{
+            return 0;
+        }
+        
     }
 
     public function getConcesionarioId($id) {
@@ -866,7 +911,12 @@ class Controller extends CController {
             'condition' => "id={$id}"
         ));
         $usuarios = Usuarios::model()->find($criteria);
-        return $usuarios->dealers_id;
+        if ($usuarios) {
+           return $usuarios->dealers_id; 
+        }else{
+           return 0;
+        }
+        
     }
 
     public function getConcesionarioGrupoRuc($id) {
@@ -910,6 +960,7 @@ class Controller extends CController {
     }
 
     public function getCityId($id) {
+        //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
@@ -1736,7 +1787,27 @@ class Controller extends CController {
                 
                 break;
             case 46: // super administrador
-                
+                case 46: // super administrador
+                // select de grupo
+                $grupo = Grupo::model()->findAll();
+                // select de concesionarios
+                $datas = '<option value="">--Seleccione grupo--</option>';
+                foreach ($grupo as $value) {
+                    $datas .= '<option value="' . $value['id'] . '">';
+                    $datas .= $value['nombre_grupo'] . '</option>';
+                }
+                $data_select[0] = $datas;
+                $criteria = new CDbCriteria(array(
+                    'condition' => "id_grupo={$id_grupo}",
+                    'order' => 'nombre asc'
+                ));
+                $conc = Concesionarios::model()->findAll($criteria);
+                $data = '<option value="">--Seleccione concesionario--</option>';
+                foreach ($conc as $ciudad) {
+                    $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
+                }
+                $data_select[1] = $data;
+                break;
                 break;
 
             default:

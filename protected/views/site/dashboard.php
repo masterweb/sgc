@@ -12,6 +12,7 @@ if (!empty($modulos)) {
     $result = Modulo::model()->findAll($criteria);
 }
 $idasesor = Yii::app()->user->getState('concesionario_id');
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
 //echo 'ID ASESOR: '.$idasesor;
 ?>
 <section>
@@ -39,7 +40,7 @@ $idasesor = Yii::app()->user->getState('concesionario_id');
                         </div>
                     </li>
                 <?php } ?>
-                <?php if ($r->descripcion == 'Usuarios') { ?>
+                <?php if ($r->descripcion == 'Usuarios' && $cargo_id != 73) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(4).'/tipo/usuarios'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
@@ -47,7 +48,7 @@ $idasesor = Yii::app()->user->getState('concesionario_id');
                         </div>
                     </li>
                 <?php } ?>
-                <?php if ($r->descripcion == 'Posventa') { ?>
+                <?php if ($r->descripcion == 'Posventa' && $cargo_id != 73) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(3).'/tipo/postventa'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/posventa/qir.png" width="46" height="56"></div>
@@ -55,7 +56,7 @@ $idasesor = Yii::app()->user->getState('concesionario_id');
                         </div>
                     </li>
                 <?php } ?>
-                <?php if ($r->descripcion == 'Callcenter') { ?>
+                <?php if ($r->descripcion == 'Callcenter' && $cargo_id != 73) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(1).'/tipo/callcenter'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/access.png" width="46" height="56"></div>
@@ -63,7 +64,7 @@ $idasesor = Yii::app()->user->getState('concesionario_id');
                         </div>
                     </li>
                 <?php } ?>
-                <?php if ($r->descripcion == '1800') { ?>
+                <?php if ($r->descripcion == '1800' && $cargo_id != 73) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(5).'/tipo/1800'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/dashboard/1800l.png" width="46" height="56"></div>

@@ -3199,8 +3199,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionGetAsesores() {
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $con = Yii::app()->db;
-        $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} ORDER BY nombres ASC";
+        if($cargo_id == 69){
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }else{
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
+        }
+        
         //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();

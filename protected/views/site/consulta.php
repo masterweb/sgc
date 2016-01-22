@@ -5,9 +5,12 @@
 <?php
 $model = new GestionVehiculo;
 $id_asesor = Yii::app()->user->getId();
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
 $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
+}
 //echo $nombre_cliente;
 $count = 0;
 if (isset($id)) {

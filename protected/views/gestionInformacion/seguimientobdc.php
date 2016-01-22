@@ -7,6 +7,7 @@ if (isset($model->identificacion))
 //echo '-----------identificacion: '.$identificacion;
 $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getDealerId($id_responsable);
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
 //echo 'REPONSABLE ID: '.$id_responsable;
 ?>
 <script>
@@ -581,8 +582,8 @@ $dealer_id = $this->getDealerId($id_responsable);
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span><!--Responsable Exonerados--> Asesor Comercial Origen</span></th>
-                            <th><span>Responsable Concesionario</span></th>
+                            <th><span>Responsable</span></th>
+                            <th><span>Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
@@ -720,8 +721,8 @@ $dealer_id = $this->getDealerId($id_responsable);
                                 ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable(Yii::app()->user->getId()) ?></td>
-                                <td><?php echo $this->getResponsable($c['responsable']); ?></td>
+                                <td><?php echo $this->getResponsable($c['id_resp']); ?></td>
+                                <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td> <?php echo $c['categorizacion']; ?> </td>
                                 <td> 
