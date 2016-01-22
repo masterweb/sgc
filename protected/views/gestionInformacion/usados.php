@@ -1,6 +1,9 @@
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.min.js"></script>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>
-<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
+<?= $this->renderPartial('//layouts/rgd/head');?>
+<?php
+$id_responsable = Yii::app()->user->getId();
+$dealer_id = $this->getConcesionarioDealerId($id_responsable);
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+?>
 <script type="text/javascript">
     $(function () {
         $('#fecha-range').daterangepicker(
@@ -52,54 +55,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="highlight">
-                <div class="form">
-                    <h4>Búsqueda:</h4>
-                    <?php
-                    $form = $this->beginWidget('CActiveForm', array(
-                        'id' => 'casos-form',
-                        'method' => 'get',
-                        'action' => Yii::app()->createUrl('gestionInformacion/seguimientoUsados'),
-                        'enableAjaxValidation' => true,
-                        'htmlOptions' => array(
-                            'class' => 'form-horizontal form-search'
-                        ),
-                    ));
-                    ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="GestionDiariafecha">Búsqueda General</label>
-                            <input type="text" name="GestionSolicitudCredito[general]" id="GestionSolicitudCredito_general" class="form-control"/>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Responsable</label>
-                            <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
-                                <option value="">--Seleccione responsable--</option>
-                                <option value="Jorge Rodriguez">Jorge Rodriguez</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="">Fecha</label>
-                            <input type="text" name="GestionSolicitudCredito[fecha]" id="fecha-range" class="form-control"/>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Tipo</label>
-                            <select name="GestionSolicitudCredito[tipo_fecha]" id="GestionDiaria_tipo_fecha" class="form-control">
-                                <option value="">--Seleccione tipo--</option>
-                                <option value="proximoseguimiento">Próximo seguimiento</option>
-                                <option value="fechsregistro">Fecha de registro</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-                        </div>
-                    </div>
-                    <?php $this->endWidget(); ?>
-                </div>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientoUsados', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'usados'));?>
             </div>
         </div>
     </div>    

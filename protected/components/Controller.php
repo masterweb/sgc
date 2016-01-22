@@ -725,15 +725,6 @@ class Controller extends CController {
         return $test;
     }
 
-    public function getVehiculosInterados($id) {
-        $criteria = new CDbCriteria(array(
-            'condition' => "id_informacion='{$id}'"
-        ));
-        $vec = GestionVehiculo::model()->findAll($criteria);
-        $count = count($vec);
-        return $count;
-    }
-
     public function getTestDriveOnly($id_informacion) {
         //die($id_informacion);
         $criteria = new CDbCriteria(array(

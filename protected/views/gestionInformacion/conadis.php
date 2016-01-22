@@ -377,7 +377,7 @@ if ($ced != '') {
     //Hay que trabajar esta función para que sea el validador global en un archivo externo al cual se conecten todos los formularios
     function vallocal(mainform, lista_val){
         $(mainform).validate({
-            submitHandler: function () {
+            submitHandler: function (mainform) {
                 $('#GestionInformacion_provincia_conc').removeAttr('disabled');
                 $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
                 $('#GestionInformacion_concesionario').removeAttr('disabled');
@@ -385,15 +385,43 @@ if ($ced != '') {
                 var num_tel = $('#GestionInformacion_telefono_oficina').val();
                 var num_casa = $('#GestionInformacion_telefono_casa').val();
                 
-                form.submit();
-                $('#myModal').modal('show');
+                 $('#GestionInformacion_provincia_conc').removeAttr('disabled');
+                    $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
+                    $('#GestionInformacion_concesionario').removeAttr('disabled');
+                    var num_cel = $('#GestionInformacion_celular').val();
+                    var num_tel = $('#GestionInformacion_telefono_oficina').val();
+                    var num_casa = $('#GestionInformacion_telefono_casa').val();
+                    if (num_cel.indexOf("0") != 0) {
+                        $('#GestionInformacion_celular').after('<label for="celular2" generated="true" class="error" id="celular2">Ingrese correctamente su celular</label>')
+                        //$('#telefono').val('');
+                        return false;
+                    }
+                    if (num_cel.indexOf("9") != 1) {
+
+                        $('#GestionInformacion_celular').after('<label for="celular2" generated="true" class="error" id="celular2">Ingrese correctamente su celular</label>')
+                        //$('#telefono').val('');
+                        return false;
+                    }
+                    if (num_tel.indexOf("0") != 0) {
+                        $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
+                        //$('#telefono').val('');
+                        return false;
+                    }
+                    if (num_casa.indexOf("0") != 0) {
+                        $('#GestionInformacion_telefono_casa').after('<label for="casa2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
+                        //$('#telefono').val('');
+                        return false;
+                    }
+                    else {
+                        mainform.submit();
+                    }
             }
         });
 
         $.each( lista_val, function( i, val ) {
             var extraval = '';
-            alert(val[3]);
-            if(val[3] != 'undefined'){alert('extra val'); extraval = ', '+val[3]}
+            //alert(val[3]);
+            if(typeof val[3] !== 'undefined'){ extraval = ', '+val[3]}
             $(val[2]+"[name*='"+val[0]+"']").rules("add", {required: true, messages: {required: val[1] + extraval}});
         });
     }
