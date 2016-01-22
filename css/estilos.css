@@ -563,7 +563,7 @@ img.cometchat_userscontentavatarimage {
 .calendar-table th{color: black;}
 
 .barra{
-    /*height: 20px;*/
+    margin: auto;
     margin-bottom: 5px;
     color: #fff;
     padding: 5px;
@@ -572,6 +572,9 @@ img.cometchat_userscontentavatarimage {
 .barratit{
     font-size: 12px;
     font-style: italic;
+}
+.graficas{
+    text-align: center;;
 }
 .trojo{color: red;}
 .tazul{color: blue;}
