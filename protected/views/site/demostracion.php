@@ -4,9 +4,12 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
 <?php
 $id_asesor = Yii::app()->user->getId();
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
 $nombre_cliente = $this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion);
+}
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 $android = FALSE;
 if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) {

@@ -3766,9 +3766,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         } else {
             $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
-            WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' 
+            WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
             AND gi.dealer_id = {$dealer_id}
             ORDER BY gi.id DESC";
+            //die($sql);
         }
         $request = $con->createCommand($sql);
         $users = $request->queryAll();

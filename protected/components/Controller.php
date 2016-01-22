@@ -463,7 +463,12 @@ class Controller extends CController {
             "condition" => "id = {$id_informacion}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        return ucfirst($gestion->nombres);
+        if($gestion){
+            return ucfirst($gestion->nombres);
+        }else{
+            return 'NA';
+        }
+        
     }
 
     public function getModeloInfo($id_informacion) {
@@ -479,7 +484,11 @@ class Controller extends CController {
             "condition" => "id = {$id_vehiculo}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        return $gestion->apellidos;
+        if($gestion){
+            return ucfirst($gestion->apellidos);
+        }else{
+            return 'NA';
+        }
     }
 
     public function getIdentificacion($id) {
@@ -879,7 +888,12 @@ class Controller extends CController {
         ));
         $dealer = Dealers::model()->find($criteria);
         //return $dealer->concesionario_id;
-        return $dealer->name;
+        if($dealer){
+            return $dealer->name;
+        }else{
+            return 0;
+        }
+        
     }
 
     public function getConcesionarioId($id) {
@@ -906,7 +920,12 @@ class Controller extends CController {
             'condition' => "id={$id}"
         ));
         $usuarios = Usuarios::model()->find($criteria);
-        return $usuarios->dealers_id;
+        if ($usuarios) {
+           return $usuarios->dealers_id; 
+        }else{
+           return 0;
+        }
+        
     }
 
     public function getConcesionarioGrupoRuc($id) {
@@ -950,6 +969,7 @@ class Controller extends CController {
     }
 
     public function getCityId($id) {
+        //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
