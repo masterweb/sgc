@@ -936,8 +936,8 @@ if ($ced != '') {
                             </div>
                             <br />
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label for="">Color de Preferencia</label>
+                                <label for="">Color de Preferencia</label>
+                                <div class="">
                                     <div class="col-md-6 well well-sm">
                                         <ul class="list-accesorios">
                                            <ul class="list-accesorios">                                            
@@ -954,7 +954,7 @@ if ($ced != '') {
                                             <li><u><input type="checkbox" value="vino" name="colores[]" id="color-2"/><span class="color" style="background: rgb(109, 20, 27);"></span>Vino</u></li>
                                             <li><u><input type="checkbox" value="azul" name="colores[]" id="color-3"/><span class="color" style="background: rgb(19, 17, 137);"></span>Azul</u></li>
                                         </ul>
-                                    </div>  
+                                    </div>                                   
                                 </div>
                             </div>
                             

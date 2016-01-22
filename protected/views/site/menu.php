@@ -164,12 +164,12 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>
                 <?php } // PERFIL JEFE DE SUCURSAL ---------------------------------------------?>
                 <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46)) { ?>
-                    <li class="wrapper">
+<!--                    <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD Jefe Sucursal</div></a>
                         </div>
-                    </li>
+                    </li>-->
 <!--                    <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
