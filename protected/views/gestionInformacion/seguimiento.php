@@ -639,6 +639,7 @@ $count = count($users);
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
                             <th><span>Responsable</span></th>
+                            <th><span>Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
@@ -789,6 +790,7 @@ $count = count($users);
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
                                 <td><?php echo $this->getResponsable($c['resp']); ?></td>
+                                <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td><?php echo $c['categorizacion']; ?> </td>
                                 <td> 

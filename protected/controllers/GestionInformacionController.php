@@ -1271,7 +1271,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 46) {// SUPER ADMINISTRADOR AEKIA
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1286,7 +1286,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter jefe');
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1301,7 +1301,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter jefe');
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1316,7 +1316,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter code 71');
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1833,10 +1833,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 &&
                     empty($_GET['GestionDiaria']['general']) &&
                     empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
                     empty($_GET['GestionDiaria']['tipo_fecha']) &&
                     empty($_GET['GestionDiaria']['fuente']) &&
                     empty($_GET['GestionDiaria']['grupo']) &&
-                    empty($_GET['GestionDiaria']['concesionario']) &&
+                    !empty($_GET['GestionDiaria']['concesionario']) &&
                     empty($_GET['GestionDiaria']['provincia'])) {
                 //die('enter responsable');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
