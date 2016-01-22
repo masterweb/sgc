@@ -146,9 +146,9 @@ $rol = Yii::app()->user->getState('roles');
                         </div>
                     </li>
                 <?php } // PERFIL ASESOR DE VENTAS --------------------------------------------- ?>
-                
+
                 <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id != 70 || $cargo_id != 46)) { ?>
-            <?php if ($cargo_id == 71) { ?>
+                    <?php if ($cargo_id == 71) { ?>
                         <li class="wrapper">
                             <div class="forma">
                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
@@ -156,7 +156,7 @@ $rol = Yii::app()->user->getState('roles');
                             </div>
                         </li>
                     <?php } ?>
-            <?php if ($cargo_id != 46) { ?>
+                    <?php if ($cargo_id != 46) { ?>
                         <li class="wrapper">
                             <div class="forma">
                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
@@ -164,25 +164,29 @@ $rol = Yii::app()->user->getState('roles');
                             </div>
                         </li>
                     <?php } ?>
-                <?php }
+                <?php
+                }
                 // PERFIL JEFE DE SUCURSAL --------------------------------------------- 
                 ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46)) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46)) { ?>
             <?php if ($cargo_id == 69 || $cargo_id == 46) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Gerente Comercial</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+            <?php if ($cargo_id == 70) { ?>
                         <li class="wrapper">
                             <div class="forma">
                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                     <div class="txt_menu">RGD Jefe Sucursal</div></a>
                             </div>
                         </li>
-            <?php } ?>
-                    <!--                    <li class="wrapper">
-                                            <div class="forma">
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                                    <div class="txt_menu">Reportes</div></a>
-                                            </div>
-                                        </li>-->
-        <?php } ?>
+                    <?php } ?>
+
+                <?php } ?>
         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46)) { ?>
 
                     <li class="wrapper">
@@ -201,7 +205,7 @@ $rol = Yii::app()->user->getState('roles');
                         </div>
                     </li>
 
-        <?php } ?>
+                <?php } ?>
         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc') { ?>
                     <li class="wrapper">
                         <div class="forma">
@@ -209,7 +213,7 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu">RGD BDC</div></a>
                         </div>
                     </li>
-        <?php } // perfil asesor de credito ?>
+                <?php } // perfil asesor de credito ?>
         <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id)) && $cargo_id != 46) { ?>
                     <li class="wrapper">
                         <div class="forma">
@@ -217,7 +221,7 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu">RGD Asesor de Crédito</div></a>
                         </div>
                     </li>
-        <?php } ?>
+                <?php } ?>
         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">
@@ -236,7 +240,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
 
 
-        <?php } ?>
+                <?php } ?>
         <?php if (($a->accesoSistema->controlador) == 'cencuestadoscquestionario' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">
@@ -291,18 +295,18 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu" <?php echo $stylol ?>>No compradores <?php echo $num ?></div></a>
                         </div>
                     </li>
-                <?php } //  ?>
+                <?php } //   ?>
 
-    <?php }
-    ?>
+            <?php }
+            ?>
             <li class="wrapper">
                 <div class="forma">
                     <a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>
                         <div class="txt_menu">Directorio</div></a>
                 </div>
             </li><?php
-}
-?>
+        }
+        ?>
 
     </ul>
 </section>
