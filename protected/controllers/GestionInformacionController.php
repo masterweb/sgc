@@ -1381,6 +1381,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.bdc = 0 AND gd.desiste = 0 ";
+
                 if (!empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario'])) {
                     $sql .= "AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                 }
@@ -1637,6 +1638,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $getParams['general'] = $_GET['GestionDiaria']['general'];
                 //die('before render seg');
                 if (count($posts) > 0) {
+                 
                     $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
                     exit();
                 }
@@ -1825,6 +1827,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $posts = $request->queryAll();
                 $title_busqueda = 'Búsqueda por Fecha: ';
                 $getParams['status'] = $_GET['GestionDiaria']['fecha'];
+                
                 $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
                 exit();
             }
@@ -1901,7 +1904,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             }
 
             //$this->render('seguimiento');
-        }
+        }        
 
         $this->render('seguimiento', array('users' => $users, 'model' => $model));
     }
