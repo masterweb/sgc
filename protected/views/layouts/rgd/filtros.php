@@ -1,3 +1,4 @@
+<?php if($tipo_filtro == 'general'):?>
 <div class="form">
     <h4>Búsqueda:</h4>
     <?php
@@ -176,3 +177,54 @@
     <?php endif; ?>   
     </div>
 </div>
+<?php else:?>
+<!--SOLUCIÓN TEMPORAL DE FILTRO PARA USADOS POR REUNIÓN-->
+<div class="form">
+   <h4>Búsqueda:</h4>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'casos-form',
+        'method' => 'get',
+        'action' => Yii::app()->createUrl('gestionInformacion/seguimientoUsados'),
+        'enableAjaxValidation' => true,
+        'htmlOptions' => array(
+            'class' => 'form-horizontal form-search'
+        ),
+    ));
+    ?>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="GestionDiariafecha">Búsqueda General</label>
+            <input type="text" name="GestionSolicitudCredito[general]" id="GestionSolicitudCredito_general" class="form-control"/>
+        </div>
+        <div class="col-md-6">
+            <label for="">Responsable</label>
+            <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
+                <option value="">--Seleccione responsable--</option>
+                <option value="Jorge Rodriguez">Jorge Rodriguez</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="">Fecha</label>
+            <input type="text" name="GestionSolicitudCredito[fecha]" id="fecha-range" class="form-control"/>
+        </div>
+        <div class="col-md-6">
+            <label for="">Tipo</label>
+            <select name="GestionSolicitudCredito[tipo_fecha]" id="GestionDiaria_tipo_fecha" class="form-control">
+                <option value="">--Seleccione tipo--</option>
+                <option value="proximoseguimiento">Próximo seguimiento</option>
+                <option value="fechsregistro">Fecha de registro</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
+        </div>
+    </div>
+    <?php $this->endWidget(); ?>
+</div>
+<?php endif?>
