@@ -3704,7 +3704,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
                         INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
-                        WHERE gi.tipo_form_web = 'usado' OR tipo_form-web = 'usadopago' 
+                        WHERE gi.tipo_form_web = 'usado' OR gi.tipo_form_web = 'usadopago' 
                         AND (gi.nombres LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' 
                         OR gi.apellidos LIKE '%{$_GET['GestionSolicitudCredito']['general']}%')";
                 $request = $con->createCommand($sql);
