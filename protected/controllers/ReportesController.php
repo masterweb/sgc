@@ -339,7 +339,7 @@ class ReportesController extends Controller {
         $proformackd1 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
             $group_ext
         );
@@ -349,7 +349,7 @@ class ReportesController extends Controller {
         $proformacbu1 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -360,7 +360,7 @@ class ReportesController extends Controller {
         $proformackd2 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
             $group_ext
         );
@@ -370,7 +370,7 @@ class ReportesController extends Controller {
         $proformacbu2 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -412,7 +412,7 @@ class ReportesController extends Controller {
         $tdcbu1 = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gt.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo'.$join_ext, 
             "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -432,7 +432,7 @@ class ReportesController extends Controller {
         $tdcbu2 = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gt.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo'.$join_ext, 
             "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
