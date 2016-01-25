@@ -25110,3 +25110,105 @@ Stack trace:
 REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
 HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento?GestionDiaria%5Bgeneral%5D=1944&GestionDiaria%5Bstatus%5D=&GestionDiaria%5Bfecha%5D=2016%2F01%2F22+-+2016%2F01%2F22&GestionDiaria%5Bfuente%5D=
 ---
+2016/01/22 16:49:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento?GestionDiaria%5Bgeneral%5D=1944&GestionDiaria%5Bstatus%5D=&GestionDiaria%5Bfecha%5D=2016%2F01%2F22+-+2016%2F01%2F22&GestionDiaria%5Bfuente%5D=
+---
+2016/01/22 16:49:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('intranet.kia.co...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php
+HTTP_REFERER=http://local.intranet.kia.com/index.php/gestionInformacion/seguimiento?GestionDiaria%5Bgeneral%5D=1944&GestionDiaria%5Bstatus%5D=&GestionDiaria%5Bfecha%5D=2016%2F01%2F22+-+2016%2F01%2F22&GestionDiaria%5Bfuente%5D=
+---
+2016/01/25 17:13:33 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gv.fecha' in 'where clause'. La sentencia SQL ejecutada fue: SELECT COUNT(*)  from gestion_diaria gd  INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+        WHERE gd.cierre = 1 AND (DATE(gv.fecha) BETWEEN '2015-12-01' AND '2015-12-25') AND gi.responsable = 90 .
+2016/01/25 17:13:33 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gv.fecha' in 'where clause'' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(253): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(449): ReportesController->SQLconstructor('COUNT(*) ', 'gestion_diaria ...', 'INNER JOIN gest...', 'gd.cierre = 1 A...', NULL)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(175): ReportesController->buscar(71, '90', NULL, NULL, 'gi.responsable ...', NULL, '2015-12-01', '2015-12-25', '2016-01-01', '2016-01-25', NULL, NULL, '')
+#4 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#14 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/01/25 17:13:50 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gv.fecha' in 'where clause'. La sentencia SQL ejecutada fue: SELECT COUNT(*)  from gestion_diaria gd  INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+        WHERE gd.cierre = 1 AND (DATE(gv.fecha) BETWEEN '2015-12-01' AND '2015-12-25') AND gi.responsable = 90 .
+2016/01/25 17:13:50 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gv.fecha' in 'where clause'' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(253): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(449): ReportesController->SQLconstructor('COUNT(*) ', 'gestion_diaria ...', 'INNER JOIN gest...', 'gd.cierre = 1 A...', NULL)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(175): ReportesController->buscar(71, '90', NULL, NULL, 'gi.responsable ...', NULL, '2015-12-01', '2015-12-25', '2016-01-01', '2016-01-25', NULL, NULL, '')
+#4 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#14 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/01/25 17:19:56 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gt.id_vehiculo' in 'on clause'. La sentencia SQL ejecutada fue: SELECT COUNT(*)  from gestion_diaria gd  INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo 
+        WHERE gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '2015-12-01' AND '2015-12-25') AND gi.responsable = 90 AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) .
+2016/01/25 17:19:56 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'gt.id_vehiculo' in 'on clause'' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(253): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(470): ReportesController->SQLconstructor('COUNT(*) ', 'gestion_diaria ...', 'INNER JOIN gest...', 'gd.cierre = 1 A...', NULL)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(175): ReportesController->buscar(71, '90', NULL, NULL, 'gi.responsable ...', NULL, '2015-12-01', '2015-12-25', '2016-01-01', '2016-01-25', NULL, NULL, '')
+#4 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#14 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/01/25 17:29:13 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion' at line 1. La sentencia SQL ejecutada fue: SELECT COUNT(*)  from gestion_diaria gd  NNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  
+        WHERE gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '2015-12-01' AND '2015-12-25') AND gi.responsable = 90 AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) .
+2016/01/25 17:29:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'NNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(253): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(470): ReportesController->SQLconstructor('COUNT(*) ', 'gestion_diaria ...', 'NNER JOIN gesti...', 'gd.cierre = 1 A...', NULL)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(175): ReportesController->buscar(71, '90', NULL, NULL, 'gi.responsable ...', NULL, '2015-12-01', '2015-12-25', '2016-01-01', '2016-01-25', NULL, NULL, '')
+#4 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#14 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
