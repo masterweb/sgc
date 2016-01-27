@@ -3203,6 +3203,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $con = Yii::app()->db;
         if($cargo_id == 69){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }else if($cargo_id == 70){
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }else{
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
         }
@@ -3212,7 +3214,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $requestr1 = $requestr1->queryAll();
         $data = '<option value="">--Seleccione Asesor--</option>';
         foreach ($requestr1 as $value) {
-            $data .= '<option value="' . $value['id'] . '">' . $this->getResponsableNombres($value['id']) . '</option>';
+            $data .= '<option value="' . $value['id'] . '">';
+            $data .= $this->getResponsableNombres($value['id']);
+            $data .= '</option>';
         }
         echo $data;
     }
