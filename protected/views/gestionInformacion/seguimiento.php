@@ -1,6 +1,7 @@
 <?= $this->renderPartial('//layouts/rgd/head');?>
 
 <?php
+
 $identificacion = '';
 if (isset($model->identificacion))
     $identificacion = $model->identificacion;
@@ -378,6 +379,7 @@ $count = count($users);
     }
     
 </style>
+
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div class="container">
     <div class="row">
@@ -606,7 +608,9 @@ $count = count($users);
         </div>
         <div class="col-md-8">
             <div class="highlight">
+
                  <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>
+            
             </div>
         </div>
     </div>
@@ -648,7 +652,9 @@ $count = count($users);
                         </tr>
                     </thead>
                     <tbody>
+
                         <?php foreach ($users as $c): ?>
+
                             <tr>
                                 <td>
                                     <?php
@@ -688,6 +694,7 @@ $count = count($users);
                                     ));
                                     $td = GestionTestDrive::model()->findAll($criteria);
                                     $countt = count($td);
+
                                     //echo 'count vec: '.$count.', count test drive: '.$countt;
                                     if ($status == 'Prospección' && $count > 0) {
                                         $paso = '1/2';
@@ -740,7 +747,9 @@ $count = count($users);
                                         default:
                                             break;
                                     }
+
                                     ?>
+
                                     <!--<button type="button" class="btn btn-xs btn-primary"><?php //echo $status;  ?></button>-->
                                     <button type="button" class="btn btn-xs btn-success"><?php echo $c['paso']; ?></button>
                                     <?php
@@ -770,6 +779,7 @@ $count = count($users);
                                     if($c['desiste'] == 1){
                                         echo '<button type="button" class="btn btn-xs btn-success">Desiste</button>'; 
                                     }
+
                                     ?>
                                 </td>
                                 <td><?php echo $c['id_info']; ?> </td>
@@ -786,11 +796,14 @@ $count = count($users);
                                 if($c['ruc'] != ''){
                                    echo $c['ruc']; 
                                 }
+
                                 ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
                                 <td><?php echo $this->getResponsable($c['resp']); ?></td>
-                                <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
+                                <td><?php 
+                                //echo $this->getNameConcesionarioById($c['dealer_id']); 
+                                //esta dando error en las busquedas revisar ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td><?php echo $c['categorizacion']; ?> </td>
                                 <td> 
@@ -895,6 +908,7 @@ $count = count($users);
                                 </td>
                             </tr>
                     <?php endforeach; ?>
+
                     </tbody>
                 </table>
 

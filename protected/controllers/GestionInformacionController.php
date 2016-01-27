@@ -1635,10 +1635,559 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
                 $fechaPk = 1;
             }
+<<<<<<< HEAD
             $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
             $this->render('seguimiento', array('users' => $posts, 'getParams' => '', 'title_busqueda' => '', 'model' => $model));
             exit();
         }
+=======
+            //die('fechaPk: '.$fechaPk);
+            // BUSQUEDA PARA SUPERADMINISTRADOR
+            // busqueda por grupo y concesionario
+            if ($cargo_id == 46 && $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['provincia']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['fuente']) &&
+                    isset($_GET['GestionDiaria']['grupo']) &&
+                    isset($_GET['GestionDiaria']['concesionario'])) {
+                //die('enter grupo concesionario');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 0 AND gd.desiste = 0 ";
+
+                if (!empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario'])) {
+                    $sql .= "AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                }
+                if (!empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario'])) {
+                    $sql .= "AND u.grupo_id = {$_GET['GestionDiaria']['grupo']}";
+                }
+                $sql .= " ORDER BY gd.id DESC";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                $title_busqueda = 'Búsqueda por Grupo: ';
+                $getParams['grupo'] = $_GET['GestionDiaria']['grupo'];
+
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            // BUSQQUEDA PARA SUPERADMINISTRADOR
+            // POR PROVINCIA
+            if ($cargo_id == 46 && $fechaPk == 1 &&
+                    !empty($_GET['GestionDiaria']['provincia']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['fuente']) &&
+                    empty($_GET['GestionDiaria']['grupo']) &&
+                    empty($_GET['GestionDiaria']['concesionario'])) {
+                //die('enter prov');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+                    gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                    INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                    INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                    INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                    INNER JOIN usuarios u ON u.id = gi.responsable 
+                    INNER JOIN gr_concesionarios gr ON gi.dealer_id = gr.dealer_id
+                    WHERE gi.bdc = 0 AND gd.desiste = 0 
+                    AND gr.provincia = {$_GET['GestionDiaria']['provincia']}
+                    ORDER BY gd.id DESC ";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Provincia: ';
+                $getParams['grupo'] = $_GET['GestionDiaria']['provincia'];
+
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            if ($cargo_id == 70 && !empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['fuente']) &&
+                    empty($_GET['GestionDiaria']['grupo']) &&
+                    empty($_GET['GestionDiaria']['concesionario']) &&
+                    empty($_GET['GestionDiaria']['provincia'])) {
+                //die('enter responsable jefe almacen');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
+                }
+                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
+                $sql .= " gi.bdc = 0 AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Responsable: ';
+                $getParams['responsable'] = $_GET['GestionDiaria']['responsable'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            /* BUSQUEDA EN CAMPOS VACIOS GERENTE COMERCIAL */
+            if (empty($_GET['GestionDiaria']['categorizacion']) &&
+                    $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['responsable']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['fuente']) && $cargo_id == 69) {
+                //die('enter busqueda general');
+                $title_busqueda = 'Búsqueda General: ';
+                if ($cargo_id == 70) {
+                    //die('enter jefe');
+                    // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+                    //die('sql sucursal'. $sql);
+                }
+                if ($cargo_id = 71) {
+                    // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+                    //die('sql: '. $sql);
+                }
+
+                // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
+                //$sql = "SELECT gi.*, gv.modelo, gv.version FROM gestion_informacion gi 
+                //        INNER JOIN gestion_vehiculo gv ON gi.id = gv.id_informacion 
+                //        GROUP BY gi.id";
+                //$sql = "SELECT * FROM gestion_informacion GROUP BY id";
+                $request = $con->createCommand($sql);
+                $users = $request->queryAll();
+                $getParams['general'] = $_GET['GestionDiaria']['general'];
+                $this->render('seguimiento', array('users' => $users, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            /* BUSQUEDA EN CAMPOS VACIOS */
+            if (empty($_GET['GestionDiaria']['categorizacion']) &&
+                    $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['fuente'])) {
+                //die('enter busqueda general');
+                $title_busqueda = 'Búsqueda General: ';
+                if ($cargo_id == 70) {
+                    //die('enter jefe');
+                    // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+                    //die('sql sucursal'. $sql);
+                }
+                if ($cargo_id = 71) {
+                    // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+                    //die('sql: '. $sql);
+                }
+
+                // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
+                //$sql = "SELECT gi.*, gv.modelo, gv.version FROM gestion_informacion gi 
+                //        INNER JOIN gestion_vehiculo gv ON gi.id = gv.id_informacion 
+                //        GROUP BY gi.id";
+                //$sql = "SELECT * FROM gestion_informacion GROUP BY id";
+                $request = $con->createCommand($sql);
+                $users = $request->queryAll();
+                $getParams['general'] = $_GET['GestionDiaria']['general'];
+                $this->render('seguimiento', array('users' => $users, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            /* -----------------BUSQUEDA GENERAL------------------ */
+            if (empty($_GET['GestionDiaria']['categorizacion']) &&
+                    $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['responsable']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    !empty($_GET['GestionDiaria']['general'])) {
+                //die('enter general');
+
+                /* BUSQUEDA POR NOMBRES O APELLIDOS */
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
+                }
+
+                $sql .= "gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
+                        . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
+                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%'";
+                //die($sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                $title_busqueda = 'Búsqueda General: ';
+                $getParams['general'] = $_GET['GestionDiaria']['general'];
+                //die('before render seg');
+                if (count($posts) > 0) {
+                    $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                    exit();
+                }
+
+                /* BUSQUEDA POR CEDULA */
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion 
+                WHERE gi.responsable = {$id_responsable} AND
+                gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%'";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda General: ';
+                $getParams['general'] = $_GET['GestionDiaria']['general'];
+                //die('before render seg');
+                if (count($posts) > 0) {
+                    $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                    exit();
+                }
+
+                /* BUSQUEDA POR ID */
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
+                }
+                $sql .= "gi.id = {$_GET['GestionDiaria']['general']}";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda General: ';
+                $getParams['general'] = $_GET['GestionDiaria']['general'];
+                //die('before render seg');
+                if (count($posts) > 0) {
+                 
+                    $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                    exit();
+                }
+
+
+                $this->render('seguimiento', array('users' => 0, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+            }
+            /* -----------------FIN BUSQUEDA GENERAL------------------ */
+
+            /* -----------------BUSQUEDA POR FUENTE PARA GERENTE COMERCIAL------------------ */
+            if (!empty($_GET['GestionDiaria']['fuente']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['responsable']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) && $cargo_id == 69) {
+                //die('enter fuente');    
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+FROM gestion_diaria gd 
+INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
+LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.responsable = {$id_responsable} AND
+                gn.fuente = '{$_GET['GestionDiaria']['fuente']}' AND gi.dealer_id = {$dealer_id}";
+                //die('sql: '.$sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Fuente: ';
+                $getParams['fuente'] = $_GET['GestionDiaria']['fuente'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+            }
+
+            /* -----------------BUSQUEDA POR FUENTE------------------ */
+            if (!empty($_GET['GestionDiaria']['fuente']) &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['tipo_fecha'])) {
+                //die('enter fuente asesor');    
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
+                }
+                $sql .= "gn.fuente = '{$_GET['GestionDiaria']['fuente']}' AND gi.dealer_id = {$dealer_id}";
+                //die('sql: '.$sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Fuente: ';
+                $getParams['fuente'] = $_GET['GestionDiaria']['fuente'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+            /* -----------------FIN BUSQUEDA POR FUENTE------------------ */
+
+            /* -----------------BUSQUEDA POR CATEGORIZACION------------------ */
+            if (!empty($_GET['GestionDiaria']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['tipo_fecha']) && empty($_GET['GestionDiaria']['general'])) {
+                //die('enter categorizacion');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
+                }
+
+                $sql .= "gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Categorización: ';
+                $getParams['categorizacion'] = $_GET['GestionDiaria']['categorizacion'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+            /* -----------------FIN BUSQUEDA POR CATEGORIZACION DE GERENTE COMERCIAL------------------ */
+
+            if (!empty($_GET['GestionDiaria']['categorizacion']) && $fechaPk == 1 && $cargo_id == 69 && empty($_GET['GestionDiaria']['responsable']) && empty($_GET['GestionDiaria']['tipo_fecha']) && empty($_GET['GestionDiaria']['general'])) {
+                //die('enter cat');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
+                }
+
+                $sql .= "gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Categorización: ';
+                $getParams['categorizacion'] = $_GET['GestionDiaria']['categorizacion'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+            }
+            /* -----------------FIN BUSQUEDA POR CATEGORIZACION------------------ */
+
+            /* -----------------BUSQUEDA POR STATUS------------------ */
+            if (!empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['responsable']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha'])) {
+                //die('enter to status');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                        INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                        INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
+                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion 
+                        WHERE gi.responsable = {$id_responsable} AND";
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $sql .= " gd.cierre = 1 ORDER BY gd.id DESC";
+                        break;
+                    case 'Desiste':
+                        $sql .= " gd.desiste = 1 ORDER BY gd.id DESC";
+                        break;
+                    case 'Entrega':
+                        $sql .= " gd.entrega = 1 ORDER BY gd.id DESC";
+                        break;
+                    case 'PrimeraVisita':
+                        $sql .= " gd.primera_visita = 1 ORDER BY gd.id DESC";
+                        break;
+                    case 'Seguimiento':
+                        $sql .= " gd.seguimiento = 1 ORDER BY gd.id DESC";
+                        break;
+                    case 'SeguimientoEntrega':
+                        $sql .= " gd.seguimiento_entrega = 1 ORDER BY gd.id DESC";
+                        break;
+
+                    default:
+                        break;
+                }
+                //die('sql: '.$sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Status: ';
+                $getParams['status'] = $_GET['GestionDiaria']['status'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+            /* -----------------END SEARCH BY STATUS------------------ */
+
+            /* -----------------BUSQUEDA POR FECHA------------------ */
+            if (empty($_GET['GestionDiaria']['status']) && $fechaPk == 0 &&
+                    empty($_GET['GestionDiaria']['responsable']) &&
+                    !empty($_GET['GestionDiaria']['tipo_fecha'])) {
+                //die('enter fecha');
+                $tipoFecha = $_GET['GestionDiaria']['tipo_fecha'];
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                //die('after params');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                        INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                        INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
+                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion 
+                        WHERE gi.responsable = {$id_responsable} AND";
+                if ($tipoFecha == 'proximoseguimiento') {
+                    $sql .= " gd.proximo_seguimiento BETWEEN '{$params1}' AND '{$params2}'";
+                } else if ($tipoFecha == 'fecharegistro') {
+                    $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
+                }
+
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Fecha: ';
+                $getParams['status'] = $_GET['GestionDiaria']['fecha'];
+                
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            /* -----------------BUSQUEDA POR RESPONSABLE PARA GERENTE COMERCIAL------------------ */
+            if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['fuente']) &&
+                    empty($_GET['GestionDiaria']['grupo']) &&
+                    !empty($_GET['GestionDiaria']['concesionario']) &&
+                    empty($_GET['GestionDiaria']['provincia'])) {
+                //die('enter responsable');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
+                }
+                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
+                $sql .= " gi.bdc = 0 AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Responsable: ';
+                $getParams['responsable'] = $_GET['GestionDiaria']['responsable'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            /* -----------------BUSQUEDA POR RESPONSABLE PARA JEFE DE ALMACEN------------------ */
+            if ($fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['general']) &&
+                    empty($_GET['GestionDiaria']['categorizacion']) &&
+                    empty($_GET['GestionDiaria']['status']) &&
+                    !empty($_GET['GestionDiaria']['responsable']) &&
+                    !empty($_GET['GestionDiaria']['fecha']) &&
+                    empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['fuente'])) {
+                //die('enter responsable jefe almacen');
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                } else {
+                    $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
+                }
+                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
+                $sql .= "AND gi.bdc = 0 AND gd.desiste = 0
+                ORDER BY gd.id DESC";
+
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $title_busqueda = 'Búsqueda por Responsable: ';
+                $getParams['responsable'] = $_GET['GestionDiaria']['responsable'];
+                //die('before render seg');
+                $this->render('seguimiento', array('users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda, 'model' => $model));
+                exit();
+            }
+
+            //$this->render('seguimiento');
+        }        
+>>>>>>> d367b91a88f473dc32393c74f4c43aac5d575b06
 
         $this->render('seguimiento', array('users' => $users, 'model' => $model));
     }

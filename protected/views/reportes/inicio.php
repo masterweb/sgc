@@ -24,8 +24,8 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th><?= $varView['nombre_mes_actual']; ?></th>
-                            <th><?= $varView['nombre_mes_anterior']; ?></th>
+                            <th><?= 'Mes actual<br>'.$varView['nombre_mes_actual']; ?></th>
+                            <th><?= 'Mes anterior<br>'.$varView['nombre_mes_anterior']; ?></th>
                             <th>Variación</th>
                             <th>Diferencia</th>
                         </tr>
@@ -190,7 +190,7 @@
                     <thead>
                         <tr>
                             <th width="45%" scope="col">&nbsp;</th>
-                            <th colspan="2" scope="col"><?= $varView['nombre_mes_actual']; ?></th>
+                            <th colspan="2" scope="col"><?= 'Mes actual<br>'.$varView['nombre_mes_actual']; ?></th>
                         </tr>
                     </thead>  
                     <tbody>
@@ -309,7 +309,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="2" scope="col"><?= $varView['nombre_mes_anterior']; ?></th>
+                            <th colspan="2" scope="col"><?= 'Mes anterior<br>'.$varView['nombre_mes_anterior']; ?></th>
                         </tr>
                     </thead>
                     <tbody>

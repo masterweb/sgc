@@ -339,7 +339,7 @@ class ReportesController extends Controller {
         $proformackd1 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
             $group_ext
         );
@@ -349,7 +349,7 @@ class ReportesController extends Controller {
         $proformacbu1 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -360,7 +360,7 @@ class ReportesController extends Controller {
         $proformackd2 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
             $group_ext
         );
@@ -370,7 +370,7 @@ class ReportesController extends Controller {
         $proformacbu2 = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gf.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo'.$join_ext, 
             "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -412,7 +412,7 @@ class ReportesController extends Controller {
         $tdcbu1 = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gt.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo'.$join_ext, 
             "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -432,7 +432,7 @@ class ReportesController extends Controller {
         $tdcbu2 = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_VEHICULO gv ON gv.id = gt.id_vehiculo'.$join_ext, 
+            'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo'.$join_ext, 
             "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
@@ -442,551 +442,66 @@ class ReportesController extends Controller {
         // BUSQUEDA POR VENTAS 
         $vh_mes_anterior = $this->SQLconstructor(
             'COUNT(*) ', 
-            'gestion_vehiculo gv', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones, 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
+        
         $vh_mes_anterior = $vh_mes_anterior[0]['COUNT(*)'];
         $retorno[] = $vh_mes_anterior;
         
         $vh_mes_actual = $this->SQLconstructor(
             'COUNT(*) ', 
-            'gestion_vehiculo gv', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion '.$join_ext, 
-            "gv.cierre = 'ACTIVO' AND (DATE(gv.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones, 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones, 
             $group_ext
         );
         $vh_mes_actual = $vh_mes_actual[0]['COUNT(*)'];
-        $retorno[] = $vh_mes_actual;
+        $retorno[] = $vh_mes_actual;        
 
-        $vhckd1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 1, $tipos[3], $concesionario); // cerato forte, sportage active
+        $vhckd1 = $this->SQLconstructor(
+            'COUNT(*) ', 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            $group_ext
+        );
+        $vhckd1 = $vhckd1[0]['COUNT(*)'];
         $retorno[] = $vhckd1;
 
-        $vhcbu1 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_anterior, $fecha_anterior, $id_responsable, 2, $tipos[3], $concesionario); // resto de modelos
+        $vhcbu1 = $this->SQLconstructor(
+            'COUNT(*) ', 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.$modelos.$versiones, 
+            $group_ext
+        );
+        $vhcbu1 = ($vhcbu1[0]['COUNT(*)'] - $vhckd1);
         $retorno[] = $vhcbu1;
 
-        $vhckd2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 1, $tipos[3], $concesionario); // cerato forte, sportage active
+
+        $vhckd2 = $this->SQLconstructor(
+            'COUNT(*) ', 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            $group_ext
+        );
+        $vhckd2 = $vhckd2[0]['COUNT(*)'];
         $retorno[] = $vhckd2;
 
-        $vhcbu2 = $this->getSelectCKDCBU($cargo_id, $fecha_inicial_actual, $fecha_actual, $id_responsable, 2, $tipos[3], $concesionario); // resto de modelos
+        $vhcbu2 = $this->SQLconstructor(
+            'COUNT(*) ', 
+            'gestion_diaria gd ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext, 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.$modelos.$versiones, 
+            $group_ext
+        );
+        $vhcbu2 = ($vhcbu2[0]['COUNT(*)'] - $vhckd2);
         $retorno[] = $vhcbu2;
 
         return $retorno;
     }
-
-
-    private function getSelectCKDCBU($cargo_id, $fecha1, $fecha2, $id_responsable, $ckdcku, $tipo_busqueda, $concesionario) {
-        $responsable = Yii::app()->user->getId();
-        if ($cargo_id != 46)
-            $dealer_id = $this->getDealerId($responsable);
-        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        $con = Yii::app()->db;
-        switch ($cargo_id) {
-            case 71: // asesor de ventas
-                switch ($tipo_busqueda) {
-
-                    case 1: // TRAFICO
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE gi.responsable = {$responsable} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die($sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 2: // PROFORMA
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$responsable} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 3: // TEST DRIVE
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND gi.responsable = {$responsable} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 4: // VENTAS
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$responsable}
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-
-                    default:
-                        break;
-                }
-                break;
-            case 70: //jefe del almacen
-                $responsable_dealer_id = $this->getDealerId($responsable);
-                switch ($tipo_busqueda) {
-                    case 1: // TRAFICO
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE gi.dealer_id = {$responsable_dealer_id} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die('sql jefe almacen: '.$sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 2: // PROFORMAS
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.dealer_id = {$responsable_dealer_id} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 3: // TEST DRIVE
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND gi.dealer_id = {$responsable_dealer_id} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 4: // VENTAS
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.dealer_id = {$responsable_dealer_id}
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 5: // trafico con fecha y responsable
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE gi.responsable = {$id_responsable} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die('sql trafico jefe allamcen: '.$sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 6: // proforma con fecha y responsable
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$id_responsable} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 7: // test drive con fecha y responsable
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND gi.responsable = {$id_responsable} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 8: // ventas con fecha y responsable
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$id_responsable}
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 69: // gerente comercial
-                $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-                switch ($tipo_busqueda) {
-                    case 1: // TRAFICO
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE u.grupo_id = {$grupo_id} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die('sql jefe almacen: '.$sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 2: // PROFORMAS
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND u.grupo_id = {$grupo_id} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        //die($sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 3: // TEST DRIVE
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND u.grupo_id = {$grupo_id} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 4: // VENTAS
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND u.grupo_id = {$grupo_id} 
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 5: // trafico por responsable
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE gi.responsable = {$id_responsable} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die('sql jefe almacen: '.$sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 6: // proforma por responsable
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$id_responsable} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 7: // test drive por responsable
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND gi.responsable = {$id_responsable} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 8:
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.responsable = {$id_responsable}
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 9: // trafico para concesionario
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE gi.dealer_id = {$concesionario} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die('sql gerente comercial: '.$sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                        break;
-                    case 10: // busqueda proforma por concesionario
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.dealer_id = {$concesionario} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 11: // busqueda test drive por concesionario
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND gi.dealer_id = {$concesionario} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 12: // busqueda ventas por concesionario
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND gi.dealer_id = {$concesionario} 
-                GROUP BY gv.id_informacion";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 13: // trafico busqueda gerente comercial
-                        $sql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.responsable, gi.fecha, gi.modelo as modinfo, gv.modelo
-                from gestion_informacion gi 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
-                WHERE u.grupo_id = {$grupo_id} AND (DATE(gi.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21)) ";
-                        //die($sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 14: // proforma gerente comercial
-                        $sql = "
-                SELECT gf.id_informacion, gf.id_vehiculo, gf.fecha, gi.responsable, gi.dealer_id, gv.modelo
-                FROM gestion_financiamiento gf 
-                INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND  (DATE(gf.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND u.grupo_id = {$grupo_id} AND gf.order = 1 
-                GROUP BY gf.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        //die($sql);
-                        return $result;
-                        break;
-                    case 15: // test drive gerente comercial
-                        $sql = "SELECT gt.id_informacion, gt.id_vehiculo, gt.test_drive, gt.fecha, gv.modelo
-                FROM gestion_test_drive gt 
-                INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                INNER JOIN gestion_vehiculo gv on gv.id = gt.id_vehiculo ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "WHERE gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "WHERE gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND gt.test_drive = 1 AND (DATE(gt.fecha) BETWEEN '{$fecha1}' AND '$fecha2') 
-                AND gt.order = 1 AND u.grupo_id = {$grupo_id} 
-                GROUP BY gt.id_vehiculo";
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    case 16: // ventas gerente comercial
-                        $sql = "SELECT gv.id_informacion, gv.modelo, gv.version, gv.fecha, gv.cierre 
-                FROM gestion_vehiculo gv 
-                INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion 
-                INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gv.cierre = 'ACTIVO' ";
-                        if ($ckdcku == 1) {// cerato forte, sportage active
-                            $sql .= "AND gv.modelo IN (24, 21) ";
-                        } elseif ($ckdcku == 2) {// resto de modelos
-                            $sql .= "AND gv.modelo NOT IN (24, 21) ";
-                        }
-                        $sql .= "AND (DATE(gv.fecha) BETWEEN '{$fecha1}' AND '{$fecha2}') 
-                AND u.grupo_id = {$grupo_id} 
-                GROUP BY gv.id_informacion";
-                        //die($sql);
-                        $requestr1 = $con->createCommand($sql);
-                        $result = $requestr1->queryAll();
-                        $result = count($result);
-                        return $result;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-        }
-    }
-
 }
