@@ -17,7 +17,7 @@
             <label for="GestionDiariafecha">Búsqueda General</label>
             <input type="text" name="GestionDiaria[general]" id="GestionDiaria_general" class="form-control"/>
         </div>
-        <!--div class="col-md-6">
+        <div class="col-md-6">
             <label for="">Categorización</label>
             <select name="GestionDiaria[categorizacion]" id="" class="form-control">
                 <option value="">--Seleccione categorización--</option>
@@ -28,7 +28,7 @@
                 <option value="Cold (hasta 6 meses)">Warm(hasta 6 meses)</option>
                 <option value="Very Cold(mas de 6 meses)">Very Cold(mas de 6 meses)</option>
             </select>
-        </div-->
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -45,7 +45,7 @@
         </div>
         <?php if($cargo_id == 70): ?>
         <?php  
-        // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 17 Y EL DEALER ID -> concesionarioid
+        // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 71 Y EL DEALER ID -> concesionarioid
         $mod = new GestionDiaria;
         $cre = new CDbCriteria();
         $cre->condition = " cargo_id =71 AND dealers_id = {$dealer_id} ";
@@ -74,22 +74,21 @@
         </div-->
 
     </div>
-    <div class="row">
+<!--    <div class="row">
         <div class="col-md-6">
             <label for="">Fuente</label>
             <select name="GestionDiaria[fuente]" id="GestionDiaria_fuente" class="form-control">
                 <option value="">--Seleccione fuente--</option>
                 <option value="showroom">Tráfico</option>
-                <!--<option value="prospeccion">Prospección</option>-->
+                <option value="prospeccion">Prospección</option>
                 <option value="exhibicion">Exhibición</option>
                 <option value="exonerados">Exonerados</option>
                 <option value="web">Web</option>
             </select>
         </div>
-
-    </div>
+    </div>-->
     <hr />
-    <?php if($cargo_id == 69 ){ ?>
+    <?php if($cargo_id == 69 || $cargo_id == 46){ ?>
     <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
     
     <div class="row">

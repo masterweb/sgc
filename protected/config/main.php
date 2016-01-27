@@ -98,7 +98,7 @@ return array(
           //'username' => 'root',
          // 'password' => 'k143c89?4Fg&2',
 			'username' => 'root',
-            'password' => '',
+            'password' => 'k143c89?4Fg&2',
 
             'charset' => 'utf8',
         ),
