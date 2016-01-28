@@ -1258,6 +1258,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //        echo '</pre>';
 //        die();
         //echo 'cargo id: '.$cargo_id;
+        $area_id = (int) Yii::app()->user->getState('area_id');
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
@@ -1283,6 +1284,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 71) { // asesor de ventas
             $sql_cargos .= "WHERE gi.responsable = {$id_responsable} AND ";
+        }else{ // AEKIA USERS
+            $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
         }
 
         $con = Yii::app()->db;
@@ -1577,8 +1580,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
             //die('sql sucursal'. $sql);
         }
-
-
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             //die('enter jefe');
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
@@ -1605,6 +1606,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 WHERE gi.responsable = {$id_responsable} 
                 ORDER BY gd.id DESC";
             //die('sql: '. $sql);
+        }else{
+            $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                ORDER BY gd.id DESC";
         }
 
         // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
@@ -1659,7 +1663,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1682,9 +1686,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
             //die($sql);
         } else {
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1692,6 +1695,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.bdc = 1
                 ORDER BY gd.id DESC";
+            //die($sql);
         }
 
         // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
@@ -2073,6 +2077,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         //$this->layout = '//layouts/callventas';
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $id_responsable = Yii::app()->user->getId();
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
@@ -2094,7 +2099,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die($sql);
         }
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gn.fuente 
@@ -2105,7 +2109,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gn.fuente 
@@ -2118,6 +2121,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         if ($cargo_id == 69) { //GERENTE COMERCIAL
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id}
+                ORDER BY gd.id DESC";
+        }else{
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gn.fuente 
@@ -3498,18 +3511,25 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
         }
-        if ($cargo_id == 46) {
+        if ($cargo_id == 46) { // SUPER ADMINISTRADOR
             $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
             WHERE gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago' 
             ORDER BY gi.id DESC";
-        } else {
+        }
+        if ($cargo_id == 71) { // ASESOR DE VENTAS
             $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
             WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
             AND gi.dealer_id = {$dealer_id}
             ORDER BY gi.id DESC";
             //die($sql);
+        }
+        else{
+            $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
+            left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+            WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
+            ORDER BY gi.id DESC";
         }
         $request = $con->createCommand($sql);
         $users = $request->queryAll();

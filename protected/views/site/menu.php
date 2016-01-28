@@ -1,11 +1,14 @@
 <?php
 $cargo = Yii::app()->user->getState('usuario');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$area_id = (int) Yii::app()->user->getState('area_id');
 //echo 'cargo id: '.$cargo_id;
 // vanessa17_ldu@hotmail.com, nutri_mas2@hotmail.com
 //echo 'CARGO:  '.(int) Yii::app()->user->getState('cargo_id');
+//echo 'AREA:  '.(int) Yii::app()->user->getState('area_id');
 
 $accesosUser = Permiso::model()->findAll(array('condition' => "cargoId=:match", 'params' => array(':match' => (int) Yii::app()->user->getState('cargo_id'))));
+//die('count '.count($accesosUser));
 ?>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/nuevosEstilos.css" type="text/css" />
 <?php
@@ -147,12 +150,20 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                 <?php } // PERFIL ASESOR DE VENTAS --------------------------------------------- ?>
 
-                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id != 70 || $cargo_id != 46)) { ?>
-                    <?php if ($cargo_id == 71) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                    <?php if ($cargo_id == 71 || $cargo_id == 67) { ?>
                         <li class="wrapper">
                             <div class="forma">
                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                     <div class="txt_menu">RGD Asesor de Ventas</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+                    <?php if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD SGC</div></a>
                             </div>
                         </li>
                     <?php } ?>
@@ -187,7 +198,7 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>
 
                 <?php } ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46)) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46)) { ?>
 
                     <li class="wrapper">
                         <div class="forma">

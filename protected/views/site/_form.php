@@ -15,24 +15,30 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sketch.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('#Usuarios_usuario').keyup(function(){
+        $('#Usuarios_usuario').keyup(function () {
             this.value = this.value.toLowerCase();
         });
         $('#usuarios-form').validate({
+            rules:{
+                'area':{required:true}
+            },
+            messages: {
+                'area':{required:'Seleccione una ubicación'}
+            }
             submitHandler: function (form) {
                 //console.log('enter submit');
-				if($("#Usuarios_cargo_id").val() >0){
-					//return true;
-				}else{
-					alert('Debe seleccionar un cargo.');
-					return false;
-				}
-				if($("#Usuarios_grupo_id").val() >0){
-					//return true;
-				}else{
-					alert('Debe seleccionar un grupo de concesionarios.');
-					return false;
-				}
+                if ($("#Usuarios_cargo_id").val() > 0) {
+                    //return true;
+                } else {
+                    alert('Debe seleccionar un cargo.');
+                    return false;
+                }
+                if ($("#Usuarios_grupo_id").val() > 0) {
+                    //return true;
+                } else {
+                    alert('Debe seleccionar un grupo de concesionarios.');
+                    return false;
+                }
 
                 var firma = $('#Usuarios_firma').val();
                 if (firma == '') { // debe firma
@@ -45,22 +51,22 @@
         });
         $('.fancybox').fancybox();
         $('#colors_sketch').sketch();
-            var sktch = $('#colors_sketch').sketch();
-            var cleanCanvas = $('#colors_sketch')[0];
+        var sktch = $('#colors_sketch').sketch();
+        var cleanCanvas = $('#colors_sketch')[0];
 
-            //Get the canvas &
-            var c = $('#colors_sketch');
-            var ct = c.get(0).getContext('2d');
-            var container = $(c).parent();
+        //Get the canvas &
+        var c = $('#colors_sketch');
+        var ct = c.get(0).getContext('2d');
+        var container = $(c).parent();
         $('.reset-canvas').click(function () {
             var cnv = $('#colors_sketch').get(0);
             var ctx = cnv.getContext('2d');
             clearCanvas(cnv, ctx); // note, this erases the canvas but not the drawing history!
             $('#colors_sketch').sketch().actions = [10]; // found it... probably not a very nice solution though
 
-        });    
+        });
     });
-    
+
     function validateUploadSize(x) {
         //var x = document.getElementById("myFile");
         var txt = "";
@@ -182,7 +188,7 @@
         <label class="col-sm-2 control-label" for="Cargo_area_id">Ubicaci&oacute;n</label>
         <div class="col-sm-4">
             <?php
-            echo '<select required id="cboAreaP" class="form-control" onchange="traerArea(this.value)">';
+            echo '<select required id="cboAreaP" class="form-control" onchange="traerArea(this.value)" name="area">';
             echo '<option value="0">--Seleccione la Ubicaci&oacute;n--</option>';
             echo '<option value="1">AEKIA</option>';
             echo '<option value="2">CONCESIONARIO</option>';
@@ -354,7 +360,7 @@
     </div>
 
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Guardar' : 'Actualizar', array('class' => 'btn btn-danger','id'=>'btnSubmit')); ?>
+        <?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar', array('class' => 'btn btn-danger', 'id' => 'btnSubmit')); ?>
         <input type="hidden" name="Usuarios[firma]" id="Usuarios_firma" value=""/>
     </div>
 
@@ -369,16 +375,34 @@
                     bootbox.alert(vl);
                 }
                 $(function () {
-					$("#btnSubmit").hide();
+                    //			$("#btnSubmit").hide();
                     $("#Usuarios_cedula").mask('9999999999');
                     //$("#Usuario_fechaNacimiento").mask('99/99/1999');
                     $(".datepicker").datepicker({
                         changeMonth: true,
                         changeYear: true,
-                        dateFormat: 'yy-mm-dd',
+                        dateFormat: 'dd-mm-yy',
                         minDate: new Date(1950, 10 - 1, 25),
                         yearRange: '1950:2016'
                     });
+                    $.datepicker.regional['es'] = {
+                        closeText: 'Cerrar',
+                        prevText: '<Ant',
+                        nextText: 'Sig>',
+                        currentText: 'Hoy',
+                        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+                        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+                        weekHeader: 'Sm',
+                        dateFormat: 'dd/mm/yy',
+                        firstDay: 1,
+                        isRTL: false,
+                        showMonthAfterYear: false,
+                        yearSuffix: ''
+                    };
+                    $.datepicker.setDefaults($.datepicker.regional['es']);
                     $("#Usuarios_celular").mask('(09)-999-99999');
                     $("#Usuarios_telefono").mask('(09)-999-9999');
 
@@ -398,7 +422,7 @@
                             $("#rcorreo").css({"border": "1px solid red"});
                             eee = 1;
                         }
-						
+
                         if (eee == 0 && eeec == 0) {
                             return true;
 
@@ -600,7 +624,7 @@
                                 if (result != 0) {
                                     $("#dArea").html(result);
                                     buscarCargo($("#Cargo_area_id").val());
-									$("#btnSubmit").show();
+                                    $("#btnSubmit").show();
                                 } else {
                                     $("#dArea").html('Seleccione una Ubicacion por favor.');
                                 }
