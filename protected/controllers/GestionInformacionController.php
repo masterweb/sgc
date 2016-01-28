@@ -1436,19 +1436,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params2 = trim($params[1]);
                 //die('after params');
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
-                if ($cargo_id == 46) { // super administrador
-                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
-                }
-                if ($cargo_id == 69) { // gerente comercial
-                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                            . " WHERE gr.id_grupo = {$grupo_id} AND ";
-                }
-                if ($cargo_id == 70) { // jefe de almacen
-                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
-                }
-                if ($cargo_id == 71) {
-                    $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
-                }
+                $sql .= $sql_cargos;
                 $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
                 //die($sql);
                 $request = $con->createCommand($sql);
