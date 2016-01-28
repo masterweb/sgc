@@ -2,9 +2,10 @@
 <div class="row">
     <div class="col-md-12">
         <button class="trigerFiltros btn btn-warning abrirFiltros">Abrir Filtros</button>
+        <div class="resultados_embudo bg-danger"></div>
         <div class="highlight filtrosReportes">
             <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>
-        </div>
+        </div>        
     </div>
 </div>
 <br />

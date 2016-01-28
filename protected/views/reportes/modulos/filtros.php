@@ -63,7 +63,7 @@
         <div class="col-md-12">
             <label for="">Modelo</label>
             <div class="panel panel-default">
-                <div class="panel-body">                    
+                <div class="panel-body modelos_filtros">                    
                     <?php
                         $activos = array();                                
                         foreach ($varView['modelos_car'] as $key => $value) {
