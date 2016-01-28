@@ -1,4 +1,5 @@
 <?php if($tipo_filtro == 'general'):?>
+<?php $area_id = (int) Yii::app()->user->getState('area_id'); //echo $area_id; ?>
 <div class="form">
     <h4>Búsqueda:</h4>
     <?php
@@ -88,7 +89,7 @@
         </div>
     </div>-->
     <hr />
-    <?php if($cargo_id == 69 || $cargo_id == 46){ ?>
+    <?php if($cargo_id == 69 || $cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
     <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
     
     <div class="row">

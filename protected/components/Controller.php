@@ -1787,7 +1787,14 @@ class Controller extends CController {
                 
                 break;
             case 46: // super administrador
-                case 46: // super administrador
+            case 4:
+            case 45:  
+            case 48:
+            case 57: 
+            case 58:  
+            case 60:  
+            case 61:  
+            case 62:
                 // select de grupo
                 $grupo = Grupo::model()->findAll();
                 // select de concesionarios
@@ -1808,7 +1815,7 @@ class Controller extends CController {
                 }
                 $data_select[1] = $data;
                 break;
-                break;
+             
 
             default:
                 break;

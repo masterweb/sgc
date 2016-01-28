@@ -563,7 +563,7 @@ img.cometchat_userscontentavatarimage {
 .calendar-table th{color: black;}
 
 .barra{
-    margin: auto;
+    /*height: 20px;*/
     margin-bottom: 5px;
     color: #fff;
     padding: 5px;
@@ -572,9 +572,6 @@ img.cometchat_userscontentavatarimage {
 .barratit{
     font-size: 12px;
     font-style: italic;
-}
-.graficas{
-    text-align: center;;
 }
 .trojo{color: red;}
 .tazul{color: blue;}
@@ -587,10 +584,8 @@ img.cometchat_userscontentavatarimage {
 hr{
     border-color: #dedede;
 }
-.select2-container{
-    width: 100%;
-}
-
-.nocursor{
-    cursor: not-allowed !important;
-}
+.errorMessage{position: relative;
+    top: -22px;
+    color: #AB1F2C;
+    font-size: 13px;
+    font-style: italic;}

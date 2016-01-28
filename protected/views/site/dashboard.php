@@ -79,7 +79,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             <li class="wrapper">
                 <div class="forma">
                     <a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>
-                        <div class="txt_menu">Directorio</div></a>
+                        <div class="txt_menu">Directorio de Contactos</div></a>
                 </div>
             </li><?php
         }
