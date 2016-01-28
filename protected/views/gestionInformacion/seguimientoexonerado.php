@@ -590,6 +590,7 @@ if ($cargo_id != 46){
                             <th><span>Responsable Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
+                            <th><span>Tipo</span></th>
                             <th><span>Edición</span></th>
                         </tr>
                     </thead>
@@ -730,6 +731,7 @@ if ($cargo_id != 46){
                                     <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
                                     else{ echo $c['fuente']; } ?> 
                                 </td>
+                                <td><?php echo $c['tipo_ex']; ?></td>
                                 <td>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
 

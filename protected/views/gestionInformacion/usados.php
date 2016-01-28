@@ -77,7 +77,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <th><span>Marca</span></th>
                             <th><span>Modelo</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span>Responsable</span></th>
+                            <th><span>Asesor Comercial Orígen</span></th>
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Edición</span></th>

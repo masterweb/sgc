@@ -581,7 +581,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <th><span>Nombres</span></th>
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
-                            <th><span>Próximo Seguimiento</span></th>
+                            <th><span>Seguimiento Caducado</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
                             <th><span>Email</span></th>

@@ -351,8 +351,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionContactos() {
         $criteria = new CDbCriteria;
         //$criteria->condition = 'estado ="ACTIVO" and id !='.(int)Yii::app()->user->id;
-        $criteria->condition = 'estado ="ACTIVO" ';
-        $criteria->order = 'id desc';
+        $criteria->alias = 'u';
+        $criteria->condition = 'u.estado ="ACTIVO" ';
+        $criteria->join='LEFT JOIN area a ON a.id=u.area_id';
+        $criteria->order = 'a.descripcion asc';
         // Count total records
         $pages = new CPagination(Usuarios::model()->count($criteria));
 
