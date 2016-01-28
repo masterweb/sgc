@@ -30,14 +30,18 @@ $(function () {
         var filtros_asesores = '';
         var filtros_modelos = '';
 
-        var selected_Concesionario = $('#GestionInformacionConcesionario').val();
-        if(selected_Concesionario != ''){
-            filtros_concesionario = ' <b>/</b> <b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text();
+        if ( $( "#GestionInformacionConcesionario" ).length && $( "#GestionInformacionConcesionario" ).is('select')) {
+            var selected_Concesionario = $('#GestionInformacionConcesionario').val();
+            if(selected_Concesionario != ''){
+                filtros_concesionario = ' <b>/</b> <b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text();
+            }
         }
         
-        var selected_responsable = $('#GestionDiariaresponsable').val();
-        if(selected_responsable != ''){
-            filtros_asesores = ' <b>/</b> <b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text();
+        if ( $( "#GestionDiariaresponsable" ).length ) {
+            var selected_responsable = $('#GestionDiariaresponsable').val();
+            if(selected_responsable != ''){
+                filtros_asesores = ' <b>/</b> <b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text();
+            }
         }
 
         var selected = [];
