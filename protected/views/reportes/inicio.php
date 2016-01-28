@@ -45,4 +45,4 @@
         </div>
     </div>
 </div>
-<?= $this->renderPartial('//reportes/modulos/footer'); ?>
+<?= $this->renderPartial('//reportes/modulos/footer', array('varView' => $varView)); ?>

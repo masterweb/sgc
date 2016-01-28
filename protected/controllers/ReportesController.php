@@ -103,6 +103,7 @@ class ReportesController extends Controller {
         }
 
          // procesamos las variables de busqueda del filtro
+        $varView['js_responsable'] = 'null';
         if($_GET['GI']){            
             if($_GET['GI']['fecha1'] != ''){
                 //echo('fecha1');
@@ -124,6 +125,7 @@ class ReportesController extends Controller {
                 //echo('responsable');
                 $varView['id_responsable'] = $_GET['GI']['responsable'];
                 $id_persona = "gi.responsable = ".$varView['id_responsable'];
+                $varView['js_responsable'] = $varView['id_responsable'];
             }
             if($_GET['GI']['concesionario'] != ''){
                 $varView['$concesionario'] = $_GET['GI']['concesionario'];
@@ -174,7 +176,8 @@ class ReportesController extends Controller {
         $varView['vhckd1'] = $retorno[20];
         $varView['vhcbu1'] = $retorno[21];
         $varView['vhckd2'] = $retorno[22];
-        $varView['vhcbu2'] = $retorno[23];             
+        $varView['vhcbu2'] = $retorno[23];
+        $varView['lista_datos'] = $lista_datos;             
         
         $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
         $varView['dif_cbu_trafico'] =  $varView['traficocbu2'] - $varView['traficocbu1'];
@@ -232,6 +235,32 @@ class ReportesController extends Controller {
         $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']);  
 
         $this->render('inicio', array('varView' => $varView));
+    }
+
+    public function actionAjaxGetAsesores() {
+        $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+        $resposable = isset($_POST["resposable"]) ? $_POST["resposable"] : "";
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $con = Yii::app()->db;
+
+        if($cargo_id == 69 || $cargo_id == 70){
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        
+            $request = $con->createCommand($sql);
+            $request = $request->queryAll();
+
+            $data = '<option value="">--Seleccione Asesor--</option>';
+            foreach ($request as $value) {
+                $data .= '<option value="' . $value['id'].'" ';
+                if($resposable == $value['id']){
+                    $data .= 'selected';
+                }
+                $data .= '>'.$this->getResponsableNombres($value['id']);
+                $data .= '</option>';
+            }
+
+            echo $data;
+        }
     }
 
     function getConcecionario($grupo_id){

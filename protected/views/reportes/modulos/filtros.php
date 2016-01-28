@@ -1,5 +1,4 @@
 <div class="form">
-    <h4>Filtros de búsqueda </h4>
     <?php
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'gestion-nueva-cotizacion-form',
@@ -25,6 +24,40 @@
         </div>
     </div>
 
+    <div class="row">
+    <!-- FILTRO CONCESIONARIOS -->
+    <?php if ($varView['cargo_id'] == 69): ?>
+        <div class="col-md-6">
+            <label for="">Concesionarios</label>
+            <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control">
+                <option value="">--Seleccione Concesionario--</option>
+                <?php
+                foreach ($varView['lista_conce'] as $value) {
+                    echo '<option value="' . $value['dealer_id'] . '"';
+                    if($value['dealer_id'] == $varView['$concesionario']){
+                        echo 'selected';
+                    }                        
+                    echo'>' . $value['nombre'] . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+    <?php endif; ?>
+
+    <!-- FILTRO ASESORES -->
+    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70): ?>
+        <?php if ($varView['cargo_id'] == 70):?>
+            <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
+        <?php endif; ?>
+            <div class="col-md-6">
+                <label for="">Asesor</label>
+                <select name="GI[responsable]" id="GestionDiariaresponsable" class="form-control">
+                    <option value="">--Seleccione--</option>
+                </select>
+            </div>
+    <?php endif; ?>
+    </div>
+
     <!-- FILTRO MODELOS -->
     <div class="row">
         <div class="col-md-12">
@@ -35,8 +68,8 @@
                         $activos = array();                                
                         foreach ($varView['modelos_car'] as $key => $value) {
                             $checked = '';
-                            if ($lista_datos) {
-                                if (in_array($value['id_modelos'], $lista_datos[0]['modelos'])) {
+                            if ($varView['lista_datos']) {
+                                if (in_array($value['id_modelos'], $varView['lista_datos'][0]['modelos'])) {
                                     $activos[] = $value['id_modelos'];
                                     $checked = 'checked';
                                 } 
@@ -56,42 +89,6 @@
             </div>
         </div>
     </div>
-
-    <!-- FILTRO CONCESIONARIOS -->
-    <?php if ($varView['cargo_id'] == 69): ?>
-        <div class="row">
-            <div class="col-md-6">
-                <label for="">Concesionarios</label>
-                <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control">
-                    <option value="">--Seleccione Concesionario--</option>
-                    <?php
-                    foreach ($varView['lista_conce'] as $value) {
-                        echo '<option value="' . $value['dealer_id'] . '"';
-                        if($value['dealer_id'] == $varView['$concesionario']){
-                            echo 'selected';
-                        }                        
-                        echo'>' . $value['nombre'] . '</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <!-- FILTRO ASESORES -->
-    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70): ?>
-        <?php if ($varView['cargo_id'] == 70):?>
-            <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
-        <?php endif; ?>
-        <div class="row">
-            <div class="col-md-6">
-                <label for="">Asesor</label>
-                <select name="GI[responsable]" id="GestionDiariaresponsable" class="form-control">
-                    <option value="">--Seleccione--</option>
-                </select>
-            </div>
-        </div>
-    <?php endif; ?>
 
     <!-- TRIGER -->
     <div class="row buttons">

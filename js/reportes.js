@@ -11,7 +11,7 @@ $(function () {
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {dealer_id: value},
+                data: {dealer_id: value, resposable: resposable},
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);
 
