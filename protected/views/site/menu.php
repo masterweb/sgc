@@ -150,7 +150,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                 <?php } // PERFIL ASESOR DE VENTAS --------------------------------------------- ?>
 
-                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && $tipo == 'ventas') { ?>
                     <?php if ($cargo_id == 71 || $cargo_id == 67) { ?>
                         <li class="wrapper">
                             <div class="forma">
@@ -179,7 +179,7 @@ $rol = Yii::app()->user->getState('roles');
                 }
                 // PERFIL JEFE DE SUCURSAL --------------------------------------------- 
                 ?>
-                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46)) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46) && $tipo == 'ventas') { ?>
             <?php if ($cargo_id == 69 || $cargo_id == 46) { ?>
                         <li class="wrapper">
                             <div class="forma">
@@ -198,7 +198,7 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>
 
                 <?php } ?>
-                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46)) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46) && $tipo == 'ventas') { ?>
 
                     <li class="wrapper">
                         <div class="forma">
@@ -208,7 +208,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                 <?php } ?>
 
-        <?php if (($a->accesoSistema->controlador) == 'gestionDiaria' && ($a->accesoSistema->accion) == 'agendamiento') { ?>
+        <?php if (($a->accesoSistema->controlador) == 'gestionDiaria' && ($a->accesoSistema->accion) == 'agendamiento' && $tipo == 'ventas') { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
@@ -217,7 +217,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
 
                 <?php } ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc') { ?>
+        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
