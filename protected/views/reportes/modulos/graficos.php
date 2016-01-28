@@ -40,10 +40,10 @@
            
                     echo '<div class="graficas"><span class="barratit trojo">Tráfico mes actual</span><div class="barra roja" style="width:'.$tmac.'%;">'.$trafico_mes_actual.'</div>'.
                      '<span class="barratit tazul">Tráfico mes anterior</span><div class="barra azul" style="width:'.$tman.'%;">'.$trafico_mes_anterior.'</div><hr/>'.
-                     '<span class="barratit trojo">Proforma mes actual</span><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
-                     '<span class="barratit tazul">Proforma mes anterior</span><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div><hr/>'.
                      '<span class="barratit trojo">Test Drive mes actual</span><div class="barra roja" style="width:'.$tdmac.'%;">'.$td_mes_actual.'</div>'.
                      '<span class="barratit tazul">Test Drive mes anterior</span><div class="barra azul" style="width:'.$tdman.'%;">'.$td_mes_anterior.'</div><hr/>'.
+                     '<span class="barratit trojo">Proforma mes actual</span><div class="barra roja" style="width:'.$pmac.'%;">'.$proforma_mes_actual.'</div>'.
+                     '<span class="barratit tazul">Proforma mes anterior</span><div class="barra azul" style="width:'.$pman.'%;">'.$proforma_mes_anterior.'</div><hr/>'.
                      '<span class="barratit trojo">Ventas mes actual</span><div class="barra roja" style="width:'.$vmac.'%;">'.$vh_mes_actual.'</div>'.
                      '<span class="barratit tazul">Ventas mes anterior</span><div class="barra azul" style="width:'.$vman.'%;">'.$vh_mes_anterior.'</div><br/><br/></div>';
                 }else{
