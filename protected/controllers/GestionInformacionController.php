@@ -1342,14 +1342,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     isset($_GET['GestionDiaria']['concesionario'])) {
             $search_type = 14;
         }
-        // BUSQUEDA EN CAMPOS VACIOS
-        if (empty($_GET['GestionDiaria']['categorizacion']) &&  $fechaPk == 1 &&
-                    empty($_GET['GestionDiaria']['responsable']) && empty($_GET['GestionDiaria']['tipo_fecha']) &&
-                    empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['status']) &&
-                    empty($_GET['GestionDiaria']['fuente'])) {
-            $search_type = 15;
-        }
-        //die('search type: '.$search_type);
+        
+       //die('search type: '.$search_type);
         switch ($search_type) {
             case 1:
                 $select = $sql;
