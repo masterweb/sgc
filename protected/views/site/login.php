@@ -9,9 +9,9 @@ $this->breadcrumbs = array(
 );
 ?>
 <style>
-	#cometchat {
-		display: none;
-	}
+    #cometchat {
+        display: none;
+    }
 </style>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/estilosUsuarios.css" type="text/css" />
 <div class="container">    
@@ -33,7 +33,7 @@ $this->breadcrumbs = array(
                         'validateOnSubmit' => true,
                     ),
                     'htmlOptions' => array('class' => 'form-horizontal', 'role' => 'form')
-                        ));
+                ));
                 ?>
 
                 <div style="margin-bottom: 25px" class="input-group">
@@ -59,7 +59,7 @@ $this->breadcrumbs = array(
                             <label for="LoginForm_rememberMe">Recordar Usuario o Contraseña</label>
                         </label>
                     </div>
-					
+
                 </div>
                 <div style="margin-top:10px" class="form-group">
                     <!-- Button -->
@@ -69,11 +69,11 @@ $this->breadcrumbs = array(
                         <!--<a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a>-->
                     </div>
                 </div>
-				<div class="row centrar">
-					<a href="<?php echo Yii::app()->createUrl('site/recuperar'); ?>" class="linkLogin">Olvide mi usuario o contrase&ntilde;a</a>
-					<span style="font-size:13px"> - </span>					
-					<a href="<?php echo Yii::app()->createUrl('site/registro'); ?>" class="linkLogin">Registrarse en la intranet</a>
-				</div>
+                <div class="row centrar">
+                    <a href="<?php echo Yii::app()->createUrl('site/recuperar'); ?>" class="linkLogin">Olvidé mi usuario o contrase&ntilde;a</a>
+                    <span style="font-size:13px"> - </span>					
+                    <a href="<?php echo Yii::app()->createUrl('site/registro'); ?>" class="linkLogin">Registrarse en la intranet</a>
+                </div>
                 </form>
                 <?php $this->endWidget(); ?>
             </div>                     

@@ -6,11 +6,12 @@
                     <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                     <?php
                     $con = Yii::app()->db;
-                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.email, gi.direccion,gi.celular, 
-                        gi.telefono_oficina, gi.id_cotizacion, gi.responsable, gi.tipo_form_web, gi.presupuesto, gd.* FROM gestion_diaria gd 
-                                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                                WHERE gi.id = {$_GET['id_informacion']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
-                                //die($sql);
+//                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.email, gi.direccion,gi.celular, 
+//                        gi.telefono_oficina, gi.id_cotizacion, gi.responsable, gi.tipo_form_web, gi.presupuesto, gd.* FROM gestion_diaria gd 
+//                                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+//                                WHERE gi.id = {$_GET['id_informacion']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
+                    $sql = "SELECT * FROM gestion_informacion WHERE id = {$_GET['id_informacion']} GROUP BY id";            
+                    //            die($sql);
                     $request = $con->createCommand($sql);
                     $users = $request->queryAll();
                     /* echo '<pre>';
@@ -41,7 +42,7 @@
                                     <td><strong>Celular:</strong> <?php echo $value['celular']; ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Teléfono Oficina:</strong> <?php echo $value['telefono_oficina']; ?></td>
+                                    <td><strong>Teléfono Oficina:</strong> <?php echo $value['telefono_casa']; ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Fuente de Contacto:</strong> <?php echo ucfirst($this->getFuente($value['id_cotizacion'])); ?></td>
@@ -59,7 +60,13 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <?php $crit = new CDbCriteria(array('condition' => "id_informacion={$id_informacion} AND paso = '1-2'"));
+                
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?php $crit = new CDbCriteria(array('condition' => "id_informacion={$id_informacion} AND paso = '1-2'"));
                             $agen = GestionAgendamiento::model()->count($crit);
                             $ag = GestionAgendamiento::model()->findAll($crit);
                             if ($agen > 0) { ?>
@@ -72,7 +79,6 @@
                                         </div>
                                     <?php } ?>
                                 </div>
-            </div>
         </div>
     </div>
 </div>

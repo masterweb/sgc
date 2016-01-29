@@ -1342,6 +1342,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     isset($_GET['GestionDiaria']['concesionario'])) {
             $search_type = 14;
         }
+        // BUSQUEDA EN CAMPOS VACIOS
+        if (empty($_GET['GestionDiaria']['categorizacion']) &&  $fechaPk == 1 &&
+                    empty($_GET['GestionDiaria']['responsable']) && empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                    empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['status']) &&
+                    empty($_GET['GestionDiaria']['fuente'])) {
+            $search_type = 15;
+        }
         //die('search type: '.$search_type);
         switch ($search_type) {
             case 1:
@@ -1532,7 +1539,47 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
                 return $users;
-                break;        
+                break;
+            case 15: // BUSQUEDA POR CAMPOS VACIOS
+                if ($cargo_id == 70) {
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+                    gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                        INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                        INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                        INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                        WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0
+                        ORDER BY gd.id DESC";
+                    //die('sql sucursal'. $sql);
+                }
+                if ($cargo_id = 71) {
+                    // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+                    gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                        INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                        INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                        LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                        WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0
+                        ORDER BY gd.id DESC";
+                    //die('sql: '. $sql);
+                }
+                if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14){
+                    //die('nnwer');
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    FROM gestion_diaria gd 
+                    INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                    INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
+                    INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                    INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id 
+                    ORDER BY gd.id DESC";
+                }
+                $request = $con->createCommand($sql);
+                $users = $request->queryAll();
+                return $users;
+                break;
 
             default:
                 break;
@@ -2737,6 +2784,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //            die();
             $historial = new GestionHistorial;
             $model->attributes = $_POST['GestionInformacion'];
+            $model->marca_usado = $_POST['GestionInformacion']['marca_usado'];
+            $model->modelo_usado = $_POST['GestionInformacion']['modelo_usado'];
             if (isset($_POST['GestionInformacion']['tipo_form_web']))
                 $model->tipo_form_web = $_POST['GestionInformacion']['tipo_form_web'];
 

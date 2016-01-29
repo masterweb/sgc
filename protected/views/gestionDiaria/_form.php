@@ -31,6 +31,7 @@ $android = FALSE;
 if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) {
     $android = TRUE;
 }
+$area_id = (int) Yii::app()->user->getState('area_id');
 //echo 'id informacion:'.$id;
 ?>
 <style>
@@ -173,7 +174,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                     <?php endif; ?>
                                     <?php if($value['ruc'] != ''): ?>
                                     <tr>
-                                        <td><strong>RUC:</strong> <?php echo $value['ruc']; ?></td>
+                                        <td><strong>Ruc:</strong> <?php echo $value['ruc']; ?></td>
                                     </tr>
                                     <?php endif; ?>
                                     <?php if($value['pasaporte'] != ''): ?>
@@ -890,6 +891,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                         <?php } ?>
                     </div>
                     <?php
+                    if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){
                     switch ($_GET['paso']) {
                         case '1-2':
                             $status = $this->getStatusGD($_GET['id_gt']);
@@ -927,6 +929,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                             break;
                         default:
                             break;
+                    }
                     }
                     ?>
 
