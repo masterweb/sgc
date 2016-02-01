@@ -3,6 +3,7 @@
 $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_responsable);
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$area_id = (int) Yii::app()->user->getState('area_id');
 ?>
 <script type="text/javascript">
     $(function () {
@@ -77,7 +78,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <th><span>Marca</span></th>
                             <th><span>Modelo</span></th>
                             <th><span>Próximo Seguimiento</span></th>
-                            <th><span>Responsable</span></th>
+                            <th><span>Asesor Comercial Orígen</span></th>
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Edición</span></th>
@@ -138,8 +139,10 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <td><?php echo $c['email']; ?></td>
                             <td><?php echo $c['tipo_form_web']; ?></td>
                             <td>
-<!--                                <a href="<?php echo Yii::app()->createUrl('gestionDiaria/usados', array('id_informacion' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>-->
+                                <a href="<?php echo Yii::app()->createUrl('gestionDiaria/usados', array('id_informacion' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
+                            <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>    
                                 <a href="<?php echo Yii::app()->createUrl('gestionDiaria/agendamiento', array('id_informacion' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                            <?php } ?>    
                             </td>
                         </tr>
                         <?php endforeach; ?>

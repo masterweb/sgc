@@ -3200,10 +3200,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionGetAsesores() {
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $area_id = (int) Yii::app()->user->getState('area_id');
         $con = Yii::app()->db;
         if($cargo_id == 69){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
-        }else if($cargo_id == 70){
+        }
+        if($cargo_id == 70){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }else{
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";

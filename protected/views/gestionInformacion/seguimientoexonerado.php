@@ -12,6 +12,7 @@ if ($cargo_id != 46){
 }else{
     $dealer_id = null;
 }
+$area_id = (int) Yii::app()->user->getState('area_id');
 //echo 'RESPONSABLE ID: '.$id_responsable;
 ?>
 <script>
@@ -286,225 +287,7 @@ if ($cargo_id != 46){
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <div class="col-md-4">
-            <div class="highlight">
-                <div class="form">
-                    <?php
-                    $form = $this->beginWidget('CActiveForm', array(
-                        'id' => 'gestion-nueva-cotizacion-form',
-                        'enableAjaxValidation' => false,
-                        'htmlOptions' => array(
-                            'onsubmit' => "return false;", /* Disable normal form submit */
-                            'onkeypress' => " if(event.keyCode == 13){ send(); } ", /* Do ajax call when user presses enter key */
-                            'class' => 'form-horizontal form-search',
-                            'autocomplete' => 'off'
-                        ),
-                    ));
-                    ?>
-                    <div class="row">
-                        <div class="col-md-12" style="position: relative;">
-                            <?php echo $form->labelEx($model, 'fuente'); ?>
-                            <?php
-                            echo $form->dropDownList($model, 'fuente', array(
-                                '' => '--Seleccione--',
-                                'prospeccion' => 'Prospección',
-                                'trafico' => 'Tráfico',
-                                'showroom' => 'Showroom',
-                                'exhibicion' => 'Exhibición',
-                                    //'web' => 'Web',
-                                    //'exonerados' => 'Exonerados'
-                                    ), array('class' => 'form-control'));
-                            ?>
-                            <?php echo $form->error($model, 'fuente'); ?>
-                            <button type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="right" title="Info" id="toolinfo">Info</button>
-                        </div>
-
-                    </div>
-                    <div class="row tipo-cont">
-                        <div class="col-md-12">
-                            <label for="GestionNuevaCotizacion_fuente">Tipo</label>
-                            <select name="GestionNuevaCotizacion[tipo]" id="GestionNuevaCotizacion_tipo" class="form-control">
-                                <option value="">--Seleccione--</option>
-                                <option value="Nuevo">Nuevo</option>
-                                <option value="Usado">Usado</option>
-                                <option value="Exonerado Taxi">Exonerado Taxi</option>
-                                <option value="Exonerado Conadis">Exonerado Conadis</option>
-                                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
-                                <option value="Flota">Flota</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row empresa-cont" style="display: none;">
-                        <div class="col-md-12">
-                            <label for="GestionNuevaCotizacion_fuente">Empresa</label>
-                            <input size="40" maxlength="20" class="form-control" name="GestionNuevaCotizacion[empresa]" id="GestionNuevaCotizacion_empresa" type="text">
-
-                        </div>
-                    </div>
-                    <div class="row exh-cont" style="display: none;">
-                        <div class="col-md-12">
-                            <label for="GestionNuevaCotizacion_fuente">Lugar</label>
-                            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text">
-                        </div>
-                    </div>
-                    <div class="row otro-cont" style="display: none;">
-                        <div class="col-md-12">
-                            <label for="GestionNuevaCotizacion_fuente">Otro</label>
-                            <input size="40" maxlength="20" class="form-control" name="GestionNuevaCotizacion[otro]" id="GestionNuevaCotizacion_otro" type="text">
-                        </div>
-                    </div>
-                    <div class="row motivo-cont" style="display:none;">
-                        <div class="col-sm-12">
-                            <?php echo $form->labelEx($model, 'motivo_exonerados'); ?>
-                            <?php
-                            echo $form->dropDownList($model, 'motivo_exonerados', array('' => '--Escoja un motivo--',
-                                'diplomáticos' => 'Vehículos Diplomáticos',
-                                'renova' => 'Plan Renova',
-                                'discapacitados' => 'Personas Capacidades Diferentes'
-                                    ), array('class' => 'form-control'));
-                            ?>
-                            <?php echo $form->error($model, 'motivo_exonerados'); ?>
-                        </div>
-                    </div>
-
-                    <?php if ($identificacion == 'ci'): ?>
-                        <div id="cont-ident">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label for="GestionNuevaCotizacion_identificacion">Identificación</label>
-                                    <?php echo $form->dropDownList($model, 'identificacion', array('' => '--Seleccione--', 'ci' => 'Cédula', 'ruc' => 'RUC', 'pasaporte' => 'Pasaporte'), array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'identificacion'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-doc">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'cedula'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-ruc" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'ruc', array('size' => 40, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'ruc'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-pasaporte" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'pasaporte', array('size' => 40, 'maxlength' => 40, 'class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'pasaporte'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($identificacion == 'ruc'): ?>
-                        <div id="cont-ident">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label for="GestionNuevaCotizacion_identificacion">Identificación</label>
-                                    <?php echo $form->dropDownList($model, 'identificacion', array('' => '--Seleccione--', 'ci' => 'Cédula', 'ruc' => 'RUC', 'pasaporte' => 'Pasaporte'), array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'identificacion'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-doc" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'cedula'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-ruc">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'ruc', array('size' => 40, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'ruc'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-pasaporte" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'pasaporte', array('size' => 40, 'maxlength' => 40, 'class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'pasaporte'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($identificacion == 'pasaporte'): ?>
-                        <div id="cont-ident">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label for="GestionNuevaCotizacion_identificacion">Identificación</label>
-                                    <?php echo $form->dropDownList($model, 'identificacion', array('' => '--Seleccione--', 'ci' => 'Cédula', 'ruc' => 'RUC', 'pasaporte' => 'Pasaporte'), array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'identificacion'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-doc" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'cedula'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-ruc" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'ruc', array('size' => 40, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'ruc'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-pasaporte">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'pasaporte', array('size' => 40, 'maxlength' => 40, 'class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'pasaporte'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($identificacion == ''): ?>
-                        <div id="cont-ident">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label for="GestionNuevaCotizacion_identificacion">Identificación</label>
-                                    <?php echo $form->dropDownList($model, 'identificacion', array('' => '--Seleccione--', 'ci' => 'Cédula', 'ruc' => 'RUC', 'pasaporte' => 'Pasaporte'), array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'identificacion'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-doc">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'cedula'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-ruc" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'ruc', array('size' => 40, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                                    <?php echo $form->error($model, 'ruc'); ?>
-                                </div>
-                            </div>
-                            <div class="row" id="cont-pasaporte" style="display: none;">
-                                <div class="col-md-12">
-                                    <label for="GestionNuevaCotizacion_cedula">Número</label>
-                                    <?php echo $form->textField($model, 'pasaporte', array('size' => 40, 'maxlength' => 40, 'class' => 'form-control')); ?>
-                                    <?php echo $form->error($model, 'pasaporte'); ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="row buttons">
-                        <div class="col-md-12">
-                            <?php echo CHtml::submitButton($model->isNewRecord ? 'Buscar' : 'Save', array('class' => 'btn btn-danger', 'onclick' => 'send();')); ?>
-                        </div>
-                    </div>
-                    <?php $this->endWidget(); ?>
-                </div><!-- form -->
-            </div>
-        </div>
+        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
         <div class="col-md-8">
             <div class="highlight">
                 <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionDiaria/search', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>
@@ -590,6 +373,7 @@ if ($cargo_id != 46){
                             <th><span>Responsable Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
+                            <th><span>Tipo</span></th>
                             <th><span>Edición</span></th>
                         </tr>
                     </thead>
@@ -730,9 +514,10 @@ if ($cargo_id != 46){
                                     <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
                                     else{ echo $c['fuente']; } ?> 
                                 </td>
+                                <td><?php echo $c['tipo_ex']; ?></td>
                                 <td>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
-
+                                    <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
                                     <?php if ($c['paso'] == '1-2') { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'exonerados')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } else { ?>
@@ -742,6 +527,7 @@ if ($cargo_id != 46){
                                     <?php if ($c['status'] == 3) { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } ?>
+                                    <?php } ?>    
                                 </td>
                             </tr>
                         <?php endforeach; ?>
