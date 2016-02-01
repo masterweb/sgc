@@ -73,32 +73,32 @@ class ReportesController extends Controller {
 
         
         switch ($varView['cargo_id']) {
-            case 69: // GERENTE COMERCIAL EN CURSO----->
+            case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
                 $tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
                 $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);
                 break;
-            case 70: // jefe de sucursal 
+            case 70: // jefe de sucursal TERMINADO------>
                 $id_persona = "gi.dealer_id = ".$varView['dealer_id'];            
                 break;                
             case 71: // asesor de ventas TERMINADO------>
                 $id_persona = "gi.responsable = ".$varView['id_responsable'];
                 break; 
-            case 72: //jefe BDC
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+            case 72: //jefe BDC y exonerados TERMINADO------> PROBAR
+                $id_persona = "gi.dealer_id = ".$varView['dealer_id'].' AND (gi.bdc = 1 OR gi.tipo_form_web = "exonerados") ';
                 break; 
-            case 73: //asesor bdc
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+            case 73: //asesor bdc TERMINADO------> PROBAR
+                $id_persona = "gi.responsable = ".$varView['id_responsable'].' AND gi.bdc = 1 ';
                 break; 
-            case 75: //asesor exonerados
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+            case 75: //asesor exonerados TERMINADO------> PROBAR
+                $id_persona = "gi.responsable = ".$varView['id_responsable'].' AND gi.tipo_form_web = "exonerados" ';
                 break; 
-            case 76: //jefe usados
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+            case 76: //jefe usados TERMINADO------> PROBAR
+                $id_persona = "gi.dealer_id = ".$varView['dealer_id'].' AND gi.tipo_form_web = "usado" ';
                 break; 
-            case 77: //asesor usados
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+            case 77: //asesor usados TERMINADO------> PROBAR
+                $id_persona = "gi.responsable = ".$varView['id_responsable'].' AND gi.tipo_form_web = "usado" ';
                 break;                                 
         }
 

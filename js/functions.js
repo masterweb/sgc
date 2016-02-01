@@ -174,7 +174,7 @@ $(document).ready(function () {
     $('#GestionVehiculo_modelo').change(function () {
         var value = $(this).attr('value');
         $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/versiones/getversiones',
+            url: 'http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/versiones/getversiones',
             beforeSend: function (xhr) {
                 $('#info2').show();  // #info must be defined somehwere
             },
@@ -193,7 +193,7 @@ $(document).ready(function () {
     $('#GestionVehiculo_modelo2').change(function () {
         var value = $(this).attr('value');
         $.ajax({
-            url: 'https://www.kia.com.ec/intranet/usuario/index.php/versiones/getversiones',
+            url: 'http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/versiones/getversiones',
             beforeSend: function (xhr) {
                 $('#info2').show();  // #info must be defined somehwere
             },
