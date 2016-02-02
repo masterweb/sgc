@@ -374,7 +374,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Tipo</span></th>
-                            <th><span>Edición</span></th>
+                            <th><span>Resúmen</span></th>
                         </tr>
                     </thead>
                     <tbody>

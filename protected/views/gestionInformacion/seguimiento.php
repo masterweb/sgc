@@ -428,7 +428,7 @@ $count = count($users);
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
                             <th><span>Fuente</span></th>
-                            <th><span>Edición</span></th>
+                            <th><span>Resúmen</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -671,7 +671,7 @@ $count = count($users);
                                 </td>
                                 <td>
                                     <?php if($c['bdc'] == 0){ ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                         <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1){ ?>
                                             <?php if ($c['paso'] == '1-2' && $c['fuente'] == 'showroom') { ?>
                                                 <?php if($area_id != 4){ ?> 
@@ -688,7 +688,7 @@ $count = count($users);
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if($c['bdc'] == 1  && ( $area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14)){ ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                     <?php } ?>            
                                 </td>
                             </tr>

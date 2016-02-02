@@ -1845,6 +1845,7 @@ class Controller extends CController {
         $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
                     WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
+        //die($sql);            
         $request = $con->createCommand($sql);
         $posts = $request->queryAll();
         //die('count: ' . count($posts));

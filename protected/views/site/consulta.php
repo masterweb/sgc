@@ -515,7 +515,12 @@ if (isset($id)) {
             <div class="row buttons">
                 <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
                 <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
-                <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
+                <?php if ($_GET['fuente'] == 'prospeccion'){ ?>
+                <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="1-2">
+                <?php }else{ ?>
+                    <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
+                <?php } ?>
+                
                 <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
                 <div class="col-md-2">
                 <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>

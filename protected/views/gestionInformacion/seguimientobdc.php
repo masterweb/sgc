@@ -371,7 +371,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
                             <th><span>Fuente</span></th>
-                            <th><span>Edición</span></th>
+                            <th><span>Resúmen</span></th>
                         </tr>
                     </thead>
                     <tbody>
