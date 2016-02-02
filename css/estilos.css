@@ -568,6 +568,7 @@ img.cometchat_userscontentavatarimage {
     color: #fff;
     padding: 5px;
     font-size: 9px;
+    margin: auto;
 }
 .barratit{
     font-size: 12px;
@@ -580,6 +581,9 @@ img.cometchat_userscontentavatarimage {
 }
 .azul{
     background: blue;
+}
+.graficas{
+    text-align: center;
 }
 hr{
     border-color: #dedede;
