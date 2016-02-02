@@ -187,12 +187,12 @@ $count = count($users);
                                         var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/update/'+data.id_informacion+'?tipo=gestion" class="btn btn-danger">Continuar</a>';
                                         $('.cont-createc-but').html(dt);
                                     }
-                                    else {
+                                    else if(data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
                                         form.submit();
                                     }
                                 },
                                 error: function (error) {
-                                    form.submit();
+                                    //form.submit();
                                 }
                             });
                         } else if (identificacion == 'ruc') {
@@ -226,7 +226,7 @@ $count = count($users);
                                             var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/update/'+data.id_informacion+'?tipo=gestion" class="btn btn-danger">Continuar</a>';
                                             $('.cont-createc-but').html(dt);
                                         }
-                                        else {
+                                        else if(data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
                                             form.submit();
                                         }
                                     },

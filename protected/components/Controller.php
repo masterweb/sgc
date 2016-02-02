@@ -142,7 +142,6 @@ class Controller extends CController {
             $deal = Dealers::model()->find($criteria2);
             return $deal->direccion;
         }
-
     }
 
     public function getNombreGrupo($id) {
@@ -170,8 +169,8 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    
-   public function getAsesorCredito($id) {
+
+    public function getAsesorCredito($id) {
         $dealers = Usuarios::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             $concesionario_id = $dealers->concesionario_id;
@@ -185,14 +184,14 @@ class Controller extends CController {
                 $criteria3 = new CDbCriteria(array(
                     'condition' => "cargo_id=74 AND dealers_id={$concesionario_id}"
                 ));
-                $asesor_credito =  Usuarios::model()->find($criteria3);
+                $asesor_credito = Usuarios::model()->find($criteria3);
 //                echo '<pre>';
 //                print_r($asesor_credito);
 //                echo '</pre>'; 
 //                die();
                 return $asesor_credito->correo;
-            }else{
-                $asesor_credito =  Usuarios::model()->find($criteria3);
+            } else {
+                $asesor_credito = Usuarios::model()->find($criteria3);
                 return $asesor_credito->correo;
             }
         }
@@ -463,12 +462,11 @@ class Controller extends CController {
             "condition" => "id = {$id_informacion}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        if($gestion){
+        if ($gestion) {
             return ucfirst($gestion->nombres);
-        }else{
+        } else {
             return 'NA';
         }
-        
     }
 
     public function getModeloInfo($id_informacion) {
@@ -484,9 +482,9 @@ class Controller extends CController {
             "condition" => "id = {$id_vehiculo}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        if($gestion){
+        if ($gestion) {
             return ucfirst($gestion->apellidos);
-        }else{
+        } else {
             return 'NA';
         }
     }
@@ -799,8 +797,23 @@ class Controller extends CController {
             return $dealer->concesionario_id;
         }
     }
-    
+
     public function getDealerGrupo($usuario_id) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "usuario_id={$usuario_id}"
+        ));
+        $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
+    
+    public function getDealerGrupoConcesionario($usuario_id) {
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
             'condition' => "usuario_id={$usuario_id}"
@@ -829,7 +842,6 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
-
 
     public function getNameConcesionario($id) {
         //die('id: '.$id);
@@ -879,12 +891,11 @@ class Controller extends CController {
         ));
         $dealer = Dealers::model()->find($criteria);
         //return $dealer->concesionario_id;
-        if($dealer){
+        if ($dealer) {
             return $dealer->name;
-        }else{
+        } else {
             return 0;
         }
-        
     }
 
     public function getConcesionarioId($id) {
@@ -912,11 +923,10 @@ class Controller extends CController {
         ));
         $usuarios = Usuarios::model()->find($criteria);
         if ($usuarios) {
-           return $usuarios->dealers_id; 
-        }else{
-           return 0;
+            return $usuarios->dealers_id;
+        } else {
+            return 0;
         }
-        
     }
 
     public function getConcesionarioGrupoRuc($id) {
@@ -1196,7 +1206,7 @@ class Controller extends CController {
                 }
                 break;
             case 6:
-                $cr = GestionFactura::model()->count(array('condition' => "id_informacion=:match",'params' => array(':match' => $id)));
+                $cr = GestionFactura::model()->count(array('condition' => "id_informacion=:match", 'params' => array(':match' => $id)));
                 if ($cr > 0) {
                     return TRUE;
                 }
@@ -1509,30 +1519,11 @@ class Controller extends CController {
             if ($solodatos == 1) {
                 $imp = '';
                 foreach ($model as $m) {
-					
-					$d = Dealers::model()->find(array("condition"=>"id =".$m->concesionario_id));
+
+                    $d = Dealers::model()->find(array("condition" => "id =" . $m->concesionario_id));
                     //$imp.=$m->consecionario->nombre . ' -- ';
-					if(!empty($d))
-                    $imp.=$d->name . ' -- ';
-                }
-                return $imp;
-            } else { 
-                return $model;
-            }
-            /* FIN */
-        }
-    }
-	public function traerConcesionariosGR($usuario, $solodatos) {
-        $model = GrConcesionarios::model()->findAll(array("condition" => 'id = ' . (int) $usuario));
-        if (!empty($model)) {
-            /* VERIFICAMOS SI PIDE SOLO DATOS EN LA VARIABLE $solodatos == 1 */
-            if ($solodatos == 1) {
-                $imp = '';
-                foreach ($model as $m) {
-					$d = Dealers::model()->find(array("condition"=>"id =".$m->dealer_id));
-                    //$imp.=$m->consecionario->nombre . ' -- ';
-					if(!empty($d))
-                    $imp.=$d->name . ' -- ';
+                    if (!empty($d))
+                        $imp.=$d->name . ' -- ';
                 }
                 return $imp;
             } else {
@@ -1541,6 +1532,27 @@ class Controller extends CController {
             /* FIN */
         }
     }
+
+    public function traerConcesionariosGR($usuario, $solodatos) {
+        $model = GrConcesionarios::model()->findAll(array("condition" => 'id = ' . (int) $usuario));
+        if (!empty($model)) {
+            /* VERIFICAMOS SI PIDE SOLO DATOS EN LA VARIABLE $solodatos == 1 */
+            if ($solodatos == 1) {
+                $imp = '';
+                foreach ($model as $m) {
+                    $d = Dealers::model()->find(array("condition" => "id =" . $m->dealer_id));
+                    //$imp.=$m->consecionario->nombre . ' -- ';
+                    if (!empty($d))
+                        $imp.=$d->name . ' -- ';
+                }
+                return $imp;
+            } else {
+                return $model;
+            }
+            /* FIN */
+        }
+    }
+
     public function redondear_dos_decimal($valor) {
         $float_redondeado = round($valor * 100) / 100;
         return $float_redondeado;
@@ -1688,7 +1700,7 @@ class Controller extends CController {
     public function getListAccesorios($id_vehiculo, $id_version, $string_accesorios) {
         //die($string_accesorios);
         $criteria2 = new CDbCriteria(array('condition' => "id_vehiculo = {$id_vehiculo} AND id_version = {$id_version} AND status = 1 AND opcional = 0",
-                'order' => 'accesorio'));
+            'order' => 'accesorio'));
         $cn = GestionAccesorios::model()->count($criteria2);
         $listAcc = array();
         $count = 1;
@@ -1704,42 +1716,43 @@ class Controller extends CController {
         }
         return $listAcc;
     }
-    
+
     public function getFinanciamientoExo($id_informacion) {
         $dealers = GestionInformacion::model()->findByPk($id_informacion);
         if (!is_null($dealers) && !empty($dealers)) {
             return $dealers->tipo_form_web;
-        }else{
+        } else {
             return 'NA';
         }
     }
-    
+
     public function getTipoExo($id) {
         $dealers = GestionNuevaCotizacion::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             return $dealers->tipo;
-        }else{
+        } else {
             return 'NA';
         }
     }
-    
+
     public function getTipoExoInfo($id) {
         $dealers = GestionInformacion::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             return $dealers->tipo_ex;
-        }else{
+        } else {
             return 'NA';
         }
     }
+
     public function getTipoExoPorcentaje($id) {
         $dealers = GestionInformacion::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             return $dealers->porcentaje_discapacidad;
-        }else{
+        } else {
             return 'NA';
         }
     }
-    
+
     public function getExonerado($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
@@ -1765,10 +1778,10 @@ class Controller extends CController {
                 // select de concesionarios
                 $datas = '<option value="">--Seleccione grupo--</option>';
                 foreach ($grupo as $value) {
-                    $datas .= '<option value="' . $value['id'].'"';
-                    if($value['id'] == $id_grupo){
+                    $datas .= '<option value="' . $value['id'] . '"';
+                    if ($value['id'] == $id_grupo) {
                         $datas .= ' selected >';
-                    }else{
+                    } else {
                         $datas .= '>';
                     }
                     $datas .= $value['nombre_grupo'] . '</option>';
@@ -1784,16 +1797,16 @@ class Controller extends CController {
                     $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
                 }
                 $data_select[1] = $data;
-                
+
                 break;
             case 46: // super administrador
             case 4:
-            case 45:  
+            case 45:
             case 48:
-            case 57: 
-            case 58:  
-            case 60:  
-            case 61:  
+            case 57:
+            case 58:
+            case 60:
+            case 61:
             case 62:
                 // select de grupo
                 $grupo = Grupo::model()->findAll();
@@ -1815,12 +1828,67 @@ class Controller extends CController {
                 }
                 $data_select[1] = $data;
                 break;
-             
+
 
             default:
                 break;
         }
         return $data_select;
+    }
+
+    public function getRandomKey($cargo_id) {
+        // GENERACION Y ASIGNACION DE USUARIOS EXONERADOS DE LOS CLIENTES GENERADOS
+        $array_ids = array();
+        $id_responsable = Yii::app()->user->getId();
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        $con = Yii::app()->db;
+        $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
+                    INNER JOIN usuarios u ON u.id = gr.usuario_id 
+                    WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
+        $request = $con->createCommand($sql);
+        $posts = $request->queryAll();
+        //die('count: ' . count($posts));
+        if (count($posts) > 0) {
+            foreach ($posts as $value) {
+                $array_ids[] = $value['usuario_id'];
+            }
+            // ID DEL ASESOR A SER ASIGNADO CLIENTE
+            $random_key = $array_ids[array_rand($array_ids)];
+            // ID DEL ASESOR EN TABLA usuarios PONEMOS ESTADO INACTIVO
+            Yii::app()->db
+                    ->createCommand("UPDATE usuarios SET status_asesor='INACTIVO' WHERE id=:ID")
+                    ->bindValues(array(':ID' => $random_key))
+                    ->execute();
+            //die('after update asesor');
+        } else {
+            $sql2 = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
+                    INNER JOIN usuarios u ON u.id = gr.usuario_id 
+                    WHERE u.cargo_id = 75  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
+            $request = $con->createCommand($sql2);
+            $post = $request->queryAll();
+            foreach ($post as $value) {
+                Yii::app()->db
+                        ->createCommand("UPDATE usuarios SET status_asesor='ACTIVO' WHERE id=:ID")
+                        ->bindValues(array(':ID' => $value['usuario_id']))
+                        ->execute();
+            }
+            $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
+                    INNER JOIN usuarios u ON u.id = gr.usuario_id 
+                    WHERE u.cargo_id = 75  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
+            $request = $con->createCommand($sql);
+            $posts = $request->queryAll();
+            foreach ($posts as $value) {
+                $array_ids[] = $value['usuario_id'];
+            }
+            // ID DEL ASESOR A SER ASIGNADO CLIENTE
+            $random_key = $array_ids[array_rand($array_ids)];
+            // ID DEL ASESOR EN TABLA usuarios PONEMOS ESTADO INACTIVO
+            Yii::app()->db
+                    ->createCommand("UPDATE usuarios SET status_asesor='INACTIVO' WHERE id=:ID")
+                    ->bindValues(array(':ID' => $random_key))
+                    ->execute();
+        }
+        return $random_key;
     }
 
 }

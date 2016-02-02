@@ -100,8 +100,8 @@ foreach ($cr as $c) {
         <style>
             .cometchat_trayiconimage {display: none !important;}
         </style>
-        <link type="text/css" href="/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
-        <script type="text/javascript" src="/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php" charset="utf-8"></script>
+<!--        <link type="text/css" href="/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
+        <script type="text/javascript" src="/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php" charset="utf-8"></script>-->
     </head>
     <body>
         <div id="bg_negro" style="display:none">

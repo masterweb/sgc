@@ -20,18 +20,32 @@
         });
         $('#usuarios-form').validate({
             rules:{
-                'area':{required:true},'Usuarios[cedula]':{required:true},'Usuarios[apellido]':{required:true},'Usuarios[nombres]':{required:true},
-                'Usuarios[usuario]':{required:true},'Usuarios[fechaingreso]':{required:true},'Usuarios[correo]':{required:true, email:true},
-                'Usuarios[fechanacimiento]':{required:true},'Usuarios[celular]':{required:true},'Usuarios[telefono]':{required:true},
-                'Usuarios[extension]':{required:true},'Usuarios[codigo_asesor]':{required:true}
+//                'area':{required:true},'Usuarios[cedula]':{required:true},'Usuarios[apellido]':{required:true},'Usuarios[nombres]':{required:true},
+//                'Usuarios[usuario]':{required:true},'Usuarios[fechaingreso]':{required:true},'Usuarios[correo]':{required:true, email:true},
+//                'Usuarios[fechanacimiento]':{required:true},'Usuarios[celular]':{required:true},'Usuarios[telefono]':{required:true},
+//                'Usuarios[extension]':{required:true},'Usuarios[codigo_asesor]':{required:true}
             },
             messages: {
-                'area':{required:'Seleccione una ubicación'},'Usuarios[cedula]':{required:'Ingrese su cédula'},'Usuarios[apellido]':{required:'Ingrese su apellido'},'Usuarios[nombres]':{required:'Ingrese su nombre'},
-                'Usuarios[usuario]':{required:'Ingrese su nickname'},'Usuarios[fechaingreso]':{required:'Ingrese su fecha de ingreso'},'Usuarios[correo]':{required:'Ingrese su email', email:'Ingrese un email válido'},
-                'Usuarios[fechanacimiento]':{required:'Ingrese su fecha de nacimiento'},'Usuarios[celular]':{required:'Ingrese su celular'},'Usuarios[telefono]':{required:'Ingrese su teléfono'},
-                'Usuarios[extension]':{required:'Ingrese su extensión'},'Usuarios[codigo_asesor]':{required:'Ingrese su código'}
+//                'area':{required:'Seleccione una ubicación'},'Usuarios[cedula]':{required:'Ingrese su cédula'},'Usuarios[apellido]':{required:'Ingrese su apellido'},'Usuarios[nombres]':{required:'Ingrese su nombre'},
+//                'Usuarios[usuario]':{required:'Ingrese su nickname'},'Usuarios[fechaingreso]':{required:'Ingrese su fecha de ingreso'},'Usuarios[correo]':{required:'Ingrese su email', email:'Ingrese un email válido'},
+//                'Usuarios[fechanacimiento]':{required:'Ingrese su fecha de nacimiento'},'Usuarios[celular]':{required:'Ingrese su celular'},'Usuarios[telefono]':{required:'Ingrese su teléfono'},
+//                'Usuarios[extension]':{required:'Ingrese su extensión'},'Usuarios[codigo_asesor]':{required:'Ingrese su código'}
             },
             submitHandler: function (form) {
+                var celular = $('#Usuarios_celular').val();
+                var telefono = $('#Usuarios_telefono').val();
+                var celular_t = celular.substring(0,4);
+                var telefono_t = telefono.substring(0,4);
+                if(celular_t != '(09)'){
+                    alert('Ingrese correctamente su celular');
+                    $('#Usuarios_celular').focus();
+                    return false;
+                }
+                if(telefono_t != '(01)' || telefono_t != '(00)'){
+                    alert('Ingrese correctamente su teléfono');
+                    $('#Usuarios_telefono').focus();
+                    return false;
+                }
                 //console.log('enter submit');
                 if ($("#Usuarios_cargo_id").val() > 0) {
                     //return true;

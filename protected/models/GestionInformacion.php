@@ -27,6 +27,7 @@
  * @property integer $ciudad_conc
  * @property integer $concesionario
  * @property integer $responsable
+ * @property integer $responsable_origen
  * @property integer $dealer_id
  * @property string $fecha
  * @property string $tipo_form_web
@@ -137,6 +138,7 @@ class GestionInformacion extends CActiveRecord {
             'ciudad_conc' => 'Ciudad Concesionario',
             'concesionario' => 'Concesionario',
             'responsable' => 'Responsable',
+            'responsable_origen' => 'Responsable Origen',
             'dealer_id' => 'Dealer ID',
             'fecha' => 'Fecha',
             'tipo_form_web' => 'Tipo Web',
