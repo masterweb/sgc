@@ -7,7 +7,7 @@ $(function () {
         if(e.attr('value') != ''){
             var value = e.attr('value');
             $.ajax({
-                url: url_1,
+                url: url_footer_var_asesores,
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
@@ -20,6 +20,27 @@ $(function () {
         }        
     }
     loadresponsables($('#GestionInformacionConcesionario'));
+
+    $('#GestionInformacionGrupo').change(function () {loaddealers($(this));});
+    function loaddealers(e){
+        if(e.attr('value') != ''){
+            var value = e.attr('value');
+            $.ajax({
+                url: url_footer_var_dealers,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {grupo_id: value, dealer: dealer},
+                success: function (data) {
+                    $('#GestionInformacionConcesionario').html(data);
+                    filtros_notification(); 
+                    loadresponsables($('#GestionInformacionConcesionario'));                   
+                }
+            });
+        }        
+    }
+    loaddealers($('#GestionInformacionGrupo'));
+
     filtros_notification();
 
     //NOTIFICACION DE FILTROS Y VARIABLES ACTIVAS

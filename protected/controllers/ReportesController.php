@@ -52,27 +52,32 @@ class ReportesController extends Controller {
                 $varView['triger'] = 1;
             }
         }
-
-        //GET Asesores
-        $mod = new GestionDiaria;
-        $cre = new CDbCriteria();
-        $varView['dealer_resp']= $this->getConcesionarioDealerId($varView['id_responsable']);
-        if(!empty($dealer_resp)){
-            $varView['dealer_id'] = $varView['dealer_resp'];
-        }
-        $cre->condition = " cargo_id = 71 AND dealers_id = ".$varView['dealer_id'];
-        $cre->order = " nombres ASC";
-        $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
-
+        
         //variables busqueda por defecto
         $tit_ext = '';
         $join_ext = null;
         $group_ext = null;
         $select_ext = null;
         $tit_init = 'Búsqueda entre ';
-
-        
+        $varView['AEKIA'] = false;
+       
+        //TIPOS DE USUARIO QUE VEN REPORTES
+        //MODIFICAR LA SELECCION DE RESPONSABLES
         switch ($varView['cargo_id']) {
+            case 4: // GERENTE GENERAL
+            case 45: // SUBGERENCIA GENERAL
+            case 46: // SUPER ADMINISTRADOR
+            case 48: // GERENTE MARKETING
+            case 57: // INTELIGENCIA DE MERCADO MARKETING
+            case 58: // JEFE DE PRODUCTO MARKETING
+            case 60: // GERENTE VENTAS
+            case 61: // JEFE DE RED VENTAS
+            case 62: // SUBGERENTE DE FLOTAS VENTAS
+                $id_persona = 'gi.responsable '; 
+                $varView['lista_grupo'] = Grupo::model()->findAll();
+                $varView['lista_conce'] = 'null';
+                $varView['AEKIA'] = true;
+                break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
                 $tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
@@ -129,9 +134,12 @@ class ReportesController extends Controller {
             }
             if($_GET['GI']['concesionario'] != ''){
                 $varView['$concesionario'] = $_GET['GI']['concesionario'];
+                $varView["js_dealer"] = $_GET['GI']['concesionario'];
                 if($_GET['GI']['responsable'] == ''){
                     $id_persona = "gi.dealer_id = ".$varView['$concesionario'];
                 }                
+            }if($_GET['GI']['grupo'] != ''){
+                $varView['$grupo'] = $_GET['GI']['grupo'];                             
             }
         }    
 
@@ -182,8 +190,8 @@ class ReportesController extends Controller {
         $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
         $varView['dif_cbu_trafico'] =  $varView['traficocbu2'] - $varView['traficocbu1'];
         $varView['lista_datos'] = $lista_datos;
-        $varView['usu'] = $usu;
-        $varView['mod'] = $mod;        
+        //$varView['usu'] = $usu;
+        //$varView['mod'] = $mod;      
 
         //set diferencias
         $varView['var_tr'] = $this->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'var');
@@ -243,7 +251,17 @@ class ReportesController extends Controller {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $con = Yii::app()->db;
 
-        if($cargo_id == 69 || $cargo_id == 70){
+        if( $cargo_id == 69 || 
+            $cargo_id == 70 || 
+            $cargo_id == 4 || 
+            $cargo_id == 45 ||
+            $cargo_id == 46 ||
+            $cargo_id == 48 ||
+            $cargo_id == 57 ||
+            $cargo_id == 58 ||
+            $cargo_id == 60 ||
+            $cargo_id == 61 ||
+            $cargo_id == 62){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         
             $request = $con->createCommand($sql);
@@ -261,6 +279,29 @@ class ReportesController extends Controller {
 
             echo $data;
         }
+    }
+
+     public function actionAjaxGetDealers() {
+        $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
+        $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
+        $con = Yii::app()->db;
+
+        $sql = "SELECT * FROM gr_concesionarios WHERE id_grupo = {$grupo_id} ORDER BY nombre ASC";
+
+        $request = $con->createCommand($sql);
+        $request = $request->queryAll();
+
+        $data = '<option value="">--Seleccione Concesionario--</option>';
+        foreach ($request as $value) {
+            $data .= '<option value="' . $value['dealer_id'].'" ';
+                if($active == $value['dealer_id']){
+                    $data .= 'selected';
+                }
+            $data .= '>'.$value['nombre'];
+            $data .= '</option>';
+        }
+
+        echo $data;
     }
 
     function getConcecionario($grupo_id){
