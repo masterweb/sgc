@@ -1,9 +1,11 @@
 </div>
 <script type="text/javascript">
 //Iniciamos variables reportes
-	url_1 = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetAsesores"); ?>';
+	url_footer_var_asesores = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetAsesores"); ?>';
+	url_footer_var_dealers = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetDealers"); ?>';
 	site_route = '<?php echo Yii::app()->request->baseUrl; ?>';
 	resposable = '<?php echo $varView["js_responsable"] ;?>';
+	dealer = '<?php echo $varView["js_dealer"] ;?>';
 </script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>

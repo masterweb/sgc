@@ -25,19 +25,42 @@
     </div>
 
     <div class="row">
+    <!-- FILTRO GRUPOS -->
+    <?php if ($varView['AEKIA'] == true): ?>
+        <div class="col-md-6">
+            <label for="">Grupos</label>
+            <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
+                <option value="">--Seleccione Grupo--</option>
+                <?php
+                if($varView['lista_grupo']){
+                    foreach ($varView['lista_grupo'] as $value) {
+                        echo '<option value="' . $value['id'] . '"';
+                        if($value['id'] == $varView['$grupo']){
+                            echo 'selected';
+                        }                       
+                        echo'>' . $value['nombre_grupo'] . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    <?php endif; ?>
+
     <!-- FILTRO CONCESIONARIOS -->
-    <?php if ($varView['cargo_id'] == 69): ?>
+    <?php if ($varView['cargo_id'] == 69 || $varView['AEKIA'] == true): ?>
         <div class="col-md-6">
             <label for="">Concesionarios</label>
             <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control">
                 <option value="">--Seleccione Concesionario--</option>
                 <?php
-                foreach ($varView['lista_conce'] as $value) {
-                    echo '<option value="' . $value['dealer_id'] . '"';
-                    if($value['dealer_id'] == $varView['$concesionario']){
-                        echo 'selected';
-                    }                        
-                    echo'>' . $value['nombre'] . '</option>';
+                if($varView['lista_conce'] != 'null'){
+                    foreach ($varView['lista_conce'] as $value) {
+                        echo '<option value="' . $value['dealer_id'] . '"';
+                        if($value['dealer_id'] == $varView['$concesionario']){
+                            echo 'selected';
+                        }                        
+                        echo'>' . $value['nombre'] . '</option>';
+                    }
                 }
                 ?>
             </select>
@@ -45,7 +68,7 @@
     <?php endif; ?>
 
     <!-- FILTRO ASESORES -->
-    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70): ?>
+    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
         <?php if ($varView['cargo_id'] == 70):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
         <?php endif; ?>
