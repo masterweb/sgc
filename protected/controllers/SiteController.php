@@ -3207,6 +3207,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }
         if($cargo_id == 70){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }
+        if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14){
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }else{
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
         }

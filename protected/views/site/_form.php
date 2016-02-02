@@ -32,6 +32,20 @@
                 'Usuarios[extension]':{required:'Ingrese su extensión'},'Usuarios[codigo_asesor]':{required:'Ingrese su código'}
             },
             submitHandler: function (form) {
+                var celular = $('#Usuarios_celular').val();
+                var telefono = $('#Usuarios_telefono').val();
+                var celular_t = celular.substring(0,4);
+                var telefono_t = telefono.substring(0,4);
+                if(celular_t != '(09)'){
+                    alert('Ingrese correctamente su celular');
+                    $('#Usuarios_celular').focus();
+                    return false;
+                }
+                if(telefono_t == '(01)' || telefono_t == '(00)'){
+                    alert('Ingrese correctamente su teléfono');
+                    $('#Usuarios_telefono').focus();
+                    return false;
+                }
                 //console.log('enter submit');
                 if ($("#Usuarios_cargo_id").val() > 0) {
                     //return true;

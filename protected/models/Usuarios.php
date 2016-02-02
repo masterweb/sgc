@@ -22,6 +22,7 @@
  * @property string $ultimaedicion
  * @property string $fechanacimiento
  * @property string $codigo_asesor
+ * @property string $status_asesor
  * @property string $firma
  *
  * The followings are the available model relations:
@@ -112,6 +113,7 @@ class Usuarios extends CActiveRecord {
             'provincia_id' => 'Provincia',
             'area_id' => 'Area',
             'codigo_asesor' => 'Codigo Asesor',
+            'status_asesor' => 'Status Asesor',
             'firma' => 'Firma',
         );
     }
