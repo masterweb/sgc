@@ -1,7 +1,7 @@
 <?= $this->renderPartial('//reportes/modulos/header', array('title' => 'Reportes'));?>
 <div class="row">
     <div class="col-md-12">
-        <button class="trigerFiltros btn btn-warning abrirFiltros">Abrir Filtros</button>
+        <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
         <div class="resultados_embudo bg-danger"></div>
         <div class="highlight filtrosReportes">
             <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>

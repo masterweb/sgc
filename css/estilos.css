@@ -562,34 +562,182 @@ img.cometchat_userscontentavatarimage {
 .dif{color: red;}
 .calendar-table th{color: black;}
 
+
 .barra{
     /*height: 20px;*/
-    margin-bottom: 5px;
     color: #fff;
     padding: 5px;
     font-size: 9px;
     margin: auto;
+    margin-bottom: 5px;
 }
 .barratit{
     font-size: 12px;
     font-style: italic;
+    position: absolute;
+    margin-top: 3px;
 }
-.trojo{color: red;}
-.tazul{color: blue;}
+.trojo{color: #5cb85c;}
+.tazul{color: #f0ad4e;}
 .roja{
-    background: red;
+    background: #5cb85c;
 }
 .azul{
-    background: blue;
+    background: #f0ad4e;
 }
 .graficas{
     text-align: center;
+    max-width: 90%;
+    margin-left: 10%;
 }
 hr{
     border-color: #dedede;
 }
-.errorMessage{position: relative;
+.errorMessage{
+    position: relative;
     top: -22px;
     color: #AB1F2C;
     font-size: 13px;
-    font-style: italic;}
+    font-style: italic;
+}
+
+/*FILTROS REPORTES*/
+.btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning{
+    background-image: url('../images/reportes/lupa.svg') !important;
+    background-position: 95% center;
+    background-repeat: no-repeat; 
+    background-size: 23px 23px;
+    background-color: #5cb85c !important;
+}
+.trigerFiltros {
+    padding: 6px 44px 6px 26px;
+    background-image: url('../images/reportes/lupa.svg') !important;
+    background-position: 95% center;
+    background-repeat: no-repeat; 
+    background-size: 23px 23px;
+}
+.trigerFiltros img{
+    max-width: 20px;
+}
+.ranges{
+    width: 100%;
+    float: left;
+}
+.range_inputs{
+    text-align: right;
+    padding-right: 15px;
+}
+.daterangepicker .input-mini{
+    padding: 0 6px 0 45px !important;
+}
+.daterangepicker{
+    width: 510px;
+}
+.glyphicon-calendar:before{
+    font-size: 9px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.ini_ico:before{
+    content: 'Desde:';
+}
+.fin_ico:before{
+    content: 'Hasta:';
+}
+.daterangepicker .daterangepicker_input i{
+    top: 5px !important;
+}
+.daterangepicker td.in-range{
+        background: #97d5f7 !important;
+}
+.daterangepicker td.active, .daterangepicker td.active:hover{
+        background-color: #357ebd !important;
+}
+
+.filtrosReportes .form-control:focus {
+    background: #357ebd;
+    color: #fff;
+}
+.cal_out:before{
+    font-family: inherit;
+    font-size: inherit;
+}
+.cal_out{
+    top: -21px;
+    left: 10px;
+}
+#fecha-range1, #fecha-range2{
+    padding-left: 35px;
+}
+.tit_repo a{
+    font-size: 17px !important;
+    padding: 6px 15px !important;
+}
+.resultados_embudo{
+    background: #e2e2e2;
+    padding: 10px;
+    color: #828384;
+    margin-top:20px;
+}
+.resultados_embudo b{
+    color: #4071b2;
+}
+.resultados_embudo h4{
+    color: #4071b2;
+}
+.cargo_rep{
+    color: #a4a3a4;
+}
+.filt_act{
+    background: #d4d4d4;
+    padding: 5px;
+    margin-right: 5px;
+    color: #4071b2;
+    border-radius: 5px;
+    line-height: 29px;
+}
+.filtrosReportes{
+    -webkit-transition: height 2s; /* Safari */
+    transition: height 2s;
+}
+.close_animate{
+    height: 0px;
+}
+.animate{
+    height: auto;
+}
+
+/*FILTRO MODELOS REPORTES*/
+.modelo{
+    height: 67px;
+    margin-bottom: 10px;
+}
+.contcheck{
+    padding: 0px !important;
+}
+.checkmodelo{
+    height: 67px;
+    border-right: 1px solid #3271b3;
+    padding: 20px 0 0;
+    margin: 0px;
+    text-align: center;
+}
+.checkmodelo input{
+    margin-left: 0px !important;
+}
+.model_info label{
+    margin-bottom: 10px;
+    display: block;
+}
+.model_info .versiones li{
+    font-size: 9px;
+    margin: 0px;
+    padding: 2px 0px;
+    height: auto !important;
+}
+ul.versiones{
+    margin: 0px;
+    padding: 0px;
+}
+ul.versiones li input{
+    margin: 0 7px 0 0px !important;
+}
