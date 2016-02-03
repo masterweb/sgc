@@ -308,13 +308,12 @@ class Controller extends CController {
     }
 
     public function getResponsable($id) {
-        //echo 'id: '.$id;
         $responsableid = Usuarios::model()->findByPk($id);
         /* echo '<pre>';
           print_r($dealers);
           echo '</pre>'; */
         //echo $dealers->responsable;
-        //die();
+        //die('dddde');
         if (!is_null($responsableid) && !empty($responsableid)) {
             return $responsableid->nombres . ' ' . $responsableid->apellido;
         } else {
@@ -962,6 +961,7 @@ class Controller extends CController {
     }
 
     public function getResponsableNombres($id) {
+        //die($id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));

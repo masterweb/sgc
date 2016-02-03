@@ -178,7 +178,7 @@ if (isset($id)) {
                         }
                     }
                 } else {
-                    alert('Seleccione una fecha menor o igual a la fecha de Categorización.');
+                    alert('Su fecha de agendamiento debe ser máxima en un rango de 48 horas..');
                     return false;
                 }
 

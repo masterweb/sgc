@@ -225,8 +225,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                 </td>
                                                 <td>
                                                     <?php
-                                                    $status = $this->getStatusSolicitud($c['id_informacion'], $c['id']);
-
+                                                    $status_credito = $this->getStatusSolicitud($c['id_informacion'], $c['id']);
                                                     $criteria2 = new CDbCriteria(array(
                                                         "condition" => "id_informacion = ".$c['id_informacion'].' AND id_vehiculo = '.$c['id']
                                                     ));
@@ -237,9 +236,9 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     }else if($status->forma_pago == null){
                                                         //echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
                                                     }else{                                                    
-                                                        switch ($status) {
+                                                        switch ($status_credito) {
                                                             case 'na':
-                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">Sin Satus</a>';
+                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">Sin Status</a>';
                                                                 break;                                                             
                                                             case 1:
                                                                 echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">En Análisis</a>';

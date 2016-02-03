@@ -1045,7 +1045,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
-        $mPDF1->SetTitle('Formulario de Prueba de Manejo');
+        $mPDF1->SetTitle('Proforma de Cotización');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet

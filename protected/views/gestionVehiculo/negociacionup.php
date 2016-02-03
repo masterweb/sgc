@@ -2173,7 +2173,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Observaciones</label>
-                                                    <textarea name="GestionFinanciamiento1[observaciones]" id="GestionFinanciamiento_observaciones" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"></textarea>
+                                                    <textarea name="GestionFinanciamiento1[observaciones]" id="GestionFinanciamiento_observaciones" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $model->observaciones; ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="row" id="cont-edit1">
@@ -2292,7 +2292,7 @@ if ($fi == 2) {
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="">Observaciones</label>
-                                                        <textarea name="GestionFinanciamiento2[observaciones]" id="GestionFinanciamiento_observaciones2" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"></textarea>
+                                                        <textarea name="GestionFinanciamiento2[observaciones]" id="GestionFinanciamiento_observaciones2" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $fin1->observaciones; ?></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row" id="cont-edit2">
@@ -2412,7 +2412,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Observaciones</label>
-                                                    <textarea name="GestionFinanciamiento3[observaciones]" id="GestionFinanciamiento_observaciones3" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"></textarea>
+                                                    <textarea name="GestionFinanciamiento3[observaciones]" id="GestionFinanciamiento_observaciones3" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $fin2->observaciones; ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="row" id="cont-edit3">
@@ -2463,7 +2463,7 @@ if ($fi == 2) {
                                                     <label for="">Tiempo de seguro</label>
                                                     <select name="GestionFinanciamiento1[tiempo_seguro_contado]" id="GestionFinanciamiento_tiempo_seguro_contado" class="form-control">
                                                         <option value="">----Seleccione tiempo----</option>
-                                                        <option value="0">Ninguno</option>
+                                                        <option value="0" <?php if($model->ts == 0){echo "selected";} ?>>Ninguno</option>
                                                         <option value="1" <?php if($model->ts == 1){echo "selected";} ?>>1 año</option>
                                                         <option value="2" <?php if($model->ts == 2){echo "selected";} ?>>2 años</option>
                                                         <option value="3" <?php if($model->ts == 3){echo "selected";} ?>>3 años</option>
@@ -2487,7 +2487,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Observaciones</label>
-                                                    <textarea name="GestionFinanciamiento1[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado" cols="30" rows="7"></textarea>
+                                                    <textarea name="GestionFinanciamiento1[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado" cols="30" rows="7"><?php echo $model->observaciones; ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="row" id="cont-edit1">
@@ -2517,7 +2517,7 @@ if ($fi == 2) {
                                                     <label for="">Tiempo de seguro</label>
                                                     <select name="GestionFinanciamiento2[tiempo_seguro_contado]" id="GestionFinanciamiento_tiempo_seguro_contado2" class="form-control">
                                                         <option value="">----Seleccione tiempo----</option>
-                                                        <option value="0">Ninguno</option>
+                                                        <option value="0" <?php if($fin1->ts == 0){echo "selected";} ?>>Ninguno</option>
                                                         <option value="1" <?php if($fin1->ts == 1){echo "selected";} ?>>1 año</option>
                                                         <option value="2" <?php if($fin1->ts == 2){echo "selected";} ?>>2 años</option>
                                                         <option value="3" <?php if($fin1->ts == 3){echo "selected";} ?>>3 años</option>
@@ -2542,7 +2542,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Observaciones</label>
-                                                    <textarea name="GestionFinanciamiento2[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado2" cols="30" rows="7"></textarea>
+                                                    <textarea name="GestionFinanciamiento2[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado2" cols="30" rows="7"><?php echo $fin1->observaciones; ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="row" id="cont-edit2">

@@ -405,7 +405,11 @@ $count = count($users);
     </div>
     <div class="cont-createc-vh01"></div>
     <div class="cont-createc-but"></div>
-    
+    <?php if(isset($title)): ?>
+    <div class="row">
+        <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     
+    </div>
+    <?php endif; ?>
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>
     </div>
@@ -428,7 +432,7 @@ $count = count($users);
                             <th><span>Categorización</span></th>
                             <th><span>Expiración de Categorización</span></th>
                             <th><span>Fuente</span></th>
-                            <th><span>Resúmen</span></th>
+                            <th><span>Resumen</span></th>
                         </tr>
                     </thead>
                     <tbody>
