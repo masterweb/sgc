@@ -522,16 +522,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $usuario_id = $p->purify($pz);
+		
         $recuperar = Recuperar::model()->find(array('condition' => "token=:match AND md5(usuarios_id)=:uid AND estado='SOLICITADO'", 'params' => array(':match' => $token, 'uid' => $usuario_id)));
         if (!empty($recuperar)) {
-
+		
             $datetime1 = date_create($recuperar->fecha);
             $datetime2 = date_create("now");
             $interval = date_diff($datetime1, $datetime2);
-
-            if ($interval->format('%a') <= 100) {
+		/*print_r($interval->i);
+		die();*/
+            if ($interval->i <= 30) {
                 $user = Usuarios::model()->find(array('condition' => "id=:match  AND estado='ACTIVO'", 'params' => array(':match' => $recuperar->usuarios_id)));
-
+	
                 if (!empty($_POST["password"])) {
                     if ($_POST["password"] == $_POST["repetir_password"]) {
                         $recuperar->estado = "EJECUTADO";
@@ -3218,11 +3220,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
         $data = '<option value="">--Seleccione Asesor--</option>';
+        $data .= '<option value="all">Todos</option>';
         foreach ($requestr1 as $value) {
             $data .= '<option value="' . $value['id'] . '">';
             $data .= $this->getResponsableNombres($value['id']);
             $data .= '</option>';
         }
+        
         echo $data;
     }
 

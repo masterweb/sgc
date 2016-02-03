@@ -226,7 +226,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <h1 class="tl_seccion_rf">Status</h1>
                     </div>  
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-<!--                      <div class="panel panel-default">
+                      <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
                             <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -236,10 +236,36 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                           <div class="panel-body">
-                            
+                            <?php $cpr = GestionAgendamiento::model()->count(array('condition' => "id_informacion=:match AND paso = '1-2'",'params' => array(':match' => $_GET['id'])));?>
+                            <?php if($cpr > 0){ 
+                            $pros = GestionAgendamiento::model()->findAll(array(
+                                'condition' => "id_informacion=:match AND paso = '1-2'",
+                                'params' => array(':match' => $_GET['id']))
+                            ); 
+                            ?>
+                          <table class="table table-striped">
+                                  <thead>
+                                      <tr>
+                                          <th>Paso</th>
+                                          <th>Observaciones</th>
+                                          <th>Fecha seguimiento</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                          <?php
+                            foreach ($pros as $vseg) {
+                                echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
+                                        . '<td>'.$vseg['observaciones'].'</td>'
+                                . '<td>'.$vseg['agendamiento'].'</td></tr>';
+                            }
+                            ?>
+                            </tbody>
+                            </table>
+                            <?php } ?>
                           </div>
                         </div>
-                      </div>-->
+                      </div>
+                      <?php if($_GET['fuente'] == 'showroom'){ ?>  
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
                           <h4 class="panel-title">
@@ -266,6 +292,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                           </div>
                         </div>
                       </div>
+                      <?php } ?>  
                       <?php $cseg = GestionAgendamiento::model()->count(array('condition' => "id_informacion=:match AND paso IN (4,5,6,7)",'params' => array(':match' => $_GET['id'])));?>
                       <?php if($cseg > 0){ ?>
                       <div class="panel panel-default">
@@ -896,7 +923,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         case '1-2':
                             $status = $this->getStatusGD($_GET['id_gt']);
                             if ($status == 1) {
-                                $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'gestion'));
+                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
+                                //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'gestion'));
                                 echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
                             } else if ($status == 3 || $status == 4) {
                                 $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'prospeccion'));

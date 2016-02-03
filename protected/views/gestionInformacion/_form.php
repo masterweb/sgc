@@ -530,10 +530,10 @@ if ($ced != '') {
                                     //console.log('fecha end:'+fechaStart+endTime);
                                     var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente '+cliente+' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
                                     $('#event-download').attr('href', href);
-                                    $('#calendar-content').show();
+                                    $('.calendar-content').show();
                                     $("#event-download").click(function () {
                                         $('#GestionInformacion_calendar').val(1);
-                                        $('#calendar-content').hide();
+                                        $('.calendar-content').hide();
                                         $('#GestionInformacion_check').val(2)
                                     });
                                     if ($('#GestionInformacion_calendar').val() == 1) {
@@ -624,10 +624,7 @@ if ($ced != '') {
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="home">
-            
-
             <div class="form">
-
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'gestion-informacion-form',
@@ -640,7 +637,6 @@ if ($ced != '') {
                 ));
                 ?>
                 <div class="highlight"><!--=========DATOS DEL CLIENTE Y CONCESIONARIO===============-->
-                    <button type="button" class="btn btn-success btn-xs" onclick="history.go(-1);">&lt;&lt; Regresar</button>
                     <div class="row">
                         <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                     </div>  
@@ -1194,7 +1190,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
 
                     </div><!-- End Seguimiento -->
                     <div class="row buttons">
-                        <div class="col-md-4">
+                        <div class="col-md-7">
                             <input type="hidden" name="GestionInformacion2[calendar]" id="GestionInformacion_calendar2" value="0">
                             <input type="hidden" name="GestionInformacion2[check]" id="GestionInformacion_check2" value="1">
                             <input type="hidden" name="GestionInformacion[fuente]" id="GestionInformacion_fuente" value="<?php echo $fuente; ?>">
@@ -1208,6 +1204,9 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <?php if ($_GET['tipo'] == 'prospeccion'){echo '<a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';} ?>
+                            
+                            <a href="" class="btn btn-primary calendar-content" id="event-download" style="display: none;">Descargar Evento</a>
+                            
                             <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                         </div>
                         <div class="col-md-2">
@@ -1216,9 +1215,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div id="calendar-content" style="display: none;">
-                                <a href="" class="btn btn-primary" id="event-download">Descargar Evento</a>
-                            </div>
+                            
                         </div>
                     </div>
                 <?php }elseif (isset($_GET['tipo']) && ($_GET['tipo'] == 'gestion') && (isset($_GET['fuente']) != 'web')) { ?>

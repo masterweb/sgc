@@ -21,7 +21,7 @@ class UserIdentity extends CUserIdentity {
 
         $users = CHtml::listData(Usuarios::model()->findAll(array("condition" => "estado = :estado", 'params' => array(':estado' => "ACTIVO"))), "usuario", "password");
         //$this->password = sha1($this->password);
-
+        
         if (!isset($users[$this->username]))
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         elseif ($users[$this->username] !== $this->password)

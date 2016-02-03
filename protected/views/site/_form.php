@@ -15,6 +15,9 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sketch.js"></script>
 <script type="text/javascript">
     $(function () {
+        $('#Usuarios_celular').keyup(function(){
+           $('#celular2').hide(); 
+        });
         $('#Usuarios_usuario').keyup(function () {
             this.value = this.value.toLowerCase();
         });
@@ -37,7 +40,7 @@
                 var celular_t = celular.substring(0,4);
                 var telefono_t = telefono.substring(0,4);
                 if(celular_t != '(09)'){
-                    alert('Ingrese correctamente su celular');
+                    $('#celular2').show(); 
                     $('#Usuarios_celular').focus();
                     return false;
                 }
@@ -327,6 +330,7 @@
         <?php echo $form->labelEx($model, 'celular', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
             <?php echo $form->textField($model, 'celular', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
+            <label class="error" style="display: none;" id="celular2">Ingrese correctamente su celular</label>
             <?php echo $form->error($model, 'celular'); ?>
         </div>
     </div>

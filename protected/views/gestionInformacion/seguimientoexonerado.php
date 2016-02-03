@@ -374,7 +374,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <th><span>Email</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Tipo</span></th>
-                            <th><span>Edición</span></th>
+                            <th><span>Resumen</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -442,7 +442,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 
                                     switch ($c['paso']) {
                                         case '1-2':
-                                            $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'trafico')); 
+                                            //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
                                             break;
                                         case '3':
                                             $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -519,7 +520,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                     <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
                                     <?php if ($c['paso'] == '1-2') { ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'exonerados')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                        <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } else { ?>
                                         <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                     <?php } ?>
