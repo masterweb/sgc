@@ -430,11 +430,16 @@ class GestionSolicitudCreditoController extends Controller {
         $hoja_solicitud->id_vehiculo = $id_vehiculo;
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $hoja_solicitud->fecha = date("Y-m-d H:i:s");
-        $hoja_solicitud->save();        
+        $hoja_solicitud->save();
+
+
+        # mPDF
+        $mPDF1 = Yii::app()->ePdf->mpdf();
+        $mPDF1->setFooter('{PAGENO}');
+        $mPDF1->SetTitle('Solicitud de Crédito');
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
-        $mPDF1->SetTitle('Solicitud de Crédito');
 
         //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
         # Load a stylesheet

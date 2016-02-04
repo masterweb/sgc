@@ -225,8 +225,8 @@ class GestionConsultaController extends Controller {
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
                             <p style="margin: 2px 0;"><strong>Tlf. Concesionario: </strong>'.$this->getConcesionarioTlf($this->getDealerId(Yii::app()->user->getId())).'</p>
-                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong></p><p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> </p>
-                            <p style="margin: 2px 0;"><strong>Celular: </strong></p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>'.$this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']).' </p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>'.$this->getCelularCliente($_POST['GestionInformacion']['id_informacion']).'</p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
@@ -527,8 +527,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
-                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong> </p>
-                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong></p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>'.$this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']).' </p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>'.$this->getCelularCliente($_POST['GestionInformacion']['id_informacion']).'</p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>

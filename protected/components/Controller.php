@@ -68,6 +68,25 @@ class Controller extends CController {
         else
             return false;
     }
+    public function getTelefonoCliente($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $email = GestionInformacion::model()->find($criteria);
+        if ($email)
+            return $email->telefono_casa;
+        else
+            return false;
+    }
+    
+    public function getCelularCliente($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $email = GestionInformacion::model()->find($criteria);
+        if ($email)
+            return $email->celular;
+        else
+            return false;
+    }
 
     public function getTipoVenta($id_informacion) {
         $criteria = new CDbCriteria;

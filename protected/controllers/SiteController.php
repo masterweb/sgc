@@ -2922,7 +2922,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $emailCliente = $this->getEmailCliente($_POST['GestionEntrega']['id_informacion']);
 				$ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
-                $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']) . ' ' . $this->getVersionTestDrive($_POST['GestionEntrega']['id_vehiculo']);
+                $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']);
                 $general = '<body style="margin: 10px;">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
                                     <div align="">
@@ -2932,7 +2932,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p>
 
                                     <p style="margin: 2px 0;">La fecha de entrega de su vehículo está fijada para el ' . date("d") . "/" . date("m") . "/" . date("Y") . ' 
-                                        en el concesionario Asiauto Mariana de Jesus por:</p>
+                                        en el concesionario '.strtoupper($this->getNameConcesionario($id_asesor)).' por:</p>
                                         <br />
                                     <table width="600" cellpadding="">
                                     <tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
@@ -2940,16 +2940,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <tr><td><strong>Fecha:</strong></td><td>' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                     <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</p></td></tr>
                                     </table> 
-									<p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su Asesor Comercial antes de acercarse al Concesionario. </p>
+                                    <p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su Asesor Comercial antes de acercarse al Concesionario. </p>
 
                                     <p style="margin: 2px 0;">Saludos cordiales,<br>
-SGC<br>
-Kia Motors Ecuador
-</p>
-
+                                    SGC<br>
+                                    Kia Motors Ecuador
+                                    </p>
                                     <br /><br />
-
-                                        
                                     </div>
                                     <br />
                                     <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
@@ -2984,14 +2981,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
-				$ciudad = $this->getCiudad($id_asesor);
+		$ciudad = $this->getCiudad($id_asesor);
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $fecha_m = date("Y-m-d");
+                $fecha_m = date("d m Y");
 
                 $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $modelo = $this->getModeloInfo($_POST['GestionEntrega']['id_vehiculo']);
+                $ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
                 // ENVIAR EMAIL CON CARTA DE BIENVENIDA AL CLIENTE
                 $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia Motors Ecuador';
                 $general = '<body style="margin: 10px;">
@@ -2999,10 +2997,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <br>
-                                        <p>'.$ciudad.', '.$fecha_m.'</p><br /><br />
+                                        <p>'.$ciudadCliente.', '.$fecha_m.'</p><br /><br />
                                         <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
-                                        <p>'.$ciudad.'.-</p>
+                                        <p>'.$ciudadCliente.'.-</p>
                                         <br />
                                         <p>
                                         KIA MOTORS ECUADOR le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
