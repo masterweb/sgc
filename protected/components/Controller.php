@@ -841,6 +841,21 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
+    
+    public function getDealerGrupoConcUsuario($id_responsable) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "usuario_id={$id_responsable}"
+        ));
+        $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
 
     public function getNameConcesionario($id) {
         //die('id: '.$id);

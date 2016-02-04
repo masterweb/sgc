@@ -1574,7 +1574,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
-                
+
                 $data['title'] = $title;
                 $data['users'] = $users;
                 return $data;
@@ -1681,11 +1681,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 WHERE gi.responsable = {$id_responsable} 
                 ORDER BY gd.id DESC";
             //die('sql: '. $sql);
-        } if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14) {
+        } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 ORDER BY gd.id DESC";
         }
-        
+
         //die($sql);
 
         $request = $con->createCommand($sql);
@@ -1725,11 +1725,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
-        $array_dealers = $this->getDealerGrupo($id_responsable);
+        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
         $dealerList = implode(', ', $array_dealers);
         $dealer_id = $this->getDealerId($id_responsable);
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
+        //die('cargo: '.$cargo_id);
 
         if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
@@ -1756,6 +1757,20 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
                 ORDER BY gd.id DESC";
             //die($sql);
+        }
+        if ($cargo_id == 72) { // JEFE DE  BDC
+            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $sql = "SELECT u.id as id_resp, gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
+                ORDER BY gd.id DESC";
+            //die($sql);
         } else {
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
@@ -1768,7 +1783,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
             //die($sql);
         }
-
+        //die($sql);
         // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
         //$sql = "SELECT gi.*, gv.modelo, gv.version FROM gestion_informacion gi 
         //        INNER JOIN gestion_vehiculo gv ON gi.id = gv.id_informacion 
@@ -2150,15 +2165,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $id_responsable = Yii::app()->user->getId();
+        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+        $dealerList = implode(', ', $array_dealers);
+
         $area_id = (int) Yii::app()->user->getState('area_id');
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
-        
+
         $array_dealers = $this->getDealerGrupo($id_responsable);
         $dealerList = implode(', ', $array_dealers);
-        
+
         if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS            
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $dealer_id = $this->getDealerId($id_responsable);
@@ -2183,6 +2201,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id = {$dealer_id}
                 ORDER BY gd.id DESC";
         }
+        if ($cargo_id == 72) { // JEFE DE BDC
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
+            gd.*, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList})
+                ORDER BY gd.id DESC";
+        }
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
@@ -2205,7 +2233,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id}
                 ORDER BY gd.id DESC";
-        } if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14){
+        } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.tipo_ex,
             gd.*, gn.fuente 
@@ -2629,8 +2657,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            
-            $random_key = $this->getRandomKey(75);//exonerados
+
+            $random_key = $this->getRandomKey(75); //exonerados
             //die('random: '.$random_key);
             // SACAMOS EL ARRAY DE IDS DE EXONERADOS DESDE LA BASE
 
@@ -2777,7 +2805,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
                             break;
-                        case 15:// tipo usados
+                        case 15:// tipo usados o exonerados
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';
@@ -2789,6 +2817,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
+
+                            $consulta = new GestionConsulta;
+                            $consulta->id_informacion = $model->id;
+                            $consulta->fecha = date("Y-m-d H:i:s");
+                            $consulta->status = 'ACTIVO';
+                            $consulta->save();
                             break;
                         default:
                             break;
@@ -2857,8 +2891,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            
-            $random_key = $this->getRandomKey(77);//usados
+
+            $random_key = $this->getRandomKey(77); //usados
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
@@ -3084,8 +3118,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            
-            $random_key = $this->getRandomKey(75);//exonerados
+
+            $random_key = $this->getRandomKey(75); //exonerados
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
             $model->responsable = $random_key;
@@ -3259,6 +3293,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
+                            
+                            $consulta = new GestionConsulta;
+                            $consulta->id_informacion = $model->id;
+                            $consulta->fecha = date("Y-m-d H:i:s");
+                            $consulta->status = 'ACTIVO';
+                            $consulta->save();
                             break;
                         default:
                             break;
@@ -3328,7 +3368,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            $random_key = $this->getRandomKey(75);//exonerados
+            $random_key = $this->getRandomKey(75); //exonerados
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
             $model->responsable = $random_key;
@@ -3498,6 +3538,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
+                            
+                            $consulta = new GestionConsulta;
+                            $consulta->id_informacion = $model->id;
+                            $consulta->fecha = date("Y-m-d H:i:s");
+                            $consulta->status = 'ACTIVO';
+                            $consulta->save();
+                            
                             break;
                         default:
                             break;
@@ -3619,8 +3666,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             AND gi.dealer_id = {$dealer_id} AND gi.responsable = {$id_responsable}
             ORDER BY gi.id DESC";
             //die($sql);
-        }  
-        else {
+        } else {
             $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
             WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 

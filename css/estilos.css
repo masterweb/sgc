@@ -245,11 +245,11 @@ section{
     padding-top: 7px;
 }
 .back-btn{
-    background: url('../images/ico_home.png') no-repeat 0px 5px;
+    background: url('../images/ico_home.png') no-repeat 0px 4px;
     display: block;
     height: 33px;
     padding-left: 42px;
-    padding-top: 7px;
+    padding-top: 9px;
 }
 .back-btn-go{
     background: url('../images/btn_back.png') no-repeat 0px 5px;
@@ -263,7 +263,13 @@ section{
     display: block;
     height: 33px;
     padding-left: 42px;
-    padding-top: 1px;
+    padding-top: 9px;
+}
+.directorio-btn{
+    display: block;
+    height: 33px;
+    padding-left: 42px;
+    padding-top: 8px;
 }
 .links-tabs p{margin-top: 4px;}
 /*SECTION TABLAS*/
