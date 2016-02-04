@@ -51,7 +51,7 @@ class Modelos extends CActiveRecord {
             array('estado', 'length', 'max' => 1),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id_modelos, id_tipo, id_categoria, nombre_modelo, code, slogan, logo_home, fotocar_home, fotomain_modelo, logo_modelo_interior, pdf_ficha_tecnica, estado, orden', 'safe', 'on' => 'search'),
+            array('id_modelos, id_tipo, id_categoria, nombre_modelo, code, slogan, logo_home, fotocar_home, fotomain_modelo, logo_modelo_interior, pdf_ficha_tecnica, estado, orden, active, ensamblaje', 'safe', 'on' => 'search'),
         );
     }
 

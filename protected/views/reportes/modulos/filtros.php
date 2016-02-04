@@ -15,19 +15,53 @@
     <!-- FILTRO FECHAS -->
     <div class="row">
         <div class="col-md-6">
-            <label for="">Fecha 1</label>
+            <label for="">Fecha Inicial</label>
             <input type="text" name="GI[fecha1]" class="form-control" id="fecha-range1" value="<?= $varView['fecha_inicial_actual'].' - '.$varView['fecha_actual'] ?>"/>
+            <i class="fa fa-calendar glyphicon glyphicon-calendar cal_out"></i>
         </div>
         <div class="col-md-6">
-            <label for="">Fecha 2</label>
-            <input type="text" name="GI[fecha2]" class="form-control" id="fecha-range2" value="<?= $varView['fecha_inicial_anterior'].' - '.$varView['fecha_anterior'] ?>"/>
+            <label for="">Fecha Final</label>
+            <input type="text" name="GI[fecha2]" class="form-control fecha_rep" id="fecha-range2" value="<?= $varView['fecha_inicial_anterior'].' - '.$varView['fecha_anterior'] ?>"/>
+            <i class="fa fa-calendar glyphicon glyphicon-calendar cal_out"></i>
         </div>
     </div>
 
     <div class="row">
-    <!-- FILTRO GRUPOS -->
+
+    <!-- FILTRO GRUPOS O PROVINCIA-->
     <?php if ($varView['AEKIA'] == true): ?>
-        <div class="col-md-6">
+        <div class="row text-center">
+            <h4>Seleccione el tipo de busqueda</h4>
+            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="grupos" class="tipo_busqueda" 
+            <?php if($varView['checked_g'] == true){echo 'checked';} ?>
+            >Por Grupos</label>
+            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="provincias" class="tipo_busqueda"
+            <?php if($varView['checked_p'] == true){echo 'checked';} ?>
+            >Por Provincias</label>
+            <hr/>
+        </div>
+
+        <!-- PROVINCIAS -->
+        <div class="col-md-6 cont_prov">
+            <label for="">Provincias</label>
+            <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
+                <option value="">--Seleccione Provincias--</option>
+                <?php
+                if($varView['lista_provincias']){
+                    foreach ($varView['lista_provincias'] as $value) {
+                        echo '<option value="' . $value['id_provincia'] . '"';
+                        if($value['id_provincia'] == $varView['provincias']){
+                            echo 'selected';
+                        }                       
+                        echo'>' . $value['nombre'] . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div>
+        
+        <!-- GRUPOS -->
+        <div class="col-md-6 cont_grup">
             <label for="">Grupos</label>
             <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
                 <option value="">--Seleccione Grupo--</option>
@@ -35,7 +69,7 @@
                 if($varView['lista_grupo']){
                     foreach ($varView['lista_grupo'] as $value) {
                         echo '<option value="' . $value['id'] . '"';
-                        if($value['id'] == $varView['$grupo']){
+                        if($value['id'] == $varView['grupo']){
                             echo 'selected';
                         }                       
                         echo'>' . $value['nombre_grupo'] . '</option>';
@@ -87,27 +121,7 @@
             <label for="">Modelo</label>
             <div class="panel panel-default">
                 <div class="panel-body modelos_filtros">                    
-                    <?php
-                        $activos = array();                                
-                        foreach ($varView['modelos_car'] as $key => $value) {
-                            $checked = '';
-                            if ($varView['lista_datos']) {
-                                if (in_array($value['id_modelos'], $varView['lista_datos'][0]['modelos'])) {
-                                    $activos[] = $value['id_modelos'];
-                                    $checked = 'checked';
-                                } 
-                            }                                         
-                            echo '<div class="col-md-4">
-                                        <div class="checkbox contcheck">
-                                            <label>
-                                                <input class="checkboxmain" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="cc'.$value['id_modelos'].'" '.$checked.'>
-                                                '.$value['nombre_modelo'].'
-                                            </label>
-                                            <div id="result" class="result"></div>
-                                        </div>
-                                    </div>';                                             
-                         }                         
-                    ?> 
+                    <?= $varView['filtro_modelos'] ?> 
                 </div>
             </div>
         </div>

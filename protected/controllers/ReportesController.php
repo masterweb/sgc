@@ -12,6 +12,11 @@ class ReportesController extends Controller {
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
+        $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
+        $varView['cargo_usuario'] = Cargo::model()->findByPk($varView['nombre_usuario']->cargo_id);
+        if($varView['nombre_usuario']->dealers_id != ''){
+            $varView['consecionario_usuario'] = '<b>Concesionario:</b> '.GrConcesionarios::model()->find('dealer_id='.$varView['nombre_usuario']->dealers_id)['nombre'];
+        }
         $varView['titulo'] = '';
         $varView['concesionario'] = 2000;
         $varView['tipos'] = null;
@@ -26,11 +31,6 @@ class ReportesController extends Controller {
         $varView['nombre_mes_anterior'] = strftime( "%B - %Y", strtotime( '-1 month', $dt ) );
 
         $con = Yii::app()->db;
-
-        //GET MODELOS Y VERSIONES PARA BUSCADOR
-        $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos";
-        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
-        $varView['modelos_car'] = $requestModelos_nv->queryAll();
 
         //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
         $lista_datos = array();
@@ -51,6 +51,43 @@ class ReportesController extends Controller {
                 $INERmodelos_td =' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
                 $varView['triger'] = 1;
             }
+        }
+        $varView['lista_datos'] = $lista_datos;
+
+        //GET MODELOS Y VERSIONES PARA BUSCADOR
+        $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos WHERE active = 1";
+        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+        $varView['modelos_car'] = $requestModelos_nv->queryAll();
+
+        $activos = array();
+        $varView['filtro_modelos'] = '<div class="row"><input class="checkboxmain" type="checkbox" value="" name="todos" id="todos"> <label><b>TODOS</b></label></div>';
+        
+        foreach ($varView['modelos_car'] as $key => $value) {
+            $checked = '';
+            if ($varView['lista_datos']) {
+                if (in_array($value['id_modelos'], $varView['lista_datos'][0]['modelos'])) {
+                    $activos[] = $value['id_modelos'];
+                    $checked = 'checked';
+                }
+            }                                         
+            $filtro_modelos = '<div class="col-md-4 modelo">
+                        <div class="checkbox contcheck">
+                            <div class="checkmodelo col-md-1">
+                                <span style="display:none;">'.$value['nombre_modelo'].'</span>
+                                <input class="checkboxmain" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="cc'.$value['id_modelos'].'" '.$checked.'>
+                            </div>
+                            <div class="model_info col-md-10">
+                                <label>                                
+                                    '.$value['nombre_modelo'].'
+                                </label>
+                                <div id="result" class="result">'.
+                                    $this->getVersiones($value['id_modelos'], $varView['lista_datos'][1]['versiones'])
+                                .'</div>
+                            </div>
+                        </div>
+                    </div>';
+
+            $varView['filtro_modelos'] .= $filtro_modelos;
         }
         
         //variables busqueda por defecto
@@ -74,15 +111,17 @@ class ReportesController extends Controller {
             case 61: // JEFE DE RED VENTAS
             case 62: // SUBGERENTE DE FLOTAS VENTAS
                 $id_persona = 'gi.responsable '; 
-                $varView['lista_grupo'] = Grupo::model()->findAll();
+                $varView['lista_grupo'] = Grupo::model()->findAll();                
+                $varView['lista_provincias'] = Provincias::model()->findAll();
                 $varView['lista_conce'] = 'null';
                 $varView['AEKIA'] = true;
+                $varView['consecionario_usuario'] = '<b>Grupo:</b> TODOS';
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
-                $tit_ext = ', Grupo: ' . $this->getNombreGrupo($varView['grupo_id']);
                 $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);
+                $varView['consecionario_usuario'] = '<b>Grupo:</b> '.$this->getNombreGrupo($varView['grupo_id']);
                 break;
             case 70: // jefe de sucursal TERMINADO------>
                 $id_persona = "gi.dealer_id = ".$varView['dealer_id'];            
@@ -138,10 +177,29 @@ class ReportesController extends Controller {
                 if($_GET['GI']['responsable'] == ''){
                     $id_persona = "gi.dealer_id = ".$varView['$concesionario'];
                 }                
-            }if($_GET['GI']['grupo'] != ''){
-                $varView['$grupo'] = $_GET['GI']['grupo'];                             
             }
-        }    
+            if($_GET['GI']['tipo'] != ''){
+                if($_GET['GI']['tipo'] == 'grupos'){
+                    $varView['checked_g']  = true;
+                    $varView['checked_p'] = false;
+                }else{
+                    $varView['checked_p']  = true; 
+                    $varView['checked_g']  = false;
+                }                          
+            }
+            if($_GET['GI']['grupo'] != ''){
+                $varView['grupo'] = $_GET['GI']['grupo'];
+                $varView['checked_g']  = true;
+                $varView['checked_p'] = false;                        
+            }
+            if($_GET['GI']['provincias'] != ''){
+                $varView['provincias'] = $_GET['GI']['provincias'];
+                $varView['checked_p']  = true; 
+                $varView['checked_g']  = false;                            
+            }
+        }else{
+                $varView['checked_g'] = true;
+        }   
 
         $retorno = $this->buscar(
             $varView['cargo_id'], 
@@ -184,12 +242,10 @@ class ReportesController extends Controller {
         $varView['vhckd1'] = $retorno[20];
         $varView['vhcbu1'] = $retorno[21];
         $varView['vhckd2'] = $retorno[22];
-        $varView['vhcbu2'] = $retorno[23];
-        $varView['lista_datos'] = $lista_datos;             
+        $varView['vhcbu2'] = $retorno[23];            
         
-        $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
-        $varView['dif_cbu_trafico'] =  $varView['traficocbu2'] - $varView['traficocbu1'];
-        $varView['lista_datos'] = $lista_datos;
+        $varView['dif_ckd_trafico'] = $varView['traficockd1'] - $varView['traficockd2'];
+        $varView['dif_cbu_trafico'] = $varView['traficocbu1'] - $varView['traficocbu2'];
         //$varView['usu'] = $usu;
         //$varView['mod'] = $mod;      
 
@@ -240,7 +296,15 @@ class ReportesController extends Controller {
         $varView['tasa_cierre_ckd_m1'] = $this->tasa($varView['traficockd2'], $varView['vhckd2']);
         $varView['tasa_cierre_cbu_m1'] = $this->tasa($varView['traficocbu2'], $varView['vhcbu2']);
         $varView['tasa_cierre_ckd_m2'] = $this->tasa($varView['traficockd1'], $varView['vhckd1']);
-        $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']);  
+        $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']); 
+
+        //set diferencias ckd y cbu
+        $varView['tasa_td_dif_ckd'] = rtrim($varView['tasa_testdrive_ckd_m2'], "%") - rtrim($varView['tasa_testdrive_ckd_m1'], "%");
+        $varView['tasa_td_dif_cbu'] = rtrim($varView['tasa_testdrive_cbu_m2'], "%") - rtrim($varView['tasa_testdrive_cbu_m1'], "%");
+        $varView['tasa_pr_dif_ckd'] = rtrim($varView['tasa_proforma_ckd_m2'], "%") - rtrim($varView['tasa_proforma_ckd_m1'], "%");
+        $varView['tasa_pr_dif_cbu'] = rtrim($varView['tasa_proforma_cbu_m2'], "%") - rtrim($varView['tasa_proforma_cbu_m1'], "%");
+        $varView['tasa_cierre_dif_ckd'] = rtrim($varView['tasa_cierre_ckd_m2'], "%") - rtrim($varView['tasa_cierre_ckd_m1'], "%");
+        $varView['tasa_cierre_dif_cbu'] = rtrim($varView['tasa_cierre_cbu_m2'], "%") - rtrim($varView['tasa_cierre_cbu_m1'], "%");
 
         $this->render('inicio', array('varView' => $varView));
     }
@@ -284,9 +348,15 @@ class ReportesController extends Controller {
      public function actionAjaxGetDealers() {
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
+        $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
         $con = Yii::app()->db;
 
-        $sql = "SELECT * FROM gr_concesionarios WHERE id_grupo = {$grupo_id} ORDER BY nombre ASC";
+        if($tipo == 'p'){
+            $where = "provincia = {$grupo_id}";
+        }else{
+            $where = "id_grupo = {$grupo_id}";
+        }
+        $sql = "SELECT * FROM gr_concesionarios WHERE ".$where." ORDER BY nombre ASC";
 
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
@@ -302,6 +372,27 @@ class ReportesController extends Controller {
         }
 
         echo $data;
+    }
+
+    function getVersiones($id, $versiones) {
+        $con = Yii::app()->db;
+
+        $sqlModelos_nv = "SELECT id_versiones, id_modelos, nombre_version from versiones WHERE id_modelos = '{$id}'";
+        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+        $versiones_car = $requestModelos_nv->queryAll();
+
+        $resp = '<ul class="versiones">';
+        foreach ($versiones_car as $key => $value) {
+            if ($versiones) {
+                if (in_array($value['id_versiones'], $versiones)) {
+                    $checked = 'checked';
+                }
+            }    
+            $resp .= '<li><input class="subcheckbox" type="checkbox" name="version[]" value="' . $value['id_versiones'] . '" '.$checked.'>' . $value['nombre_version'] . '</li>';
+        }
+        $resp .= '</ul>';
+
+        return $resp;
     }
 
     function getConcecionario($grupo_id){
@@ -324,38 +415,46 @@ class ReportesController extends Controller {
     }
 
     function tasa_dif($var1, $var2){
-        $dfpr = $var1 - $var2;
-        if($df > 0){
+        $dfpr = $var2 - $var1;
+        if($dfpr >= 0){
             return $dfpr.' %';
         }else{
-            return '<span class="dif">('.abs($dfpr).' %)</span>';
+            return '<span class="dif">(-'.abs($dfpr).' %)</span>';
         }
     }
     
     function DIFconstructor($var1, $var2, $tipo){
-        $dif = $var1 - $var2;
+        $dif = $var2 - $var1;
+        if($dif < 0){
+            $divisor = $var1;
+        }else{
+            $divisor = $var2; 
+        }
         $unidad = '';        
         if($tipo == 'var'){
             $unidad = '%';
-            if($var2 == 0){
+            if($divisor == 0){
                 if($var1 != 0){
-                    $var2 = $var1;
+                    $divisor = $var1;
                 }else{
                     $dif = 100;
-                    $var2 = 100;
+                    $divisor = 100;
                 }                
-            }      
-            $dif = ($dif * 100) / $var2;            
+            }     
+            $dif = ($dif * 100) / $divisor;            
             $dif = round($dif, 2);
         }
+
+        if($var1 == 0 && $var2 == 0){$dif = 0;}
 
         $resp = '<span';
         if ($dif >= 0) {
             $resp .= '>' . $dif.$unidad;
         } else {
-            $resp .= ' class="dif">(' . abs($dif) . $unidad. ')';
+            $resp .= ' class="dif">(-' . abs($dif) . $unidad. ')';
         }
         $resp .= '</span>';
+
 
         return $resp;
     }
@@ -371,6 +470,13 @@ class ReportesController extends Controller {
     }
 
     function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td){
+        $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1")->queryAll();
+        $CKDsRender = '';
+        foreach ($CKDs as $key => $value) {
+            $CKDsRender .= $value['id_modelos'].', '; 
+        }
+        $CKDsRender = rtrim($CKDsRender, ", ");
+
         $modelos = null;
         $versiones = null;
         if(!empty($carros['modelos'])){ $modelos = $carros['modelos'];  }
@@ -408,7 +514,7 @@ class ReportesController extends Controller {
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $traficockd1 = $traficockd1[0]['COUNT(*)'];
@@ -420,7 +526,7 @@ class ReportesController extends Controller {
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $traficockd2 = $traficockd2[0]['COUNT(*)'];
@@ -454,7 +560,7 @@ class ReportesController extends Controller {
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $proformackd1 = $proformackd1[0]['COUNT(*)'];
@@ -475,7 +581,7 @@ class ReportesController extends Controller {
             'COUNT(*) '.$select_ext, 
             'gestion_financiamiento gf', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo '.$join_ext, 
-            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $proformackd2 = $proformackd2[0]['COUNT(*)'];
@@ -516,7 +622,7 @@ class ReportesController extends Controller {
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
             'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $tdckd1 = $tdckd1[0]['COUNT(*)'];
@@ -536,7 +642,7 @@ class ReportesController extends Controller {
             'COUNT(*) ', 
             'gestion_test_drive  gt', 
             'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo '.$join_ext, 
-            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "gt.test_drive = 1 AND DATE(gt.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."' AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $tdckd2 = $tdckd2[0]['COUNT(*)'];
@@ -578,7 +684,7 @@ class ReportesController extends Controller {
             'COUNT(*) ', 
             'gestion_diaria gd ', 
             'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
-            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $vhckd1 = $vhckd1[0]['COUNT(*)'];
@@ -598,7 +704,7 @@ class ReportesController extends Controller {
             'COUNT(*) ', 
             'gestion_diaria gd ', 
             'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
-            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (24,21)) OR gi.modelo IN (24,21))", 
+            "gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ".$id_persona.' '.$modelos.$versiones." AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
             $group_ext
         );
         $vhckd2 = $vhckd2[0]['COUNT(*)'];

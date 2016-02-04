@@ -1,7 +1,10 @@
 $(function () {
-    $(".checkboxmain").on("change", function(e) {checkboxes(e.target);});
+    
+    //$(".checkboxmain").on("change", function(e) {checkboxes(e.target);}); //AJAX LOAD VERSIONES EN FILTRO DE MODELOS
     $('#fecha-range1').daterangepicker({locale: {format: 'YYYY-MM-DD'}});
-    $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}});    
+    $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}}); 
+
+    //carga responsables   
     $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
     function loadresponsables(e){
         if(e.attr('value') != ''){
@@ -21,8 +24,37 @@ $(function () {
     }
     loadresponsables($('#GestionInformacionConcesionario'));
 
-    $('#GestionInformacionGrupo').change(function () {loaddealers($(this));});
-    function loaddealers(e){
+    //selectro tipo provincia o grupo
+    $(".tipo_busqueda").change(function () {vaciar();checkFiltro($(this));});
+
+    $(".tipo_busqueda").each(function() {
+        if ($(this).is(':checked')) {
+            checkFiltro($(this));
+        }
+    });
+    
+    function checkFiltro(e){
+        if(e.attr('value') == 'grupos'){
+            $('.cont_grup').show();
+            $('.cont_prov').hide();            
+        }else if(e.attr('value') == 'provincias'){
+            $('.cont_prov').show();
+            $('.cont_grup').hide();            
+        }
+    }
+
+    //vaciar selects
+    function vaciar(){
+        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
+        $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">Concesionario</option>').val('');
+        $("#GestionInformacionGrupo option:selected").prop("selected", false);
+        $("#GestionInformacionProvincias option:selected").prop("selected", false);
+    }
+
+    //carga concesionarios por provincia o por grupo
+    $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
+    $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
+    function loaddealers(e, t){
         if(e.attr('value') != ''){
             var value = e.attr('value');
             $.ajax({
@@ -30,7 +62,7 @@ $(function () {
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {grupo_id: value, dealer: dealer},
+                data: {grupo_id: value, dealer: dealer, tipo: t},
                 success: function (data) {
                     $('#GestionInformacionConcesionario').html(data);
                     filtros_notification(); 
@@ -39,14 +71,21 @@ $(function () {
             });
         }        
     }
-    loaddealers($('#GestionInformacionGrupo'));
+    if(active_group != ''){
+        tipoactivo1 = $('#GestionInformacionGrupo');
+        tipoactivo2 = 'g';
+    }else{
+        tipoactivo1 = $('#GestionInformacionProvincias');
+        tipoactivo2 = 'p';
+    }
+    loaddealers(tipoactivo1, tipoactivo2);
 
     filtros_notification();
 
     //NOTIFICACION DE FILTROS Y VARIABLES ACTIVAS
     function filtros_notification(){
-        var filtros_fecha1 = '<b>Fecha 1:</b> ' + $('#fecha-range1').attr('value');
-        var filtros_fecha2 = ' <b>/</b> <b>Fecha 2:</b> ' + $('#fecha-range2').attr('value');
+        var filtros_fecha1 = '<span class="filt_act"><b>Fecha Inicial:</b> ' + $('#fecha-range1').attr('value') + '</span>';
+        var filtros_fecha2 = '<span class="filt_act"><b>Fecha Final:</b> ' + $('#fecha-range2').attr('value') + '</span>';
         var filtros_concesionario = '';
         var filtros_asesores = '';
         var filtros_modelos = '';
@@ -54,14 +93,22 @@ $(function () {
         if ( $( "#GestionInformacionConcesionario" ).length && $( "#GestionInformacionConcesionario" ).is('select')) {
             var selected_Concesionario = $('#GestionInformacionConcesionario').val();
             if(selected_Concesionario != ''){
-                filtros_concesionario = ' <b>/</b> <b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text();
+                filtros_concesionario = '<span class="filt_act"><b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text() + '</span>';
+            }else{
+                filtros_concesionario = '<span class="filt_act">'+ nombre_concecionario +'</span>';
             }
         }
         
         if ( $( "#GestionDiariaresponsable" ).length ) {
             var selected_responsable = $('#GestionDiariaresponsable').val();
             if(selected_responsable != ''){
-                filtros_asesores = ' <b>/</b> <b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text();
+                filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text() + '</span>';
+            }else{
+                if(selected_Concesionario == ''){
+                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + nombre_usuario + '</span>';
+                }else{
+                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> Todos</span>';
+                }               
             }
         }
 
@@ -71,10 +118,10 @@ $(function () {
         });
 
         if(!jQuery.isEmptyObject(selected)){
-            filtros_modelos = ' <br><b>Modelos:</b> ' + selected;
+            filtros_modelos = '<br><br><span class="filt_act"><b>Modelos:</b> ' + selected + '</span>';
         }
         
-        var var_filtros_activos = '<h4>Filtros Activos:</h4>' + filtros_fecha1 + filtros_fecha2 + filtros_concesionario + filtros_asesores + filtros_modelos;
+        var var_filtros_activos = '<h4>Filtros Activos:</h4> <b>Perfil:</b> ' + nombre_usuario + '<br>' + nombre_concecionario + '<br><br>' + filtros_fecha1 + filtros_fecha2 + filtros_concesionario + filtros_asesores + filtros_modelos;
         $('.resultados_embudo').html(var_filtros_activos);
     }
 
@@ -83,14 +130,18 @@ $(function () {
     $('.trigerFiltros').on("click", function() {
         if($(this).hasClass( "abrirFiltros" )){
             $('.filtrosReportes').show();
+            $('.filtrosReportes').removeClass( "close_animate" );
+            $('.filtrosReportes').addClass( "animate" );
             $('.abrirFiltros').addClass( "cerrarFiltros" );
             $('.cerrarFiltros').removeClass( "abrirFiltros" );
             $(this).html('Cerrar Filtros'); 
         }else{
             $('.filtrosReportes').hide();
+            $('.filtrosReportes').removeClass( "animate" );
+            $('.filtrosReportes').addClass( "close_animate" );
             $('.cerrarFiltros').addClass( "abrirFiltros" );
             $('.abrirFiltros').removeClass( "cerrarFiltros" );
-            $(this).html('Abrir Filtros'); 
+            $(this).html('Buscar por filtros'); 
         }        
     });
 
@@ -112,9 +163,42 @@ $(function () {
             $('#'+ tabtoshow ).show();
         });
     });
+
+    //graficas titulo posicion
+    $( '.graficas' ).children('span').each(function () {
+        var thismargin = parseInt($(this).css('margin-left').replace("px", ""));
+        var thiswidth = $(this).width();
+        var salida = thismargin - thiswidth;
+        $(this).css('margin-left', salida + 'px');
+    });
+
+    //FILTRO MODELOS SLECT CHECKBOXES
+    //TODOS
+    $('#todos').change(function () {
+        if(this.checked){
+            check = true;
+        }else{
+            check = false;
+        }
+        $('.modelo input').each(function () {
+            $(this).prop('checked', check);
+        });
+    });
+
+    $('.subcheckbox').change(function () {
+        $(this).parents('.contcheck').find('.checkboxmain').prop('checked', false);
+    });
+    $('.checkboxmain').change(function () {
+        if(this.checked){
+            check = true;
+        }else{
+            check = false;
+        }
+        $(this).parents('.contcheck').find('.subcheckbox').prop('checked', check);
+    });
 });
 
-//Load versiones via ajax
+//Load versiones via ajax // ACTUALMENTE NO ESTA EN USO
 function checkboxes(e){                                              
     if(e.checked === true) {
         var id = e.value;
