@@ -2823,6 +2823,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
                             $consulta->save();
+                            
                             break;
                         default:
                             break;
@@ -3543,8 +3544,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $consulta->id_informacion = $model->id;
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
-                            $consulta->save();
-                            
+                            $consulta->save();                            
                             break;
                         default:
                             break;

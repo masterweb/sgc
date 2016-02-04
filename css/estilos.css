@@ -266,6 +266,7 @@ section{
     padding-top: 9px;
 }
 .directorio-btn{
+    background: url('../images/ico_contactos2.png') no-repeat;
     display: block;
     height: 33px;
     padding-left: 42px;
