@@ -20,7 +20,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         <?php //if(Yii::app()->user->getState('area_id') == 17): ?>
 <!--        <img class="img_rs" id="imgmenu" src="<?php echo Yii::app()->request->baseUrl; ?>/images/stage_ventas.jpg">-->
         <?php //else: ?>
-        <img class="img_rs" id="imgmenu" src="<?php echo Yii::app()->request->baseUrl; ?>/images/perfil-intranet.png">
+        <img class="img_rs" id="imgmenu" src="<?php echo Yii::app()->request->baseUrl; ?>/images/perfil-intranet2.jpg">
         <?php //endif; ?>
     </div>
 </section>
