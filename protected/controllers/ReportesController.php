@@ -244,8 +244,8 @@ class ReportesController extends Controller {
         $varView['vhckd2'] = $retorno[22];
         $varView['vhcbu2'] = $retorno[23];            
         
-        $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
-        $varView['dif_cbu_trafico'] =  $varView['traficocbu2'] - $varView['traficocbu1'];
+        $varView['dif_ckd_trafico'] = $varView['traficockd1'] - $varView['traficockd2'];
+        $varView['dif_cbu_trafico'] = $varView['traficocbu1'] - $varView['traficocbu2'];
         //$varView['usu'] = $usu;
         //$varView['mod'] = $mod;      
 
@@ -296,7 +296,15 @@ class ReportesController extends Controller {
         $varView['tasa_cierre_ckd_m1'] = $this->tasa($varView['traficockd2'], $varView['vhckd2']);
         $varView['tasa_cierre_cbu_m1'] = $this->tasa($varView['traficocbu2'], $varView['vhcbu2']);
         $varView['tasa_cierre_ckd_m2'] = $this->tasa($varView['traficockd1'], $varView['vhckd1']);
-        $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']);  
+        $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']); 
+
+        //set diferencias ckd y cbu
+        $varView['tasa_td_dif_ckd'] = rtrim($varView['tasa_testdrive_ckd_m2'], "%") - rtrim($varView['tasa_testdrive_ckd_m1'], "%");
+        $varView['tasa_td_dif_cbu'] = rtrim($varView['tasa_testdrive_cbu_m2'], "%") - rtrim($varView['tasa_testdrive_cbu_m1'], "%");
+        $varView['tasa_pr_dif_ckd'] = rtrim($varView['tasa_proforma_ckd_m2'], "%") - rtrim($varView['tasa_proforma_ckd_m1'], "%");
+        $varView['tasa_pr_dif_cbu'] = rtrim($varView['tasa_proforma_cbu_m2'], "%") - rtrim($varView['tasa_proforma_cbu_m1'], "%");
+        $varView['tasa_cierre_dif_ckd'] = rtrim($varView['tasa_cierre_ckd_m2'], "%") - rtrim($varView['tasa_cierre_ckd_m1'], "%");
+        $varView['tasa_cierre_dif_cbu'] = rtrim($varView['tasa_cierre_cbu_m2'], "%") - rtrim($varView['tasa_cierre_cbu_m1'], "%");
 
         $this->render('inicio', array('varView' => $varView));
     }
@@ -407,38 +415,46 @@ class ReportesController extends Controller {
     }
 
     function tasa_dif($var1, $var2){
-        $dfpr = $var1 - $var2;
-        if($df > 0){
+        $dfpr = $var2 - $var1;
+        if($dfpr >= 0){
             return $dfpr.' %';
         }else{
-            return '<span class="dif">('.abs($dfpr).' %)</span>';
+            return '<span class="dif">(-'.abs($dfpr).' %)</span>';
         }
     }
     
     function DIFconstructor($var1, $var2, $tipo){
-        $dif = $var1 - $var2;
+        $dif = $var2 - $var1;
+        if($dif < 0){
+            $divisor = $var1;
+        }else{
+            $divisor = $var2; 
+        }
         $unidad = '';        
         if($tipo == 'var'){
             $unidad = '%';
-            if($var2 == 0){
+            if($divisor == 0){
                 if($var1 != 0){
-                    $var2 = $var1;
+                    $divisor = $var1;
                 }else{
                     $dif = 100;
-                    $var2 = 100;
+                    $divisor = 100;
                 }                
-            }      
-            $dif = ($dif * 100) / $var2;            
+            }     
+            $dif = ($dif * 100) / $divisor;            
             $dif = round($dif, 2);
         }
+
+        if($var1 == 0 && $var2 == 0){$dif = 0;}
 
         $resp = '<span';
         if ($dif >= 0) {
             $resp .= '>' . $dif.$unidad;
         } else {
-            $resp .= ' class="dif">(' . abs($dif) . $unidad. ')';
+            $resp .= ' class="dif">(-' . abs($dif) . $unidad. ')';
         }
         $resp .= '</span>';
+
 
         return $resp;
     }

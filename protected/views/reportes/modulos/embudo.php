@@ -189,28 +189,28 @@
                         <td><?= $varView['dif_cbu_trafico'] ?></td>
                     </tr>
                     <tr>
-                        <td><?= $varView['tdckd2'] - $varView['tdckd1'] ?></td>
-                        <td><?= $varView['tdcbu2'] - $varView['tdcbu1'] ?></td>
+                        <td><?= $varView['tdckd1'] - $varView['tdckd2']?></td>
+                        <td><?= $varView['tdcbu1'] - $varView['tdcbu2']?></td>
                     </tr>
                     <tr>
-                        <td><?= $varView['proformackd2'] - $varView['proformackd1'] ?></td>
-                        <td><?= $varView['proformacbu2'] - $varView['proformacbu1'] ?></td>
+                        <td><?= $varView['proformackd1'] - $varView['proformackd2']?></td>
+                        <td><?= $varView['proformacbu1'] - $varView['proformacbu2']?></td>
                     </tr>                    
                     <tr>
-                        <td><?= $varView['vhckd2'] - $varView['vhckd1'] ?></td>
-                        <td><?= $varView['vhcbu2'] - $varView['vhcbu1'] ?></td>
+                        <td><?= $varView['vhckd1'] - $varView['vhckd2']?></td>
+                        <td><?= $varView['vhcbu1'] - $varView['vhcbu2']?></td>
                     </tr>
                     <tr>
-                        <td><?= $tasatd2 - $tasatd2ant.'%';?> </td>
-                        <td><?= $tasatd2cbu - $tasatd2antcbu.'%';?></td>
+                        <td><?= $varView['tasa_td_dif_ckd'].'%';?> </td>
+                        <td><?= $varView['tasa_td_dif_cbu'].'%';?></td>
                     </tr>
                     <tr>
-                        <td><?= ($tasapr2 - $tasapr2ant).'%'; ?></td>
-                        <td><?= ($tasapr2cbu - $tasapr2antcbu).'%';  ?></td>
+                        <td><?= $varView['tasa_pr_dif_ckd'].'%'; ?></td>
+                        <td><?= $varView['tasa_pr_dif_cbu'].'%';  ?></td>
                     </tr>                    
                     <tr>
-                        <td><?= $tasac2 - $tasac2ant.'%';?></td>
-                        <td> <?= $tasac2cbu - $tasac2antcbu.'%';?></td>
+                        <td><?= $varView['tasa_cierre_dif_ckd'].'%';?></td>
+                        <td><?= $varView['tasa_cierre_dif_cbu'].'%';?></td>
                     </tr>
                 </tbody>
             </table>

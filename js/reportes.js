@@ -94,6 +94,8 @@ $(function () {
             var selected_Concesionario = $('#GestionInformacionConcesionario').val();
             if(selected_Concesionario != ''){
                 filtros_concesionario = '<span class="filt_act"><b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text() + '</span>';
+            }else{
+                filtros_concesionario = '<span class="filt_act">'+ nombre_concecionario +'</span>';
             }
         }
         
@@ -101,6 +103,12 @@ $(function () {
             var selected_responsable = $('#GestionDiariaresponsable').val();
             if(selected_responsable != ''){
                 filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text() + '</span>';
+            }else{
+                if(selected_Concesionario == ''){
+                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + nombre_usuario + '</span>';
+                }else{
+                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> Todos</span>';
+                }               
             }
         }
 
