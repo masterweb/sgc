@@ -339,6 +339,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             'model' => $posts,
             'pages' => $pages,
             'busqueda' => '',
+            'apellidos' => '',
             'email' => '',
             'cargo' => $cargo,
             'concesionarios' => $concesionarios,
@@ -351,10 +352,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionContactos() {
         $criteria = new CDbCriteria;
         //$criteria->condition = 'estado ="ACTIVO" and id !='.(int)Yii::app()->user->id;
-        $criteria->alias = 'u';
-        $criteria->condition = 'u.estado ="ACTIVO" ';
-        $criteria->join='LEFT JOIN area a ON a.id=u.area_id';
-        $criteria->order = 'a.descripcion asc';
+        $criteria->condition = 'estado ="ACTIVO" ';
+        $criteria->order = 'id desc';
         // Count total records
         $pages = new CPagination(Usuarios::model()->count($criteria));
 
@@ -375,6 +374,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             'model' => $posts,
             'pages' => $pages,
             'busqueda' => '',
+            'apellidos' => '',
             'email' => '',
             'cargo' => $cargo,
             'concesionarios' => $concesionarios,
@@ -420,23 +420,65 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionSearch() {
         $p = new CHtmlPurifier();
-        if (!empty($_GET['Search']['Nombres']) || !empty($_GET['Search']['Email']) || !empty($_GET['Search']['Cargo']) || !empty($_GET['Search']['Concesionario'])) {
+        if (!empty($_GET['Usuarios']['nombres']) || !empty($_GET['Usuarios']['email']) || $_GET['Usuarios']['grupo_id'] !='--') {
+            
+            $nombres = '';
+            $apellidos = '';
+            $cargos = '';
+            $concesionarioss = '';
+            $email = '';
+            $cargo_id = '';
+            $grupo_id = '';
+            $area_id = '';
+            $patronBusqueda='';
 
+            $criteria=new CDbCriteria;
 
-            $cargos = $p->purify($_GET['Search']['Cargo']);
-            $carg = ($cargos != "A") ? " AND cargo_id =$cargos" : "";
-            $concesionarioss = $p->purify($_GET['Search']['Concesionario']);
-            $deal = ($concesionarioss != "A") ? " AND dealers_id =$concesionarioss" : "";
+            if(!empty($_GET['Usuarios']['nombres'])){
+                $nombres = $p->purify($_GET['Usuarios']['nombres']);
+                $criteria->condition = "nombres LIKE '%$nombres%'";
+                //$criteria->condition = "nombres ='$nombres' ";
+                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
+                $criteria->addCondition('apellido LIKE :nombre');
+                $criteria->params=array(
+                    ':nombre'=>'%$nombres%',
+                );*/
+            }
+            if(!empty($_GET['Usuarios']['apellidos']) && !empty($_GET['Usuarios']['nombres'])){
+                $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                $criteria->addCondition("apellido LIKE '%$apellidos%'");
+                //$criteria->condition = "nombres ='$nombres' ";
+                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
+                $criteria->addCondition('apellido LIKE :nombre');
+                $criteria->params=array(
+                    ':nombre'=>'%$nombres%',
+                );*/
+            }else  if(!empty($_GET['Usuarios']['apellidos'])){
+                 $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                 $criteria->condition = "apellido LIKE '%$apellidos%'";
+            }
+            
+            if(!empty($_GET['Usuarios']['email'])){
+                $email = $p->purify($_GET['Usuarios']['email']);
+                $criteria->addCondition ('correo = "'.$email.'"');
+            }
 
-            /* CONDICIONES DE BUSQUEDA */
-            $patronBusqueda = $p->purify($_GET['Search']['Nombres']);
-            $email = $p->purify($_GET['Search']['Email']);
-            if (!empty($patronBusqueda) && empty($email)) {
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => "(nombres LIKE :match or apellido LIKE :match) $carg $deal AND estado !='RECHAZADO'", 'params' => array(':match' => "%$patronBusqueda%")));
-            } else if (empty($patronBusqueda) && !empty($email)) {
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => " correo LIKE :c  $carg $deal AND estado !='RECHAZADO'", 'params' => array(':c' => "%$email%")));
-            } else
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => "nombres LIKE :match AND correo LIKE :c  $carg $deal AND estado !='RECHAZADO'", 'params' => array(':c' => "%$email%", ':match' => "%$patronBusqueda%")));
+            if(!empty($_GET['Usuarios']['cargo_id']) && $_GET['Usuarios']['cargo_id']>0){
+                $cargo_id = $p->purify($_GET['Usuarios']['cargo_id']);
+                $criteria->addCondition ('cargo_id = '.$cargo_id);
+            }
+
+            if(!empty($_GET['Usuarios']['grupo_id'])  && $_GET['Usuarios']['grupo_id']>0){
+                $grupo_id = $p->purify($_GET['Usuarios']['grupo_id']);
+                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
+            }
+
+            /*if(!empty($_GET['Cargo']['area_id']) && $_GET['Cargo']['area_id']>0 ){
+                $area_id = $p->purify($_GET['Cargo']['area_id']);
+                $criteria->condition = 'area_id = '.$area_id;
+            }*/
+
+            $posts = Usuarios::model()->findAll($criteria);
 
 
 
@@ -448,15 +490,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $this->render('admin', array(
                     'model' => $posts,
                     'pages' => $pages,
-                    'busqueda' => $patronBusqueda,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
                     'email' => $email,
                     'cargo' => $cargo,
                     'concesionarios' => $concesionarios,
                     'cargos' => $cargos,
-                    'concesionarioss' => $concesionarioss,
+                    'concesionarioss' => $grupo_id,
                         )
                 );
-            } else {
+            }else {
                 Yii::app()->user->setFlash('error', "No se encontraron datos con la busqueda realizada.");
                 $this->redirect(array('uusuarios/admin/'));
             }
@@ -468,23 +511,66 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionSearchC() {
         $p = new CHtmlPurifier();
-        if (!empty($_GET['Search']['Nombres']) || !empty($_GET['Search']['Email']) || !empty($_GET['Search']['Cargo']) || !empty($_GET['Search']['Concesionario'])) {
+       
+        if (!empty($_GET['Usuarios']['nombres']) || !empty($_GET['Usuarios']['email']) || $_GET['Usuarios']['grupo_id'] !='--') {
+            
+            $nombres = '';
+            $apellidos = '';
+            $cargos = '';
+            $concesionarioss = '';
+            $email = '';
+            $cargo_id = '';
+            $grupo_id = '';
+            $area_id = '';
+            $patronBusqueda='';
 
+            $criteria=new CDbCriteria;
 
-            $cargos = $p->purify($_GET['Search']['Cargo']);
-            $carg = ($cargos != "A") ? " AND cargo_id =$cargos" : "";
-            $concesionarioss = $p->purify($_GET['Search']['Concesionario']);
-            $deal = ($concesionarioss != "A") ? " AND dealers_id =$concesionarioss" : "";
+            if(!empty($_GET['Usuarios']['nombres'])){
+                $nombres = $p->purify($_GET['Usuarios']['nombres']);
+                $criteria->condition = "nombres LIKE '%$nombres%'";
+                //$criteria->condition = "nombres ='$nombres' ";
+                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
+                $criteria->addCondition('apellido LIKE :nombre');
+                $criteria->params=array(
+                    ':nombre'=>'%$nombres%',
+                );*/
+            }
+            if(!empty($_GET['Usuarios']['apellidos']) && !empty($_GET['Usuarios']['nombres'])){
+                $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                $criteria->addCondition("apellido LIKE '%$apellidos%'");
+                //$criteria->condition = "nombres ='$nombres' ";
+                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
+                $criteria->addCondition('apellido LIKE :nombre');
+                $criteria->params=array(
+                    ':nombre'=>'%$nombres%',
+                );*/
+            }else  if(!empty($_GET['Usuarios']['apellidos'])){
+                 $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                 $criteria->condition = "apellido LIKE '%$apellidos%'";
+            }
+            
+            if(!empty($_GET['Usuarios']['email'])){
+                $email = $p->purify($_GET['Usuarios']['email']);
+                $criteria->addCondition ('correo = "'.$email.'"');
+            }
 
-            /* CONDICIONES DE BUSQUEDA */
-            $patronBusqueda = $p->purify($_GET['Search']['Nombres']);
-            $email = $p->purify($_GET['Search']['Email']);
-            if (!empty($patronBusqueda) && empty($email)) {
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => "nombres LIKE :match OR apellido LIKE :match $carg $deal AND estado='ACTIVO'", 'params' => array(':match' => "%$patronBusqueda%")));
-            } else if (empty($patronBusqueda) && !empty($email)) {
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => " correo LIKE :c  $carg $deal AND estado='ACTIVO'", 'params' => array(':c' => "%$email%")));
-            } else
-                $posts = Usuarios::model()->findAll(array('order' => 'id DESC', 'condition' => "nombres LIKE :match OR apellido LIKE :match AND correo LIKE :c  $carg $deal AND estado='ACTIVO'", 'params' => array(':c' => "%$email%", ':match' => "%$patronBusqueda%")));
+            if(!empty($_GET['Usuarios']['cargo_id']) && $_GET['Usuarios']['cargo_id']>0){
+                $cargo_id = $p->purify($_GET['Usuarios']['cargo_id']);
+                $criteria->addCondition ('cargo_id = '.$cargo_id);
+            }
+
+            if(!empty($_GET['Usuarios']['grupo_id'])  && $_GET['Usuarios']['grupo_id']>0){
+                $grupo_id = $p->purify($_GET['Usuarios']['grupo_id']);
+                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
+            }
+
+            /*if(!empty($_GET['Cargo']['area_id']) && $_GET['Cargo']['area_id']>0 ){
+                $area_id = $p->purify($_GET['Cargo']['area_id']);
+                $criteria->condition = 'area_id = '.$area_id;
+            }*/
+
+            $posts = Usuarios::model()->findAll($criteria);
 
 
 
@@ -496,12 +582,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $this->render('contactos', array(
                     'model' => $posts,
                     'pages' => $pages,
-                    'busqueda' => $patronBusqueda,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
                     'email' => $email,
                     'cargo' => $cargo,
                     'concesionarios' => $concesionarios,
                     'cargos' => $cargos,
-                    'concesionarioss' => $concesionarioss,
+                    'concesionarioss' => $grupo_id,
                         )
                 );
             } else {
