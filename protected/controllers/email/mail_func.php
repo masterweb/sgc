@@ -268,7 +268,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
 
     $mail->AddAddress($to);
     $mail->AddAddress('vlondono@kia.com.ec'); // call center
-    $mail->AddAddress('gansaldo72@hotmail.com'); // call center
+    //$mail->AddAddress('gansaldo72@hotmail.com'); // call center
     
     if (!$mail->Send()) {
         return false;

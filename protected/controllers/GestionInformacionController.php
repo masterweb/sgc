@@ -1293,7 +1293,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $con = Yii::app()->db;
         $search_type = 0;
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
-        if (!empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
+        if (!empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
             $search_type = 1;
         }
         // BUSQUEDA POR CATEGORIZACION
@@ -1343,6 +1344,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 isset($_GET['GestionDiaria']['grupo']) &&
                 isset($_GET['GestionDiaria']['concesionario'])) {
             $search_type = 14;
+        }
+
+        // BUSQUEDA CAMPOS VACIOS ASESOR VENTAS
+        if (empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente']) &&
+                empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) && 
+                empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 16;
         }
 
         //die('search type: '.$search_type);
@@ -1618,6 +1627,43 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
                 return $users;
+                break;
+            case 16:
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+                gd.*, gc.preg7 as categorizacion, gn.fuente 
+                FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                if ($cargo_id == 46) { // super administrador
+                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
+                    $title = "Busqueda Total País";
+                }
+                if ($cargo_id == 69) { // gerente comercial
+                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                            . " WHERE gr.id_grupo = {$grupo_id} ";
+                    $title = "Busqueda por Grupo Total: <strong>".$this->getNombreGrupo($grupo_id)."</strong>";        
+                }
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} ";
+                    $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
+                }
+                if ($cargo_id == 71) { // asesor de ventas
+                    $sql .= "WHERE gi.responsable = {$id_responsable} ";
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                } 
+                if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id ";
+                    $title = "Busqueda por Total País";
+                }
+                $sql .= " ORDER BY gd.id DESC";
+                //die($sql);
+                $request = $con->createCommand($sql);
+                $users = $request->queryAll();
+                $data['title'] = $title;
+                $data['users'] = $users;
+                return $data;
                 break;
 
             default:
@@ -2823,7 +2869,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
                             $consulta->save();
-                            
+
                             break;
                         default:
                             break;
@@ -3294,7 +3340,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            
+
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
                             $consulta->fecha = date("Y-m-d H:i:s");
@@ -3539,12 +3585,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            
+
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
-                            $consulta->save();                            
+                            $consulta->save();
                             break;
                         default:
                             break;
