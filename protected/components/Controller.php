@@ -1192,12 +1192,20 @@ class Controller extends CController {
         $preg = FALSE;
         switch ($tipo) {
             case 1: // preguntas paso 1-2 prospeccion
-                $criteria = new CDbCriteria(array(
+                /*$criteria = new CDbCriteria(array(
                     'condition' => "id_informacion={$id}"
                 ));
                 $pr = GestionProspeccionRp::model()->count($criteria);
                 if ($pr > 0) {
                     return TRUE;
+                }*/
+                $con = Yii::app()->db;
+                $sqlpr = "SELECT * FROM gestion_diaria WHERE id_informacion = {$_GET['id']} AND prospeccion = 1";
+                //die($sql);            
+                $request = $con->createCommand($sqlpr);
+                $posts = $request->queryAll();
+                if(count($posts) > 0){
+                   return TRUE; 
                 }
                 break;
             case 2: // preguntas paso 3-4 recepcion consulta

@@ -226,6 +226,14 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <h1 class="tl_seccion_rf">Status</h1>
                     </div>  
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                      <?php 
+                    $con = Yii::app()->db;
+                    $sqlpr = "SELECT * FROM gestion_diaria WHERE id_informacion = {$_GET['id']} AND prospeccion = 1";
+                    //die($sql);            
+                    $request = $con->createCommand($sqlpr);
+                    $posts = $request->queryAll();
+                      ?>
+                      <?php if(count($posts) > 0){ ?>  
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
@@ -265,6 +273,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                           </div>
                         </div>
                       </div>
+                      <?php } ?>  
                       <?php if($_GET['fuente'] == 'showroom'){ ?>  
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">

@@ -517,7 +517,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 </td>
                                 <td><?php echo $c['tipo_ex']; ?></td>
                                 <td>
-                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => 'showroom')); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                     <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
                                     <?php if ($c['paso'] == '1-2') { ?>
                                         <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
