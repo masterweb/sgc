@@ -260,9 +260,8 @@ if ($ced != '') {
                     //validateVehiculo();
                     break;
                 case '4':// si estoy interesado
-
                     $('.cont-vec').hide();
-                    $('.cont-interesado').show();
+                    $('.cont-interesado').show();$('.cont_encuentro').show();$('.cont-lugar').show();$('.cont-conc').show();
                     $('.cont-nocont').hide();
                     //validateInteresado();
                     break;
@@ -271,6 +270,7 @@ if ($ced != '') {
                     $('.cont-nocont').show();
                     $('.cont-int-price').hide();
                     $('.cont-interesado').hide();
+                    $('.cont-interesado').show();$('.cont_encuentro').hide();$('.cont-lugar').hide();$('.cont-conc').hide();
                     break;
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
@@ -409,18 +409,6 @@ if ($ced != '') {
                         //$('#telefono').val('');
                         return false;
                     }
-//                    var k = validateCantNumbers(num_tel);
-//                    if (k == false) {
-//                        $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese correctamente su teléfono</label>');
-//                        //$("#telefono").val("");
-//                        return false
-//                    }
-//                    var k = validateCantNumbers(num_casa);
-//                    if (k == false) {
-//                        $('#GestionInformacion_telefono_casa').after('<label for="telefono3" generated="true" class="error" style="display: block;" id="telefono3">Ingrese correctamente su teléfono</label>');
-//                        //$("#telefono").val("");
-//                        return false
-//                    }
                     form.submit();
                 }
             });
@@ -457,7 +445,8 @@ if ($ced != '') {
             switch (observaciones) {
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
-                case '6':// telefono equivocado    
+                case '6':// telefono equivocado  
+                    //console.log('enter case 6');
                     $('.cont-vec').hide();
                     $('.cont-ag').hide();
                     $('.cont-nocont').hide();
@@ -1081,21 +1070,14 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                     </div>
                                 </div>
                             </div>
-                            <div class="row cont-ag" style="display: none;">
-                                <div class="col-md-4">
-                                    <select name="intoptions" id="intoptions" class="form-control">
-                                        <option value="">--Seleccione--</option>
-                                        <option value="1">Agendamiento</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="cont-interesado" style="display:none;">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Agendamiento</label>
                                         <input type="text" name="GestionDiaria[agendamiento]" id="agendamiento" class="form-control">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 cont_encuentro">
                                         <label for="">Lugar de Encuentro</label>
                                         <select name="GestionProspeccionRp[lugar]" id="GestionProspeccion_lugar" class="form-control">
                                             <option value="0">Concesionario</option>

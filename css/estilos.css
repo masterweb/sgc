@@ -623,6 +623,10 @@ hr{
     background-size: 23px 23px;
     background-color: #5cb85c !important;
 }
+.btn-warning:hover{
+    background-color: #5CB85C !important;
+    border-color: #5cb85c !important; 
+}
 .trigerFiltros {
     padding: 6px 44px 6px 26px;
     background-image: url('../images/reportes/lupa.svg') !important;
@@ -756,6 +760,11 @@ ul.versiones li input{
     margin: 0 7px 0 0px !important;
 }
 .nocursor{cursor: default;}
-.nocursor:hover{
-    
+.btn-inactive{
+    color: #ffffff;
+    background-color: #616568;
+    border-color: #9A9A9A;
+}
+.btn-inactive:hover{
+    color: #ffffff;
 }
