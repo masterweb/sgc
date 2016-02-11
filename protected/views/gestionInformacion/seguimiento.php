@@ -32,9 +32,12 @@ $count = count($users);
             }
         }
     }
+    
 
     $(function () {
-
+        $('#GestionNuevaCotizacion_cedula').keyup(function (){
+            $('#cedula2').hide();
+        });
          $('#GestionNuevaCotizacion_ruc').change(function() {
             var resp = validateruc($(this));
             if(resp != true){
@@ -161,6 +164,12 @@ $count = count($users);
                         var cedula = $('#GestionNuevaCotizacion_cedula').val();
                         var fuente = $('#GestionNuevaCotizacion_fuente').val();
                         if (identificacion == 'ci') {
+                            var validateCedula = CedulaValida(cedula);
+                            if(validateCedula == false){
+                                $('#cedula2').show();
+                                return false;
+                            }
+                            
                             $.ajax({
                                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getCedula"); ?>',
                                 beforeSend: function (xhr) {
@@ -256,51 +265,9 @@ $count = count($users);
                                 }
                             });
                         }
-
                     }
                 });
                 break;
-            case 'web':
-                $('#gestion-nueva-cotizacion-form').validate({
-                    rules: {
-                        //'GestionNuevaCotizacion[cedula]': {required: true},
-                        'GestionNuevaCotizacion[fuente]': {required: true},
-                        'GestionNuevaCotizacion[identificacion]': {required: true}
-                    },
-                    messages: {
-                        //'GestionNuevaCotizacion[cedula]': {required: 'Ingrese la cédula'},
-                        'GestionNuevaCotizacion[fuente]': {required: 'Seleccione fuente'},
-                        'GestionNuevaCotizacion[identificacion]': {required: 'Seleccione identificación'}
-                    },
-                    submitHandler: function (form) {
-                        var identificacion = $('#GestionNuevaCotizacion_identificacion').val();
-                        var cedula = $('#GestionNuevaCotizacion_cedula').val();
-                        var fuente = $('#GestionNuevaCotizacion_fuente').val();
-                        if (identificacion == 'ci') {
-                            $.ajax({
-                                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getCedula"); ?>',
-                                beforeSend: function (xhr) {
-                                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
-                                },
-                                type: 'POST', dataType: 'json', data: {id: cedula, fuente: fuente},
-                                success: function (data) {
-                                    $('#bg_negro').hide();
-                                    if (data.result == true) {
-                                        $('.cont-existente').html(data.data);
-                                    } else {
-                                        form.submit();
-                                    }
-                                }
-                            });
-                        } else if (identificacion == 'pasaporte') {
-                            form.submit();
-                        } else {
-                            form.submit();
-                        }
-
-                    }
-                });
-                break;    
             case 'exonerados':
                 $('#gestion-nueva-cotizacion-form').validate({
                     rules: {
@@ -328,6 +295,15 @@ $count = count($users);
                         'GestionNuevaCotizacion[tipo]': {required: true}
                     },
                     submitHandler: function (form) {
+                        var identificacion = $('#GestionNuevaCotizacion_identificacion').val();
+                        var cedula = $('#GestionNuevaCotizacion_cedula').val();
+                        if (identificacion == 'ci') {
+                            var validateCedula = CedulaValida(cedula);
+                            if(validateCedula == false){
+                                $('#cedula2').show();
+                                return false;
+                            }
+                        }    
                         if($('#GestionNuevaCotizacion_identificacion').val() == 'ruc'){
                             var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
                             if(resp != true){
@@ -363,6 +339,44 @@ $count = count($users);
             default:
         }
 
+    }
+    function CedulaValida(cedula) {
+        console.log('cedula '+cedula);
+        //Si no tiene el guión, se lo pone para la validación
+        if (cedula.match(/\d{10}/)) {
+            cedula = cedula.substr(0, 9) + "-" + cedula.substr(9);
+        }
+
+        //Valida que la cédula sea de la forma ddddddddd-d
+        if (!cedula.match(/^\d{9}-\d{1}$/))
+            return false;
+
+        //Valida que el # formado por los dos primeros dígitos esté entre 1 y 24
+        var dosPrimerosDigitos = parseInt(cedula.substr(0, 2), 10);
+        if (dosPrimerosDigitos < 1 || dosPrimerosDigitos > 24)
+            return false;
+        //Valida que el valor acumulado entre los primeros 9 números coincida con el último
+        var acumulado = 0, digito, aux;
+        for (var i = 1; i <= 9; i++) {
+            digito = parseInt(cedula.charAt(i - 1));
+            if (i % 2 == 0) { //si está en una posición par
+                acumulado += digito;
+            } else { //si está en una posición impar
+                aux = 2 * digito;
+                if (aux > 9)
+                    aux -= 9;
+                acumulado += aux;
+            }
+        }
+        acumulado = 10 - (acumulado % 10);
+        if (acumulado == 10)
+            acumulado = 0;
+        var ultimoDigito = parseInt(cedula.charAt(10));
+        if (ultimoDigito != acumulado)
+            return false;
+
+        //La cédula es válida
+        return true;
     }
 </script>
 <style type="text/css">

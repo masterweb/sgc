@@ -185,11 +185,13 @@ $firma = GestionFirma::model()->count($cri);
         $('#GestionTestDrive_preg1').change(function () {
             var value = $(this).attr('value');
             if (value == 'Si') {
+                addRules();
                 $('.cont-test-drive').show();
                 $('.cont-form-manejo').show();
                 $('.cont-obs-seg').hide();
                 //$('#cont-seg').hide();
             } else {
+                removeRules();
                 $('.cont-form-manejo').hide();
                 $('.cont-test-drive').hide();
                 $('.cont-obs-seg').show();
@@ -212,6 +214,9 @@ $firma = GestionFirma::model()->count($cri);
             $('.cont-form-manejo').hide();
         });
         $('#gestion-test-drive-form').validate({
+            rules:{
+              'GestionTestDrive[preg1]':{required:true}  
+            },
             submitHandler: function (form) {
                 console.log('enter submit');
                 var preg1 = $('#GestionTestDrive_preg1').val();
@@ -297,6 +302,14 @@ $firma = GestionFirma::model()->count($cri);
             }
         });
     });
+    function addRules(){
+        $("#GestionTestDrive_observaciones_form").rules("add", "required");
+        $("#GestionTestDrive_preg1_observaciones").rules("remove", "required");
+    }
+    function removeRules(){
+        $("#GestionTestDrive_preg1_observaciones").rules("add", "required");
+        $("#GestionTestDrive_observaciones_form").rules("remove", "required");
+    }
     function validateUploadSize(x) {
         //var x = document.getElementById("myFile");
         var txt = "";
@@ -454,6 +467,7 @@ $firma = GestionFirma::model()->count($cri);
                             <div class="row">
                                 <div class="col-md-3">
                                     <select name="GestionTestDrive[preg1]" id="GestionTestDrive_preg1" class="form-control">
+                                        <option value="">--Seleccione--</option>
                                         <option value="Si">Si</option>
                                         <option value="No">No</option>
                                     </select>
@@ -656,6 +670,7 @@ $firma = GestionFirma::model()->count($cri);
                                             <div class="col-md-12">
                                                 <label for="">Observaciones</label>
                                                 <select name="GestionTestDrive[observaciones_form]" id="GestionTestDrive_observaciones_form" class="form-control">
+                                                    <option value="">--Seleccione--</option>
                                                     <option value="Primera prueba de manejo">Primera prueba de manejo</option>
                                                     <option value="prueba de manejo familiar amistad">Prueba de manejo familiar/amistad</option>
                                                     <option value="vehiculo manejado por asesor de ventas">Vehículo manejado por asesor de ventas</option>

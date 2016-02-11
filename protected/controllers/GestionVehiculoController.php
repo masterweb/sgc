@@ -1172,7 +1172,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                             <p style="margin: 2px 0;">Kia Motors Ecuador</p>
                             <p></p><br /><br />';
 
-
         $general .= '</div>
                             <br />
                            <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:11px;">

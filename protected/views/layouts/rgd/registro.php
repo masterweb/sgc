@@ -1,4 +1,7 @@
-<?php $area_id = (int) Yii::app()->user->getState('area_id'); ?>
+<?php 
+$area_id = (int) Yii::app()->user->getState('area_id'); 
+$cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+?>
 <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
 <div class="col-md-4">
             <div class="highlight">
@@ -21,15 +24,28 @@
         <div class="col-md-12" style="position: relative;">
             <?php echo $form->labelEx($model, 'fuente'); ?>
             <?php
-            echo $form->dropDownList($model, 'fuente', array(
-                '' => '--Seleccione--',
-                'prospeccion' => 'Prospección',
-                //'trafico' => 'Tráfico',
-                'showroom' => 'Tráfico',
-                'exhibicion' => 'Exhibición',
-                    //'web' => 'Web',
-                    //'exonerados' => 'Exonerados'
-                    ), array('class' => 'form-control'));
+            $tipo_array = array();
+            $data_tipo = '';
+            if($cargo_id == 75){ // asesor exonerado
+                $tipo_array =  array('showroom' => 'Tráfico');
+                $data_tipo = '<option value="">--Seleccione--</option><option value="Exonerado Taxi">Exonerado Taxi</option>
+                <option value="Exonerado Conadis">Exonerado Conadis</option>
+                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
+            }
+            if($cargo_id == 71){ // asesor ventas
+                $tipo_array =  array('' => '--Seleccione--','prospeccion' => 'Prospección','showroom' => 'Tráfico','exhibicion' => 'Exhibición');
+                $data_tipo = '<option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+                <option value="Exonerado Taxi">Exonerado Taxi</option>
+                <option value="Exonerado Conadis">Exonerado Conadis</option>
+                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
+                <option value="Flota">Flota</option>';
+            }
+            if($cargo_id == 73){ // asesor bdc
+                $tipo_array =  array('prospeccion' => 'Prospección');
+                $data_tipo = '<option value="Nuevo">Nuevo</option>';
+            }
+            echo $form->dropDownList($model, 'fuente', $tipo_array, array('class' => 'form-control'));
             ?>
             <?php echo $form->error($model, 'fuente'); ?>
             <button type="button" class="btn btn-warning btn-xs" data-toggle="tooltip" data-placement="right" title="Info" id="toolinfo">Info</button>
@@ -39,13 +55,7 @@
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Tipo</label>
             <select name="GestionNuevaCotizacion[tipo]" id="GestionNuevaCotizacion_tipo" class="form-control">
-                <option value="">--Seleccione--</option>
-                <option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
-                <option value="Exonerado Taxi">Exonerado Taxi</option>
-                <option value="Exonerado Conadis">Exonerado Conadis</option>
-                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
-                <option value="Flota">Flota</option>
+                <?php echo $data_tipo?>
             </select>
         </div>
     </div>
@@ -95,6 +105,7 @@
                 <div class="col-md-12">
                     <label for="GestionNuevaCotizacion_cedula">Número</label>
                     <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                    <label class="error" id="cedula2" style="display: none;">Ingrese correctamente el número de cédula</label>
                     <?php echo $form->error($model, 'cedula'); ?>
                 </div>
             </div>
@@ -127,6 +138,7 @@
                 <div class="col-md-12">
                     <label for="GestionNuevaCotizacion_cedula">Número 1</label>
                     <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                    <label class="error" id="cedula2" style="display: none;">Ingrese correctamente el número de cédula</label>
                     <?php echo $form->error($model, 'cedula'); ?>
                 </div>
             </div>
@@ -159,6 +171,7 @@
                 <div class="col-md-12">
                     <label for="GestionNuevaCotizacion_cedula">Número</label>
                     <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                    <label class="error" id="cedula2" style="display: none;">Ingrese correctamente el número de cédula</label>
                     <?php echo $form->error($model, 'cedula'); ?>
                 </div>
             </div>
@@ -191,6 +204,7 @@
                 <div class="col-md-12">
                     <label for="GestionNuevaCotizacion_cedula">Número</label>
                     <?php echo $form->textField($model, 'cedula', array('size' => 40, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                    <label class="error" id="cedula2" style="display: none;">Ingrese correctamente el número de cédula</label>
                     <?php echo $form->error($model, 'cedula'); ?>
                 </div>
             </div>

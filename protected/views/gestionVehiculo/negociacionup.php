@@ -111,19 +111,32 @@ if ($fi == 2) {
         });
         //VALORES PRIMERA OPCION FINANCIAMIENTO
         var valorentrada = parseInt($('#GestionFinanciamiento_entrada').val());
-        valorentrada = format2(valorentrada, '$');
+        if(valorentrada > 0){
+            valorentrada = format2(valorentrada, '$');
+        }else{
+            valorentrada = format2(0, '$');
+        }
         $('#GestionFinanciamiento_entrada').val(valorentrada);
 
-        var valorfinanciamiento = parseInt($('#GestionFinanciamiento_valor_financiamiento').val());    
-        valorfinanciamiento = format2(valorfinanciamiento, '$');
+        var valorfinanciamiento = parseInt($('#GestionFinanciamiento_valor_financiamiento').val()); 
+        if(valorfinanciamiento > 0){
+            valorfinanciamiento = format2(valorfinanciamiento, '$');
+        }else{
+            valorfinanciamiento = format2(0, '$');
+        }
         $('#GestionFinanciamiento_valor_financiamiento').val(valorfinanciamiento);
-
+        
         var valorseguro = parseInt($('#GestionFinanciamiento_seguro').val());    
         valorseguro = format2(valorseguro, '$');
         $('#GestionFinanciamiento_seguro').val(valorseguro);
 
         var cuotamensual = parseInt($('#GestionFinanciamiento_cuota_mensual').val());
         cuotamensual = format2(cuotamensual, '$');
+        if(cuotamensual>0){
+            cuotamensual = format2(cuotamensual, '$');
+        }else{
+            cuotamensual = format2(0, '$');
+        }
         $('#GestionFinanciamiento_cuota_mensual').val(cuotamensual);
 
         //VALORES SEGUNDA OPCION FINANCIAMIENTO
@@ -275,6 +288,7 @@ if ($fi == 2) {
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 0},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });
@@ -288,6 +302,7 @@ if ($fi == 2) {
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 1},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });

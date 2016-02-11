@@ -347,6 +347,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     case 'Viudo':
                     case 'Divorciado':
                     case 'Casado con separación de bienes':
+                        var cadena = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                            var letra = cadena.charAt(1);
+                            if(letra == '0'){
+                               error++; 
+                               alert('Ingrese un número válido');
+                               $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
+                            }
                         //validateCasado();
                         break;
                     case 'Casado sin separación de bienes':
@@ -722,7 +729,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'year'); ?>
-                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'year'); ?>
                             </div>
                             <div class="col-md-2">

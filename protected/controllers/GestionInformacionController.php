@@ -2667,6 +2667,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionExonerados($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -2883,8 +2884,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-
-                    $this->redirect(array('gestionInformacion/seguimiento'));
+                    if($cargo_id == 75)
+                        $this->redirect(array('gestionInformacion/seguimientoexonerados'));
+                    else
+                        $this->redirect(array('gestionInformacion/seguimiento'));
                 } else if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
@@ -3129,6 +3132,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionConadis($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -3359,8 +3363,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-
-                    $this->redirect(array('gestionInformacion/seguimiento'));
+                    
+                    if($cargo_id == 75)
+                        $this->redirect(array('gestionInformacion/seguimientoexonerados'));
+                    else
+                        $this->redirect(array('gestionInformacion/seguimiento'));
                 } else if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
@@ -3379,6 +3386,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionDiplomaticos($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -3605,7 +3613,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
 
-                    $this->redirect(array('gestionInformacion/seguimiento'));
+                    if($cargo_id == 75)
+                        $this->redirect(array('gestionInformacion/seguimientoexonerados'));
+                    else
+                        $this->redirect(array('gestionInformacion/seguimiento'));
                 } else if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }

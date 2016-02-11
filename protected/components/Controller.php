@@ -51,12 +51,27 @@ class Controller extends CController {
     }
 
     public function getCiudad($id) {
+        //die('id: '.$id);
         $ciudad = Dealercities::model()->findByPk($id);
         if (!is_null($ciudad) && !empty($ciudad)) {
             return $ciudad->name;
         } else {
             return 'NA';
         }
+    }
+    
+    public function getCiudadConcesionario($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $gt = GestionInformacion::model()->find($criteria);
+        $concesionario = $gt->concesionario;
+        
+        $cri = new CDbCriteria;
+        $cri->condition = "id={$concesionario}";
+        $ci = Dealers::model()->find($cri); 
+        $ciudad = $ci->cityid;
+        
+        return $this->getCiudad($ciudad);
     }
 
     public function getEmailCliente($id_informacion) {
@@ -712,6 +727,13 @@ class Controller extends CController {
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1"
         ));
         $test = GestionTestDrive::model()->count($criteria);
+        return $test;
+    }
+    public function getFactura($id_informacion, $id_vehiculo) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
+        ));
+        $test = GestionFactura::model()->count($criteria);
         return $test;
     }
 
@@ -1932,6 +1954,57 @@ class Controller extends CController {
                     ->execute();
         }
         return $random_key;
+    }
+    
+    public function getFormatFecha($fecha) {
+        //die('fecha: '.$fecha);
+        $params = explode(" ", $fecha);
+        //die('dddd'.$params[1]);
+        $data_fecha = '';
+        switch ( (string) $params[1]) {
+            case '01':
+                $mes = 'enero';
+                break;
+            case '02':
+                $mes = 'febrero';
+                break;
+            case '03':
+                $mes = 'marzo';
+                break;
+            case '04':
+                $mes = 'abril';
+                break;
+            case '05':
+                $mes = 'mayo';
+                break;
+            case '06':
+                $mes = 'junio';
+                break;
+            case '07':
+                $mes = 'julio';
+                break;
+            case '08':
+                $mes = 'agosto';
+                break;
+            case '09':
+                $mes = 'septiembre';
+                break;
+            case '10':
+                $mes = 'octubre';
+                break;
+            case '11':
+                $mes = 'noviembre';
+                break;
+            case '12':
+                $mes = 'diciembre';
+                break;
+
+            default:
+                break;
+            
+        }
+        $data_fecha = $params[0].' de '.$mes.' del '.$params[2];
+        return $data_fecha;
     }
 
 }

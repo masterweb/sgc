@@ -234,11 +234,11 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     if($status->forma_pago === 'Contado'){
                                                         echo '<a class="btn btn-tomate btn-xs nocursor" target="_blank">Contado</a>';
                                                     }else if($status->forma_pago == null){
-                                                        //echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Satus</a>';
+                                                        echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
                                                     }else{                                                    
                                                         switch ($status_credito) {
                                                             case 'na':
-                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">Sin Status</a>';
+                                                                echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">En Análisis</a>';
                                                                 break;                                                             
                                                             case 1:
                                                                 echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">En Análisis</a>';
@@ -292,7 +292,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                     </div>
                 <?php endif; ?>
 
-<?php if ($gf > 0): ?>
+                <?php if ($gf > 0): ?>
                     <div class="row"></div>
                     <br />
                     <div class="row">
@@ -300,7 +300,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                             <a href="<?php echo Yii::app()->createUrl('site/cierre/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
                     </div>
-<?php endif; ?>
+                <?php endif; ?>
                 <div class="row"></div>
                 <br />
                 <div class="highlight">

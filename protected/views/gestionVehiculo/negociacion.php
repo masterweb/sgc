@@ -142,6 +142,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 0},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });
@@ -155,6 +156,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 1},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });

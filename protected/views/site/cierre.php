@@ -194,10 +194,9 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                         
                                         <td>
                                         <?php 
-                                        $test = $this->getTestDrive($c['id_informacion'], $c['id']);
+                                        $test = $this->getFactura($c['id_informacion'], $c['id']);
                                         ?>
                                         <?php if($test > 0): ?>
-                                          
                                             <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Cierre</a>
                                         <?php else: ?>    
                                            

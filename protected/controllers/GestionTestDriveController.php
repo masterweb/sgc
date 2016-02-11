@@ -197,8 +197,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $codigohtml = $general;
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                //$email = $emailCliente; //email cliente registrado
-                $email = 'alkanware@gmail.com'; //email administrador
+                $email = $emailCliente; //email cliente registrado
+                //$email = 'alkanware@gmail.com'; //email administrador
 
                 $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                 //die('send: '.$send);

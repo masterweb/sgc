@@ -561,6 +561,13 @@ img.cometchat_userscontentavatarimage {
   color: #ffffff;
   background-color: #ff4e00;
   border-color: #ff4e00;
+  cursor: none;
+}
+.btn-tomate:hover{
+  color: #ffffff;
+  background-color: #ff4e00;
+  border-color: #ff4e00;
+  cursor: default;
 }
 
 /*REPORTES */
