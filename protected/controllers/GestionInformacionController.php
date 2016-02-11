@@ -230,7 +230,10 @@ class GestionInformacionController extends Controller {
                             $historial->fecha = date("Y-m-d H:i:s");
                             $historial->save();
                             //die('after save');
-                            $this->redirect(array('gestionInformacion/seguimiento'));
+                            if($cargo_id == 73)
+                                $this->redirect(array('gestionInformacion/seguimientobdc'));
+                            else
+                                $this->redirect(array('gestionInformacion/seguimiento'));
                             break;
                         case 5:// no contesta
                             $prospeccion->preg1 = $_POST['GestionProspeccionPr']['pregunta'];
