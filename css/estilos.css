@@ -755,3 +755,7 @@ ul.versiones{
 ul.versiones li input{
     margin: 0 7px 0 0px !important;
 }
+.nocursor{cursor: default;}
+.nocursor:hover{
+    
+}

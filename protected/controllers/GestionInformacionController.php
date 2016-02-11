@@ -123,6 +123,8 @@ class GestionInformacionController extends Controller {
                 $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
                 $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
             endif;
+            if($cargo_id == 73)
+                $model->bdc = 1;
 
             if (isset($_POST['GestionInformacion']['fecha_cita']))
                 $model->fecha_cita = $_POST['GestionInformacion']['fecha_cita'];

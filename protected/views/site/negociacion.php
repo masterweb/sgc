@@ -234,7 +234,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     if($status->forma_pago === 'Contado'){
                                                         echo '<a class="btn btn-tomate btn-xs nocursor" target="_blank">Contado</a>';
                                                     }else if($status->forma_pago == null){
-                                                        echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
+                                                        echo '<a class="btn btn-warning btn-xs nocursor" target="_blank">Sin Status</a>';
                                                     }else{                                                    
                                                         switch ($status_credito) {
                                                             case 'na':
