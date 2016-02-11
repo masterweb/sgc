@@ -60,6 +60,7 @@ class GestionInformacionController extends Controller {
      */
     public function actionCreate($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -289,10 +290,20 @@ class GestionInformacionController extends Controller {
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-
+                    
+                    if($cargo_id == 73)
+                        $this->redirect(array('gestionInformacion/seguimientobdc'));
+                    else
+                        $this->redirect(array('gestionInformacion/seguimiento'));
+                        
+                
+                    
+                } 
+                if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
-                } else if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
-                    $this->redirect(array('gestionInformacion/seguimiento'));
+                }
+                if ($_POST['tipo'] == 'prospeccion' && $cargo_id = 73) {
+                    $this->redirect(array('gestionInformacion/seguimientobdc'));
                 }
                 if ($_POST['tipo'] == 'gestion') {
                     $fecha_actual = date("Y-m-d H:i:s");
