@@ -252,7 +252,10 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            $this->redirect(array('gestionInformacion/seguimiento'));
+                            if($cargo_id == 73)
+                                $this->redirect(array('gestionInformacion/seguimientobdc'));
+                            else
+                                $this->redirect(array('gestionInformacion/seguimiento'));
                             //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
                             break;
                         case 6: // telefono equivocado

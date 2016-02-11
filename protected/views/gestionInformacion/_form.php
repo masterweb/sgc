@@ -549,9 +549,9 @@ if ($ced != '') {
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
                         submitHandler: function (form) {
-                            var proximoSeguimiento = $('#agendamiento2').val();
+                            var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
-                                if ($('#GestionInformacion_check2').val() != 2) {
+                                if ($('#GestionInformacion_check').val() != 2) {
                                     var cliente = $('#GestionInformacion_nombres').val() + ' ' + $('#GestionInformacion_apellidos').val();
                                     var params = proximoSeguimiento.split("/");
                                     var fechaDate = params[0] + params[1] + params[2];
@@ -564,14 +564,14 @@ if ($ced != '') {
                                     //console.log('start time:'+fechaStart+startTime);
                                     //console.log('fecha end:'+fechaStart+endTime);
                                     var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=Por definir&to_name=' + cliente + '&conc=no';
-                                    $('#event-download2').attr('href', href);
-                                    $('#calendar-content2').show();
-                                    $("#event-download2").click(function () {
-                                        $('#GestionInformacion_calendar2').val(1);
-                                        $('#calendar-content2').hide();
-                                        $('#GestionInformacion_check2').val(2)
+                                    $('#event-download').attr('href', href);
+                                    $('.calendar-content').show();
+                                    $("#event-download").click(function () {
+                                        $('#GestionInformacion_calendar').val(1);
+                                        $('.calendar-content').hide();
+                                        $('#GestionInformacion_check').val(2)
                                     });
-                                    if ($('#GestionInformacion_calendar2').val() == 1) {
+                                    if ($('#GestionInformacion_calendar').val() == 1) {
                                         form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
