@@ -146,6 +146,7 @@ $count = count($users);
         switch (fuente) {
             case 'showroom':
             case 'exhibicion':
+                console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
                     rules: {
                         'GestionNuevaCotizacion[cedula]': {required: true},
@@ -175,6 +176,7 @@ $count = count($users);
                                 beforeSend: function (xhr) {
                                     $('#bg_negro').show();  // #bg_negro must be defined somewhere
                                 },
+                                timeout:8000,  // I chose 8 secs for kicks
                                 type: 'POST', dataType: 'json', data: {id: cedula, fuente: fuente},
                                 success: function (data) {
                                     //alert(data);
@@ -201,7 +203,10 @@ $count = count($users);
                                     }
                                 },
                                 error: function (error) {
-                                    //form.submit();
+                                    $('#myModal').modal('show');
+                                    $('#closemodal').click(function(){
+                                        form.submit();
+                                    });
                                 }
                             });
                         } else if (identificacion == 'ruc') {
@@ -215,6 +220,7 @@ $count = count($users);
                                     beforeSend: function (xhr) {
                                         $('#bg_negro').show();  // #bg_negro must be defined somewhere
                                     },
+                                    timeout:8000,  // I chose 8 secs for kicks
                                     type: 'POST', dataType: 'json', data: {id: ruc, fuente: fuente},
                                     success: function (data) {
                                         //alert(data.flagttga35);
@@ -240,7 +246,10 @@ $count = count($users);
                                         }
                                     },
                                     error: function (error) {
-                                        form.submit();
+                                        $('#myModal').modal('show');
+                                        $('#closemodal').click(function(){
+                                            form.submit();
+                                        });
                                     }
                                 }); 
                             }
@@ -397,6 +406,22 @@ $count = count($users);
 
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div class="container">
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">SGC</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Conexión con sistema pirámide fallido</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Continuar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <div class="row">
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>

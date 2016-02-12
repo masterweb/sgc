@@ -252,6 +252,12 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
+                            
+                            $consulta = new GestionConsulta;
+                            $consulta->id_informacion = $model->id;
+                            $consulta->fecha = date("Y-m-d H:i:s");
+                            $consulta->status = 'ACTIVO';
+                            $consulta->save();
                             if($cargo_id == 73)
                                 $this->redirect(array('gestionInformacion/seguimientobdc'));
                             else
