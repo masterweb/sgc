@@ -1054,28 +1054,28 @@ if ($ced != '') {
                                 </div>
                                 <br />
                                 <div class="row">
-                                    <label for="">Color de Preferencia</label>
-                                    <div class="col-md-12">
-                                        
-                                        <div class="col-md-6 well well-sm">
-                                        <ul class="list-accesorios">
-                                           <ul class="list-accesorios">                                            
+                                <label for="">Color de Preferencia</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 well well-sm">
+                                    
+                                    <div class="col-md-6">
+                                        <ul class="list-accesorios">                                          
                                             <li><u><input type="checkbox" value="negro" name="colores[]" id="color-3"/><span class="color" style="background: rgb(0, 0, 0);"></span>Negro</u></li>
                                             <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-5"/><span class="color" style="background: rgb(50, 52, 55);"></span>Plomo</u></li>
                                             <li><u><input type="checkbox" value="plata" name="colores[]" id="color-2"/><span class="color" style="background: rgb(205, 210, 216);"></span>Plata</u></li>
                                             <li><u><input type="checkbox" value="blanco" name="colores[]" id="color-1"/><span class="color" style="background: rgb(245, 245, 249);"></span>Blanco</u></li>                                               
                                         </ul>
                                     </div>
-                                    <div class="col-md-6 well well-sm">
+                                    <div class="col-md-6">
                                         <ul class="list-accesorios">
-                                           <ul class="list-accesorios">
                                             <li><u><input type="checkbox" value="rojo" name="colores[]" id="color-4"/><span class="color" style="background: rgb(213, 42, 44);"></span>Rojo</u></li>
                                             <li><u><input type="checkbox" value="vino" name="colores[]" id="color-2"/><span class="color" style="background: rgb(109, 20, 27);"></span>Vino</u></li>
                                             <li><u><input type="checkbox" value="azul" name="colores[]" id="color-3"/><span class="color" style="background: rgb(19, 17, 137);"></span>Azul</u></li>
                                         </ul>
-                                    </div>  
-                                    </div>
+                                    </div>                                   
                                 </div>
+                            </div>
 
                             </div>
                             <div class="row buttons">

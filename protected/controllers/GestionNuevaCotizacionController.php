@@ -560,10 +560,10 @@ class GestionNuevaCotizacionController extends Controller {
             }
         }
 
-
-        $this->render('create', array(
-            'model' => $model
-        ));
+        $this->redirect(array('gestionInformacion/seguimiento'));
+//        $this->render('create', array(
+//            'model' => $model
+//        ));
     }
 
     /**

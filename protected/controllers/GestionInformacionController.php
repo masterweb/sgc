@@ -2730,14 +2730,21 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            $random_key = $this->getRandomKey(75); //exonerados
+            
             //die('random: '.$random_key);
             // SACAMOS EL ARRAY DE IDS DE EXONERADOS DESDE LA BASE
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            $model->responsable = $random_key;
-            $model->responsable_origen = Yii::app()->user->getId();
+            if($cargo_id == 75){
+                $model->responsable = Yii::app()->user->getId();
+            }
+            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75); //exonerados
+                $model->responsable = $random_key;
+                $model->responsable_origen = Yii::app()->user->getId();
+            }
+            
             $model->dealer_id = $this->getDealerId(Yii::app()->user->getId());
             $model->id_cotizacion = $_POST['GestionInformacion']['id_cotizacion'];
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
@@ -3195,11 +3202,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            $random_key = $this->getRandomKey(75); //exonerados
+            
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            $model->responsable = $random_key;
-            $model->responsable_origen = Yii::app()->user->getId();
+            if($cargo_id == 75){
+                $model->responsable = Yii::app()->user->getId();
+            }
+            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75); //exonerados
+                $model->responsable = $random_key;
+                $model->responsable_origen = Yii::app()->user->getId();
+            }
             $model->dealer_id = $this->getDealerId(Yii::app()->user->getId());
             $model->id_cotizacion = $_POST['GestionInformacion']['id_cotizacion'];
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
@@ -3448,11 +3461,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            $random_key = $this->getRandomKey(75); //exonerados
+            
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            $model->responsable = $random_key;
-            $model->responsable_origen = Yii::app()->user->getId();
+            if($cargo_id == 75){
+                $model->responsable = Yii::app()->user->getId();
+            }
+            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75); //exonerados
+                $model->responsable = $random_key;
+                $model->responsable_origen = Yii::app()->user->getId();
+            }
             $model->dealer_id = $this->getDealerId(Yii::app()->user->getId());
             $model->id_cotizacion = $_POST['GestionInformacion']['id_cotizacion'];
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
