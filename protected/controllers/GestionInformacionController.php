@@ -2712,7 +2712,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionExonerados($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
-        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
@@ -3187,6 +3188,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionConadis($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
         $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
@@ -3448,6 +3450,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionDiplomaticos($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
         $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
