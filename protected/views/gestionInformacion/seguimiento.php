@@ -469,7 +469,7 @@ $count = count($users);
                             <th><span>Concesionario</span></th>
                             <th><span>Email</span></th>
                             <th><span>Categorización</span></th>
-                            <th><span>Expiración de Categorización</span></th>
+                            <th><span>Exp. de Categ.</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Resumen</span></th>
                         </tr>

@@ -1900,11 +1900,11 @@ class Controller extends CController {
         return $data_select;
     }
 
-    public function getRandomKey($cargo_id) {
+    public function getRandomKey($cargo_id, $dealer_id) {
         // GENERACION Y ASIGNACION DE USUARIOS EXONERADOS DE LOS CLIENTES GENERADOS
         $array_ids = array();
         $id_responsable = Yii::app()->user->getId();
-        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        //$dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $con = Yii::app()->db;
         $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 

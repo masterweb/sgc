@@ -354,20 +354,11 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
                 </ol>
             </div>
         <?php else: ?>
-            <div class="row">
-                <div class="col-xs-12"><h4>REQUISITOS PARA VENTA AL CONTADO</h4></div>
-                <div class="col-xs-8">
-                    <ol>
-                        <li>Fotocopia cédula de ciudadanía </li>
-                        <li>Fotocopia del certificado de votación</li>
-                        <li>Recibo de pago de luz, agua o teléfono</li>
-                    </ol>
-                </div>
-            <?php endif; ?>
-        </div>
+            
+        <?php endif; ?>    
         <?php if (isset($tipo_exonerado)) { ?>
         <div class="row">
-            <div class="col-xs-12"><h4>PROCESO PARA VEHÍCULO EXONERADO <?php echo strtoupper($fin); ?></h4></div>
+            <div class="col-xs-12"><h4>PROCESO PARA VEHÍCULO <?php echo strtoupper($fin); ?></h4></div>
             <?php
             switch ($tipo_exonerado) {
                 case 'Exonerado Taxi':

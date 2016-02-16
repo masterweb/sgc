@@ -8,5 +8,5 @@ class Constantes {
     
 	 const ADM_SITIO_CODIGO_USUARIO = 'adm';  
 	 const ADM_CALL_CODIGO_USUARIO = 'adm';  
-	 const CDG = 'adm';  
+	 const CDG = 'CC';  
 }

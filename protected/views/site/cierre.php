@@ -28,108 +28,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
             minDate:'-1970/01/01',//yesterday is minimum date(for today use 0 or -1970/01/01)
             disabledDates:['03.04.2015','01.05.2015','10.08.2015','09.10.2015','02.11.2015','03.11.2015','25.12.2015'], formatDate:'d.m.Y'
         });
-        $('#GestionAgendamiento_observaciones').change(function(){
-            var value = $(this).attr('value');
-            if(value == 'Otro'){
-                $('#cont-otro').show();
-            }else{
-                $('#cont-otro').hide();
-            }
-        });
-        $('#gestion-agendamiento-form').validate({
-            rules:{
-                'GestionAgendamiento[agendamiento]':{
-                    required:true
-                },
-                'GestionAgendamiento[observaciones]': {
-                    required: true
-                },
-                'GestionAgendamiento[categorizacion]':{
-                    required:true
-                }
-            },
-            messages:{
-                'GestionAgendamiento[agendamiento]':{
-                    required:'Seleccione una fecha de agendamiento'
-                },
-                'GestionAgendamiento[categorizacion]':{
-                    required:'Seleccione una categoría'
-                }
-            },
-            submitHandler: function(form) {
-                var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
-                //console.log(proximoSeguimiento);
-                var fechaSeguimiento = proximoSeguimiento.replace('/', '-');
-                fechaSeguimiento = fechaSeguimiento.replace('/', '-');
-                var fechaArray = fechaSeguimiento.split(' ');
-
-                //console.log('fecha seguimiento: '+fechaSeguimiento);
-                var categorizacion = $('#GestionAgendamiento_categorizacion').val();
-                var dias = 0;
-                switch (categorizacion) {
-                    case 'Hot A (hasta 7 dias)':
-                        dias = 7;
-                        break;
-                    case 'Hot B (hasta 15 dias)':
-                        dias = 15;
-                        break;
-                    case 'Hot C (hasta 30 dias)':
-                        dias = 30;
-                        break;
-                    case 'Warm (hasta 3 meses)':
-                        dias = 60;
-                        break;
-                    case 'Cold (hasta 6 meses)':
-                        dias = 180;
-                        break;
-                    case 'Very Cold(mas de 6 meses)':
-                        dias = 181;
-                        break;
-                    default:
-                }
-                //console.log(proximoSeguimiento);
-                var fechaActual = new Date().toJSON().slice(0, 10);
-                //console.log('Fecha Actual: '+hoy);
-                var diferencia = restaFechas(fechaActual, fechaArray[0]);
-                if (diferencia <= dias) {
-                    if (proximoSeguimiento != '') {
-                        //console.log('proximo: '+proximoSeguimiento);
-                        if ($('#GestionInformacion_check').val() != 2) {
-                            var cliente = '';
-                            var params = proximoSeguimiento.split("/");
-                            var fechaDate = params[0] + params[1] + params[2];
-                            var secDate = params[2].split(" ");
-                            var fechaStart = params[0] + params[1] + secDate[0];
-                            var start = secDate[1].split(":");
-                            var startTime = start[0] + start[1];
-                            var params2 = fechaDate.split(":");
-                            var endTime = parseInt(startTime) + 100;
-                            //console.log('start time:'+fechaStart+startTime);
-                            //console.log('fecha end:'+fechaStart+endTime);
-                            var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente <?php echo $nombre_cliente; ?>&desc=Cita con el cliente negociación <?php echo $nombre_cliente; ?>&location=Concesionario <?php echo $nombreConcesionario; ?>&to_name=' + cliente + '&conc=<?php echo $nombreConcesionario; ?>';
-                            //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
-                            $('#event-download').attr('href', href);
-                            $('#calendar-content').show();
-                            $("#event-download").click(function () {
-                                $('#GestionInformacion_calendar').val(1);
-                                $('#calendar-content').hide();
-                                $('#GestionInformacion_check').val(2)
-                            });
-                            if ($('#GestionInformacion_calendar').val() == 1) {
-                                form.submit();
-                            } else {
-                                alert('Debes descargar agendamiento y luego dar click en Continuar');
-                            }
-                        } else {
-                            form.submit();
-                        }
-                    }
-                }else{
-                    alert('Seleccione una fecha menor o igual a la fecha de Categorización.');
-                    return false;
-                }
-            }
-        });
+        
         $('#Demostracion_test_drive').change(function () {
             var value = $(this).attr('value');
             if (value == 1) {
@@ -270,7 +169,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                         <div class="row buttons">
                             <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
                             <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
-                            <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="7">
+                            <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="8">
                             <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id; ?>">
                             <div class="col-md-2">
                                 <?php //echo CHtml::submitButton($agendamiento->isNewRecord ? 'Cambiar' : 'Save', array('class' => 'btn btn-danger', 'onclick' => 'sendCat();')); ?>
@@ -316,19 +215,13 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                 <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($agendamiento, 'observaciones'); ?>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 agendamiento">
                                 <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
                                 <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($agendamiento, 'agendamiento'); ?>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <div id="cont-obs-cat" style="display: none;">
-                                    <label for="">Observación de Categorización</label>
-                                    <input type="text" class="form-control" name="GestionAgendamiento[observacion_categorizacion]" id="GestionAgendamiento_observacion_categorizacion"/>
-                                </div>
-                            </div>
                             <div class="col-md-4">
                                 <div id="cont-otro" style="display: none;">
                                     <label for="">Observaciones</label>

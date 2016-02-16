@@ -676,6 +676,7 @@ class GestionInformacionController extends Controller {
     public function actionSeguimientoexcel() {
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $id_responsable = Yii::app()->user->getId();
         $array_dealers = $this->getDealerGrupoConc($grupo_id);
         $dealerList = implode(', ', $array_dealers);
@@ -707,12 +708,11 @@ class GestionInformacionController extends Controller {
         }
 
         if (isset($_GET['GestionDiaria2'])) {
+            //die('enter gestion diaria2');
 //            echo '<pre>';
 //            print_r($_GET);
 //            echo '</pre>';
 //            die();
-            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
-            $id_responsable = Yii::app()->user->getId();
 
             $con = Yii::app()->db;
             $getParams = array();
@@ -726,12 +726,12 @@ class GestionInformacionController extends Controller {
             }
             //die('fechaPk: '.$fechaPk);
             /* BUSQUEDA EN CAMPOS VACIOS GERENTE COMERCIAL */
-            if (empty($_GET['GestionDiaria2']['categorizacion']) &&
-                    $fechaPk == 1 &&
-                    empty($_GET['GestionDiaria2']['responsable']) &&
-                    empty($_GET['GestionDiaria2']['tipo_fecha']) &&
-                    empty($_GET['GestionDiaria2']['general']) &&
+            if (empty($_GET['GestionDiaria2']['general']) && 
+                    empty($_GET['GestionDiaria2']['categorizacion']) &&
+                    $fechaPk == 1 && 
                     empty($_GET['GestionDiaria2']['status']) &&
+                    empty($_GET['GestionDiaria2']['responsable']) &&
+                    empty($_GET['GestionDiaria2']['concesionario']) &&
                     empty($_GET['GestionDiaria2']['fuente']) && $cargo_id == 69) {
                 //die('enter busqueda general');
                 $title_busqueda = 'Búsqueda General: ';
@@ -775,17 +775,20 @@ class GestionInformacionController extends Controller {
             }
 
             /* BUSQUEDA EN CAMPOS VACIOS */
-            if (empty($_GET['GestionDiaria2']['categorizacion']) &&
-                    $fechaPk == 1 &&
-                    empty($_GET['GestionDiaria2']['tipo_fecha']) &&
-                    empty($_GET['GestionDiaria2']['general']) &&
+            if (empty($_GET['GestionDiaria2']['general']) &&
+                    $fechaPk == 0 &&
+                    empty($_GET['GestionDiaria2']['categorizacion']) &&
                     empty($_GET['GestionDiaria2']['status']) &&
-                    empty($_GET['GestionDiaria2']['fuente'])) {
-                //die('enter busqueda general');
+                    empty($_GET['GestionDiaria2']['responsable']) &&
+                    empty($_GET['GestionDiaria2']['fecha']) &&
+                    empty($_GET['GestionDiaria2']['fuente']) && 
+                    empty($_GET['GestionDiaria2']['grupo']) && 
+                    empty($_GET['GestionDiaria2']['concesionario'])) {
+                //die('enter busqueda general jefe almacen');
                 $title_busqueda = 'Búsqueda General: ';
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -795,9 +798,9 @@ class GestionInformacionController extends Controller {
                 ORDER BY gd.id DESC";
                     //die('sql sucursal'. $sql);
                 }
-                if ($cargo_id = 71) { // asesor de ventas
+                if ($cargo_id == 71) { // asesor de ventas
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -813,8 +816,9 @@ class GestionInformacionController extends Controller {
                 //        INNER JOIN gestion_vehiculo gv ON gi.id = gv.id_informacion 
                 //        GROUP BY gi.id";
                 //$sql = "SELECT * FROM gestion_informacion GROUP BY id";
+                //die($sql);
                 $request = $con->createCommand($sql);
-                $users = $request->queryAll();
+                $posts = $request->queryAll();
                 $tituloReporte = "Reporte General RGD Concesionario: " . $this->getNameConcesionario($id_responsable);
                 $name_file = "Reporte General RGD.xls";
             }
@@ -829,20 +833,21 @@ class GestionInformacionController extends Controller {
 
                 /* BUSQUEDA POR NOMBRES, APELLIDOS, CEDULA, ID */
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 if ($cargo_id == 70) { // jefe de almacen
-                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND (";
                 } else {
                     $sql .= "WHERE gi.responsable = {$id_responsable} AND (";
                 }
                 $sql .= "gi.nombres LIKE '%{$_GET['GestionDiaria2']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria2']['general']}%' "
                         . "OR gi.cedula LIKE '%{$_GET['GestionDiaria2']['general']}%'";
-                $sql .= " OR gi.id = '{$_GET['GestionDiaria2']['general']}'";
+                $sql .= " OR gi.id = '{$_GET['GestionDiaria2']['general']}')";
+                //die($sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
 
@@ -915,7 +920,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
                 //die('enter categorizacion');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -967,12 +972,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
                 //die('enter to status');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
-                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion 
-                        WHERE gi.responsable = {$id_responsable} AND";
+                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                }else{
+                    $sql .= " WHERE gi.responsable = {$id_responsable} AND";
+                }
                 switch ($_GET['GestionDiaria2']['status']) {
                     case 'Cierre':
                         $sql .= " gd.cierre = 1 ORDER BY gd.id DESC";
@@ -984,7 +993,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .= " gd.entrega = 1 ORDER BY gd.id DESC";
                         break;
                     case 'PrimeraVisita':
-                        $sql .= " gd.primera_visita = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.paso = '1-2' ORDER BY gd.id DESC";
                         break;
                     case 'Seguimiento':
                         $sql .= " gd.seguimiento = 1 ORDER BY gd.id DESC";
@@ -1007,24 +1016,31 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             /* -----------------END SEARCH BY STATUS------------------ */
 
             /* -----------------BUSQUEDA POR FECHA------------------ */
-            if (empty($_GET['GestionDiaria2']['status']) && $fechaPk == 0 &&
+            if (empty($_GET['GestionDiaria2']['general']) && 
+                    empty($_GET['GestionDiaria2']['categorizacion']) && 
+                    empty($_GET['GestionDiaria2']['status']) && $fechaPk == 0 &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
-                    !empty($_GET['GestionDiaria2']['tipo_fecha'])) {
+                    !empty($_GET['GestionDiaria2']['fecha']) && 
+                    empty($_GET['GestionDiaria2']['concesionario'])) {
                 //die('enter fecha');
                 $tipoFecha = $_GET['GestionDiaria2']['tipo_fecha'];
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
                 //die('after params');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                        WHERE gi.responsable = {$id_responsable} AND";
-                if ($tipoFecha == 'proximoseguimiento') {
-                    $sql .= " gd.proximo_seguimiento BETWEEN '{$params1}' AND '{$params2}'";
-                } else if ($tipoFecha == 'fecharegistro') {
-                    $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
-                }
+                        INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
+                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                if ($cargo_id == 70) { // jefe de almacen
+                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                }else{
+                    $sql .= " WHERE gi.responsable = {$id_responsable} AND";
+                };
+                
+                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
+                //die($sql);
 
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1043,7 +1059,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['provincia'])) {
                 //die('enter responsable');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1055,8 +1071,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria2']['responsable']} AND ";
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gi.bdc = 0 AND gd.desiste = 0
+                $sql .= " gd.desiste = 0
                 ORDER BY gd.id DESC";
+                //die($sql);
 
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1077,21 +1094,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['fuente'])) {
                 //die('enter responsable jefe almacen');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
                 if ($cargo_id == 70) { // jefe de almacen
-                    $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                    //$sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
+                    $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria2']['responsable']} AND ";
                 } else {
                     $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria2']['responsable']} AND ";
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gi.bdc = 0 AND gd.desiste = 0
+                $sql .= " gd.desiste = 0
                 ORDER BY gd.id DESC";
-
+                //die($sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 $tituloReporte = "Reporte por Responsable : " . $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
@@ -1188,10 +1206,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('E2', 'Identificación')
                 ->setCellValue('F2', 'Email')
                 ->setCellValue('G2', 'Responsable')
-                ->setCellValue('H2', 'Proximo Seguimiento')
-                ->setCellValue('I2', 'Fecha')
-                ->setCellValue('J2', 'Categorización')
-                ->setCellValue('K2', 'Fuente');
+                ->setCellValue('H2', 'Concesionario')
+                ->setCellValue('I2', 'Proximo Seguimiento')
+                ->setCellValue('J2', 'Fecha')
+                ->setCellValue('K2', 'Categorización')
+                ->setCellValue('L2', 'Fuente');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1217,10 +1236,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('E' . $i, $identificacion)
                     ->setCellValue('F' . $i, $row['email'])
                     ->setCellValue('G' . $i, $this->getResponsableNombres($row['resp']))
-                    ->setCellValue('H' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('I' . $i, $row['fecha'])
-                    ->setCellValue('J' . $i, $row['categorizacion'])
-                    ->setCellValue('K' . $i, $row['fuente']);
+                    ->setCellValue('H' . $i, $this->getNameConcesionarioById($row['dealer_id']))
+                    ->setCellValue('I' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('J' . $i, $row['fecha'])
+                    ->setCellValue('K' . $i, $row['categorizacion'])
+                    ->setCellValue('L' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1311,7 +1331,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 71) { // asesor de ventas
             $sql_cargos .= "WHERE gi.responsable = {$id_responsable} AND ";
-        } else { // AEKIA USERS
+        } if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14) { // AEKIA USERS
             $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
         }
 
@@ -1386,9 +1406,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $sql .= "gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
+                $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
-                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%'";
+                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')";
                 //die($sql);       
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -2693,6 +2713,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionExonerados($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
         $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -2740,7 +2761,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->responsable = Yii::app()->user->getId();
             }
             if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75); //exonerados
+                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }
@@ -2937,6 +2958,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionUsados($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
 
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
@@ -2974,7 +2996,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            $random_key = $this->getRandomKey(77); //usados
+            $random_key = $this->getRandomKey(77,$dealer_id); //usados
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
@@ -3165,6 +3187,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionConadis($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
         $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -3209,7 +3232,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->responsable = Yii::app()->user->getId();
             }
             if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75); //exonerados
+                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }
@@ -3425,6 +3448,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
     public function actionDiplomaticos($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
         $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -3468,7 +3492,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->responsable = Yii::app()->user->getId();
             }
             if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75); //exonerados
+                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }

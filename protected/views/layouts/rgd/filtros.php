@@ -171,7 +171,7 @@
         <input type="hidden" name="GestionDiaria2[fuente]" id="" value="<?php echo isset($_GET["GestionDiaria"]['fuente']) ? $_GET["GestionDiaria"]['fuente'] : "" ?>">
         <input type="hidden" name="GestionDiaria2[grupo]" id="" value="<?php echo isset($_GET["GestionDiaria"]['grupo']) ? $_GET["GestionDiaria"]['grupo'] : "" ?>">
         <input type="hidden" name="GestionDiaria2[concesionario]" id="" value="<?php echo isset($_GET["GestionDiaria"]['concesionario']) ? $_GET["GestionDiaria"]['concesionario'] : "" ?>">
-        <input type="hidden" name="GestionDiaria2[provincia]" id="" value="<?php echo isset($_GET["GestionDiaria"]['provincia']) ? $_GET["GestionDiaria"]['provincia'] : "" ?>">
+        
     </div>
     <?php $this->endWidget(); ?>
     <?php endif; ?>   
