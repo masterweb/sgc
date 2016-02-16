@@ -20,6 +20,7 @@ $case = ''; // para busqueda por defecto
 //echo 'id call center: '.Yii::app()->user->getId().'<br>';
 //echo 'rol: '.Yii::app()->user->getState('roles').'<br>';
 $rol = Yii::app()->user->getState('roles');
+
 ?>
 <script type="text/javascript">
     var abrir=0;
@@ -63,7 +64,9 @@ $rol = Yii::app()->user->getState('roles');
 
 	<div class="row">
         <div class="col-md-8">
-		 <?php if (Yii::app()->user->hasFlash('success')){ ?>
+		 <?php 
+
+		 if (Yii::app()->user->hasFlash('success')){ ?>
                 <div class="info">
                     <?php echo Yii::app()->user->getFlash('success'); ?>
                 </div>
@@ -77,7 +80,9 @@ $rol = Yii::app()->user->getState('roles');
   			<h4>Asesores</h4>
   			<form id="grabarasesores" class="form-horizontal" method="post" action="<?php echo Yii::app()->request->baseUrl; ?>/index.php/cencuestadoscquestionario/generar/id/<?php echo $questionario->id?>">
 			
-  			<?php if(!empty($asesores)){ ?>
+  			<?php 
+
+  			if(!empty($asesores)){ ?>
   				<table class="table table-condensed">
 			      <thead>
 			        <tr>

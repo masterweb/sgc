@@ -1624,10 +1624,10 @@ class Controller extends CController {
 
     public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2015-12-09" and encuestado = 0 and id_modelos is not null limit 100';
+        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2015-12-09" and encuestado = 0 and id_modelos is not null limit 10';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
-        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
         if (!empty($datosC)) {
             $maximo = number_format(count($datosC) / count($usuarios), 0);
@@ -1682,12 +1682,8 @@ class Controller extends CController {
         date_default_timezone_set("America/Bogota");
 
         $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));
-
-
-
-
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
-        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
         if (!empty($datosC)) {
             $maximo = number_format(count($datosC) / count($usuarios), 0);

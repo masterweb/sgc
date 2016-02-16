@@ -582,7 +582,7 @@ $(document).ready(function () {
                     fechaSeguimiento = fechaSeguimiento.replace('/', '-');
                     var fechaArray = fechaSeguimiento.split(' ');
 
-                    //console.log('fecha seguimiento: '+fechaSeguimiento);
+                    console.log('fecha seguimiento: '+fechaArray[0]);
                     var categorizacion = $('#GestionAgendamiento_categorizacion').val();
                     var dias = 0;
                     switch (categorizacion) {
@@ -606,9 +606,9 @@ $(document).ready(function () {
                             break;
                         default:
                     }
-                    //console.log(proximoSeguimiento);
+                    console.log(dias);
                     var fechaActual = new Date().toJSON().slice(0, 10);
-                    //console.log('Fecha Actual: '+hoy);
+                    console.log('Fecha Actual: '+fechaActual);
                     var diferencia = restaFechas(fechaActual, fechaArray[0]);
                     if (diferencia <= dias) {
                         if (proximoSeguimiento != '') {

@@ -123,11 +123,13 @@ $this->menu = array(
                 <?php
                     if(!empty($preguntas)){
                         foreach ($preguntas as $value) {
+                            
                             if($value->ctipopregunta_id == 1){
                                 echo '<div class="row pad-all">';
                                 echo $value->descripcion.'</div>';
                                 echo '<div class="row"><textarea class="required" onkeypress="return '.$value->tipocontenido.'(event);" id="txtpregunta'.$value->id.'" name="respuesta['.$value->id.']" placeholder="Ingrese la respuesta aquí"></textarea>';
                                 echo '</div>';
+
                             }else if($value->ctipopregunta_id == 2){
                                 echo '<div class="row pad-all">';
                                 echo $value->descripcion.'</div>';
@@ -139,7 +141,8 @@ $this->menu = array(
                                     foreach ($opciones as $op) {
                                         echo '<div class="radio">
                                               <label class="lblrespuesta">
-                                                <input id="ckk'.$op->id.'" class="required" type="checkbox" onclick="verificarSubPregunta(1,this.id,'.$op->id.','.$value->id.')" '.$chk.' name="respuesta['.$value->id.'][]" id="respuestaCheck" value="'.$op->detalle.'">
+                                                
+                                                <input id="ckk'.$op->id.'" class="required" type="checkbox" onclick="verificarSubPregunta(1,this.id,'.$op->id.','.$value->id.')" '.$chk.' name="respuesta['.$value->id.'][]" id="respuestaCheck" value="'.$op->detalle.'|'.$op->id.'">
                                                 '.$op->detalle.'
                                               </label>';
                                         echo '<div id="divopcion-'.$op->id.'" class=" cl-'.$value->id.'"></div>';
@@ -159,7 +162,8 @@ $this->menu = array(
 										$vv = (!empty($op->valor))?$op->valor:0;
                                         echo '<div class="radio">
                                               <label class="lblrespuesta">
-                                                <input class="required" type="radio" onclick="oculta('.$value->id.','.$vv.'); verificarSubPregunta(0,this.id,'.$op->id.','.$value->id.')"  name="respuesta['.$value->id.'][respuesta]" id="respuestaOption" value="'.$op->detalle.'">
+                                             
+                                                <input class="required" type="radio" onclick="oculta('.$value->id.','.$vv.'); verificarSubPregunta(0,this.id,'.$op->id.','.$value->id.')"  name="respuesta['.$value->id.'][respuesta]" id="respuestaOption" value="'.$op->detalle.'|'.$op->id.'">
                                                 '.$op->detalle.'
                                                     </label>';
 											if(!empty($op->valor)){
@@ -188,12 +192,13 @@ $this->menu = array(
                                     echo '</tr>';
                                     foreach ($opciones as $op) {
                                         echo '<tr>';
-                                        echo '<td>'.$op->detalle.'</td>';
+                                        echo '<td><input type="hidden" name="respuesta['.$op->id.'][idop]" value="'.$op->id.'">'.$op->detalle.'</td>';
                                         foreach ($matriz as $key) {
                                             echo '<td>';
                                             echo '<div class="radio">
                                               <label class="lblrespuesta">
-                                                <input type="radio" class="required" checked="true" name="respuesta['.$value->id.']['.$op->id.']" id="respuestaOptionMatriz" value="'.$op->detalle.' - '.$key->detalle.'( '.$key->valor.' )">
+                                              
+                                                <input type="radio" class="required" checked="true" name="respuesta['.$value->id.']['.$op->id.']" id="respuestaOptionMatriz" value="'.$op->detalle.' - '.$key->detalle.' ( '.$key->valor.' )|'.$key->id.'">
                                                 
                                               </label>
                                             </div>';
