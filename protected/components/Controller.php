@@ -150,8 +150,16 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getConcesionarioDireccionById($id) {
+        $dealer = Dealers::model()->find(array('condition' => "id={$id}"));
+        if($dealer){
+            return $dealer->direccion;
+        }
+    }
 
     public function getConcesionarioDireccion($id) {
+        //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));

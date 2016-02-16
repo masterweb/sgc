@@ -2959,6 +2959,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionUsados($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
+        $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
 
         if (isset($_POST['GestionInformacion'])) {
