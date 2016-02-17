@@ -1,5 +1,8 @@
 <?php if($tipo_filtro == 'general'):?>
-<?php $area_id = (int) Yii::app()->user->getState('area_id'); //echo $area_id; ?>
+<?php 
+$area_id = (int) Yii::app()->user->getState('area_id'); //echo $area_id;
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+?>
 <div class="form">
     <h4>Búsqueda:</h4>
     <?php
@@ -44,12 +47,34 @@
                 <option value="SeguimientoEntrega">Seguimiento Entrega</option>
             </select>
         </div>
-        <?php if($cargo_id == 70): ?>
+        <?php if($cargo_id == 70 || $cargo_id == 72): ?>
         <?php  
         // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 71 Y EL DEALER ID -> concesionarioid
         $mod = new GestionDiaria;
         $cre = new CDbCriteria();
-        $cre->condition = " cargo_id =71 AND dealers_id = {$dealer_id} ";
+        //echo $id_responsable = Yii::app()->user->getId().'<br>';
+        //echo ('dealer id: '.$dealer_id);
+        
+        switch ($cargo_id) {
+            case 70: // JEFE SUCURSAL
+                $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
+                break;
+            case 72: // JEFE BDC EXONERADOS
+                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                $dealerList = implode(',', $array_dealers);
+                if($tipo == 'exo'){
+                    $cre->condition = " cargo_id = 75 AND dealers_id IN ({$dealerList}) ";
+                }
+                if($tipo == 'bdc'){
+                    $cre->condition = " cargo_id = 73 AND dealers_id IN ({$dealerList}) ";
+                }
+                
+                break;
+
+            default:
+                break;
+        }
+//        $cre->condition = " cargo_id =71 AND dealers_id = {$dealer_id} ";
         $cre->order = " nombres ASC";
         $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
         ?>
@@ -143,6 +168,13 @@
     <div class="row">
         <div class="col-md-6">
             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
+            <?php if(isset($tipo) && $tipo == 'exo'){ ?>
+            <input type="hidden" name="GestionDiaria[tipo]" id="GestionDiaria_tipo" value="exo"/>
+            <?php } if(isset($tipo) && $tipo == 'bdc'){ ?>
+            <input type="hidden" name="GestionDiaria[tipo]" id="GestionDiaria_tipo" value="bdc"/>
+            <?php } else if(!isset($tipo)){ ?>
+            <input type="hidden" name="GestionDiaria[tipo]" id="GestionDiaria_tipo" value="none"/>
+            <?php } ?>
         </div>
         
     </div>

@@ -286,7 +286,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionDiaria/search', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
             </div>
         </div>
     </div>

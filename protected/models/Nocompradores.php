@@ -45,7 +45,7 @@ class Nocompradores extends CActiveRecord
 			array('usuario_id, gestiondiaria_id', 'required'),
 			array('usuario_id, gestiondiaria_id', 'numerical', 'integerOnly'=>true),
 			array('preguntauno, compro, nuevo, marca, modelo, porque, donde', 'length', 'max'=>250),
-			array('fecha, cedula, ceular', 'length', 'max'=>45),
+			array('fecha, cedula, ceular,convencional', 'length', 'max'=>45),
 			array('nombre, apellido', 'length', 'max'=>155),
 			array('email', 'length', 'max'=>145),
 			array('experienciaasesor, caracteristicas, otros', 'safe'),

@@ -20,7 +20,7 @@ class SiteController extends Controller {
         );
     }
 
-    /**
+    /**actionConsultarUsuarioEncuesta
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
@@ -678,25 +678,25 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $where = '';
             if (!empty($ciudad) && $ciudad > 0) {
                 if (empty($where)) {
-                    $where .= "where gi.ciudad_conc =" . $ciudad;
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
                 } else {
-                    $where .= " and gi.ciudad_conc =" . $ciudad;
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.ciudad_conc =" . $ciudad;
                 }
             }
 
             if (!empty($concesionario) && $concesionario > 0) {
                 if (empty($where)) {
-                    $where .= "where gi.dealer_id =" . $concesionario;
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.dealer_id =" . $concesionario;
                 } else {
-                    $where .= " and gi.dealer_id =" . $concesionario;
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.dealer_id =" . $concesionario;
                 }
             }
 
             if (!empty($desde) && !empty($hasta)) {
                 if (empty($where)) {
-                    $where .= "where gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 } else {
-                    $where .= " and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
 
@@ -704,7 +704,47 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
-                    ' . $where;
+                    ' . $where.' ORDER BY gi.fecha DESC';
+            //echo $sql;
+            $persona = Yii::app()->db->createCommand($sql)->queryAll();
+            echo count($persona);
+        }
+		if ($opcion == 4) {
+
+            $ciudad = $p->purify($_POST['ciudad']);
+            $concesionario = $p->purify($_POST['concesionario']);
+            $desde = $p->purify($_POST['desde']);
+            $hasta = $p->purify($_POST['hasta']);
+            $where = '';
+            if (!empty($ciudad) && $ciudad > 0) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gi.ciudad_conc =" . $ciudad;
+                }
+            }
+
+            if (!empty($concesionario) && $concesionario > 0) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gi.dealer_id =" . $concesionario;
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gi.dealer_id =" . $concesionario;
+                }
+            }
+
+            if (!empty($desde) && !empty($hasta)) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                }
+            }
+
+            $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+                    FROM gestion_informacion gi 
+                        inner join gestion_test_drive gt 
+                            on gi.id = gt.id_informacion
+                    ' . $where.' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
             echo count($persona);

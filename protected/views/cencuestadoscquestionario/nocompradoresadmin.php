@@ -97,7 +97,7 @@ $rol = Yii::app()->user->getState('roles');
     </div>
 	 <div class="row "> 
 		<div class="col-md-12 pad-all">
-			<a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/nocompradoresadminencuestados'); ?>"><input type="button" value="No Encuestados" id="encuestadosbtn" class="pad-all btn btn-success btn-sm"></a>
+			<a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/nocompradoresadminencuestados'); ?>"><input type="button" value="Encuestados" id="encuestadosbtn" class="pad-all btn btn-success btn-sm"></a>
 		</div>
 	</div>
     <div class="row ">
@@ -117,7 +117,8 @@ $rol = Yii::app()->user->getState('roles');
                         <th><span>Nombre</span></th>
                         <th><span>Apellido</span></th>
                         <th>C&eacute;dula</th>
-                        <th>Email</th>
+                        <th>Celular</th>
+                        <th>Convencional</th>
                         <th colspan="2">Opciones</th>
                     </tr>
                 </thead>
@@ -135,6 +136,7 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $c->apellido ?> </td>
                             <td><?php echo $c->cedula ?> </td>
                             <td><?php echo $c->ceular ?> </td>
+                            <td><?php echo (!empty($c->convencional))?$c->convencional:'--'; ?> </td>
                             <td><a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/nocompradores', array('id' => $c->id)); ?>" class="btn btn-primary btn-xs btn-danger">Realizar Encuesta</a></a></td>
                             <?php 
 								/*if(!empty($accesosUser)){

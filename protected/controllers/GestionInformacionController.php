@@ -123,7 +123,7 @@ class GestionInformacionController extends Controller {
                 $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
                 $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
             endif;
-            if($cargo_id == 73)
+            if ($cargo_id == 73)
                 $model->bdc = 1;
 
             if (isset($_POST['GestionInformacion']['fecha_cita']))
@@ -232,7 +232,7 @@ class GestionInformacionController extends Controller {
                             $historial->fecha = date("Y-m-d H:i:s");
                             $historial->save();
                             //die('after save');
-                            if($cargo_id == 73)
+                            if ($cargo_id == 73)
                                 $this->redirect(array('gestionInformacion/seguimientobdc'));
                             else
                                 $this->redirect(array('gestionInformacion/seguimiento'));
@@ -252,13 +252,13 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            
+
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
                             $consulta->save();
-                            if($cargo_id == 73)
+                            if ($cargo_id == 73)
                                 $this->redirect(array('gestionInformacion/seguimientobdc'));
                             else
                                 $this->redirect(array('gestionInformacion/seguimiento'));
@@ -304,15 +304,12 @@ class GestionInformacionController extends Controller {
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-                    
-                    if($cargo_id == 73)
+
+                    if ($cargo_id == 73)
                         $this->redirect(array('gestionInformacion/seguimientobdc'));
                     else
                         $this->redirect(array('gestionInformacion/seguimiento'));
-                        
-                
-                    
-                } 
+                }
                 if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
@@ -726,9 +723,9 @@ class GestionInformacionController extends Controller {
             }
             //die('fechaPk: '.$fechaPk);
             /* BUSQUEDA EN CAMPOS VACIOS GERENTE COMERCIAL */
-            if (empty($_GET['GestionDiaria2']['general']) && 
+            if (empty($_GET['GestionDiaria2']['general']) &&
                     empty($_GET['GestionDiaria2']['categorizacion']) &&
-                    $fechaPk == 1 && 
+                    $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['status']) &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['concesionario']) &&
@@ -781,8 +778,8 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['status']) &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['fecha']) &&
-                    empty($_GET['GestionDiaria2']['fuente']) && 
-                    empty($_GET['GestionDiaria2']['grupo']) && 
+                    empty($_GET['GestionDiaria2']['fuente']) &&
+                    empty($_GET['GestionDiaria2']['grupo']) &&
                     empty($_GET['GestionDiaria2']['concesionario'])) {
                 //die('enter busqueda general jefe almacen');
                 $title_busqueda = 'Búsqueda General: ';
@@ -979,7 +976,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
-                }else{
+                } else {
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
                 }
                 switch ($_GET['GestionDiaria2']['status']) {
@@ -1016,11 +1013,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             /* -----------------END SEARCH BY STATUS------------------ */
 
             /* -----------------BUSQUEDA POR FECHA------------------ */
-            if (empty($_GET['GestionDiaria2']['general']) && 
-                    empty($_GET['GestionDiaria2']['categorizacion']) && 
+            if (empty($_GET['GestionDiaria2']['general']) &&
+                    empty($_GET['GestionDiaria2']['categorizacion']) &&
                     empty($_GET['GestionDiaria2']['status']) && $fechaPk == 0 &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
-                    !empty($_GET['GestionDiaria2']['fecha']) && 
+                    !empty($_GET['GestionDiaria2']['fecha']) &&
                     empty($_GET['GestionDiaria2']['concesionario'])) {
                 //die('enter fecha');
                 $tipoFecha = $_GET['GestionDiaria2']['tipo_fecha'];
@@ -1035,10 +1032,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
-                }else{
+                } else {
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
                 };
-                
+
                 $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
                 //die($sql);
 
@@ -1331,7 +1328,26 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 71) { // asesor de ventas
             $sql_cargos .= "WHERE gi.responsable = {$id_responsable} AND ";
-        } if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14) { // AEKIA USERS
+        }
+        if ($cargo_id == 73) { // asesor bdc
+            $sql_cargos .= "WHERE gi.responsable = {$id_responsable} AND gi.bdc = 1 AND ";
+        }
+        if ($cargo_id == 75) { // asesor exonerados
+            $sql_cargos .= "WHERE gi.responsable = {$id_responsable} AND gi.tipo_form_web = 'exonerados' AND ";
+        }
+        if ($cargo_id == 72) { // JEFE BDC EXONERADOS
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
+            if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75 AND ";
+            }
+            if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND";
+            }
+        }
+
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
             $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
         }
 
@@ -1394,7 +1410,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         // BUSQUEDA CAMPOS VACIOS ASESOR VENTAS
         if (empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
                 $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente']) &&
-                empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) && 
+                empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) &&
                 empty($_GET['GestionDiaria']['responsable'])) {
             $search_type = 16;
         }
@@ -1402,6 +1418,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         //die('search type: '.$search_type);
         switch ($search_type) {
             case 1:
+                $count = 0;
                 $select = $sql;
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
@@ -1415,6 +1432,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $count = count($users);
                 //die('before render nombre:'.$count);
                 if ($count > 0) {
+                    $count++;
+                    //die('fef');
                     $title = "Busqueda por nombres o apellidos: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
@@ -1432,6 +1451,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $users = $request->queryAll();
                 //die('before render cedula');
                 if (count($users) > 0) {
+                    $count++;
+                    //die('ccc');
                     $title = "Busqueda por cédula: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
@@ -1449,9 +1470,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $users = $request->queryAll();
                 //die('before render id');
                 if (count($users) > 0) {
+                    $count++;
+                    //die('554');
                     $title = "Busqueda por ID: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
+                    return $data;
+                }
+                if ($count == 3) {
+                    $title = "Busqueda por ID: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                    $data['title'] = $title;
+                    $data['users'] = '';
                     return $data;
                 }
                 break;
@@ -1540,8 +1569,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
                 $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gd.desiste = 0
-                ORDER BY gd.id DESC";
+                if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                    $sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
+                }
+                if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                    $sql .= " gi.bdc = 1 ORDER BY gd.id DESC";
+                }
+                //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
                 //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $request = $con->createCommand($sql);
@@ -1688,16 +1722,43 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($cargo_id == 69) { // gerente comercial
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                             . " WHERE gr.id_grupo = {$grupo_id} ";
-                    $title = "Busqueda por Grupo Total: <strong>".$this->getNombreGrupo($grupo_id)."</strong>";        
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql .= "WHERE gi.dealer_id = {$dealer_id} ";
                     $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
                 }
+                if ($cargo_id == 72) { // jefe bdc
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                        $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable 
+                                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75 ";
+                    }
+                    if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                        $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable 
+                                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73 ";
+                    }
+                    
+                    $title = "Busqueda por Total BDC : <strong>{$dealer_id}</strong>";
+                }
                 if ($cargo_id == 71) { // asesor de ventas
                     $sql .= "WHERE gi.responsable = {$id_responsable} ";
                     $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
-                } 
+                }
+                if ($cargo_id == 73) { // asesor bdc
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    $sql .= "INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND gi.responsable = {$id_responsable} ";
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                }
+                if ($cargo_id == 75) { // asesor exonerados
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    $sql .= " WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) AND gi.responsable = $id_responsable ";
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                }
                 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id ";
                     $title = "Busqueda por Total País";
@@ -1777,14 +1838,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
         }
 
-        //die($sql);
-
-        $request = $con->createCommand($sql);
-        $users = $request->queryAll();
-        $count = count($users);
-        //die('count: '.$count);
-        $tipo = '';
-
+        //die('asdas'.$sql);
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
@@ -1801,13 +1855,29 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
                 $fechaPk = 1;
             }
-
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
-            $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
-            exit();
+            //die('55d: '.$_GET['GestionDiaria']['tipo']);
+            if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                //die('enter exo');
+                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+                $this->render('seguimientoexonerado', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
+                exit();
+            }
+            if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+                $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
+                exit();
+            } else {
+                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+                $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
+                exit();
+            }
         }
 
-
+        $request = $con->createCommand($sql);
+        $users = $request->queryAll();
+        $count = count($users);
+        //die('count: '.$count);
+        $tipo = '';
         $this->render('seguimiento', array('users' => $users, 'model' => $model));
     }
 
@@ -1815,6 +1885,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         //$this->layout = '//layouts/callventas';
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $area_id = (int) Yii::app()->user->getState('area_id');
         $id_responsable = Yii::app()->user->getId();
         $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
         $dealerList = implode(', ', $array_dealers);
@@ -1845,7 +1916,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND gi.responsable = {$id_responsable}
                 ORDER BY gd.id DESC";
             //die($sql);
         }
@@ -1859,10 +1930,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73
                 ORDER BY gd.id DESC";
             //die($sql);
-        } else {
+        } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -1870,9 +1941,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable
                 WHERE gi.bdc = 1
                 ORDER BY gd.id DESC";
-            //die($sql);
+            //die('else: '.$sql);
         }
         //die($sql);
         // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
@@ -2299,7 +2371,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList})
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
@@ -2752,21 +2825,21 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            
+
             //die('random: '.$random_key);
             // SACAMOS EL ARRAY DE IDS DE EXONERADOS DESDE LA BASE
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            if($cargo_id == 75){
+            if ($cargo_id == 75) {
                 $model->responsable = Yii::app()->user->getId();
             }
-            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
+            if ($cargo_id == 71 || $cargo_id == 70) { // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75, $dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }
-            
+
             $model->dealer_id = $this->getDealerId(Yii::app()->user->getId());
             $model->id_cotizacion = $_POST['GestionInformacion']['id_cotizacion'];
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
@@ -2938,7 +3011,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-                    if($cargo_id == 75)
+                    if ($cargo_id == 75)
                         $this->redirect(array('gestionInformacion/seguimientoexonerados'));
                     else
                         $this->redirect(array('gestionInformacion/seguimiento'));
@@ -2998,7 +3071,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            $random_key = $this->getRandomKey(77,$dealer_id); //usados
+            $random_key = $this->getRandomKey(77, $dealer_id); //usados
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
@@ -3188,7 +3261,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionConadis($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
-        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
@@ -3228,14 +3301,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
 
-            
+
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            if($cargo_id == 75){
+            if ($cargo_id == 75) {
                 $model->responsable = Yii::app()->user->getId();
             }
-            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
+            if ($cargo_id == 71 || $cargo_id == 70) { // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75, $dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }
@@ -3427,8 +3500,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->paso = '1-2';
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
-                    
-                    if($cargo_id == 75)
+
+                    if ($cargo_id == 75)
                         $this->redirect(array('gestionInformacion/seguimientoexonerados'));
                     else
                         $this->redirect(array('gestionInformacion/seguimiento'));
@@ -3450,7 +3523,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
     public function actionDiplomaticos($tipo = NULL, $id = NULL, $fuente = NULL, $tipo_fuente = NULL) {
         $model = new GestionInformacion;
-        $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         if (isset($_POST['GestionInformacion'])) {
@@ -3489,14 +3562,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
-            
+
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
-            if($cargo_id == 75){
+            if ($cargo_id == 75) {
                 $model->responsable = Yii::app()->user->getId();
             }
-            if($cargo_id == 71  || $cargo_id == 70){ // asesor de ventas y jefe de sucursal
-                $random_key = $this->getRandomKey(75,$dealer_id); //exonerados
+            if ($cargo_id == 71 || $cargo_id == 70) { // asesor de ventas y jefe de sucursal
+                $random_key = $this->getRandomKey(75, $dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
             }
@@ -3685,7 +3758,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
 
-                    if($cargo_id == 75)
+                    if ($cargo_id == 75)
                         $this->redirect(array('gestionInformacion/seguimientoexonerados'));
                     else
                         $this->redirect(array('gestionInformacion/seguimiento'));

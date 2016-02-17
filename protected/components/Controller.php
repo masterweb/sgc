@@ -350,6 +350,7 @@ class Controller extends CController {
     }
 
     public function getResponsable($id) {
+        //echo 'id: '.$id;
         $responsableid = Usuarios::model()->findByPk($id);
         /* echo '<pre>';
           print_r($dealers);
@@ -1630,10 +1631,10 @@ class Controller extends CController {
         return $float_redondeado;
     }
 
-    public function traercotizaciones() {
+    public function traernocompradores() {
         date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2015-12-09" and encuestado = 0 and id_modelos is not null limit 10';
-        $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
+
+        $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
         $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
@@ -1651,34 +1652,27 @@ class Controller extends CController {
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
+
                     $contactual = 0;
                     $posicion++;
                 }
+
                 if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
-
-                    $cotizacion = new Cotizacionesnodeseadas();
-                    $cotizacion->atencion_detalle_id = (int) $d['id_atencion'];
-
+                    //echo $usuario_list[$posicion].'<br>';
+                    $cotizacion = new Nocompradores();
+                    $cotizacion->gestiondiaria_id = (int) $d->id;
                     $cotizacion->usuario_id = $usuario_list[$posicion];
-                    $cotizacion->fecha = $d['fecha_form'];
-                    $cotizacion->realizado = '0';
-                    $cotizacion->nombre = $d['nombre'];
-                    $cotizacion->apellido = $d['apellido'];
-                    $cotizacion->cedula = $d['cedula'];
-                    $cotizacion->direccion = $d['direccion'];
-                    $cotizacion->telefono = $d['telefono'];
-                    $cotizacion->celular = $d['celular'];
-                    $cotizacion->email = $d['email'];
-                    $cotizacion->modelo_id = $d['id_modelos'];
-                    $cotizacion->version_id = $d['id_version'];
-                    $cotizacion->ciudadconcesionario_id = $d['cityid'];
-                    $cotizacion->concesionario_id = $d['dealerid'];
+                    $cotizacion->nombre = $d->gestioninformacion->nombres;
+                    $cotizacion->apellido = $d->gestioninformacion->apellidos;
+                    $cotizacion->cedula = $d->gestioninformacion->cedula;
+                    $cotizacion->email = $d->gestioninformacion->email;
+                    $cotizacion->ceular = $d->gestioninformacion->celular;
+                    $cotizacion->convencional = $d->gestioninformacion->telefono_casa;
+
                     if ($cotizacion->save()) {
-                        //echo $usuario_list[$posicion];
-                        Yii::app()->db2
-                                ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
-                                ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
-                                ->execute();
+                        $d->encuestado = 1;
+                        $d->realizado = date('Y-m-d h:i:s');
+                        $d->update();
                     }
                 }
                 $contactual++;
@@ -1930,9 +1924,11 @@ class Controller extends CController {
                     ->execute();
             //die('after update asesor');
         } else {
+            //die('enter else');
             $sql2 = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
-                    WHERE u.cargo_id = 75  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    die($sql2);
             $request = $con->createCommand($sql2);
             $post = $request->queryAll();
             foreach ($post as $value) {
@@ -1943,7 +1939,7 @@ class Controller extends CController {
             }
             $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
-                    WHERE u.cargo_id = 75  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
             $request = $con->createCommand($sql);
             $posts = $request->queryAll();
             foreach ($posts as $value) {
