@@ -426,7 +426,10 @@ $count = count($users);
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
+        <?php if($cargo_id != 69){ ?>
+        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));
+        }
+        ?>
         <div class="col-md-8">
             <div class="highlight">
                  <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>

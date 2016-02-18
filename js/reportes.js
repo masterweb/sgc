@@ -1,20 +1,43 @@
 $(function () {
     
     //$(".checkboxmain").on("change", function(e) {checkboxes(e.target);}); //AJAX LOAD VERSIONES EN FILTRO DE MODELOS
+    $('#traficoacumulado').hide();
+    $('#cont_TAgrupo').hide();
     $('#fecha-range1').daterangepicker({locale: {format: 'YYYY-MM-DD'}});
-    $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}}); 
+    $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}});
+
+    $('#fecha-range1').change(function () {loadmodelos($(this)); vaciar();});
+    $('#fecha-range2').change(function () {loadmodelos($(this)); vaciar();});
+    function loadmodelos(e){
+        if(e.attr('value') != ''){
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            $.ajax({
+                url: url_footer_var_modelos,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {fecha1: fecha1, fecha2: fecha2},
+                success: function (data) {
+                    $('.modelos_filtros').html(data);                   
+                }
+            });
+        }        
+    }
 
     //carga responsables   
     $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
     function loadresponsables(e){
         if(e.attr('value') != ''){
             var value = e.attr('value');
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
             $.ajax({
                 url: url_footer_var_asesores,
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {dealer_id: value, resposable: resposable},
+                data: {dealer_id: value, resposable: resposable, fecha1: fecha1, fecha2: fecha2},
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);
                     filtros_notification();                    
@@ -32,14 +55,69 @@ $(function () {
             checkFiltro($(this));
         }
     });
+
+    //TRAFICO ACUMULADO 
+    $(".tipo_busqueda_TA").change(function () {checkFiltro($(this)); });
+    //TODOS TA
+    $('.filtros_modelos_ta').on('change', '#todos_ta', function(){
+        if(this.checked){
+            check = true;
+        }else{
+            check = false;
+        }
+        $('.modelos_TA input').each(function () {
+            $(this).prop('checked', check);
+        });
+    });
+    //carga responsables   
+    $('#TAprovincia').change(function () {loadconcesionariosTA($(this));});
+    $('#TAgrupo').change(function () {loadconcesionariosTA($(this));});
+    function loadconcesionariosTA(e){
+        if(e.attr('value') != ''){
+            var where = '';
+            var value = e.attr('value');
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            if(e.attr('id') == 'TAprovincia'){
+                where = "provincia = '" + value + "'";
+            }else{
+                where = "grupo = '"+ value + "'";
+            }
+            $.ajax({
+                url: url_footer_var_asesoresTA,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {where: where, fecha1: fecha1, fecha2: fecha2},
+                success: function (data) {
+                    $('#TAconcesionarios').html(data);                  
+                }
+            });
+        }        
+    }
     
     function checkFiltro(e){
         if(e.attr('value') == 'grupos'){
+            $('#traficoGeneral').show();
+            $('#traficoacumulado').hide();
             $('.cont_grup').show();
-            $('.cont_prov').hide();            
+            $('.cont_prov').hide();           
         }else if(e.attr('value') == 'provincias'){
+            $('#traficoGeneral').show();
+            $('#traficoacumulado').hide();
             $('.cont_prov').show();
             $('.cont_grup').hide();            
+        }else if(e.attr('value') == 'traficoacumulado'){
+            $('#traficoGeneral').hide(); 
+            $('#traficoacumulado').show();
+            $('#fecha-range1').val('2015-12-01 - 2015-12-31');
+            $('#fecha-range2').val('2015-11-01 - 2015-11-30');         
+        }else if(e.attr('value') == 'TA_grupos'){
+            $('#cont_TAprovincia').hide(); 
+            $('#cont_TAgrupo').show();          
+        }else if(e.attr('value') == 'TA_provincias'){
+            $('#cont_TAprovincia').show(); 
+            $('#cont_TAgrupo').hide();           
         }
     }
 
@@ -65,7 +143,8 @@ $(function () {
                 data: {grupo_id: value, dealer: dealer, tipo: t},
                 success: function (data) {
                     $('#GestionInformacionConcesionario').html(data);
-                    filtros_notification(); 
+                    filtros_notification();
+                    $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
                     loadresponsables($('#GestionInformacionConcesionario'));                   
                 }
             });
@@ -165,16 +244,14 @@ $(function () {
     });
 
     //graficas titulo posicion
-    $( '.graficas' ).children('span').each(function () {
-        var thismargin = parseInt($(this).css('margin-left').replace("px", ""));
-        var thiswidth = $(this).width();
-        var salida = thismargin - thiswidth;
-        $(this).css('margin-left', salida + 'px');
+    $( '.graficas' ).children('.barra').each(function () {
+        anchotit = -$(this).children('span').width() - 10;
+        $(this).children('span').css('margin-left', anchotit + 'px');
     });
 
     //FILTRO MODELOS SLECT CHECKBOXES
     //TODOS
-    $('#todos').change(function () {
+    $('.modelos_filtros').on('change', '#todos', function(){
         if(this.checked){
             check = true;
         }else{
@@ -184,11 +261,10 @@ $(function () {
             $(this).prop('checked', check);
         });
     });
-
-    $('.subcheckbox').change(function () {
+    $('.modelos_filtros').on('change', '.subcheckbox', function(){
         $(this).parents('.contcheck').find('.checkboxmain').prop('checked', false);
     });
-    $('.checkboxmain').change(function () {
+    $('.modelos_filtros').on('change', '.checkboxmain', function(){
         if(this.checked){
             check = true;
         }else{
@@ -196,6 +272,7 @@ $(function () {
         }
         $(this).parents('.contcheck').find('.subcheckbox').prop('checked', check);
     });
+
 });
 
 //Load versiones via ajax // ACTUALMENTE NO ESTA EN USO

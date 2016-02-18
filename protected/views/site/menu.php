@@ -149,43 +149,52 @@ $rol = Yii::app()->user->getState('roles');
                         </div>
                     </li>
                 <?php } // PERFIL ASESOR DE VENTAS --------------------------------------------- ?>
-                <?php if($tipo == 'ventas'){ ?>
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
-                        <?php if ($cargo_id == 71 || $cargo_id == 67 || $cargo_id == 46) {?>
-                            <li class="wrapper">
-                                <div class="forma">
-                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Asesor de Ventas</div></a>
-                                </div>
-                            </li>
-                        <?php } ?>
-                        <?php if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
-                            <li class="wrapper">
-                                <div class="forma">
-                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD SGC</div></a>
-                                </div>
-                            </li>
-                        <?php } ?>
-                        
-                    <?php }?>
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46)) { ?>
-                        <?php if ($cargo_id == 69 || $cargo_id == 46) { ?>
-                            <li class="wrapper">
-                                <div class="forma">
-                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Gerente Comercial</div></a>
-                                </div>
-                            </li>
-                        <?php } ?>
-                        <?php if ($cargo_id == 70) { ?>
-                            <li class="wrapper">
-                                <div class="forma">
-                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Jefe Sucursal</div></a>
-                                </div>
-                            </li>
-                        <?php } ?>
+
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && $tipo == 'ventas') { ?>
+                    <?php if ($cargo_id == 71 || $cargo_id == 67) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Asesor de Ventas</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+                    <?php if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD SGC</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+                    <?php if ($cargo_id != 46) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">Reportes</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+                <?php
+                }
+                // PERFIL JEFE DE SUCURSAL --------------------------------------------- 
+                ?>
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 70 || $cargo_id != 46) && $tipo == 'ventas') { ?>
+            <?php if ($cargo_id == 69 || $cargo_id == 46) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Gerente Comercial</div></a>
+                            </div>
+                        </li>
+                    <?php } ?>
+            <?php if ($cargo_id == 70) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Jefe Sucursal</div></a>
+                            </div>
+                        </li>
                     <?php } ?>
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46) && $tipo == 'ventas') { ?>
 
@@ -236,7 +245,7 @@ $rol = Yii::app()->user->getState('roles');
                             <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD Asesor de Crédito</div></a>
                         </div>
-                    </li>
+                    </li>                   
                 <?php } ?>
                 
 

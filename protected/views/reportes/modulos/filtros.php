@@ -34,13 +34,16 @@
             <h4>Seleccione el tipo de busqueda</h4>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="grupos" class="tipo_busqueda" 
             <?php if($varView['checked_g'] == true){echo 'checked';} ?>
-            >Por Grupos</label>
+            >Por Grupos (2015 >>)</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="provincias" class="tipo_busqueda"
             <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-            >Por Provincias</label>
+            >Por Provincias (2015 >>)</label>
+            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
+            <?php if($varView['checked_p'] == true){echo 'checked';} ?>
+            >Tráfico Acumulado (<< 2015)</label>
             <hr/>
         </div>
-
+<div id="traficoGeneral">
         <!-- PROVINCIAS -->
         <div class="col-md-6 cont_prov">
             <label for="">Provincias</label>
@@ -113,19 +116,49 @@
                 </select>
             </div>
     <?php endif; ?>
-    </div>
 
     <!-- FILTRO MODELOS -->
     <div class="row">
         <div class="col-md-12">
             <label for="">Modelo</label>
             <div class="panel panel-default">
-                <div class="panel-body modelos_filtros">                    
+                <div class="panel-body modelos_filtros">                   
                     <?= $varView['filtro_modelos'] ?> 
                 </div>
             </div>
         </div>
     </div>
+<?php if ($varView['AEKIA'] == true): ?>    
+</div> <!-- #traficogeneral fin-->
+<?php endif; ?>
+
+<?php if ($varView['AEKIA'] == true): ?> 
+<div id="traficoacumulado"> <!-- #traficoacumulado fin-->
+    <div class="row text-center">
+        <h4>Seleccione el tipo de busqueda de Tráfico Acumulado</h4>
+        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_grupos" class="tipo_busqueda_TA" 
+        >Por Grupos</label>
+        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_provincias" class="tipo_busqueda_TA"
+        checked>Por Provincias</label>
+        <hr/>
+    </div>
+    <div class="row">
+        <input type="hidden"  name="GI[traficoacumulado]" id="traficoacumuladoControl" value="false"/>
+        <?= $varView['traficoAcumulado']['ini_filtros']['provincia'] ?>
+        <?= $varView['traficoAcumulado']['ini_filtros']['grupo'] ?>
+        <div class="col-md-6" id="cont_TAconcesionarios">
+            <label for="">Concesionarios</label>
+            <select name="TA[concesionarios]" id="TAconcesionarios" class="form-control">
+                <option value="">-- Concesionarios --</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <?= $varView['traficoAcumulado']['ini_filtros']['modelo'] ?>
+    </div>
+</div> <!-- #traficoacumulado fin-->
+<?php endif; ?>
+
 
     <!-- TRIGER -->
     <div class="row buttons">

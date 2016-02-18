@@ -22,6 +22,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             <label for="GestionDiariafecha">Búsqueda General</label>
             <input type="text" name="GestionDiaria[general]" id="GestionDiaria_general" class="form-control"/>
         </div>
+        <?php if($cargo_id == 71 || $cargo_id == 70 || $cargo_id == 69 || $cargo_id == 46): ?>
         <div class="col-md-6">
             <label for="">Categorización</label>
             <select name="GestionDiaria[categorizacion]" id="" class="form-control">
@@ -34,6 +35,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <option value="Very Cold(mas de 6 meses)">Very Cold(mas de 6 meses)</option>
             </select>
         </div>
+        <?php endif; ?>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -240,20 +242,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             </select>
         </div-->
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <label for="">Fecha</label>
-            <input type="text" name="GestionSolicitudCredito[fecha]" id="fecha-range" class="form-control"/>
-        </div>
-        <!--div class="col-md-6">
-            <label for="">Tipo</label>
-            <select name="GestionSolicitudCredito[tipo_fecha]" id="GestionDiaria_tipo_fecha" class="form-control">
-                <option value="">--Seleccione tipo--</option>
-                <option value="proximoseguimiento">Próximo seguimiento</option>
-                <option value="fechsregistro">Fecha de registro</option>
-            </select>
-        </div-->
-    </div>
+    
     
     <div class="row">
         <div class="col-md-6">

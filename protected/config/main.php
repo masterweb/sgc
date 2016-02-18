@@ -1,5 +1,4 @@
 <?php
-
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
@@ -98,7 +97,7 @@ return array(
           'username' => 'root',
           'password' => 'k143c89?4Fg&2',
 			//'username' => 'root',
-            //'password' => '',
+           // 'password' => '',
             'charset' => 'utf8',
         ),
          'db2' => array(
@@ -106,8 +105,8 @@ return array(
           'class'=>'CDbConnection',
           'emulatePrepare' => true,
           'username' => 'root',
-          //'username' => 'root',
-          'password' => 'k143c89?4Fg&2',
+          'username' => 'root',
+          //'password' => 'k143c89?4Fg&2',
           //'password' => '',
           'charset' => 'utf8',
           ), 

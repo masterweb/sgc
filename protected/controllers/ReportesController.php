@@ -1,4 +1,6 @@
 <?php
+require_once( dirname(__FILE__) . '/../components/TraficoAcumulado/TraficoAcumulado.php');
+
 class ReportesController extends Controller {
 
 	public function actionInicio($id_informacion = null, $id_vehiculo = null) {
@@ -53,42 +55,6 @@ class ReportesController extends Controller {
             }
         }
         $varView['lista_datos'] = $lista_datos;
-
-        //GET MODELOS Y VERSIONES PARA BUSCADOR
-        $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos WHERE active = 1";
-        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
-        $varView['modelos_car'] = $requestModelos_nv->queryAll();
-
-        $activos = array();
-        $varView['filtro_modelos'] = '<div class="row"><input class="checkboxmain" type="checkbox" value="" name="todos" id="todos"> <label><b>TODOS</b></label></div>';
-        
-        foreach ($varView['modelos_car'] as $key => $value) {
-            $checked = '';
-            if ($varView['lista_datos']) {
-                if (in_array($value['id_modelos'], $varView['lista_datos'][0]['modelos'])) {
-                    $activos[] = $value['id_modelos'];
-                    $checked = 'checked';
-                }
-            }                                         
-            $filtro_modelos = '<div class="col-md-4 modelo">
-                        <div class="checkbox contcheck">
-                            <div class="checkmodelo col-md-1">
-                                <span style="display:none;">'.$value['nombre_modelo'].'</span>
-                                <input class="checkboxmain" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="cc'.$value['id_modelos'].'" '.$checked.'>
-                            </div>
-                            <div class="model_info col-md-10">
-                                <label>                                
-                                    '.$value['nombre_modelo'].'
-                                </label>
-                                <div id="result" class="result">'.
-                                    $this->getVersiones($value['id_modelos'], $varView['lista_datos'][1]['versiones'])
-                                .'</div>
-                            </div>
-                        </div>
-                    </div>';
-
-            $varView['filtro_modelos'] .= $filtro_modelos;
-        }
         
         //variables busqueda por defecto
         $tit_ext = '';
@@ -116,6 +82,9 @@ class ReportesController extends Controller {
                 $varView['lista_conce'] = 'null';
                 $varView['AEKIA'] = true;
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> TODOS';
+                //TRAFICO ACUMULADO
+                $traficoAcumulado = new traficoAcumulado;
+                $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros();
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
@@ -199,51 +168,116 @@ class ReportesController extends Controller {
             }
         }else{
                 $varView['checked_g'] = true;
-        }   
+        }
 
-        $retorno = $this->buscar(
-            $varView['cargo_id'], 
-            $varView['id_responsable'], 
-            $select_ext, 
-            $join_ext, 
-            $id_persona, 
-            $group_ext, 
-            $varView['fecha_inicial_anterior'], 
-            $varView['fecha_anterior'], 
-            $varView['fecha_inicial_actual'], 
-            $varView['fecha_actual'], 
-            $varView['concesionario'], 
-            $tipos, 
-            $SQLmodelos,
-            $INERmodelos,
-            $INERmodelos_td
-        );
+        //GET Modelos activos en rango de fechas
+        $modelos_ma = $this->getModleosActivos($varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['lista_datos']);
+        $varView['filtro_modelos'] = $modelos_ma;
 
-        $varView['trafico_mes_anterior'] = $retorno[0];
-        $varView['trafico_mes_actual'] = $retorno[1];               
-        $varView['traficockd1'] = $retorno[2];
-        $varView['traficocbu1'] = $retorno[3];
-        $varView['traficockd2'] = $retorno[4];
-        $varView['traficocbu2'] = $retorno[5];
-        $varView['proforma_mes_anterior'] = $retorno[6];
-        $varView['proforma_mes_actual'] = $retorno[7];
-        $varView['proformackd1'] = $retorno[8];
-        $varView['proformacbu1'] = $retorno[9];
-        $varView['proformackd2'] = $retorno[10];
-        $varView['proformacbu2'] = $retorno[11];
-        $varView['td_mes_anterior'] = $retorno[12];
-        $varView['td_mes_actual'] = $retorno[13];
-        $varView['tdckd1'] = $retorno[14];
-        $varView['tdcbu1'] = $retorno[15];
-        $varView['tdckd2'] = $retorno[16];
-        $varView['tdcbu2'] = $retorno[17];
-        $varView['vh_mes_anterior'] = $retorno[18];
-        $varView['vh_mes_actual']= $retorno[19];
-        $varView['vhckd1'] = $retorno[20];
-        $varView['vhcbu1'] = $retorno[21];
-        $varView['vhckd2'] = $retorno[22];
-        $varView['vhcbu2'] = $retorno[23];            
-        
+        //Check if TRAFICO ACUMLADO ESTA ACTIVO
+        $varView['TA'] = false;
+        if($_GET['GI']['tipo'] == 'traficoacumulado'){
+            $varView['TA'] = true;
+            $varView['TAconsulta'] = [];
+             if($_GET['TA']['modelo'] != ''){
+                $varView['TAmodelo'] = $_GET['TA']['modelo'];
+            }
+            if($_GET['TA']['concesionarios'] != ''){
+                $varView['TAconcesionarios'] = $_GET['TA']['concesionarios'];
+                $varView['TAconsulta']['concesionarios'] = $_GET['TA']['concesionarios'];
+            }
+            if($_GET['TA']['provincia'] != ''){
+                $varView['TAprovincia'] = $_GET['TA']['provincia'];
+                $varView['TAconsulta']['provincia']  = $_GET['TA']['provincia'];
+            }
+            if($_GET['TA']['grupo'] != ''){
+                $varView['TAgrupo'] = $_GET['TA']['grupo'];
+                $varView['TAconsulta']['grupo'] = $_GET['TA']['grupo'];
+            }
+
+            $traficoAcumulado = new traficoAcumulado;
+            $fechas[0] = $varView['fecha_inicial_anterior'];
+            $fechas[1] = $varView['fecha_anterior'];
+            $fechas[2] = $varView['fecha_inicial_actual'];
+            $fechas[3] = $varView['fecha_actual'];
+            $retorno = $traficoAcumulado->buscar($varView['TAconsulta'], '', $fechas);
+            $contador = [];
+            foreach ($retorno['mant'] as $tipo) {
+                if($tipo['tipo'] == 'TRAFICO'){
+                    $contador['trafico_mant'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'TESTDRIVE'){
+                    $contador['testdrive_mant'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'PROFORMA'){
+                    $contador['proforma_mant'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'VENTAS'){
+                    $contador['ventas_mant'][] = $tipo['tipo'];
+                }
+            }
+
+            foreach ($retorno['mact'] as $tipo) {
+                if($tipo['tipo'] == 'TRAFICO'){
+                    $contador['trafico_mact'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'TESTDRIVE'){
+                    $contador['testdrive_mact'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'PROFORMA'){
+                    $contador['proforma_mact'][] = $tipo['tipo'];
+                }else if($tipo['tipo'] == 'VENTAS'){
+                    $contador['ventas_mact'][] = $tipo['tipo'];
+                }
+            }
+            $varView['trafico_mes_anterior'] = count($contador['trafico_mant']);
+            $varView['trafico_mes_actual'] = count($contador['trafico_mact']);               
+            $varView['proforma_mes_anterior'] = count($contador['proforma_mant']);
+            $varView['proforma_mes_actual'] = count($contador['proforma_mact']);
+            $varView['td_mes_anterior'] = count($contador['testdrive_mant']);
+            $varView['td_mes_actual'] = count($contador['testdrive_mact']);
+            $varView['vh_mes_anterior'] = count($contador['ventas_mant']);
+            $varView['vh_mes_actual']= count($contador['ventas_mact']);
+        }else{
+            $retorno = $this->buscar(
+                $varView['cargo_id'], 
+                $varView['id_responsable'], 
+                $select_ext, 
+                $join_ext, 
+                $id_persona, 
+                $group_ext, 
+                $varView['fecha_inicial_anterior'], 
+                $varView['fecha_anterior'], 
+                $varView['fecha_inicial_actual'], 
+                $varView['fecha_actual'], 
+                $varView['concesionario'], 
+                $tipos, 
+                $SQLmodelos,
+                $INERmodelos,
+                $INERmodelos_td
+            );
+
+            $varView['trafico_mes_anterior'] = $retorno[0];
+            $varView['trafico_mes_actual'] = $retorno[1];               
+            $varView['traficockd1'] = $retorno[2];
+            $varView['traficocbu1'] = $retorno[3];
+            $varView['traficockd2'] = $retorno[4];
+            $varView['traficocbu2'] = $retorno[5];
+            $varView['proforma_mes_anterior'] = $retorno[6];
+            $varView['proforma_mes_actual'] = $retorno[7];
+            $varView['proformackd1'] = $retorno[8];
+            $varView['proformacbu1'] = $retorno[9];
+            $varView['proformackd2'] = $retorno[10];
+            $varView['proformacbu2'] = $retorno[11];
+            $varView['td_mes_anterior'] = $retorno[12];
+            $varView['td_mes_actual'] = $retorno[13];
+            $varView['tdckd1'] = $retorno[14];
+            $varView['tdcbu1'] = $retorno[15];
+            $varView['tdckd2'] = $retorno[16];
+            $varView['tdcbu2'] = $retorno[17];
+            $varView['vh_mes_anterior'] = $retorno[18];
+            $varView['vh_mes_actual']= $retorno[19];
+            $varView['vhckd1'] = $retorno[20];
+            $varView['vhcbu1'] = $retorno[21];
+            $varView['vhckd2'] = $retorno[22];
+            $varView['vhcbu2'] = $retorno[23];            
+        }
+
         $varView['dif_ckd_trafico'] = $varView['traficockd1'] - $varView['traficockd2'];
         $varView['dif_cbu_trafico'] = $varView['traficocbu1'] - $varView['traficocbu2'];
         //$varView['usu'] = $usu;
@@ -309,9 +343,97 @@ class ReportesController extends Controller {
         $this->render('inicio', array('varView' => $varView));
     }
 
+    public function getModleosActivos($fecha1_1, $fecha1_2, $fecha2_1, $fecha2_2, $lista_datos){
+        $con = Yii::app()->db;
+        $sql_modelos_act = "SELECT distinct modelo FROM gestion_vehiculo WHERE DATE(fecha) BETWEEN '".$fecha1_1."' AND '".$fecha1_2."' OR DATE(fecha) BETWEEN '".$fecha2_1."' AND '".$fecha2_2."'";
+        $request_ma = $con->createCommand($sql_modelos_act);
+        $request_ma = $request_ma->queryAll();
+        $modelos_ma = '';
+        foreach ($request_ma as $id_modelo) {
+            $modelos_ma .= $id_modelo['modelo'].', ';
+        }
+        $modelos_ma = rtrim($modelos_ma, ", ");
+        if($modelos_ma != ''){
+            $modelos_ma = "AND id_modelos IN (".$modelos_ma.")";
+        }
+
+        //GET MODELOS Y VERSIONES PARA BUSCADOR
+        $sqlModelos_nv = "SELECT nombre_modelo, id_modelos from modelos WHERE active = 1 ".$modelos_ma;
+        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+        $varView['modelos_car'] = $requestModelos_nv->queryAll();
+
+        $activos = array();
+        $filtro_modelos_main = '<div class="row"><input class="checkboxmain" type="checkbox" value="activo" name="todos" id="todos"> <label><b>Todos</b></label></div>';
+        
+        foreach ($varView['modelos_car'] as $key => $value) {
+            $checked = '';
+            if ($lista_datos) {
+                if (in_array($value['id_modelos'], $lista_datos[0]['modelos'])) {
+                    $activos[] = $value['id_modelos'];
+                    $checked = 'checked';
+                }
+            }                                     
+            $filtro_modelos = '<div class="col-md-4 modelo">
+                        <div class="checkbox contcheck">
+                            <div class="checkmodelo col-md-1">
+                                <span style="display:none;">'.$value['nombre_modelo'].'</span>
+                                <input class="checkboxmain" type="checkbox" value="'.$value['id_modelos'].'" name="modelo[]" id="cc'.$value['id_modelos'].'" '.$checked.'>
+                            </div>
+                            <div class="model_info col-md-10">
+                                <label>                                
+                                    '.$value['nombre_modelo'].'
+                                </label>
+                                <div id="result" class="result">'.
+                                    $this->getVersiones($value['id_modelos'], $lista_datos[1]['versiones'])
+                                .'</div>
+                            </div>
+                        </div>
+                    </div>';
+
+            $filtro_modelos_main .= $filtro_modelos;
+        }
+
+        if($modelos_ma == ''){  
+            $filtro_modelos_main = 'No exiten modelos activos para este rango de fechas - Seleccione un nuevo rango de fechas';
+        }
+        return $filtro_modelos_main;  
+    }
+
+    public function actionAjaxGetModelos() {
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        $modelos_ma = $this->getModleosActivos($fecha1[0], $fecha1[1], $fecha2[0], $fecha2[1], null);
+        echo ''.$modelos_ma;
+    }
+
     public function actionAjaxGetAsesores() {
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
         $resposable = isset($_POST["resposable"]) ? $_POST["resposable"] : "";
+
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        //GET asesores activos en rango de fechas
+        $con_aa = Yii::app()->db;
+        $sql_asesores_act = "SELECT distinct responsable FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        $request_aa = $con_aa->createCommand($sql_asesores_act);
+        $request_aa = $request_aa->queryAll();
+        $asesores_aa = '';
+        foreach ($request_aa as $id_asesor) {
+            $asesores_aa .= $id_asesor['responsable'].', ';
+        }
+        $asesores_aa = rtrim($asesores_aa, ", ");
+        //FIN
+
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $con = Yii::app()->db;
 
@@ -326,12 +448,17 @@ class ReportesController extends Controller {
             $cargo_id == 60 ||
             $cargo_id == 61 ||
             $cargo_id == 62){
-            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
         
             $request = $con->createCommand($sql);
             $request = $request->queryAll();
 
-            $data = '<option value="">--Seleccione Asesor--</option>';
+            if(empty($request)){
+                $data = '<option value=""> No hay asesores activos en este rango de fechas</option>';
+            }else{
+                $data = '<option value="">--Seleccione Asesor--</option>'; 
+            }
+            
             foreach ($request as $value) {
                 $data .= '<option value="' . $value['id'].'" ';
                 if($resposable == $value['id']){
@@ -419,12 +546,13 @@ class ReportesController extends Controller {
         if($dfpr >= 0){
             return $dfpr.' %';
         }else{
-            return '<span class="dif">(-'.abs($dfpr).' %)</span>';
+            return '<span class="dif">-'.abs($dfpr).' %</span>';
         }
     }
     
     function DIFconstructor($var1, $var2, $tipo){
         $dif = $var2 - $var1;
+
         if($dif < 0){
             $divisor = $var1;
         }else{
@@ -451,7 +579,7 @@ class ReportesController extends Controller {
         if ($dif >= 0) {
             $resp .= '>' . $dif.$unidad;
         } else {
-            $resp .= ' class="dif">(-' . abs($dif) . $unidad. ')';
+            $resp .= ' class="dif">-' . abs($dif) . $unidad;
         }
         $resp .= '</span>';
 
@@ -470,6 +598,44 @@ class ReportesController extends Controller {
     }
 
     function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td){
+        if(!empty($carros['modelos']) || !empty($carros['versiones'])){
+            $datos_solo_modelos = $this->renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, $carros, $INERmodelos, $INERmodelos_td);
+            if($_GET['todos']){
+                $datos_enteros = $this->renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, null, null, null); 
+                $varView[0] = ($datos_enteros[0] - $datos_solo_modelos[0]) + $datos_solo_modelos[0];
+                $varView[1] = ($datos_enteros[1] - $datos_solo_modelos[1]) + $datos_solo_modelos[1];               
+                $varView[2] = ($datos_enteros[2] - $datos_solo_modelos[2]) + $datos_solo_modelos[2];
+                $varView[3] = ($datos_enteros[3] - $datos_solo_modelos[3]) + $datos_solo_modelos[3];
+                $varView[4] = ($datos_enteros[4] - $datos_solo_modelos[4]) + $datos_solo_modelos[4];
+                $varView[5] = ($datos_enteros[5] - $datos_solo_modelos[5]) + $datos_solo_modelos[5];
+                $varView[6] = ($datos_enteros[6] - $datos_solo_modelos[6]) + $datos_solo_modelos[6];
+                $varView[7] = ($datos_enteros[7] - $datos_solo_modelos[7]) + $datos_solo_modelos[7];
+                $varView[8] = ($datos_enteros[8] - $datos_solo_modelos[8]) + $datos_solo_modelos[8];
+                $varView[9] = ($datos_enteros[9] - $datos_solo_modelos[9]) + $datos_solo_modelos[9];
+                $varView[10] = ($datos_enteros[10] - $datos_solo_modelos[10]) + $datos_solo_modelos[10];
+                $varView[11] = ($datos_enteros[11] - $datos_solo_modelos[11]) + $datos_solo_modelos[11];
+                $varView[12] = ($datos_enteros[12] - $datos_solo_modelos[12]) + $datos_solo_modelos[12];
+                $varView[13] = ($datos_enteros[13] - $datos_solo_modelos[13]) + $datos_solo_modelos[13];
+                $varView[14] = ($datos_enteros[14] - $datos_solo_modelos[14]) + $datos_solo_modelos[14];
+                $varView[15] = ($datos_enteros[15] - $datos_solo_modelos[15]) + $datos_solo_modelos[15];
+                $varView[16] = ($datos_enteros[16] - $datos_solo_modelos[16]) + $datos_solo_modelos[16];
+                $varView[17] = ($datos_enteros[17] - $datos_solo_modelos[17]) + $datos_solo_modelos[17];
+                $varView[18] = ($datos_enteros[18] - $datos_solo_modelos[18]) + $datos_solo_modelos[18];
+                $varView[19] = ($datos_enteros[19] - $datos_solo_modelos[19]) + $datos_solo_modelos[19];
+                $varView[20] = ($datos_enteros[20] - $datos_solo_modelos[20]) + $datos_solo_modelos[20];
+                $varView[21] = ($datos_enteros[21] - $datos_solo_modelos[21]) + $datos_solo_modelos[21];
+                $varView[22] = ($datos_enteros[22] - $datos_solo_modelos[22]) + $datos_solo_modelos[22];
+                $varView[23] = ($datos_enteros[23] - $datos_solo_modelos[23]) + $datos_solo_modelos[23];
+            }else{
+                $varView = $datos_solo_modelos;
+            }
+        }else{
+            $varView = $this->renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, $carros, $INERmodelos, $INERmodelos_td);
+        } 
+        return $varView;     
+    }
+
+    function renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td){
         $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1")->queryAll();
         $CKDsRender = '';
         foreach ($CKDs as $key => $value) {
@@ -479,7 +645,7 @@ class ReportesController extends Controller {
 
         $modelos = null;
         $versiones = null;
-        if(!empty($carros['modelos'])){ $modelos = $carros['modelos'];  }
+        if(!empty($carros['modelos'])){ $modelos = $carros['modelos'];}
         if(!empty($carros['versiones'])){ $versiones = $carros['versiones'];}
 
         if(empty($tipos)){
@@ -487,8 +653,8 @@ class ReportesController extends Controller {
             array_push($tipos,1,2,3,4);       
         }
 
-        $retorno = array();
-        
+        $retorno = array();    
+
         //BUSQUEDA POR TRAFICO      
         $trafico_mes_anterior = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
@@ -721,5 +887,14 @@ class ReportesController extends Controller {
         $retorno[] = $vhcbu2;
 
         return $retorno;
+    }
+
+    //TRAFICO ACUMULADO
+    public function actionAjaxGetConsecionariosTA() {
+        $where = isset($_POST["where"]) ? $_POST["where"] : "";
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $traficoAcumulado = new traficoAcumulado;
+        $traficoAcumulado->ConcesionariosTA($where, $fecha1, $fecha2);
     }
 }

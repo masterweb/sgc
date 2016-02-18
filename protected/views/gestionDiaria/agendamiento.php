@@ -202,6 +202,7 @@
                                 <?php if ($value['tipo_form_web'] == 'usadopago'): ?>
                                     <?php
                                     $stringAutos = $this->getGaleriaUsados($value['id_info']);
+                                    if($stringAutos != ''){
                                     $stringAutos = trim($stringAutos);
                                     $stringAutos = substr($stringAutos, 0, strlen($stringAutos) - 1);
                                     $paramAutos = explode('@', $stringAutos);
@@ -224,6 +225,7 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    <?php } ?>
                             <?php endif; ?>
                             </table>                       
                     <?php endforeach; ?>
