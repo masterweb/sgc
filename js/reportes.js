@@ -5,6 +5,7 @@ $(function () {
     $('#cont_TAgrupo').hide();
     $('#fecha-range1').daterangepicker({locale: {format: 'YYYY-MM-DD'}});
     $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}});
+
     $('#fecha-range1').change(function () {loadmodelos($(this)); vaciar();});
     $('#fecha-range2').change(function () {loadmodelos($(this)); vaciar();});
     function loadmodelos(e){
