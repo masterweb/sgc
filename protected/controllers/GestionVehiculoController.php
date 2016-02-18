@@ -1074,6 +1074,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
+        $tipo_exonerado = $this->getTipoExoInfo($id_informacion);
         //die('conc id: '.$concesionarioid);
         $telefono = $this->getAsesorTelefono($id_asesor);
         $celular = $this->getAsesorCelular($id_asesor);
@@ -1123,7 +1124,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
         $mPDF1->WriteHTML($stylesheet, 1);
         # renderPartial (only 'view' of current controller)
-        $mPDF1->WriteHTML($this->renderPartial('proformaexo', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
+        $mPDF1->WriteHTML($this->renderPartial('proformaexo', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion,
+            'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc,'tipo_exonerado' => $tipo_exonerado), true));
 
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
@@ -1169,7 +1171,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                             <p style="margin: 2px 0;">Estaremos gustosos de servirle.</p><br />
                             <p style="margin: 2px 0;">Kia Motors Ecuador</p>
                             <p></p><br /><br />';
-
 
         $general .= '</div>
                             <br />
@@ -1285,8 +1286,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $headers = 'From: info@kia.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         //$email = $emailCliente; //email administrador
-        //$email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
-        $email = 'gansaldo72@hotmail.com';
+        $email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
+        //$email = 'gansaldo72@hotmail.com';
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
         $send = sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);

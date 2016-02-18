@@ -289,7 +289,7 @@
                     <?php } ?>
                     <div class="row buttons">
                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Actualizar' : 'Actualizar', array('class' => 'btn btn-danger')); ?>
-                        <input type="hidden" name="Usuarios[firma]" id="Usuarios_firma" value=""/>
+                        <input type="hidden" name="Usuarios[firma]" id="Usuarios_firma" value="<?php if (!empty($firma)){echo $model->firma;} ?>"/>
                     </div>
 
                     <?php $this->endWidget(); ?>

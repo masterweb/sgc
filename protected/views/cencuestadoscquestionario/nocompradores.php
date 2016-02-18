@@ -77,8 +77,8 @@ $rol = Yii::app()->user->getState('roles');
 										<textarea name="datos[respuesta_experiencia]" id="txt_experiencia" class="form-control sb" placeholder="Ingrese la experiencia aquí"></textarea>
 									</div>
 							</li>
-							<li><div class="radio"><input onclick="nover('subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_precio" value="Precio">Precio</label></div></li>
-							<li><div class="radio"><input onclick="nover('subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_credito" value="Credito Rechazado">Credito Rechazado</label></div></li>
+							<li><div class="radio"><input onclick="nover('subpreguntas_a'); verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_precio" value="Precio">Precio</label></div></li>
+							<li><div class="radio"><input onclick="nover('subpreguntas_a'); verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_credito" value="Credito Rechazado">Credito Rechazado</label></div></li>
 							<li><div class="radio"><input onclick="nover('subpreguntas_a'); verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_dinero" value="Falta de Dinero">Falta de Dinero</label></div></li>
 							<li>
 								<div class="radio"><input onclick="nover('subpreguntas_a'); ver('div_caracteristicas','subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_caracteristicas" value="Características del vehículo o color no disponible">Características del vehículo o color no disponible</label></div>
@@ -88,7 +88,7 @@ $rol = Yii::app()->user->getState('roles');
 								</div>
 							</li>
 							<li><div class="radio"><input onclick="nover('subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_desicion" value="Aun no toma la decision">Aún no toma la decisión </label></div></li>
-							<li><div class="radio"><input onclick="nover('subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_modelo" value="Modelo no disponible">Modelo no disponible</label></div></li>
+							<li><div class="radio"><input onclick="nover('subpreguntas_a'); verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_modelo" value="Modelo no disponible">Modelo no disponible</label></div></li>
 							<li>
 								<div class="radio"><input onclick="nover('subpreguntas_a'); ver('div_otro','subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_otros" value="Otros">Otros</label></div>
 								<div id="div_otro" class="subpreguntas_a" style="display:none">

@@ -19,11 +19,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
     $(function () {
         //$('#toolinfo').tooltip();
         $('#toolinfo').tooltipster({
-            content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
-<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>\n\
-<p style="text-align:left;" class="tool">Showroom:  10 Pasos de Ventas</p>\n\
-<p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
-'),
+            content: $('<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>'),
             position: 'right',
             maxWidth: 500,
             theme: 'tooltipster-default '
@@ -287,10 +283,10 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
+        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion,'tipo' =>'exonerado'));?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionDiaria/search', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general','tipo' => 'exo'));?>
             </div>
         </div>
     </div>
@@ -517,7 +513,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 </td>
                                 <td><?php echo $c['tipo_ex']; ?></td>
                                 <td>
-                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => 'showroom')); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                     <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
                                     <?php if ($c['paso'] == '1-2') { ?>
                                         <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    

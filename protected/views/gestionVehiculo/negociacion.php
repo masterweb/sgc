@@ -142,6 +142,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 0},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });
@@ -155,6 +156,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     type: 'POST',
                     data: {idInformacion: idinfo, tipo: 1},
                     success: function (data) {
+                        $('#bg_negro').show();
                         location.reload();
                     }
                 });
@@ -2465,9 +2467,9 @@ function deleter(id){
                 <br />
                 <div class="row">
                     <div class="col-md-8  col-xs-12 links-tabs">
-                        <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
                         <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
                     </div>
                 </div>
             </div>   

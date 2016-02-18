@@ -144,7 +144,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                         <?php
                         $con = Yii::app()->db;
-                        $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte,    gi.email, gi.direccion,gi.celular, gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gd.* FROM gestion_diaria gd 
+                        $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.direccion,gi.celular, gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gi.senae, gd.* FROM gestion_diaria gd 
                                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                                 WHERE gi.id = {$_GET['id']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
                                 //die('sql: '.$sql);
@@ -217,6 +217,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                             ?>
                                         </td>
                                     </tr>
+                                    <?php if($value['senae']): ?>
+                                    <tr>
+                                        <td>
+                                            <strong>Senae:</strong><?php echo ' Si'; ?>
+                                        </td>
+                                    </tr>
+                                    <?php endif; ?>
                                 </table>                       
                             <?php endforeach; ?>
                         </div>
@@ -226,6 +233,14 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <h1 class="tl_seccion_rf">Status</h1>
                     </div>  
                     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                      <?php 
+                    $con = Yii::app()->db;
+                    $sqlpr = "SELECT * FROM gestion_diaria WHERE id_informacion = {$_GET['id']} AND prospeccion = 1";
+                    //die($sql);            
+                    $request = $con->createCommand($sqlpr);
+                    $posts = $request->queryAll();
+                      ?>
+                      <?php if(count($posts) > 0){ ?>  
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                           <h4 class="panel-title">
@@ -236,35 +251,24 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         </div>
                         <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                           <div class="panel-body">
-                            <?php $cpr = GestionAgendamiento::model()->count(array('condition' => "id_informacion=:match AND paso = '1-2'",'params' => array(':match' => $_GET['id'])));?>
-                            <?php if($cpr > 0){ 
-                            $pros = GestionAgendamiento::model()->findAll(array(
-                                'condition' => "id_informacion=:match AND paso = '1-2'",
+                            <?php 
+                            $pv = GestionInformacion::model()->findAll(array(
+                                'condition' => "id=:match",
                                 'params' => array(':match' => $_GET['id']))
-                            ); 
+                            );
+                            
                             ?>
-                          <table class="table table-striped">
-                                  <thead>
-                                      <tr>
-                                          <th>Paso</th>
-                                          <th>Observaciones</th>
-                                          <th>Fecha seguimiento</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                          <?php
-                            foreach ($pros as $vseg) {
-                                echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
-                                        . '<td>'.$vseg['observaciones'].'</td>'
-                                . '<td>'.$vseg['agendamiento'].'</td></tr>';
+                            <?php
+                            foreach ($pv as $vpv) {
+                                echo '<div class="col-md-6">Prospección el: </div>'
+                                . '<div class="col-md-6">'.$vpv['fecha'].'</div>';
                             }
                             ?>
-                            </tbody>
-                            </table>
-                            <?php } ?>
+                            
                           </div>
                         </div>
                       </div>
+                      <?php } ?>  
                       <?php if($_GET['fuente'] == 'showroom'){ ?>  
                       <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
@@ -315,6 +319,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                   <thead>
                                       <tr>
                                           <th>Paso</th>
+                                          <th>Observaciones</th>
                                           <th>Fecha seguimiento</th>
                                       </tr>
                                   </thead>
@@ -322,10 +327,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                               <?php
                             foreach ($seg as $vseg) {
                                 echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
+                                        . '<td>'.$vseg['observaciones'].'</td>'
                                 . '<td>'.$vseg['agendamiento'].'</td></tr>';
                             }
                             ?>
-                            </tbody>
+                                </tbody>
                             </table>
                           </div>
                         </div>
@@ -532,7 +538,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 ));
                 $art = GestionConsulta::model()->findAll($criteria4);
                 foreach ($art as $c){
-                    if ($c['preg1_sec5'] == 0 && !empty($c['preg1_sec5'])){ // SI TIENE VEHICULO
+                    //if ($c['preg1_sec5'] == 0 || !empty($c['preg1_sec5'])){ // SI TIENE VEHICULO
                         $params = explode('@', $c['preg1_sec2']);
                         //print_r($params);
                         $modelo_auto = $params[1] . ' ' . $params[2];
@@ -585,7 +591,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div class="col-md-4"><p>Mantenerlo</p></div>
                                 <?php
                             }
-                    } // END SI TIENE VEHICULO 
+                    //} // END SI TIENE VEHICULO 
                         ?>
                     </div>
                     <div class="col-md-8">
@@ -687,34 +693,33 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-9" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
                     <div class="col-md-8">
                         <?php //$modelos = $this->getModelosPr($id); ?>
-                        <div class="col-md-2"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php //echo $this->getPdf($c['modelo']); ?>" class="btn btn-xs btn-success" target="_blank">Catálogo</a></div>
+                        <div class="col-md-2"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($val['modelo']); ?>" class="btn btn-xs btn-success" target="_blank">Catálogo</a></div>
                     </div>
                     <?php
-                    $criteria8 = new CDbCriteria(array(
-                        'condition' => "id_informacion={$_GET['id']}"
-                    ));
-                    $art2 = GestionPresentacion::model()->findAll($criteria8);
+                    $art2 = GestionPresentacion::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));
                     foreach ($art2 as $c){
+                    ?>
+
+                    <?php
+                    $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 5"));
+                    $agen5 = GestionAgendamiento::model()->count($crit5);
+
+                    $ag5 = GestionAgendamiento::model()->findAll($crit5);
+                    if ($agen5 > 0) {
                         ?>
+                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                            <?php
 
-                        <?php
-                        $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 5"));
-                        $agen5 = GestionAgendamiento::model()->count($crit5);
-
-                        $ag5 = GestionAgendamiento::model()->findAll($crit5);
-                        if ($agen5 > 0) {
+                        foreach ($ag5 as $a) {
                             ?>
-                            <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
-                                <?php
-                            
-                            foreach ($ag5 as $a) {
-                                ?>
-                                <div class="row">
-                                    <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                    <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                </div>
-                                </div>
-                    <?php }} ?>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
+                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                            </div>
+                        </div>
+                    <?php }
+                    } 
+                    ?>
                         
                         <?php
                     } // endforeach
@@ -759,7 +764,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             </div>    
                         <?php }// end foreach
                         
-                            } // endif ?>
+                        } // endif ?>
                         
                 <?php } // End - Paso 6 - Demostración ?>
                 <?php if ($this->getAnswer(5, $id) > 0) { ?>

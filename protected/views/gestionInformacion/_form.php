@@ -260,9 +260,8 @@ if ($ced != '') {
                     //validateVehiculo();
                     break;
                 case '4':// si estoy interesado
-
                     $('.cont-vec').hide();
-                    $('.cont-interesado').show();
+                    $('.cont-interesado').show();$('.cont_encuentro').show();$('.cont-lugar').show();$('.cont-conc').show();
                     $('.cont-nocont').hide();
                     //validateInteresado();
                     break;
@@ -271,6 +270,7 @@ if ($ced != '') {
                     $('.cont-nocont').show();
                     $('.cont-int-price').hide();
                     $('.cont-interesado').hide();
+                    $('.cont-interesado').show();$('.cont_encuentro').hide();$('.cont-lugar').hide();$('.cont-conc').hide();
                     break;
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
@@ -409,18 +409,6 @@ if ($ced != '') {
                         //$('#telefono').val('');
                         return false;
                     }
-//                    var k = validateCantNumbers(num_tel);
-//                    if (k == false) {
-//                        $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese correctamente su teléfono</label>');
-//                        //$("#telefono").val("");
-//                        return false
-//                    }
-//                    var k = validateCantNumbers(num_casa);
-//                    if (k == false) {
-//                        $('#GestionInformacion_telefono_casa').after('<label for="telefono3" generated="true" class="error" style="display: block;" id="telefono3">Ingrese correctamente su teléfono</label>');
-//                        //$("#telefono").val("");
-//                        return false
-//                    }
                     form.submit();
                 }
             });
@@ -457,7 +445,8 @@ if ($ced != '') {
             switch (observaciones) {
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
-                case '6':// telefono equivocado    
+                case '6':// telefono equivocado  
+                    //console.log('enter case 6');
                     $('.cont-vec').hide();
                     $('.cont-ag').hide();
                     $('.cont-nocont').hide();
@@ -560,9 +549,9 @@ if ($ced != '') {
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
                         submitHandler: function (form) {
-                            var proximoSeguimiento = $('#agendamiento2').val();
+                            var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
-                                if ($('#GestionInformacion_check2').val() != 2) {
+                                if ($('#GestionInformacion_check').val() != 2) {
                                     var cliente = $('#GestionInformacion_nombres').val() + ' ' + $('#GestionInformacion_apellidos').val();
                                     var params = proximoSeguimiento.split("/");
                                     var fechaDate = params[0] + params[1] + params[2];
@@ -575,14 +564,14 @@ if ($ced != '') {
                                     //console.log('start time:'+fechaStart+startTime);
                                     //console.log('fecha end:'+fechaStart+endTime);
                                     var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=Por definir&to_name=' + cliente + '&conc=no';
-                                    $('#event-download2').attr('href', href);
-                                    $('#calendar-content2').show();
-                                    $("#event-download2").click(function () {
-                                        $('#GestionInformacion_calendar2').val(1);
-                                        $('#calendar-content2').hide();
-                                        $('#GestionInformacion_check2').val(2)
+                                    $('#event-download').attr('href', href);
+                                    $('.calendar-content').show();
+                                    $("#event-download").click(function () {
+                                        $('#GestionInformacion_calendar').val(1);
+                                        $('.calendar-content').hide();
+                                        $('#GestionInformacion_check').val(2)
                                     });
-                                    if ($('#GestionInformacion_calendar2').val() == 1) {
+                                    if ($('#GestionInformacion_calendar').val() == 1) {
                                         form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
@@ -1081,21 +1070,14 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                     </div>
                                 </div>
                             </div>
-                            <div class="row cont-ag" style="display: none;">
-                                <div class="col-md-4">
-                                    <select name="intoptions" id="intoptions" class="form-control">
-                                        <option value="">--Seleccione--</option>
-                                        <option value="1">Agendamiento</option>
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="cont-interesado" style="display:none;">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Agendamiento</label>
                                         <input type="text" name="GestionDiaria[agendamiento]" id="agendamiento" class="form-control">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 cont_encuentro">
                                         <label for="">Lugar de Encuentro</label>
                                         <select name="GestionProspeccionRp[lugar]" id="GestionProspeccion_lugar" class="form-control">
                                             <option value="0">Concesionario</option>

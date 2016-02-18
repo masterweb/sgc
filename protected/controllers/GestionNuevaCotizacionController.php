@@ -78,7 +78,7 @@ class GestionNuevaCotizacionController extends Controller {
             if ($_POST['GestionNuevaCotizacion']['tipo'] == 'Flota') {
                 $model->empresa_flotas = $_POST['GestionNuevaCotizacion']['empresa'];
             }
-            //die('save identf');
+            //die('fuente: '.$_POST['GestionNuevaCotizacion']['fuente']);
             switch ($_POST['GestionNuevaCotizacion']['fuente']) {
                 case 'otro':
                     $model->fuente = $_POST['GestionNuevaCotizacion']['fuente'];
@@ -366,6 +366,7 @@ class GestionNuevaCotizacionController extends Controller {
                     $model->setscenario('consulta');
                     $tipo = 'gestion';
                     $documento = $_POST['GestionNuevaCotizacion']['identificacion'];
+                    //die('documente: '.$documento);
                     switch ($documento) {
                         case 'ci':
                             //$model->setscenario('prospeccion');
@@ -393,6 +394,7 @@ class GestionNuevaCotizacionController extends Controller {
                             //die('enter ced');
                             $this->redirect(array('gestionVehiculo/create', 'id' => $ced->id));
                         } else {
+                            //die('no find cedula');
                             if ($_POST['GestionNuevaCotizacion']['tipo'] == 'Usado') {
                                 $model->setscenario('prospeccion');
                                 $tipo = 'trafico';
@@ -558,10 +560,10 @@ class GestionNuevaCotizacionController extends Controller {
             }
         }
 
-
-        $this->render('create', array(
-            'model' => $model
-        ));
+        $this->redirect(array('gestionInformacion/seguimiento'));
+//        $this->render('create', array(
+//            'model' => $model
+//        ));
     }
 
     /**

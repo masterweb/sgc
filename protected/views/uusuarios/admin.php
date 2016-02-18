@@ -50,7 +50,7 @@ $rol = Yii::app()->user->getState('roles');
     </div>
     <div class="row">
         <!-- FORMULARIO DE BUSQUEDA -->
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="highlight">
                 <div class="form">
                     <h4>Filtrar por:</h4>
@@ -64,62 +64,92 @@ $rol = Yii::app()->user->getState('roles');
                     ));
                     ?>
                     <div class="row">
-                        <label class="col-sm-2 control-label" for="Casos_estado">Nombres</label>
-                        <div class="col-md-4">
-                            <input size="80" maxlength="80" value="<?php echo $busqueda; ?>" class="form-control" name="Search[Nombres]" id="Search_nombres" type="text">
-
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Casos_estado">Nombres</label>
+                            <div class="col-sm-4">
+                                <input size="80" maxlength="80" value="<?php echo $busqueda;?>" class="form-control" name="Usuarios[nombres]" id="Search_nombres" type="text">
+                            
+                             </div>
+                             <label class="col-sm-2 control-label" for="Casos_estado">Apellidos</label>
+                            <div class="col-sm-4">
+                                <input size="80" maxlength="80" value="<?php echo $apellidos;?>" class="form-control" name="Usuarios[apellidos]" id="Search_nombres" type="text">
+                            
+                             </div>
+                             </div>
+                        
+                         <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Casos_estado">Correo Electrónico</label>
+                        <div class="col-sm-10">
+                            <input size="80" maxlength="80" value="<?php echo $email;?>" class="form-control" name="Usuarios[email]" id="Search_email" type="text">
+                            
                         </div>
-                        <label class="col-sm-2 control-label" for="Casos_estado">Email</label>
-                        <div class="col-md-4">
-                            <input size="80" maxlength="80" value="<?php echo $email; ?>" class="form-control" name="Search[Email]" id="Search_email" type="text">
-
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-sm-2 control-label" for="Casos_estado">Cargo</label>
-                        <div class="col-md-4">
-                            <?php
-                            if (!empty($cargo)) {
-                                echo '<select class="form-control" name="Search[Cargo]" id="Search_cargo">';
-                                echo '<option value="A">Seleccione >></option>';
-                                foreach ($cargo as $c) {
-                                    echo '<option value="' . $c->id . '">' . $c->descripcion . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="Cargo_area_id">Ubicaci&oacute;n</label>
+                            <div class="col-sm-4">
+                                <?php 
+                                        echo '<select class="form-control" onchange="traerArea(this.value)">';
+                                        echo '<option value="0">--Seleccione la Ubicaci&oacute;n--</option>';
+                                        echo '<option value="1">AEKIA</option>';
+                                        echo '<option value="2">CONCESIONARIO</option>';
+                                        echo '</select>';
+                                ?> 
+                                
+                            </div>
+                            <label class = 'col-sm-2 control-label'>&Aacute;rea</label>
+                            <div class="col-sm-4">
+                                <div id="dArea"> <p style="font-size:13px;font-weight:bold;padding-top:5px"><< Seleccione una Ubicaci&oacute;n</p></div>
+                                
+                            </div>
+                            
                         </div>
-                        <label class="col-sm-2 control-label" for="Casos_estado">Concesionario</label>
-                        <div class="col-md-4">
-
-                            <?php
-                            if (!empty($concesionarios)) {
-                                echo '<select class="form-control" name="Search[Concesionario]" id="Search_concesionario">';
-                                echo '<option value="A">Seleccione >></option>';
-                                foreach ($concesionarios as $c) {
-                                    echo '<option value="' . $c->id . '">' . $c->name . '</option>';
-                                }
-                                echo '</select>';
-                            }
-                            ?>
+                        <div class="form-group">
+                            <label class = 'col-sm-2 control-label'>Cargo</label>
+                            <div class="col-sm-4">
+                                <?php //echo $form->dropDownList($model,'cargo_id', CHtml::listData(Cargo::model()->findAll(), 'id', 'descripcion'), array('empty'=>'Seleccione >>','class'=>'form-control')) ?> 
+                                <div id="ccargos"><h6>Primero seleccione un &aacute;rea por favor</h6></div>
+                                
+                            </div>
+                        
+                            <label class = 'col-sm-2 control-label'>Grupo Concesionarios</label>
+                            <div class="col-sm-4">
+                                <!--<select class = 'form-control' name="Usuarios[grupo_id]" id="Usuarios_grupo_id" onchange="buscarConcesionario(this.value)">-->
+                                <select class = 'form-control' name="Usuarios[grupo_id]" id="Usuarios_grupo_id">
+                                    <option> -- Seleccione -- </option>
+                                    <?php
+                                        $grupo = GrGrupo::model()->findAll();
+                                        if(!empty($grupo)){
+                                            foreach($grupo as $c){
+                                                echo '<option value="'.$c->id.'">'.$c->nombre_grupo.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <!--<label class = 'col-sm-2 control-label'>Concesionarios</label>
+                            <div class="col-sm-4">
+                                <div id="concesionarioscbo"><h6><< Primero seleccione un grupo de concesionario</h6></div>
+                                
+                            </div>-->
+                            
                         </div>
                     </div>
                     <div class="row">
                         <div class="row col-md-19">
-                            <?php
-                            foreach (Yii::app()->user->getFlashes() as $key => $message) {
+                            <?php   foreach(Yii::app()->user->getFlashes() as $key => $message) {
                                 echo '<div class=" row flash-' . $key . '">' . $message . "</div>\n";
-                            }
-                            ?>
+                            }?>
                         </div>   
                     </div>
                 </div>
-
-
-                <div class="row buttons">
-                <?php //echo CHtml:submitButton($model->isNewRecord ? 'Buscar' : 'Save', array('class' => 'btn btn-danger'));      ?>
-                    <input class="btn btn-danger" type="submit" name="yt0" value="Buscar">
-                </div>
+                    
+                    
+                    <div class="row buttons">
+                        <?php //echo CHtml:submitButton($model->isNewRecord ? 'Buscar' : 'Save', array('class' => 'btn btn-danger'));     ?>
+                        <input class="btn btn-danger" type="submit" name="yt0" value="Buscar">
+                    </div>
 <?php $this->endWidget(); ?>
             </div>
 
@@ -290,9 +320,131 @@ endforeach;
     </div>
 </div>
 <script>
-    $(function () {
+    $(function(){
         $("#Search_cargo").val('<?php echo $cargos ?>');
-        $("#Search_concesionario").val('<?php echo $concesionarioss ?>');
-
+        $("#Usuarios_grupo_id").val('<?php echo $concesionarioss ?>');
+        
     });
+    $(document).ready(function () {
+
+    (function ($) {
+
+        $('#filter').keyup(function () {
+
+            var rex = new RegExp($(this).val(), 'i');
+            $('.searchable tr').hide();
+            $('.searchable tr').filter(function () {
+                return rex.test($(this).text());
+            }).show();
+
+        })
+
+    }(jQuery));
+
+});
+    function buscarDealer(vl){
+        //concesionarioscbo
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl("site/traerconsesionario")?>',
+            type:'POST',
+            async:true,
+            data:{
+                rs : vl,
+            },
+            success:function(result){
+                if(result == 0){
+                    alert("No se pudo realizar la consulta de concesionarios.");
+                    
+                }else{
+                    $("#concesionarioscbo").html(result);
+                }
+            }
+        });
+    }
+    function buscarConcesionario(vl){
+        //concesionarioscbo
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl("site/traerconsesionario")?>',
+            type:'POST',
+            async:true,
+            data:{
+                rs : vl,
+            },
+            success:function(result){
+                if(result == 0){
+                    alert("No se pudo realizar la consulta de concesionarios.");
+                    
+                }else{
+                    $("#concesionarioscbo").html(result);
+                }
+            }
+        });
+    }
+    function buscarCargo(vl){
+        //concesionarioscbo
+        $.ajax({
+            url: '<?php echo Yii::app()->createUrl("site/traercargos")?>',
+            type:'POST',
+            async:true,
+            data:{
+                rs : vl,
+            },
+            success:function(result){
+                if(result == 0){
+                    alert("No se pudo realizar la consulta de cargos.");
+                    $("#ccargos").html("<p style='font-size:13px;font-weight:bold;padding-top:5px;'>Seleccione un &aacute;rea.</p>");
+                }else{
+                    //alert(result)
+                    $("#ccargos").html(result);
+                }
+            }
+        });
+    }
+
+
+
+    function traerArea(vl){
+        if(vl>0){
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl("/site/traerArea")?>',
+                type:'POST',
+                async:false,
+                data:{
+                    rs : vl,
+                },
+                success:function(result){
+                    if(result != 0){
+                        $("#dArea").html(result);
+                        buscarCargo($("#Cargo_area_id").val());
+                    }else{
+                         $("#dArea").html('Seleccione una Ubicacion por favor.');
+                    }
+                }
+            });
+        }
+    }
+    function verciudadcon(vl){
+        $("#descripcionUbicaciones").hide();
+        if(vl>0){
+            $.ajax({
+                url: '<?php echo Yii::app()->createUrl("/site/traerciudadcon")?>',
+                type:'POST',
+                async:false,
+                data:{
+                    rs : vl,
+                },
+                success:function(result){
+                    if(result != 0){
+                        $("#descripcionUbicaciones").html(result);
+                        $("#descripcionUbicaciones").show();
+                        if($('#Usuarios_concesionario_id :selected').length >1){
+                                    $('#pppc').html('--');
+                            }
+                    }else{
+                         $("#descripcionUbicaciones").html('Se produjo un error vuelva a cargar el sitio e intente nuevamente.');
+                    }
+                }
+            });
+        }
+    }
 </script>

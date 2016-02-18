@@ -51,12 +51,27 @@ class Controller extends CController {
     }
 
     public function getCiudad($id) {
+        //die('id: '.$id);
         $ciudad = Dealercities::model()->findByPk($id);
         if (!is_null($ciudad) && !empty($ciudad)) {
             return $ciudad->name;
         } else {
             return 'NA';
         }
+    }
+    
+    public function getCiudadConcesionario($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $gt = GestionInformacion::model()->find($criteria);
+        $concesionario = $gt->concesionario;
+        
+        $cri = new CDbCriteria;
+        $cri->condition = "id={$concesionario}";
+        $ci = Dealers::model()->find($cri); 
+        $ciudad = $ci->cityid;
+        
+        return $this->getCiudad($ciudad);
     }
 
     public function getEmailCliente($id_informacion) {
@@ -65,6 +80,25 @@ class Controller extends CController {
         $email = GestionInformacion::model()->find($criteria);
         if ($email)
             return $email->email;
+        else
+            return false;
+    }
+    public function getTelefonoCliente($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $email = GestionInformacion::model()->find($criteria);
+        if ($email)
+            return $email->telefono_casa;
+        else
+            return false;
+    }
+    
+    public function getCelularCliente($id_informacion) {
+        $criteria = new CDbCriteria;
+        $criteria->condition = "id={$id_informacion}";
+        $email = GestionInformacion::model()->find($criteria);
+        if ($email)
+            return $email->celular;
         else
             return false;
     }
@@ -116,8 +150,16 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getConcesionarioDireccionById($id) {
+        $dealer = Dealers::model()->find(array('condition' => "id={$id}"));
+        if($dealer){
+            return $dealer->direccion;
+        }
+    }
 
     public function getConcesionarioDireccion($id) {
+        //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
@@ -308,6 +350,7 @@ class Controller extends CController {
     }
 
     public function getResponsable($id) {
+        //echo 'id: '.$id;
         $responsableid = Usuarios::model()->findByPk($id);
         /* echo '<pre>';
           print_r($dealers);
@@ -695,6 +738,13 @@ class Controller extends CController {
         $test = GestionTestDrive::model()->count($criteria);
         return $test;
     }
+    public function getFactura($id_informacion, $id_vehiculo) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
+        ));
+        $test = GestionFactura::model()->count($criteria);
+        return $test;
+    }
 
     public function getTestDemostracion($id_informacion, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
@@ -837,6 +887,21 @@ class Controller extends CController {
         foreach ($dealers as $value) {
             //echo 'asdasd'.$value['concesionario_id'];
             $array_dealers[$counter] = $value['dealer_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
+    
+    public function getDealerGrupoConcUsuario($id_responsable) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "usuario_id={$id_responsable}"
+        ));
+        $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
             $counter++;
         }
         return $array_dealers;
@@ -1158,12 +1223,20 @@ class Controller extends CController {
         $preg = FALSE;
         switch ($tipo) {
             case 1: // preguntas paso 1-2 prospeccion
-                $criteria = new CDbCriteria(array(
+                /*$criteria = new CDbCriteria(array(
                     'condition' => "id_informacion={$id}"
                 ));
                 $pr = GestionProspeccionRp::model()->count($criteria);
                 if ($pr > 0) {
                     return TRUE;
+                }*/
+                $con = Yii::app()->db;
+                $sqlpr = "SELECT * FROM gestion_diaria WHERE id_informacion = {$_GET['id']} AND prospeccion = 1";
+                //die($sql);            
+                $request = $con->createCommand($sqlpr);
+                $posts = $request->queryAll();
+                if(count($posts) > 0){
+                   return TRUE; 
                 }
                 break;
             case 2: // preguntas paso 3-4 recepcion consulta
@@ -1558,12 +1631,12 @@ class Controller extends CController {
         return $float_redondeado;
     }
 
-    public function traercotizaciones() {
+    public function traernocompradores() {
         date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2015-12-09" and encuestado = 0 and id_modelos is not null limit 100';
-        $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
+
+        $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
-        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
         if (!empty($datosC)) {
             $maximo = number_format(count($datosC) / count($usuarios), 0);
@@ -1579,34 +1652,27 @@ class Controller extends CController {
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
+
                     $contactual = 0;
                     $posicion++;
                 }
+
                 if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
-
-                    $cotizacion = new Cotizacionesnodeseadas();
-                    $cotizacion->atencion_detalle_id = (int) $d['id_atencion'];
-
+                    //echo $usuario_list[$posicion].'<br>';
+                    $cotizacion = new Nocompradores();
+                    $cotizacion->gestiondiaria_id = (int) $d->id;
                     $cotizacion->usuario_id = $usuario_list[$posicion];
-                    $cotizacion->fecha = $d['fecha_form'];
-                    $cotizacion->realizado = '0';
-                    $cotizacion->nombre = $d['nombre'];
-                    $cotizacion->apellido = $d['apellido'];
-                    $cotizacion->cedula = $d['cedula'];
-                    $cotizacion->direccion = $d['direccion'];
-                    $cotizacion->telefono = $d['telefono'];
-                    $cotizacion->celular = $d['celular'];
-                    $cotizacion->email = $d['email'];
-                    $cotizacion->modelo_id = $d['id_modelos'];
-                    $cotizacion->version_id = $d['id_version'];
-                    $cotizacion->ciudadconcesionario_id = $d['cityid'];
-                    $cotizacion->concesionario_id = $d['dealerid'];
+                    $cotizacion->nombre = $d->gestioninformacion->nombres;
+                    $cotizacion->apellido = $d->gestioninformacion->apellidos;
+                    $cotizacion->cedula = $d->gestioninformacion->cedula;
+                    $cotizacion->email = $d->gestioninformacion->email;
+                    $cotizacion->ceular = $d->gestioninformacion->celular;
+                    $cotizacion->convencional = $d->gestioninformacion->telefono_casa;
+
                     if ($cotizacion->save()) {
-                        //echo $usuario_list[$posicion];
-                        Yii::app()->db2
-                                ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
-                                ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
-                                ->execute();
+                        $d->encuestado = 1;
+                        $d->realizado = date('Y-m-d h:i:s');
+                        $d->update();
                     }
                 }
                 $contactual++;
@@ -1614,16 +1680,12 @@ class Controller extends CController {
         }
     }
 
-    public function traernocompradores() {
+    public function traernocompradores2() {
         date_default_timezone_set("America/Bogota");
 
         $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));
-
-
-
-
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
-        $usuarios = Usuarios::model()->findAll(array('condition' => 'cargo_id =' . $cargo_id->id));
+        $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
         if (!empty($datosC)) {
             $maximo = number_format(count($datosC) / count($usuarios), 0);
@@ -1836,11 +1898,11 @@ class Controller extends CController {
         return $data_select;
     }
 
-    public function getRandomKey($cargo_id) {
+    public function getRandomKey($cargo_id, $dealer_id) {
         // GENERACION Y ASIGNACION DE USUARIOS EXONERADOS DE LOS CLIENTES GENERADOS
         $array_ids = array();
         $id_responsable = Yii::app()->user->getId();
-        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        //$dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $con = Yii::app()->db;
         $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
@@ -1862,9 +1924,11 @@ class Controller extends CController {
                     ->execute();
             //die('after update asesor');
         } else {
+            //die('enter else');
             $sql2 = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
-                    WHERE u.cargo_id = 75  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    die($sql2);
             $request = $con->createCommand($sql2);
             $post = $request->queryAll();
             foreach ($post as $value) {
@@ -1875,7 +1939,7 @@ class Controller extends CController {
             }
             $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
-                    WHERE u.cargo_id = 75  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
+                    WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'ACTIVO' AND gr.concesionario_id = {$dealer_id}";
             $request = $con->createCommand($sql);
             $posts = $request->queryAll();
             foreach ($posts as $value) {
@@ -1890,6 +1954,57 @@ class Controller extends CController {
                     ->execute();
         }
         return $random_key;
+    }
+    
+    public function getFormatFecha($fecha) {
+        //die('fecha: '.$fecha);
+        $params = explode(" ", $fecha);
+        //die('dddd'.$params[1]);
+        $data_fecha = '';
+        switch ( (string) $params[1]) {
+            case '01':
+                $mes = 'enero';
+                break;
+            case '02':
+                $mes = 'febrero';
+                break;
+            case '03':
+                $mes = 'marzo';
+                break;
+            case '04':
+                $mes = 'abril';
+                break;
+            case '05':
+                $mes = 'mayo';
+                break;
+            case '06':
+                $mes = 'junio';
+                break;
+            case '07':
+                $mes = 'julio';
+                break;
+            case '08':
+                $mes = 'agosto';
+                break;
+            case '09':
+                $mes = 'septiembre';
+                break;
+            case '10':
+                $mes = 'octubre';
+                break;
+            case '11':
+                $mes = 'noviembre';
+                break;
+            case '12':
+                $mes = 'diciembre';
+                break;
+
+            default:
+                break;
+            
+        }
+        $data_fecha = $params[0].' de '.$mes.' del '.$params[2];
+        return $data_fecha;
     }
 
 }

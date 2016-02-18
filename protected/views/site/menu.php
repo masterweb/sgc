@@ -196,9 +196,7 @@ $rol = Yii::app()->user->getState('roles');
                             </div>
                         </li>
                     <?php } ?>
-
-                <?php } ?>
-                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46) && $tipo == 'ventas') { ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimiento' && $opcion == md5(($a->accesoSistema->modulo_id)) && ($cargo_id == 46) && $tipo == 'ventas') { ?>
 
                     <li class="wrapper">
                         <div class="forma">
@@ -206,43 +204,52 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu">RGD Jefe Sucursal</div></a>
                         </div>
                     </li>
-                <?php } ?>
-
-        <?php if (($a->accesoSistema->controlador) == 'gestionDiaria' && ($a->accesoSistema->accion) == 'agendamiento' && $tipo == 'ventas') { ?>
+                    <?php } ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD Usados</div></a>
                         </div>
                     </li>
-
-                <?php } ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
+                    <?php } ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                    <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                <div class="txt_menu">RGD Asesor Exonerados</div></a>
+                        </div>
+                    </li>
+                    <?php } ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD BDC</div></a>
                         </div>
                     </li>
-                <?php } // perfil asesor de credito ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id)) && $cargo_id != 46) { ?>
+                    <?php } ?>
+                <?php } // end tipo ventas ?> 
+                <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'reportes' && $tipo == 'ventas') { ?>
+                    <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                <div class="txt_menu">Reportes</div></a>
+                        </div>
+                    </li>
+                <?php } ?>    
+                
+                <?php if (($a->accesoSistema->controlador) == 'gestionSolicitudCredito' && ($a->accesoSistema->accion) == 'status' && $opcion == md5(($a->accesoSistema->modulo_id)) && $cargo_id != 46) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD Asesor de Crédito</div></a>
                         </div>
-                    </li>
-                <?php } ?>
-        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
-                    <li class="wrapper">
-                        <div class="forma">
-                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Asesor Exonerados</div></a>
-                        </div>
                     </li>                   
                 <?php } ?>
+                
 
-        <?php if (($a->accesoSistema->controlador) == 'ccampana' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'ccampana' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('ccampana/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>
@@ -252,7 +259,7 @@ $rol = Yii::app()->user->getState('roles');
 
 
                 <?php } ?>
-        <?php if (($a->accesoSistema->controlador) == 'cencuestadoscquestionario' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                <?php if (($a->accesoSistema->controlador) == 'cencuestadoscquestionario' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>

@@ -462,14 +462,14 @@ $(document).ready(function () {
         precioaccesorios = precioaccesorios.replace('$', '');
         precioaccesorios = parseInt(precioaccesorios);
         var precionormal = $('#precio_normal').val();
-        
+
         precionormal = precionormal.replace(',', '');
         precionormal = precionormal.replace('.', ',');
         precionormal = precionormal.replace('$', '');
         precionormal = parseInt(precionormal);
         //console.log('precio normal: '+precionormal);
         //console.log('precio accesorios: '+precioaccesorios);
-        
+
         var difprecioaccesorios = precioaccesorios - precio_accesorios_anterior;
         console.log('diferencia: ' + difprecioaccesorios);
         precioaccesorios = precionormal + difprecioaccesorios;
@@ -530,7 +530,145 @@ $(document).ready(function () {
     $('#GestionAgendamiento_categorizacion').change(function () {
         sendCat();
     });
+    $('#GestionAgendamiento_observaciones').change(function () {
+        var value = $(this).attr('value');
+        switch (value) {
+            case 'Falta de tiempo':
+                $('#cont-otro').hide();
+                $('.agendamiento').show();
+                addReglas();
+                break;
+            case 'Llamada de emergencia':
+                $('#cont-otro').hide();
+                $('.agendamiento').show();
+                addReglas();
+                break;
+            case 'Busca solo precio':
+                $('#cont-otro').hide();
+                $('.agendamiento').hide();
+                removeReglas();
+                break;
+            case 'Desiste':
+                $('#cont-otro').hide();
+                $('.agendamiento').hide();
+                removeReglas();
+                break;
+            case 'Otro':
+                $('#cont-otro').show();
+                $('.agendamiento').hide();
+                removeReglas();
+                break;
+        }
+    });
+    $('#gestion-agendamiento-form').validate({
+        rules: {
+            'GestionAgendamiento[observaciones]': {
+                required: true
+            }
+        },
+        messages: {
+            'GestionAgendamiento[observaciones]': {
+                required: 'Seleccione una opción'
+            }
+        },
+        submitHandler: function (form) {
+            var observaciones = $('#GestionAgendamiento_observaciones').val();
+            var nombre_cliente = $('#GestionAgendamiento_nombre_cliente').val();
+            var nombre_concesionario = $('#GestionAgendamiento_nombre_concesionario').val();
+            var direccion_concesionario = $('#GestionAgendamiento_direccion_concesionario').val();
+            switch (observaciones) {
+                case 'Falta de tiempo':
+                case 'Llamada de emergencia':
+                    var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
+                    //console.log(proximoSeguimiento);
+                    var fechaSeguimiento = proximoSeguimiento.replace('/', '-');
+                    fechaSeguimiento = fechaSeguimiento.replace('/', '-');
+                    var fechaArray = fechaSeguimiento.split(' ');
+
+                    console.log('fecha seguimiento: '+fechaArray[0]);
+                    var categorizacion = $('#GestionAgendamiento_categorizacion').val();
+                    var dias = 0;
+                    switch (categorizacion) {
+                        case 'Hot A (hasta 7 dias)':
+                            dias = 7;
+                            break;
+                        case 'Hot B (hasta 15 dias)':
+                            dias = 15;
+                            break;
+                        case 'Hot C (hasta 30 dias)':
+                            dias = 30;
+                            break;
+                        case 'Warm (hasta 3 meses)':
+                            dias = 60;
+                            break;
+                        case 'Cold (hasta 6 meses)':
+                            dias = 180;
+                            break;
+                        case 'Very Cold(mas de 6 meses)':
+                            dias = 181;
+                            break;
+                        default:
+                    }
+                    console.log(dias);
+                    var fechaActual = new Date().toJSON().slice(0, 10);
+                    console.log('Fecha Actual: '+fechaActual);
+                    var diferencia = restaFechas(fechaActual, fechaArray[0]);
+                    if (diferencia <= dias) {
+                        if (proximoSeguimiento != '') {
+                            //console.log('proximo: '+proximoSeguimiento);
+                            if ($('#GestionInformacion_check').val() != 2) {
+                                var cliente = '';
+                                var params = proximoSeguimiento.split("/");
+                                var fechaDate = params[0] + params[1] + params[2];
+                                var secDate = params[2].split(" ");
+                                var fechaStart = params[0] + params[1] + secDate[0];
+                                var start = secDate[1].split(":");
+                                var startTime = start[0] + start[1];
+                                var params2 = fechaDate.split(":");
+                                var endTime = parseInt(startTime) + 100;
+                                //console.log('start time:'+fechaStart+startTime);
+                                //console.log('fecha end:'+fechaStart+endTime);
+                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
+                                //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
+                                $('#event-download').attr('href', href);
+                                $('#calendar-content').show();
+                                $("#event-download").click(function () {
+                                    $('#GestionInformacion_calendar').val(1);
+                                    $('#calendar-content').hide();
+                                    $('#GestionInformacion_check').val(2)
+                                });
+                                if ($('#GestionInformacion_calendar').val() == 1) {
+                                    form.submit();
+                                } else {
+                                    alert('Debes descargar agendamiento y luego dar click en Continuar');
+                                }
+                            } else {
+                                form.submit();
+                            }
+                        }
+                    } else {
+                        alert('Seleccione una fecha menor o igual a la fecha de Categorización.');
+                        return false;
+                    }
+                    break;
+                case 'Busca solo precio':
+                case 'Desiste':
+                case 'Otro':
+                    form.submit();
+                    break;
+                default :
+                    break;
+            }
+        }
+    });
 });
+
+function addReglas() {
+    $("#GestionAgendamiento_agendamiento").rules("add", "required");
+}
+function removeReglas() {
+    $("#GestionAgendamiento_agendamiento").rules("remove", "required");
+}
 
 function restaFechas(f1, f2)
 {

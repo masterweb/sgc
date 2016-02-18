@@ -51,6 +51,7 @@ $rol = Yii::app()->user->getState('roles');
 	<div class="col-md-12">
     
     <div class="alert alert-info" role="alert"><p style="font-weight:bold;">Datos registrados exitosamente, por favor seleccione una opci&oacute;n para continuar</p></div>
+	<br>
 	<a href="<?php echo Yii::app()->createUrl('site/dashboard'); ?>"><input type="" value="Regresar al Men&uacute;" class="btn btn-danger"></a>
 	<a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/atenciondetalle'); ?>"><input type="" value="Continuar Encuestando" class="btn btn-success"></a>
 	

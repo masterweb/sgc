@@ -49,8 +49,9 @@ $rol = Yii::app()->user->getState('roles');
         <h1 class="tl_seccion">No compradores Web</h1>
     </div>
 	<div class="col-md-12">
-    <div class="alert alert-info" role="alert"> Encuesta realizada exitosamente, por favor seleccione una opci&oacute;n del men&uacute; inferior. </div>
-	<a href="<?php echo Yii::app()->createUrl('site/dashboard'); ?>"><input type="" value="Regresar al Administrador" class="btn btn-danger"></a>
+    <div class="alert alert-info" style="margin:15px auto;padding:15px;" role="alert"> Encuesta realizada exitosamente, por favor seleccione una opci&oacute;n del men&uacute; inferior. </div>
+	<br>
+	<a href="<?php echo Yii::app()->createUrl('site/dashboard'); ?>"><input type="" value="Volver al Administrador" class="btn btn-danger"></a>
 	<a href="<?php echo Yii::app()->createUrl('cencuestadoscquestionario/nocompradoresadmin'); ?>"><input type="" value="Continuar Encuestando" class="btn btn-success"></a>
 	
 

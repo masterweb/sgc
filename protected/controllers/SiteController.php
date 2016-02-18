@@ -20,7 +20,7 @@ class SiteController extends Controller {
         );
     }
 
-    /**
+    /**actionConsultarUsuarioEncuesta
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
@@ -678,25 +678,25 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $where = '';
             if (!empty($ciudad) && $ciudad > 0) {
                 if (empty($where)) {
-                    $where .= "where gi.ciudad_conc =" . $ciudad;
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
                 } else {
-                    $where .= " and gi.ciudad_conc =" . $ciudad;
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.ciudad_conc =" . $ciudad;
                 }
             }
 
             if (!empty($concesionario) && $concesionario > 0) {
                 if (empty($where)) {
-                    $where .= "where gi.dealer_id =" . $concesionario;
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.dealer_id =" . $concesionario;
                 } else {
-                    $where .= " and gi.dealer_id =" . $concesionario;
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.dealer_id =" . $concesionario;
                 }
             }
 
             if (!empty($desde) && !empty($hasta)) {
                 if (empty($where)) {
-                    $where .= "where gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                    $where .= "where gt.test_drive = 1 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 } else {
-                    $where .= " and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                    $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
 
@@ -704,7 +704,47 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
-                    ' . $where;
+                    ' . $where.' ORDER BY gi.fecha DESC';
+            //echo $sql;
+            $persona = Yii::app()->db->createCommand($sql)->queryAll();
+            echo count($persona);
+        }
+		if ($opcion == 4) {
+
+            $ciudad = $p->purify($_POST['ciudad']);
+            $concesionario = $p->purify($_POST['concesionario']);
+            $desde = $p->purify($_POST['desde']);
+            $hasta = $p->purify($_POST['hasta']);
+            $where = '';
+            if (!empty($ciudad) && $ciudad > 0) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gi.ciudad_conc =" . $ciudad;
+                }
+            }
+
+            if (!empty($concesionario) && $concesionario > 0) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gi.dealer_id =" . $concesionario;
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gi.dealer_id =" . $concesionario;
+                }
+            }
+
+            if (!empty($desde) && !empty($hasta)) {
+                if (empty($where)) {
+                    $where .= "where gt.test_drive = 0 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                } else {
+                    $where .= " and gt.test_drive = 0 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+                }
+            }
+
+            $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+                    FROM gestion_informacion gi 
+                        inner join gestion_test_drive gt 
+                            on gi.id = gt.id_informacion
+                    ' . $where.' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
             echo count($persona);
@@ -2736,7 +2776,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //echo "NO HAY COINCIDENCIA";
             }
             $datos_search = array(
-                'chasis' => 'No. Chasis', 'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
+                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo','nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
                 'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
                 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
@@ -2922,7 +2962,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $emailCliente = $this->getEmailCliente($_POST['GestionEntrega']['id_informacion']);
 				$ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
-                $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']) . ' ' . $this->getVersionTestDrive($_POST['GestionEntrega']['id_vehiculo']);
+                $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']);
                 $general = '<body style="margin: 10px;">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
                                     <div align="">
@@ -2932,7 +2972,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p>
 
                                     <p style="margin: 2px 0;">La fecha de entrega de su vehículo está fijada para el ' . date("d") . "/" . date("m") . "/" . date("Y") . ' 
-                                        en el concesionario Asiauto Mariana de Jesus por:</p>
+                                        en el concesionario '.strtoupper($this->getNameConcesionario($id_asesor)).' por:</p>
                                         <br />
                                     <table width="600" cellpadding="">
                                     <tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
@@ -2940,16 +2980,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <tr><td><strong>Fecha:</strong></td><td>' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                     <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</p></td></tr>
                                     </table> 
-									<p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su Asesor Comercial antes de acercarse al Concesionario. </p>
+                                    <p style="margin: 2px 0;"><strong>Importante:</strong> La fecha de entrega de su vehículo puede variar por motivos fuera de control de Kia Motors Ecuador, por favor confirmar con su Asesor Comercial antes de acercarse al Concesionario. </p>
 
                                     <p style="margin: 2px 0;">Saludos cordiales,<br>
-SGC<br>
-Kia Motors Ecuador
-</p>
-
+                                    SGC<br>
+                                    Kia Motors Ecuador
+                                    </p>
                                     <br /><br />
-
-                                        
                                     </div>
                                     <br />
                                     <table width="600"  cellpadding="0" cellspacing="0" style="font-family:Arial, Helvetica, sans-serif; font-size:12px;">
@@ -2984,14 +3021,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
-				$ciudad = $this->getCiudad($id_asesor);
+		$ciudad = $this->getCiudad($id_asesor);
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $fecha_m = date("Y-m-d");
+                $fecha_m = date("d m Y");
+                $fecha_m = $this->getFormatFecha($fecha_m);
 
                 $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $modelo = $this->getModeloInfo($_POST['GestionEntrega']['id_vehiculo']);
+                $ciudadCliente = $this->getCiudadConcesionario($_POST['GestionEntrega']['id_informacion']);
+                //die('ciudad cliente: '.$ciudadCliente);
                 // ENVIAR EMAIL CON CARTA DE BIENVENIDA AL CLIENTE
                 $asunto = '[Kia Motors Ecuador] Bienvenido a la Familia Kia Motors Ecuador';
                 $general = '<body style="margin: 10px;">
@@ -2999,10 +3039,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <br>
-                                        <p>'.$ciudad.', '.$fecha_m.'</p><br /><br />
+                                        <p>'.$ciudadCliente.', '.$fecha_m.'</p><br /><br />
                                         <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
-                                        <p>'.$ciudad.'.-</p>
+                                        <p>'.$ciudadCliente.'.-</p>
                                         <br />
                                         <p>
                                         KIA MOTORS ECUADOR le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
@@ -3014,7 +3054,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 } else {
                     $general .=' garantía de 5 años o 100.000 Km, ';
                 }
-                $general .= 'para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro concesionario KIA a nivel nacional. 
+                $general .= 'para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro <a href="https://www.kia.com.ec/concesionarios.html"> concesionario KIA a nivel nacional</a>. 
                                         </p><br />
                                         <p>
                                         Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA (1800 542 542), donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.

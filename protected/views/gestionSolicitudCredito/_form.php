@@ -75,6 +75,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             $('#GestionSolicitudCredito_apellido_paterno_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').hide();
         });
+        $('#GestionSolicitudCredito_telefonos_trabajo').keyup(function(){
+            $('#telefonos_trabajo_error').hide();
+        });
         $('#GestionSolicitudCredito_nombres_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_nombres_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_nombres_conyugue_error').hide();
@@ -295,6 +298,25 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#confirm').hide();
         $('#send-asesor').show();
     }
+    function countChar(str){
+        var arr = str.split("");
+        var i;
+        var count = 0;
+        var cer = 0;
+        for (i = 0; i < arr.length; i++) {
+            if(arr[i] == '0'){
+                count++;
+            }
+            if(i == 1 && arr[1] == '0'){
+                cer++;
+            }
+        }
+        if (count > 4 || cer > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
     function send() {
         //console.log('enter send');
         $('#gestion-solicitud-credito-form').validate({
@@ -342,11 +364,31 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 var error = 0;
                 console.log('enter submit');
                 var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
                 switch (estado_civil) {
                     case 'Soltero':
                     case 'Viudo':
                     case 'Divorciado':
                     case 'Casado con separación de bienes':
+                        var cadena = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                            var letra = cadena.charAt(1);
+                            if(letra == '0'){
+                               error++; 
+                               $('#telefonos_trabajo_error').show();
+                               $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
+                            }
                         //validateCasado();
                         break;
                     case 'Casado sin separación de bienes':
@@ -1095,6 +1137,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'telefonos_trabajo'); ?>
                                 <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['telefono_oficina'])); ?>
+                                <label class="error" id="telefonos_trabajo_error" style="display: none;">Ingrese un número vállido.</label>
                                 <?php echo $form->error($model, 'telefonos_trabajo'); ?></div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'tiempo_trabajo'); ?>
@@ -1214,7 +1257,6 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->labelEx($model, 'nacionalidad_conyugue'); ?>
                                     <?php //echo $form->textField($model, 'nacionalidad_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control'));  ?>
                                     <select name="GestionSolicitudCredito[nacionalidad_conyugue]" id="GestionSolicitudCredito_nacionalidad_conyugue" class="form-control">
-                                        <option value="" selected="selected">--Seleccione--</option>
                                         <option value="EC">Ecuador</option>
                                         <option value="CO">Colombia</option>
                                         <option value="PE">Perú</option>
@@ -1493,7 +1535,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->labelEx($model, 'telefono_trabajo_conyugue'); ?>
                                     <?php echo $form->textField($model, 'telefono_trabajo_conyugue', array('size' => 50, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                     <?php echo $form->error($model, 'telefono_trabajo_conyugue'); ?>
-                                    <label for="" generated="true" class="error" id="GestionSolicitudCredito_telefono_trabajo_conyugue_error" style="display: none;">Este campo es requerido.</label>
+                                    <label for="" generated="true" class="error" id="GestionSolicitudCredito_telefono_trabajo_conyugue_error" style="display: none;">Ingrese un teléfono válido.</label>
                                 </div>
 
                                 <div class="col-md-2">

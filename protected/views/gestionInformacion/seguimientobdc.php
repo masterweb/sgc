@@ -15,11 +15,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
     $(function () {
         //$('#toolinfo').tooltip();
         $('#toolinfo').tooltipster({
-            content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
-<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>\n\
-<p style="text-align:left;" class="tool">Showroom:  10 Pasos de Ventas</p>\n\
-<p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
-'),
+            content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>'),
             position: 'right',
             maxWidth: 500,
             theme: 'tooltipster-default '
@@ -286,7 +282,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionDiaria/search', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
             </div>
         </div>
     </div>

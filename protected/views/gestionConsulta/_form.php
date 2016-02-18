@@ -178,8 +178,8 @@ $id = $_GET['id_informacion'];
                 $('.cont-fv .pos').remove();
                 $('.cont-vec-new').hide();
                 $('.cont-vec-new .pos').remove();
-                $("#GestionConsulta_preg3 option[value=0]").attr('selected', 'selected');
-                $("#GestionConsulta_preg3 option[value=1]").removeAttr('selected');
+                //$("#GestionConsulta_preg3 option[value=0]").attr('selected', 'selected');
+                //$("#GestionConsulta_preg3 option[value=1]").removeAttr('selected');
                 $('#GestionConsulta_vec').removeClass('error');
             } else {
                 $('#tipovehiculo').hide();
@@ -189,8 +189,8 @@ $id = $_GET['id_informacion'];
                 $('.cont-vec-new').show();
                 $('.cont-vec-new .pos').remove();
                 $('.cont-vec-new label').first().prepend( '<span class="pos"></span>' )
-                $("#GestionConsulta_preg3 option[value=1]").attr('selected', 'selected');
-                $("#GestionConsulta_preg3 option[value=0]").removeAttr('selected');$('#GestionConsulta_vec').removeClass('error');
+                //$("#GestionConsulta_preg3 option[value=1]").attr('selected', 'selected');
+                //$("#GestionConsulta_preg3 option[value=0]").removeAttr('selected');$('#GestionConsulta_vec').removeClass('error');
             }
             numerar();
         });
@@ -591,7 +591,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                                          <option value="Cerato Forte">Cerato Forte</option>
                                          <option value="Cerato Forte Koup">Cerato Koup</option>
                                          <option value="Cerato R">Cerato R</option>
-                                         <option value="Optima Híbrido">Optima Híbrido</option>
+<!--                                         <option value="Optima Híbrido">Optima Híbrido</option>-->
                                          <option value="Quoris">Quoris</option>
                                          <option value="Soul R">Soul R</option>
                                          <option value="Sportage Active">Sportage Active</option>
@@ -847,7 +847,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                             <label for=""><span class="pos"></span> ¿Para qué utilizará el nuevo vehículo?</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <?php echo $form->dropDownList($consulta, 'preg3', array('0' => 'Primer Vehículo del hogar', '1' => 'Segundo Vehículo del hogar', '2' => 'Renovación de vehículo'), array('class' => 'form-control', 'options' => array('1' => array('selected' => true)))); ?>
+                                    <?php echo $form->dropDownList($consulta, 'preg3', array(''=> '--Seleccione--','0' => 'Primer Vehículo del hogar', '1' => 'Segundo Vehículo del hogar', '2' => 'Renovación de vehículo'), array('class' => 'form-control', 'options' => array('5' => array('selected' => true)))); ?>
                                 </div>
                             </div>
                             <div class="row cont-utl">
@@ -1006,7 +1006,7 @@ $provincia_id = $this->getProvinciaId($city_id);
                                         "88" => "Quoris",
                                         "20" => "Carens R",
                                         "11" => "Grand Carnival",
-                                        "80" => "Soul",
+                                        //"80" => "Soul",
                                         "93" => "Soul EV",
                                         "21" => "Sportage Active",
                                         "83" => "Sportage R",
@@ -1035,19 +1035,20 @@ $provincia_id = $this->getProvinciaId($city_id);
                             <br />
                             <div class="row">
                                 <label for="">Color de Preferencia</label>
-                                <div class="">
-                                    <div class="col-md-6 well well-sm">
-                                        <ul class="list-accesorios">
-                                           <ul class="list-accesorios">                                            
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 well well-sm">
+                                    
+                                    <div class="col-md-6">
+                                        <ul class="list-accesorios">                                          
                                             <li><u><input type="checkbox" value="negro" name="colores[]" id="color-3"/><span class="color" style="background: rgb(0, 0, 0);"></span>Negro</u></li>
                                             <li><u><input type="checkbox" value="plomo" name="colores[]" id="color-5"/><span class="color" style="background: rgb(50, 52, 55);"></span>Plomo</u></li>
                                             <li><u><input type="checkbox" value="plata" name="colores[]" id="color-2"/><span class="color" style="background: rgb(205, 210, 216);"></span>Plata</u></li>
                                             <li><u><input type="checkbox" value="blanco" name="colores[]" id="color-1"/><span class="color" style="background: rgb(245, 245, 249);"></span>Blanco</u></li>                                               
                                         </ul>
                                     </div>
-                                    <div class="col-md-6 well well-sm">
+                                    <div class="col-md-6">
                                         <ul class="list-accesorios">
-                                           <ul class="list-accesorios">
                                             <li><u><input type="checkbox" value="rojo" name="colores[]" id="color-4"/><span class="color" style="background: rgb(213, 42, 44);"></span>Rojo</u></li>
                                             <li><u><input type="checkbox" value="vino" name="colores[]" id="color-2"/><span class="color" style="background: rgb(109, 20, 27);"></span>Vino</u></li>
                                             <li><u><input type="checkbox" value="azul" name="colores[]" id="color-3"/><span class="color" style="background: rgb(19, 17, 137);"></span>Azul</u></li>
@@ -1259,9 +1260,9 @@ $provincia_id = $this->getProvinciaId($city_id);
                 <br />
                 <div class="row">
                     <div class="col-md-8  col-xs-12 links-tabs">
-                        <div class="col-md-3 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
                         <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                        <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
                     </div>
                 </div>
         </div>

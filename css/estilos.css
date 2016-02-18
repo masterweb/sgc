@@ -245,11 +245,11 @@ section{
     padding-top: 7px;
 }
 .back-btn{
-    background: url('../images/ico_home.png') no-repeat 0px 5px;
+    background: url('../images/ico_home.png') no-repeat 0px 4px;
     display: block;
     height: 33px;
     padding-left: 42px;
-    padding-top: 7px;
+    padding-top: 9px;
 }
 .back-btn-go{
     background: url('../images/btn_back.png') no-repeat 0px 5px;
@@ -263,7 +263,14 @@ section{
     display: block;
     height: 33px;
     padding-left: 42px;
-    padding-top: 1px;
+    padding-top: 9px;
+}
+.directorio-btn{
+    background: url('../images/ico_contactos2.png') no-repeat;
+    display: block;
+    height: 33px;
+    padding-left: 42px;
+    padding-top: 8px;
 }
 .links-tabs p{margin-top: 4px;}
 /*SECTION TABLAS*/
@@ -554,6 +561,13 @@ img.cometchat_userscontentavatarimage {
   color: #ffffff;
   background-color: #ff4e00;
   border-color: #ff4e00;
+  cursor: none;
+}
+.btn-tomate:hover{
+  color: #ffffff;
+  background-color: #ff4e00;
+  border-color: #ff4e00;
+  cursor: default;
 }
 
 /*REPORTES */
@@ -612,6 +626,10 @@ hr{
     background-repeat: no-repeat; 
     background-size: 23px 23px;
     background-color: #5cb85c !important;
+}
+.btn-warning:hover{
+    background-color: #5CB85C !important;
+    border-color: #5cb85c !important; 
 }
 .trigerFiltros {
     padding: 6px 44px 6px 26px;
@@ -745,9 +763,19 @@ ul.versiones{
 ul.versiones li input{
     margin: 0 7px 0 0px !important;
 }
+
 #tabs_repo h2{
     background: #888;
     color: #fff;
     padding: 5px 15px;
     font-size: 15px;
 }
+
+.nocursor{cursor: default;}
+.btn-inactive{
+    color: #ffffff;
+    background-color: #616568;
+    border-color: #9A9A9A;
+}
+.btn-inactive:hover{
+    color: #ffffff;
