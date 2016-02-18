@@ -4736,3 +4736,26 @@ Stack trace:
 #19 {main}
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
 ---
+2016/02/18 11:44:23 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND DATE(fecha) BETWEEN '2015-11-01' AND '2015-11-30'' at line 1. La sentencia SQL ejecutada fue: SELECT tipo from trafico_acumulado where   AND DATE(fecha) BETWEEN '2015-11-01' AND '2015-11-30'.
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\components\TraficoAcumulado\TraficoAcumulado.php (102)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php (203)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/18 11:44:23 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND DATE(fecha) BETWEEN '2015-11-01' AND '2015-11-30'' at line 1. The SQL statement executed was: SELECT tipo from trafico_acumulado where   AND DATE(fecha) BETWEEN '2015-11-01' AND '2015-11-30'' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\components\TraficoAcumulado\TraficoAcumulado.php(102): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(203): TraficoAcumulado::buscar(Array, '', Array)
+#3 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#13 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2015-12-01+-+2015-12-31&GI%5Bfecha2%5D=2015-11-01+-+2015-11-30&GI%5Btipo%5D=traficoacumulado&GI%5Bprovincias%5D=&GI%5Bgrupo%5D=&GI%5Bconcesionario%5D=&GI%5Bresponsable%5D=&TA%5Btipo%5D=TA_provincias&GI%5Btraficoacumulado%5D=false&TA%5Bprovincia%5D=PICHINCHA&TA%5Bgrupo%5D=&TA%5Bconcesionarios%5D=&todos=activo&TA%5Bmodelo%5D%5B%5D=PICANTO&TA%5Bmodelo%5D%5B%5D=RIO+CKD&TA%5Bmodelo%5D%5B%5D=CERATO+MT&TA%5Bmodelo%5D%5B%5D=K3000&TA%5Bmodelo%5D%5B%5D=SPORTAGE+CKD+LX+TM&TA%5Bmodelo%5D%5B%5D=SPORTAGE+R+MT&TA%5Bmodelo%5D%5B%5D=RIO+R+4P&TA%5Bmodelo%5D%5B%5D=SOUL&TA%5Bmodelo%5D%5B%5D=K2700+CS+4X2&TA%5Bmodelo%5D%5B%5D=SORENTO&TA%5Bmodelo%5D%5B%5D=PREGIO+GRAND&TA%5Bmodelo%5D%5B%5D=K2700+CD+4X4&TA%5Bmodelo%5D%5B%5D=OPTIMA&TA%5Bmodelo%5D%5B%5D=CARNIVAL&TA%5Bmodelo%5D%5B%5D=CERATO+AT&TA%5Bmodelo%5D%5B%5D=RONDO&TA%5Bmodelo%5D%5B%5D=SPORTAGE+CKD+LX+AT&TA%5Bmodelo%5D%5B%5D=RIO+R+5P&TA%5Bmodelo%5D%5B%5D=SPORTAGE+R+AT&TA%5Bmodelo%5D%5B%5D=QUORIS&TA%5Bmodelo%5D%5B%5D=MOHAVE&TA%5Bmodelo%5D%5B%5D=CARENS+R&TA%5Bmodelo%5D%5B%5D=CERATO+R+MT&TA%5Bmodelo%5D%5B%5D=CERATO+R+AT&TA%5Bmodelo%5D%5B%5D=NEW+SOUL&TA%5Bmodelo%5D%5B%5D=NEW+CARENS&TA%5Bmodelo%5D%5B%5D=CERATO+R+TM&TA%5Bmodelo%5D%5B%5D=CETATO+R+MT&TA%5Bmodelo%5D%5B%5D=+NEW+SOUL&TA%5Bmodelo%5D%5B%5D=CARNIVAL+R
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---

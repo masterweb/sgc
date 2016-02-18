@@ -34,13 +34,13 @@
             <h4>Seleccione el tipo de busqueda</h4>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="grupos" class="tipo_busqueda" 
             <?php if($varView['checked_g'] == true){echo 'checked';} ?>
-            >Por Grupos (<< 2015)</label>
+            >Por Grupos (2015 >>)</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="provincias" class="tipo_busqueda"
             <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-            >Por Provincias (<< 2015)</label>
+            >Por Provincias (2015 >>)</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
             <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-            >Tráfico Acumulado (2015 >>)</label>
+            >Tráfico Acumulado (<< 2015)</label>
             <hr/>
         </div>
 <div id="traficoGeneral">

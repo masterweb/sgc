@@ -178,17 +178,21 @@ class ReportesController extends Controller {
         $varView['TA'] = false;
         if($_GET['GI']['tipo'] == 'traficoacumulado'){
             $varView['TA'] = true;
+            $varView['TAconsulta'] = [];
              if($_GET['TA']['modelo'] != ''){
                 $varView['TAmodelo'] = $_GET['TA']['modelo'];
             }
             if($_GET['TA']['concesionarios'] != ''){
                 $varView['TAconcesionarios'] = $_GET['TA']['concesionarios'];
+                $varView['TAconsulta']['concesionarios'] = $_GET['TA']['concesionarios'];
             }
             if($_GET['TA']['provincia'] != ''){
                 $varView['TAprovincia'] = $_GET['TA']['provincia'];
+                $varView['TAconsulta']['provincia']  = $_GET['TA']['provincia'];
             }
             if($_GET['TA']['grupo'] != ''){
                 $varView['TAgrupo'] = $_GET['TA']['grupo'];
+                $varView['TAconsulta']['grupo'] = $_GET['TA']['grupo'];
             }
 
             $traficoAcumulado = new traficoAcumulado;
@@ -196,7 +200,7 @@ class ReportesController extends Controller {
             $fechas[1] = $varView['fecha_anterior'];
             $fechas[2] = $varView['fecha_inicial_actual'];
             $fechas[3] = $varView['fecha_actual'];
-            $retorno = $traficoAcumulado->buscar($varView['TAconcesionarios'], '', $fechas);
+            $retorno = $traficoAcumulado->buscar($varView['TAconsulta'], '', $fechas);
             $contador = [];
             foreach ($retorno['mant'] as $tipo) {
                 if($tipo['tipo'] == 'TRAFICO'){

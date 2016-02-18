@@ -82,13 +82,22 @@ class TraficoAcumulado{
 
         return $filtro_main;
     }
-
-    public static function buscar($concesionario, $modelos, $fechas){
+    public static function buscar($consulta, $modelos, $fechas){
+        $where = '';
     	if($modelos != ''){
     		$modelos = "AND modelo IN (".$modelos.")";
     	}
+        if($consulta['concesionarios']){
+            $where = "concesionario = '".$consulta['concesionarios']."' ";
+        }else{
+            if($consulta['provincia']){
+                $where = "provincia = '".$consulta['provincia']."' ";
+            }else if($consulta['grupo']){
+                $where = "grupo = '".$consulta['grupo']."' ";
+            }
+        }
     	$con = Yii::app()->db;    	
-    	$sql = "SELECT tipo from trafico_acumulado where concesionario = '".$concesionario."' ".$modelos." AND DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."'";
+    	$sql = "SELECT tipo from trafico_acumulado where ".$where." ".$modelos." AND DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."'";
         $request = $con->createCommand($sql);
         $busqueda['mant'] = $request->queryAll();
 
