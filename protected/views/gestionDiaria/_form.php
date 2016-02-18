@@ -196,14 +196,23 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         <td><strong>Teléfono Domicilio:</strong> <?php echo $value['telefono_casa']; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Fuente de Contacto:</strong> 
-                                            <?php if($this->getFuente($value['id_cotizacion']) == 'showroom'){ echo 'Tráfico'; }
-                                            else{ echo ucfirst($this->getFuente($value['id_cotizacion'])); } ?> 
+                                        <td><strong>Fuente de Contacto:</strong>
+                                            <?php if($value['id_cotizacion'] == ''){
+                                                echo 'WEB' ;
+                                                
+                                            }else if($this->getFuente($value['id_cotizacion']) == 'showroom'){
+                                                echo 'Tráfico';
+                                            }else{
+                                                echo ucfirst($this->getFuente($value['id_cotizacion']));
+                                            }
+                                            ?>
+                                            
                                          </td>
                                     </tr>
                                     <tr>
                                         <td><strong>Responsable:</strong> <?php echo $this->getResponsable($value['resp']); ?></td>
                                     </tr>
+                                    <?php if($value['id_cotizacion'] != ''){ ?>
                                     <tr>
                                         <td><strong>Tipo:</strong>  
                                             <?php 
@@ -217,6 +226,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                             ?>
                                         </td>
                                     </tr>
+                                    <?php } ?>
                                     <?php if($value['senae']): ?>
                                     <tr>
                                         <td>

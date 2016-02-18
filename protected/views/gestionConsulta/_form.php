@@ -5,6 +5,16 @@
 $tipo = $_GET['tipo'];
 $id = $_GET['id_informacion'];
 ?>
+<?php
+$id_asesor = Yii::app()->user->getId();
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+if($cargo_id != 46){
+$concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
+$nombre_cliente = $this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion);
+$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+}
+?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskMoney.js" type="text/javascript"></script>
 <style type="text/css">
     .fileinput .btn{  padding: 6px 14px;}

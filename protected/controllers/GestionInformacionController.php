@@ -1934,7 +1934,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT u.id as id_resp, gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gn.fuente, gn.id as id_cotizacion  
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -3845,12 +3845,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $dealer_id = $this->getDealerId($id_responsable);
         $con = Yii::app()->db;
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-        $fechaActual = date("Y/m/d");
-        $params = explode('-', $_GET['GestionSolicitudCredito']['fecha']);
-        $fechaPk = 0;
-        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
-            $fechaPk = 1;
-        }
+//        $fechaActual = date("Y/m/d");
+//        $params = explode('-', $_GET['GestionSolicitudCredito']['fecha']);
+//        $fechaPk = 0;
+//        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+//            $fechaPk = 1;
+//        }
 
         if (isset($_GET['GestionSolicitudCredito'])) {
 //            echo '<pre>';
@@ -3858,8 +3858,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //            echo '</pre>';
 
             //---- BUSQUEDA GENERAL----
-            if (!empty($_GET['GestionSolicitudCredito']['general']) &&
-                    $fechaPk == 1) {
+            if (!empty($_GET['GestionSolicitudCredito']['general'])) {
                 //die('enter nombres apellidos');
 
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
@@ -3873,6 +3872,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 if (count($posts) > 0) {
+                    //die('enter count nombre');
                     $this->render('usados', array(
                         'users' => $posts, 'search' => true
                     ));
