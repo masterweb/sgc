@@ -571,6 +571,10 @@ img.cometchat_userscontentavatarimage {
     margin: auto;
     margin-bottom: 5px;
 }
+.barra .barratit{
+    float: left;
+    display: block;
+}
 .barratit{
     font-size: 12px;
     font-style: italic;
@@ -602,7 +606,7 @@ hr{
 }
 
 /*FILTROS REPORTES*/
-.btn-warning:focus, .btn-warning:active, .btn-warning.active, .open .dropdown-toggle.btn-warning{
+.trigerFiltros.btn-warning:focus, .trigerFiltros.btn-warning:active, .trigerFiltros.btn-warning.active, .trigerFiltros.open .trigerFiltros.dropdown-toggle.btn-warning{
     background-image: url('../images/reportes/lupa.svg') !important;
     background-position: 95% center;
     background-repeat: no-repeat; 
@@ -740,4 +744,10 @@ ul.versiones{
 }
 ul.versiones li input{
     margin: 0 7px 0 0px !important;
+}
+#tabs_repo h2{
+    background: #888;
+    color: #fff;
+    padding: 5px 15px;
+    font-size: 15px;
 }

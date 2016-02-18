@@ -2,6 +2,7 @@
 <div class="row">
     <div class="col-md-12">
         <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
+        <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
         <div class="resultados_embudo bg-danger"></div>
         <div class="highlight filtrosReportes">
             <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>
