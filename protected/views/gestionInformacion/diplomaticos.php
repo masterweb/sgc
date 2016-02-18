@@ -416,9 +416,10 @@ if ($ced != '') {
                      return false
                      }*/
                     if(tipo_fuente ==  'exonerado'){
-                        
-                       form.submit();
-                       $('#myModal').modal('show'); 
+                       $('#myModal').modal('show');
+                        $('#closemodal').click(function(){
+                            form.submit();
+                        });
                     }else{
                        form.submit(); 
                     }
@@ -1041,7 +1042,7 @@ if ($ced != '') {
                             <h4>Tu proceso se ha ido a exonerados</h4>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Continuar</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->

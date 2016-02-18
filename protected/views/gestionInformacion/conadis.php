@@ -492,7 +492,10 @@ if ($ced != '') {
                         return false;
                     }
                     else {
-                        form.submit();
+                        $('#myModal').modal('show');
+                        $('#closemodal').click(function(){
+                            form.submit();
+                        });
                     }
 
                 }
@@ -717,7 +720,7 @@ if ($ced != '') {
                                 <h4>Tu proceso se está enviando a exonerados... Por favor espere...</h4>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Continuar</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
@@ -1158,9 +1161,9 @@ if ($ced != '') {
                             <div class="modal-body">
                                 <h4>Tu proceso se está enviando a exonerados... Por favor espere...</h4>
                             </div>
-                            <!--div class="modal-footer">
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
-                            </div-->
+                            </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->

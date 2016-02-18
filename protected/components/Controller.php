@@ -1680,7 +1680,7 @@ class Controller extends CController {
         }
     }
 
-    public function traernocompradores() {
+    public function traernocompradores2() {
         date_default_timezone_set("America/Bogota");
 
         $datosC = GestionDiaria::model()->findAll(array('condition' => 'desiste = 1 and encuestado=0'));

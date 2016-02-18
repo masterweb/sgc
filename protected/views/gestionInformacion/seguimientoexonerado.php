@@ -19,11 +19,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
     $(function () {
         //$('#toolinfo').tooltip();
         $('#toolinfo').tooltipster({
-            content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
-<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>\n\
-<p style="text-align:left;" class="tool">Showroom:  10 Pasos de Ventas</p>\n\
-<p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
-'),
+            content: $('<p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p>'),
             position: 'right',
             maxWidth: 500,
             theme: 'tooltipster-default '
