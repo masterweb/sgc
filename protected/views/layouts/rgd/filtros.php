@@ -4,7 +4,7 @@ $area_id = (int) Yii::app()->user->getState('area_id'); //echo $area_id;
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 ?>
 <div class="form">
-    <h4>Búsqueda:</h4>
+    
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'id' => 'casos-form',
@@ -16,6 +16,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         ),
     ));
     ?>
+    <h4>Búsqueda: (Seleccione solo uno de los filtros)</h4>
     <div class="row">
         <div class="col-md-6">
             <label for="GestionDiariafecha">Búsqueda General</label>
@@ -116,7 +117,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
     <hr />
     <?php if($cargo_id == 69 || $cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
     <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
-    
+    <h4>Búsqueda:</h4>
     <div class="row">
         
         <div class="col-md-6">

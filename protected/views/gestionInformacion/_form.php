@@ -261,7 +261,7 @@ if ($ced != '') {
                     break;
                 case '4':// si estoy interesado
                     $('.cont-vec').hide();
-                    $('.cont-interesado').show();$('.cont_encuentro').show();$('.cont-lugar').show();$('.cont-conc').show();
+                    $('.cont-interesado').show();$('.cont_encuentro').show();$('.cont-conc').show();
                     $('.cont-nocont').hide();
                     //validateInteresado();
                     break;
@@ -1185,7 +1185,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             endif;
                             ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
-                            <?php if ($_GET['tipo'] == 'prospeccion'){echo '<a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';} ?>
+                            <?php if ($_GET['tipo'] == 'prospeccion'){echo '<a href="'.Yii::app()->request->baseUrl.'/images/LISTA-DE-PRECIOS-KIA-17-02-2016.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';} ?>
                             
                             <a href="" class="btn btn-primary calendar-content" id="event-download" style="display: none;">Descargar Evento</a>
                             

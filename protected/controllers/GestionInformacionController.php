@@ -1417,6 +1417,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         //die('search type: '.$search_type);
         switch ($search_type) {
+            case 0:
+                $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
+                $data['title'] = $title;
+                $data['users'] = $users = array();
+                return $data;
+                break;
             case 1:
                 $count = 0;
                 $select = $sql;
@@ -1432,13 +1438,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $count = count($users);
                 //die('before render nombre:'.$count);
                 if ($count > 0) {
-                    $count++;
                     //die('fef');
                     $title = "Busqueda por nombres o apellidos: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
                     return $data;
                 } else {
+                    $count++;
                     $sql = $select;
                 }
 
@@ -1449,38 +1455,40 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('cwevwevwev'.$sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
-                //die('before render cedula');
+                //die('before render cedula'.count($users));
                 if (count($users) > 0) {
-                    $count++;
                     //die('ccc');
                     $title = "Busqueda por cédula: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
                     return $data;
                 } else {
+                    $count++;
                     $sql = $select;
                 }
 
                 /* BUSQUEDA POR ID */
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $sql .= "gi.id = {$_GET['GestionDiaria']['general']}";
+                $sql .= "gi.id = '{$_GET['GestionDiaria']['general']}'";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
                 //die('before render id');
                 if (count($users) > 0) {
-                    $count++;
                     //die('554');
                     $title = "Busqueda por ID: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
                     return $data;
+                } else {
+                    $count++;
                 }
-                if ($count == 3) {
-                    $title = "Busqueda por ID: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                //die('count: '.$count);
+                if ($count == 3) { // no existen resultados para ninguna opcion
+                    $title = "No existen resultados para: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
-                    $data['users'] = '';
+                    $data['users'] = $users = array();
                     return $data;
                 }
                 break;
@@ -1567,20 +1575,36 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
-                $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
+                if($cargo_id == 69 && $_GET['GestionDiaria']['responsable'] == 'all'){ // GERENTE COMERCIAL
+                    $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) ";
+                            $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";  
+                }
+                /*if($_GET['GestionDiaria']['responsable'] == 'all'){
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . "WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 ";
+                    $title = "Busqueda Total";        
+                }*/
+                else{
+                    $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' ";
+                    $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                    $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                }
+                
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 if ($_GET['GestionDiaria']['tipo'] == 'exo') {
-                    $sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
+                    $sql .= " AND gd.desiste = 0 ORDER BY gd.id DESC";
                 }
                 if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
-                    $sql .= " gi.bdc = 1 ORDER BY gd.id DESC";
+                    $sql .= " AND gi.bdc = 1 ORDER BY gd.id DESC";
                 }
                 //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
                 //die($sql);
-                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
-                $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                
                 $data['title'] = $title;
                 $data['users'] = $users;
                 return $data;
@@ -1739,7 +1763,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable 
                                 WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73 ";
                     }
-                    
+
                     $title = "Busqueda por Total BDC : <strong>{$dealer_id}</strong>";
                 }
                 if ($cargo_id == 71) { // asesor de ventas
@@ -1822,7 +1846,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE u.grupo_id = {$grupo_id} 
+                WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 
                 ORDER BY gd.id DESC";
             //die('sql sucursal'. $sql);
         }
@@ -2833,11 +2857,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $model->fecha = date("Y-m-d H:i:s");
             if ($cargo_id == 75) {
                 $model->responsable = Yii::app()->user->getId();
+                $email_responsable = $this->getEmailAsesor($id_responsable);
             }
             if ($cargo_id == 71 || $cargo_id == 70) { // asesor de ventas y jefe de sucursal
                 $random_key = $this->getRandomKey(75, $dealer_id); //exonerados
                 $model->responsable = $random_key;
                 $model->responsable_origen = Yii::app()->user->getId();
+                $email_responsable = $this->getEmailAsesor($random_key);
             }
 
             $model->dealer_id = $this->getDealerId(Yii::app()->user->getId());
@@ -2867,7 +2893,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if ($model->save()) {
                 //die('enter save');
                 if ($_POST['tipo'] == 'gestion') {
-                    //die('enter continuar');
+                    // die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
                     $gestion = new GestionDiaria;
@@ -2990,6 +3016,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->status = 0;
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
+                            $gestion->paso = '3';
                             $gestion->save();
 
                             $consulta = new GestionConsulta;
@@ -2997,6 +3024,38 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $consulta->fecha = date("Y-m-d H:i:s");
                             $consulta->status = 'ACTIVO';
                             $consulta->save();
+                            require_once 'email/mail_func.php';
+                            $asunto = 'Kia Motors Ecuador - Nuevo Exonerado Taxi.';
+                            $general = '<body style="margin: 10px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
+                                    <div align="">
+                                    <img src="images/header_mail.jpg"><br>
+
+                                        <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p><br /> 
+                                        <p style="margin: 2px 0;">Este email es una notificación electrónica de que su prueba de manejo se ha efectuado con éxito.</p>
+                                        <p></p> <br />   
+                                        <p style="margin: 2px 0;">A continuación le presentamos el detalle:</p><br /><br />
+                                        
+                                        <table width="600">
+                                        <tr><td><strong>Asesor Comercial:</strong></td><td>' . $this->getResponsable($id_asesor) . '</td></tr>
+                                        <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
+                                        <tr><td><strong>Modelo:</strong></td><td>' . $this->getModeloTestDrive($_POST['GestionTestDrive']['id_vehiculo']) . '</td></tr>
+                                        <tr><td><strong>Fecha:</strong></td><td>' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
+                                        <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>
+                                        </table>
+                                        <br/><br />
+                                    </div>
+                                    <br /><br />
+                                </div>
+                            </body>';
+                            //die('table: '.$general);
+                            $codigohtml = $general;
+                            $headers = 'From: info@kia.com.ec' . "\r\n";
+                            $headers .= 'Content-type: text/html' . "\r\n";
+                            $email = $email_responsable; //email cliente registrado
+                            //$email = 'alkanware@gmail.com'; //email administrador
+
+                            //$send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                             break;
                         default:
@@ -3480,6 +3539,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->status = 0;
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
+                            $gestion->paso = '3';
                             $gestion->save();
 
                             $consulta = new GestionConsulta;
@@ -3737,6 +3797,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->status = 0;
                             $gestion->proximo_seguimiento = '';
                             $gestion->fecha = date("Y-m-d H:i:s");
+                            $gestion->paso = '3';
                             $gestion->save();
 
                             $consulta = new GestionConsulta;
@@ -3783,20 +3844,32 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         $con = Yii::app()->db;
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $fechaActual = date("Y/m/d");
+        $params = explode('-', $_GET['GestionSolicitudCredito']['fecha']);
+        $fechaPk = 0;
+        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+            $fechaPk = 1;
+        }
 
         if (isset($_GET['GestionSolicitudCredito'])) {
+//            echo '<pre>';
+//            print_r($_GET);
+//            echo '</pre>';
 
             //---- BUSQUEDA GENERAL----
             if (!empty($_GET['GestionSolicitudCredito']['general']) &&
-                    empty($_GET['GestionSolicitudCredito']['status']) &&
-                    empty($_GET['GestionSolicitudCredito']['responsable'])) {
+                    $fechaPk == 1) {
+                //die('enter nombres apellidos');
 
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
-                        INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
-                        WHERE gi.tipo_form_web = 'usado' OR gi.tipo_form_web = 'usadopago' 
+                        LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+                        WHERE (gi.tipo_form_web = 'usado' OR gi.tipo_form_web = 'usadopago') 
                         AND (gi.nombres LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' 
-                        OR gi.apellidos LIKE '%{$_GET['GestionSolicitudCredito']['general']}%')";
+                        OR gi.apellidos LIKE '%{$_GET['GestionSolicitudCredito']['general']}%') "
+                        . " AND gi.dealer_id = {$dealer_id} AND gi.responsable = {$id_responsable}";
+                //die($sql);        
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 if (count($posts) > 0) {
@@ -3827,6 +3900,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (empty($_GET['GestionSolicitudCredito']['general']) &&
                     !empty($_GET['GestionSolicitudCredito']['status']) &&
                     empty($_GET['GestionSolicitudCredito']['responsable'])) {
+                //die('busqueda status');
 
                 $sql = "SELECT gs.*, gt.`status` FROM gestion_solicitud_credito gs 
                         INNER JOIN gestion_status_solicitud gt ON gs.id_informacion = gt.id_informacion 

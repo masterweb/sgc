@@ -1928,7 +1928,7 @@ class Controller extends CController {
             $sql2 = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 
                     INNER JOIN usuarios u ON u.id = gr.usuario_id 
                     WHERE u.cargo_id = {$cargo_id}  AND u.status_asesor = 'INACTIVO' AND gr.concesionario_id = {$dealer_id}";
-                    die($sql2);
+                    //die($sql2);
             $request = $con->createCommand($sql2);
             $post = $request->queryAll();
             foreach ($post as $value) {

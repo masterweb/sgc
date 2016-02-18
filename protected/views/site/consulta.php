@@ -10,6 +10,7 @@ if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
 $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
+$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
 }
 //echo $nombre_cliente;
 $count = 0;
@@ -154,7 +155,7 @@ if (isset($id)) {
                                 var endTime = parseInt(startTime) + 100;
                                 //console.log('start time:'+fechaStart+startTime);
                                 //console.log('fecha end:'+fechaStart+endTime);
-                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente <?php echo $nombre_cliente; ?>&desc=Cita con el cliente paso consulta: <?php echo $nombre_cliente; ?>&location=Por definir&to_name=' + cliente + '&conc=<?php echo $nombreConcesionario; ?>';
+                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente <?php echo $nombre_cliente; ?>&desc=Cita con el cliente paso consulta: <?php echo $nombre_cliente; ?>&location= <?php echo $direccion_concesionario; ?>&to_name=' + cliente + '&conc=<?php echo $nombreConcesionario; ?>';
                                 //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
                                 $('#event-download').attr('href', href);
                                 $('#calendar-content').show();
