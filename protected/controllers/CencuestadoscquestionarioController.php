@@ -1346,6 +1346,7 @@ class CencuestadoscquestionarioController extends Controller {
     public function actionNocompradores($id) {
         date_default_timezone_set("America/Bogota");
         if (!empty($_POST)) {
+            //die('enter post');
 
             /* echo '<pre>';
               print_r($_POST);
@@ -1416,10 +1417,12 @@ class CencuestadoscquestionarioController extends Controller {
                         }
                     }
                     if (trim($_POST['datos']['motivo']) == 'Aun no toma la decision') {
+                        //die('enter no toma des');
                         if (!empty($gi)) {
                             /* $gd->desiste = 2;
                               $gd->update(); */
-                            $gi->tipo_form_web = 'usadopago';
+                            $gi->tipo_form_web = '';
+                            $gi->bdc = 1;
                             $gi->responsable_origen = $gi->responsable;
                             $gi->responsable = $this->getRandomKey(73, $gi->dealer_id);
                             $gi->update();
