@@ -347,39 +347,48 @@ class CencuestadoscquestionarioController extends Controller {
                         $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                     }
                 }
-
+				 if(empty($where)){
+					$where = ' WHERE gt.test_drive = 1 and gt.order=1';
+				}
                 $sql = 'SELECT DISTiNCT gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
 	                    FROM gestion_informacion gi 
 	                        inner join gestion_test_drive gt 
 	                            on gi.id = gt.id_informacion
 	                    ' . $where . ' ORDER BY gi.fecha DESC';
                 echo $sql;
+               // echo $sql;
                 //die();
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 $errorSave = 0;
-                echo $sql;
+               // echo $sql;
+				$cosnt=1;
                 //die();
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        echo $key['nombres'];
+					//
+                       // echo $key['nombres'];
 
                         if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_oficina']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
                             $model = new Cencuestados;
                             $model->nombre = $p->purify($key['nombres'] . ' ' . $key['apellidos']);
                             $model->telefono = $p->purify($key['telefono_oficina']);
                             $model->celular = $p->purify($key['celular']);
-                            $model->email = $p->purify($key['email']);
+                            $model->email = $p->purify($key['email']); 
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
                             $model->ciudad = $p->purify($city->name);
                             $model->estado = 'ACTIVO';
                             $model->cquestionario_id = $id;
                             if (!$model->save()) {
                                 $errorSave++;
-                            } else
+								echo $p->purify($key['nombres'] . ' ' . $key['apellidos']).'<br>';
+                            } else{
                                 $errorSave = 0;
+								echo $cosnt++;
+								}
                         }
                     }
                 }
+		
                 if ($errorSave == 0) {
                     Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
                     $this->redirect(array('cencuestadoscquestionario/seleccionar/' . $id));
@@ -561,6 +570,9 @@ class CencuestadoscquestionarioController extends Controller {
                         $where .= " and gt.test_drive = 0 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                     }
                 }
+				if(empty($where)){
+					$where = ' WHERE gt.test_drive = 0 and gt.order=1';
+				}
 
                 $sql = 'SELECT DISTiNCT gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
@@ -731,6 +743,7 @@ class CencuestadoscquestionarioController extends Controller {
     }
 
     public function VerificarEncuestasAutomaticas($id) {
+
         $encuesta = Cquestionario::model()->findByPk($id);
         if ($encuesta->automatico == 'SI') {
             //OBTENER LAS PERSONAS A ENCUESTAR
@@ -744,13 +757,14 @@ class CencuestadoscquestionarioController extends Controller {
                                  WHERE gt.test_drive = 1 and gt.order=1
                         ORDER BY gi.fecha DESC
 	                    ';
+	
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
                         $verificasihay = Cencuestados::model()->find(array("condition" => 'email ="' . $key['email'] . '"'));
 
                         if (empty($verificasihay)) {
-
+							
                             $sqlU = 'select count(*) asignados, usuarios_id from cencuestadoscquestionario where cquestionario_id=' . $id . ' group by usuarios_id order by asignados ASC limit 1';
                             $user = Yii::app()->db->createCommand($sqlU)->queryAll();
                             $uu = '';
@@ -881,7 +895,7 @@ class CencuestadoscquestionarioController extends Controller {
         $criteria = new CDbCriteria;
         $criteria->condition = "cquestionario_id = $id and usuarios_id=" . (int) Yii::app()->user->id;
         //$criteria->select = ' usuarios_id, cquestionario_id';
-        $criteria->order = 'estado DESC';
+        $criteria->order = 'estado, id DESC';
 
 
 
@@ -1346,7 +1360,6 @@ class CencuestadoscquestionarioController extends Controller {
     public function actionNocompradores($id) {
         date_default_timezone_set("America/Bogota");
         if (!empty($_POST)) {
-            //die('enter post');
 
             /* echo '<pre>';
               print_r($_POST);
@@ -1417,12 +1430,10 @@ class CencuestadoscquestionarioController extends Controller {
                         }
                     }
                     if (trim($_POST['datos']['motivo']) == 'Aun no toma la decision') {
-                        //die('enter no toma des');
                         if (!empty($gi)) {
                             /* $gd->desiste = 2;
                               $gd->update(); */
-                            $gi->tipo_form_web = '';
-                            $gi->bdc = 1;
+                            $gi->tipo_form_web = 'usadopago';
                             $gi->responsable_origen = $gi->responsable;
                             $gi->responsable = $this->getRandomKey(73, $gi->dealer_id);
                             $gi->update();
@@ -1460,7 +1471,7 @@ class CencuestadoscquestionarioController extends Controller {
             $criteria->distinct = true;
             $criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
         }
-        $criteria->order = 'id DESC';
+       // $criteria->order = 'id DESC';
 
 
 
