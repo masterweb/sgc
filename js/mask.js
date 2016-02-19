@@ -195,7 +195,7 @@ $.fn.extend({
 				}
 			}
 
-			function keypressEvent(e) {
+			function keyupEvent(e) {
 				var k = e.which,
 					pos = input.caret(),
 					p,
@@ -320,7 +320,7 @@ $.fn.extend({
 						input.change();
 				})
 				.bind("keydown.mask", keydownEvent)
-				.bind("keypress.mask", keypressEvent)
+				.bind("keyup.mask", keyupEvent)
 				.bind(pasteEventName, function() {
 					setTimeout(function() { 
 						var pos=checkVal(true);

@@ -755,7 +755,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
-
+            	if(empty($where)){
+					$where = ' WHERE gt.test_drive = 1 and gt.order=1';
+				}
             $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
@@ -795,7 +797,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $where .= " and gt.test_drive = 0 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
-
+            	if(empty($where)){
+					$where = ' WHERE gt.test_drive = 0 and gt.order=1';
+				}
             $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 

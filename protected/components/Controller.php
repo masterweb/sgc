@@ -52,8 +52,9 @@ class Controller extends CController {
                     $cotizacion = new Cotizacionesnodeseadas();
 					
                     $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
-
-                    $cotizacion->usuario_id = $usuario_list[$posicion];
+                    $po =array_rand($usuario_list);
+                    $cotizacion->usuario_id = $usuario_list[$po];
+                    //$cotizacion->usuario_id = $usuario_list[$posicion];
                     $cotizacion->fecha = $d['fecha_form'];
                     $cotizacion->realizado = '0';
                     $cotizacion->nombre = $d['nombre'];
@@ -1699,12 +1700,17 @@ class Controller extends CController {
             $actual = 0;
             $contactual = 0;
             $posicion = 0;
+            $usuario_listO = array();           
             $usuario_list = array();
+
             foreach ($usuarios as $u) {
                 $usuario_list[$actual++] = $u->id;
             }
 
-
+           // print_r($usuario_list);
+           
+           
+               
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
@@ -1717,7 +1723,8 @@ class Controller extends CController {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
-                    $cotizacion->usuario_id = $usuario_list[$posicion];
+                    $po =array_rand($usuario_list);
+                    $cotizacion->usuario_id = $usuario_list[$po];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
                     $cotizacion->cedula = $d->gestioninformacion->cedula;
@@ -1766,7 +1773,9 @@ class Controller extends CController {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
-                    $cotizacion->usuario_id = $usuario_list[$posicion];
+                   // $cotizacion->usuario_id = $usuario_list[$posicion];
+                    $po =array_rand($usuario_list);
+                    $cotizacion->usuario_id = $usuario_list[$po];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
                     $cotizacion->cedula = $d->gestioninformacion->cedula;

@@ -271,14 +271,16 @@
             <p style="font-size:13px; font-weight:bold;padding-top:-5px;">PICHINCHA</p>
         </div>
     </div>
-    <div class="form-group">
-        <?php echo $form->labelEx($model, 'cedula', array('class' => 'col-sm-2 control-label')); ?>
+  
+        <div class="form-group">
+        <label class="col-sm-2 control-label required" for="Usuarios_cedula">Cédula <span class="required">*</span></label>        
         <div class="col-sm-10">
-            <?php echo $form->textField($model, 'cedula', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
-            <div id="errorCedula" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">C&eacute;dula ingresada es incorrecta.</div>
-            <?php echo $form->error($model, 'cedula'); ?>
+            <input type="tel" size="10" maxlength="10" min="10" max="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
+            <div id="errorCedula" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">Cédula ingresada es incorrecta.</div>
+                    
         </div>
     </div>
+
 
     <div class="form-group">
         <?php echo $form->labelEx($model, 'nombres', array('class' => 'col-sm-2 control-label')); ?>
@@ -329,7 +331,7 @@
         </div>
         <?php echo $form->labelEx($model, 'celular', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
-            <?php echo $form->textField($model, 'celular', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
+            <input size="10" maxlength="10" class="form-control" placeholder="09999999999" name="Usuarios[celular]" id="Usuarios_celular" type="tel" onkeypress="return numeros(event);">
             <label class="error" style="display: none;" id="celular2">Ingrese correctamente su celular</label>
             <?php echo $form->error($model, 'celular'); ?>
         </div>
@@ -338,7 +340,8 @@
     <div class="form-group">
         <?php echo $form->labelEx($model, 'telefono', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
-            <?php echo $form->textField($model, 'telefono', array('size' => 15, 'maxlength' => 15, 'class' => 'form-control')); ?>
+            <input  maxlength="9" min="9" max="9" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
+
             <?php echo $form->error($model, 'telefono'); ?>
         </div>
         <?php echo $form->labelEx($model, 'extension', array('class' => 'col-sm-2 control-label')); ?>
@@ -400,7 +403,8 @@
                 }
                 $(function () {
                     //			$("#btnSubmit").hide();
-                    $("#Usuarios_cedula").mask('9999999999');
+                    
+                   // $("#Usuarios_cedula").mask('9999999999');
                     //$("#Usuario_fechaNacimiento").mask('99/99/1999');
                     $(".datepicker").datepicker({
                         changeMonth: true,
@@ -427,8 +431,8 @@
                         yearSuffix: ''
                     };
                     $.datepicker.setDefaults($.datepicker.regional['es']);
-                    $("#Usuarios_celular").mask('(09)-999-99999');
-                    $("#Usuarios_telefono").mask('(09)-999-9999');
+                    //$("#Usuarios_celular").mask('(09)-999-99999');
+                    //$("#Usuarios_telefono").mask('(09)-999-9999');
 
                     $('#usuarios-form').submit(function () {
                         verificaNick($("#Usuarios_usuario").val());
@@ -682,4 +686,29 @@
                     }
 
                 }
+                 function numeros(evt)
+    {
+        var code = (evt.which) ? evt.which : evt.keyCode;
+        if(code==8)
+        {
+            //backspace
+            return true;
+        }
+        else if(code>=48 && code<=57)
+        {
+            //is a number
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    $( "#Usuarios_celular" ).focus(function() {
+        celular(this.id)
+    });
+    function celular(vl){
+        $("#"+vl).val('09');
+    }
+  
 </script>
