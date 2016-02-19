@@ -318,8 +318,8 @@
         </div>
         <label class="col-sm-2 control-label required" for="">Repetir Correo <span class="required">*</span></label>
         <div class="col-sm-4">
-            <input size="60" maxlength="150" class="form-control" name="rcorreo" id="rcorreo" type="text" onpaste="alert('Los datos deben ser ingresados manualmente.');return false">			
-            <div class="errorMessage" id="Usuarios_correo_em_" style="display:none"></div>		
+            <input size="60" maxlength="150" class="form-control" name="rcorreo" id="rcorreo" type="text" onpaste="alert('Los datos deben ser ingresados manualmente.');return false">          
+            <div class="errorMessage" id="Usuarios_correo_em_" style="display:none"></div>      
         </div>
     </div>
     <div class="form-group">
@@ -402,7 +402,7 @@
                     bootbox.alert(vl);
                 }
                 $(function () {
-                    //			$("#btnSubmit").hide();
+                    //          $("#btnSubmit").hide();
                     
                    // $("#Usuarios_cedula").mask('9999999999');
                     //$("#Usuario_fechaNacimiento").mask('99/99/1999');
@@ -633,11 +633,11 @@
                     var ultimoDigito = parseInt(cedula.charAt(10));
                     if (ultimoDigito != acumulado)
                         return false;
-                    //				alert('asd');
+                    //              alert('asd');
 
                     //La c?dula es v?lida
                     return true;
-                    //		alert('bien');
+                    //      alert('bien');
                 }
                 function traerArea(vl) {
                     if (vl > 0) {
