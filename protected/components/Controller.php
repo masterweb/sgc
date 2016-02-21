@@ -2019,6 +2019,108 @@ class Controller extends CController {
         return $random_key;
     }
     
+    public function getEntregaPaso($id_informacion, $id_vehiculo,$paso) {
+        $campo = '';
+        switch ($paso) {
+            case 1:
+                $campo = 'envio_factura';
+                break;
+            case 2:
+                $campo = 'emision_contrato';
+                break;
+            case 3:
+                $campo = 'agendar_firma';
+                break;
+            case 4:
+                $campo = 'alistamiento_unidad';
+                break;
+            case 5:
+                $campo = 'pago_matricula';
+                break;
+            case 6:
+                $campo = 'recepcion_contratos';
+                break;
+            case 7:
+                $campo = 'recepcion_matricula';
+                break;
+            case 8:
+                $campo = 'vehiculo_revisado';
+                break;
+            case 9:
+                $campo = 'entrega_vehiculo';
+                break;
+            case 10:
+                $campo = 'foto_entrega';
+                break;
+
+            default:
+                break;
+        }
+        $criteria2 = new CDbCriteria(array(
+            'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo} AND {$campo} = 1"
+        ));
+        $entre = GestionPasoEntrega::model()->count($criteria2);
+        if($entre > 0){
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+    
+    public function getPasoEntregaCon($id_informacion,$id_vehiculo) {
+        $criteria2 = new CDbCriteria(array(
+            'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"
+        ));
+        $entre = GestionPasoEntrega::model()->find($criteria2);
+        if (!is_null($entre) && !empty($entre)) {
+            return $entre->paso;
+        }else{
+            return 0;
+        }
+    }
+    
+    public function getFechaObsEntrega($id_gestion, $id_paso) {
+        $data = array();
+        $criteria2 = new CDbCriteria(array(
+            'condition' => "id_gestion = {$id_gestion} AND id_paso = {$id_paso}"
+        ));
+        $entre = GestionPasoEntregaDetail::model()->find($criteria2);
+        if (!is_null($entre) && !empty($entre)) {
+            if($id_paso == 7){
+                $data['fecha'] = $entre->fecha_paso;
+                $data['placa'] = $entre->placa;
+            }
+            if($id_paso == 8){
+                $data['fecha'] = $entre->fecha_paso;
+                $data['responsable'] = $entre->responsable;
+            }
+            if($id_paso == 10){
+                $data['foto_entrega'] = $entre->foto_entrega;
+                $data['foto_hoja_entrega'] = $entre->foto_hoja_entrega;
+            }else{
+                $data['fecha'] = $entre->fecha_paso;
+                $data['observaciones'] = $entre->observaciones;
+            }
+            return $data;
+        }else{
+            return $data;
+        }
+    }
+
+
+    public function getIdPasoEntrega($id_informacion,$id_vehiculo) {
+        $criteria2 = new CDbCriteria(array(
+            'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"
+        ));
+        $entre = GestionPasoEntrega::model()->find($criteria2);
+        if (!is_null($entre) && !empty($entre)) {
+            return $entre->id;
+        }else{
+            return 0;
+        }
+    }
+
+
     public function getFormatFecha($fecha) {
         //die('fecha: '.$fecha);
         $params = explode(" ", $fecha);

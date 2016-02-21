@@ -2916,11 +2916,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
     }
 
-    public function actionEntrega($id_vehiculo = NULL, $id_informacion = NULL) {
+    public function actionEntrega($id_informacion = NULL) {
         $model = new GestionEntrega;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionEntrega'])) {
             //die('enter entrega');
@@ -2946,7 +2944,14 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //$this->redirect(array('gestionInformacion/seguimiento'));
             }
         }
-        $this->render('entrega', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion='{$id_informacion}'"
+        ));
+        $vec = GestionVehiculo::model()->findAll($criteria);
+        $this->render('entrega', array('vec' => $vec, 'id_informacion' => $id_informacion));
+        //$this->render('entrega', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
     }
 
     public function actionEntregaAjax($id_vehiculo = NULL, $id_informacion = NULL) {
