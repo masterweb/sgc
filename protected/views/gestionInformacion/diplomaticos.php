@@ -362,9 +362,9 @@ if ($ced != '') {
             //console.log('enter gestion');
             $('#gestion-informacion-form').validate({
                 rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                    'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[direccion]': {required: true},
+                    'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[direccion]': {required: true},
                     'GestionInformacion[provincia_domicilio]': {required: true}, 'GestionInformacion[ciudad_domicilio]': {required: true},
-                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10},
+                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true},
                     //'GestionInformacion[telefono_oficina]': {required: true, minlength: 9},
                     'GestionInformacion[marca_usado]': {required: true}, 'GestionInformacion[modelo_usado]': {required: true},
                     'GestionInformacion[telefono_casa]': {required: true, minlength: 9}},
@@ -423,7 +423,6 @@ if ($ced != '') {
                     }else{
                        form.submit(); 
                     }
-                    
                 }
             });
         } else if (tipo == 'prospeccion') {
@@ -462,7 +461,7 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}},
@@ -477,7 +476,7 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
@@ -492,7 +491,7 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
@@ -553,7 +552,7 @@ if ($ced != '') {
                     $('.cont-nocont').show();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
                         submitHandler: function (form) {
@@ -594,7 +593,7 @@ if ($ced != '') {
                 case '15':
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},

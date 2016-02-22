@@ -3,10 +3,17 @@
 /* @var $model GestionPasoEntrega */
 /* @var $form CActiveForm */
 $paso = $this->getPasoEntregaCon($id_informacion, $id_vehiculo);
-$id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo);
+echo 'PASO:++++++ ' . $paso . '<br>';
 $tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 - credito, 0 - contado
+if($tipo == 0 && $paso == 0){
+    $paso = 3;
+}elseif($tipo == 1){
+    $paso = $this->getPasoEntregaCon($id_informacion, $id_vehiculo);
+}
+$id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo);
+
 //echo 'TIPO DE FINANCIAMIENTO: '.$tipo;
-//echo 'PASO:++++++ ' . $paso . '<br>';
+
 //echo 'id paso entrega: ' . $id_gestion_paso_entrega;
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/datetimepicker/jquery.datetimepicker.css" rel="stylesheet">
@@ -134,7 +141,6 @@ $tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 -
                         return false;
                     }
                 }
-
                 form.submit();
             }
         });
@@ -641,7 +647,12 @@ $tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 -
                             </div>
                         <?php } ?>
                         <div class="row buttons">
+                            <?php if($paso == 10){ ?>
+                            <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion)); ?>" class="btn btn-danger" id="continue">Continuar</a>
+                            <?php }else{ ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
+                            <?php } ?>
+                            
                             <input type="hidden" name="GestionPasoEntrega[paso]" id="GestionPasoEntrega_paso" value="<?php echo $paso; ?>"/>
                             <input type="hidden" name="GestionPasoEntrega[id_informacion]" id="GestionPasoEntrega_id_informacion" value="<?php echo $id_informacion; ?>"/>
                             <input type="hidden" name="GestionPasoEntrega[id_vehiculo]" id="GestionPasoEntrega_id_informacion" value="<?php echo $id_vehiculo; ?>"/>

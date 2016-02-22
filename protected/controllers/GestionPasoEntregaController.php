@@ -75,6 +75,7 @@ class GestionPasoEntregaController extends Controller {
 //            print_r($_POST);
 //            echo '</pre>';
 //            die();
+            // tipo de financiamiento 1 - credito, 0 - contado
             $tipo = $this->getFinanciamiento($_POST['GestionPasoEntrega']['id_informacion']);
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
 
