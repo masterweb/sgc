@@ -648,7 +648,7 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                         <?php } ?>
                         <div class="row buttons">
                             <?php if($paso == 10){ ?>
-                            <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion)); ?>" class="btn btn-danger" id="continue">Continuar</a>
+                            <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_informacion' => $id_informacion,'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger" id="continue">Continuar</a>
                             <?php }else{ ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
                             <?php } ?>

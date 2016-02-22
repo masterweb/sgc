@@ -1442,6 +1442,7 @@ class CencuestadoscquestionarioController extends Controller {
                             $gi->tipo_form_web = 'usadopago';
                             $gi->responsable_origen = $gi->responsable;
                             $gi->responsable = $this->getRandomKey(73, $gi->dealer_id);
+                            $gi->bdc = 1;
                             $gi->update();
                         }
                     }

@@ -298,7 +298,7 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
     $mail->AddAddress($to);
     $mail->AddAddress($toAsesor);
     $mail->AddAddress('vlondono@kia.com.ec'); // call center
-    $mail->AddAddress('carli-c@hotmail.com');
+    $mail->AddAddress('gansaldo72@hotmail.com');
     
     if (!$mail->Send()) {
         return false;
