@@ -1345,7 +1345,7 @@ class Controller extends CController {
                 $criteria = new CDbCriteria(array(
                     'condition' => "id_informacion={$id}"
                 ));
-                $pr = GestionEntrega::model()->count($criteria);
+                $pr = GestionPasoEntrega::model()->count($criteria);
                 if ($pr > 0) {
                     return TRUE;
                 }

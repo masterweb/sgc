@@ -275,7 +275,7 @@
         <div class="form-group">
         <label class="col-sm-2 control-label required" for="Usuarios_cedula">Cédula <span class="required">*</span></label>        
         <div class="col-sm-10">
-            <input type="tel" size="10" maxlength="10" min="10" max="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
+            <input type="tel" size="10" maxlength="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
             <div id="errorCedula" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">Cédula ingresada es incorrecta.</div>
                     
         </div>
@@ -340,7 +340,7 @@
     <div class="form-group">
         <?php echo $form->labelEx($model, 'telefono', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
-            <input  maxlength="9" min="9" max="9" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
+            <input  maxlength="9" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
 
             <?php echo $form->error($model, 'telefono'); ?>
         </div>
