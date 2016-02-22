@@ -1444,6 +1444,7 @@ class CencuestadoscquestionarioController extends Controller {
                             $gi->responsable = $this->getRandomKey(73, $gi->dealer_id);
                             $gi->bdc = 1;
                             $gi->update();
+                            
                         }
                     }
                 }
