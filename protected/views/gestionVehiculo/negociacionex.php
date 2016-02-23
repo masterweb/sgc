@@ -1965,7 +1965,7 @@ function deleter(id){
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="checkbox">
-                                                                    <span class="label label-default label-price" id="accspan-3">USD. 595</span>
+                                                                    <span class="label label-default label-price" id="accspan-3">USD. 670</span>
                                                                 </div>
                                                             </div>
                                                         </div>
