@@ -140,15 +140,11 @@ $(document).ready(function () {
                                 <option value="85">Rio R</option>\n\
                                 <option value="24">Cerato Forte</option>\n\
                                 <option value="90">Cerato R</option>\n\
-                                <option value="89">Óptima Híbrido</option>\n\
                                 <option value="88">Quoris</option>\n\
                                 <option value="20">Carens R</option>\n\
                                 <option value="11">Grand Carnival</option>\n\
                                 <option value="21">Sportage Active</option>\n\
                                 <option value="83">Sportage R</option>\n\
-                                <option value="10">Sorento</option>\n\
-                                <option value="25">K 2700 Cabina Simple</option>\n\
-                                <option value="87">K 2700 Cabina Doble</option>\n\
                                 <option value="86">K 3000</option>'
             var dataVersion = '<option value="" selected="selected">Escoja una versión</option>';
             $('#Casos_modelo').html(dataModelo);
@@ -214,7 +210,6 @@ $(document).ready(function () {
         var datausado = '<option value="">--Seleccione--</option>\n\
 <option value="Nuevo">Nuevo</option>\n\\n\
 <option value="Usado">Usado</option>\n\
-<option value="Exonerado Taxi">Exonerado Taxi</option>\n\
 <option value="Exonerado Conadis">Exonerado Conadis</option>\n\
 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
         var dataprospeccion = '<option value="">--Seleccione--</option>\n\
@@ -628,7 +623,7 @@ $(document).ready(function () {
                                 var endTime = parseInt(startTime) + 100;
                                 //console.log('start time:'+fechaStart+startTime);
                                 //console.log('fecha end:'+fechaStart+endTime);
-                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
+                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+nombre_concesionario+' - '+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
                                 //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
                                 $('#event-download').attr('href', href);
                                 $('#calendar-content').show();

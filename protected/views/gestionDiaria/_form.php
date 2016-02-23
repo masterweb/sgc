@@ -869,53 +869,192 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php } ?>
                     
                 <?php } // End - Paso 8 - Cierre  ?>
-                <?php if ($this->getAnswer(7, $id) > 0): ?>
-                    <div class="col-md-9" id="entrega"><h3 class="tl_seccion_rf" id="entrega"><span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 9 - Entrega</h3></div>
+                <?php if ($this->getAnswer(7, $id) > 0){ ?>
+                    <div class="col-md-9" id="entrega">
+                        <h3 class="tl_seccion_rf" id="entrega">
+                            <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 9 - Entrega</h3>
+                    </div>
                     <?php
                     $criteria10 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}"
                     ));
-                    $art5 = GestionEntrega::model()->findAll($criteria10);
-                    foreach ($art5 as $c2):
-                        ?>        
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Cita para entrega del Vehículo</h4>
-                            <div class="col-md-3"><p><?php echo $c2['agendamiento1']; ?></p></div>
-                        </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Vehículo Cotizado</h4>
-                            <div class="row">
-                                <div class="col-md-4"><strong>Modelo: </strong><?php echo $this->getModeloTestDrive($c2['id_vehiculo']); ?></div>
-                                <div class="col-md-4"><strong>Versión: </strong><?php echo $this->getVersionTestDrive($c2['id_vehiculo']); ?></div>
+                    $art5 = GestionPasoEntrega::model()->find($criteria10);
+                    $id_vehiculo = $art5->id_vehiculo;
+                    $id_gestion_paso_entrega = $this->getIdPasoEntrega($_GET['id'], $id_vehiculo);
+                    ?>
+                    <div class="col-md-9">
+                    <table class="table table-striped">
+                        <thead> <tr><th>Paso</th> <th>Fecha</th> <th>Detalle</th> </tr> </thead>
+                        <tbody>
+                            <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 1)) { ?>
+                                <tr>
+                                    <td>
+                                        <h3 class="panel-title">Envío de factura del vehículo y de los accesorios</h3>
+                                    </td>
+                                    <td>
 
-                            </div>
+                                        <label for="">Fecha: </label>
+                                        <?php echo $data['fecha']; ?>
+                                    </td>
+                                    <td>
+                                        <label for="">Observaciones: </label>
+                                        <?php echo $data['observaciones']; ?>
+                                    </td>
+                                </tr>    
+                            <?php } ?>
+                            <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 2)) { ?>
+                            <tr>
+                                <td>
+                                    <h3 class="panel-title">Emisión de los contratos</h3>
+                                </td>
+                                <td>
+
+                                    <label for="">Fecha: </label>
+                                    <?php echo $data['fecha']; ?>
+                                </td>
+                                <td>
+                                    <label for="">Observaciones: </label>
+                                    <?php echo $data['observaciones']; ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                            <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 3)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Agendar firma de contratos por parte del cliente</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Observaciones: </label>
+                                <?php echo $data['observaciones']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 4)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Alistamiento de la unidad en PDI y accesorización</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Observaciones: </label>
+                                <?php echo $data['observaciones']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 5)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Pago de la matrícula e impuestos</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Observaciones: </label>
+                                <?php echo $data['observaciones']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 6)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Recepción de contratos legalizados</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Observaciones: </label>
+                                <?php echo $data['observaciones']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 7)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Recepción de matrícula  y placas</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Placa: </label>
+                                <?php echo $data['placa']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 8)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Vehículo Revisado</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Responsable: </label>
+                                <?php echo $data['responsable']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 9)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Entrega al Vehículo</h3>
+                            </td>
+                            <td>
+
+                                <label for="">Fecha: </label>
+                                <?php echo $data['fecha']; ?>
+                            </td>
+                            <td>
+                                <label for="">Observaciones: </label>
+                                <?php echo $data['observaciones']; ?>
+                            </td>
+                        </tr>    
+                    <?php } ?>
+                    <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 10)) { ?>
+                        <tr>
+                            <td>
+                                <h3 class="panel-title">Foto de entrega</h3>
+                            </td>
+                            <td>
+                                <a class="fancybox btn btn-success btn-xs"  href="#inline2">Foto de Entrega</a>
+                            </td>
+                            <td>
+                                <a class="fancybox btn btn-success btn-xs" href="#inline3">Foto de Hoja de Entrega</a>
+                            </td>
+                        </tr>
+                        <div id="inline2" style="width:auto;display: none;">
+                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_entrega']; ?>"/> 
                         </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Hoja de Entrega</h4>
-                            <div class="col-md-2">
-                                <a class="btn btn-success btn-xs" href="<?php echo Yii::app()->createUrl('site/hojaentregacliente/', array('id_informacion' => $c2['id_informacion'], 'id_vehiculo' => $c2['id_vehiculo'])); ?>" target="_blank">Hoja de Entrega</a>
-                            </div>
+                        <div id="inline3" style="width:auto;display: none;">
+                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_hoja_entrega']; ?>"/> 
                         </div>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Foto Entrega Vehículo</h4>
-                            <div class="col-md-2">
-                                <?php
-                                $cri = new CDbCriteria(array(
-                                    'condition' => "id_informacion={$c2['id_informacion']} AND id_vehiculo = {$c2['id_vehiculo']}"
-                                ));
-                                $foto = GestionEntrega::model()->find($cri);
-                                $imgEntrega = $foto->foto_cliente;
-                                ?>
-                                <div id="inline2" style="width:auto;display: none;">
-                                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $imgEntrega; ?>"/> 
-                                </div>
-                                <a class="fancybox btn btn-success btn-xs" href="#inline2">Foto</a>
-                            </div>
-                        </div>
-                        <?php
-                    endforeach;
-                endif;
-                ?> 
+                    <?php } ?>
+                    
+                    </tbody>
+                    </table>
+                    </div>
+                                        
+                <?php } ?> 
                     <div class="row">
                     <div class="col-md-9">
                         <hr style="border-top: 1px solid #AE5858;" />

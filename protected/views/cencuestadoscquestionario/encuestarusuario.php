@@ -106,8 +106,8 @@ $this->menu = array(
                 </div>
                 <div class="row">
                       <div class="col-md-2 text-right"><h5><b>Correo:</b></h5></div>
-                      <div class="col-md-3 text-left"><h5><?php echo $questionario->cencuestados->email;?></h5></div>
-                      <div class="col-md-3 text-right"><h5><b>Fecha Nacimiento:</b></h5></div>
+                      <div class="col-md-4 text-left"><h5><?php echo $questionario->cencuestados->email;?></h5></div>
+                      <div class="col-md-2 text-right"><h5><b>Fecha Nacimiento:</b></h5></div>
                       <div class="col-md-3 text-left"><h5><?php echo $questionario->cencuestados->fechanacimiento;?></h5></div>
                   </div> 
             </div>

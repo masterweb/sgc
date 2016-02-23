@@ -51,7 +51,7 @@ $rol = Yii::app()->user->getState('roles');
     </div>
 	<div class="row">
         <!-- FORMULARIO DE BUSQUEDA -->
-        <!--<div class="col-md-8">
+        <div class="col-md-8">
             <div class="highlight">
                 <div class="form">
                     <h4>Filtrar por:</h4>
@@ -59,7 +59,7 @@ $rol = Yii::app()->user->getState('roles');
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'codigo-naturaleza-form',
                         'method' => 'get',
-                        'action' => Yii::app()->createUrl('cquestionario/search/'),
+                        'action' => Yii::app()->createUrl('cencuestadoscquestionario/encuestas/'.$id),
                         'enableAjaxValidation' => true,
                         'htmlOptions' => array('class' => 'form-horizontal form-search')
                             ));
@@ -83,7 +83,7 @@ $rol = Yii::app()->user->getState('roles');
                     <?php $this->endWidget(); ?>
                 </div>
 				
-            </div>-->
+            </div>
 			
         </div>
 

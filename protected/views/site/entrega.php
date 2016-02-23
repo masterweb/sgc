@@ -19,20 +19,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-$hoja = $this->getHojaStatus($id_informacion, $id_vehiculo);
-//echo 'HOJA DE ENTREGA: ----'.$hoja;
-$cri = new CDbCriteria(array(
-    'condition' => "id_informacion={$id_informacion} AND tipo = 2"
-        ));
-$firma = GestionFirma::model()->count($cri);
-$tipo = $this->getFinanciamiento($id_informacion);
-$nombre_cliente = $this->getNombresInfo($id_informacion);
-$crit = new CDbCriteria(array(
-    'condition' => "id_informacion={$id_informacion}"
-        ));
-//    die('id informacion: '.$id_informacion);
-$consulta = GestionConsulta::model()->find($crit);
-$credito = $consulta->preg6;
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/datetimepicker/jquery.datetimepicker.css" rel="stylesheet">
 <style type="text/css">
@@ -43,8 +29,8 @@ $credito = $consulta->preg6;
 <script type="text/javascript">
     $(document).ready(function () {
         $('#closemodal').click(function () {
-            var url      = window.location.href; 
-            $(location).attr('href',url);
+            var url = window.location.href;
+            $(location).attr('href', url);
         });
         $('.fancybox').fancybox();
 <?php if (($firma == 0)): ?>
@@ -204,7 +190,7 @@ $credito = $consulta->preg6;
 
         }
     }
-    function send(){
+    function send() {
         //console.log('enter send');
         $('#gestion-entrega-form').validate({
             submitHandler: function (form) {
@@ -388,796 +374,94 @@ $credito = $consulta->preg6;
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="profile">
                 <div class="row">
-                    <h1 class="tl_seccion_rf">Entrega del Vehículo: Modelo - <?php echo $this->getModeloTestDrive($id_vehiculo); ?>, Versión - <?php echo $this->getVersionTestDrive($id_vehiculo); ?></h1>
+                    <h1 class="tl_seccion">Lista de Entrega</h1>
                 </div>
-                <div class="row">
-                    <h1 class="tl_seccion_rf">Datos del Cliente y Vehículo</h1>
-                </div>
+                <div class="rows">
+                    <div class="col-md-12">
+                        <div class="row highlight">
+                            <div class="table-responsive">
+                                <table class="tables tablesorter" id="keywords">
+                                    <thead>
+                                        <tr>
+                                            <th><span>Modelo</span></th>
+                                            <th><span>Versión</span></th>
+                                            <!--<th><span>Precio</span></th>-->
+                                            <th><span>Entrega</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($vec as $c): ?>
+                                            <tr>
+                                                <td><?php echo $this->getModel($c['modelo']); ?> </td>
+                                                <td><?php echo $this->getVersion($c['version']); ?> </td>
 
+                                                <td>
+                                                    <?php
+                                                    $test = $this->getPasoEntregaCon($c['id_informacion'], $c['id']);
+                                                    //echo 'test: '.$test;
+                                                    ?>
+                                                    <?php if ($test == 10) { ?>
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Entrega</a>
+                                                    <?php } ?>
+                                                    <?php if ($test == 0) { ?>  
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Entrega</a>
+                                                    <?php } ?>
+                                                    <?php if ($test > 0 && $test < 10) { ?> 
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-info btn-xs btn-rf">Entrega</a>
+                                                    <?php } ?>    
 
-                <p class="note">Campos con <span class="required">*</span> son obligatorios.</p>
-                <?php
-                $criteria = new CDbCriteria(array('condition' => "id = {$id_informacion}"));
-                $cl = GestionInformacion::model()->findAll($criteria);
-                ?>
-                <div class="row">
-                    <div class="col-md-8">
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr class="odd"><th>Modelo</th><td><?php echo $this->getModeloTestDrive($id_vehiculo); ?></td><th>Cliente</th><td><?php echo ucfirst($cl[0]['nombres']); ?> <?php echo ucfirst($cl[0]['apellidos']); ?></td></tr>
-                                <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr>
-                                <tr class="odd"><th>Motor</th><td></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
-                                <tr class="odd"><th>Factura</th><td></td><th>No. Chasis</th><td></td></tr>
-                                <tr class="odd"><th>Color</th><td></td><th></th><td></td></tr> 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="highlight">
-
-
-                    <div class="form">
-                        <form action="/intranet/usuario/index.php/site/matticula" method="post" id="gestion-matriculacion" onsubmit="return false;" onkeypress="if (event.keyCode == 13) {
-                                    sendmail();
-                                }" >
-                            <!--                            <div class="row">
-                                                            <h1 class="tl_seccion_rf">Proceso de Matriculación</h1>
-                                                        </div>-->
-                            <?php
-                            $criteria2 = new CDbCriteria(array(
-                                'condition' => "id_informacion={$id_informacion}",
-                                'order' => 'id DESC',
-                                'limit' => 1
-                            ));
-                            $count = GestionMatricula::model()->count($criteria2);
-                            $art = GestionMatricula::model()->findAll($criteria2);
-                            ?>
-                            <?php
-                            if ($count > 0):
-                                foreach ($art as $v):
-                                    ?>
-
-                                    <div class="cont-mat">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        FACTURA E INGRESO DE LOS DATOS DE CHASIS Y MOTOR AL SRI.
-                                                        <?php if ($v['factura_ingreso'] == 1) : ?>
-                                                            <input type="checkbox" value="1" name="GestionMatricula[factura_ingreso]" checked="" disabled="">
-                                                        <?php else: ?>
-                                                            <input type="checkbox" value="1" name="GestionMatricula[factura_ingreso]">
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        ENVÍO DE LA FACTURA ELECTRÓNICA A LA DIRECCIÓN DEL CLIENTE DESPUÉS DE TENER LA AUTORIZACIÓN DEL SRI, PARA QUE PROCEDA EL PAGO
-                                                        MATRÍCULA, REVISIÓN VEHICULAR Y OTROS EN LAS ENTIDADES BANCARIAS AUTORIZADAS.
-                                                        <?php if ($v['envio_factura'] == 2) : ?>
-                                                            <input type="checkbox" value="2" name="GestionMatricula[envio_factura]" checked="" disabled="">
-                                                        <?php endif; ?>
-                                                        <?php if ($v['envio_factura'] == NULL) : ?>
-                                                            <input type="checkbox" value="2" name="GestionMatricula[envio_factura]">
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        PAGO CONSEJO PROVINCIAL Y SI APLICA PAGO RODAJE. NORMALMENTE SE INCLUYE EN EL PAGO DE LA MATRÍCULA.
-                                                        <?php if ($v['pago_consejo'] == 3): ?>
-                                                            <input type="checkbox" value="3" name="GestionMatricula[pago_consejo]" checked="" disabled="">
-                                                        <?php endif; ?>
-                                                        <?php if ($v['pago_consejo'] == NULL) : ?>
-                                                            <input type="checkbox" value="3" name="GestionMatricula[pago_consejo]" disabled class="dsc">
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        EN CASO DE VENTA A CRÉDITO LA ENTIDAD BANCARIA DEBE ENTREGAR LOS CONTRATOS PARA PROCEDER CON LA MATRICULACIÓN. 
-                                                        <?php if ($v['pago_consejo'] == 3 && $v['venta_credito'] == '') : ?>
-                                                            <input type="checkbox" value="4" name="GestionMatricula[venta_credito]">
-                                                        <?php endif; ?>    
-                                                        <?php if ($v['venta_credito'] == NULL) : ?>
-                                                            <input type="checkbox" value="4" name="GestionMatricula[venta_credito]" disabled class="dsc">
-                                                        <?php endif; ?>    
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        ENTREGAR TODOS LOS DOCUMENTOS AL GESTOR CALIFICADO.
-                                                        <?php if ($v['venta_credito'] == 4) : ?>
-                                                            <input type="checkbox" value="5" name="GestionMatricula[entrega_documentos_gestor]">
-                                                        <?php endif; ?>
-                                                        <?php if ($v['entrega_documentos_gestor'] == NULL) : ?>
-                                                            <input type="checkbox" value="5" name="GestionMatricula[entrega_documentos_gestor]" checked="">
-                                                        
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        ENTE REGULADOR ENTREGA PLACA Y MATRÍCULA AL GESTOR.
-                                                        <?php if ($v['ente_regulador_placa'] == 6) : ?>
-                                                            <input type="checkbox" value="6" name="GestionMatricula[ente_regulador_placa]" checked="">
-                                                        <?php else: ?>
-                                                            <input type="checkbox" value="6" name="GestionMatricula[ente_regulador_placa]" disabled class="dsc">
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        EL VEHÍCULO SERÁ ENTREGADO ÚNICAMENTE CON MATRÍCULA Y PLACAS, DE ACUERDO A LO QUE DICE LA RESOLUCIÓN 123-DIR-2013-ANT.
-                                                        <?php if ($v['vehiculo_matricula_placas'] == 7) : ?>
-                                                            <input type="checkbox" value="7" name="GestionMatricula[vehiculo_matricula_placas]">
-                                                        <?php else: ?>
-                                                            <input type="checkbox" value="7" name="GestionMatricula[vehiculo_matricula_placas]" disabled class="dsc">
-                                                        <?php endif; ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <?php
-                                    endforeach;
-                                else:
-                                    ?>
-                                    <div class="cont-mat">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label>
-                                                        FACTURA E INGRESO DE LOS DATOS DE CHASIS Y MOTOR AL SRI.
-                                                        <input type="checkbox" value="1" name="GestionMatricula[factura_ingreso]">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label class="dsc">
-                                                        ENVÍO DE LA FACTURA ELECTRÓNICA A LA DIRECCIÓN DEL CLIENTE DESPUÉS DE TENER LA AUTORIZACIÓN DEL SRI, PARA QUE PROCEDA EL PAGO
-                                                        MATRÍCULA, REVISIÓN VEHICULAR Y OTROS EN LAS ENTIDADES BANCARIAS AUTORIZADAS.
-                                                        <input type="checkbox" value="2" name="GestionMatricula[envio_factura]" disabled class="dsc">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label class="dsc">
-                                                        PAGO CONSEJO PROVINCIAL Y SI APLICA PAGO RODAJE. NORMALMENTE SE INCLUYE EN EL PAGO DE LA MATRÍCULA.
-                                                        <input type="checkbox" value="3" name="GestionMatricula[pago_consejo]" disabled class="dsc">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <?php
-                                            if ($credito == 1):
-                                                ?>
-                                                <div class="col-md-12">
-                                                    <div class="checkbox">
-                                                        <label class="dsc">
-                                                            EN CASO DE VENTA A CRÉDITO LA ENTIDAD BANCARIA DEBE ENTREGAR LOS CONTRATOS PARA PROCEDER CON LA MATRICULACIÓN. 
-                                                            <input type="checkbox" value="4" name="GestionMatricula[venta_credito]" disabled class="dsc">
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label class="dsc">
-                                                        ENTREGAR TODOS LOS DOCUMENTOS AL GESTOR CALIFICADO.
-                                                        <input type="checkbox" value="5" name="GestionMatricula[entrega_documentos_gestor]" disabled class="dsc">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label class="dsc">
-                                                        PLACA Y MATRÍCULA. 
-                                                        <input type="checkbox" value="6" name="GestionMatricula[ente_regulador_placa]" disabled class="dsc">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="checkbox">
-                                                    <label class="dsc">
-                                                        INGRESO INFORMACIÓN DE KIA SATELITAL.
-                                                        <input type="checkbox" value="7" name="GestionMatricula[info_satelital]" disabled class="dsc">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    <?php endif; ?>
-                                    <div class="row accs">
-                                        <div class="col-md-4"><h4>Fecha de entrega</h4></div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="">Fecha de entrega<span class="required">*</span></label>
-                                            <input type="text" name="GestionMatricula[agendamiento1]" id="agendamiento1" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="row accs">
-                                        <div class="col-md-4"><h4>Observaciones</h4></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <textarea class="form-control" rows="5" name="GestionMatricula[observaciones]" id="GestionEntrega_observaciones"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
-                                            <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
-                                            <input type="hidden" name="GestionMatricula[id_informacion]" id="GestionMatricula_id_informacion" value="<?php echo $id_informacion; ?>">
-                                            <input type="hidden" name="GestionMatricula[id_vehiculo]" id="GestionMatricula_id_vehiculo" value="<?php echo $id_vehiculo; ?>">
-                                            <input class="btn btn-warning" id="matricula" type="submit" onclick="sendmail();" value="Grabar">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div id="calendar-content" style="display: none;">
-                                                <a href="" class="btn btn-primary" id="event-download">Descargar Evento</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>    
-                                <div class="row" id="alert-cont" style="display: none;">
-                                    <div class="alert alert-warning alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Agendamiento satisfactorio. Email enviado</strong>
-                                    </div>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="form">
-                    <?php
-                    $form = $this->beginWidget('CActiveForm', array(
-                        'id' => 'gestion-entrega-form',
-                        'enableAjaxValidation' => false,
-                        'htmlOptions' => array(
-                            //'enctype' => 'multipart/form-data',
-                            'onsubmit' => "return false;", /* Disable normal form submit */
-                            'onkeypress' => " if(event.keyCode == 13){ send(); } " /* Do ajax call when user presses enter key */
-                        ),
-                    ));
-                    ?>
-
-                    <?php
-                    //echo 'hoja: '.$hoja;
-                    //echo 'tipo de credito: '.$tipo;
-                    //if ($hoja == 'aprobado' || $tipo == 0) :
-                    ?>
-                    <div class="row">
-                        <h1 class="tl_seccion_rf">CHECK LISTA DE ENTREGA</h1>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    ACEITE MOTOR
-                                    <input type="checkbox" value="Aceite Motor" name="GestionEntrega[accesorios][]">
-                                </label>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    AGUA LIMPIA PARABRISAS
-                                    <input type="checkbox" value="Agua Limpia Parabrisas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    ANTENAS DE RADIO
-                                    <input type="checkbox" value="Antenas de radio" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    AROS/TAPACUBOS/PERNOS
-                                    <input type="checkbox" value="Aros/Tapacubos/Pernos" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    BATERÍA
-                                    <input type="checkbox" value="Batería" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    CERTIFICADO DE PRODUCCIÓN CAE
-                                    <input type="checkbox" value="Certificado de Producción CAE" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    A/C CALEFACCIÓN
-                                    <input type="checkbox" value="A/C Calefacción" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    CENICERO
-                                    <input type="checkbox" value="Cenicero" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    CINTURONES DE SEGURIDAD
-                                    <input type="checkbox" value="Cinturones de Seguridad" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    EMBLEMAS
-                                    <input type="checkbox" value="Emblemas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    ESPEJO INTERIOR IZQUIERDO
-                                    <input type="checkbox" value="Espejo Interior Izquierdo" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    ESPEJO EXTERIOR DERECHO
-                                    <input type="checkbox" value="Espejo Exterior Derecho" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    ESPEJO INTERIOR
-                                    <input type="checkbox" value="Espejo Interior" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    FACTURA
-                                    <input type="checkbox" value="Factura" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    FALDONES
-                                    <input type="checkbox" value="Faldones" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    GATA
-                                    <input type="checkbox" value="Gata" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    HERRAMIENTAS
-                                    <input type="checkbox" value="Herramientas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    LÍQUIDO DE FRENOS
-                                    <input type="checkbox" value="Líquido de Frenos" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    LLANTAS DE EMERGENCIA
-                                    <input type="checkbox" value="Llantas de Energencia" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    2 LLAVES (ENCENDIDO Y PUERTAS)
-                                    <input type="checkbox" value="2 Llaves Encendido y Puertas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    LLAVE DE RUEDAS
-                                    <input type="checkbox" value="Llave de Ruedas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    LUCES (FUNCIONAMIENTO)
-                                    <input type="checkbox" value="Luces Funcionamiento" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    MOLDURAS Y NIQUELADOS
-                                    <input type="checkbox" value="Molduras y Niquelados" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    MANUAL DE GARANTÍA
-                                    <input type="checkbox" value="Manual de Garantía" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    MANUAL DE PROPIETARIO
-                                    <input type="checkbox" value="Manual de Propietario" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    NEBLINEROS
-                                    <input type="checkbox" value="Neblineros" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    PARASOLES
-                                    <input type="checkbox" value="Parasoles" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    PARLANTES
-                                    <input type="checkbox" value="Parlantes" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    PINTURA
-                                    <input type="checkbox" value="Pintura" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    PITO
-                                    <input type="checkbox" value="Pito" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    PLUMAS LIMPIAPARABRISAS
-                                    <input type="checkbox" value="Plumas Limpiadoras" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    RADIO CON PANTALLA
-                                    <input type="checkbox" value="Radio con Pantalla" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    REFRIGERANTE DE RADIADOR
-                                    <input type="checkbox" value="Refrigerante de Radiador" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    SEGUROS PUERTAS (FUNCIONAMIENTO)
-                                    <input type="checkbox" value="Seguros Puertas Funcionamiento" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    SEGURO LLANTA DE EMERGENCIA
-                                    <input type="checkbox" value="Segurl Llanta de Emergencia" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    TABLERO DE CONTROL
-                                    <input type="checkbox" value="Tablero de Control" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    TAPA DE GASOLINA    
-                                    <input type="checkbox" value="Tablero de Gasolina" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    TAPA VÁLVULAS
-                                    <input type="checkbox" value="Tapa Válvulas" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    TAPICERÍA
-                                    <input type="checkbox" value="Tapicería" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="checkbox">
-                                <label>
-                                    VIDRIOS (FUNCIONAMIENTO)
-                                    <input type="checkbox" value="Vidrios Funcionamiento" name="GestionEntrega[accesorios][]">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <h1 class="tl_seccion_rf">Firma y Foto del Cliente</h1>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Firma del Cliente</h4>
-                        </div>
-                    </div>
-                    <?php
-                    if ($firma > 0):
-                        $fr = GestionFirma::model()->find($cri);
-                        $imgfr = $fr->firma;
+                        <?php
+                        $criteria2 = new CDbCriteria(array(
+                            'condition' => "id_informacion = {$_GET['id_informacion']} AND paso = 10"
+                        ));
+                        $entre = GestionPasoEntrega::model()->count($criteria2);
+                        if($entre > 0){
+                        $ent = GestionPasoEntrega::model()->find($criteria2);    
                         ?>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
-
-                            </div>
-                        </div>
-
-                    <?php else: ?>
-                        <div class="row" id="cont-firma-img" style="display: none;">
-                            <img src="" alt="" id="img-firma" width="200" height="100"/>
-                        </div>
-                        <div id="inline1" style="width:800px;display: none;height: 400px;">
-                            <div class="row">
-                                <h1 class="tl_seccion_rf">Ingreso de firma</h1>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <canvas id="colors_sketch" width="800" height="300"></canvas>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="tools">
-                                        <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
-                                        <input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
-                                        <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id="cont-firma">
-                            <div class="col-md-4">
-                                <!--<a href="/intranet/ventas/index.php/site/signature/176" target="_blank" class="btn btn-xs btn-primary">Ingresar Firma</a>-->
-                                <a href="#inline1" class="fancybox btn btn-xs btn-primary">Ingresar Firma</a> 
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4>Foto de entrega de vehículo de cliente</h4>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 100px;"></div>
-                                <div>
-                                    <span class="btn btn-default btn-file"><span class="fileinput-new">Foto del Cliente</span><span class="fileinput-exists">Cambiar</span>
-                                        <input type="file" name="GestionEntrega[foto_cliente]" id="GestionEntrega_foto_cliente">
-                                    </span>
-                                    <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cont-carta" style="display: none;">
-                        <div class="row">
-                            <h1 class="tl_seccion_rf">Carta de Bienvenida</h1>
-                        </div>
+                        <br />
                         <div class="row">
                             <div class="col-md-4">
-                                <a target="_blank" class="btn btn-xs btn-warning" onclick="sendBienvenida();">Enviar mail</a>
+                                <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_informacion' => $_GET['id_informacion'],'id_vehiculo' => $ent->id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
                             </div>
                         </div>
+                        <br />
+                        <?php } ?>
+
                     </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <label for="">Observaciones</label>
-                            <textarea cols="10" rows="10" name="GestionEntrega[observaciones]" id="GestionEntregaObservaciones"></textarea>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row buttons">
-                        <div class="col-md-2">
-                            <input type="hidden" name="GestionEntrega[id_vehiculo]" id="GestionEntrega_id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
-                            <input type="hidden" name="GestionEntrega[id_informacion]" id="GestionEntrega_id_informacion" value="<?php echo $id_informacion; ?>" />
-                            <input type="hidden" name="GestionInformacion2[calendar]" id="GestionInformacion_calendar2" value="0">
-                            <input type="hidden" name="GestionInformacion2[check]" id="GestionInformacion_check2" value="1">
-                            <input type="hidden" name="GestionInformacion[nombres]" id="GestionInformacion_nombres" value="<?php echo $this->getNombresInfo($id_informacion); ?>">
-                            <input type="hidden" name="GestionInformacion[apellidos]" id="GestionInformacion_apellidos" value="<?php echo $this->getApellidosInfo($id_informacion); ?>">
-                            <input class="btn btn-danger" id="finalizar" type="submit" value="Continuar" onclick="send();">
-                        </div>
-                        <div class="col-md-2">
-                            <div id="calendar-content2" style="display: none;">
-                                <a href="" class="btn btn-primary" id="event-download2">Descargar Evento</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion)); ?>" class="btn btn-danger" id="continue" style="display: none;" target="_blank">Continuar</a>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/hojaentrega/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-warning" id="generatepdf" style="display: none;" target="_blank">Imprimir</a>
-                        </div>
-                    </div>
-                    <?php //endif; ?>
-                    <?php $this->endWidget(); ?>
                 </div>
             </div>
+            <br />
+            <br />
+            <div class="row">
+                <div class="col-md-8  col-xs-12 links-tabs">
+                    <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
+                    <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
+                    <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
+                </div>
+            </div>
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">SGC</h4>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Agendamiento satisfactorio. Email enviado al cliente</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
         </div>
     </div>
-        <br />
-                <br />
-                <div class="row">
-                    <div class="col-md-8  col-xs-12 links-tabs">
-                        <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
-                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
-                    </div>
-                </div>
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">SGC</h4>
-                </div>
-                <div class="modal-body">
-                    <h4>Agendamiento satisfactorio. Email enviado al cliente</h4>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-</div>
-</div>
+</div>    

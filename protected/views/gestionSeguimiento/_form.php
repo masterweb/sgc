@@ -135,6 +135,10 @@
                         </div>
                         <div class="modal-body">
                             <h4>El proceso ha finalizado</h4>
+                            <ul>
+                                <li>La carta de bienvenida ha sido enviada al cliente.</li>
+                                <li>El mail de seguimiento ha sido enviado a su correo.</li>
+                            </ul>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Cerrar</button>

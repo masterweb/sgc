@@ -32,7 +32,7 @@ class Cencuestados extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('nombre, telefono, celular, email, ciudad, estado, cquestionario_id', 'required'),
-			array('cquestionario_id', 'numerical', 'integerOnly'=>true),
+			array('cquestionario_id,gestion_informacion_id', 'numerical', 'integerOnly'=>true),
 			array('nombre, email', 'length', 'max'=>150),
 			array('telefono, celular', 'length', 'max'=>18),
 			array('ciudad, estado,fechanacimiento', 'length', 'max'=>45),
@@ -69,6 +69,7 @@ class Cencuestados extends CActiveRecord
 			'estado' => 'Estado',
 			'fechanacimiento' => 'Fecha de Nacimiento',
 			'cquestionario_id' => 'Cquestionario',
+			'gestion_informacion_id' => 'gestion_informacion_id',
 		);
 	}
 
@@ -99,6 +100,7 @@ class Cencuestados extends CActiveRecord
 		$criteria->compare('estado',$this->estado,true);
 		$criteria->compare('fechanacimiento',$this->fechanacimiento,true);
 		$criteria->compare('cquestionario_id',$this->cquestionario_id);
+		$criteria->compare('gestion_informacion_id',$this->gestion_informacion_id);  
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

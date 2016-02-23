@@ -316,7 +316,7 @@ if (isset($id)) {
                                                 "" => "--Escoja un Modelo--",
                                                 "84" => "Picanto R",
                                                 "85" => "Rio R",
-                                                "91" => "Rio Taxi",
+                                                //"91" => "Rio Taxi",
                                                 "24" => "Cerato Forte",
                                                 "90" => "Cerato R",
                                                 //"89" => "Óptima Híbrido",
@@ -371,7 +371,6 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
-                                            <option value="91">Rio Taxi</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="90">Cerato R</option>
                                             <option value="88">Quoris</option>
@@ -483,6 +482,7 @@ if (isset($id)) {
                         <hr>
                     </div>
                     <div class="form-content norm" style="display: none;">
+                        
                         <form onsubmit="return false;" onkeypress="if (event.keyCode == 13) {send();}" id="gestion-vehiculo-form" action="/intranet/callcenter/index.php/gestionVehiculo/create/40" method="post">
                             <div class="col-md-8">
                                 <div class="row">
@@ -495,7 +495,6 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
-                                            <option value="91">Rio Taxi</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="90">Cerato R</option>
                                             <option value="88">Quoris</option>

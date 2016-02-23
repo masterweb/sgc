@@ -133,7 +133,7 @@ $rol = Yii::app()->user->getState('roles');
                         <tr>
                             
                             <td><?php echo utf8_decode(($c->nombre)) ?> </td>
-                            <td><?php echo $c->apellido ?> </td>
+                            <td><?php echo utf8_decode(($c->apellido)) ?> </td>
                             <td><?php echo $c->cedula ?> </td>
                             <td><?php echo $c->telefono ?> </td>
                             <td><?php echo $c->fecha ?> </td>

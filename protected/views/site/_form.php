@@ -25,21 +25,21 @@
             rules:{
                 'area':{required:true},'Usuarios[cedula]':{required:true},'Usuarios[apellido]':{required:true},'Usuarios[nombres]':{required:true},
                 'Usuarios[usuario]':{required:true},'Usuarios[fechaingreso]':{required:true},'Usuarios[correo]':{required:true, email:true},
-                'Usuarios[fechanacimiento]':{required:true},'Usuarios[celular]':{required:true},'Usuarios[telefono]':{required:true},
+                'Usuarios[fechanacimiento]':{required:true},'Usuarios[celular]':{required:true, number:true, minlength: 10},'Usuarios[telefono]':{required:true,number:true, minlength: 9},
                 'Usuarios[extension]':{required:true},'Usuarios[codigo_asesor]':{required:true}
             },
             messages: {
                 'area':{required:'Seleccione una ubicación'},'Usuarios[cedula]':{required:'Ingrese su cédula'},'Usuarios[apellido]':{required:'Ingrese su apellido'},'Usuarios[nombres]':{required:'Ingrese su nombre'},
                 'Usuarios[usuario]':{required:'Ingrese su nickname'},'Usuarios[fechaingreso]':{required:'Ingrese su fecha de ingreso'},'Usuarios[correo]':{required:'Ingrese su email', email:'Ingrese un email válido'},
-                'Usuarios[fechanacimiento]':{required:'Ingrese su fecha de nacimiento'},'Usuarios[celular]':{required:'Ingrese su celular'},'Usuarios[telefono]':{required:'Ingrese su teléfono'},
+                'Usuarios[fechanacimiento]':{required:'Ingrese su fecha de nacimiento'},'Usuarios[celular]':{required:'Ingrese su celular',number:'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'},'Usuarios[telefono]':{required:'Ingrese su teléfono',number:'Ingrese sólo números', minlength: 'Ingrese 9 dígitos'},
                 'Usuarios[extension]':{required:'Ingrese su extensión'},'Usuarios[codigo_asesor]':{required:'Ingrese su código'}
             },
             submitHandler: function (form) {
                 var celular = $('#Usuarios_celular').val();
                 var telefono = $('#Usuarios_telefono').val();
-                var celular_t = celular.substring(0,4);
+                var celular_t = celular.substring(0,2);
                 var telefono_t = telefono.substring(0,4);
-                if(celular_t != '(09)'){
+                if(celular_t != '09'){
                     $('#celular2').show(); 
                     $('#Usuarios_celular').focus();
                     return false;
@@ -275,7 +275,7 @@
         <div class="form-group">
         <label class="col-sm-2 control-label required" for="Usuarios_cedula">Cédula <span class="required">*</span></label>        
         <div class="col-sm-10">
-            <input type="tel" size="10" maxlength="10" min="10" max="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
+            <input type="tel" size="10" maxlength="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
             <div id="errorCedula" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">Cédula ingresada es incorrecta.</div>
                     
         </div>
@@ -340,7 +340,7 @@
     <div class="form-group">
         <?php echo $form->labelEx($model, 'telefono', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
-            <input  maxlength="9" min="9" max="9" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
+            <input  maxlength="9" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
 
             <?php echo $form->error($model, 'telefono'); ?>
         </div>

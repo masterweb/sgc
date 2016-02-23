@@ -30,8 +30,7 @@ class CencuestadoscquestionarioController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('nocompradoresadminencuestados', 'atenciondetalleencuestado', 'nocompradoresadmin', 'search', 'atenciondetalle', 'nocotizacionok', 'nocompradores', 'cotizaciones', 'create', 'cotizacionok', 'update', 'admin', ''
-                    . '', 'encuestas', 'encuestar', 'encuestarusuario', 'finalizarencuesta', 'seleccionar'),
+                'actions' => array('nocompradoresadminencuestados', 'atenciondetalleencuestado', 'nocompradoresadmin', 'search', 'atenciondetalle', 'nocotizacionok', 'nocompradores', 'cotizaciones', 'create', 'cotizacionok', 'update', 'admin', 'generar', 'encuestas', 'encuestar', 'encuestarusuario', 'finalizarencuesta', 'seleccionar'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -84,7 +83,7 @@ class CencuestadoscquestionarioController extends Controller {
                     foreach ($encuestados as $row) {
 
                         if ($contTPA < ($ua * $totalParaAsesores) && $contTPA >= $min) {
-                            //  echo 'entra->'.$contTPA.' con-->'. $row->id.'<br>';
+                            //	echo 'entra->'.$contTPA.' con-->'. $row->id.'<br>';
                             if (!empty($row->id)) {
                                 $model = new Cencuestadoscquestionario();
                                 $model->cencuestados_id = $row->id;
@@ -104,17 +103,17 @@ class CencuestadoscquestionarioController extends Controller {
                         require_once 'email/mail_func.php';
                         $asunto = 'Notificación de encuestas';
                         $general = '<body style="margin: 10px;">
-                                    <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
-                                        <div width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto align="center"><img src="images/header_mail.jpg"/><br><div>';
+									<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
+										<div width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto align="center"><img src="images/header_mail.jpg"/><br><div>';
 
                         $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Estimad@: <b>' . utf8_decode(utf8_encode($usuarioDato->nombres)) . ' ' . utf8_decode(utf8_encode($usuarioDato->apellido)) . '</b> se le ha asignado nuevas encuestas que deben ser completadas totalmente desde el sistema.</div>';
                         $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Recuerde que la fecha de inicio de la encuesta es <b>' . $questionario->fechainicio . '</b> y la de caducidad es el <b>' . $questionario->fechafin . '</b>.</div>';
                         $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left">Para acceder al sistema realice un clic <a href="' . $url . Yii::app()->request->baseUrl . '/index.php/site/login">aqu&iacute;.</a></div>';
 
                         $general.=' <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left"><img src="images/footer_mail.jpg"/></dvi>
-                                        </div>
-                                    </div>
-                                </body>';
+										</div>
+									</div>
+								</body>';
                         $codigohtml = $general;
                         $tipo = 'informativo';
                         $headers = 'From: info@kia.com.ec' . "\r\n";
@@ -146,7 +145,7 @@ class CencuestadoscquestionarioController extends Controller {
         );
     }
 
-    public function actionSeleccionar($id) {
+        public function actionSeleccionar($id) {
         $questionario = Cquestionario::model()->findByPk($id);
         $models = new UploadForm;
         //llamadas de clases EXCEL
@@ -268,7 +267,7 @@ class CencuestadoscquestionarioController extends Controller {
         switch ($questionario->cbasedatos_id) {
             case '1':
                 /* OBTENER LOS USUARIOS DE LA BASE DE DATOS TEST DRIVE, LAS TABLAS INVOLUCRADAS SON gestión_test_drive Y gestion_informacion */
-                $sql = 'SELECT DISTINCT gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+                $sql = 'SELECT DISTINCT gi.id,gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
@@ -351,7 +350,7 @@ class CencuestadoscquestionarioController extends Controller {
                 if(empty($where)){
                     $where = ' WHERE gt.test_drive = 1 and gt.order=1';
                 }
-                $sql = 'SELECT DISTiNCT gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
+                $sql = 'SELECT DISTiNCT gi.id,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
@@ -375,6 +374,7 @@ class CencuestadoscquestionarioController extends Controller {
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
                             $model->ciudad = $p->purify($city->name);
                             $model->estado = 'ACTIVO';
+							$model->gestion_informacion_id = $p->purify($key['id']);
                             $model->cquestionario_id = $id;
                             if (!$model->save()) {
                                 $errorSave++;
@@ -567,7 +567,7 @@ class CencuestadoscquestionarioController extends Controller {
                     if(empty($where)){
                     $where = ' WHERE gt.test_drive = 0 and gt.order=1';
                 }
-                $sql = 'SELECT DISTiNCT gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
+                $sql = 'SELECT DISTiNCT gi.id,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
@@ -591,6 +591,7 @@ class CencuestadoscquestionarioController extends Controller {
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
                             $model->ciudad = $p->purify($city->name);
                             $model->estado = 'ACTIVO';
+							$model->gestion_informacion_id = $p->purify($key['id']);
                             $model->cquestionario_id = $id;
                             if (!$model->save()) {
                                 $errorSave++;
@@ -735,14 +736,14 @@ class CencuestadoscquestionarioController extends Controller {
         );
     }
 
-    public function VerificarEncuestasAutomaticas($id) {
+     public function VerificarEncuestasAutomaticas($id) {
         $encuesta = Cquestionario::model()->findByPk($id);
         if ($encuesta->automatico == 'SI') {
             //OBTENER LAS PERSONAS A ENCUESTAR
             $encuestados = Cencuestados::model()->findAll(array('condition' => 'cquestionario_id=' . $encuesta->id));
             if ($encuesta->cbasedatos_id == 1) {
                 //obtener todas las personas existentes en la base de datos TEST DRIVE
-                $sql = 'SELECT DISTiNCT gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
+                $sql = 'SELECT DISTiNCT gi.id,gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
@@ -752,7 +753,7 @@ class CencuestadoscquestionarioController extends Controller {
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        $verificasihay = Cencuestados::model()->find(array("condition" => 'email ="' . $key['email'] . '"'));
+                        $verificasihay = Cencuestados::model()->find(array("condition" => 'gestion_informacion_id ="' . $key['id'] . '"'));
 
                         if (empty($verificasihay)) {
 
@@ -772,6 +773,7 @@ class CencuestadoscquestionarioController extends Controller {
                                 $city = Dealercities::model()->findByPk($key['ciudad_conc']);
                                 $model->ciudad = $p->purify($city->name);
                                 $model->estado = 'ACTIVO';
+								$model->gestion_informacion_id = $p->purify($key['id']);
                                 $model->cquestionario_id = $id;
                                 if ($model->save()) {
                                     $models = new Cencuestadoscquestionario();
@@ -788,7 +790,7 @@ class CencuestadoscquestionarioController extends Controller {
             }
             if ($encuesta->cbasedatos_id == 4) {
                 //obtener todas las personas existentes en la base de datos TEST DRIVE
-                $sql = 'SELECT DISTiNCT gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
+                $sql = 'SELECT DISTiNCT gi.id,gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
@@ -798,7 +800,7 @@ class CencuestadoscquestionarioController extends Controller {
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        $verificasihay = Cencuestados::model()->find(array("condition" => 'email ="' . $key['email'] . '"'));
+                        $verificasihay = Cencuestados::model()->find(array("condition" => 'gestion_informacion_id ="' . $key['id'] . '"'));
 
                         if (empty($verificasihay)) {
 
@@ -819,6 +821,7 @@ class CencuestadoscquestionarioController extends Controller {
                                 $model->ciudad = $p->purify($city->name);
                                 $model->estado = 'ACTIVO';
                                 $model->cquestionario_id = $id;
+								$model->gestion_informacion_id = $p->purify($key['id']);
                                 if ($model->save()) {
                                     $models = new Cencuestadoscquestionario();
                                     $models->cencuestados_id = $model->id;
@@ -830,7 +833,7 @@ class CencuestadoscquestionarioController extends Controller {
                             }
                         }
                     }
-                }
+                } 
             }
             if ($encuesta->cbasedatos_id == 2) {
                 //obtener todas las personas existentes en la base de datos TEST DRIVE
@@ -880,13 +883,24 @@ class CencuestadoscquestionarioController extends Controller {
         return true;
     }
 
-    public function actionEncuestas($id) {
+     public function actionEncuestas($id) {
         $rol = Yii::app()->user->getState('roles');
         $this->VerificarEncuestasAutomaticas($id);
         $criteria = new CDbCriteria;
-        $criteria->condition = "cquestionario_id = $id and usuarios_id=" . (int) Yii::app()->user->id;
+         $criteria->condition = "cquestionario_id = $id and usuarios_id=" . (int) Yii::app()->user->id;
+		if(!empty($_GET['Modelos']['Descripcion'])){
+			$match =($_GET['Modelos']['Descripcion']);
+			$busqueda = Cencuestados::model()->findAll(array('condition'=>"nombre LIKE '%$match%'"));
+			if(!empty($busqueda)){
+				$id_ec = array();
+				foreach($busqueda as $b){
+					array_push($id_ec,$b->id);
+				}
+				$criteria->addInCondition('cencuestados_id', $id_ec);
+			}
+		} 
         //$criteria->select = ' usuarios_id, cquestionario_id';
-        $criteria->order = 'estado, id DESC';
+        $criteria->order = ' id DESC';
 
 
 
@@ -920,13 +934,13 @@ class CencuestadoscquestionarioController extends Controller {
             $user = Usuarios::model()->findByPk(Yii::app()->user->id);
             $q = Cquestionario::model()->findByPk($id);
             $general = '<body style="margin: 10px;">
-                        <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
-                            <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto" align="center"><img src="images/header_mail.jpg"/><br></div>';
+						<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">
+							<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto" align="center"><img src="images/header_mail.jpg"/><br></div>';
             $general .= '<div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto">El usuario: <b>' . utf8_decode(utf8_encode($user->nombres)) . ' ' . utf8_decode(utf8_encode($user->apellido)) . '</b>  ha ha completado todas las encuestas pendientes referentes a la campa&ntilde;a <b>"' . $q->ccampana->nombre . '"</b> y su questionario <b>"' . $q->nombre . '"</b>.</div>';
             $general.=' <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;margin:auto;text-align:left"><img src="images/footer_mail.jpg"/></div>
-                            </div>
-                        </div>
-                    </body>';
+							</div>
+						</div>
+					</body>';
             $codigohtml = $general;
             $tipo = 'informativo';
             $headers = 'From: info@kia.com.ec' . "\r\n";
@@ -1043,11 +1057,12 @@ class CencuestadoscquestionarioController extends Controller {
         $this->render('encuestar', array('model' => $model));
     }
 
-    public function actionEncuestarusuario($id) {
+       public function actionEncuestarusuario($id) {
         $p = new CHtmlPurifier();
         date_default_timezone_set("America/Bogota");
         $q = Cencuestadoscquestionario::model()->findByPk($id);
-        $q->tiempoinicio = date('Y-m-d h:i:s');
+		if(empty($q->tiempoinicio))
+			$q->tiempoinicio = date('Y-m-d h:i:s');
         if (!empty($_POST['tt']))
             $q->tiempo = $_POST['tt'];
 
@@ -1351,7 +1366,6 @@ class CencuestadoscquestionarioController extends Controller {
     public function actionNocompradores($id) {
         date_default_timezone_set("America/Bogota");
         if (!empty($_POST)) {
-            //die('enter post');
 
             /* echo '<pre>';
               print_r($_POST);
@@ -1422,15 +1436,15 @@ class CencuestadoscquestionarioController extends Controller {
                         }
                     }
                     if (trim($_POST['datos']['motivo']) == 'Aun no toma la decision') {
-                        //die('enter no toma des');
                         if (!empty($gi)) {
                             /* $gd->desiste = 2;
                               $gd->update(); */
-                            $gi->tipo_form_web = '';
-                            $gi->bdc = 1;
+                            $gi->tipo_form_web = 'usadopago';
                             $gi->responsable_origen = $gi->responsable;
                             $gi->responsable = $this->getRandomKey(73, $gi->dealer_id);
+                            $gi->bdc = 1;
                             $gi->update();
+                            
                         }
                     }
                 }
@@ -1465,7 +1479,7 @@ class CencuestadoscquestionarioController extends Controller {
             $criteria->distinct = true;
             $criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
         }
-        //$criteria->order = 'id DESC';
+        $criteria->order = 'id DESC';
 
 
 

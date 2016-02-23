@@ -452,8 +452,8 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                                         $paso = '7';
                                     //$url = Yii::app()->createUrl('site/financiamiento', array('id' => $c['id_info']));
                                     endif;
-
                                     switch ($c['paso']) {
+                                        
                                         case '1-2':
                                             $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'gestion'));
                                             break;
@@ -483,7 +483,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                                     }
                                     ?>
                                     <!--<button type="button" class="btn btn-xs btn-primary"><?php //echo $status; ?></button>-->
-                                    <button type="button" class="btn btn-xs btn-success"><?php echo $c['paso']; ?></button>
+                                    <button type="button" class="btn btn-xs btn-success"><?php echo 'PASO:'.$c['paso']; ?></button>
                                     <?php
                                     $credito = $this->getStatusSolicitudAll($c['id_info']);
                                     if ($credito == true) {

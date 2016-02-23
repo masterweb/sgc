@@ -116,9 +116,10 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             </select>
         </div>
     </div>-->
-    <hr />
+    
     <?php if($cargo_id == 69 || $cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
     <?php $select = $this->getSelectProfile($cargo_id, $dealer_id); ?>
+<hr />
     <h4>Búsqueda:</h4>
     <div class="row">
         
