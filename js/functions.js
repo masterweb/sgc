@@ -140,15 +140,11 @@ $(document).ready(function () {
                                 <option value="85">Rio R</option>\n\
                                 <option value="24">Cerato Forte</option>\n\
                                 <option value="90">Cerato R</option>\n\
-                                <option value="89">Óptima Híbrido</option>\n\
                                 <option value="88">Quoris</option>\n\
                                 <option value="20">Carens R</option>\n\
                                 <option value="11">Grand Carnival</option>\n\
                                 <option value="21">Sportage Active</option>\n\
                                 <option value="83">Sportage R</option>\n\
-                                <option value="10">Sorento</option>\n\
-                                <option value="25">K 2700 Cabina Simple</option>\n\
-                                <option value="87">K 2700 Cabina Doble</option>\n\
                                 <option value="86">K 3000</option>'
             var dataVersion = '<option value="" selected="selected">Escoja una versión</option>';
             $('#Casos_modelo').html(dataModelo);
@@ -214,7 +210,6 @@ $(document).ready(function () {
         var datausado = '<option value="">--Seleccione--</option>\n\
 <option value="Nuevo">Nuevo</option>\n\\n\
 <option value="Usado">Usado</option>\n\
-<option value="Exonerado Taxi">Exonerado Taxi</option>\n\
 <option value="Exonerado Conadis">Exonerado Conadis</option>\n\
 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
         var dataprospeccion = '<option value="">--Seleccione--</option>\n\
