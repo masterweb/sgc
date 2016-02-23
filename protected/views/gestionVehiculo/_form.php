@@ -482,6 +482,7 @@ if (isset($id)) {
                         <hr>
                     </div>
                     <div class="form-content norm" style="display: none;">
+                        
                         <form onsubmit="return false;" onkeypress="if (event.keyCode == 13) {send();}" id="gestion-vehiculo-form" action="/intranet/callcenter/index.php/gestionVehiculo/create/40" method="post">
                             <div class="col-md-8">
                                 <div class="row">
