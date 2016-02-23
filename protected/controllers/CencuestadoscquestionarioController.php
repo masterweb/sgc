@@ -900,7 +900,7 @@ class CencuestadoscquestionarioController extends Controller {
 			}
 		} 
         //$criteria->select = ' usuarios_id, cquestionario_id';
-        $criteria->order = ' id, estado DESC';
+        $criteria->order = ' id DESC';
 
 
 
@@ -1479,7 +1479,7 @@ class CencuestadoscquestionarioController extends Controller {
             $criteria->distinct = true;
             $criteria->condition = "(nombre LIKE '%$name%' or apellido LIKE '%$name%') and realizado='0' and usuario_id=" . (int) Yii::app()->user->id;
         }
-       // $criteria->order = 'id DESC';
+        $criteria->order = 'id DESC';
 
 
 

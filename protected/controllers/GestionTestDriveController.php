@@ -290,6 +290,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $demostracion->id_informacion = $_POST['GestionTestDrive']['id_informacion'];
                 $demostracion->id_vehiculo = $_POST['GestionTestDrive']['id_vehiculo'];
                 $demostracion->save();
+                
+                $con = Yii::app()->db;
+                $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '6', status = 1 WHERE id_informacion = {$id_informacion}";
+                $request = $con->createCommand($sql)->query();
             }
 
             if ($model->save())

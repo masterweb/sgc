@@ -628,7 +628,7 @@ $(document).ready(function () {
                                 var endTime = parseInt(startTime) + 100;
                                 //console.log('start time:'+fechaStart+startTime);
                                 //console.log('fecha end:'+fechaStart+endTime);
-                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
+                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+nombre_concesionario+' - '+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
                                 //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
                                 $('#event-download').attr('href', href);
                                 $('#calendar-content').show();

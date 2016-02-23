@@ -362,14 +362,14 @@ if ($ced != '') {
                 rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                     'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[direccion]': {required: true},
                     'GestionInformacion[provincia_domicilio]': {required: true}, 'GestionInformacion[ciudad_domicilio]': {required: true},
-                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10},
+                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number:true},
                     //'GestionInformacion[telefono_oficina]': {required: true,minlength:9}, 
                     'GestionInformacion[marca_usado]': {required: true}, 'GestionInformacion[modelo_usado]': {required: true},
                     'GestionInformacion[telefono_casa]': {required: true,minlength:9}},
                 messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                     'GestionInformacion[cedula]': {required: 'Ingrese el número'}, 'GestionInformacion[direccion]': {required: 'Ingrese la dirección'},
                     'GestionInformacion[provincia_domicilio]': {required: 'Seleccione la provincia'}, 'GestionInformacion[ciudad_domicilio]': {required: 'Seleccione la ciudad'},
-                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos'},
+                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number:'Ingrese números'},
                     //'GestionInformacion[telefono_oficina]': {required: 'Ingrese el teléfono',minlength:'Ingrese 9 dígitos'},
                     'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono',minlength:'Ingrese 9 dígitos'}
                 },
@@ -453,10 +453,10 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}},
+                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true,minlength:10, number: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number:'Ingrese números'}},
                         submitHandler: function (form) {
                             form.submit();
                         }
@@ -468,10 +468,10 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true,minlength:10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number:'Ingrese números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
                             form.submit();
                         }
@@ -483,10 +483,10 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true,minlength:10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
                         submitHandler: function (form) {
                             var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
@@ -585,10 +585,10 @@ if ($ced != '') {
                 case '15':
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true,minlength:10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
                         submitHandler: function (form) {
                             form.submit();
                         }

@@ -267,7 +267,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail->IsHTML(true);
 
     $mail->AddAddress($to);
-    $mail->AddAddress('vlondono@kia.com.ec'); // call center
+    //$mail->AddAddress('vlondono@kia.com.ec'); // call center
     $mail->AddAddress('carlacalderonsalazar@gmail.com'); // call center
     
     if (!$mail->Send()) {
@@ -297,7 +297,7 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
 
     $mail->AddAddress($to);
     $mail->AddAddress($toAsesor);
-    $mail->AddAddress('vlondono@kia.com.ec'); // call center
+    //$mail->AddAddress('vlondono@kia.com.ec'); // call center
     $mail->AddAddress('gansaldo72@hotmail.com');
     
     if (!$mail->Send()) {

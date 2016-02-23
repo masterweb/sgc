@@ -112,6 +112,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                     </div>    
                 </div>
                 <br />
+                <br />
                 <div class="row">
                     <div class="col-md-2">
                         <?php 

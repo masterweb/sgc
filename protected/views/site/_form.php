@@ -37,9 +37,9 @@
             submitHandler: function (form) {
                 var celular = $('#Usuarios_celular').val();
                 var telefono = $('#Usuarios_telefono').val();
-                var celular_t = celular.substring(0,4);
+                var celular_t = celular.substring(0,2);
                 var telefono_t = telefono.substring(0,4);
-                if(celular_t != '(09)'){
+                if(celular_t != '09'){
                     $('#celular2').show(); 
                     $('#Usuarios_celular').focus();
                     return false;

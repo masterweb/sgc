@@ -73,6 +73,14 @@ class GestionSeguimientoController extends Controller {
             }
         }
         
+        // actualizar base de datos con el paso 10 en gestion_diaria
+        Yii::app()->db
+                    ->createCommand("UPDATE gestion_diaria SET entrega = 1, paso = 10 WHERE id_informacion=:ID")
+                    ->bindValues(array(':ID' => $id_informacion))
+                    ->execute();
+        
+        // mandar email de carta de bienvenida al cliente y email al asesor para llamada de seguimiento
+        
         $emailCliente = $this->getEmailCliente($id_informacion);
         $id_asesor = Yii::app()->user->getId();
         $nombre_asesor = $this->getResponsableNombres($id_asesor);

@@ -19,7 +19,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/datetimepicker/jquery.datetimepicker.css" rel="stylesheet">
 <style type="text/css">
@@ -398,14 +397,19 @@
 
                                                 <td>
                                                     <?php
-                                                    $test = $this->getFactura($c['id_informacion'], $c['id']);
+                                                    $test = $this->getPasoEntregaCon($c['id_informacion'], $c['id']);
+                                                    //echo 'test: '.$test;
                                                     ?>
-                                                    <?php if ($test > 0): ?>
+                                                    <?php if ($test == 10) { ?>
                                                         <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Entrega</a>
-                                                    <?php else: ?>    
-
+                                                    <?php } ?>
+                                                    <?php if ($test == 0) { ?>  
                                                         <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Entrega</a>
-                                                    <?php endif; ?>
+                                                    <?php } ?>
+                                                    <?php if ($test > 0 && $test < 10) { ?> 
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-info btn-xs btn-rf">Entrega</a>
+                                                    <?php } ?>    
+
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -413,10 +417,25 @@
                                 </table>
                             </div>
                         </div>
+                        <?php
+                        $criteria2 = new CDbCriteria(array(
+                            'condition' => "id_informacion = {$_GET['id_informacion']} AND paso = 10"
+                        ));
+                        $entre = GestionPasoEntrega::model()->count($criteria2);
+                        if($entre > 0){
+                        $ent = GestionPasoEntrega::model()->find($criteria2);    
+                        ?>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_informacion' => $_GET['id_informacion'],'id_vehiculo' => $ent->id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
+                            </div>
+                        </div>
+                        <br />
+                        <?php } ?>
+
                     </div>
                 </div>
-
-
             </div>
             <br />
             <br />
@@ -445,3 +464,4 @@
             </div><!-- /.modal -->
         </div>
     </div>
+</div>    

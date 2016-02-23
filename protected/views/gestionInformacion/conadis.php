@@ -455,13 +455,13 @@ if ($ced != '') {
                     'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true},
                     //'GestionInformacion[telefono_oficina]': {required: true, minlength: 9},
                     'GestionInformacion[marca_usado]': {required: true}, 'GestionInformacion[modelo_usado]': {required: true},
-                    'GestionInformacion[telefono_casa]': {required: true, minlength: 9}},
+                    'GestionInformacion[telefono_casa]': {required: true, minlength: 9,number:true}},
                 messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                     'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[direccion]': {required: 'Ingrese la dirección'},
                     'GestionInformacion[provincia_domicilio]': {required: 'Seleccione la provincia'}, 'GestionInformacion[ciudad_domicilio]': {required: 'Seleccione la ciudad'},
-                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos'},
+                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos',number:'Ingrese números'},
                     //'GestionInformacion[telefono_oficina]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos'},
-                    'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos'}
+                    'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number:'Ingrese números'}
                 },
                 submitHandler: function (form) {
                     $('#GestionInformacion_provincia_conc').removeAttr('disabled');
@@ -551,10 +551,10 @@ if ($ced != '') {
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength:10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
+                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
                             form.submit();
                         }
@@ -1027,15 +1027,15 @@ if ($ced != '') {
                                             "91" => "Rio Taxi",
                                             "24" => "Cerato Forte",
                                             "90" => "Cerato R",
-                                            "89" => "Óptima Híbrido",
+                                            //"89" => "Óptima Híbrido",
                                             "88" => "Quoris",
                                             "20" => "Carens R",
                                             "11" => "Grand Carnival",
                                             "21" => "Sportage Active",
                                             "83" => "Sportage R",
-                                            "10" => "Sorento",
-                                            "25" => "K 2700 Cabina Simple",
-                                            "87" => "K 2700 Cabina Doble",
+                                            //"10" => "Sorento",
+                                            //"25" => "K 2700 Cabina Simple",
+                                            //"87" => "K 2700 Cabina Doble",
                                             "86" => "K 3000"), array('class' => 'form-control'));
                                         ?>
                                         <?php echo $form->error($vehiculo, 'modelo'); ?>

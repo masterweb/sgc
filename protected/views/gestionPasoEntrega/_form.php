@@ -3,7 +3,7 @@
 /* @var $model GestionPasoEntrega */
 /* @var $form CActiveForm */
 $paso = $this->getPasoEntregaCon($id_informacion, $id_vehiculo);
-echo 'PASO:++++++ ' . $paso . '<br>';
+//echo 'PASO:++++++ ' . $paso . '<br>';
 $tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 - credito, 0 - contado
 if($tipo == 0 && $paso == 0){
     $paso = 3;
@@ -662,6 +662,15 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                         <?php $this->endWidget(); ?>
 
                     </div><!-- form -->
+                    <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-8  col-xs-12 links-tabs">
+                        <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
+                        <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

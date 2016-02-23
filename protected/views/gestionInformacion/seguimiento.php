@@ -568,7 +568,10 @@ $count = count($users);
                                             $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
                                             break;
                                         case '9':
-                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id_info']));
+                                            break;
+                                        case '10':
+                                            $url = Yii::app()->createUrl('site/entrega', array('id' => $c['id_info']));
                                             break;
                                         default:
                                             break;
