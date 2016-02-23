@@ -882,18 +882,18 @@ if ($ced != '') {
                                         "" => "--Escoja un Modelo--",
                                         "84" => "Picanto R",
                                         "85" => "Rio R",
-                                        "91" => "Rio Taxi",
+                                        //"91" => "Rio Taxi",
                                         "24" => "Cerato Forte",
                                         "90" => "Cerato R",
-                                        "89" => "Óptima Híbrido",
+                                        //"89" => "Óptima Híbrido",
                                         "88" => "Quoris",
                                         "20" => "Carens R",
                                         "11" => "Grand Carnival",
                                         "21" => "Sportage Active",
                                         "83" => "Sportage R",
-                                        "10" => "Sorento",
-                                        "25" => "K 2700 Cabina Simple",
-                                        "87" => "K 2700 Cabina Doble",
+                                        //"10" => "Sorento",
+                                        //"25" => "K 2700 Cabina Simple",
+                                        //"87" => "K 2700 Cabina Doble",
                                         "86" => "K 3000"), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($vehiculo, 'modelo'); ?>
