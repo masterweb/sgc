@@ -6,8 +6,26 @@ $(function () {
     $('#fecha-range1').daterangepicker({locale: {format: 'YYYY-MM-DD'}});
     $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}});
 
-    $('#fecha-range1').change(function () {loadmodelos($(this)); vaciar();});
-    $('#fecha-range2').change(function () {loadmodelos($(this)); vaciar();});
+    $('#fecha-range1').change(function () {
+        loadmodelos($(this));
+        loadprovincia($('#GestionInformacionProvincias'));
+        loadgrupo($('#GestionInformacionGrupo')); 
+
+        loadprovincia($('#TA_provincias'));
+        loadgrupo($('#TA_grupos')); 
+        vaciar();
+    });
+
+    $('#fecha-range2').change(function () {
+        loadmodelos($(this));
+        loadprovincia($('#GestionInformacionProvincias'));
+        loadgrupo($('#GestionInformacionGrupo'));
+
+        loadprovincia($('#TA_provincias'));
+        loadgrupo($('#TA_grupos')); 
+        vaciar();
+    });
+
     function loadmodelos(e){
         if(e.attr('value') != ''){
             var fecha1 = $('#fecha-range1').attr('value');
@@ -24,6 +42,41 @@ $(function () {
             });
         }        
     }
+    function loadprovincia(e){
+        //if(e.attr('value') != ''){
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            $.ajax({
+                url: url_footer_var_provincia,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {fecha1: fecha1, fecha2: fecha2},
+                success: function (data) {
+                    e.html(data);              
+                }
+            });
+        //}        
+    }
+    loadprovincia($('#GestionInformacionProvincias'));
+
+    function loadgrupo(e){
+        //if(e.attr('value') != ''){
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            $.ajax({
+                url: url_footer_var_grupo,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {fecha1: fecha1, fecha2: fecha2},
+                success: function (data) {
+                    e.html(data);                   
+                }
+            });
+        //}        
+    }
+    loadgrupo($('#GestionInformacionGrupo'));
 
     //carga responsables   
     $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
@@ -57,7 +110,11 @@ $(function () {
     });
 
     //TRAFICO ACUMULADO 
-    $(".tipo_busqueda_TA").change(function () {checkFiltro($(this)); });
+    $(".tipo_busqueda_TA").change(function () {
+        checkFiltro($(this)); 
+        loadprovincia($('#TA_provincias'));
+        loadgrupo($('#TA_grupos')); 
+    });
     //TODOS TA
     $('.filtros_modelos_ta').on('change', '#todos_ta', function(){
         if(this.checked){

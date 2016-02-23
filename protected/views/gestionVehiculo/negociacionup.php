@@ -259,11 +259,10 @@ if ($fi == 2) {
             $('#btnmodprof').show();
             //$('#select-cot').show();
         });
+
         $('#GestionFinanciamiento_entrada').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionFinanciamiento_entrada2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionFinanciamiento_entrada3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        //$('#GestionFinanciamiento_valor_financiamiento').maskMoney({prefix:'$ ', allowNegative: true, thousands:',', decimal:'.', affixesStay: true});
-        //$('#GestionFinanciamiento_cuota_mensual').maskMoney({prefix:'$ ', allowNegative: true, thousands:',', decimal:'.', affixesStay: true});
 
         $('#GestionAgendamiento_agendamiento').datetimepicker({
             lang: 'es',
