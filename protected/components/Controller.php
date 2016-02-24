@@ -1250,6 +1250,20 @@ class Controller extends CController {
         }
         return $tipo;
     }
+    
+    public function getFotoEntregaDetail($id_informacion) {
+        $con = Yii::app()->db;
+        $sql = "SELECT g.id_informacion, gd.foto_entrega, gd.id_gestion FROM gestion_paso_entrega g 
+                INNER JOIN gestion_paso_entrega_detail gd ON g.id = gd.id_gestion 
+                WHERE g.id_informacion = {$id_informacion} AND gd.id_paso = 10 LIMIT 0,1 ";
+        $request = $con->createCommand($sql)->query();
+        $foto_entrega = '';
+        foreach ($request as $value) {
+            $foto_entrega = $value['foto_entrega'];
+        }
+        return $foto_entrega;
+        
+    }
 
     public function getPrecioNormal($id_version) {
         $criteria = new CDbCriteria(array(

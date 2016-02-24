@@ -33,7 +33,7 @@
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id_informacion); ?>" saria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id_informacion); ?>" saria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion.png" alt="" /></span> Negociación</a></li>
-            <li role="presentation" class="active"><a href="<?php echo Yii::app()->createUrl('site/factura/' . $id_vehiculo); ?>" aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cierre_on.png" alt="" /></span> Cierre</a></li>
+            <li role="presentation" class="active"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cierre_on.png" alt="" /></span> Cierre</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/entrega/', array('id_informacion' => $id_informacion)); ?>" aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/entrega.png" alt="" /></span> Entrega</a></li>
             <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/seguimiento.png" alt="" /></span>Seguimiento</a></li>
         </ul>
@@ -86,7 +86,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-4">
-                                <input type="submit" class="btn btn-danger" id="send" name="send">
+                                <input type="submit" class="btn btn-danger" id="send" name="send" value="Enviar">
                                 <input type="hidden" id="send" name="Factura[id_informacion]" value="<?php echo $_GET['id_informacion']; ?>">
                                 <input type="hidden" id="send" name="Factura[id_vehiculo]" value="<?php echo $_GET['id_vehiculo']; ?>">
                                 <input type="hidden" id="Factura_identificacion" name="Factura[identificacion]" value="<?php echo $this->getIdentificacionTipo($id_informacion); ?>"/>
