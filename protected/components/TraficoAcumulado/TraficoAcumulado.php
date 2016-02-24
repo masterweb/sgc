@@ -55,7 +55,7 @@ class TraficoAcumulado{
 
     public static function selectConstructor($array, $name){
     	$filtro_main = '<div class="col-md-6" id="cont_TA'.$name.'">
-                <label for="">'.$name.'</label><select name="TA['.$name.']" id="TA'.$name.'" class="form-control">
+                <label for="">'.ucwords($name).'</label><select name="TA['.$name.']" id="TA'.$name.'" class="form-control">
                 <option value="">--Seleccione '.$name.'--</option>';
     	foreach ($array as $key => $value) {                                  
             $filtro = ' <option value="'.$value[$name].'">'.$value[$name].'</option>';
@@ -101,7 +101,7 @@ class TraficoAcumulado{
         $request = $con->createCommand($sql);
         $busqueda['mant'] = $request->queryAll();
 
-        $sql = "SELECT tipo from trafico_acumulado where concesionario = '".$concesionario."' ".$modelos." AND DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."'";
+        $sql = "SELECT tipo from trafico_acumulado where ".$where." ".$modelos." AND DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."'";
         $request = $con->createCommand($sql);
         $busqueda['mact'] = $request->queryAll();
 

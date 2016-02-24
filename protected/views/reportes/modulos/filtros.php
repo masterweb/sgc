@@ -34,13 +34,13 @@
             <h4>Seleccione el tipo de busqueda</h4>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="grupos" class="tipo_busqueda" 
             <?php if($varView['checked_g'] == true){echo 'checked';} ?>
-            >Por Grupos (2015 >>)</label>
+            >Por Grupos</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="provincias" class="tipo_busqueda"
             <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-            >Por Provincias (2015 >>)</label>
+            >Por Provincias</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
-            <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-            >Tráfico Acumulado (<< 2015)</label>
+            <?php if($varView['checked_ta'] == true){echo 'checked';} ?>
+            >Tráfico Histórico</label>
             <hr/>
         </div>
 <div id="traficoGeneral">
@@ -135,10 +135,10 @@
 <?php if ($varView['AEKIA'] == true): ?> 
 <div id="traficoacumulado"> <!-- #traficoacumulado fin-->
     <div class="row text-center">
-        <h4>Seleccione el tipo de busqueda de Tráfico Acumulado</h4>
-        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_grupos" class="tipo_busqueda_TA" 
+        <h4>Seleccione el tipo de busqueda de Tráfico Histórico</h4>
+        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_grupos" id="TA_grupos" class="tipo_busqueda_TA" 
         >Por Grupos</label>
-        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_provincias" class="tipo_busqueda_TA"
+        <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_provincias" id="TA_provincias" class="tipo_busqueda_TA"
         checked>Por Provincias</label>
         <hr/>
     </div>

@@ -148,23 +148,19 @@ class ReportesController extends Controller {
                 }                
             }
             if($_GET['GI']['tipo'] != ''){
-                if($_GET['GI']['tipo'] == 'grupos'){
-                    $varView['checked_g']  = true;
-                    $varView['checked_p'] = false;
-                }else{
+               if($_GET['GI']['tipo'] == 'provincias'){
                     $varView['checked_p']  = true; 
                     $varView['checked_g']  = false;
-                }                          
-            }
-            if($_GET['GI']['grupo'] != ''){
-                $varView['grupo'] = $_GET['GI']['grupo'];
-                $varView['checked_g']  = true;
-                $varView['checked_p'] = false;                        
-            }
-            if($_GET['GI']['provincias'] != ''){
-                $varView['provincias'] = $_GET['GI']['provincias'];
-                $varView['checked_p']  = true; 
-                $varView['checked_g']  = false;                            
+                    $varView['checked_ta'] = false;
+                }else if($_GET['GI']['tipo'] == 'traficoacumulado'){
+                    $varView['checked_ta'] = true;
+                    $varView['checked_p']  = false; 
+                    $varView['checked_g']  = false;
+                }else{
+                    $varView['checked_g']  = true;
+                    $varView['checked_p'] = false;
+                    $varView['checked_ta'] = false;
+                }                      
             }
         }else{
                 $varView['checked_g'] = true;
@@ -226,7 +222,7 @@ class ReportesController extends Controller {
                 }
             }
             $varView['trafico_mes_anterior'] = count($contador['trafico_mant']);
-            $varView['trafico_mes_actual'] = count($contador['trafico_mact']);               
+            $varView['trafico_mes_actual'] = count($contador['trafico_mact']);             
             $varView['proforma_mes_anterior'] = count($contador['proforma_mant']);
             $varView['proforma_mes_actual'] = count($contador['proforma_mact']);
             $varView['td_mes_anterior'] = count($contador['testdrive_mant']);
@@ -393,7 +389,7 @@ class ReportesController extends Controller {
             $filtro_modelos_main .= $filtro_modelos;
         }
 
-        if($modelos_ma == ''){  
+        if($modelos_ma == ''){
             $filtro_modelos_main = 'No exiten modelos activos para este rango de fechas - Seleccione un nuevo rango de fechas';
         }
         return $filtro_modelos_main;  
@@ -427,47 +423,54 @@ class ReportesController extends Controller {
         $sql_asesores_act = "SELECT distinct responsable FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
-        $asesores_aa = '';
-        foreach ($request_aa as $id_asesor) {
-            $asesores_aa .= $id_asesor['responsable'].', ';
-        }
-        $asesores_aa = rtrim($asesores_aa, ", ");
-        //FIN
 
-        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
-        $con = Yii::app()->db;
 
-        if( $cargo_id == 69 || 
-            $cargo_id == 70 || 
-            $cargo_id == 4 || 
-            $cargo_id == 45 ||
-            $cargo_id == 46 ||
-            $cargo_id == 48 ||
-            $cargo_id == 57 ||
-            $cargo_id == 58 ||
-            $cargo_id == 60 ||
-            $cargo_id == 61 ||
-            $cargo_id == 62){
-            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
-        
-            $request = $con->createCommand($sql);
-            $request = $request->queryAll();
-
-            if(empty($request)){
-                $data = '<option value=""> No hay asesores activos en este rango de fechas</option>';
-            }else{
-                $data = '<option value="">--Seleccione Asesor--</option>'; 
+        if(!empty($request_aa)){
+            $asesores_aa = '';
+            foreach ($request_aa as $id_asesor) {
+                $asesores_aa .= $id_asesor['responsable'].', ';
             }
+            $asesores_aa = rtrim($asesores_aa, ", ");
+            //FIN
+
+            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+            $con = Yii::app()->db;
+
+            if( $cargo_id == 69 || 
+                $cargo_id == 70 || 
+                $cargo_id == 4 || 
+                $cargo_id == 45 ||
+                $cargo_id == 46 ||
+                $cargo_id == 48 ||
+                $cargo_id == 57 ||
+                $cargo_id == 58 ||
+                $cargo_id == 60 ||
+                $cargo_id == 61 ||
+                $cargo_id == 62){
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
             
-            foreach ($request as $value) {
-                $data .= '<option value="' . $value['id'].'" ';
-                if($resposable == $value['id']){
-                    $data .= 'selected';
-                }
-                $data .= '>'.$this->getResponsableNombres($value['id']);
-                $data .= '</option>';
-            }
+                $request = $con->createCommand($sql);
+                $request = $request->queryAll();
 
+                if(empty($request)){
+                    $data = '<option value=""> No hay asesores activos en este rango de fechas</option>';
+                }else{
+                    $data = '<option value="">--Seleccione Asesor--</option>'; 
+                }
+                
+                foreach ($request as $value) {
+                    $data .= '<option value="' . $value['id'].'" ';
+                    if($resposable == $value['id']){
+                        $data .= 'selected';
+                    }
+                    $data .= '>'.$this->getResponsableNombres($value['id']);
+                    $data .= '</option>';
+                }
+
+                echo $data;
+            }
+        }else{
+            $data = '<option value=""> No hay asesores activos en este rango de fechas</option>';
             echo $data;
         }
     }
@@ -499,6 +502,141 @@ class ReportesController extends Controller {
         }
 
         echo $data;
+    }
+
+    public function actionAjaxGetProvincias() {
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        //GET asesores activos en rango de fechas
+        $con = Yii::app()->db;
+        $sql = "SELECT distinct provincia_conc FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        $request = $con->createCommand($sql);
+        $request = $request->queryAll();
+
+        if(!empty($request)){
+            $provincias = '';
+            foreach ($request as $id_asesor) {
+                $provincias.= $id_asesor['provincia_conc'].', ';
+            }
+            $provincias = rtrim($provincias, ", ");
+            //FIN
+
+            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+            $con = Yii::app()->db;
+
+            if( $cargo_id == 69 || 
+                $cargo_id == 70 || 
+                $cargo_id == 4 || 
+                $cargo_id == 45 ||
+                $cargo_id == 46 ||
+                $cargo_id == 48 ||
+                $cargo_id == 57 ||
+                $cargo_id == 58 ||
+                $cargo_id == 60 ||
+                $cargo_id == 61 ||
+                $cargo_id == 62){
+                $sql = "SELECT * FROM provincias WHERE id_provincia IN (".$provincias.") ORDER BY nombre ASC";
+
+                $request = $con->createCommand($sql);
+                $request = $request->queryAll();
+
+                if(empty($request)){
+                    $data = '<option value=""> No hay Provincias activas en este rango de fechas</option>';
+                }else{
+                    $data = '<option value="">--Seleccione Provincia--</option>'; 
+                }
+                
+                foreach ($request as $value) {
+                    $data .= '<option value="' . $value['id_provincia'].'" ';
+                    $data .= '>'.$value['nombre'];
+                    $data .= '</option>';
+                }
+
+                echo $data;
+            }
+        }else{
+            $data = '<option value=""> No hay Provincias activas en este rango de fechas</option>';
+            echo $data;
+        }
+    }
+
+    public function actionAjaxGetGrupo() {
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        //GET concesionarios activos en rango de fechas
+        $con = Yii::app()->db;
+        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        $request = $con->createCommand($sql);
+        $request = $request->queryAll();
+
+        if(!empty($request)){
+            $grupos = '';
+            foreach ($request as $grupo) {
+                $grupos .= $grupo['dealer_id'].', ';
+            }
+            $grupos = rtrim($grupos, ", ");
+
+            //GET grupos activos en rango de fechas
+            $con = Yii::app()->db;
+            $sql = "SELECT distinct id_grupo FROM gr_concesionarios WHERE id IN (".$grupos.") ORDER BY nombre ASC";           
+            $request2 = $con->createCommand($sql);
+            $request2 = $request2->queryAll();
+
+            $grupos = '';
+            foreach ($request2 as $grupo) {
+                $grupos .= $grupo['id_grupo'].', ';
+            }
+            $grupos = rtrim($grupos, ", ");
+        }
+        
+        if(!empty($request2)){
+            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+            $con = Yii::app()->db;
+
+            if( $cargo_id == 69 || 
+                $cargo_id == 70 || 
+                $cargo_id == 4 || 
+                $cargo_id == 45 ||
+                $cargo_id == 46 ||
+                $cargo_id == 48 ||
+                $cargo_id == 57 ||
+                $cargo_id == 58 ||
+                $cargo_id == 60 ||
+                $cargo_id == 61 ||
+                $cargo_id == 62){
+                $sql = "SELECT * FROM gr_grupo WHERE id IN (".$grupos.") ORDER BY nombre_grupo ASC";
+            
+                $request = $con->createCommand($sql);
+                $request = $request->queryAll();
+
+                if(empty($request2)){
+                    $data = '<option value=""> No hay grupos activos en este rango de fechas</option>';
+                }else{
+                    $data = '<option value="">--Seleccione Grupo--</option>'; 
+                }
+                
+                foreach ($request as $value) {
+                    $data .= '<option value="' . $value['id'].'" ';
+                    $data .= '>'. $value['nombre_grupo'];
+                    $data .= '</option>';
+                }
+
+                echo $data;
+            }
+        }else{
+            $data = '<option value=""> No hay grupo activos en este rango de fechas</option>';
+            echo $data;
+        }
     }
 
     function getVersiones($id, $versiones) {

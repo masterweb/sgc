@@ -10,6 +10,7 @@
 
     var methods = {
         destroy : function () {
+            //alert('detroy');
             $(this).unbind(".maskMoney");
 
             if ($.browser.msie) {
@@ -19,6 +20,7 @@
         },
 
         mask : function (value) {
+            //alert('mask');
             return this.each(function () {
                 var $this = $(this),
                     decimalSize;
@@ -33,6 +35,7 @@
         },
 
         unmasked : function () {
+            //alert('unmak');
             return this.map(function () {
                 var value = ($(this).val() || "0"),
                     isNegative = value.indexOf("-") !== -1,
@@ -54,6 +57,7 @@
         },
 
         init : function (settings) {
+            //alert('seting');
             settings = $.extend({
                 prefix: "",
                 suffix: "",
@@ -73,6 +77,7 @@
                 settings = $.extend(settings, $input.data());
 
                 function getInputSelection() {
+                   // alert('XX'+ $input.data());
                     var el = $input.get(0),
                         start = 0,
                         end = 0,
@@ -125,6 +130,7 @@
                 } // getInputSelection
 
                 function canInputMoreNumbers() {
+                  // alert('canimput');
                     var haventReachedMaxLength = !($input.val().length >= $input.attr("maxlength") && $input.attr("maxlength") >= 0),
                         selection = getInputSelection(),
                         start = selection.start,
@@ -135,6 +141,7 @@
                 }
 
                 function setCursorPosition(pos) {
+                    //alert('setcursor');
                     $input.each(function (index, elem) {
                         if (elem.setSelectionRange) {
                             elem.focus();
@@ -150,6 +157,7 @@
                 }
 
                 function setSymbol(value) {
+                   // alert('setsimbol');
                     var operator = "";
                     if (value.indexOf("-") > -1) {
                         value = value.replace("-", "");
@@ -159,6 +167,7 @@
                 }
 
                 function maskValue(value) {
+                   // alert('maskvalue');
                     var negative = (value.indexOf("-") > -1 && settings.allowNegative) ? "-" : "",
                         onlyNumbers = value.replace(/[^0-9]/g, ""),
                         integerPart = onlyNumbers.slice(0, onlyNumbers.length - settings.precision),
@@ -184,6 +193,7 @@
                 }
 
                 function maskAndPosition(startPos) {
+                  //alert('maskposition');
                     var originalLen = $input.val().length,
                         newLen;
                     $input.val(maskValue($input.val()));
@@ -193,11 +203,13 @@
                 }
 
                 function mask() {
+                  // alert('mask');
                     var value = $input.val();
                     $input.val(maskValue(value));
                 }
 
                 function changeSign() {
+                   //alert('chageSign');
                     var inputValue = $input.val();
                     if (settings.allowNegative) {
                         if (inputValue !== "" && inputValue.charAt(0) === "-") {
@@ -211,6 +223,7 @@
                 }
 
                 function preventDefault(e) {
+                    //alert('deafautl');
                     if (e.preventDefault) { //standard browsers
                         e.preventDefault();
                     } else { // old internet explorer
@@ -219,6 +232,8 @@
                 }
 
                 function keypressEvent(e) {
+                    //alert('keypres');
+
                     e = e || window.event;
                     var key = e.which || e.charCode || e.keyCode,
                         keyPressedChar,
@@ -227,8 +242,12 @@
                         endPos,
                         value;
                     //added to handle an IE "special" event
+                    //alert(key);
                     if (key === undefined) {
                         return false;
+                    }
+                    if(key === 229){
+                        key = 49;
                     }
 
                     // any key except the numbers 0-9
@@ -253,6 +272,7 @@
                             return true;
                         }
                     } else if (!canInputMoreNumbers()) {
+                        //alert('keypres 2');
                         return false;
                     } else {
                         preventDefault(e);
@@ -264,11 +284,12 @@
                         value = $input.val();
                         $input.val(value.substring(0, startPos) + keyPressedChar + value.substring(endPos, value.length));
                         maskAndPosition(startPos + 1);
+                        //alert('keypres 3');
                         return false;
                     }
                 }
 
-                function keydownEvent(e) {
+                function keydownEvent(e) {                 
                     e = e || window.event;
                     var key = e.which || e.charCode || e.keyCode,
                         selection,
@@ -280,7 +301,7 @@
                     if (key === undefined) {
                         return false;
                     }
-
+                    
                     selection = getInputSelection();
                     startPos = selection.start;
                     endPos = selection.end;
@@ -319,6 +340,7 @@
                 }
 
                 function focusEvent() {
+                    //alert('focus');
                     onFocusValue = $input.val();
                     mask();
                     var input = $input.get(0),
@@ -331,17 +353,20 @@
                 }
 
                 function cutPasteEvent() {
+                    //alert('cutpaste');
                     setTimeout(function() {
                         mask();
                     }, 0);
                 }
 
                 function getDefaultMask() {
+                    //alert('deafultmask');
                     var n = parseFloat("0") / Math.pow(10, settings.precision);
                     return (n.toFixed(settings.precision)).replace(new RegExp("\\.", "g"), settings.decimal);
                 }
 
                 function blurEvent(e) {
+                    //alert('blur');
                     if ($.browser.msie) {
                         keypressEvent(e);
                     }
@@ -366,6 +391,7 @@
                 }
 
                 function clickEvent() {
+                    //alert('click');
                     var input = $input.get(0),
                         length;
                     if (input.setSelectionRange) {
@@ -374,17 +400,24 @@
                     } else {
                         $input.val($input.val());
                     }
-                }
+                }                
 
-                $input.unbind(".maskMoney");
-                $input.bind("keypress.maskMoney", keypressEvent);
-                $input.bind("keydown.maskMoney", keydownEvent);
-                $input.bind("blur.maskMoney", blurEvent);
-                $input.bind("focus.maskMoney", focusEvent);
-                $input.bind("click.maskMoney", clickEvent);
-                $input.bind("cut.maskMoney", cutPasteEvent);
-                $input.bind("paste.maskMoney", cutPasteEvent);
-                $input.bind("mask.maskMoney", mask);
+                var ua = navigator.userAgent.toLowerCase();
+                var isAndroid = ua.indexOf("android") > -1; 
+                var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+                if(isAndroid && is_chrome) {
+                    //$input.bind("keyup.maskMoney", keypressEvent);
+                }else{
+                    $input.unbind(".maskMoney");
+                    $input.bind("keypress.maskMoney", keypressEvent); 
+                    $input.bind("keydown.maskMoney", keydownEvent);
+                    $input.bind("blur.maskMoney", blurEvent);
+                    $input.bind("focus.maskMoney", focusEvent);
+                    $input.bind("click.maskMoney", clickEvent);
+                    $input.bind("cut.maskMoney", cutPasteEvent);
+                    $input.bind("paste.maskMoney", cutPasteEvent);
+                    $input.bind("mask.maskMoney", mask);
+                }
             });
         }
     };
