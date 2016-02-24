@@ -2364,7 +2364,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $array_dealers = $this->getDealerGrupo($id_responsable);
         $dealerList = implode(', ', $array_dealers);
 
-        if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS            
+        if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS Y EXONERADOS           
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $dealer_id = $this->getDealerId($id_responsable);
             //die($dealer_id);
@@ -3424,6 +3424,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $prospeccion = new GestionProspeccionRp;
                     $prospeccion->id_informacion = $model->id;
                     $observaciones = $_POST['GestionProspeccionPr']['pregunta'];
+                    //die('obs '.$observaciones);
                     switch ($observaciones) {
                         case 1:// no estoy interesado
                             $prospeccion->preg1 = $_POST['GestionProspeccionPr']['pregunta'];
@@ -3529,6 +3530,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->save();
                             break;
                         case 15:// tipo usados
+                            //die('enter exo00');
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';
@@ -3541,7 +3543,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->paso = '3';
                             $gestion->save();
-
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
                             $consulta->fecha = date("Y-m-d H:i:s");

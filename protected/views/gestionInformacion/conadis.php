@@ -425,7 +425,6 @@ if ($ced != '') {
             $(val[2]+"[name*='"+val[0]+"']").rules("add", {required: true, messages: {required: val[1] + extraval}});
         });
     }
-
     function sendInfo() {
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();

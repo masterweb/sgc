@@ -37,7 +37,7 @@ if ($ced != '') {
         $telefono_casa = $c->telefono_casa;
     }
 }
-
+$tipo = $_GET['tipo'];
 
 //echo '<br>Ciudad id: '.$city_id.', Provincia id: '.$provincia_id;
 ?>
