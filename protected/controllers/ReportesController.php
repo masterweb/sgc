@@ -83,8 +83,18 @@ class ReportesController extends Controller {
                 $varView['AEKIA'] = true;
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> TODOS';
                 //TRAFICO ACUMULADO
+                if($_GET['TA']['provincia']  != ''){
+                    $TAactivo = $_GET['TA']['provincia'];
+                }else{
+                    $TAactivo = $_GET['TA']['grupo'];
+                }
+                $varView['TAresp_activo'] = $_GET['TA']['concesionarios'];
+                 if($_GET['TA']['modelo'] != ''){
+                    $TAmodelo = $_GET['TA']['modelo'];
+                }
+                
                 $traficoAcumulado = new traficoAcumulado;
-                $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros();
+                $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
@@ -152,11 +162,13 @@ class ReportesController extends Controller {
                     $varView['checked_p']  = true; 
                     $varView['checked_g']  = false;
                     $varView['checked_ta'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];                    
                 }else if($_GET['GI']['tipo'] == 'traficoacumulado'){
                     $varView['checked_ta'] = true;
                     $varView['checked_p']  = false; 
                     $varView['checked_g']  = false;
                 }else{
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
                     $varView['checked_g']  = true;
                     $varView['checked_p'] = false;
                     $varView['checked_ta'] = false;
@@ -172,6 +184,7 @@ class ReportesController extends Controller {
 
         //Check if TRAFICO ACUMLADO ESTA ACTIVO
         $varView['TA'] = false;
+        $varView['TAchecked_gp'] = 'p';
         if($_GET['GI']['tipo'] == 'traficoacumulado'){
             $varView['TA'] = true;
             $varView['TAconsulta'] = [];
@@ -185,10 +198,12 @@ class ReportesController extends Controller {
             if($_GET['TA']['provincia'] != ''){
                 $varView['TAprovincia'] = $_GET['TA']['provincia'];
                 $varView['TAconsulta']['provincia']  = $_GET['TA']['provincia'];
+               $varView['TAchecked_gp'] = 'p';
             }
             if($_GET['TA']['grupo'] != ''){
                 $varView['TAgrupo'] = $_GET['TA']['grupo'];
                 $varView['TAconsulta']['grupo'] = $_GET['TA']['grupo'];
+               $varView['TAchecked_gp'] = 'g';
             }
 
             $traficoAcumulado = new traficoAcumulado;
@@ -196,39 +211,91 @@ class ReportesController extends Controller {
             $fechas[1] = $varView['fecha_anterior'];
             $fechas[2] = $varView['fecha_inicial_actual'];
             $fechas[3] = $varView['fecha_actual'];
-            $retorno = $traficoAcumulado->buscar($varView['TAconsulta'], '', $fechas);
+
+            $retorno = $traficoAcumulado->buscar($varView['TAconsulta'], $varView['TAmodelo'], $fechas);
             $contador = [];
+            $ckd = array(
+                'CERATO MT', 
+                'CERATO AT', 
+                'SPORTAGE CKD LX TM', 
+                'SPORTAGE R MT', 
+                'SPORTAGE R AT', 
+                'RIO CKD', 
+                'RIO R 4P', 
+                'PREGIO GRAND'
+            );
             foreach ($retorno['mant'] as $tipo) {
                 if($tipo['tipo'] == 'TRAFICO'){
                     $contador['trafico_mant'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['trafico_ckd_mant'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'TESTDRIVE'){
                     $contador['testdrive_mant'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['testdrive_ckd_mant'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'PROFORMA'){
                     $contador['proforma_mant'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['proforma_ckd_mant'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'VENTAS'){
                     $contador['ventas_mant'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['ventas_ckd_mant'][] = $tipo['modelo'];
+                    }
                 }
             }
 
             foreach ($retorno['mact'] as $tipo) {
                 if($tipo['tipo'] == 'TRAFICO'){
                     $contador['trafico_mact'][] = $tipo['tipo'];
+                     if(in_array($tipo['modelo'], $ckd)){
+                        $contador['trafico_ckd_mact'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'TESTDRIVE'){
                     $contador['testdrive_mact'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['testdrive_ckd_mact'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'PROFORMA'){
                     $contador['proforma_mact'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['proforma_ckd_mact'][] = $tipo['modelo'];
+                    }
                 }else if($tipo['tipo'] == 'VENTAS'){
                     $contador['ventas_mact'][] = $tipo['tipo'];
+                    if(in_array($tipo['modelo'], $ckd)){
+                        $contador['ventas_ckd_mact'][] = $tipo['modelo'];
+                    }
                 }
             }
+
             $varView['trafico_mes_anterior'] = count($contador['trafico_mant']);
-            $varView['trafico_mes_actual'] = count($contador['trafico_mact']);             
+            $varView['trafico_mes_actual'] = count($contador['trafico_mact']);
+            $varView['traficockd1'] = count($contador['trafico_ckd_mant']);
+            $varView['traficocbu1'] = count($contador['trafico_mant']) - count($contador['trafico_ckd_mant']);
+            $varView['traficockd2'] = count($contador['trafico_ckd_mact']);
+            $varView['traficocbu2'] = count($contador['trafico_mact']) - count($contador['trafico_ckd_mact']);            
             $varView['proforma_mes_anterior'] = count($contador['proforma_mant']);
             $varView['proforma_mes_actual'] = count($contador['proforma_mact']);
+            $varView['proformackd1'] = count($contador['proforma_ckd_mant']);
+            $varView['proformacbu1'] = count($contador['proforma_mant']) - count($contador['proforma_ckd_mant']);
+            $varView['proformackd2'] = count($contador['proforma_ckd_mact']);
+            $varView['proformacbu2'] = count($contador['proforma_mact']) - count($contador['proforma_ckd_mact']);
             $varView['td_mes_anterior'] = count($contador['testdrive_mant']);
             $varView['td_mes_actual'] = count($contador['testdrive_mact']);
+            $varView['tdckd1'] = count($contador['testdrive_ckd_mant']);
+            $varView['tdcbu1'] = count($contador['testdrive_mant']) - count($contador['testdrive_ckd_mant']);
+            $varView['tdckd2'] = count($contador['testdrive_ckd_mact']);
+            $varView['tdcbu2'] = count($contador['testdrive_mact']) - count($contador['testdrive_ckd_mact']);
             $varView['vh_mes_anterior'] = count($contador['ventas_mant']);
             $varView['vh_mes_actual']= count($contador['ventas_mact']);
+            $varView['vhckd1'] = count($contador['ventas_ckd_mant']);
+            $varView['vhcbu1'] = count($contador['ventas_mant']) - count($contador['ventas_ckd_mant']);
+            $varView['vhckd2'] = count($contador['ventas_ckd_mact']);
+            $varView['vhcbu2'] = count($contador['ventas_mact']) - count($contador['ventas_ckd_mact']); 
         }else{
             $retorno = $this->buscar(
                 $varView['cargo_id'], 
@@ -447,7 +514,7 @@ class ReportesController extends Controller {
                 $cargo_id == 60 ||
                 $cargo_id == 61 ||
                 $cargo_id == 62){
-                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (70, 71, 72, 73, 75, 76, 77) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
             
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
@@ -480,14 +547,32 @@ class ReportesController extends Controller {
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
         $con = Yii::app()->db;
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."' ORDER BY dealer_id ASC";
+        $request = $con->createCommand($sql);
+        $request = $request->queryAll();
+        foreach ($request as $id_concesionario) {
+            $concesionario .= $id_concesionario['dealer_id'].', ';
+        }
+        $concesionario = rtrim($concesionario, ", ");
+        
+        if(!empty($concesionario)){
+            $concesionario = " dealer_id IN (".$concesionario.") ";
+        }
+        echo $concesionario;
 
         if($tipo == 'p'){
-            $where = "provincia = {$grupo_id}";
+            $where = "provincia = {$grupo_id} AND ";
         }else{
-            $where = "id_grupo = {$grupo_id}";
+            $where = "id_grupo = {$grupo_id} AND ";
         }
-        $sql = "SELECT * FROM gr_concesionarios WHERE ".$where." ORDER BY nombre ASC";
-
+        $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE ".$where.$concesionario." ORDER BY nombre ASC";
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 
@@ -506,6 +591,7 @@ class ReportesController extends Controller {
 
     public function actionAjaxGetProvincias() {
         //FECHAS RENDER
+        $active  = isset($_POST["active"]) ? $_POST["active"] : "";
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
         $fecha1 = explode(" - ", $fecha1);
 
@@ -553,6 +639,9 @@ class ReportesController extends Controller {
                 
                 foreach ($request as $value) {
                     $data .= '<option value="' . $value['id_provincia'].'" ';
+                    if($active == $value['id_provincia']){
+                        $data .= 'selected';
+                    }
                     $data .= '>'.$value['nombre'];
                     $data .= '</option>';
                 }
@@ -567,6 +656,7 @@ class ReportesController extends Controller {
 
     public function actionAjaxGetGrupo() {
         //FECHAS RENDER
+        $active  = isset($_POST["active"]) ? $_POST["active"] : "";
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
         $fecha1 = explode(" - ", $fecha1);
 
@@ -588,7 +678,7 @@ class ReportesController extends Controller {
 
             //GET grupos activos en rango de fechas
             $con = Yii::app()->db;
-            $sql = "SELECT distinct id_grupo FROM gr_concesionarios WHERE id IN (".$grupos.") ORDER BY nombre ASC";           
+            $sql = "SELECT distinct id_grupo FROM gr_concesionarios WHERE dealer_id IN (".$grupos.") ORDER BY nombre ASC";           
             $request2 = $con->createCommand($sql);
             $request2 = $request2->queryAll();
 
@@ -627,6 +717,9 @@ class ReportesController extends Controller {
                 
                 foreach ($request as $value) {
                     $data .= '<option value="' . $value['id'].'" ';
+                    if($active == $value['id']){
+                        $data .= 'selected';
+                    }
                     $data .= '>'. $value['nombre_grupo'];
                     $data .= '</option>';
                 }
@@ -1032,7 +1125,8 @@ class ReportesController extends Controller {
         $where = isset($_POST["where"]) ? $_POST["where"] : "";
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
         $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $TAresp_activo = isset($_POST["TAresp_activo"]) ? $_POST["TAresp_activo"] : "";
         $traficoAcumulado = new traficoAcumulado;
-        $traficoAcumulado->ConcesionariosTA($where, $fecha1, $fecha2);
+        $traficoAcumulado->ConcesionariosTA($where, $fecha1, $fecha2, $TAresp_activo);
     }
 }

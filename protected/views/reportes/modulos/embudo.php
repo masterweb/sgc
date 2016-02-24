@@ -70,7 +70,7 @@
 <?= $this->renderPartial('//reportes/modulos/graficos', array( 'varView' => $varView));?>
 <!--FIN GRAFICOS-->
 
-<?php if($varView['triger'] != 1 && $varView['TA'] != true): //se muestra si no existe consulta de modelos y versiones?>
+<?php if($varView['triger'] != 1): //se muestra si no existe consulta de modelos y versiones?>
 <div class="row">
     <h2>Ensamblado Nacional (CKD) e internacional (CBU)</h2>
     <div class="col-md-4">

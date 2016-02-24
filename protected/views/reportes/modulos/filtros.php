@@ -43,44 +43,45 @@
             >Tráfico Histórico</label>
             <hr/>
         </div>
-<div id="traficoGeneral">
-        <!-- PROVINCIAS -->
-        <div class="col-md-6 cont_prov">
-            <label for="">Provincias</label>
-            <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
-                <option value="">--Seleccione Provincias--</option>
-                <?php
-                if($varView['lista_provincias']){
-                    foreach ($varView['lista_provincias'] as $value) {
-                        echo '<option value="' . $value['id_provincia'] . '"';
-                        if($value['id_provincia'] == $varView['provincias']){
-                            echo 'selected';
-                        }                       
-                        echo'>' . $value['nombre'] . '</option>';
+        <div id="traficoGeneral">
+            <!-- PROVINCIAS -->
+            <div class="col-md-6 cont_prov">
+                <label for="">Provincias</label>
+                <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
+                    <option value="">--Seleccione Provincias--</option>
+                    <?php
+                    if($varView['lista_provincias']){
+                        foreach ($varView['lista_provincias'] as $value) {
+                            echo '<option value="' . $value['id_provincia'] . '"';
+
+                            if($value['id_provincia'] == $varView['id_provincia']){
+                                echo 'selected';
+                            }                       
+                            echo'>' . $value['nombre'].'</option>';
+                        }
                     }
-                }
-                ?>
-            </select>
-        </div>
+                    ?>
+                </select>
+            </div>
         
-        <!-- GRUPOS -->
-        <div class="col-md-6 cont_grup">
-            <label for="">Grupos</label>
-            <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
-                <option value="">--Seleccione Grupo--</option>
-                <?php
-                if($varView['lista_grupo']){
-                    foreach ($varView['lista_grupo'] as $value) {
-                        echo '<option value="' . $value['id'] . '"';
-                        if($value['id'] == $varView['grupo']){
-                            echo 'selected';
-                        }                       
-                        echo'>' . $value['nombre_grupo'] . '</option>';
+            <!-- GRUPOS -->
+            <div class="col-md-6 cont_grup">
+                <label for="">Grupos</label>
+                <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
+                    <option value="">--Seleccione Grupo--</option>
+                    <?php
+                    if($varView['lista_grupo']){
+                        foreach ($varView['lista_grupo'] as $value) {
+                            echo '<option value="' . $value['id'] . '"';
+                            if($value['id'] == $varView['id_grupo']){
+                                echo 'selected';
+                            }                       
+                            echo'>' . $value['nombre_grupo'] . '</option>';
+                        }
                     }
-                }
-                ?>
-            </select>
-        </div>
+                    ?>
+                </select>
+            </div>
     <?php endif; ?>
 
     <!-- FILTRO CONCESIONARIOS -->
@@ -131,15 +132,15 @@
 <?php if ($varView['AEKIA'] == true): ?>    
 </div> <!-- #traficogeneral fin-->
 <?php endif; ?>
-
+</div>
 <?php if ($varView['AEKIA'] == true): ?> 
 <div id="traficoacumulado"> <!-- #traficoacumulado fin-->
     <div class="row text-center">
         <h4>Seleccione el tipo de busqueda de Tráfico Histórico</h4>
         <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_grupos" id="TA_grupos" class="tipo_busqueda_TA" 
-        >Por Grupos</label>
+        <?php if($varView['TAchecked_gp'] == 'g'){echo 'checked';} ?>>Por Grupos</label>
         <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_provincias" id="TA_provincias" class="tipo_busqueda_TA"
-        checked>Por Provincias</label>
+        <?php if($varView['TAchecked_gp'] == 'p'){echo 'checked';} ?>>Por Provincias</label>
         <hr/>
     </div>
     <div class="row">
