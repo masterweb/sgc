@@ -1951,7 +1951,7 @@ function deleter(id){
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <?php if ($tipo == 1) { ?>
+                                                <?php if ($tipo == 1 && $id_modelo != 90) { ?>
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-7">
@@ -1965,7 +1965,7 @@ function deleter(id){
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <div class="checkbox">
-                                                                    <span class="label label-default label-price" id="accspan-3">USD. 595</span>
+                                                                    <span class="label label-default label-price" id="accspan-3">USD. 670</span>
                                                                 </div>
                                                             </div>
                                                         </div>

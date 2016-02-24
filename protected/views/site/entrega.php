@@ -407,7 +407,7 @@
                                                         <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Entrega</a>
                                                     <?php } ?>
                                                     <?php if ($test > 0 && $test < 10) { ?> 
-                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-info btn-xs btn-rf">Entrega</a>
+                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-tomate btn-xs btn-rf">Entrega</a>
                                                     <?php } ?>    
 
                                                 </td>
@@ -439,13 +439,7 @@
             </div>
             <br />
             <br />
-            <div class="row">
-                <div class="col-md-8  col-xs-12 links-tabs">
-                    <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
-                    <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
-                    <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
-                </div>
-            </div>
+            <?= $this->renderPartial('//layouts/rgd/links');?>
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">

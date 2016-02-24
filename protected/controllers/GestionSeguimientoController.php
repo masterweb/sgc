@@ -90,6 +90,7 @@ class GestionSeguimientoController extends Controller {
         $modelo = $this->getModeloInfo($id_vehiculo);
         $ciudadCliente = $this->getCiudadConcesionario($id_informacion);
         $ciudad = $this->getCiudad($id_asesor);
+        $foto_entrega = $this->getFotoEntregaDetail($id_informacion);
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $fecha_m = date("d m Y");
         $fecha_m = $this->getFormatFecha($fecha_m);
@@ -138,7 +139,7 @@ class GestionSeguimientoController extends Controller {
                                         </p>
                                         <p>Para KIA MOTORS ECUADOR es importante poner a su disposición productos de calidad para poder brindarle el mejor servicio.</p>
 										
-                                        <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/hojaentregacliente?id_informacion=' . $$id_informacion . '&id_vehiculo=' . $id_vehiculo . '">Foto de Entrega</a>
+                                        <a href="https://www.kia.com.ec/'. Yii::app()->request->baseUrl.'/images/uploads/'.$foto_entrega.'">Foto de Entrega</a>
                                         
                                         <p><strong>Atentamente</strong></p>
                                         <p><strong>KIA MOTORS ECUADOR</strong></p>
