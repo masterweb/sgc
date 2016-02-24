@@ -1951,7 +1951,7 @@ function deleter(id){
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <?php if ($tipo == 1) { ?>
+                                                <?php if ($tipo == 1 && $id_modelo != 90) { ?>
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-7">

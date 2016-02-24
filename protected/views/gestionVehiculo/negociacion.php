@@ -12,7 +12,7 @@
 //echo 'id informacion: '.$id_informacion.'<br>';
 //echo 'id vehiculo: '.$id_vehiculo;
 $id_modelo = $this->getIdModelo($id_vehiculo);
-//echo 'id vehiculo: '.$id_vehiculo;
+//echo 'id modelo: '.$id_modelo;
 $tipo = $this->getFinanciamiento($id_informacion); 
 $id_version = $this->getIdVersion($id_vehiculo);
 ?>
@@ -1830,7 +1830,7 @@ function deleter(id){
 
                             $count = 1;
                             ?>
-                            <?php if ($cn > 0): ?>
+                            <?php if ($cn > 0){ ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
@@ -1893,12 +1893,12 @@ function deleter(id){
                                         </div>
                                     </div>
                                 </div>
-                            <?php else: ?>
+                            <?php } else { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <?php if ($tipo == 1) { ?>
+                                                <?php if ($tipo == 1 && $id_modelo != 90) { ?>
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-7">
@@ -1924,7 +1924,7 @@ function deleter(id){
                                         </div>
                                     </div>
                                 </div>    
-                            <?php endif; ?>
+                            <?php } ?>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="precio_normal">Precio Normal</label>
