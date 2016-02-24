@@ -428,6 +428,8 @@ if ($ced != '') {
     function sendInfo() {
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();
+        //console.log('tipo: '+tipo);
+        //return false;
         var tipo_fuente = $('#tipo_fuente').val();
         var lista_val = [            
             ['GestionVehiculo[modelo]', 'Campo obligatorio', 'select'],
@@ -445,8 +447,8 @@ if ($ced != '') {
             lista_val.push(['GestionInformacion[porcentaje_discapacidad]', 'Campo obligatorio', 'select']);
             vallocal('#gestion-informacion-form', lista_val);
         }
-        else if (tipo == 'gestion' || tipo == 'trafico') {
-            //console.log('enter gestion');
+        if (tipo == 'gestion' || tipo == 'trafico') {
+            console.log('enter gestion');
             $('#gestion-informacion-form').validate({
                 rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                     'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[direccion]': {required: true},
@@ -463,6 +465,7 @@ if ($ced != '') {
                     'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number:'Ingrese números'}
                 },
                 submitHandler: function (form) {
+                    
                     $('#GestionInformacion_provincia_conc').removeAttr('disabled');
                     $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
                     $('#GestionInformacion_concesionario').removeAttr('disabled');
@@ -493,13 +496,14 @@ if ($ced != '') {
                     else {
                         $('#myModal').modal('show');
                         $('#closemodal').click(function(){
-                            form.submit();
+                            //form.submit();
                         });
                     }
 
                 }
             });
         } else if (tipo == 'prospeccion') {
+            console.log('enter prospeccion');
             var observaciones = $('#GestionProspeccionPr_pregunta').val();
             console.log('observaciones: ' + observaciones);
             var num_cel = $('#GestionInformacion_celular').val();
