@@ -442,7 +442,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                             //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
                                             break;
                                         case '3':
-                                            $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '4':
                                             $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
