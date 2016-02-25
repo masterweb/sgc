@@ -52,14 +52,14 @@ $firma = GestionFirma::model()->count($cri);
             $.each([3, 5, 10, 15], function () {
                 $('#colors_demo .tools').append("<a href='#colors_sketch' data-size='" + this + "' style='background: #ccc'>" + this + "</a> ");
             });
-//            $('#colors_sketch').sketch();
-//            var sktch = $('#colors_sketch').sketch();
-//            var cleanCanvas = $('#colors_sketch')[0];
-//
-//            //Get the canvas &
-//            var c = $('#colors_sketch');
-//            var ct = c.get(0).getContext('2d');
-//            var container = $(c).parent();
+            $('#colors_sketch').sketch();
+            var sktch = $('#colors_sketch').sketch();
+            var cleanCanvas = $('#colors_sketch')[0];
+
+            //Get the canvas &
+            var c = $('#colors_sketch');
+            var ct = c.get(0).getContext('2d');
+            var container = $(c).parent();
             //$('#cont-btn').hide();
 <?php endif; ?>
         //Run function when browser resizes

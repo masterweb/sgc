@@ -495,7 +495,10 @@ class ReportesController extends Controller {
         if(!empty($request_aa)){
             $asesores_aa = '';
             foreach ($request_aa as $id_asesor) {
-                $asesores_aa .= $id_asesor['responsable'].', ';
+                if($id_asesor['responsable'] != ''){
+                    $asesores_aa .= $id_asesor['responsable'].', ';
+                }
+                
             }
             $asesores_aa = rtrim($asesores_aa, ", ");
             //FIN
@@ -515,7 +518,6 @@ class ReportesController extends Controller {
                 $cargo_id == 61 ||
                 $cargo_id == 62){
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (70, 71, 72, 73, 75, 76, 77) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
-            
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
