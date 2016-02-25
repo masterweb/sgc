@@ -1042,11 +1042,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <a class="fancybox btn btn-success btn-xs" href="#inline3">Foto de Hoja de Entrega</a>
                             </td>
                         </tr>
-                        <div id="inline2" style="width:auto;display: none;">
-                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_entrega']; ?>"/> 
+                        <div id="inline2" style="width:600;display: none;">
+                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_entrega']; ?>" width="600"/> 
                         </div>
-                        <div id="inline3" style="width:auto;display: none;">
-                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_hoja_entrega']; ?>"/> 
+                        <div id="inline3" style="width:600;display: none;">
+                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_hoja_entrega']; ?>" width="600"/> 
                         </div>
                     <?php } ?>
                     

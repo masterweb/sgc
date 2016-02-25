@@ -28,7 +28,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             $data_tipo = '';
             if($cargo_id == 75){ // asesor exonerado
                 $tipo_array =  array('showroom' => 'Tráfico');
-                $data_tipo = '<option value="">--Seleccione--</option><option value="Exonerado Taxi">Exonerado Taxi</option>
+                $data_tipo = '<option value="">--Seleccione--</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
             }

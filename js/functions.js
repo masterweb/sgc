@@ -528,6 +528,11 @@ $(document).ready(function () {
     $('#GestionAgendamiento_observaciones').change(function () {
         var value = $(this).attr('value');
         switch (value) {
+            case 'Seguimiento':
+                $('#cont-otro').hide();
+                $('.agendamiento').show();
+                addReglas();
+                break;
             case 'Falta de tiempo':
                 $('#cont-otro').hide();
                 $('.agendamiento').show();
@@ -572,6 +577,7 @@ $(document).ready(function () {
             var nombre_concesionario = $('#GestionAgendamiento_nombre_concesionario').val();
             var direccion_concesionario = $('#GestionAgendamiento_direccion_concesionario').val();
             switch (observaciones) {
+                case 'Seguimiento':
                 case 'Falta de tiempo':
                 case 'Llamada de emergencia':
                     var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();

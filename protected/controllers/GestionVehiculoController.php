@@ -1057,7 +1057,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma, 'I');
+        $mPDF1->Output($nombreproforma.'.pdf', 'I');
     }
     
     /**
@@ -1130,7 +1130,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma, 'I');
+        $mPDF1->Output($nombreproforma.'.pdf', 'I');
     }
 
     public function actionSendProforma() {

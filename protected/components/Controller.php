@@ -471,7 +471,7 @@ class Controller extends CController {
         return $name_version;
     }
 
-    public function getPrecio($id, $tipo) {
+    public function getPrecio($id, $tipo, $id_modelo) {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
@@ -480,8 +480,9 @@ class Controller extends CController {
         $criteria2 = new CDbCriteria(array(
             "condition" => "id_versiones = {$version}",
         ));
+        //    die ('version: '.$version);
         $modeloversion = Versiones::model()->find($criteria2);
-        if ($tipo == 1) {
+        if ($tipo == 1 && $id_modelo != 90) {
             return $modeloversion->precio + 670; // precio de credito con accesorio Kit Satelital por defecto
         } else {
             return $modeloversion->precio;

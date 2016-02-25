@@ -1945,7 +1945,7 @@ if ($fi == 2) {
                                         <div class="panel panel-default">
                                             <div class="panel-body">
                                                 <?php foreach ($acc3 as $value3): ?>
-                                                    <p><?php echo $value3['accesorio']; ?></p>
+                                                    <p><?php echo $value3['accesorio'].' '.$value3['detalle']; ?></p>
                                                 <?php endforeach; ?>
                                             </div>
                                         </div>     
@@ -2074,12 +2074,12 @@ if ($fi == 2) {
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="precio_normal">Precio Normal</label>
-                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo); ?>">
+                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo); ?>">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="precio_accesorios">Precio con Accesorios</label>
-                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo); ?>" data-symbol="$ " data-thousands="." data-decimal=",">
-                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo); ?>"/>
+                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo); ?>" data-symbol="$ " data-thousands="." data-decimal=",">
+                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo); ?>"/>
                                 </div>
                             </div>
                             <br />
@@ -2167,7 +2167,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Tasa</label>
-                                                    <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="15,20" disabled=""/>
+                                                    <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" disabled=""/>
                                                 </div>
                                             </div>
 
@@ -2224,7 +2224,7 @@ if ($fi == 2) {
                                                         if ($fi == 1 || $fi == 2) {
                                                             echo $fin1->precio_vehiculo;
                                                         } else {
-                                                            echo $this->getPrecio($id_vehiculo, $tipo);
+                                                            echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo);
                                                         }
                                                         ?>"/>
                                                     </div>
@@ -2279,7 +2279,7 @@ if ($fi == 2) {
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="">Tasa</label>
-                                                        <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="15,20" disabled=""/>
+                                                        <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="16,06" disabled=""/>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -2346,7 +2346,7 @@ if ($fi == 2) {
                                                         if ($fi == 2) {
                                                             echo $fin2->precio_vehiculo;
                                                         } else {
-                                                            echo $this->getPrecio($id_vehiculo, $tipo);
+                                                            echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo);
                                                         }
                                                         ?>"/>
                                                 </div>
@@ -2400,7 +2400,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Tasa</label>
-                                                    <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="15,20" disabled=""/>
+                                                    <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="16,06" disabled=""/>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -2469,7 +2469,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Precio Vehículo</label>
-                                                    <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo); ?><?php //echo $model->precio_vehiculo; ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo); ?><?php //echo $model->precio_vehiculo; ?>"/>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -2523,7 +2523,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Precio Vehículo</label>
-                                                    <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -2576,7 +2576,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Precio Vehículo</label>
-                                                    <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
                                                 </div>
                                             </div>
                                             <div class="row">

@@ -11,7 +11,7 @@ $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
 $nombre_cliente = $this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion);
 $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
 }
-$ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+$ua = strtolower($_SERVER['HTTP_USER_AGENT']);  
 $android = FALSE;
 if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) {
     $android = TRUE;
@@ -284,7 +284,7 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                             </div>
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--','Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($agendamiento, 'observaciones'); ?>
                             </div>
                             <div class="col-md-4 agendamiento">
