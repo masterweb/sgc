@@ -10,10 +10,37 @@
 	site_route = '<?php echo Yii::app()->request->baseUrl; ?>';
 	resposable = '<?php echo $varView["js_responsable"] ;?>';
 	dealer = '<?php echo $varView["js_dealer"] ;?>';
-	nombre_usuario = '<?= $varView["nombre_usuario"]->nombres." ".$varView["nombre_usuario"]->apellido; ?>' + ' | <span class="cargo_rep">' + '<?= $varView["cargo_usuario"]->descripcion; ?>' + '</span>';
+	<?php
+		switch ($varView['cargo_id']) {
+            case 4: // GERENTE GENERAL
+            case 45: // SUBGERENCIA GENERAL
+            case 46: // SUPER ADMINISTRADOR
+            case 48: // GERENTE MARKETING
+            case 57: // INTELIGENCIA DE MERCADO MARKETING
+            case 58: // JEFE DE PRODUCTO MARKETING
+            case 60: // GERENTE VENTAS
+            case 61: // JEFE DE RED VENTAS
+            case 62: // SUBGERENTE DE FLOTAS VENTAS
+            case 69: // GERENTE COMERCIAL EN CURSO TERMINADO
+				$nombre_print = 'Todos';
+				$cargo_print = 'Todos';
+				break; 
+			default:
+				$nombre_print = $varView["nombre_usuario"]->nombres." ".$varView["nombre_usuario"]->apellido;
+				$cargo_print = $varView["cargo_usuario"]->descripcion;
+				break;                                 
+		}
+	?>
+	nombre_usuario = '<?= $nombre_print; ?>' + ' | <span class="cargo_rep">' + '<?= $cargo_print; ?>' + '</span>';
 	nombre_concecionario = '<?= $varView["consecionario_usuario"]; ?>';
 	active_group = '<?= $varView["grupo"] ?>';
 	active_prov = '<?= $varView["provincias"] ?>';
+
+	id_provincia = '<?= $varView["id_provincia"] ?>';
+	id_grupo = '<?= $varView["id_grupo"] ?>';
+
+	TAchecked_gp = '<?= $varView["TAchecked_gp"] ?>';
+	TAresp_activo = '<?= $varView["TAresp_activo"] ?>';
 </script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>

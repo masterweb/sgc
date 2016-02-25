@@ -95,9 +95,8 @@ return array(
             'connectionString' => 'mysql:host=localhost;dbname=callcenter',
             'emulatePrepare' => true,
             'username' => 'root',
-            'password' => 'k143c89?4Fg&2',
-			//'username' => 'root',
-           //'password' => '',
+            //'password' => 'k143c89?4Fg&2',
+           'password' => '',
             'charset' => 'utf8',
         ),
          'db2' => array(
@@ -105,9 +104,8 @@ return array(
           'class'=>'CDbConnection',
           'emulatePrepare' => true,
           'username' => 'root',
-          //'username' => 'root',
-          'password' => 'k143c89?4Fg&2',
-          //'password' => '',
+          //'password' => 'k143c89?4Fg&2',
+          'password' => '',
           'charset' => 'utf8',
           ), 
         'image' => array(

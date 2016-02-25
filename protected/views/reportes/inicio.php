@@ -1,16 +1,4 @@
 <?= $this->renderPartial('//reportes/modulos/header', array('title' => 'Reportes'));?>
-<div class="row">
-    <div class="col-md-12">
-        <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
-        <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
-        <div class="resultados_embudo bg-danger"></div>
-        <div class="highlight filtrosReportes">
-            <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>
-        </div>        
-    </div>
-</div>
-<br />
-
 <div id="tabs_repo">
     <ul class="nav nav-tabs tabs_triger">
         <li role="presentation" class="tit_repo active" triger="tab1"><a href="#">Embudo</a></li>
@@ -21,7 +9,19 @@
     </ul>
     <div class="tab_repo active" id="tab1">        
         <!-- EMBUDO -->
+        <br /><br />
         <div class="cont_repo">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
+                    <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
+                    <div class="resultados_embudo bg-danger"></div>
+                    <div class="highlight filtrosReportes">
+                        <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>
+                    </div>        
+                </div>
+            </div>
+            <br />
             <?= $this->renderPartial('//reportes/modulos/embudo', array('varView' => $varView));?>
         </div>
         <!-- FIN EMBUDO -->

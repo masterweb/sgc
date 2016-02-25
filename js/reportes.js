@@ -8,22 +8,48 @@ $(function () {
 
     $('#fecha-range1').change(function () {
         loadmodelos($(this));
-        loadprovincia($('#GestionInformacionProvincias'));
-        loadgrupo($('#GestionInformacionGrupo')); 
+        loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
+        loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
-        loadprovincia($('#TA_provincias'));
-        loadgrupo($('#TA_grupos')); 
+        loadgp($('#TA_provincias'), url_footer_var_grupo);
+        loadgp($('#TA_grupos'), url_footer_var_provincia);
         vaciar();
     });
 
     $('#fecha-range2').change(function () {
         loadmodelos($(this));
-        loadprovincia($('#GestionInformacionProvincias'));
-        loadgrupo($('#GestionInformacionGrupo'));
+        loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
+        loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
-        loadprovincia($('#TA_provincias'));
-        loadgrupo($('#TA_grupos')); 
+        loadgp($('#TA_provincias'), url_footer_var_grupo);
+        loadgp($('#TA_grupos'), url_footer_var_provincia);
         vaciar();
+    });
+
+    $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
+    $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
+    $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
+
+    loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+    loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+    loadresponsables($('#GestionInformacionConcesionario'));
+
+    if(id_grupo != ''){  
+        loaddealers($('#GestionInformacionGrupo'), 'g');
+    }else{    
+        loaddealers($('#GestionInformacionProvincias'), 'p');
+    }
+
+    //selectro tipo provincia o grupo
+    $(".tipo_busqueda").change(function () {
+        vaciar();
+        checkFiltro($(this));
+    });
+
+    $(".tipo_busqueda").each(function() {
+        if ($(this).is(':checked')) {
+            checkFiltro($(this));
+        }
     });
 
     function loadmodelos(e){
@@ -35,51 +61,68 @@ $(function () {
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {fecha1: fecha1, fecha2: fecha2},
+                data: {
+                    fecha1: fecha1, 
+                    fecha2: fecha2
+                },
                 success: function (data) {
                     $('.modelos_filtros').html(data);                   
                 }
             });
         }        
-    }
-    function loadprovincia(e){
-        //if(e.attr('value') != ''){
-            var fecha1 = $('#fecha-range1').attr('value');
-            var fecha2 = $('#fecha-range2').attr('value');
-            $.ajax({
-                url: url_footer_var_provincia,
-                beforeSend: function (xhr) {
-                },
-                type: 'POST', 
-                data: {fecha1: fecha1, fecha2: fecha2},
-                success: function (data) {
-                    e.html(data);              
-                }
-            });
-        //}        
-    }
-    loadprovincia($('#GestionInformacionProvincias'));
+    }   
 
-    function loadgrupo(e){
+    function loadgp(e, url, tipo){
         //if(e.attr('value') != ''){
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
+            active = e.attr('value');
+
             $.ajax({
-                url: url_footer_var_grupo,
+                url: url,
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {fecha1: fecha1, fecha2: fecha2},
+                data: {
+                    fecha1: fecha1, 
+                    fecha2: fecha2,
+                    active: active
+                },
                 success: function (data) {
                     e.html(data);                   
                 }
             });
         //}        
     }
-    loadgrupo($('#GestionInformacionGrupo'));
 
+    //carga concesionarios por provincia o por grupo
+    function loaddealers(e, t){
+        if(e.attr('value') != ''){
+            var value = e.attr('value');
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            $.ajax({
+                url: url_footer_var_dealers,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {
+                    grupo_id: value, 
+                    dealer: dealer, 
+                    tipo: t, 
+                    fecha1: fecha1, 
+                    fecha2: fecha2
+                },
+                success: function (data) {
+                    $('#GestionInformacionConcesionario').html(data);
+                    filtros_notification();
+                    $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
+                    loadresponsables($('#GestionInformacionConcesionario'));                   
+                }
+            });
+        }        
+    }
     //carga responsables   
-    $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
     function loadresponsables(e){
         if(e.attr('value') != ''){
             var value = e.attr('value');
@@ -90,7 +133,12 @@ $(function () {
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {dealer_id: value, resposable: resposable, fecha1: fecha1, fecha2: fecha2},
+                data: {
+                    dealer_id: value, 
+                    resposable: resposable, 
+                    fecha1: fecha1, 
+                    fecha2: fecha2
+                },
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);
                     filtros_notification();                    
@@ -98,22 +146,13 @@ $(function () {
             });
         }        
     }
-    loadresponsables($('#GestionInformacionConcesionario'));
 
-    //selectro tipo provincia o grupo
-    $(".tipo_busqueda").change(function () {vaciar();checkFiltro($(this));});
-
-    $(".tipo_busqueda").each(function() {
-        if ($(this).is(':checked')) {
-            checkFiltro($(this));
-        }
-    });
-
+    
     //TRAFICO ACUMULADO 
     $(".tipo_busqueda_TA").change(function () {
         checkFiltro($(this)); 
-        loadprovincia($('#TA_provincias'));
-        loadgrupo($('#TA_grupos')); 
+        //loadprovincia($('#TA_provincias'));
+        //loadgrupo($('#TA_grupos')); 
     });
     //TODOS TA
     $('.filtros_modelos_ta').on('change', '#todos_ta', function(){
@@ -127,8 +166,28 @@ $(function () {
         });
     });
     //carga responsables   
-    $('#TAprovincia').change(function () {loadconcesionariosTA($(this));});
-    $('#TAgrupo').change(function () {loadconcesionariosTA($(this));});
+    $('#TAprovincia').change(function () {
+        $('#TAgrupo option:selected').prop("selected", false);
+        $('#TAconcesionarios option:selected').prop("selected", false);
+        loadconcesionariosTA($(this));      
+    });
+    $('#TAgrupo').change(function () {
+        $('#TAprovincia option:selected').prop("selected", false);
+        $('#TAconcesionarios option:selected').prop("selected", false);
+        
+        loadconcesionariosTA($(this));  
+    });
+
+    if(TAchecked_gp === 'p'){
+        loadconcesionariosTA($('#TAprovincia'));
+        $('#cont_TAprovincia').show(); 
+        $('#cont_TAgrupo').hide(); 
+    }else{
+        loadconcesionariosTA($('#TAgrupo')); 
+        $('#cont_TAprovincia').hide(); 
+        $('#cont_TAgrupo').show(); 
+    }
+
     function loadconcesionariosTA(e){
         if(e.attr('value') != ''){
             var where = '';
@@ -136,16 +195,21 @@ $(function () {
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
             if(e.attr('id') == 'TAprovincia'){
-                where = "provincia = '" + value + "'";
+                where = "provincia = '" + value + "' AND ";
             }else{
-                where = "grupo = '"+ value + "'";
+                where = "grupo = '"+ value + "' AND ";
             }
             $.ajax({
                 url: url_footer_var_asesoresTA,
                 beforeSend: function (xhr) {
                 },
                 type: 'POST', 
-                data: {where: where, fecha1: fecha1, fecha2: fecha2},
+                data: {
+                    where: where, 
+                    fecha1: fecha1, 
+                    fecha2: fecha2,
+                    TAresp_activo: TAresp_activo
+                },
                 success: function (data) {
                     $('#TAconcesionarios').html(data);                  
                 }
@@ -186,27 +250,7 @@ $(function () {
         $("#GestionInformacionProvincias option:selected").prop("selected", false);
     }
 
-    //carga concesionarios por provincia o por grupo
-    $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
-    $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
-    function loaddealers(e, t){
-        if(e.attr('value') != ''){
-            var value = e.attr('value');
-            $.ajax({
-                url: url_footer_var_dealers,
-                beforeSend: function (xhr) {
-                },
-                type: 'POST', 
-                data: {grupo_id: value, dealer: dealer, tipo: t},
-                success: function (data) {
-                    $('#GestionInformacionConcesionario').html(data);
-                    filtros_notification();
-                    $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
-                    loadresponsables($('#GestionInformacionConcesionario'));                   
-                }
-            });
-        }        
-    }
+    
     if(active_group != ''){
         tipoactivo1 = $('#GestionInformacionGrupo');
         tipoactivo2 = 'g';
