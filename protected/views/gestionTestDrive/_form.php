@@ -345,7 +345,7 @@ $firma = GestionFirma::model()->count($cri);
     function UploadPic() {
 
         // generate the image data
-        var data = document.getElementById("colors_sketch").toDataURL("image/png");
+        var data = document.getElementById("colors_sketch2").toDataURL("image/png");
         var output = data.replace(/^data:image\/(png|jpg);base64,/, "");
         // Sending the image data to Server
         if (confirm("Antes de continuar, esta seguro que ha realizado su firma correctamente?")) {
@@ -717,23 +717,40 @@ $firma = GestionFirma::model()->count($cri);
                                             </div>
                                         <?php else: ?>
                                             <div id="inline1" style="width:800px;display: none;height: 400px;">
-                                                <div class="row">
+                                                <!--div class="row">
                                                     <h1 class="tl_seccion_rf">Ingreso de firma</h1>
-                                                </div>
+                                                </div-->
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <canvas id="colors_sketch" width="800" height="300"></canvas>
+                                                       
+                                                        <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/canvas/signature-pad.css" rel="stylesheet">
+                                                         <div id="signature-pad" class="m-signature-pad">
+                                                            <div class="m-signature-pad--body">
+                                                              <canvas id="colors_sketch2"></canvas>
+                                                            </div>
+                                                            <div class="m-signature-pad--footer">
+                                                              <div class="description">Firma arriba</div>
+                                                              <button type="button" class="button clear" data-action="clear">Borrar</button>
+                                                              <button type="button" class="button save" data-action="save">Guardar</button>
+                                                              <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
+                                                            </div>
+                                                          </div>                                          
+                                                        
+                                                        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/signature_pad.js"></script>
+                                                        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/app.js"></script>
+                                                        
+                                                        <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <!--div class="row">
                                                     <div class="col-md-8">
                                                         <div class="tools">
                                                             <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
-                                                            <input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
+                                                            <!--input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
                                                             <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div-->
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4" id="cont-firma">
