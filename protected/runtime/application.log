@@ -7275,3 +7275,282 @@ Stack trace:
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
 HTTP_REFERER=http://192.168.99.1:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/358?id_informacion=2001
 ---
+2016/02/25 13:00:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/358?id_informacion=2001
+---
+2016/02/25 14:01:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/358?id_informacion=2001
+---
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "empresa" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "lugar" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "otro" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "identificacion" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "cedula" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "ruc" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:04:49 [warning] [application] Error al establecer unsafe al atributo "pasaporte" de "GestionNuevaCotizacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionNuevaCotizacionController.php (73)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "last_name" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "pasaporte" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "provincia_domicilio" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "ciudad_domicilio" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "id_cotizacion" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "provincia_conc" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "ciudad_conc" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "fuente" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "paso" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "tipo" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "iden" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:07:16 [warning] [application] Error al establecer unsafe al atributo "status" de "GestionInformacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionInformacionController.php (75)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:08:52 [warning] [application] Error al establecer unsafe al atributo "modelo_intersado" de "GestionConsulta".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionConsultaController.php (391)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:08:52 [warning] [application] Error al establecer unsafe al atributo "vec" de "GestionConsulta".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionConsultaController.php (391)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:08:52 [warning] [application] Error al establecer unsafe al atributo "preg7" de "GestionConsulta".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionConsultaController.php (391)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:08:52 [warning] [application] Error al establecer unsafe al atributo "especifique" de "GestionConsulta".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionConsultaController.php (391)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:09:23 [warning] [application] Error al establecer unsafe al atributo "paso" de "GestionPresentacion".
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\GestionPresentacionController.php (72)
+in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php (15)
+2016/02/25 14:09:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:12:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:13:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:15:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:17:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:18:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:19:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:20:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:20:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:20:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:21:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:22:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:22:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:24:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:25:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:27:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:28:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:28:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:31:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:32:48 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
+2016/02/25 14:33:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png"' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/firma/00...')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/upload/firma/00a6ad785a3848b0c594f995fc3aa16c8_firma.png
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/gestionTestDrive/create/359?id_informacion=2002
+---
