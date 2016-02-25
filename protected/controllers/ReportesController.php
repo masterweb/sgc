@@ -543,6 +543,8 @@ class ReportesController extends Controller {
     }
 
      public function actionAjaxGetDealers() {
+        echo 'llego';
+        die();
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
