@@ -686,7 +686,7 @@ $firma = GestionFirma::model()->count($cri);
                                                 <div class="row">
                                                     <div class="col-md-12">                                                     
                                                         
-                                                            <?= $this->renderPartial('//firma');?> 
+                                                            <?= $this->renderPartial('//firma', array('id_informacion' => $id_informacion));?> 
                                                         
                                                         <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
                                                     </div>
