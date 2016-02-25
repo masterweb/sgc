@@ -3415,7 +3415,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             if ($model->save()) {
                 //die('enter save');
-                if ($_POST['tipo'] == 'gestion' && $_POST['yt0'] == 'Continuar') {
+                if ($_POST['tipo'] == 'gestion') {
                     //die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
@@ -3496,6 +3496,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->status = 1;
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento'];
                             $gestion->fecha = date("Y-m-d H:i:s");
+                            if($gestion->validate())
+                                {
+                                      die('no errores');  
+                                }
+                                else {
+                                      die('error');  
+                                }
                             $gestion->save();
                             //die('after save');
                             break;
@@ -3530,7 +3537,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->save();
                             break;
                         case 15:// tipo usados
-                            //die('enter exo00');
+                            //die('enter exo cnadis');
+							
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';
@@ -3674,7 +3682,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             if ($model->save()) {
                 //die('enter save');
-                if ($_POST['tipo'] == 'gestion' && $_POST['yt0'] == 'Continuar') {
+				//die($_POST['tipo']);
+				/*echo '<pre>';
+				print_r($_POST);
+				echo '</pre>';
+				die();*/
+
+                if ($_POST['tipo'] == 'gestion') {
                     //die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
@@ -3788,6 +3802,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->save();
                             break;
                         case 15:// tipo usados
+						//die('enter dipl');
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';

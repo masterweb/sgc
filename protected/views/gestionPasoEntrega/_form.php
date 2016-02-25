@@ -613,11 +613,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                     </div>
                                 </div>
                             </div>
-                            <div id="inline1" style="width:auto;display: none;">
-                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_entrega']; ?>"/> 
+                            <div id="inline1" style="width:600;display: none;">
+                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_entrega']; ?>" width="600"/> 
                             </div>
-                            <div id="inline2" style="width:auto;display: none;">
-                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_hoja_entrega']; ?>"/> 
+                            <div id="inline2" style="width:600;display: none;">
+                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $data['foto_hoja_entrega']; ?>" width="600"/> 
                             </div>
 
                         <?php } else if ($this->getEntregaPaso($id_informacion, $id_vehiculo, 9) && !$this->getEntregaPaso($id_informacion, $id_vehiculo, 10)) { ?>

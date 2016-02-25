@@ -1854,7 +1854,7 @@ function deleter(id){
                                   <div class="panel panel-default">
                                       <div class="panel-body">
                                           <?php foreach ($acc3 as $value3): ?>
-                                          <p><?php echo $value3['accesorio']; ?></p>
+                                          <p><?php echo $value3['accesorio'].' '.$value3['detalle']; ?></p>
                                           <?php endforeach; ?>
                                       </div>
                                   </div>     
@@ -2009,8 +2009,8 @@ function deleter(id){
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="precio_normal">Precio Normal</label>
-                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>">
-                                    <input type="hidden" name="precio_normal_anterior" id="precio_normal_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>"/>
+                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>">
+                                    <input type="hidden" name="precio_normal_anterior" id="precio_normal_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
                                 </div>
                                 <div class="col-md-1" style="padding-top: 24px;">
                                     <button type="button" class="btn btn-primary btn-xs" id="edit-btn" style="display: inline-block;">Editar</button>
@@ -2018,8 +2018,8 @@ function deleter(id){
                                 </div>
                                 <div class="col-md-4">
                                     <label for="precio_accesorios">Precio con Accesorios</label>
-                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>" data-symbol="$ " data-thousands="." data-decimal=",">
-                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>"/>
+                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>" data-symbol="$ " data-thousands="." data-decimal=",">
+                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
                                 </div>
                                 
                             </div>
@@ -2054,7 +2054,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
