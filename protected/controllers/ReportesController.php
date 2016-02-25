@@ -518,8 +518,6 @@ class ReportesController extends Controller {
                 $cargo_id == 61 ||
                 $cargo_id == 62){
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (70, 71, 72, 73, 75, 76, 77) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
-                echo $sql;
-                die();
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
