@@ -488,8 +488,6 @@ class ReportesController extends Controller {
         //GET asesores activos en rango de fechas
         $con_aa = Yii::app()->db;
         $sql_asesores_act = "SELECT distinct responsable FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
-        echo $sql_asesores_act;
-        die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
 
@@ -517,7 +515,8 @@ class ReportesController extends Controller {
                 $cargo_id == 61 ||
                 $cargo_id == 62){
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (70, 71, 72, 73, 75, 76, 77) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
-            
+                echo $sql;
+                die();
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
