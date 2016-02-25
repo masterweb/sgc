@@ -495,7 +495,10 @@ class ReportesController extends Controller {
         if(!empty($request_aa)){
             $asesores_aa = '';
             foreach ($request_aa as $id_asesor) {
-                $asesores_aa .= $id_asesor['responsable'].', ';
+                if($id_asesor['responsable'] != ''){
+                    $asesores_aa .= $id_asesor['responsable'].', ';
+                }
+                
             }
             $asesores_aa = rtrim($asesores_aa, ", ");
             //FIN
