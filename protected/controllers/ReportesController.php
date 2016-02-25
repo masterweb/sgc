@@ -580,12 +580,14 @@ class ReportesController extends Controller {
 
         $data = '<option value="">--Seleccione Concesionario--</option>';
         foreach ($request as $value) {
-            $data .= '<option value="' . $value['dealer_id'].'" ';
-                if($active == $value['dealer_id']){
-                    $data .= 'selected';
-                }
-            $data .= '>'.$value['nombre'];
-            $data .= '</option>';
+            if($value['nombre'] != 'TODOS'){
+                $data .= '<option value="' . $value['dealer_id'].'" ';
+                    if($active == $value['dealer_id']){
+                        $data .= 'selected';
+                    }
+                $data .= '>'.$value['nombre'];
+                $data .= '</option>';
+            }
         }
 
         echo $data;

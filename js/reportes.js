@@ -7,38 +7,48 @@ $(function () {
     $('#fecha-range2').daterangepicker({locale: { format: 'YYYY-MM-DD'}});
 
     $('#fecha-range1').change(function () {
-        loadmodelos($(this));
-        loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
-        loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
+        if(activar_dealer == 'si'){ 
+            loadmodelos($(this));
+            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
+            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
-        loadgp($('#TA_provincias'), url_footer_var_grupo);
-        loadgp($('#TA_grupos'), url_footer_var_provincia);
-        vaciar();
+            loadgp($('#TA_provincias'), url_footer_var_grupo);
+            loadgp($('#TA_grupos'), url_footer_var_provincia);
+            vaciar();
+        }else{
+            loadresponsables($('#GestionInformacionConcesionario'));
+        }
     });
 
     $('#fecha-range2').change(function () {
-        loadmodelos($(this));
-        loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
-        loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
+        if(activar_dealer == 'si'){ 
+            loadmodelos($(this));
+            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
+            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
-        loadgp($('#TA_provincias'), url_footer_var_grupo);
-        loadgp($('#TA_grupos'), url_footer_var_provincia);
-        vaciar();
+            loadgp($('#TA_provincias'), url_footer_var_grupo);
+            loadgp($('#TA_grupos'), url_footer_var_provincia);
+            vaciar();
+        }{
+           loadresponsables($('#GestionInformacionConcesionario'));
+        }
     });
-
+if(activar_dealer == 'si'){ 
     $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
     $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
-    $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});
-
     loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
     loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+}
+    $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});    
     loadresponsables($('#GestionInformacionConcesionario'));
 
+if(activar_dealer == 'si'){ 
     if(id_grupo != ''){  
         loaddealers($('#GestionInformacionGrupo'), 'g');
     }else{    
         loaddealers($('#GestionInformacionProvincias'), 'p');
     }
+}
 
     //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
@@ -147,7 +157,7 @@ $(function () {
         }        
     }
 
-    
+if(activar_dealer == 'si'){  
     //TRAFICO ACUMULADO 
     $(".tipo_busqueda_TA").change(function () {
         checkFiltro($(this)); 
@@ -216,7 +226,7 @@ $(function () {
             });
         }        
     }
-    
+}   
     function checkFiltro(e){
         if(e.attr('value') == 'grupos'){
             $('#traficoGeneral').show();

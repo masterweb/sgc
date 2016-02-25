@@ -21,13 +21,15 @@
             case 60: // GERENTE VENTAS
             case 61: // JEFE DE RED VENTAS
             case 62: // SUBGERENTE DE FLOTAS VENTAS
-            case 69: // GERENTE COMERCIAL EN CURSO TERMINADO
+            //case 69: // GERENTE COMERCIAL EN CURSO TERMINADO
 				$nombre_print = 'Todos';
 				$cargo_print = 'Todos';
+				$activar_dealer = 'si';
 				break; 
 			default:
 				$nombre_print = $varView["nombre_usuario"]->nombres." ".$varView["nombre_usuario"]->apellido;
 				$cargo_print = $varView["cargo_usuario"]->descripcion;
+				$activar_dealer = 'no';
 				break;                                 
 		}
 	?>
@@ -35,6 +37,7 @@
 	nombre_concecionario = '<?= $varView["consecionario_usuario"]; ?>';
 	active_group = '<?= $varView["grupo"] ?>';
 	active_prov = '<?= $varView["provincias"] ?>';
+	activar_dealer = '<?= $activar_dealer?>';
 
 	id_provincia = '<?= $varView["id_provincia"] ?>';
 	id_grupo = '<?= $varView["id_grupo"] ?>';
