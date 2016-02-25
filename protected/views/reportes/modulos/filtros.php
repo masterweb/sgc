@@ -93,11 +93,13 @@
                 <?php
                 if($varView['lista_conce'] != 'null'){
                     foreach ($varView['lista_conce'] as $value) {
-                        echo '<option value="' . $value['dealer_id'] . '"';
-                        if($value['dealer_id'] == $varView['$concesionario']){
-                            echo 'selected';
-                        }                        
-                        echo'>' . $value['nombre'] . '</option>';
+                        if($value['nombre'] != 'TODOS'){
+                            echo '<option value="' . $value['dealer_id'] . '"';
+                            if($value['dealer_id'] == $varView['$concesionario']){
+                                echo 'selected';
+                            }                        
+                            echo'>' . $value['nombre'] . '</option>';
+                        }
                     }
                 }
                 ?>
@@ -107,7 +109,9 @@
 
     <!-- FILTRO ASESORES -->
     <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
-        <?php if ($varView['cargo_id'] == 70):?>
+        <?php 
+        $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
+        if (in_array($varView['cargo_id'], $usuariosBajos)):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
         <?php endif; ?>
             <div class="col-md-6">
