@@ -15,36 +15,36 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sketch.js"></script>
 <script type="text/javascript">
     $(function () {
-        $('#Usuarios_celular').keyup(function(){
-           $('#celular2').hide(); 
+        $('#Usuarios_celular').keyup(function () {
+            $('#celular2').hide();
         });
         $('#Usuarios_usuario').keyup(function () {
             this.value = this.value.toLowerCase();
         });
         $('#usuarios-form').validate({
-            rules:{
-                'area':{required:true},'Usuarios[cedula]':{required:true},'Usuarios[apellido]':{required:true},'Usuarios[nombres]':{required:true},
-                'Usuarios[usuario]':{required:true},'Usuarios[fechaingreso]':{required:true},'Usuarios[correo]':{required:true, email:true},
-                'Usuarios[fechanacimiento]':{required:true},'Usuarios[celular]':{required:true, number:true, minlength: 10},'Usuarios[telefono]':{required:true,number:true, minlength: 9},
-                'Usuarios[extension]':{required:true},'Usuarios[codigo_asesor]':{required:true}
+            rules: {
+                'area': {required: true}, 'Usuarios[cedula]': {required: true}, 'Usuarios[apellido]': {required: true}, 'Usuarios[nombres]': {required: true},
+                'Usuarios[usuario]': {required: true}, 'Usuarios[fechaingreso]': {required: true}, 'Usuarios[correo]': {required: true, email: true},
+                'Usuarios[fechanacimiento]': {required: true}, 'Usuarios[celular]': {required: true, number: true, minlength: 10}, 'Usuarios[telefono]': {required: true, number: true, minlength: 9},
+                'Usuarios[extension]': {required: true}, 'Usuarios[codigo_asesor]': {required: true}
             },
             messages: {
-                'area':{required:'Seleccione una ubicación'},'Usuarios[cedula]':{required:'Ingrese su cédula'},'Usuarios[apellido]':{required:'Ingrese su apellido'},'Usuarios[nombres]':{required:'Ingrese su nombre'},
-                'Usuarios[usuario]':{required:'Ingrese su nickname'},'Usuarios[fechaingreso]':{required:'Ingrese su fecha de ingreso'},'Usuarios[correo]':{required:'Ingrese su email', email:'Ingrese un email válido'},
-                'Usuarios[fechanacimiento]':{required:'Ingrese su fecha de nacimiento'},'Usuarios[celular]':{required:'Ingrese su celular',number:'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'},'Usuarios[telefono]':{required:'Ingrese su teléfono',number:'Ingrese sólo números', minlength: 'Ingrese 9 dígitos'},
-                'Usuarios[extension]':{required:'Ingrese su extensión'},'Usuarios[codigo_asesor]':{required:'Ingrese su código'}
+                'area': {required: 'Seleccione una ubicación'}, 'Usuarios[cedula]': {required: 'Ingrese su cédula'}, 'Usuarios[apellido]': {required: 'Ingrese su apellido'}, 'Usuarios[nombres]': {required: 'Ingrese su nombre'},
+                'Usuarios[usuario]': {required: 'Ingrese su nickname'}, 'Usuarios[fechaingreso]': {required: 'Ingrese su fecha de ingreso'}, 'Usuarios[correo]': {required: 'Ingrese su email', email: 'Ingrese un email válido'},
+                'Usuarios[fechanacimiento]': {required: 'Ingrese su fecha de nacimiento'}, 'Usuarios[celular]': {required: 'Ingrese su celular', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'Usuarios[telefono]': {required: 'Ingrese su teléfono', number: 'Ingrese sólo números', minlength: 'Ingrese 9 dígitos'},
+                'Usuarios[extension]': {required: 'Ingrese su extensión'}, 'Usuarios[codigo_asesor]': {required: 'Ingrese su código'}
             },
             submitHandler: function (form) {
                 var celular = $('#Usuarios_celular').val();
                 var telefono = $('#Usuarios_telefono').val();
-                var celular_t = celular.substring(0,2);
-                var telefono_t = telefono.substring(0,4);
-                if(celular_t != '09'){
-                    $('#celular2').show(); 
+                var celular_t = celular.substring(0, 2);
+                var telefono_t = telefono.substring(0, 4);
+                if (celular_t != '09') {
+                    $('#celular2').show();
                     $('#Usuarios_celular').focus();
                     return false;
                 }
-                if(telefono_t == '(01)' || telefono_t == '(00)'){
+                if (telefono_t == '(01)' || telefono_t == '(00)') {
                     alert('Ingrese correctamente su teléfono');
                     $('#Usuarios_telefono').focus();
                     return false;
@@ -172,23 +172,26 @@
     }
 </style>
 <div id="inline1" style="width:800px;display: none;height: 400px;">
-    <div class="row">
+    <!--div class="row">
         <h1 class="tl_seccion_rf">Ingreso de firma</h1>
-    </div>
+    </div-->
     <div class="row">
-        <div class="col-md-12">
-            <canvas id="colors_sketch" width="800" height="300"></canvas>
+        <div class="col-md-12">                                                     
+
+            <?= $this->renderPartial('//firma'); ?> 
+
+            <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
         </div>
     </div>
-    <div class="row">
+    <!--div class="row">
         <div class="col-md-8">
             <div class="tools">
-                <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
-                <input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
-                <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
-            </div>
-        </div>
-    </div>
+    <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
+    <!--input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
+    <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
+</div>
+</div>
+</div-->
 </div>
 <div class="form">
 
@@ -271,13 +274,13 @@
             <p style="font-size:13px; font-weight:bold;padding-top:-5px;">PICHINCHA</p>
         </div>
     </div>
-  
-        <div class="form-group">
+
+    <div class="form-group">
         <label class="col-sm-2 control-label required" for="Usuarios_cedula">Cédula <span class="required">*</span></label>        
         <div class="col-sm-10">
             <input type="tel" size="10" maxlength="10" class="form-control" onkeypress="return numeros(event);"  name="Usuarios[cedula]" id="Usuarios_cedula">            
             <div id="errorCedula" style="display:none;color: red;position: relative;top: 0px;left: 2px;font-size:11px">Cédula ingresada es incorrecta.</div>
-                    
+
         </div>
     </div>
 
@@ -403,8 +406,8 @@
                 }
                 $(function () {
                     //          $("#btnSubmit").hide();
-                    
-                   // $("#Usuarios_cedula").mask('9999999999');
+
+                    // $("#Usuarios_cedula").mask('9999999999');
                     //$("#Usuario_fechaNacimiento").mask('99/99/1999');
                     $(".datepicker").datepicker({
                         changeMonth: true,
@@ -686,29 +689,29 @@
                     }
 
                 }
-                 function numeros(evt)
-    {
-        var code = (evt.which) ? evt.which : evt.keyCode;
-        if(code==8)
-        {
-            //backspace
-            return true;
-        }
-        else if(code>=48 && code<=57)
-        {
-            //is a number
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    $( "#Usuarios_celular" ).focus(function() {
-        celular(this.id)
-    });
-    function celular(vl){
-        $("#"+vl).val('09');
-    }
-  
+                function numeros(evt)
+                {
+                    var code = (evt.which) ? evt.which : evt.keyCode;
+                    if (code == 8)
+                    {
+                        //backspace
+                        return true;
+                    }
+                    else if (code >= 48 && code <= 57)
+                    {
+                        //is a number
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                $("#Usuarios_celular").focus(function () {
+                    celular(this.id)
+                });
+                function celular(vl) {
+                    $("#" + vl).val('09');
+                }
+
 </script>
