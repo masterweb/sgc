@@ -488,6 +488,8 @@ class ReportesController extends Controller {
         //GET asesores activos en rango de fechas
         $con_aa = Yii::app()->db;
         $sql_asesores_act = "SELECT distinct responsable FROM gestion_informacion WHERE DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        echo $sql_asesores_act;
+        die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
 
@@ -543,8 +545,6 @@ class ReportesController extends Controller {
     }
 
      public function actionAjaxGetDealers() {
-        echo 'llego';
-        die();
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
