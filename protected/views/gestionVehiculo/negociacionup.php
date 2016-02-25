@@ -2633,9 +2633,9 @@ if ($fi == 2) {
                                     <input type="hidden" name="GestionFinanciamiento1[id_financiamiento]" id="GestionFinanciamiento_id_financiamiento" value="<?php echo $model->id; ?>" />
                                     <input type="hidden" name="GestionFinanciamiento1[flag]" id="GestionFinanciamiento_flag" value="0" />
                                     <input type="hidden" name="GestionFinanciamiento1[mod]" id="GestionFinanciamiento_mod" value="" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc1]" id="GestionFinanciamiento_acc1" value="<?php echo ($tipo == 1) ? '670-Kit Satelital@' : ''; ?>" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc2]" id="GestionFinanciamiento_acc2" value="<?php echo ($tipo == 1) ? '670-Kit Satelital@' : ''; ?>" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc3]" id="GestionFinanciamiento_acc3" value="<?php echo ($tipo == 1) ? '670-Kit Satelital@' : ''; ?>" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc1]" id="GestionFinanciamiento_acc1" value="<?php echo ($tipo == 1 && ($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc2]" id="GestionFinanciamiento_acc2" value="<?php echo ($tipo == 1 && ($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc3]" id="GestionFinanciamiento_acc3" value="<?php echo ($tipo == 1 && ($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
                                     <input type="hidden" name="GestionFinanciamiento1[tipo_financiamiento]" id="GestionFinanciamiento_tipo_financiamiento" value="<?php echo $tipo; ?>" />
                                     <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Generar Proforma" onclick="send();" style="display: none;">
                                 </div>

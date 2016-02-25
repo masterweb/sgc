@@ -2314,14 +2314,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionGetPasaporte() {
+        //die('enter pasaporte');
         $model = new GestionNuevaCotizacion;
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-//        $model->cedula = $id;
-//        $model->fuente = $fuente;
-//        $model->save();
+        $model->cedula = $id;
+        $model->fuente = $fuente;
+        $model->save();
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "pasaporte='{$id}'"
@@ -2373,7 +2374,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
 
                 $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id']);
-                //die('paso: '.$paso);
+                //die('url: '.$showboton);
 
                 $data .= '<tr><td>Cliente</td>'
                         . '<td>' . $value['nombres'] . '</td>'
@@ -2816,8 +2817,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             );
             //die('after uri');
             $client = new SoapClient(@$uriservicio, array('trace' => 1));
-            $response = $client->pws01_01_cl("{$identificacion}", '');
-            //die('reponse');
+            
+            try {
+                $response = $client->pws01_01_cl("{$identificacion}", '');
+            } catch (Exception $exc) {
+                Yii::app()->user->setFlash('error', "Error al conectarse a la pirámide");
+            }
+
 
             $params = explode('<ttvh01>', $response['lcxml']);
             $count = count($params);
@@ -2909,6 +2915,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 }
             }
         }
+    }
+    
+    function checkCreatec($response){
+        if(!$response){
+            throw new Exception("Error al conectarse con la pirámide");
+        }
+        return true;
     }
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {

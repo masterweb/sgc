@@ -42,6 +42,11 @@
             <div role="tabpanel" class="tab-pane active" id="profile">
 
                 <div class="highlight">
+                    <?php if (Yii::app()->user->hasFlash('error')): ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo Yii::app()->user->getFlash('error'); ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="row">
                         <h1 class="tl_seccion">Datos de Cliente</h1>
                     </div>
@@ -93,6 +98,7 @@
                                     <div class="alert alert-warning" role="alert">
                                         <strong>FACTURA NO REGISTRADA</strong>
                                     </div>
+                            <br />
                                     <a href="<?php echo Yii::app()->createUrl('site/facturaNoRegistered', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
                                     <?php
                                     break;
@@ -113,12 +119,12 @@
                                     ));
                                     ?>
                                     <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="submit" name="send" value="Continuar" class="btn btn-primary"/>
-                                                <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
-                                                <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
-                                            </div>
+                                        <div class="col-md-3">
+                                            <input type="submit" name="send" value="Continuar" class="btn btn-primary"/>
+                                            <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
+                                            <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
                                         </div>
+                                    </div>
                                     <?php $this->endWidget(); ?>
                                     <?php
                                     break;
@@ -157,7 +163,7 @@
                                                 <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
                                             </div>
                                         </div>
-        <?php $this->endWidget(); ?>
+                                        <?php $this->endWidget(); ?>
                                     </div>
                                     <br />
                                     <?php
@@ -173,7 +179,7 @@
 
                 <?php if ($search): ?>
 
-<?php else: ?>
+                <?php else: ?>
 
 
                     <!--                <div class="row">
@@ -181,7 +187,7 @@
                                             <a href="<?php echo Yii::app()->createUrl('site/factura/' . $id_informacion); ?>" class="btn btn-danger">Ingresar Chasis</a>
                                         </div>
                                     </div>-->
-<?php endif; ?>
+                <?php endif; ?>
                 <br />
                 <div class="row">
                     <div class="col-md-8  col-xs-12 links-tabs">
