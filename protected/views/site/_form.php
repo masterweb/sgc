@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/jquery.fancybox.css?v=2.1.4" type="text/css"/>               
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" type="text/css"/>        
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css"/>
+<link href="<?php echo Yii::app()->request->baseUrl; ?>/css/canvas/signature-pad.css" rel="stylesheet">
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/mask.js" type="text/javascript" charset="utf-8"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
@@ -73,14 +74,14 @@
             }
         });
         $('.fancybox').fancybox();
-        $('#colors_sketch').sketch();
-        var sktch = $('#colors_sketch').sketch();
-        var cleanCanvas = $('#colors_sketch')[0];
+        //$('#colors_sketch').sketch();
+        //var sktch = $('#colors_sketch').sketch();
+        //var cleanCanvas = $('#colors_sketch')[0];
 
         //Get the canvas &
-        var c = $('#colors_sketch');
-        var ct = c.get(0).getContext('2d');
-        var container = $(c).parent();
+        //var c = $('#colors_sketch');
+        //var ct = c.get(0).getContext('2d');
+        //var container = $(c).parent();
         $('.reset-canvas').click(function () {
             var cnv = $('#colors_sketch').get(0);
             var ctx = cnv.getContext('2d');
@@ -122,10 +123,10 @@
         context.beginPath();
     }
 
-    function UploadPic() {
+    function UploadPic2() {
 
         // generate the image data
-        var data = document.getElementById("colors_sketch").toDataURL("image/png");
+        var data = document.getElementById("colors_sketch2").toDataURL("image/png");
         var output = data.replace(/^data:image\/(png|jpg);base64,/, "");
         // Sending the image data to Server
         if (confirm("Antes de continuar, esta seguro que ha realizado su firma correctamente?")) {
@@ -172,26 +173,40 @@
     }
 </style>
 <div id="inline1" style="width:800px;display: none;height: 400px;">
-    <!--div class="row">
+<!--    <div class="row">
         <h1 class="tl_seccion_rf">Ingreso de firma</h1>
-    </div-->
+    </div>-->
     <div class="row">
-        <div class="col-md-12">                                                     
+        <div class="col-md-12">
+            <div id="signature-pad" class="m-signature-pad">
+                <div class="m-signature-pad--body">
+                    <canvas id="colors_sketch2"></canvas>
+                </div>
+                <div class="m-signature-pad--footer">
+                    <div class="description">Firma arriba</div>
+                    <button type="button" class="button clear" data-action="clear">Borrar</button>
+                    <button type="button" class="button save" data-action="save" style="display:none;">Guardar</button>
+                    <button type="button" class="button save" onclick="UploadPic2()" >Guardar</button>
 
-            <?= $this->renderPartial('//firma'); ?> 
+                    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/signature_pad.js"></script>
+                    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/app.js"></script>
 
-            <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
+                    <!--ORIGINLAES-->
+                    <!--button type="button" class="button save" data-action="save" >Guardar</button>
+                    <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma"-->
+                </div>
+            </div>
         </div>
     </div>
-    <!--div class="row">
+<!--    <div class="row">
         <div class="col-md-8">
             <div class="tools">
-    <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
-    <!--input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
-    <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
-</div>
-</div>
-</div-->
+                <a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>
+                <input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
+                <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
+            </div>
+        </div>
+    </div>-->
 </div>
 <div class="form">
 

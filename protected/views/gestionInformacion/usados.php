@@ -131,8 +131,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 ?>
                             </td>
                             <td><?php echo $c['marca_usado']; ?></td>
-                            <td><?php
-                            echo $c['modelo_usado'];
+                            <td><?php 
+                            $paramAutos = explode('@', $c['modelo_usado']);
+                            echo $paramAutos[1].' '.$paramAutos[2];
                             ?></td>
                             <td><?php echo $c['proximo_seguimiento']; ?></td>
                             <td><?php echo $this->getResponsable($c['responsable']); ?></td>

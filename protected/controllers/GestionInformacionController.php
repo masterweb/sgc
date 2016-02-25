@@ -600,7 +600,7 @@ class GestionInformacionController extends Controller {
                 $request = $con->createCommand($sql)->query();
 
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => 'gestion'));
-               if ($_POST['tipo'] == 'trafico') {
+                if ($_POST['tipo'] == 'trafico') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
@@ -1581,23 +1581,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
-                if($cargo_id == 69 && $_GET['GestionDiaria']['responsable'] == 'all'){ // GERENTE COMERCIAL
+                if ($cargo_id == 69 && $_GET['GestionDiaria']['responsable'] == 'all') { // GERENTE COMERCIAL
                     $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
                             . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) ";
-                            $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";  
+                    $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 }
-                /*if($_GET['GestionDiaria']['responsable'] == 'all'){
-                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
-                            . "WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 ";
-                    $title = "Busqueda Total";        
-                }*/
-                else{
+                /* if($_GET['GestionDiaria']['responsable'] == 'all'){
+                  $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                  . "WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 ";
+                  $title = "Busqueda Total";
+                  } */ else {
                     $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' ";
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
                 }
-                
+
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 if ($_GET['GestionDiaria']['tipo'] == 'exo') {
                     $sql .= " AND gd.desiste = 0 ORDER BY gd.id DESC";
@@ -1607,10 +1606,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
                 //die($sql);
-                
+
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
-                
+
                 $data['title'] = $title;
                 $data['users'] = $users;
                 return $data;
@@ -3060,7 +3059,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $headers .= 'Content-type: text/html' . "\r\n";
                             $email = $email_responsable; //email cliente registrado
                             //$email = 'alkanware@gmail.com'; //email administrador
-
                             //$send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                             break;
@@ -3166,14 +3164,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->setscenario('prospeccion');
             }
 
-
+            $gestion = new GestionDiaria;
             if ($model->save()) {
                 //die('enter save');
                 if ($_POST['tipo'] == 'gestion' && $_POST['yt0'] == 'Continuar') {
                     //die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
-                    $gestion = new GestionDiaria;
+                    
                     $gestion->paso = $_POST['GestionInformacion']['paso'];
                     $prospeccion = new GestionProspeccionRp;
                     $prospeccion->id_informacion = $model->id;
@@ -3314,6 +3312,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 if ($_POST['tipo'] == 'trafico') {
+                    $gestion->id_informacion = $model->id;
+                    $gestion->id_vehiculo = 0;
+                    $gestion->observaciones = 'Prospección';
+                    $gestion->medio_contacto = 'telefono';
+                    $gestion->fuente_contacto = 'prospeccion';
+                    $gestion->codigo_vehiculo = 0;
+                    $gestion->prospeccion = 1;
+                    $gestion->status = 0;
+                    $gestion->proximo_seguimiento = '';
+                    $gestion->fecha = date("Y-m-d H:i:s");
+                    $gestion->save();
+                    //die('enter trafico usado');
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
                 $this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
@@ -3502,13 +3512,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->status = 1;
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento'];
                             $gestion->fecha = date("Y-m-d H:i:s");
-                            if($gestion->validate())
-                                {
-                                      die('no errores');  
-                                }
-                                else {
-                                      die('error');  
-                                }
+                            if ($gestion->validate()) {
+                                die('no errores');
+                            } else {
+                                die('error');
+                            }
                             $gestion->save();
                             //die('after save');
                             break;
@@ -3544,7 +3552,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             break;
                         case 15:// tipo usados
                             //die('enter exo cnadis');
-							
+
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';
@@ -3688,11 +3696,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             if ($model->save()) {
                 //die('enter save');
-				//die($_POST['tipo']);
-				/*echo '<pre>';
-				print_r($_POST);
-				echo '</pre>';
-				die();*/
+                //die($_POST['tipo']);
+                /* echo '<pre>';
+                  print_r($_POST);
+                  echo '</pre>';
+                  die(); */
 
                 if ($_POST['tipo'] == 'gestion') {
                     //die('enter continuar');
@@ -3808,7 +3816,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                             $gestion->save();
                             break;
                         case 15:// tipo usados
-						//die('enter dipl');
+                            //die('enter dipl');
                             $gestion->id_informacion = $model->id;
                             $gestion->id_vehiculo = 0;
                             $gestion->observaciones = 'Prospección';
@@ -3878,7 +3886,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //            echo '<pre>';
 //            print_r($_GET);
 //            echo '</pre>';
-
             //---- BUSQUEDA GENERAL----
             if (!empty($_GET['GestionSolicitudCredito']['general'])) {
                 //die('enter nombres apellidos');

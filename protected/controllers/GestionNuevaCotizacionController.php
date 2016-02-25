@@ -492,7 +492,7 @@ class GestionNuevaCotizacionController extends Controller {
                     }
 
                     if ($_POST['GestionNuevaCotizacion']['pasaporte'] != '') {
-                       
+                        //die('enter pasaporte');       
                         $ident = 'pasaporte';
                         //die('enter pasaporte');
                         $model->pasaporte = $_POST['GestionNuevaCotizacion']['pasaporte'];
@@ -541,7 +541,7 @@ class GestionNuevaCotizacionController extends Controller {
                                     break;
                             }
                             if ($model->save()) {
-                                //die('enter save');
+                                //die('enter save trafico showroom');
                                 $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'fuente' => $_POST['GestionNuevaCotizacion']['fuente'], 'iden' => $ident));
                             }
                         }

@@ -657,7 +657,7 @@ class Controller extends CController {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionInformacion::model()->find($criteria);
+        $gestion = GestionNuevaCotizacion::model()->find($criteria);
         return $gestion->ruc;
     }
 
@@ -666,7 +666,7 @@ class Controller extends CController {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionInformacion::model()->find($criteria);
+        $gestion = GestionNuevaCotizacion::model()->find($criteria);
         //die('pasaporte: '.$gestion->pasaporte);
         return $gestion->pasaporte;
     }

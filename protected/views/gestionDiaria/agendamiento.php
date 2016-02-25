@@ -191,7 +191,8 @@
                                     <td><strong>Marca:</strong> <?php echo ($value['marca_usado']); ?></td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Modelo:</strong> <?php echo ($value['modelo_usado']); ?></td>
+                                    <td><strong>Modelo:</strong> <?php $paramAutos = explode('@', $value['modelo_usado']);
+                            echo $paramAutos[1].' '.$paramAutos[2]; ?></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Responsable:</strong> <?php echo $this->getResponsable($value['responsable']); ?></td>
