@@ -389,7 +389,7 @@ if (isset($id)) {
                                                 <td></td>
                                                 <td></td>
                                                 <td><a href="<?php echo Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente)); ?>" class="btn btn-danger btn-xs">Consulta</a></td>
-                                                <td><?php echo '<a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" class="btn btn-default btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';; ?></td>
+                                                <td><?php echo '<a href="'.Yii::app()->request->baseUrl.'/images/precios_24.pdf" class="btn btn-default btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';; ?></td>
                                             </tr>
 
                                         </tbody>

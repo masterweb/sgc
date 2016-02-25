@@ -148,7 +148,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                                     <tr>
                                         <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                         <td><?php echo $this->getVersion($c['version']); ?> </td>
-                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-17-02-2016.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/precios_24.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
 
                                         <?php
                                         $criteria5 = new CDbCriteria(array('condition' => "id_vehiculo='{$c['id']}'"));
@@ -181,7 +181,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                                         ?>
         <!--<td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-info btn-xs" target="_blank">Accesorios</a>-->
                                         </td>
-                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/noticias-def.pdf" target="_blank" class="btn btn-xs btn-default">Ver Noticias</a></td>
+                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Noticias-Kia-Enero-2016-(2).pdf" target="_blank" class="btn btn-xs btn-default">Ver Noticias</a></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -199,7 +199,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                             <a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
                         <div class="col-md-offset-5 col-md-4">
-                            <a href="https://www.kia.com.ec/images/Manual-Comparativo-Noviembre-2015.pdf" class="btn btn-default" target="_blank">Manual Comparativo y Pricing</a>
+                            <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Manual-Comparativo-Noviembre-2015(3).pdf" class="btn btn-default" target="_blank">Manual Comparativo y Pricing</a>
                         </div>
                     </div>
                 <?php endif; ?>

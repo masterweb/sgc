@@ -578,18 +578,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $usuario_id = $p->purify($pz);
-		
+        
         $recuperar = Recuperar::model()->find(array('condition' => "token=:match AND md5(usuarios_id)=:uid AND estado='SOLICITADO'", 'params' => array(':match' => $token, 'uid' => $usuario_id)));
         if (!empty($recuperar)) {
-		
             $datetime1 = date_create($recuperar->fecha);
             $datetime2 = date_create("now");
-            $interval = date_diff($datetime1, $datetime2);
-		/*print_r($interval->i);
-		die();*/
-            if ($interval->i <= 30) {
+           
+            $interval = date_diff($datetime2, $datetime1);
+        
+            //if ($interval->i <= 100) {
                 $user = Usuarios::model()->find(array('condition' => "id=:match  AND estado='ACTIVO'", 'params' => array(':match' => $recuperar->usuarios_id)));
-	
+    
                 if (!empty($_POST["password"])) {
                     if ($_POST["password"] == $_POST["repetir_password"]) {
                         $recuperar->estado = "EJECUTADO";
@@ -605,7 +604,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
 
                 $this->render('restablecerpassword', array("t" => $t, "pz" => $pz));
-            }
+            //}
         } else
             throw new CHttpException(404, 'Lo sentimos no se puede desplegar esta s' . utf8_encode("información") . '.');
     }
@@ -2314,14 +2313,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionGetPasaporte() {
+        //die('enter pasaporte');
         $model = new GestionNuevaCotizacion;
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-//        $model->cedula = $id;
-//        $model->fuente = $fuente;
-//        $model->save();
+        $model->cedula = $id;
+        $model->fuente = $fuente;
+        $model->save();
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "pasaporte='{$id}'"
@@ -2373,7 +2373,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
 
                 $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id']);
-                //die('paso: '.$paso);
+                //die('url: '.$showboton);
 
                 $data .= '<tr><td>Cliente</td>'
                         . '<td>' . $value['nombres'] . '</td>'
@@ -2816,8 +2816,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             );
             //die('after uri');
             $client = new SoapClient(@$uriservicio, array('trace' => 1));
-            $response = $client->pws01_01_cl("{$identificacion}", '');
-            //die('reponse');
+            
+            try {
+                $response = $client->pws01_01_cl("{$identificacion}", '');
+            } catch (Exception $exc) {
+                Yii::app()->user->setFlash('error', "Error al conectarse a la pirámide");
+            }
+
 
             $params = explode('<ttvh01>', $response['lcxml']);
             $count = count($params);
@@ -2909,6 +2914,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 }
             }
         }
+    }
+    
+    function checkCreatec($response){
+        if(!$response){
+            throw new Exception("Error al conectarse con la pirámide");
+        }
+        return true;
     }
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {

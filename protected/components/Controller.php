@@ -368,6 +368,7 @@ class Controller extends CController {
     }
 
     public function setBotonCotizacion($paso, $id, $fuente, $id_informacion) {
+        //die('id: '.$id);
         $data = '';
         switch ($paso) {
             case 1:
@@ -396,7 +397,7 @@ class Controller extends CController {
                 $data = '<a href="' . Yii::app()->createUrl('site/cierre', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
                 break;
             case 10:
-                $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/create', array('tipo' => 'gestion', 'id' => $id, 'fuente' => $fuente)) . '" class="btn btn-primary btn-xs btn-danger">Nueva Cotización</a>';
+                $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Nueva Cotización</a>';
                 break;
 
 
@@ -482,7 +483,7 @@ class Controller extends CController {
         ));
         //    die ('version: '.$version);
         $modeloversion = Versiones::model()->find($criteria2);
-        if ($tipo == 1 && $id_modelo != 90) {
+        if ($tipo == 1 && ($id_modelo != 90 || $id_modelo != 93)) {
             return $modeloversion->precio + 670; // precio de credito con accesorio Kit Satelital por defecto
         } else {
             return $modeloversion->precio;
@@ -634,20 +635,39 @@ class Controller extends CController {
                 break;
         }
     }
+    
+    public function getTipoIdentificacionInformacion($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id}",
+        ));
+        $gestion = GestionInformacion::model()->find($criteria);
+        if($gestion->cedula != ''){
+            return 'ci';
+        }
+        if($gestion->ruc != ''){
+            return 'ruc';
+        }
+        if($gestion->pasaporte != ''){
+            return 'pasaporte';
+        }
+    }
 
     public function getIdentificacionRuc($id) {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionNuevaCotizacion::model()->find($criteria);
+        $gestion = GestionInformacion::model()->find($criteria);
         return $gestion->ruc;
     }
 
     public function getIdentificacionPasaporte($id) {
+        //echo ('id: '.$id);
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionNuevaCotizacion::model()->find($criteria);
+        $gestion = GestionInformacion::model()->find($criteria);
+        //die('pasaporte: '.$gestion->pasaporte);
         return $gestion->pasaporte;
     }
 

@@ -616,17 +616,61 @@ $id = $_GET['id'];
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'cedula'); ?>
-                            <label class="" for="">Cédula <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
+                        <?php
+                        $identificacion = $this->getTipoIdentificacionInformacion($id);
+                        //echo '--------- IDENT: '.$identificacion;
+                        ?>
+                        <?php if ($identificacion == 'ci'): ?>
+                            <div class="col-md-3">
+                                <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                <label class="" for="">Cédula <?php
+                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                        echo '<span class="required">*</span>';
+                                    }
+                                    ?></label>
+                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="10" class="form-control" name="GestionInformacion[cedula]" id="GestionInformacion_cedula" type="text" value="<?php
+                                if (isset($id)) {
+                                    echo $ced;
                                 }
-                                ?></label>
-                            <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));  ?>
-                            <?php echo $form->textField($model, 'cedula', array('size' => 45, 'maxlength' => 10, 'class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'cedula'); ?>
-                        </div>
+                                ?>">
+                                       <?php echo $form->error($model, 'cedula'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($identificacion == 'ruc'): ?>
+                            <div class="col-md-3">
+                                <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                <label class="" for="">RUC <?php
+                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                        echo '<span class="required">*</span>';
+                                    }
+                                    ?></label>
+                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
+                                if (isset($id)) {
+                                    echo $this->getIdentificacionRuc($id);
+                                }
+                                ?>">
+                                       <?php echo $form->error($model, 'ruc'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($identificacion == 'pasaporte'): ?>
+                            <div class="col-md-3">
+                                <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                <label class="" for="">Pasaporte <?php
+                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                        echo '<span class="required">*</span>';
+                                    }
+                                    ?></label>
+                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="50" class="form-control" name="GestionInformacion[pasaporte]" id="GestionInformacion_pasaporte" type="text" value="<?php
+                                if (isset($id)) {
+                                    echo $this->getIdentificacionPasaporte($id);
+                                }
+                                ?>">
+                                       <?php echo $form->error($model, 'pasaporte'); ?>
+                            </div>
+                        <?php endif; ?>
                         <div class="col-md-3">
                             <?php //echo $form->labelEx($model, 'direccion');   ?>
                             <label class="" for="">Dirección <?php
