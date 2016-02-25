@@ -288,11 +288,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="">Fecha</label>
-                                            <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha2]" id="GestionPasoEntregaDetail_envio_factura_fecha2" class="form-control"/>
+                                            <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha2]" id="GestionPasoEntregaDetail_envio_factura_fecha2" class="form-control" autocomplete="off"/>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="">Observaciones</label>
-                                            <textarea name="GestionPasoEntregaDetail[observaciones2]" id="GestionPasoEntregaDetail_observaciones2" cols="30" rows="3"></textarea>
+                                            <textarea name="GestionPasoEntregaDetail[observaciones2]" id="GestionPasoEntregaDetail_observaciones2" cols="30" rows="3" autocomplete="off"></textarea>
                                         </div>
                                     </div>
                                 </div>    
@@ -331,11 +331,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="">Fecha</label>
-                                            <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha3]" id="GestionPasoEntregaDetail_envio_factura_fecha3" class="form-control"/>
+                                            <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha3]" id="GestionPasoEntregaDetail_envio_factura_fecha3" class="form-control" autocomplete="off"/>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="">Observaciones</label>
-                                            <textarea name="GestionPasoEntregaDetail[observaciones3]" id="GestionPasoEntregaDetail_observaciones3" cols="30" rows="3"></textarea>
+                                            <textarea name="GestionPasoEntregaDetail[observaciones3]" id="GestionPasoEntregaDetail_observaciones3" cols="30" rows="3" autocomplete="off"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -376,11 +376,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha4]" id="GestionPasoEntregaDetail_envio_factura_fecha4" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha4]" id="GestionPasoEntregaDetail_envio_factura_fecha4" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-5">
                                         <label for="">Observaciones</label>
-                                        <textarea name="GestionPasoEntregaDetail[observaciones4]" id="GestionPasoEntregaDetail_observaciones4" cols="30" rows="3"></textarea>
+                                        <textarea name="GestionPasoEntregaDetail[observaciones4]" id="GestionPasoEntregaDetail_observaciones4" cols="30" rows="3" autocomplete="off"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -420,11 +420,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha5]" id="GestionPasoEntregaDetail_envio_factura_fecha5" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha5]" id="GestionPasoEntregaDetail_envio_factura_fecha5" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-5">
                                         <label for="">Observaciones</label>
-                                        <textarea name="GestionPasoEntregaDetail[observaciones5]" id="GestionPasoEntregaDetail_observaciones5" cols="30" rows="3"></textarea>
+                                        <textarea name="GestionPasoEntregaDetail[observaciones5]" id="GestionPasoEntregaDetail_observaciones5" cols="30" rows="3" autocomplete="off"></textarea>
                                     </div>
                                 </div>
                             </div>    
@@ -463,11 +463,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha6]" id="GestionPasoEntregaDetail_envio_factura_fecha6" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha6]" id="GestionPasoEntregaDetail_envio_factura_fecha6" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-5">
                                         <label for="">Observaciones</label>
-                                        <textarea name="GestionPasoEntregaDetail[observaciones6]" id="GestionPasoEntregaDetail_observaciones6" cols="30" rows="3"></textarea>
+                                        <textarea name="GestionPasoEntregaDetail[observaciones6]" id="GestionPasoEntregaDetail_observaciones6" cols="30" rows="3" autocomplete="off"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -505,11 +505,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha7]" id="GestionPasoEntregaDetail_envio_factura_fecha7" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha7]" id="GestionPasoEntregaDetail_envio_factura_fecha7" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="">Placa</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[placa]" id="GestionPasoEntregaDetail_placa" class="form-control" maxlength="7"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[placa]" id="GestionPasoEntregaDetail_placa" class="form-control" maxlength="7" autocomplete="off"/>
                                     </div>
                                 </div>
                             </div>    
@@ -547,11 +547,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha8]" id="GestionPasoEntregaDetail_envio_factura_fecha8" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha8]" id="GestionPasoEntregaDetail_envio_factura_fecha8" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="">Responsable</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[responsable]" id="GestionPasoEntregaDetail_tesponsable" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[responsable]" id="GestionPasoEntregaDetail_tesponsable" class="form-control" autocomplete="off"/>
                                     </div>
                                 </div>
                             </div>
@@ -589,11 +589,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha9]" id="GestionPasoEntregaDetail_envio_factura_fecha9" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha9]" id="GestionPasoEntregaDetail_envio_factura_fecha9" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-5">
                                         <label for="">Observaciones</label>
-                                        <textarea name="GestionPasoEntregaDetail[observaciones9]" id="GestionPasoEntregaDetail_observaciones9" cols="30" rows="3"></textarea>
+                                        <textarea name="GestionPasoEntregaDetail[observaciones9]" id="GestionPasoEntregaDetail_observaciones9" cols="30" rows="3" autocomplete="off"></textarea>
                                     </div>
                                 </div>
                             </div>

@@ -113,7 +113,7 @@ class GestionSeguimientoController extends Controller {
                                         </p><br />
                                         <p>
                                         Le recordamos que su vehículo cuenta con una';
-        if ($modelo == 86) {
+        if ($modelo == 86 || $modelo == 93) {
             $general .= ' garantía de 7 años o 120.000 Km, ';
         } else {
             $general .=' garantía de 5 años o 100.000 Km, ';
