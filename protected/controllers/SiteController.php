@@ -578,18 +578,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $usuario_id = $p->purify($pz);
-		
+        
         $recuperar = Recuperar::model()->find(array('condition' => "token=:match AND md5(usuarios_id)=:uid AND estado='SOLICITADO'", 'params' => array(':match' => $token, 'uid' => $usuario_id)));
         if (!empty($recuperar)) {
-		
             $datetime1 = date_create($recuperar->fecha);
             $datetime2 = date_create("now");
-            $interval = date_diff($datetime1, $datetime2);
-		/*print_r($interval->i);
-		die();*/
-            if ($interval->i <= 30) {
+           
+            $interval = date_diff($datetime2, $datetime1);
+        
+            //if ($interval->i <= 100) {
                 $user = Usuarios::model()->find(array('condition' => "id=:match  AND estado='ACTIVO'", 'params' => array(':match' => $recuperar->usuarios_id)));
-	
+    
                 if (!empty($_POST["password"])) {
                     if ($_POST["password"] == $_POST["repetir_password"]) {
                         $recuperar->estado = "EJECUTADO";
@@ -605,7 +604,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
 
                 $this->render('restablecerpassword', array("t" => $t, "pz" => $pz));
-            }
+            //}
         } else
             throw new CHttpException(404, 'Lo sentimos no se puede desplegar esta s' . utf8_encode("información") . '.');
     }

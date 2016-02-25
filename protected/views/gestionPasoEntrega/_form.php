@@ -246,11 +246,11 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Fecha</label>
-                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha1]" id="GestionPasoEntregaDetail_envio_factura_fecha1" class="form-control"/>
+                                        <input type="text" name="GestionPasoEntregaDetail[envio_factura_fecha1]" id="GestionPasoEntregaDetail_envio_factura_fecha1" class="form-control" autocomplete="off"/>
                                     </div>
                                     <div class="col-md-5">
                                         <label for="">Observaciones</label>
-                                        <textarea name="GestionPasoEntregaDetail[observaciones1]" id="GestionPasoEntregaDetail_observaciones1" cols="30" rows="3"></textarea>
+                                        <textarea name="GestionPasoEntregaDetail[observaciones1]" id="GestionPasoEntregaDetail_observaciones1" cols="30" rows="3" autocomplete="off"></textarea>
                                     </div>
                                 </div>
                             <?php } ?>

@@ -484,6 +484,7 @@ class GestionInformacionController extends Controller {
                 $gestionrp = new GestionProspeccionRp;
                 if ($_POST['GestionInformacion']['tipo'] == 'prospeccion') {
                     $pregunta = $_POST['GestionProspeccionPr']['pregunta'];
+                    //die('pregunta: '.$pregunta);
                     switch ($pregunta) {
                         case 1:// no estoy interesado
                             $gestionrp->preg1 = $pregunta;
@@ -574,6 +575,7 @@ class GestionInformacionController extends Controller {
                             break;
 
                         default:
+                            die('enter def');
                             $con = Yii::app()->db;
                             if ($_POST['yt0'] == 'Grabar') {
                                 $sql = "UPDATE gestion_diaria SET status = 1, proximo_seguimiento = '{$_POST['GestionDiaria']['agendamiento']}' WHERE id_informacion = {$id}";
@@ -582,13 +584,13 @@ class GestionInformacionController extends Controller {
                             } else if ($_POST['yt0'] == 'Continuar') {
                                 $sql = "UPDATE gestion_diaria SET status = 1, proximo_seguimiento = '', paso = '3' WHERE id_informacion = {$id}";
                                 $request = $con->createCommand($sql)->query();
-                                $this->redirect(array('gestionConsulta/create', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
+                                $this->redirect(array('site/consulta', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
                             }
                             break;
                     }
                 } else if ($_POST['GestionInformacion']['tipo'] == 'gestion' || $_POST['GestionInformacion']['tipo'] == 'trafico') {
                     //die('enter gestion update');
-                    $this->redirect(array('gestionConsulta/create', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => $_POST['GestionInformacion']['tipo']));
+                    $this->redirect(array('site/consulta', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => $_POST['GestionInformacion']['tipo']));
                     //$this->redirect(array('gestionConsulta/update', 'id' => $id));
                 }
                 //die('gestion: '.$_POST['GestionProspeccionPr']['pregunta']);
@@ -598,7 +600,11 @@ class GestionInformacionController extends Controller {
                 $request = $con->createCommand($sql)->query();
 
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => 'gestion'));
-                $this->redirect(array('gestionInformacion/seguimiento'));
+               if ($_POST['tipo'] == 'trafico') {
+                    $this->redirect(array('gestionInformacion/seguimiento'));
+                }
+                //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
+                $this->redirect(array('site/consulta', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
             }
             //$this->redirect(array('view', 'id' => $model->id));
         }

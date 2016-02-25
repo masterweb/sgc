@@ -635,20 +635,39 @@ class Controller extends CController {
                 break;
         }
     }
+    
+    public function getTipoIdentificacionInformacion($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id}",
+        ));
+        $gestion = GestionInformacion::model()->find($criteria);
+        if($gestion->cedula != ''){
+            return 'ci';
+        }
+        if($gestion->ruc != ''){
+            return 'ruc';
+        }
+        if($gestion->pasaporte != ''){
+            return 'pasaporte';
+        }
+    }
 
     public function getIdentificacionRuc($id) {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionNuevaCotizacion::model()->find($criteria);
+        $gestion = GestionInformacion::model()->find($criteria);
         return $gestion->ruc;
     }
 
     public function getIdentificacionPasaporte($id) {
+        //echo ('id: '.$id);
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
-        $gestion = GestionNuevaCotizacion::model()->find($criteria);
+        $gestion = GestionInformacion::model()->find($criteria);
+        //die('pasaporte: '.$gestion->pasaporte);
         return $gestion->pasaporte;
     }
 
