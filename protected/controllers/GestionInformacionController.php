@@ -3910,19 +3910,39 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
                 /* BUSQUEDA POR CEDULA,RUC O PASAPORTE */
                 $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
-                        INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+                        LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id
                         WHERE gi.tipo_form_web = 'usado' 
                         AND (gi.cedula LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' 
                         OR gi.ruc LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' "
                         . "OR gi.pasaporte LIKE '%{$_GET['GestionSolicitudCredito']['general']}%')";
+                        //die('sql cedula: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 if (count($posts) > 0) {
+                    //die('enter count ruc cedula');
                     $this->render('usados', array(
                         'users' => $posts, 'search' => true
                     ));
                     exit();
                 }
+                
+                /* BUSQUEDA POR ID */
+                $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
+                        LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+                        WHERE gi.tipo_form_web = 'usado' 
+                        AND gi.id = {$_GET['GestionSolicitudCredito']['general']}";
+                        //die('sql id: '.$sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                if (count($posts) > 0) {
+                    //die('enter count ruc cedula');
+                    $this->render('usados', array(
+                        'users' => $posts, 'search' => true
+                    ));
+                    exit();
+                }
+                
+                
             }
 
             //---- BUSQUEDA POR STATUS----

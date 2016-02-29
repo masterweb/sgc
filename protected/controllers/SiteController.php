@@ -2763,7 +2763,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $sql = "UPDATE gestion_vehiculo SET cierre = 'ACTIVO' WHERE id = {$id_vehiculo}";
 
         // ACTUALIZAR EN GESTION DIARIA EL STATUS DE CIERRE A 1
-        $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 8 WHERE id_informacion = {$id_informacion}";
+        $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 9 WHERE id_informacion = {$id_informacion}";
         //die('sql: '.$sql);
         $request = $con->createCommand($sql)->query();
         $request2 = $con->createCommand($sql2)->query();

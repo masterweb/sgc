@@ -16,24 +16,21 @@
             var value = $(this).attr('value');
             switch (value) {
                 case 'Llamar en otro momento':
+                case 'Crear Cita':    
                     $('#cont-agendamiento').show();
                     $('#cont-otro').hide();
-                    break;
-                case 'Crear Cita':
-                    $('#cont-agendamiento').show();
-                    $('#cont-otro').hide();
+                    validateAgendamiento();
                     break;
                 case 'Busca solo precio':
+                case 'Desiste':    
                     $('#cont-agendamiento').hide();
                     $('#cont-otro').hide();
-                    break;
-                case 'Desiste':
-                    $('#cont-agendamiento').hide();
-                    $('#cont-otro').hide();
-                    break;
+                    validateNormal();
+                    break;                    
                 case 'Otro':
                     $('#cont-agendamiento').hide();
                     $('#cont-otro').show();
+                    validateOtro();
                     break;
             }
         });
@@ -47,26 +44,28 @@
             minDate: '-1970/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
             disabledDates: ['03.04.2015', '01.05.2015', '10.08.2015', '09.10.2015', '02.11.2015', '03.11.2015', '25.12.2015'], formatDate: 'd.m.Y'
         });
-        $('#gestion-agendamiento-form').validate({
+        $('#form-gestion-agendamiento').validate({
             rules: {
                 'GestionAgendamiento[agendamiento]': {
                     required: true
-                }
+                },
+                'GestionAgendamiento[observaciones]':{required:true}
             },
             messages: {
                 'GestionAgendamiento[agendamiento]': {
                     required: 'Seleccione una fecha de agendamiento'
-                }
+                },
+                'GestionAgendamiento[observaciones]':{required:'Seleccione una opción'}
             },
             submitHandler: function (form) {
-                //console.log('enter handler');
+                console.log('enter handler');
                 var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
                 //console.log(proximoSeguimiento);
                 var fechaSeguimiento = proximoSeguimiento.replace('/', '-');
                 fechaSeguimiento = fechaSeguimiento.replace('/', '-');
                 var fechaArray = fechaSeguimiento.split(' ');
                 if (proximoSeguimiento != '') {
-                    console.log('proximo: ' + proximoSeguimiento);
+                    //console.log('proximo: ' + proximoSeguimiento);
                     if ($('#GestionInformacion_check').val() != 2) {
                         var cliente = '';
                         var params = proximoSeguimiento.split("/");
@@ -141,7 +140,7 @@
                     <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                     <?php
                     $con = Yii::app()->db;
-                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.email, gi.direccion,gi.celular, 
+                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi. pasaporte, gi.email, gi.direccion,gi.celular, 
                         gi.telefono_oficina, gi.id_cotizacion, gi.responsable, gi.tipo_form_web, gi.presupuesto, gi.marca_usado, gi.modelo_usado, gd.* FROM gestion_diaria gd 
                                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                                 WHERE gi.id = {$_GET['id_informacion']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
@@ -163,9 +162,21 @@
                                 <tr>
                                     <td><strong>Apellidos:</strong> <?php echo $value['apellidos']; ?></td>
                                 </tr>
-                                <tr>
-                                    <td><strong>Cédula:</strong> <?php echo $value['cedula']; ?></td>
-                                </tr>
+                                <?php if($value['cedula'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Cédula:</strong> <?php echo $value['cedula']; ?></td>
+                                    </tr>
+                                    <?php endif; ?>
+                                    <?php if($value['ruc'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Ruc:</strong> <?php echo $value['ruc']; ?></td>
+                                    </tr>
+                                    <?php endif; ?>
+                                    <?php if($value['pasaporte'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Pasaporte:</strong> <?php echo $value['pasaporte']; ?></td>
+                                    </tr>
+                                    <?php endif; ?>
                                 <tr>
                                     <td><strong>Email:</strong> <?php echo $value['email']; ?></td>
                                 </tr>
@@ -275,7 +286,7 @@
                     <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'action' => Yii::app()->createUrl('gestionAgendamiento/create'),
-                        'id' => 'gestion-agendamiento-form',
+                        'id' => 'form-gestion-agendamiento',
                         'enableAjaxValidation' => false,
                     ));
                     ?>
@@ -314,7 +325,7 @@
                         <input type="hidden" name="GestionInformacion[tipo_form_web]" id="GestionInformacion_tipo_form_web" value="usado">
                         <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
                         <div class="col-md-2">
-                        <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger', 'onclick' => 'sendAgen();')); ?>
+                        <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
                         </div>
                         <div class="col-md-3">
                             <div id="calendar-content" style="display: none;">

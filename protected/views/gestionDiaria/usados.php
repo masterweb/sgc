@@ -10,7 +10,7 @@
 //                        gi.telefono_oficina, gi.id_cotizacion, gi.responsable, gi.tipo_form_web, gi.presupuesto, gd.* FROM gestion_diaria gd 
 //                                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
 //                                WHERE gi.id = {$_GET['id_informacion']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
-                    $sql = "SELECT * FROM gestion_informacion WHERE id = {$_GET['id_informacion']} GROUP BY id";            
+                    $sql = "SELECT * FROM gestion_informacion WHERE id = {$_GET['id_informacion']} GROUP BY id";
                     //            die($sql);
                     $request = $con->createCommand($sql);
                     $users = $request->queryAll();
@@ -29,9 +29,21 @@
                                 <tr>
                                     <td><strong>Apellidos:</strong> <?php echo $value['apellidos']; ?></td>
                                 </tr>
-                                <tr>
-                                    <td><strong>Cédula:</strong> <?php echo $value['cedula']; ?></td>
-                                </tr>
+                                <?php if ($value['cedula'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Cédula:</strong> <?php echo $value['cedula']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                                <?php if ($value['ruc'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Ruc:</strong> <?php echo $value['ruc']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                                <?php if ($value['pasaporte'] != ''): ?>
+                                    <tr>
+                                        <td><strong>Pasaporte:</strong> <?php echo $value['pasaporte']; ?></td>
+                                    </tr>
+                                <?php endif; ?>
                                 <tr>
                                     <td><strong>Email:</strong> <?php echo $value['email']; ?></td>
                                 </tr>
@@ -60,25 +72,40 @@
                         <?php endforeach; ?>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <?php $crit = new CDbCriteria(array('condition' => "id_informacion={$id_informacion} AND paso = '1-2'"));
-                            $agen = GestionAgendamiento::model()->count($crit);
-                            $ag = GestionAgendamiento::model()->findAll($crit);
-                            if ($agen > 0) { ?>
-                                <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
-                                    <?php }
-                                    foreach ($ag as $a) { ?>
-                                        <div class="row">
-                                        <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                        <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+            <?php
+            $crit = new CDbCriteria(array('condition' => "id_informacion={$id_informacion} AND paso = '1-2'"));
+            $agen = GestionAgendamiento::model()->count($crit);
+            $ag = GestionAgendamiento::model()->findAll($crit);
+            if ($agen > 0) {
+                ?>
+                <div class="row">
+                    <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                        <ul class="list-group">
+                            <?php foreach ($ag as $a) { ?>
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <?php if ($a['observaciones'] == 'Otro'): ?>
+                                                <strong>Observación: </strong><?php echo $a['otro_observacion']; ?>
+                                            <?php else: ?>
+                                                <strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php } ?>
-                                </div>
+                                        <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                    </div>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+            <?php } ?>
+
         </div>
     </div>
 </div>
