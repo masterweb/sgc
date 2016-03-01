@@ -2,6 +2,14 @@
 /* @var $this GestionSeguimientoController */
 /* @var $model GestionSeguimiento */
 /* @var $form CActiveForm */
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimiento';
+if($cargo_id == 75){ // asesor exonerados
+    $url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimientoexonerados';
+}
+if($cargo_id == 73){ // asesor bdc
+    $url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimientobdc';
+}
 ?>
 <?php $this->widget('application.components.Notificaciones'); ?>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/jquery.fancybox.css?v=2.1.4" type="text/css"/>               
@@ -17,7 +25,7 @@
     $(function () {
         //$("#hidden_link").fancybox().trigger('click');
         $('#closemodal').click(function () {
-            var url="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimiento";
+            var url="<?php echo $url; ?>";
             $(location).attr('href',url);
         });
     });
@@ -70,7 +78,15 @@
                         <tbody>
                             <tr class="odd"><th>Nombres</th><td><?php echo $cl[0]['nombres']; ?></td></tr> 
                             <tr class="odd"><th>Apellidos</th><td><?php echo $cl[0]['apellidos']; ?></td></tr> 
-                            <tr class="odd"><th>Cédula</th><td><?php echo $cl[0]['cedula']; ?></td></tr> 
+                            <?php if($cl[0]['cedula'] != ''){ ?>
+                            <tr class="odd"><th>Celular</th><td><?php echo $cl[0]['cedula']; ?></td></tr> 
+                            <?php } ?>
+                            <?php if($cl[0]['ruc'] != ''){ ?>
+                            <tr class="odd"><th>Ruc</th><td><?php echo $cl[0]['ruc']; ?></td></tr> 
+                            <?php } ?>
+                            <?php if($cl[0]['pasaporte'] != ''){ ?>
+                            <tr class="odd"><th>Pasaporte</th><td><?php echo $cl[0]['pasaporte']; ?></td></tr> 
+                            <?php } ?>
                             <tr class="odd"><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr> 
                             <tr class="odd"><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr> 
                             <tr class="odd"><th>Teléfono Domicilio</th><td><?php echo $cl[0]['telefono_casa']; ?></td></tr>
