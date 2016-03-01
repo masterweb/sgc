@@ -701,7 +701,7 @@ class Controller extends CController {
             $status = GestionStatusSolicitud::model()->find($criteria);
             return $status->observaciones;
         } else {
-            return 'na';
+            return '';
         }
     }
 

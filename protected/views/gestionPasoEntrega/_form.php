@@ -635,14 +635,31 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Foto de Entrega</label>
-                                        <?php echo $form->FileField($model, 'foto_entrega', array('class' => 'form-control')); ?>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                                            <div>
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imágen</span><span class="fileinput-exists">Cambiar</span>
+                                                    <?php echo $form->FileField($model, 'foto_entrega', array('class' => 'form-control')); ?>
+                                                </span>
+                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="">Foto de Hoja de Entrega</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                                            <div>
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imágen</span><span class="fileinput-exists">Cambiar</span>
+                                                    <?php echo $form->FileField($model, 'foto_hoja_entrega', array('class' => 'form-control')); ?>
+                                                </span>
+                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="">Foto de Hoja de Entrega</label>
-                                        <?php echo $form->FileField($model, 'foto_hoja_entrega', array('class' => 'form-control')); ?>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         <?php } ?>
