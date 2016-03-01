@@ -49,7 +49,7 @@ class Cotizacionesnodeseadas extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('atencion_detalle_id, fecha, usuario_id, realizado, modelo_id', 'required'),
+            array('atencion_detalle_id, fecha, usuario_id, realizado, modelo_id,id_atencion', 'required'),
             array('atencion_detalle_id, usuario_id, modelo_id, version_id, ciudadconcesionario_id,id_atencion, concesionario_id', 'numerical', 'integerOnly' => true),
             array('fecha, realizado,fecharealizado', 'length', 'max' => 45),
             array('nombre, apellido, email', 'length', 'max' => 250),

@@ -2401,7 +2401,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) AND gi.responsable = $id_responsable
                 ORDER BY gd.id DESC";
             //die($sql);
@@ -2412,7 +2412,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id = {$dealer_id}
                 ORDER BY gd.id DESC";
         }
@@ -2422,7 +2422,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75
                 ORDER BY gd.id DESC";
@@ -2433,7 +2433,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.tipo_form_web = 'exonerados'
                 ORDER BY gd.id DESC";
         }
@@ -2445,7 +2445,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id}
                 ORDER BY gd.id DESC";
@@ -2455,7 +2455,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.tipo_form_web = 'exonerados'
                 ORDER BY gd.id DESC";
         }

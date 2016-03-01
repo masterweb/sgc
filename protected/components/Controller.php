@@ -23,24 +23,25 @@ class Controller extends CController {
      * for more details on how to specify this property.
      */
     public $breadcrumbs = array();
+
     public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
         $sql = 'SELECT * FROM atencion_detalle WHERE id_atencion IN (1,5) and fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
         $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
- 
+
         if (!empty($datosC)) {
-            $maximo = number_format(count($datosC) / count($usuarios), 0); 
+            $maximo = number_format(count($datosC) / count($usuarios), 0);
             $actual = 0;
             $contactual = 0;
             $posicion = 0;
             $usuario_list = array();
-            foreach ($usuarios as $u) { 
+            foreach ($usuarios as $u) {
                 $usuario_list[$actual++] = $u->id;
             }
 
- 
+
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
@@ -48,33 +49,34 @@ class Controller extends CController {
                     $posicion++;
                 }
                 if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
+                    if (!empty($d['id_atencion'])) {
+                        $cotizacion = new Cotizacionesnodeseadas();
 
-                    $cotizacion = new Cotizacionesnodeseadas();
-					
-                    $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
-                    $po =array_rand($usuario_list);
-                    $cotizacion->usuario_id = $usuario_list[$po];
-                    //$cotizacion->usuario_id = $usuario_list[$posicion];
-                    $cotizacion->fecha = $d['fecha_form'];
-                    $cotizacion->realizado = '0';
-                    $cotizacion->nombre = $d['nombre'];
-                    $cotizacion->apellido = $d['apellido'];
-                    $cotizacion->cedula = $d['cedula'];
-                    $cotizacion->direccion = $d['direccion'];
-                    $cotizacion->telefono = $d['telefono'];
-                    $cotizacion->celular = $d['celular'];
-                    $cotizacion->email = $d['email'];
-                    $cotizacion->modelo_id = $d['id_modelos'];
-                    $cotizacion->version_id = $d['id_version'];
-                    $cotizacion->ciudadconcesionario_id = $d['cityid'];
-                    $cotizacion->concesionario_id = $d['dealerid'];
-                    $cotizacion->id_atencion = $d['id_atencion']; 
-                    if ($cotizacion->save()) {
-                        //echo $usuario_list[$posicion];
-                        Yii::app()->db2
-                                ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
-                                ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
-                                ->execute();
+                        $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
+                        $po = array_rand($usuario_list);
+                        $cotizacion->usuario_id = $usuario_list[$po];
+                        //$cotizacion->usuario_id = $usuario_list[$posicion];
+                        $cotizacion->fecha = $d['fecha_form'];
+                        $cotizacion->realizado = '0';
+                        $cotizacion->nombre = $d['nombre'];
+                        $cotizacion->apellido = $d['apellido'];
+                        $cotizacion->cedula = $d['cedula'];
+                        $cotizacion->direccion = $d['direccion'];
+                        $cotizacion->telefono = $d['telefono'];
+                        $cotizacion->celular = $d['celular'];
+                        $cotizacion->email = $d['email'];
+                        $cotizacion->modelo_id = $d['id_modelos'];
+                        $cotizacion->version_id = $d['id_version'];
+                        $cotizacion->ciudadconcesionario_id = $d['cityid'];
+                        $cotizacion->concesionario_id = $d['dealerid'];
+                        $cotizacion->id_atencion = $d['id_atencion'];
+                        if ($cotizacion->save()) {
+                            //echo $usuario_list[$posicion];
+                            Yii::app()->db2
+                                    ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
+                                    ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
+                                    ->execute();
+                        }
                     }
                 }
                 $contactual++;
@@ -117,18 +119,18 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    
+
     public function getCiudadConcesionario($id_informacion) {
         $criteria = new CDbCriteria;
         $criteria->condition = "id={$id_informacion}";
         $gt = GestionInformacion::model()->find($criteria);
         $concesionario = $gt->concesionario;
-        
+
         $cri = new CDbCriteria;
         $cri->condition = "id={$concesionario}";
-        $ci = Dealers::model()->find($cri); 
+        $ci = Dealers::model()->find($cri);
         $ciudad = $ci->cityid;
-        
+
         return $this->getCiudad($ciudad);
     }
 
@@ -141,6 +143,7 @@ class Controller extends CController {
         else
             return false;
     }
+
     public function getTelefonoCliente($id_informacion) {
         $criteria = new CDbCriteria;
         $criteria->condition = "id={$id_informacion}";
@@ -150,7 +153,7 @@ class Controller extends CController {
         else
             return false;
     }
-    
+
     public function getCelularCliente($id_informacion) {
         $criteria = new CDbCriteria;
         $criteria->condition = "id={$id_informacion}";
@@ -208,10 +211,10 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    
+
     public function getConcesionarioDireccionById($id) {
         $dealer = Dealers::model()->find(array('condition' => "id={$id}"));
-        if($dealer){
+        if ($dealer) {
             return $dealer->direccion;
         }
     }
@@ -618,20 +621,20 @@ class Controller extends CController {
                 break;
         }
     }
-    
+
     public function getTipoIdentificacionInformacion($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
         $gestion = GestionInformacion::model()->find($criteria);
-        if($gestion->cedula != ''){
+        if ($gestion->cedula != '') {
             return 'ci';
         }
-        if($gestion->ruc != ''){
+        if ($gestion->ruc != '') {
             return 'ruc';
         }
-        if($gestion->pasaporte != ''){
+        if ($gestion->pasaporte != '') {
             return 'pasaporte';
         }
     }
@@ -799,6 +802,7 @@ class Controller extends CController {
         $test = GestionTestDrive::model()->count($criteria);
         return $test;
     }
+
     public function getFactura($id_informacion, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
@@ -907,8 +911,8 @@ class Controller extends CController {
             return $dealer->concesionario_id;
         }
     }
-    
-    public function getResponsablesByGrupo($grupo_id,$cargo_id) {
+
+    public function getResponsablesByGrupo($grupo_id, $cargo_id) {
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
             'condition' => "usuario_id={$usuario_id}"
@@ -937,7 +941,7 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
-    
+
     public function getDealerGrupoConcesionario($usuario_id) {
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
@@ -967,7 +971,7 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
-    
+
     public function getDealerGrupoConcUsuario($id_responsable) {
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
@@ -1266,7 +1270,7 @@ class Controller extends CController {
         }
         return $tipo;
     }
-    
+
     public function getFotoEntregaDetail($id_informacion) {
         $con = Yii::app()->db;
         $sql = "SELECT g.id_informacion, gd.foto_entrega, gd.id_gestion FROM gestion_paso_entrega g 
@@ -1278,7 +1282,6 @@ class Controller extends CController {
             $foto_entrega = $value['foto_entrega'];
         }
         return $foto_entrega;
-        
     }
 
     public function getPrecioNormal($id_version) {
@@ -1310,20 +1313,20 @@ class Controller extends CController {
         $preg = FALSE;
         switch ($tipo) {
             case 1: // preguntas paso 1-2 prospeccion
-                /*$criteria = new CDbCriteria(array(
-                    'condition' => "id_informacion={$id}"
-                ));
-                $pr = GestionProspeccionRp::model()->count($criteria);
-                if ($pr > 0) {
-                    return TRUE;
-                }*/
+                /* $criteria = new CDbCriteria(array(
+                  'condition' => "id_informacion={$id}"
+                  ));
+                  $pr = GestionProspeccionRp::model()->count($criteria);
+                  if ($pr > 0) {
+                  return TRUE;
+                  } */
                 $con = Yii::app()->db;
                 $sqlpr = "SELECT * FROM gestion_diaria WHERE id_informacion = {$_GET['id']} AND prospeccion = 1";
                 //die($sql);            
                 $request = $con->createCommand($sqlpr);
                 $posts = $request->queryAll();
-                if(count($posts) > 0){
-                   return TRUE; 
+                if (count($posts) > 0) {
+                    return TRUE;
                 }
                 break;
             case 2: // preguntas paso 3-4 recepcion consulta
@@ -1730,17 +1733,17 @@ class Controller extends CController {
             $actual = 0;
             $contactual = 0;
             $posicion = 0;
-            $usuario_listO = array();           
+            $usuario_listO = array();
             $usuario_list = array();
 
             foreach ($usuarios as $u) {
                 $usuario_list[$actual++] = $u->id;
             }
 
-           // print_r($usuario_list);
-           
-           
-               
+            // print_r($usuario_list);
+
+
+
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
@@ -1753,7 +1756,7 @@ class Controller extends CController {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
-                    $po =array_rand($usuario_list);
+                    $po = array_rand($usuario_list);
                     $cotizacion->usuario_id = $usuario_list[$po];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
@@ -1803,8 +1806,8 @@ class Controller extends CController {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
-                   // $cotizacion->usuario_id = $usuario_list[$posicion];
-                    $po =array_rand($usuario_list);
+                    // $cotizacion->usuario_id = $usuario_list[$posicion];
+                    $po = array_rand($usuario_list);
                     $cotizacion->usuario_id = $usuario_list[$po];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
@@ -2048,8 +2051,8 @@ class Controller extends CController {
         }
         return $random_key;
     }
-    
-    public function getEntregaPaso($id_informacion, $id_vehiculo,$paso) {
+
+    public function getEntregaPaso($id_informacion, $id_vehiculo, $paso) {
         $campo = '';
         switch ($paso) {
             case 1:
@@ -2090,25 +2093,25 @@ class Controller extends CController {
             'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo} AND {$campo} = 1"
         ));
         $entre = GestionPasoEntrega::model()->count($criteria2);
-        if($entre > 0){
+        if ($entre > 0) {
             return TRUE;
-        }else{
+        } else {
             return FALSE;
         }
     }
-    
-    public function getPasoEntregaCon($id_informacion,$id_vehiculo) {
+
+    public function getPasoEntregaCon($id_informacion, $id_vehiculo) {
         $criteria2 = new CDbCriteria(array(
             'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
         $entre = GestionPasoEntrega::model()->find($criteria2);
         if (!is_null($entre) && !empty($entre)) {
             return $entre->paso;
-        }else{
+        } else {
             return 0;
         }
     }
-    
+
     public function getFechaObsEntrega($id_gestion, $id_paso) {
         $data = array();
         $criteria2 = new CDbCriteria(array(
@@ -2116,47 +2119,45 @@ class Controller extends CController {
         ));
         $entre = GestionPasoEntregaDetail::model()->find($criteria2);
         if (!is_null($entre) && !empty($entre)) {
-            if($id_paso == 7){
+            if ($id_paso == 7) {
                 $data['fecha'] = $entre->fecha_paso;
                 $data['placa'] = $entre->placa;
             }
-            if($id_paso == 8){
+            if ($id_paso == 8) {
                 $data['fecha'] = $entre->fecha_paso;
                 $data['responsable'] = $entre->responsable;
             }
-            if($id_paso == 10){
+            if ($id_paso == 10) {
                 $data['foto_entrega'] = $entre->foto_entrega;
                 $data['foto_hoja_entrega'] = $entre->foto_hoja_entrega;
-            }else{
+            } else {
                 $data['fecha'] = $entre->fecha_paso;
                 $data['observaciones'] = $entre->observaciones;
             }
             return $data;
-        }else{
+        } else {
             return $data;
         }
     }
 
-
-    public function getIdPasoEntrega($id_informacion,$id_vehiculo) {
+    public function getIdPasoEntrega($id_informacion, $id_vehiculo) {
         $criteria2 = new CDbCriteria(array(
             'condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"
         ));
         $entre = GestionPasoEntrega::model()->find($criteria2);
         if (!is_null($entre) && !empty($entre)) {
             return $entre->id;
-        }else{
+        } else {
             return 0;
         }
     }
-
 
     public function getFormatFecha($fecha) {
         //die('fecha: '.$fecha);
         $params = explode(" ", $fecha);
         //die('dddd'.$params[1]);
         $data_fecha = '';
-        switch ( (string) $params[1]) {
+        switch ((string) $params[1]) {
             case '01':
                 $mes = 'enero';
                 break;
@@ -2196,12 +2197,11 @@ class Controller extends CController {
 
             default:
                 break;
-            
         }
-        $data_fecha = $params[0].' de '.$mes.' del '.$params[2];
+        $data_fecha = $params[0] . ' de ' . $mes . ' del ' . $params[2];
         return $data_fecha;
     }
-    
+
     public function getAsesoresByGrupo($grupo_id) {
         $con = Yii::app()->db;
         $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND cargo_id IN (77) ORDER BY nombres ASC";
@@ -2214,7 +2214,7 @@ class Controller extends CController {
             $data .= $this->getResponsableNombres($value['id']);
             $data .= '</option>';
         }
-        
+
         echo $data;
     }
 
