@@ -137,7 +137,7 @@ class GestionInformacionController extends Controller {
 
             if ($model->save()) {
                 //die('enter save');
-                if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Continuar') {
+                if ($_POST['tipo'] == 'prospeccion') {
                     //die('enter continuar');
                     // enviar a la pantalla de seguimiento con el nuevo caso ingresado
                     // ingresar datos en gestion diaria con status 1: prospección
@@ -146,6 +146,7 @@ class GestionInformacionController extends Controller {
                     $prospeccion = new GestionProspeccionRp;
                     $prospeccion->id_informacion = $model->id;
                     $observaciones = $_POST['GestionProspeccionPr']['pregunta'];
+                    //die('observaciones: '.$observaciones);
                     switch ($observaciones) {
                         case 1:// no estoy interesado
                             $prospeccion->preg1 = $_POST['GestionProspeccionPr']['pregunta'];
@@ -313,7 +314,7 @@ class GestionInformacionController extends Controller {
                 if ($_POST['tipo'] == 'prospeccion' && $_POST['yt0'] == 'Abandonar') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
-                if ($_POST['tipo'] == 'prospeccion' && $cargo_id = 73) {
+                if ($_POST['tipo'] == 'prospeccion' && $cargo_id == 73) {
                     $this->redirect(array('gestionInformacion/seguimientobdc'));
                 }
                 if ($_POST['tipo'] == 'gestion') {

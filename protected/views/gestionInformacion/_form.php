@@ -413,6 +413,7 @@ $tipo = $_GET['tipo'];
                 }
             });
         } else if (tipo == 'prospeccion') {
+            //console.log('ENTER PROSPECCION');
             $('#GestionInformacion_provincia_conc').removeAttr('disabled');
             $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
             $('#GestionInformacion_concesionario').removeAttr('disabled');
@@ -446,7 +447,7 @@ $tipo = $_GET['tipo'];
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
                 case '6':// telefono equivocado  
-                    //console.log('enter case 6');
+                    //console.log('enter falta de dinero');
                     $('.cont-vec').hide();
                     $('.cont-ag').hide();
                     $('.cont-nocont').hide();
