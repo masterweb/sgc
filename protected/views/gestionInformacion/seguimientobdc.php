@@ -67,6 +67,24 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 //            else
 //                $('.exh-cont').hide();
 //        });
+        $('#GestionDiaria_concesionario').change(function () {
+            var value = $(this).attr('value');
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {dealer_id: value},
+                success: function (data) {
+                    //$('#info-3').hide();
+                    //alert(data);
+                    $('#GestionDiaria_responsable').html(data);
+
+                }
+            });
+        });
 
         $('#GestionDiaria_grupo').change(function () {
             var valuenc = $(this).attr('value');
@@ -282,7 +300,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientobdc', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
             </div>
         </div>
     </div>
@@ -345,6 +363,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 </div>
             </div>
         </div>-->
+    <?php if(isset($title)): ?>
+    <div class="row">
+        <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     
+    </div>
+    <?php endif; ?>
     <div class="row">
         <h1 class="tl_seccion">RGD BDC</h1>
     </div>

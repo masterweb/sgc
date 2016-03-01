@@ -286,7 +286,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion,'tipo' =>'exonerado'));?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general','tipo' => 'exo'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientoexonerados', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general','tipo' => 'exo'));?>
             </div>
         </div>
     </div>
@@ -503,9 +503,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable($c['resp']) ?></td>
-                                <!--td><?php echo $this->getResponsable($c['resp']).' - '.$this->getNameConcesionario($c['resp']); ?></td-->
-                                <td><?= $this->getNameConcesionario($c['resp']); ?></td>
+                                <td><?php echo $this->getResponsable($c['id_resp']) ?></td>
+                                <td><?= $this->getNameConcesionario($c['id_resp']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
                                 <td> 
                                     <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }

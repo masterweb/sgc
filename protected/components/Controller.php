@@ -25,11 +25,11 @@ class Controller extends CController {
     public $breadcrumbs = array();
     public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
+        $sql = 'SELECT * FROM atencion_detalle WHERE id_atencion IN (1,5) and fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
         $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
-
+ 
         if (!empty($datosC)) {
             $maximo = number_format(count($datosC) / count($usuarios), 0); 
             $actual = 0;
@@ -68,6 +68,7 @@ class Controller extends CController {
                     $cotizacion->version_id = $d['id_version'];
                     $cotizacion->ciudadconcesionario_id = $d['cityid'];
                     $cotizacion->concesionario_id = $d['dealerid'];
+                    $cotizacion->id_atencion = $d['id_atencion']; 
                     if ($cotizacion->save()) {
                         //echo $usuario_list[$posicion];
                         Yii::app()->db2
@@ -269,30 +270,12 @@ class Controller extends CController {
         }
     }
 
-    public function getAsesorCredito($id) {
-        $dealers = Usuarios::model()->findByPk($id);
+    public function getEmailAsesorCredito($dealers_id) {
+        //die('id: '.$dealers_id);
+        $dealers = Usuarios::model()->find(array('condition' => "dealers_id={$dealers_id} AND cargo_id = 74"));
         if (!is_null($dealers) && !empty($dealers)) {
-            $concesionario_id = $dealers->concesionario_id;
-            if ($concesionario_id == 0) {
-                $criteria2 = new CDbCriteria(array(
-                    'condition' => "usuario_id={$id}"
-                ));
-                $usuario = Grupoconcesionariousuario::model()->find($criteria2);
-                $concesionario_id = $usuario->concesionario_id;
-                //die('conc: '.$concesionario_id);
-                $criteria3 = new CDbCriteria(array(
-                    'condition' => "cargo_id=74 AND dealers_id={$concesionario_id}"
-                ));
-                $asesor_credito = Usuarios::model()->find($criteria3);
-//                echo '<pre>';
-//                print_r($asesor_credito);
-//                echo '</pre>'; 
-//                die();
-                return $asesor_credito->correo;
-            } else {
-                $asesor_credito = Usuarios::model()->find($criteria3);
-                return $asesor_credito->correo;
-            }
+            //die('enter not null');
+            return $dealers->correo;
         }
     }
 
@@ -924,6 +907,21 @@ class Controller extends CController {
             return $dealer->concesionario_id;
         }
     }
+    
+    public function getResponsablesByGrupo($grupo_id,$cargo_id) {
+        $array_dealers = array();
+        $criteria = new CDbCriteria(array(
+            'condition' => "usuario_id={$usuario_id}"
+        ));
+        $dealers = Usuarios::model()->findAll($criteria);
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
 
     public function getDealerGrupo($usuario_id) {
         $array_dealers = array();
@@ -987,20 +985,17 @@ class Controller extends CController {
 
     public function getNameConcesionario($id) {
         //die('id: '.$id);
-        $criteria = new CDbCriteria(array(
-            'condition' => "id={$id}"
-        ));
-        $dealer = Usuarios::model()->find($criteria);
+        $dealer = Usuarios::model()->findByPk(array('condition' => "id={$id}"));
         if ($dealer->concesionario_id == 0) {
             //die('enter no conc');
             $criteria2 = new CDbCriteria(array(
                 'condition' => "usuario_id={$id}"
             ));
-            $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+            $usuario = Grupoconcesionariousuario::model()->findByPk($criteria2);
             $cri = new CDbCriteria(array(
                 'condition' => "id={$usuario->concesionario_id}"
             ));
-            $deal = Dealers::model()->find($cri);
+            $deal = Dealers::model()->findByPk($cri);
             return $deal->name;
         } else {
             $criteria2 = new CDbCriteria(array(
@@ -2205,6 +2200,22 @@ class Controller extends CController {
         }
         $data_fecha = $params[0].' de '.$mes.' del '.$params[2];
         return $data_fecha;
+    }
+    
+    public function getAsesoresByGrupo($grupo_id) {
+        $con = Yii::app()->db;
+        $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND cargo_id IN (77) ORDER BY nombres ASC";
+        $requestr1 = $con->createCommand($sql);
+        $requestr1 = $requestr1->queryAll();
+        $data = '<option value="">--Seleccione Asesor--</option>';
+        $data .= '<option value="all">Todos</option>';
+        foreach ($requestr1 as $value) {
+            $data .= '<option value="' . $value['id'] . '">';
+            $data .= $this->getResponsableNombres($value['id']);
+            $data .= '</option>';
+        }
+        
+        echo $data;
     }
 
 }

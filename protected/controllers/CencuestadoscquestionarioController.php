@@ -1272,7 +1272,7 @@ class CencuestadoscquestionarioController extends Controller {
             //grbar los datos en gestion informacion y gestion diaria
             //print_r($_POST);
             //die();
-
+            $cotizacion = Cotizacionesnodeseadas::model()->find(array('condition' => 'id=' . (int) $_POST['data']['id_atencion']));
             /* OBTNER DATOS DE PROVINCIA */
             $city = Dealercities::model()->findByPk($_POST["data"]['ciudad']);
 
@@ -1293,10 +1293,20 @@ class CencuestadoscquestionarioController extends Controller {
             $informacion->dealer_id = $p->purify($_POST["data"]['concesionario']);
             $informacion->modelo = $p->purify($_POST["data"]['modelo']);
             $informacion->version = $p->purify($_POST["data"]['version']);
-            $informacion->bdc = 1;
+            
             $informacion->provincia_domicilio = $city->id_provincia;
             $informacion->ciudad_domicilio = $city->id;
-            $informacion->responsable = $this->getRandomKey(73, $_POST["data"]['concesionario']);
+            $cotizacion->id_atencion;
+            if($cotizacion->id_atencion == '5'){
+                $informacion->responsable = $this->getRandomKey(75, $_POST["data"]['concesionario']);
+                $informacion->tipo_form_web = 'exonerados';   
+                //die();
+            }else{
+                $informacion->responsable = $this->getRandomKey(73, $_POST["data"]['concesionario']);    
+                $informacion->bdc = 1;
+                //die();
+            }
+            
             $informacion->provincia_conc = $city->id_provincia;
             $informacion->ciudad_conc = $city->id;
 
@@ -1328,11 +1338,11 @@ class CencuestadoscquestionarioController extends Controller {
 
                     if ($consulta->save()) {
 
-                        $cotizacion = Cotizacionesnodeseadas::model()->find(array('condition' => 'id=' . (int) $_POST['data']['id_atencion']));
+                        
                         $cotizacion->fecharealizado = date('Y-m-d H:i:s');
                         $cotizacion->realizado = 'SI';
                         $cotizacion->nombre = $p->purify($_POST["data"]['nombre']);
-                        $cotizacion->apellido = $p->purify($_POST["data"]['apellido']);
+                        $cotizacion->apellido = $p->purify($_POST["data"]['apellido']); 
                         $cotizacion->cedula = $p->purify($_POST["data"]['cedula']);
                         $cotizacion->direccion = $p->purify($_POST["data"]['direccion']);
                         $cotizacion->provincia = '0';
@@ -1358,7 +1368,6 @@ class CencuestadoscquestionarioController extends Controller {
         $datos = Cotizacionesnodeseadas::model()->find(array('condition' => 'id=' . $id));
         $this->render('cotizaciones', array('datos' => $datos, 'informacion' => $informacion));
     }
-
     public function actionCotizacionok() {
         $this->render('cotizacionok');
     }

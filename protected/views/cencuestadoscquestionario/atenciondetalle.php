@@ -117,13 +117,14 @@ $rol = Yii::app()->user->getState('roles');
                        
                         <th><span>Nombre</span></th>
                         <th><span>Apellido</span></th>
+                        <th><span>Tipo</span></th>
                         <th>C&eacute;dula</th>
                         <th>Tel&eacute;fono</th>
                         <th>Fecha</th>
                         <th colspan="2">Opciones</th>
                     </tr>
                 </thead>
-                <tbody class="searchable">
+                <tbody class="searchable"> 
                     <?php
 //$model = Casos::model()->findAll();
                     $cont =0;
@@ -134,6 +135,7 @@ $rol = Yii::app()->user->getState('roles');
                             
                             <td><?php echo utf8_decode(($c->nombre)) ?> </td>
                             <td><?php echo utf8_decode(($c->apellido)) ?> </td>
+                            <td><?php echo ($c->id_atencion ==5)?'Exonerado':'Cotizaciones web'; ?> </td>
                             <td><?php echo $c->cedula ?> </td>
                             <td><?php echo $c->telefono ?> </td>
                             <td><?php echo $c->fecha ?> </td>

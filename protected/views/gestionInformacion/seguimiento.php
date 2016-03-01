@@ -629,7 +629,7 @@ $count = count($users);
                                 ?> 
                                 </td>
                                 <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable($c['resp']); ?></td>
+                                <td><?php echo $this->getResponsable($c['id_resp']); ?></td>
                                 <td><?php 
                                 echo $this->getNameConcesionarioById($c['dealer_id']); 
                                 //esta dando error en las busquedas revisar ?></td>

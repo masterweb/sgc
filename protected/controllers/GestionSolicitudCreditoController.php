@@ -95,6 +95,7 @@ class GestionSolicitudCreditoController extends Controller {
             //die('enter post');
             $nombre_cliente = $this->getNombresInfo($_POST['GestionSolicitudCredito']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionSolicitudCredito']['id_informacion']);
             $id_asesor = Yii::app()->user->getId();
+            $dealer_id = $this->getConcesionarioDealerId($id_asesor);
             $result = FALSE;
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->attributes = $_POST['GestionSolicitudCredito'];
@@ -206,7 +207,7 @@ class GestionSolicitudCreditoController extends Controller {
             if ($model->save()) {
                 require_once 'email/mail_func.php';
                 //---- SEND EMAIL ASESOR DE CREDITO
-                $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito: ';
+                $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito ';
                 
 
                 $general = '<body style="margin: 10px;">
@@ -242,7 +243,8 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $emailAsesorCredito = $this->getAsesorCredito($id_asesor);
+                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                //die('email asesor: '.$emailAsesorCredito);
                 sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
                 $result = TRUE;

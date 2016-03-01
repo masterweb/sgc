@@ -760,7 +760,59 @@ if ($ced != '') {
                             <?php
                             $consulta = new GestionConsulta;
                             $criteria = new CDbCriteria(array('group' => 'modelo', 'order' => 'id asc'));
-                            $marcas = CHtml::listData(Marcas::model()->findAll($criteria), "marca", "marca");
+                            //$marcas = CHtml::listData(Marcas::model()->findAll($criteria), "marca", "marca");
+                            $marcas = array(
+                                            '' => '--Seleccione--',
+                                            "ALFA ROMEO" => 'ALFA ROMEO',
+                                            "AUDI" => 'AUDI',
+                                            "BAW" => 'BAW',
+                                            "BMW" => 'BMW',
+                                            "BYD" => 'BYD',
+                                            "CHANA" => 'CHANA',
+                                            "CHANGHE" => 'CHANGHE',
+                                            "CHERY" => 'CHERY',
+                                            "CHEVROLET" => 'CHEVROLET',
+                                            "CHRYSLER" => 'CHRYSLER',
+                                            "CITROEN" => 'CITROEN',
+                                            "DAIHATSU" => 'DAIHATSU',
+                                            "DODGE" => 'DODGE',
+                                            "D.F.S.K. (DONGFENG)" => 'D.F.S.K. (DONGFENG)',
+                                            "FIAT" => 'FIAT',
+                                            "FORD" => 'FORD',
+                                            "GEELY" => 'GEELY',
+                                            "GREAT WALL" => 'GREAT WALL',
+                                            "HAFEI" => 'HAFEI',
+                                            "HONDA" => 'HONDA',
+                                            "HYUNDAI" => 'HYUNDAI',
+                                            "JAC MOTORS" => 'JAC MOTORS',
+                                            "JEEP" => 'JEEP',
+                                            "JINBEI" => 'JINBEI',
+                                            "JMC" => 'JMC',
+                                            "KIA" => 'KIA',
+                                            "LADA" => 'LADA',
+                                            "LAND ROVER" => 'LAND ROVER',
+                                            "LEXUS" => 'LEXUS',
+                                            "LIFAN" => 'LIFAN',
+                                            "MAHINDRA" => 'MAHINDRA',
+                                            "MAZDA" => 'MAZDA',
+                                            "MERCEDES BENZ" => 'MERCEDES BENZ',
+                                            "MITSUBISHI" => 'MITSUBISHI',
+                                            "NISSAN" => 'NISSAN',
+                                            "PEUGEOT" => 'PEUGEOT',
+                                            "PORSCHE" => 'PORSCHE',
+                                            "QMC" => 'QMC',
+                                            "RENAULT" => 'RENAULT',
+                                            "SAIC WULING" => 'SAIC WULING',
+                                            "SKODA" => 'SKODA',
+                                            "SSANGYONG" => 'SSANGYONG',
+                                            "TOYOTA" => 'TOYOTA',
+                                            "VOLKSWAGEN" => 'VOLKSWAGEN',
+                                            "VOLVO" => 'VOLVO',
+                                            "ZNA" => 'ZNA',
+                                            "ZOTYE" => 'ZOTYE',
+                                            "ZX AUTO" => 'ZX AUTO',
+                                            "DAEWOO" => 'DAEWOO'
+                                        );
                             ?>
                             <?php
                             $this->widget('ext.select2.ESelect2', array(
