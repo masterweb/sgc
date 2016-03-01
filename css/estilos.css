@@ -5,7 +5,7 @@
     width:100%;
 }
 body{
-    background:url('../images/img_17.jpg');
+    background:url('../images/img_17.jpg') !important;
 }
 header{
     background:url(../images/img_01.jpg) top repeat-x;
@@ -782,4 +782,8 @@ ul.versiones li input{
 }
 .form-search hr{
     border-color: #C21930;
+}
+.select2-container{
+    width: 100% !important;
+    font-size: 12px !important;
 }
