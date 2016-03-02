@@ -369,6 +369,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 </div>
             </div>
         </div>-->
+    <?php if(isset($title)): ?>
+    <div class="row">
+        <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     
+    </div>
+    <?php endif; ?>
     <div class="row">
         <h1 class="tl_seccion">RGD Exonerados</h1>
     </div>

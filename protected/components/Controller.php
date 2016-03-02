@@ -2205,6 +2205,7 @@ class Controller extends CController {
     public function getAsesoresByGrupo($grupo_id) {
         $con = Yii::app()->db;
         $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND cargo_id IN (77) ORDER BY nombres ASC";
+        //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
         $data = '<option value="">--Seleccione Asesor--</option>';

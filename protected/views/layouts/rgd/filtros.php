@@ -1,5 +1,6 @@
 <?php
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+//echo 'grupo id: '.$grupo_id;
 ?>
 <?php if ($tipo_filtro == 'general'): ?>
     <?php

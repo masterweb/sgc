@@ -1327,8 +1327,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
         }
         if ($cargo_id == 69) { // gerente comercial
-            $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+            if($get_array == 'bdc'){
+                $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                    . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73) AND ";
+            }
+            if($get_array == 'exo'){
+                $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                    . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75) AND ";
+            }
+            if($get_array == ''){
+                $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                     . " WHERE gr.id_grupo = {$grupo_id} AND ";
+            }
+            
         }
         if ($cargo_id == 70) { // jefe de almacen
             $sql_cargos .= "WHERE gi.dealer_id = {$dealer_id} AND ";
@@ -1623,8 +1634,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                 if ($cargo_id == 69 && $get_array == 'seg') { // jefe de almacen
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (71,70) AND ";
+                }
+                if ($cargo_id == 69 && $get_array == 'exo') { // jefe de almacen
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (75) AND ";
+                }
+                if ($cargo_id == 69 && $get_array == 'bdc') { // jefe de almacen
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (72,73) AND ";
                 }
                 if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
                     $sql .= "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND ";
@@ -1638,7 +1656,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
-                $title = "Busqueda por Concesionario: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
+                $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 return $data;
@@ -1742,7 +1760,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 break;
             case 16:
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-                gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+                gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
                 gd.*, gc.preg7 as categorizacion, gn.fuente 
                 FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1752,9 +1770,21 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
                     $title = "Busqueda Total País";
                 }
-                if ($cargo_id == 69) { // gerente comercial
+                if ($cargo_id == 69 && $get_array == '') { // gerente comercial
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                             . " WHERE gr.id_grupo = {$grupo_id} ";
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'bdc') { // gerente comercial
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                            . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN (72,73)";
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'exo') { // gerente comercial
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                            . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN (75)";
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 70) { // jefe de almacen
@@ -4135,7 +4165,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             left JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
             INNER JOIN usuarios u ON u.id = gi.responsable 
             WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
-            AND u.grupo_id = {$grupo_id} 
+            AND u.grupo_id = {$grupo_id} AND cargo_id = 77 
             ORDER BY gi.id DESC";
             //die($sql);
         }
