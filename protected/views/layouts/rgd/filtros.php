@@ -233,7 +233,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <label for="GestionDiariafecha">Búsqueda General</label>
                 <input type="text" name="GestionSolicitudCredito[general]" id="GestionSolicitudCredito_general" class="form-control"/>
             </div>
-            <?php if ($cargo_id == 76): ?>
+            <?php if ($cargo_id == 76 || $cargo_id == 69 ): ?>
                 <div class="col-md-6">
                     <label for="">Responsable</label>
                     <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">

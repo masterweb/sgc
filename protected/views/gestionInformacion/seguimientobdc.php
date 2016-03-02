@@ -76,7 +76,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 },
                 type: 'POST',
                 //dataType: 'json', 
-                data: {dealer_id: value},
+                data: {dealer_id: value,tipo:'bdc'},
                 success: function (data) {
                     //$('#info-3').hide();
                     //alert(data);

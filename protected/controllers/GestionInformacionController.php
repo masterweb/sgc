@@ -1345,10 +1345,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 72) { // JEFE BDC EXONERADOS
             $array_dealers = $this->getDealerGrupoConc($grupo_id);
             $dealerList = implode(', ', $array_dealers);
-            if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+            if ($get_array == 'exo') {
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75 AND ";
             }
-            if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+            if ($get_array == 'bdc') {
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND";
             }
@@ -1623,7 +1623,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
-                if ($cargo_id == 69) { // jefe de almacen
+                if ($cargo_id == 69 && $get_array == 'seg') { // jefe de almacen
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (71,70) AND ";
+                }
+                if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
                     $sql .= "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND ";
                 }
                 /* else {
@@ -1897,7 +1900,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
                 exit();
             } else {
-                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'seg');
                 $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
                 exit();
             }
@@ -2367,7 +2370,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('55d: '.$_GET['GestionDiaria']['tipo']);
 
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'bdc');
             $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
             exit();
         }
@@ -2847,7 +2850,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $fechaPk = 1;
             }
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $_GET);
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'exo');
             $this->render('seguimientoexonerado', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
             exit();
         }

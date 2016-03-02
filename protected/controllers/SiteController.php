@@ -3323,20 +3323,31 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionGetAsesores() {
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+        $tipo = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $area_id = (int) Yii::app()->user->getState('area_id');
         $con = Yii::app()->db;
-        if($cargo_id == 69){
+        if($cargo_id == 69 && $tipo == 'seg'){ // GERENTE COMERCIAL
+            //die('enter gerente');
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
-        if($cargo_id == 70){
+        if($cargo_id == 69 && $tipo == 'exo'){ // GERENTE COMERCIAL
+            //die('enter gerente');
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) ORDER BY nombres ASC";
+        }
+        if($cargo_id == 69 && $tipo == 'bdc'){ // GERENTE COMERCIAL
+            //die('enter gerente');
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (72,73) ORDER BY nombres ASC";
+        }
+        if($cargo_id == 70){ // JEFE SUCURSAL
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
         if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14){
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
-        }else{
-            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
         }
+        /*else{
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
+        }*/
         
         //die($sql);
         $requestr1 = $con->createCommand($sql);

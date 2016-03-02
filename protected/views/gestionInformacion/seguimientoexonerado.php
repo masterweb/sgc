@@ -90,6 +90,24 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 }
             });
         });
+        $('#GestionDiaria_concesionario').change(function () {
+            var value = $(this).attr('value');
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {dealer_id: value,tipo:'exo'},
+                success: function (data) {
+                    //$('#info-3').hide();
+                    //alert(data);
+                    $('#GestionDiaria_responsable').html(data);
+
+                }
+            });
+        });
     });
     function send() {
         var fuente = $('#GestionNuevaCotizacion_fuente').val();
