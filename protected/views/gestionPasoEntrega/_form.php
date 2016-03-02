@@ -2,6 +2,7 @@
 /* @var $this GestionPasoEntregaController */
 /* @var $model GestionPasoEntrega */
 /* @var $form CActiveForm */
+
 $paso = $this->getPasoEntregaCon($id_informacion, $id_vehiculo);
 //echo 'PASO:++++++ ' . $paso . '<br>';
 $tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 - credito, 0 - contado

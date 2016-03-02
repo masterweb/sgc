@@ -414,7 +414,9 @@ if ($ced != '') {
                         return false
                     }*/
                     $('#myModal').modal('show');
-                    form.submit();
+                        $('#closemodal').click(function(){
+                            form.submit();
+                        });
                 }
             });
         } else if (tipo == 'prospeccion') {

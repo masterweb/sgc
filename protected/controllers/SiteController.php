@@ -2789,10 +2789,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $result = 'nofind'; // identificacion no encontrada
         $count_vh = 0;
         if (isset($_POST['Factura'])) {
-//            echo '<pre>';
-//            print_r($_POST);
-//            echo '</pre>';
-//            die();
             $identificacionsgc = $_POST['Factura']['identificacion'];
             switch ($_POST['Factura']['tipo']) {
                 case 'cedula':

@@ -188,23 +188,7 @@ if ($ced != '') {
                 $('.cont-int-price').show();
             }
         });
-        /*$('#gestion-informacion-form').validate({
-         submitHandler: function(form) { 
-         //alert('enter submit handler');
-         var proximoSeguimiento = $('#GestionInformacion_fecha_cita').val();
-         if(proximoSeguimiento != ''){
-         //console.log('enter proximo seguimiento');
-         if($('#GestionInformacion_check').val() != 2){
-         var params = proximoSeguimiento.split("/");var fechaDate = params[0]+params[1]+params[2];
-         var params2 = fechaDate.split(":");var endTime = parseInt(params2[1])+100; endTime = endTime.toString();var startTime = params2[0]+params2[1];
-         var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
-         $('#event-download').attr('href',href);$('#calendar-content').show();
-         $("#event-download").click(function(){$('#GestionInformacion_calendar').val(1);$('#calendar-content').hide();$('#GestionInformacion_check').val(2)});
-         if($('#GestionInformacion_calendar').val() == 1){form.submit();}else{alert('Debes descargar agendamiento y luego dar click en Continuar');}
-         }else{form.submit();}
-         }else{form.submit();}
-         }
-         });*/
+        
         $('#GestionInformacion_provincia_domicilio').change(function () {
             var value = $("#GestionInformacion_provincia_domicilio option:selected").val();
             //console.log('valor seleccionado: '+value);
@@ -448,9 +432,9 @@ if ($ced != '') {
             vallocal('#gestion-informacion-form', lista_val);
         }
         if (tipo == 'gestion' || tipo == 'trafico') {
-            console.log('enter gestion');
-            $('#gestion-informacion-form').validate({
-                rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+            console.log('enter gestion o trafico');
+            $('#gestion-informacion-form3').validate({
+                /*rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                     'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[direccion]': {required: true},
                     'GestionInformacion[provincia_domicilio]': {required: true}, 'GestionInformacion[ciudad_domicilio]': {required: true},
                     'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true},
@@ -463,9 +447,9 @@ if ($ced != '') {
                     'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos',number:'Ingrese números'},
                     //'GestionInformacion[telefono_oficina]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos'},
                     'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number:'Ingrese números'}
-                },
+                },*/
                 submitHandler: function (form) {
-                    
+                    console.log('enter submit handler');
                     $('#GestionInformacion_provincia_conc').removeAttr('disabled');
                     $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
                     $('#GestionInformacion_concesionario').removeAttr('disabled');
@@ -502,7 +486,8 @@ if ($ced != '') {
 
                 }
             });
-        } else if (tipo == 'prospeccion') {
+        }
+        if (tipo == 'prospeccion') {
             console.log('enter prospeccion');
             var observaciones = $('#GestionProspeccionPr_pregunta').val();
             console.log('observaciones: ' + observaciones);
@@ -544,7 +529,7 @@ if ($ced != '') {
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
-                            form.submit();
+                            //form.submit();
                         }
                     });
                     break;
@@ -559,7 +544,7 @@ if ($ced != '') {
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
-                            form.submit();
+                            //form.submit();
                         }
                     });
                     break;
@@ -613,12 +598,12 @@ if ($ced != '') {
                                         $('#GestionInformacion_check').val(2)
                                     });
                                     if ($('#GestionInformacion_calendar').val() == 1) {
-                                        form.submit();
+                                        //form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
                                     }
                                 } else {
-                                    form.submit();
+                                    //form.submit();
                                 }
                             }
                         }
@@ -657,12 +642,12 @@ if ($ced != '') {
                                         $('#GestionInformacion_check2').val(2)
                                     });
                                     if ($('#GestionInformacion_calendar2').val() == 1) {
-                                        form.submit();
+                                        //form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
                                     }
                                 } else {
-                                    form.submit();
+                                    //form.submit();
                                 }
                             }
                         }
@@ -676,7 +661,7 @@ if ($ced != '') {
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese solo números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
                         submitHandler: function (form) {
-                            form.submit();
+                            //form.submit();
                         }
                     });
                     break;
@@ -746,7 +731,7 @@ if ($ced != '') {
                         </div>  
                         <div class="row"><p class="note">Campos con <span class="required">*</span> son requeridos.</p></div>
 
-                        <?php echo $form->errorSummary($model); ?>
+                        <?php //echo $form->errorSummary($model); ?>
 
                         <div class="row">
                             <div class="col-md-3">

@@ -16,6 +16,7 @@ $android = FALSE;
 if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) {
     $android = TRUE;
 }
+
 ?>
 <script type="text/javascript">
     $(function () {
