@@ -297,7 +297,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
+        <?php if($cargo_id != 69){ ?>
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
+        <?php } ?>
         <div class="col-md-8">
             <div class="highlight">
                 <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientobdc', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
@@ -618,7 +620,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 </td>
                                 <td>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
-                                    <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
+                                    <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14 && $cargo_id != 69){ ?>
                                     <?php if ($c['status'] == 1): ?>
                                         <?php if ($c['paso'] == '1-2') { ?>
                                             <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
