@@ -2745,6 +2745,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $factura = new GestionFactura;
         $factura->id_informacion = $_POST['id_informacion'];
         $factura->id_vehiculo = $_POST['id_vehiculo'];
+        $factura->datos_vehiculo = $_POST['datos_vehiculo'];
         $factura->observaciones = 'Venta realizada';
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
@@ -2770,6 +2771,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $factura = new GestionFactura;
         $factura->id_informacion = $_POST['id_informacion'];
         $factura->id_vehiculo = $_POST['id_vehiculo'];
+        $factura->datos_vehiculo = $_POST['datos_vehiculo'];
         $factura->observaciones = $_POST['Factura']['observaciones'];
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
@@ -2807,6 +2809,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     break;
             }
             $data = '';
+            $data_save = array();
             $uriservicio = "http://200.31.10.92/wsa/wsa1/wsdl?targetURI=urn:aekia";
             $params = array(
                 "cidentifica_cliente" => '1791282264001',
@@ -2841,8 +2844,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //echo "NO HAY COINCIDENCIA";
             }
             $datos_search = array(
-                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo','nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
-                'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
+                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo','nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
+                'fsc' => 'Factura','fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
                 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
@@ -2881,8 +2884,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     }
 
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
+                    $data_save[$value] = "{$strtgavh}";
+                    
                 }
-                $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'search' => TRUE, 'result' => $result));
+                //die('SALIDA NUMERO DE COINCIDENCIAS: '.print_r($data_save));
+                $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data,'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
             } else { // si el valor es menor o igual a 0
                 if ($count >= 2) {// ENCUENTRA IDENTIFICACION
                     foreach ($datos_search as $key => $value) {
@@ -2906,11 +2912,14 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                         }
 
                         $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $str . '</td></tr>';
+                        $data_save[$value] = "{$str}";
+                        
                     }
+                    //die('SALIDA ENCUENTRA INDENTIFICACION: '.print_r($data_save));
                     //die('result: '.$result);
-                    $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'search' => TRUE, 'result' => $result));
+                    $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
                 } else {
-                    $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'search' => FALSE, 'result' => $result));
+                    $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => FALSE, 'result' => $result));
                 }
             }
         }

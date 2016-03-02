@@ -144,8 +144,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                         <?php
                         $con = Yii::app()->db;
-                        $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.direccion,gi.celular, gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gi.senae, gd.* FROM gestion_diaria gd 
+                        $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.direccion,gi.celular, 
+                                gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gi.senae, gd.*, gn.*
+                                FROM gestion_diaria gd 
                                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                                 WHERE gi.id = {$_GET['id']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
                                 //die('sql: '.$sql);
                         $request = $con->createCommand($sql);
@@ -209,6 +212,14 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                             
                                          </td>
                                     </tr>
+                                    <?php if($value['lugar_exhibicion'] != ''){ ?>
+                                    <tr>
+                                        <td><strong>Lugar de Exhibición:</strong>
+                                            <?php echo $value['lugar_exhibicion'];?>
+                                            
+                                         </td>
+                                    </tr>
+                                    <?php } ?>
                                     <tr>
                                         <td><strong>Responsable:</strong> <?php echo $this->getResponsable($value['resp']); ?></td>
                                     </tr>

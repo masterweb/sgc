@@ -155,9 +155,12 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
                     <h1 class="tl_seccion_rf">Datos del Cliente</h1>
                     <?php
                     $con = Yii::app()->db;
-                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi. pasaporte, gi.email, gi.direccion,gi.celular, 
-                        gi.telefono_oficina, gi.id_cotizacion, gi.responsable as id_resp, gi.tipo_form_web, gi.presupuesto, gi.marca_usado, gi.modelo_usado, gd.* FROM gestion_diaria gd 
-                                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                    $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi. pasaporte, gi.email, gi.direccion,
+                            gi.celular, gi.telefono_oficina, gi.id_cotizacion, gi.responsable as id_resp, gi.tipo_form_web, gi.presupuesto, 
+                            gi.marca_usado, gi.modelo_usado, gd.*, gn.*
+                            FROM gestion_diaria gd 
+                            INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                            LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                                 WHERE gi.id = {$_GET['id_informacion']} GROUP BY gi.id ORDER BY gd.id_informacion DESC";
                     //die($sql);
                     $request = $con->createCommand($sql);
@@ -207,6 +210,14 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
                                 <tr>
                                     <td><strong>Fuente de Contacto:</strong> <?php echo ucfirst($this->getFuente($value['id_cotizacion'])); ?></td>
                                 </tr>
+                                <?php if($value['lugar_exhibicion'] != ''){ ?>
+                                    <tr>
+                                        <td><strong>Lugar de Exhibición:</strong>
+                                            <?php echo $value['lugar_exhibicion'];?>
+                                            
+                                         </td>
+                                    </tr>
+                                    <?php } ?>
                                 <tr>
                                     <td><strong>Tipo Formulario:</strong> <?php echo ucfirst($value['tipo_form_web']); ?></td>
                                 </tr>

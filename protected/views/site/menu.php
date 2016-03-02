@@ -196,13 +196,25 @@ $rol = Yii::app()->user->getState('roles');
                         </div>
                     </li>
                     <?php } ?>
+                    <?php if($cargo_id == 77){ // ASESOR USADOS ?>
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Usados</div></a>
+                                <div class="txt_menu">RGD Asesor Usados</div></a>
                         </div>
                     </li>
+                    <?php } ?>
+                    <?php } ?>
+                    <?php if($cargo_id == 76){ // JEFE USADOS ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
+                    <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                <div class="txt_menu">RGD Jefe Usados</div></a>
+                        </div>
+                    </li>
+                    <?php } ?>
                     <?php } ?>
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">

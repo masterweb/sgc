@@ -3194,8 +3194,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
                 $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 $model->marca_usado = $_POST['GestionInformacion']['marca_usado'];
-                $params = explode('@', $_POST['GestionInformacion']['modelo_usado']);
-                $model->modelo_usado = $params[1] . ' ' . $params[2];
+                //$params = explode('@', $_POST['GestionInformacion']['modelo_usado']);
+                $model->modelo_usado = $_POST['GestionInformacion']['modelo_usado'];
             endif;
 
             if (isset($_POST['GestionInformacion']['fecha_cita']))

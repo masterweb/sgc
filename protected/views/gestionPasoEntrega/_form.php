@@ -183,6 +183,13 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                 <?php
                 $criteria = new CDbCriteria(array('condition' => "id = {$id_informacion}"));
                 $cl = GestionInformacion::model()->findAll($criteria);
+                $datos_vehiculo = GestionFactura::model()->findAll(array('condition' => "id_informacion = {$id_informacion}"));
+                //echo(count($datos_vehiculo));
+                //echo $datos_vehiculo[0]['datos_vehiculo'];
+                $array_datos_vehiculo = explode(',', $datos_vehiculo[0]['datos_vehiculo']);
+//                echo '<pre>';
+//                print_r($array_datos_vehiculo);
+//                echo '</pre>';    
                 ?>
                 <div class="row">
                     <div class="col-md-8">
@@ -190,9 +197,9 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                             <tbody>
                                 <tr class="odd"><th>Modelo</th><td><?php echo $this->getModeloTestDrive($id_vehiculo); ?></td><th>Cliente</th><td><?php echo ucfirst($cl[0]['nombres']); ?> <?php echo ucfirst($cl[0]['apellidos']); ?></td></tr>
                                 <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr>
-                                <tr class="odd"><th>Motor</th><td></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
-                                <tr class="odd"><th>Factura</th><td></td><th>No. Chasis</th><td></td></tr>
-                                <tr class="odd"><th>Color</th><td></td><th></th><td></td></tr> 
+                                <tr class="odd"><th>Motor</th><td><?php echo $array_datos_vehiculo[2]; ?></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
+                                <tr class="odd"><th>Factura</th><td><?php echo $array_datos_vehiculo[5]; ?></td><th>No. Chasis</th><td><?php echo $array_datos_vehiculo[0]; ?></td></tr>
+                                <tr class="odd"><th>Color</th><td><?php echo $array_datos_vehiculo[4]; ?></td><th></th><td></td></tr> 
                             </tbody>
                         </table>
                     </div>
