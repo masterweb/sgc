@@ -496,14 +496,24 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         <button type="button" class="btn btn-xs btn-warning">www</button>
                                     <?php endif; ?>
                                     <?php
+                                    if ($c['medio_contacto'] == 'caduco'):
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-warning">Caduco</button>
+                                    <?php endif; ?>
+                                    <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
                                     <?php endif; ?>
                                     <?php
-                                    if ($c['id_cotizacion'] == ''):
+                                    if ($c['id_cotizacion'] == '' && $c['medio_contacto'] == ''):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">Web</button>
+                                    <?php endif; ?>
+                                    <?php
+                                    if ($c['medio_contacto'] == 'desistecc'):
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-warning">Desiste CC</button>
                                     <?php endif; ?>
                                     <?php
                                     $credito = $this->getStatusSolicitudAll($c['id_info']);

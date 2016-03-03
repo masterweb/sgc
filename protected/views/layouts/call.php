@@ -1,36 +1,5 @@
 <?php
-$con = Yii::app()->db;
-/* @var $this Controller */
-//echo 'dealer id: '.Yii::app()->user->getState('dealer_id').'<br>';
-date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-//echo 'fecha actual: '.$fecha_actual;
-$fecha="2015/10/28 07:00:00";
-//echo 'fecha actual: '.strtotime('now');
-//echo '<br />';
-//echo 'fecha seguimiento: '.strtotime($fecha);
-//echo '<br />';
-//$fecha="2015-10-31 11:00:00";
-$segundos= strtotime('now') - strtotime($fecha);
-//echo 'diferencia segundos: '.$segundos;
-$diferencia_horas=intval($segundos/60/60);
-//echo '<br />'."La cantidad de horas entre el ".$fecha." y hoy es <b>".$diferencia_horas."</b>";
-// SACAR FECHAS AGENDAMIENTO DE TABLA GESTION AGENDAMIENTO
 
-$cr = GestionAgendamiento::model()->findAll();
-foreach ($cr as $c) {
-    if($c['agendamiento'] != ''){
-        // update gestion informacion BDC 1
-        $fecha = $c['agendamiento'];
-        //echo 'FECHA AGENDAMIENTO: '.$fecha.'<br />';
-        $segundos= strtotime('now') - strtotime($fecha);
-        $diferencia_horas=intval($segundos/60/60);
-        //echo '<br />'."La cantidad de horas para id informacion: ".$c['id_informacion'].", entre el ".$fecha." y hoy es <b>".$diferencia_horas."</b>"; 
-        if ($diferencia_horas > 12) {
-            $sql = "UPDATE gestion_informacion SET bdc = 1 WHERE id = {$c['id_informacion']}";
-            $request = $con->createCommand($sql)->query();
-        }
-    }
-}
 
 ?>
 <!doctype html>

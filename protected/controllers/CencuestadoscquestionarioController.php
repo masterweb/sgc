@@ -1454,6 +1454,9 @@ class CencuestadoscquestionarioController extends Controller {
                             $gi->bdc = 1;
                             $gi->update();
                             
+                            $gd->medio_contacto = 'desistecc';
+                            $gd->update();
+                            
                         }
                     }
                 }
