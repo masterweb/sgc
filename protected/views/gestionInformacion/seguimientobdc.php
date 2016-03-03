@@ -506,7 +506,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
                                     <?php endif; ?>
                                     <?php
-                                    if ($c['id_cotizacion'] == '' && $c['medio_contacto'] == ''):
+                                    if ($c['id_cotizacion'] == ''):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">Web</button>
                                     <?php endif; ?>
