@@ -1893,7 +1893,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter code 71');
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql .= " LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.responsable = {$id_responsable} 
+                INNER JOIN usuarios u ON u.id = gi.responsable
+                WHERE (gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable}) 
+                    AND u.cargo_id = 71
                 ORDER BY gd.id DESC";
             //die('sql: '. $sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {

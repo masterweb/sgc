@@ -217,22 +217,34 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>
                     <?php } ?>
                     <?php if($cargo_id == 69){ // JEFE USADOS ?>
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
-                    <li class="wrapper">
-                        <div class="forma">
-                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Usados</div></a>
-                        </div>
-                    </li>
+                        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoUsados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Usados</div></a>
+                            </div>
+                        </li>
+                        <?php } ?>
                     <?php } ?>
+                    <?php if($cargo_id == 75){ // ASESOR EXONERADOS ?>    
+                        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Asesor Exonerados</div></a>
+                            </div>
+                        </li>
+                        <?php } ?>
                     <?php } ?>
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
-                    <li class="wrapper">
-                        <div class="forma">
-                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Asesor Exonerados</div></a>
-                        </div>
-                    </li>
+                    <?php if($cargo_id == 72){ // Jefe Bdc Y Exonerados ?>    
+                        <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                        <li class="wrapper">
+                            <div class="forma">
+                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                    <div class="txt_menu">RGD Exonerados</div></a>
+                            </div>
+                        </li>
+                        <?php } ?>
                     <?php } ?>
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
                     <li class="wrapper">
