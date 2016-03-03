@@ -1327,6 +1327,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
         }
         if ($cargo_id == 69) { // gerente comercial
+            //die('enter ge');
             if($get_array == 'bdc'){
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                     . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73) AND ";
@@ -1335,7 +1336,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                     . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75) AND ";
             }
-            if($get_array == ''){
+            if($get_array == 'sub'){
                 $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                     . " WHERE gr.id_grupo = {$grupo_id} AND ";
             }

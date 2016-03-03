@@ -174,7 +174,7 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Gerente Comercial</div></a>
+                                        <div class="txt_menu">RGD Nuevos</div></a>
                                 </div>
                             </li>
                         <?php } ?>
