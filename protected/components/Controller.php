@@ -638,7 +638,7 @@ class Controller extends CController {
             return 'pasaporte';
         }
     }
-    
+
     public function getIdentificacionCedula($id) {
         //echo 'id: '.$id;
         $criteria = new CDbCriteria(array(
@@ -1761,7 +1761,7 @@ class Controller extends CController {
                     $posicion++;
                 }
 
-                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion]) && !empty($d->gestioninformacion->telefono_casa) ) {
+                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion]) && !empty($d->gestioninformacion->telefono_casa)) {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;
@@ -1769,7 +1769,14 @@ class Controller extends CController {
                     $cotizacion->usuario_id = $usuario_list[$po];
                     $cotizacion->nombre = $d->gestioninformacion->nombres;
                     $cotizacion->apellido = $d->gestioninformacion->apellidos;
-                    $cotizacion->cedula = $d->gestioninformacion->cedula;
+                    if (!empty($d->gestioninformacion->cedula)) {
+                        $id = $d->gestioninformacion->cedula;
+                    } else if (!empty($d->gestioninformacion->ruc)) {
+                        $id = $d->gestioninformacion->ruc;
+                    } else if (!empty($d->gestioninformacion->pasaporte)) {
+                        $id = $d->gestioninformacion->pasaporte;
+                    }
+                    $cotizacion->cedula = $id;
                     $cotizacion->email = $d->gestioninformacion->email;
                     $cotizacion->ceular = $d->gestioninformacion->celular;
                     $cotizacion->convencional = $d->gestioninformacion->telefono_casa;
