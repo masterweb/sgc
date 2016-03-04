@@ -103,6 +103,7 @@ $this->menu = array(
 										}
                                         echo '<td>
 													<input type="hidden" data-control="true" value="'.$cont.'">
+                                                    <input type="hidden" id="id_opcion"  name="opciontxt['.$cont.'][id]" data-control="true" value="'.$key->id.'">
                                                     <input type="text" placeholder="Ingrese la opción de respuesta" name="opciontxt['.$cont.'][opcion]" class="form-control vl"" value="'.$key->detalle.'">
                                                 </td>
 												<td>

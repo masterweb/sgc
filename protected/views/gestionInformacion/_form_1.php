@@ -628,12 +628,8 @@ $id = $_GET['id'];
                                         echo '<span class="required">*</span>';
                                     }
                                     ?></label>
-                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
-                                <input size="20" maxlength="10" class="form-control" name="GestionInformacion[cedula]" id="GestionInformacion_cedula" type="text" value="<?php
-                                if (isset($id)) {
-                                    echo $ced;
-                                }
-                                ?>">
+                                <?php echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <!--<input size="20" maxlength="10" class="form-control" name="GestionInformacion[cedula]" id="GestionInformacion_cedula" type="text" value="<?php //if (isset($id)) {echo $ced;} ?>">-->
                                        <?php echo $form->error($model, 'cedula'); ?>
                             </div>
                         <?php endif; ?>
@@ -645,12 +641,12 @@ $id = $_GET['id'];
                                         echo '<span class="required">*</span>';
                                     }
                                     ?></label>
-                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
-                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
+                                <?php echo $form->textField($model, 'ruc', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+<!--                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
                                 if (isset($id)) {
                                     echo $this->getIdentificacionRuc($id);
                                 }
-                                ?>">
+                                ?>">-->
                                        <?php echo $form->error($model, 'ruc'); ?>
                             </div>
                         <?php endif; ?>

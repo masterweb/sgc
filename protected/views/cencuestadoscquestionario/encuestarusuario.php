@@ -122,17 +122,18 @@ $this->menu = array(
             <input type="hidden" name="tt" id="tt">
                 <?php
                     if(!empty($preguntas)){
+						$con = 0;
                         foreach ($preguntas as $value) {
-                            
+                             $cont++;
                             if($value->ctipopregunta_id == 1){
                                 echo '<div class="row pad-all">';
-                                echo $value->descripcion.'</div>';
+                                echo  $cont.'.- '.$value->descripcion.'</div>';
                                 echo '<div class="row"><textarea class="required" onkeypress="return '.$value->tipocontenido.'(event);" id="txtpregunta'.$value->id.'" name="respuesta['.$value->id.']" placeholder="Ingrese la respuesta aquí"></textarea>';
                                 echo '</div>';
 
                             }else if($value->ctipopregunta_id == 2){
                                 echo '<div class="row pad-all">';
-                                echo $value->descripcion.'</div>';
+                                echo $cont.'.- '.$value->descripcion.'</div>';
                                 $opciones = Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$value->id));
                                 if(!empty($opciones)){
                                     echo '<div class="row"><div class="highlight">';
@@ -154,7 +155,7 @@ $this->menu = array(
                                 //
                             }else if($value->ctipopregunta_id == 3){
                                 echo '<div class="row pad-all">';
-                                echo $value->descripcion.'</div>';
+                                echo $cont.'.- '.$value->descripcion.'</div>';
                                 $opciones = Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$value->id));
                                 if(!empty($opciones)){
                                     echo '<div class="row"><div class="highlight">';
@@ -178,7 +179,7 @@ $this->menu = array(
                                 //
                             }else{
                                 echo '<div class="row pad-all">';
-                                echo $value->descripcion.'</div>';
+                                echo $cont.'.- '.$value->descripcion.'</div>';
                                 $opciones = Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$value->id));
                                 $matriz = Cmatrizpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$value->id));
                                 if(!empty($opciones) && !empty($matriz)){

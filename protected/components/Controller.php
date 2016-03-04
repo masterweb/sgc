@@ -638,6 +638,15 @@ class Controller extends CController {
             return 'pasaporte';
         }
     }
+    
+    public function getIdentificacionCedula($id) {
+        //echo 'id: '.$id;
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id}",
+        ));
+        $gestion = GestionNuevaCotizacion::model()->find($criteria);
+        return $gestion->cedula;
+    }
 
     public function getIdentificacionRuc($id) {
         $criteria = new CDbCriteria(array(
@@ -1752,7 +1761,7 @@ class Controller extends CController {
                     $posicion++;
                 }
 
-                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
+                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion]) && !empty($d->gestioninformacion->telefono_casa) && !empty($d->gestioninformacion->cedula)) {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;

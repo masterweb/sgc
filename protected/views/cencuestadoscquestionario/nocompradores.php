@@ -1,4 +1,4 @@
-﻿<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/nuevosEstilos.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.min.js"></script>
@@ -50,11 +50,17 @@ $rol = Yii::app()->user->getState('roles');
     </div>
     <?php
     if (!empty($model)) {
+		
+		$gd = GestionDiaria::model()->find(array('condition'=>'id = '.$model->gestiondiaria_id));
+		// 
+		$i = GestionInformacion::model()->find(array('condition'=>'id = 2229'));
+		//print_r($i);
+		$de = Dealers::model()->find(array('condition'=>'id ='.$gd->gestioninformacion->dealer_id));
         ?>
         <div class="col-md-12">
             <p class="intro_encuestas">
-                Buenos d&iacute;as me  comunica por favor con el Sr./a <b><?php echo $model->nombre . ' ' . $model->apellido ?></b>, mucho gusto Sr/a <b><?php echo $model->nombre . ' ' . $model->apellido ?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>,  el motivo de mi llamada es realizar una peque&ntilde;a encuesta por la visita que tuvo usted en nuestros concesionarios Kia.
-            </p>
+				Buenos días/tardes/noches.... me comunica por favor con el Sr./a <b><?php echo $model->apellido ?></b>, mucho gusto Sr/a <b><?php echo $model->apellido ?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>, el motivo de mi llamada es realizar una pequeña encuesta por la visita que tuvo usted en nuestros concesionario <b><?php echo $de->name;?></b>.
+			</p>
             <div class=" row contenido_no_compradores">
                 <div class="col-md-12">
                     <h3>Encuesta a completar</h3>
@@ -66,7 +72,7 @@ $rol = Yii::app()->user->getState('roles');
                     ?>
                     <div class="">
                         <p class="pregunta_no_compradorespregunta_no_compradores">
-                            1.- Tenemos registrado que usted cotizó uno de nuestros vehículos KIA, queremos saber ¿porque no se concretó la compra del mismo? <span>Responde el cliente y escogemos la opción</span>
+                            1.- Tenemos registrado que usted cotizó uno de nuestros vehículos KIA, queremos saber ¿por qué no se concretó la compra del mismo? <span>Responde el cliente y escogemos la opción</span>
                         </p>
 
                         <ul class="opciones_no_compradores">

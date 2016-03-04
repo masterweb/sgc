@@ -20,10 +20,11 @@ class SiteController extends Controller {
         );
     }
 
-    /**actionConsultarUsuarioEncuesta
+    /*     * actionConsultarUsuarioEncuesta
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
+
     public function actionIndex() {
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
@@ -46,6 +47,7 @@ class SiteController extends Controller {
             $this->redirect(array('site/login'));
         }
     }
+
     public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
         $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
@@ -54,16 +56,16 @@ class SiteController extends Controller {
         $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
         if (!empty($datosC)) {
-            $maximo = number_format(count($datosC) / count($usuarios), 0); 
+            $maximo = number_format(count($datosC) / count($usuarios), 0);
             $actual = 0;
             $contactual = 0;
             $posicion = 0;
             $usuario_list = array();
-            foreach ($usuarios as $u) { 
+            foreach ($usuarios as $u) {
                 $usuario_list[$actual++] = $u->id;
             }
 
- 
+
             foreach ($datosC as $d) {
 
                 if ($contactual == $maximo) {
@@ -73,7 +75,7 @@ class SiteController extends Controller {
                 if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
 
                     $cotizacion = new Cotizacionesnodeseadas();
-					
+
                     $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
 
                     $cotizacion->usuario_id = $usuario_list[$posicion];
@@ -578,32 +580,32 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $usuario_id = $p->purify($pz);
-        
+
         $recuperar = Recuperar::model()->find(array('condition' => "token=:match AND md5(usuarios_id)=:uid AND estado='SOLICITADO'", 'params' => array(':match' => $token, 'uid' => $usuario_id)));
         if (!empty($recuperar)) {
             $datetime1 = date_create($recuperar->fecha);
             $datetime2 = date_create("now");
-           
+
             $interval = date_diff($datetime2, $datetime1);
-        
+
             //if ($interval->i <= 100) {
-                $user = Usuarios::model()->find(array('condition' => "id=:match  AND estado='ACTIVO'", 'params' => array(':match' => $recuperar->usuarios_id)));
-    
-                if (!empty($_POST["password"])) {
-                    if ($_POST["password"] == $_POST["repetir_password"]) {
-                        $recuperar->estado = "EJECUTADO";
-                        $recuperar->fecha = date('Y-m-d h:i:s');
-                        if ($recuperar->update()) {
-                            $user->password = md5($_POST["password"]);
-                            if ($user->update()) {
-                                Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Cambio de contrase&ntilde;a</h1><p>Estimad@ <b>' . $user->nombres . ' ' . $user->apellido . '</b> su solicitud de cambio de contrase&ntilde;a ha sido realizado exitosamente,ahora puede ingresar al sistema con su nueva contrase&ntilde;a desde <a href="' . Yii::app()->createUrl('site/login') . '">aqu&iacute;.</a></div>');
-                                $this->redirect(array("site/listocambio"));
-                            }
+            $user = Usuarios::model()->find(array('condition' => "id=:match  AND estado='ACTIVO'", 'params' => array(':match' => $recuperar->usuarios_id)));
+
+            if (!empty($_POST["password"])) {
+                if ($_POST["password"] == $_POST["repetir_password"]) {
+                    $recuperar->estado = "EJECUTADO";
+                    $recuperar->fecha = date('Y-m-d h:i:s');
+                    if ($recuperar->update()) {
+                        $user->password = md5($_POST["password"]);
+                        if ($user->update()) {
+                            Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Cambio de contrase&ntilde;a</h1><p>Estimad@ <b>' . $user->nombres . ' ' . $user->apellido . '</b> su solicitud de cambio de contrase&ntilde;a ha sido realizado exitosamente,ahora puede ingresar al sistema con su nueva contrase&ntilde;a desde <a href="' . Yii::app()->createUrl('site/login') . '">aqu&iacute;.</a></div>');
+                            $this->redirect(array("site/listocambio"));
                         }
                     }
                 }
+            }
 
-                $this->render('restablecerpassword', array("t" => $t, "pz" => $pz));
+            $this->render('restablecerpassword', array("t" => $t, "pz" => $pz));
             //}
         } else
             throw new CHttpException(404, 'Lo sentimos no se puede desplegar esta s' . utf8_encode("información") . '.');
@@ -754,19 +756,19 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
-            	if(empty($where)){
-					$where = ' WHERE gt.test_drive = 1 and gt.order=1';
-				}
+            if (empty($where)) {
+                $where = ' WHERE gt.test_drive = 1 and gt.order=1';
+            }
             $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
-                    ' . $where.' ORDER BY gi.fecha DESC';
+                    ' . $where . ' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
             echo count($persona);
         }
-		if ($opcion == 4) {
+        if ($opcion == 4) {
 
             $ciudad = $p->purify($_POST['ciudad']);
             $concesionario = $p->purify($_POST['concesionario']);
@@ -796,14 +798,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $where .= " and gt.test_drive = 0 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
                 }
             }
-            	if(empty($where)){
-					$where = ' WHERE gt.test_drive = 0 and gt.order=1';
-				}
+            if (empty($where)) {
+                $where = ' WHERE gt.test_drive = 0 and gt.order=1';
+            }
             $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
-                    ' . $where.' ORDER BY gi.fecha DESC';
+                    ' . $where . ' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
             echo count($persona);
@@ -969,7 +971,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         foreach ($opciones as $op) {
                             echo '<div class="radio">
 								  <label class="lblrespuesta">
-									<input  id="ckk' . $op->id . '"  class="required" type="checkbox" onclick="verificarSubPregunta(1,this.id,' . $op->id . ',' . $value->id . ')" ' . $chk . ' name="respuesta[' . $value->id . '][]" id="respuestaCheck" value="' . $op->detalle . '">
+									<input  id="ckk' . $op->id . '"  class="required" type="checkbox" onclick="verificarSubPregunta(1,this.id,' . $op->id . ',' . $value->id . ')" ' . $chk . ' name="respuesta[' . $value->id . '][]" id="respuestaCheck" value="' . $op->detalle . '|' . $op->id . '">
 									' . $op->detalle . '
 								  </label>';
                             echo '<div id="divopcion-' . $op->id . '" class=" cl-' . $value->id . '"></div>';
@@ -989,7 +991,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             $vv = (!empty($op->valor)) ? $op->valor : 0;
                             echo '<div class="radio">
 								  <label class="lblrespuesta">
-									<input class="required" type="radio" onclick="oculta(' . $value->id . ',' . $vv . '); verificarSubPregunta(0,this.id,' . $op->id . ',' . $value->id . ')"  name="respuesta[' . $value->id . '][respuesta]" id="respuestaOption" value="' . $op->detalle . '">
+									<input class="required" type="radio" onclick="oculta(' . $value->id . ',' . $vv . '); verificarSubPregunta(0,this.id,' . $op->id . ',' . $value->id . ')"  name="respuesta[' . $value->id . '][respuesta]" id="respuestaOption" value="' . $op->detalle . '|' . $op->id . '">
 									' . $op->detalle . '
 										</label>';
                             if (!empty($op->valor)) {
@@ -1017,15 +1019,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         echo '</tr>';
                         foreach ($opciones as $op) {
                             echo '<tr>';
-                            echo '<td>' . $op->detalle . '</td>';
+                            echo '<td><input type="hidden" name="respuesta[' . $op->id . '][idop]" value="' . $op->id . '">' . $op->detalle . '</td>';
                             foreach ($matriz as $key) {
                                 echo '<td>';
                                 echo '<div class="radio">
-								  <label class="lblrespuesta">
-									<input type="radio" class="required" checked="true" name="respuesta[' . $value->id . '][' . $op->id . ']" id="respuestaOptionMatriz" value="' . $op->detalle . ' - ' . $key->detalle . '( ' . $key->valor . ' )">
-									
-								  </label>
-								</div>';
+                                              <label class="lblrespuesta">
+                                              
+                                                <input type="radio" class="required" checked="true" name="respuesta[' . $value->id . '][' . $op->id . ']" id="respuestaOptionMatriz" value="' . $op->detalle . ' - ' . $key->detalle . ' ( ' . $key->valor . ' )|' . $key->id . '">
+                                                
+                                              </label>
+                                            </div>';
                                 echo '</td>';
                             }
 
@@ -1344,7 +1347,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 <!--<td><a href="' . Yii::app()->createUrl('gestionVehiculo/update', array('id' => $m['id'], 'id_informacion' => $m['id_informacion'])) . '" class="btn btn-primary btn-xs btn-danger">Editar</a>                              
                 </td>-->
                 <td><button class="btn btn-xs btn-success">Consulta</button></td>
-                <td><a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                <td><a href="' . Yii::app()->request->baseUrl . '/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                 </tr>';
         endforeach;
         $data .= '</tbody></table></div>';
@@ -1740,6 +1743,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }
         // -------------FIN DE BUSQUEDA TABLA TTGH36-----------------------
         // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
+        $data_save = array();
         if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
 
             $count_vh = count($coincidencias_vh[0]);
@@ -1798,75 +1802,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $modelInformacion->setscenario('createc');
 
 
-                // BUSCAR NOMBRES
-                // primero encontramos la posicion de la cadena a encontrar
-                $pos = strpos($response['lcxml'], '<nombre_propietario>');
-                // encontramos la posicion final de la cadena final
-                $posfinal = strpos($response['lcxml'], '</nombre_propietario');
-                // longitud de la cadena a impriimir
-                $longitud_cadena = $posfinal - $pos;
-                // cadena a imprimir, con posicion inicial y longitud
-                $cadena = substr($response['lcxml'], $pos, $longitud_cadena);
-                //$modelInformacion->nombres = (string) $cadena;
-                // BUSCAR TIPO DE IDENTIFICACION
-                // primero encontramos la posicion de la cadena a encontrar
-                $pos = strpos($response['lcxml'], '<tipo_id_propietario>');
-                // encontramos la posicion final de la cadena final
-                $posfinal = strpos($response['lcxml'], '</tipo_id_propietario');
-                // longitud de la cadena a impriimir
-                $longitud_cadena = $posfinal - $pos;
-                // cadena a imprimir, con posicion inicial y longitud
-                $cadena = (string) substr($response['lcxml'], $pos, $longitud_cadena);
-
-                //die('cadena: '.$cadena);
-                if ($cadena == 'C') {
-                    //die('enter cedula');
-                    $pos = strpos($response['lcxml'], '<numero_id_propietario>');
-                    // encontramos la posicion final de la cadena final
-                    $posfinal = strpos($response['lcxml'], '</numero_id_propietario');
-                    // longitud de la cadena a impriimir
-                    $longitud_cadena = $posfinal - $pos;
-                    // cadena a imprimir, con posicion inicial y longitud
-                    $cadena2 = substr($response['lcxml'], $pos, $longitud_cadena);
-                    $modelInformacion->cedula = $cadena2;
-                }
-                if ($cadena == 'R') {
-                    //die('enter ruc');
-                    $pos = strpos($response['lcxml'], '<numero_id_propietario>');
-                    // encontramos la posicion final de la cadena final
-                    $posfinal = strpos($response['lcxml'], '</numero_id_propietario');
-                    // longitud de la cadena a impriimir
-                    $longitud_cadena = $posfinal - $pos;
-                    // cadena a imprimir, con posicion inicial y longitud
-                    $cadena2 = substr($response['lcxml'], $pos, $longitud_cadena);
-                    $modelInformacion->ruc = $cadena2;
-                }
-
-
-                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $modelInformacion->fecha = date("Y-m-d H:i:s");
-                $modelInformacion->responsable = $id_responsable;
-                $modelInformacion->dealer_id = $dealer_id;
-                $modelInformacion->celular = '0999999999';
-                $modelInformacion->direccion = 'NA';
-                $modelInformacion->nombres = 'NA';
-                $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
-                //die('before validare');
-                if ($modelInformacion->validate()) {
-
-                    //die( 'validate');
-                } else {
-//                    echo '<pre>';
-//                    print_r($modelInformacion->getErrors());
-//                    echo '</pre>';
-                    //die( 'validate errors');
-                }
-                if ($modelInformacion->save()) {
-                    //die('enter model save');
-                    $id_modeloInformacion = $modelInformacion->id;
-                }
-
-
                 for ($i = 0; $i < $count_vh; $i++) {
                     $ini = $coincidencias_vh[0][$i][1];
                     $fin = $coincidencias2_vh[0][$i][1];
@@ -1883,13 +1818,47 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         $longitud_cadena = $posfinal - $pos;
                         // cadena a imprimir, con posicion inicial y longitud
                         $strtgavh = substr($str_vh, $pos, $longitud_cadena);
+                        $params = explode(">", $strtgavh);
                         $dataCreatec_vh .= '<td>' . $strtgavh . '</td>';
+                        $data_save[$value] = "{$params[1]}";
                     }
                     $dataCreatec_vh .= '</tr>';
                 }
                 $dataCreatec_vh .= '</table></div></div></div>';
+//                echo '<pre>';
+//                print_r($data_save);
+//                echo '</pre>';
+
                 $dataCrTgavh = TRUE;
                 $result = TRUE;
+
+                //GRABAR DATOS A GESTION INFORMACION
+                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                $modelInformacion->fecha = date("Y-m-d H:i:s");
+                $modelInformacion->responsable = $id_responsable;
+                $modelInformacion->dealer_id = $dealer_id;
+                if(strlen($data_save['Teléfono del Propietario']) == 10){
+                    $modelInformacion->celular = $data_save['Teléfono del Propietario'];
+                }else{
+                    $modelInformacion->celular = '0999999999';
+                }
+                $modelInformacion->cedula = $data_save['Id del Propietario'];
+                $modelInformacion->nombres = $data_save['Nombre Propietario'];
+                $modelInformacion->direccion = $data_save['Calle Principal'];
+                $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
+                //die('before validare');
+//                if ($modelInformacion->validate()) {
+//                    die( 'validate');
+//                } else {
+//                    echo '<pre>';
+//                    print_r($modelInformacion->getErrors());
+//                    echo '</pre>';
+//                    die( 'validate errors');
+//                }
+                if ($modelInformacion->save()) {
+                    //die('enter model save');
+                    $id_modeloInformacion = $modelInformacion->id;
+                }
             }
         }
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------
@@ -1914,9 +1883,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-//        $model->cedula = $id;
-//        $model->fuente = $fuente;
-//        $model->save();
+        $model->ruc = $id;
+        $model->fuente = $fuente;
+        $model->save();
+        $id_nueva_cotizacion = $model->id;
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "ruc='{$id}'"
@@ -2161,6 +2131,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }
         // -------------FIN DE BUSQUEDA TABLA TTGH36-----------------------
         // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
+        $data_save = array();
         if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
 
             $count_vh = count($coincidencias_vh[0]);
@@ -2220,59 +2191,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $modelInformacion->setscenario('createc');
 
 
-                // BUSCAR NOMBRES
-                // primero encontramos la posicion de la cadena a encontrar
-                $pos = strpos($response['lcxml'], '<nombre_propietario>');
-                // encontramos la posicion final de la cadena final
-                $posfinal = strpos($response['lcxml'], '</nombre_propietario');
-                // longitud de la cadena a impriimir
-                $longitud_cadena = $posfinal - $pos;
-                // cadena a imprimir, con posicion inicial y longitud
-                $cadena = substr($response['lcxml'], $pos, $longitud_cadena);
-                //$modelInformacion->nombres = (string) $cadena;
-                // BUSCAR TIPO DE IDENTIFICACION
-                // primero encontramos la posicion de la cadena a encontrar
-                $pos = strpos($response['lcxml'], '<tipo_id_propietario>');
-                // encontramos la posicion final de la cadena final
-                $posfinal = strpos($response['lcxml'], '</tipo_id_propietario');
-                // longitud de la cadena a impriimir
-                $longitud_cadena = $posfinal - $pos;
-                // cadena a imprimir, con posicion inicial y longitud
-                $cadena = substr($response['lcxml'], $pos, $longitud_cadena);
-
-
-                if ($cadena == 'C') {
-                    $pos = strpos($response['lcxml'], '<numero_id_propietario>');
-                    // encontramos la posicion final de la cadena final
-                    $posfinal = strpos($response['lcxml'], '</numero_id_propietario');
-                    // longitud de la cadena a impriimir
-                    $longitud_cadena = $posfinal - $pos;
-                    // cadena a imprimir, con posicion inicial y longitud
-                    $cadena = substr($response['lcxml'], $pos, $longitud_cadena);
-                    $modelInformacion->cedula = $cadena;
-                }
-                if ($cadena == 'R') {
-                    $pos = strpos($response['lcxml'], '<numero_id_propietario>');
-                    // encontramos la posicion final de la cadena final
-                    $posfinal = strpos($response['lcxml'], '</numero_id_propietario');
-                    // longitud de la cadena a impriimir
-                    $longitud_cadena = $posfinal - $pos;
-                    // cadena a imprimir, con posicion inicial y longitud
-                    $cadena = substr($response['lcxml'], $pos, $longitud_cadena);
-                    $modelInformacion->ruc = $cadena;
-                }
-
-
-                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $modelInformacion->fecha = date("Y-m-d H:i:s");
-                $modelInformacion->responsable = $id_responsable;
-                $modelInformacion->dealer_id = $dealer_id;
-                $modelInformacion->celular = '0999999999';
-                $modelInformacion->direccion = 'NA';
-                $modelInformacion->nombres = 'NA';
-                $modelInformacion->id_cotizacion = $id;
-
-
                 for ($i = 0; $i < $count_vh; $i++) {
                     $ini = $coincidencias_vh[0][$i][1];
                     $fin = $coincidencias2_vh[0][$i][1];
@@ -2289,13 +2207,47 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         $longitud_cadena = $posfinal - $pos;
                         // cadena a imprimir, con posicion inicial y longitud
                         $strtgavh = substr($str_vh, $pos, $longitud_cadena);
+                        $params = explode(">", $strtgavh);
                         $dataCreatec_vh .= '<td>' . $strtgavh . '</td>';
+                        $data_save[$value] = "{$params[1]}";
                     }
                     $dataCreatec_vh .= '</tr>';
                 }
                 $dataCreatec_vh .= '</table></div></div></div>';
+//                echo '<pre>';
+//                print_r($data_save);
+//                echo '</pre>';
                 $dataCrTgavh = TRUE;
                 $result = TRUE;
+                
+                //GRABAR DATOS A GESTION INFORMACION
+                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                $modelInformacion->fecha = date("Y-m-d H:i:s");
+                $modelInformacion->responsable = $id_responsable;
+                $modelInformacion->dealer_id = $dealer_id;
+                if(strlen($data_save['Teléfono del Propietario']) == 10){
+                    $modelInformacion->celular = $data_save['Teléfono del Propietario'];
+                }else{
+                    $modelInformacion->celular = '0999999999';
+                }
+                
+                $modelInformacion->ruc = $data_save['Id del Propietario'];
+                $modelInformacion->nombres = $data_save['Nombre Propietario'];
+                $modelInformacion->direccion = $data_save['Calle Principal'];
+                $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
+                //die('before validare');
+//                if ($modelInformacion->validate()) {
+//                    die( 'validate');
+//                } else {
+//                    echo '<pre>';
+//                    print_r($modelInformacion->getErrors());
+//                    echo '</pre>';
+//                    die( 'validate errors');
+//                }
+                if ($modelInformacion->save()) {
+                    //die('enter model save');
+                    $id_modeloInformacion = $modelInformacion->id;
+                }
             }
         }
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------
@@ -2307,7 +2259,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             'datavh01' => $dataCreatec_vh,
             'flagttga35' => $dataCrTga35,
             'flagttga36' => $dataCrTga36,
-            'flagvh01' => $dataCrTgavh
+            'flagvh01' => $dataCrTgavh,
+            'id_informacion' => $id_modeloInformacion,
+            'id_nueva_cotizacion' => $id_nueva_cotizacion
         );
         echo json_encode($options);
     }
@@ -2490,7 +2444,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         //$proforma->fecha = date("Y-m-d H:i:s");
         //$proforma->save();
         # mPDF        
-
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
         $mPDF1->SetTitle('Proforma Cliente');
@@ -2505,9 +2458,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma.'.pdf', 'I');
+        $mPDF1->Output($nombreproforma . '.pdf', 'I');
     }
-    
+
     /**
      * Generate a pdf document with vehicle accesories and charts
      * @param type $id_informacion
@@ -2534,13 +2487,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
         $num_proforma = $this->getProformaCliente($id_informacion, $id_vehiculo);
-        
+
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
         $mPDF1->WriteHTML($stylesheet, 1);
-        $mPDF1->WriteHTML($this->render('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));       
-        $mPDF1->Output($nombreproforma.'.pdf', 'I');
-
+        $mPDF1->WriteHTML($this->render('proformacliente', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion, 'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc), true));
+        $mPDF1->Output($nombreproforma . '.pdf', 'I');
     }
 
     /**
@@ -2557,7 +2509,7 @@ INNER JOIN gestion_informacion gi on gi.id = ge.id_informacion
 WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
-        $num_entrega = $this->getHojaEntregaCliente($id_informacion, $id_vehiculo);        
+        $num_entrega = $this->getHojaEntregaCliente($id_informacion, $id_vehiculo);
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
@@ -2608,7 +2560,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $criteria = new CDbCriteria(array(
             'condition' => "id='{$id_informacion}'"
         ));
-        $request = GestionInformacion::model()->findAll($criteria);        
+        $request = GestionInformacion::model()->findAll($criteria);
 
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
@@ -2750,16 +2702,16 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
         $factura->save();
-        
+
         $this->redirect(array('site/cierre/' . $id_informacion));
         //$this->render('cierre',  array('id' => $id_informacion, 'vec' => $vec));
     }
 
     public function actionFacturaIncorrecta($id_informacion = NULL, $id_vehiculo = NULL) {
-        /*echo '<pre>';
-        print_r($_POST);
-        echo '</pre>';
-        die();*/
+        /* echo '<pre>';
+          print_r($_POST);
+          echo '</pre>';
+          die(); */
         $con = Yii::app()->db;
         $sql = "UPDATE gestion_vehiculo SET cierre = 'ACTIVO' WHERE id = {$id_vehiculo}";
 
@@ -2776,7 +2728,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
         $factura->save();
-        
+
         $this->redirect(array('site/cierre/' . $id_informacion));
     }
 
@@ -2815,7 +2767,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             );
             //die('after uri');
             $client = new SoapClient(@$uriservicio, array('trace' => 1));
-            
+
             try {
                 $response = $client->pws01_01_cl("{$identificacion}", '');
             } catch (Exception $exc) {
@@ -2840,8 +2792,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //echo "NO HAY COINCIDENCIA";
             }
             $datos_search = array(
-                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo','nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
-                'fsc' => 'Factura','fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
+                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo', 'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
+                'fsc' => 'Factura', 'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
                 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
@@ -2881,10 +2833,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
                     $data_save[$value] = "{$strtgavh}";
-                    
                 }
                 //die('SALIDA NUMERO DE COINCIDENCIAS: '.print_r($data_save));
-                $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data,'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
+                $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
             } else { // si el valor es menor o igual a 0
                 if ($count >= 2) {// ENCUENTRA IDENTIFICACION
                     foreach ($datos_search as $key => $value) {
@@ -2909,7 +2860,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
                         $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $str . '</td></tr>';
                         $data_save[$value] = "{$str}";
-                        
                     }
                     //die('SALIDA ENCUENTRA INDENTIFICACION: '.print_r($data_save));
                     //die('result: '.$result);
@@ -2920,9 +2870,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             }
         }
     }
-    
-    function checkCreatec($response){
-        if(!$response){
+
+    function checkCreatec($response) {
+        if (!$response) {
             throw new Exception("Error al conectarse con la pirámide");
         }
         return true;
@@ -3042,7 +2992,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 $emailCliente = $this->getEmailCliente($_POST['GestionEntrega']['id_informacion']);
-				$ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
+                $ciudadCliente = $this->getCiudad($_POST['GestionEntrega']['id_informacion']);
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $asunto = 'Kia Motors Ecuador - Confirmación de Entrega de vehículo Kia ' . $this->getModeloTestDrive($_POST['GestionEntrega']['id_vehiculo']);
                 $general = '<body style="margin: 10px;">
@@ -3054,7 +3004,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                     <p style="margin: 2px 0;">Reciba un cordial saludo de Kia Motors Ecuador.</p>
 
                                     <p style="margin: 2px 0;">La fecha de entrega de su vehículo está fijada para el ' . date("d") . "/" . date("m") . "/" . date("Y") . ' 
-                                        en el concesionario '.strtoupper($this->getNameConcesionario($id_asesor)).' por:</p>
+                                        en el concesionario ' . strtoupper($this->getNameConcesionario($id_asesor)) . ' por:</p>
                                         <br />
                                     <table width="600" cellpadding="">
                                     <tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
@@ -3103,7 +3053,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
-		$ciudad = $this->getCiudad($id_asesor);
+                $ciudad = $this->getCiudad($id_asesor);
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $fecha_m = date("d m Y");
                 $fecha_m = $this->getFormatFecha($fecha_m);
@@ -3121,10 +3071,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     <div align="">
                                     <img src="images/header_mail.jpg">
                                     <br>
-                                        <p>'.$ciudadCliente.', '.$fecha_m.'</p><br /><br />
+                                        <p>' . $ciudadCliente . ', ' . $fecha_m . '</p><br /><br />
                                         <p>Señor(a)</p>
                                         <p>' . $nombre_cliente . '</p>
-                                        <p>'.$ciudadCliente.'.-</p>
+                                        <p>' . $ciudadCliente . '.-</p>
                                         <br />
                                         <p>
                                         KIA MOTORS ECUADOR le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
@@ -3327,28 +3277,28 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $area_id = (int) Yii::app()->user->getState('area_id');
         $con = Yii::app()->db;
-        if($cargo_id == 69 && $tipo == 'seg'){ // GERENTE COMERCIAL
+        if ($cargo_id == 69 && $tipo == 'seg') { // GERENTE COMERCIAL
             //die('enter gerente');
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
-        if($cargo_id == 69 && $tipo == 'exo'){ // GERENTE COMERCIAL
+        if ($cargo_id == 69 && $tipo == 'exo') { // GERENTE COMERCIAL
             //die('enter gerente');
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) ORDER BY nombres ASC";
         }
-        if($cargo_id == 69 && $tipo == 'bdc'){ // GERENTE COMERCIAL
+        if ($cargo_id == 69 && $tipo == 'bdc') { // GERENTE COMERCIAL
             //die('enter gerente');
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (72,73) ORDER BY nombres ASC";
         }
-        if($cargo_id == 70){ // JEFE SUCURSAL
+        if ($cargo_id == 70) { // JEFE SUCURSAL
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
-        if($area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14){
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
-        /*else{
-            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
-        }*/
-        
+        /* else{
+          $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
+          } */
+
         //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
@@ -3359,7 +3309,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $data .= $this->getResponsableNombres($value['id']);
             $data .= '</option>';
         }
-        
+
         echo $data;
     }
 
@@ -3621,7 +3571,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $options = array('options' => $data);
         echo json_encode($options);
     }
-    
+
     public function actionCotizacion($id_informacion, $id_vehiculo) {
         $this->layout = '//layouts/call-print';
         //die('enter prof');

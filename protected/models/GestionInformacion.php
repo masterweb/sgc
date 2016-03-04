@@ -85,7 +85,7 @@ class GestionInformacion extends CActiveRecord {
             array('nombres, direccion', 'required','on' => 'createc'),
             array('concesionario, modelo, version', 'numerical', 'integerOnly' => true),
             array('nombres, apellidos, email, ciudad', 'length', 'max' => 100),
-            array('nombres, apellidos', 'match', 'pattern' => '/^[a-zA-Z áéíóúÁÉÍÓÚÑñ\s]+$/', 'message' => "{attribute} debe contener sólo letras"),
+            array('nombres, apellidos', 'match', 'pattern' => '/^[a-zA-Z áéíóúÁÉÍÓÚÑñ.\s]+$/', 'message' => "{attribute} debe contener sólo letras"),
             array('cedula', 'length', 'max' => 20),
             array('direccion', 'length', 'max' => 100),
             array('celular, telefono_oficina, telefono_casa', 'length', 'max' => 15),

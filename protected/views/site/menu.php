@@ -273,7 +273,14 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                 <?php } ?>
                 
-
+                <?php if (($a->accesoSistema->controlador) == 'cquestionario' && ($a->accesoSistema->accion) == 'reportes' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
+                        <li class="wrapper">
+                                <div class="forma">
+                                        <a href="<?php echo Yii::app()->createUrl('cquestionario/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>
+                                                <div class="txt_menu">Reportes de Encuestas</div></a>
+                                </div>
+                        </li>
+                <?php } ?>    
                 <?php if (($a->accesoSistema->controlador) == 'ccampana' && ($a->accesoSistema->accion) == 'admin' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                     <li class="wrapper">
                         <div class="forma">

@@ -116,7 +116,7 @@ $rol = Yii::app()->user->getState('roles');
                         <th><span>#</span></th>
                         <th><span>Nombre</span></th>
                         <th><span>Apellido</span></th>
-                        <th>C&eacute;dula</th>
+                        <th>Identificaci&oacute;n</th>
                         <th>Celular</th>
                         <th>Convencional</th>
                         <th colspan="2">Opciones</th>
@@ -132,7 +132,7 @@ $rol = Yii::app()->user->getState('roles');
                         ?>
                         <tr>
                             <td><?php echo $cont; ?> </td>
-                            <td><?php echo utf8_decode(($c->nombre)) ?> </td>
+                            <td><?php echo (($c->nombre)) ?> </td>
                             <td><?php echo $c->apellido ?> </td>
                             <td><?php echo $c->cedula ?> </td>
                             <td><?php echo $c->ceular ?> </td>
@@ -229,7 +229,7 @@ $rol = Yii::app()->user->getState('roles');
 <script>
     
     $(document).ready(function () {
-
+ 
     (function ($) {
 
         $('#filter').keyup(function () {

@@ -153,7 +153,7 @@ class CpreguntaController extends Controller
 
 		$this->render('opciones',array('idc'=>$c,'op'=>$op,'model'=>$model,));
 	}
-	public function actionMatriz($c,$op){
+	public function actionMatriz($c,$op,$opcion=null){
 		$model=new Cpregunta;
 		if(isset($_POST['Cpregunta']))
 		{
@@ -165,6 +165,8 @@ class CpreguntaController extends Controller
 				//die();
 			$model->attributes=$_POST['Cpregunta'];
 			$model->estado ='ACTIVO';
+			if(!empty($opcion))
+				$model->copcionpregunta_id = (int)$opcion;
 			$model->fecha = date("Y-m-d");
 			if($model->save()){
 				
@@ -285,39 +287,59 @@ class CpreguntaController extends Controller
 		if(isset($_POST['Cpregunta']))
 		{
 			$p = new CHtmlPurifier();
-			//echo '<pre>';
-								//print_r($_POST);
-								//die();
+			/*echo '<pre>';
+			print_r($_POST);
+			die();*/
 			$model->attributes=$_POST['Cpregunta'];
 			$model->estado ='ACTIVO';
 			$model->fecha = date("Y-m-d");
 			if($model->save()){
 				$opciones = $p->purify($_POST['opciontxt']);
 				$status = 0;
-				$revisar = Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$model->id));
-				if(!empty($revisar)){
+				//$revisar = Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id='.$model->id));
+				/*if(!empty($revisar)){
 					Copcionpregunta::model()->deleteAll(array('condition'=>'cpregunta_id='.$model->id));
-				}
+				}*/
 				if(count($opciones)>=3){
 					
 					for($i =0 ; $i <= count($opciones) ; $i++){
 
 						if(!empty($opciones[$i])){
 							//echo $opciones[$i];
-							$opcionesB = new Copcionpregunta();		
-							if(!empty($opciones[$i]['opcion'])){
+							if(!empty($opciones[$i]['id'])){
+								$opcionesB = Copcionpregunta::model()->findByPk($opciones[$i]['id']);
+								if(!empty($opciones[$i]['opcion'])){
 								$opcionesB->detalle = $opciones[$i]['opcion'];
+								}
+								if(!empty($opciones[$i]['justifica'])){
+									$opcionesB->valor = $opciones[$i]['justifica'];
+								}else{
+									$opcionesB->valor = null;
+								}
+								$opcionesB->cpregunta_id = $model->id;
+								if(!$opcionesB->update()){
+									$status++;
+									/*echo '<pre>';
+									print_r($opciones[$i]);
+									die();*/
+								}
+							}else{
+								$opcionesB = new Copcionpregunta();		
+								if(!empty($opciones[$i]['opcion'])){
+									$opcionesB->detalle = $opciones[$i]['opcion'];
+								}
+								if(!empty($opciones[$i]['justifica'])){
+									$opcionesB->valor = $opciones[$i]['justifica'];
+								}
+								$opcionesB->cpregunta_id = $model->id;
+								if(!$opcionesB->save()){
+									$status++;
+									/*echo '<pre>';
+									print_r($opciones[$i]);
+									die();*/
+								}
 							}
-							if(!empty($opciones[$i]['justifica'])){
-								$opcionesB->valor = $opciones[$i]['justifica'];
-							}
-							$opcionesB->cpregunta_id = $model->id;
-							if(!$opcionesB->save()){
-								$status++;
-								/*echo '<pre>';
-								print_r($opciones[$i]);
-								die();*/
-							}
+
 						}
 					}
 					

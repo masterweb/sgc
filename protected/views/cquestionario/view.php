@@ -21,19 +21,21 @@ $this->menu = array(
                     <?php echo Yii::app()->user->getFlash('success'); ?>
                 </div>
             <?php else: ?>
-            <h1 class="tl_seccion">Ver Campa&ntilde;a</h1>
+            <h1 class="tl_seccion">Encuesta de la campa&ntilde;a: <i><?php echo $model->ccampana->nombre;?></i></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
-
-		
+		array(
+                    'label' => 'Base de datos',
+                        'value' => Cbasedatos::model()->findByPk($model->cbasedatos_id)->nombre
+                    ),
 		'nombre',
 		'descripcion',
+		'fechainicio',
+		'fechafin',
 		'fecha',
 		'estado',
-		
 	),
 )); ?>
 <?php endif; ?>  </div>
@@ -41,7 +43,7 @@ $this->menu = array(
            
             <p class="border-bt">Tambi&eacute;n puedes ir a:</p>
             <ul>
-                <li><a href="<?php echo Yii::app()->createUrl('ccampana/admin'); ?>" class="seguimiento-btn">Administrador de Campa&ntilde;as</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('cquestionario/admin/id/'.$model->ccampana_id); ?>" class="seguimiento-btn">Administrador de Encuestas</a></li>
                 <li><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></li>
 				<li><a href="javascript:history.back(1)" class="back-btn-go">Volver</a></li>
             </ul>

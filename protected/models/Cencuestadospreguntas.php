@@ -49,6 +49,8 @@ class Cencuestadospreguntas extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'cencuestadoscquestionario' => array(self::BELONGS_TO, 'Cencuestadoscquestionario', 'cencuestadoscquestionario_id'),
+			'copcionpregunta' => array(self::BELONGS_TO, 'Copcionpregunta', 'copcionpregunta_id'),
+			'cmatrizpregunta' => array(self::BELONGS_TO, 'Cmatrizpregunta', 'cmatrizpregunta_id'),
 		);
 	}
 
@@ -60,6 +62,8 @@ class Cencuestadospreguntas extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'pregunta_id' => 'Pregunta',
+			'copcionpregunta_id'=>'copcionpregunta_id',
+			'cmatrizpregunta_id'=>'cmatrizpregunta_id',
 			'respuesta' => 'Respuesta',
 			'fecha' => 'Fecha',
 			'cencuestadoscquestionario_id' => 'Cencuestadoscquestionario',
@@ -80,7 +84,7 @@ class Cencuestadospreguntas extends CActiveRecord
 	 */
 	public function search()
 	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+		//cmatrizpregunta_id @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
@@ -89,6 +93,8 @@ class Cencuestadospreguntas extends CActiveRecord
 		$criteria->compare('respuesta',$this->respuesta,true);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('cencuestadoscquestionario_id',$this->cencuestadoscquestionario_id);
+		$criteria->compare('copcionpregunta_id',$this->copcionpregunta_id);
+		$criteria->compare('cmatrizpregunta_id',$this->cmatrizpregunta_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
