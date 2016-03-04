@@ -28,11 +28,11 @@ class CquestionarioController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('graficar','index','view','getencuestas','getUsuario',"traerRespuestas",'abrirMatriz'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('reportes','create','update','admin','eliminar','search','adjunto','duplicar'),
+				'actions'=>array('detallereporteusuario','reportes','create','update','admin','eliminar','search','adjunto','duplicar','reportesv','detallereporte'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -298,10 +298,142 @@ class CquestionarioController extends Controller
 		}
 		$this->render('duplicar',array('model'=>$encuesta));
 	}
-	public function actionReportes(){
-
-		$campana = Ccampana::model()->findAll(array('condition'=>'estado = "ACTIVO"'));
-		$model = Cquestionario::model()->findAll(array("condition"=>'estado = "ACTIVO"'));
-		$this->render('reportes',array('model'=>$model,'campana'=>$campana));
+	public function actionReportesv(){
+		$this->redirect(array('/cquestionario/reportes/c/'.$_GET['cbocampana'].'/r/'.$_GET['cboencuesta']));
+		
 	}
+	public function actionReportes($c=null,$r=null){
+		$model = null;
+		$campana  = null;
+
+		if(!empty($c))
+			$campana = Ccampana::model()->findAll(array('condition'=>'id='.$c.' and estado = "ACTIVO"'));
+		//else
+			//$campana = Ccampana::model()->findAll(array('condition'=>'estado = "ACTIVO"'));
+		
+		if(!empty($r))
+			$model = Cquestionario::model()->findAll(array("condition"=>'id='.$r.' and estado = "ACTIVO"'));
+		/*else
+			$model = Cquestionario::model()->findAll(array("condition"=>'estado = "ACTIVO"'));*/
+		$this->render('reportes',array('model'=>$model,'campana'=>$campana));
+	}  
+	
+	public function actionGetencuestas(){ 
+		$p = new CHtmlPurifier();
+		$valor = $p->purify($_POST['vl']);
+		if(!empty($valor)){
+			$model = Cquestionario::model()->findAll(array('condition'=>'ccampana_id = '.$valor));
+			if(!empty($model)){
+				$html = '<select id="cboencuesta" name="cboencuesta" class="form-control">';
+				foreach($model as $m){
+					$html .="<option value='$m->id'>$m->nombre</option>";
+				}
+				$html .= '</select>';
+				echo $html;
+			}
+		}
+	}
+	public function actionDetallereporte($id){
+		$model = Cquestionario::model()->findByPk((int)$id);
+		$encuestados = Cencuestados::model()->findAll(array('condition'=>'cquestionario_id = '.(int)$model->id));
+		$this->render('detalle',array('model'=>$model,'encuestados'=>$encuestados ));
+	}
+	public function actionDetallereporteusuario($u,$q){
+		$model = Cquestionario::model()->find(array("condition"=>'id='.$q.' and estado = "ACTIVO"'));
+		$qe = Cencuestadoscquestionario::model()->find(array('condition'=>'cquestionario_id='.$q.' and cencuestados_id='.$u));
+		$this->render('detallereporteusuario',array('model'=>$model,'encuesta'=>$qe));
+	}
+	public function getUsuario($encuestado, $encuesta){
+		$userD = Cencuestadoscquestionario::model()->find(array('condition'=>'cquestionario_id = '.$encuesta.' and cencuestados_id='.(int)$encuestado));
+		if(!empty($userD)){
+			$user = Usuarios::model()->findByPk($userD->usuarios_id);
+			return $user;
+		}
+	}
+	public function getEncuesta($encuestado, $encuesta){
+		$userD = Cencuestadoscquestionario::model()->find(array('condition'=>'cquestionario_id = '.$encuesta.' and cencuestados_id='.(int)$encuestado));
+		if(!empty($userD)){
+			return $userD;
+		}
+	}
+	public function actionGraficar(){
+		$p = new CHtmlPurifier();
+		$valor = $p->purify($_POST['vl']);
+		if(!empty($valor)){
+			$keyp = Cpregunta::model()->findByPk($valor);
+			$opciones= Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id = '.(int)$valor));
+			$table = "";
+			if(!empty($opciones)){
+				
+				foreach ($opciones as $keyo) {
+					$numerorespuestas =0;
+
+					$numerorespuestas = Cencuestadospreguntas::model()->count(array('condition'=>'pregunta_id ='.(int)$valor.' and copcionpregunta_id ='.$keyo->id));
+					/*PARA MATRIZ*/
+					if($keyp->ctipopregunta_id ==4){
+						echo '<li style="padding:10px;width:100%;border:1px solid #ccc;margin:2px auto;">'.$cont.'.'.$conto.') &nbsp;<label style="width:250px;height:15px;font-weight:bold;font-size:13px;">'.$keyo->detalle.'</label><span style="margin:width:200px;auto auto auto 100px; padding:2px;">Respuestas: '.$numerorespuestas.'</span></li>';
+					}else{
+						$table .= $keyo->detalle.'-'.$numerorespuestas.'|';
+					}
+
+				}
+			}
+			echo $table;
+		}
+	}
+	public function actionTraerRespuestas(){
+		$p = new CHtmlPurifier();
+		$valor = $p->purify($_POST['vl']);
+		if(!empty($valor)){
+			$keyp = Cpregunta::model()->findByPk($valor);
+			$respuestas= Cencuestadospreguntas::model()->findAll(array('condition'=>'pregunta_id = '.(int)$valor));
+			$table = "";
+			if(!empty($respuestas)){
+
+				foreach ($respuestas as $keyo) {
+					$table .="<div style='width:100%;padding: 9px;margin:3px auto;border: 1px solid#ccc;font-weight: 600;'>$keyo->respuesta</div>";
+				}
+			echo $table;
+			die();
+			}
+		}
+		echo 0;
+	}
+
+	public function actionAbrirMatriz(){
+		$p = new CHtmlPurifier();
+		$valor = $p->purify($_POST['vl']);
+		if(!empty($valor)){
+			$keyp = Cpregunta::model()->findByPk($valor);
+			$opciones= Copcionpregunta::model()->findAll(array('condition'=>'cpregunta_id = '.(int)$keyp->id));
+			$table = "";
+			if(!empty($opciones)){
+				foreach ($opciones as $keyo) {
+					$table .='||'.$keyo->detalle.'-';
+					$matriz= Cmatrizpregunta::model()->findAll(array('condition'=>'cpregunta_id = '.(int)$keyp->id));
+					if(!empty($matriz)){
+						/*$table .='<table class="table"><tr>';
+						foreach ($matriz as $key) {
+							$table .='<th style="background:#CCC;text-align:center"><span >'.$key->detalle.' [ '.$key->valor.' ]</span></th>';
+							//$table.='<li style="width:100%;padding:5px; margin:5px auto;"></li>';
+						}
+						$table .= '</tr>';*/
+						//COMPROBAR SI HUBO RESPUESTA
+						//$table .= '<tr>';
+						foreach ($matriz as $key) {
+							$RESP = 0;
+							$RESP= Cencuestadospreguntas::model()->count(array('condition'=>'cmatrizpregunta_id = '.(int)$key->id.' and copcionpregunta_id='.$keyo->id));
+							if($RESP >0){
+								$table .= '<td style="font-size:13px;font-weight:100;text-align:center;">'.$RESP.'</td>';
+							}
+						}
+						//$table .='</tr>';
+						//$table .='</table>';
+					}
+				}
+			}
+		}
+		echo $table;
+	}
+
 }

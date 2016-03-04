@@ -1761,7 +1761,7 @@ class Controller extends CController {
                     $posicion++;
                 }
 
-                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion]) && !empty($d->gestioninformacion->telefono_casa) && !empty($d->gestioninformacion->cedula)) {
+                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion]) && !empty($d->gestioninformacion->telefono_casa) ) {
                     //echo $usuario_list[$posicion].'<br>';
                     $cotizacion = new Nocompradores();
                     $cotizacion->gestiondiaria_id = (int) $d->id;

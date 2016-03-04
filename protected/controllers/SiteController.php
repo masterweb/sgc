@@ -1837,9 +1837,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $modelInformacion->fecha = date("Y-m-d H:i:s");
                 $modelInformacion->responsable = $id_responsable;
                 $modelInformacion->dealer_id = $dealer_id;
-                if(strlen($data_save['Teléfono del Propietario']) == 10){
+                if (strlen($data_save['Teléfono del Propietario']) == 10) {
                     $modelInformacion->celular = $data_save['Teléfono del Propietario'];
-                }else{
+                } else {
                     $modelInformacion->celular = '0999999999';
                 }
                 $modelInformacion->cedula = $data_save['Id del Propietario'];
@@ -1859,6 +1859,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     //die('enter model save');
                     $id_modeloInformacion = $modelInformacion->id;
                 }
+                
+                // GRABAR PASO INICIAL EN GESTION CONSULTA
+                $consulta = new GestionConsulta;
+                $consulta->id_informacion = $modelInformacion->id;
+                $consulta->fecha = date("Y-m-d H:i:s");
+                $consulta->status = 'ACTIVO';
+                $consulta->save();
+                
             }
         }
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------
@@ -2219,18 +2227,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 //                echo '</pre>';
                 $dataCrTgavh = TRUE;
                 $result = TRUE;
-                
+
                 //GRABAR DATOS A GESTION INFORMACION
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $modelInformacion->fecha = date("Y-m-d H:i:s");
                 $modelInformacion->responsable = $id_responsable;
                 $modelInformacion->dealer_id = $dealer_id;
-                if(strlen($data_save['Teléfono del Propietario']) == 10){
+                if (strlen($data_save['Teléfono del Propietario']) == 10) {
                     $modelInformacion->celular = $data_save['Teléfono del Propietario'];
-                }else{
+                } else {
                     $modelInformacion->celular = '0999999999';
                 }
-                
+
                 $modelInformacion->ruc = $data_save['Id del Propietario'];
                 $modelInformacion->nombres = $data_save['Nombre Propietario'];
                 $modelInformacion->direccion = $data_save['Calle Principal'];
@@ -2248,6 +2256,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     //die('enter model save');
                     $id_modeloInformacion = $modelInformacion->id;
                 }
+
+                // GRABAR PASO INICIAL EN GESTION CONSULTA
+                $consulta = new GestionConsulta;
+                $consulta->id_informacion = $modelInformacion->id;
+                $consulta->fecha = date("Y-m-d H:i:s");
+                $consulta->status = 'ACTIVO';
+                $consulta->save();
             }
         }
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------

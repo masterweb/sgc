@@ -378,6 +378,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionUpdate($id_informacion = NULL, $tipo = NULL, $fuente = NULL) {
 
         $id = $this->getIdConsulta($id_informacion);
+        //die('id consulta: '.$id);
 
         $model = $this->loadModel($id);
 
