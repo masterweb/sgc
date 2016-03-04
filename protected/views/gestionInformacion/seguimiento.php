@@ -439,14 +439,16 @@ $count = count($users);
     <div class="cont-existente">
 
     </div>
+    <div class="cont-createc-vh01"></div>
+    <div class="cont-createc-but"></div>
     <div class="cont-createc">
         
     </div>
     <div class="cont-createc-tg36">
 
     </div>
-    <div class="cont-createc-vh01"></div>
-    <div class="cont-createc-but"></div>
+    
+    
     <?php if(isset($title)): ?>
     <div class="row">
         <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     

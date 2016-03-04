@@ -1859,14 +1859,28 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     //die('enter model save');
                     $id_modeloInformacion = $modelInformacion->id;
                 }
-                
+
+                // GRABAR PASO INICIAL GESTION DIARIA
+                $gestion = new GestionDiaria;
+                $gestion->id_informacion = $modelInformacion->id;
+                $gestion->id_vehiculo = 0;
+                $gestion->observaciones = 'Prospección';
+                $gestion->medio_contacto = 'telefono';
+                $gestion->fuente_contacto = 'prospeccion';
+                $gestion->codigo_vehiculo = 0;
+                $gestion->primera_visita = 1;
+                $gestion->status = 1;
+                $gestion->paso = 3;
+                $gestion->proximo_seguimiento = '';
+                $gestion->fecha = date("Y-m-d H:i:s");
+                $gestion->save();
+
                 // GRABAR PASO INICIAL EN GESTION CONSULTA
                 $consulta = new GestionConsulta;
                 $consulta->id_informacion = $modelInformacion->id;
                 $consulta->fecha = date("Y-m-d H:i:s");
                 $consulta->status = 'ACTIVO';
                 $consulta->save();
-                
             }
         }
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------
@@ -2256,6 +2270,21 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     //die('enter model save');
                     $id_modeloInformacion = $modelInformacion->id;
                 }
+
+                // GRABAR PASO INICIAL GESTION DIARIA
+                $gestion = new GestionDiaria;
+                $gestion->id_informacion = $modelInformacion->id;
+                $gestion->id_vehiculo = 0;
+                $gestion->observaciones = 'Prospección';
+                $gestion->medio_contacto = 'telefono';
+                $gestion->fuente_contacto = 'prospeccion';
+                $gestion->codigo_vehiculo = 0;
+                $gestion->primera_visita = 1;
+                $gestion->status = 1;
+                $gestion->paso = 3;
+                $gestion->proximo_seguimiento = '';
+                $gestion->fecha = date("Y-m-d H:i:s");
+                $gestion->save();
 
                 // GRABAR PASO INICIAL EN GESTION CONSULTA
                 $consulta = new GestionConsulta;
@@ -2848,6 +2877,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
                     $data_save[$value] = "{$strtgavh}";
+                    
                 }
                 //die('SALIDA NUMERO DE COINCIDENCIAS: '.print_r($data_save));
                 $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
