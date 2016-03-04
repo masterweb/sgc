@@ -57,6 +57,7 @@ class Cencuestadoscquestionario extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'usuarios' => array(self::BELONGS_TO, 'Usuarios', 'usuarios_id'),
 			'cencuestados' => array(self::BELONGS_TO, 'Cencuestados', 'cencuestados_id'),
 			'cquestionario' => array(self::BELONGS_TO, 'Cquestionario', 'cquestionario_id'),
 			'cencuestadospreguntases' => array(self::HAS_MANY, 'Cencuestadospreguntas', 'cencuestadoscquestionario_id'),
