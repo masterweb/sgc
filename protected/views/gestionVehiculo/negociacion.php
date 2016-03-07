@@ -13,7 +13,7 @@
 //echo 'id vehiculo: '.$id_vehiculo;
 $id_modelo = $this->getIdModelo($id_vehiculo);
 //echo 'id modelo: '.$id_modelo;
-$tipo = $this->getFinanciamiento($id_informacion); 
+$tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo); 
 $id_version = $this->getIdVersion($id_vehiculo);
 ?>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
@@ -133,6 +133,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         $('#GestionFinanciamiento_tipo').change(function () {
             var valorFin = $('#GestionFinanciamiento_tipo').val();
             var idinfo = $('#GestionFinanciamiento_id_informacion').val();
+            var idvehiculo = $('#GestionFinanciamiento_id_vehiculo').val();
             console.log('id informacion: ' + idinfo);
             if (valorFin == 'Contado') { // cambiar a contado
                 // make a update to table gestion_consulta with value 0 in column preg6
@@ -140,7 +141,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $.ajax({
                     url: '<?php echo Yii::app()->createAbsoluteUrl("gestionConsulta/setFinanciamiento"); ?>',
                     type: 'POST',
-                    data: {idInformacion: idinfo, tipo: 0},
+                    data: {idInformacion: idinfo, tipo: 0, idVehiculo: idvehiculo},
                     success: function (data) {
                         $('#bg_negro').show();
                         location.reload();
@@ -154,7 +155,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $.ajax({
                     url: '<?php echo Yii::app()->createAbsoluteUrl("gestionConsulta/setFinanciamiento"); ?>',
                     type: 'POST',
-                    data: {idInformacion: idinfo, tipo: 1},
+                    data: {idInformacion: idinfo, tipo: 1, idVehiculo: idvehiculo},
                     success: function (data) {
                         $('#bg_negro').show();
                         location.reload();

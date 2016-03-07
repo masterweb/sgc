@@ -5,7 +5,7 @@
 //echo 'num proforma: '.$id_hoja;
 $fin = $this->getTipoExoInfo($id_informacion);
 //echo '<strong>'.$fin.'</strong><br>';
-
+$id_vehiculo = $_GET['id_vehiculo'];
 $id_asesor = Yii::app()->user->getId();
 $emailAsesor = $this->getAsesorEmail($responsable_id);
 $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
@@ -34,13 +34,13 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
 <div class="container cont-print">
     <?php foreach ($data as $key => $value) : ?>
         <?php
-        $credito = $this->getFinanciamiento($id_informacion);
+        $credito = $this->getFinanciamiento($id_informacion,$id_vehiculo);
         // echo 'credito: '.$credito;
         ?>
         <div class="row title">
             <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
             <div class="col-xs-8" style="border-left:1px solid #888890;">
-                <h4><?php echo strtoupper($this->getNameConcesionario($id_asesor)); ?></h4>
+                <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
                 <div class="target">
 
                     <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>

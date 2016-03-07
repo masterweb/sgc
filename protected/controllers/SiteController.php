@@ -2836,9 +2836,10 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //echo "NO HAY COINCIDENCIA";
             }
             $datos_search = array(
-                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo', 'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
-                'fsc' => 'Factura', 'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
-                'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
+                'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo',
+                'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
+                'fsc' => 'Factura', 'codigo_concesionario' => 'Concesionario','fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
+                'numero_id_propietario' => 'Identificación', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
                 'forma_pago_retail' => 'Forma de Pago'
@@ -2877,8 +2878,24 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
                     $data_save[$value] = "{$strtgavh}";
-                    
                 }
+                //echo '<pre>';
+                //print_r($data_save);
+                //echo '</pre>';
+                //die();
+
+                $dt = time();
+                $fecha_actual = strftime("%Y-%m-%d", $dt);
+                $year_actual = explode('-', $fecha_actual);
+                $year_createc = explode('-', $data_save['Fecha de Venta']);
+                $fact = (string) trim($year_actual[0]);
+                $fcreatec = substr($year_createc[0], 14, 4);
+                //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
+                //echo '<h2>' . $fcreatec . '</h2>';
+                if ($fcreatec !== $fact) {
+                    $result = 'nofind'; // Year doesn't match 
+                }
+                //die('result 1: ' . $result);
                 //die('SALIDA NUMERO DE COINCIDENCIAS: '.print_r($data_save));
                 $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
             } else { // si el valor es menor o igual a 0
@@ -2906,6 +2923,25 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                         $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $str . '</td></tr>';
                         $data_save[$value] = "{$str}";
                     }
+
+                    //echo '<pre>';
+                    //print_r($data_save);
+                    //echo '</pre>';
+                    //die();
+
+                    $dt = time();
+                    $fecha_actual = strftime("%Y-%m-%d", $dt);
+                    $year_actual = explode('-', $fecha_actual);
+                    $year_createc = explode('-', $data_save['Fecha de Venta']);
+                    $fact = (string) trim($year_actual[0]);
+                    $fcreatec = substr($year_createc[0], 14, 4);
+                    //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
+                    //echo '<h2>' . $fcreatec . '</h2>';
+                    if ($fcreatec !== $fact) {
+                        $result = 'nofind'; // Year doesn't match 
+                    }
+                    //die('result 2: ' . $result);
+
                     //die('SALIDA ENCUENTRA INDENTIFICACION: '.print_r($data_save));
                     //die('result: '.$result);
                     $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
@@ -3652,6 +3688,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
+    
+    /*public function actionAlterTable() {
+        $sql = "ALTER TABLE gestion_vehiculo ADD tipo_credito INT unsigned default 1";
+        $con = Yii::app()->db;
+        $request = $con->createCommand($sql)->execute();
+        echo 'result: '.$request;
+        
+    }*/
 
     //
 }

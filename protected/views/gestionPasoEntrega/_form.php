@@ -200,7 +200,7 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                                 <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr>
                                 <tr class="odd"><th>Motor</th><td><?php echo $array_datos_vehiculo[2]; ?></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
                                 <tr class="odd"><th>Factura</th><td><?php echo $array_datos_vehiculo[5]; ?></td><th>No. Chasis</th><td><?php echo $array_datos_vehiculo[0]; ?></td></tr>
-                                <tr class="odd"><th>Color</th><td><?php echo $array_datos_vehiculo[4]; ?></td><th></th><td></td></tr> 
+                                <tr class="odd"><th>Color</th><td><?php echo $array_datos_vehiculo[4]; ?></td><th>Concesionario</th><td><?php echo $array_datos_vehiculo[7]; ?></td></tr> 
                             </tbody>
                         </table>
                     </div>

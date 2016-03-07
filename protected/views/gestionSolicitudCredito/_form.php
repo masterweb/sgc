@@ -18,7 +18,7 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
 //$id_version = $this->getVersion($id_vehiculo);
 //echo 'id repsonsable:'.$id_asesor;
 $modelo = $this->getNombreModelo($id_informacion, $id_vehiculo);
-$credito = $this->getFinanciamiento($id_informacion);
+$credito = $this->getFinanciamiento($id_informacion, $id_vehiculo);
 $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 //echo 'nombre concesionario : '.$nombre_concesionario;
 ?>
@@ -121,6 +121,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_sueldo_mensual_conyugue').keyup(function () {
             $('#GestionSolicitudCredito_sueldo_mensual_conyugue').removeClass('error');
             $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').hide();
+            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').hide();
+        });
+        $('#GestionSolicitudCredito_sueldo_mensual').keyup(function () {
+            $('#GestionSolicitudCredito_sueldo_mensual').removeClass('error');
+            $('#GestionSolicitudCredito_sueldo_mensual_error').hide();
+        });
+        $('#GestionSolicitudCredito_avaluo_propiedad').keyup(function () {
+            $('#GestionSolicitudCredito_avaluo_propiedad_error').hide();
         });
         $('#GestionSolicitudCreditovehiculo_valor2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCreditovalor_inversion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
@@ -389,6 +397,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                $('#telefonos_trabajo_error').show();
                                $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
                             }
+                        var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                        if(sueldo_soltero < 300){
+                            $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                            error++;
+                            return false;
+                        }
                         //validateCasado();
                         break;
                     case 'Casado sin separación de bienes':
@@ -455,6 +470,20 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
                             error++;
                         }
+                        var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                        if(sueldo_soltero < 300){
+                            $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                            error++;
+                            return false;
+                        }
+                        var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+                        if(sueldo_casado < 300){
+                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                            errot++;
+                            return false;
+                        }
                         break;
                 }
                 var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
@@ -465,6 +494,16 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 if (diferencia < 6480) {
                     alert('El cliente debe ser mayor de 18 años');
                     return false;
+                }
+                
+                var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
+                if(tipo_propiedad == 'Propia'){
+                    var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
+                    if(avaluo_propiedad < 9999){
+                        $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
+                        $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
+                        return false;
+                    }
                 }
                 //console.log('enter submit');
                 //if (confirm('Desea grabar los datos ingresados y enviar la solicitud al Asesor de Crédito?')) {
@@ -1630,6 +1669,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->labelEx($model, 'avaluo_propiedad'); ?>
                                 <?php echo $form->textField($model, 'avaluo_propiedad', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                 <?php echo $form->error($model, 'avaluo_propiedad'); ?>
+                                <label for="" generated="true" class="error" id="GestionSolicitudCredito_avaluo_propiedad_error" style="display: none;">Ingrese un valor correcto</label>
                             </div>
 
 
@@ -1726,12 +1766,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <?php echo $form->labelEx($model, 'sueldo_mensual'); ?>
                             <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'sueldo_mensual'); ?>
+                            <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_error" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
                         </div>
                         <div class="col-md-4">
                             <?php echo $form->labelEx($model, 'sueldo_mensual_conyugue'); ?>
                             <?php echo $form->textField($model, 'sueldo_mensual_conyugue', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'sueldo_mensual_conyugue'); ?>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_conyugue_error" style="display: none;">Este campo es requerido.</label>
+                            <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_conyugue_error2" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
                         </div>
                         <div class="col-md-4">
                             <?php echo $form->labelEx($model, 'otros_ingresos'); ?>

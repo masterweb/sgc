@@ -179,7 +179,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                     'condition' => "id_informacion={$id}"
                 ));
                 $sl = GestionSolicitudCredito::model()->count($criteria5);
-                if ($sl > 0):
+                if ($sl > 0 || $gf > 0):
                     ?>
                     <div class="row"></div>
                     <br />
@@ -190,7 +190,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                     </div>
                 <?php endif; ?>
 
-                <?php if ($gf > 0): ?>
+                <?php if ($gf > 216546): ?>
                     <div class="row"></div>
                     <br />
                     <div class="row">

@@ -459,6 +459,7 @@ class Controller extends CController {
     }
 
     public function getPrecio($id, $tipo, $id_modelo) {
+        //echo 'tipo: '.$tipo;
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
         ));
@@ -469,7 +470,7 @@ class Controller extends CController {
         ));
         //    die ('version: '.$version);
         $modeloversion = Versiones::model()->find($criteria2);
-        if ($tipo == 1 && ($id_modelo != 90 || $id_modelo != 93)) {
+        if ($tipo == 1 && $id_modelo != 90 && $id_modelo != 93) {
             return $modeloversion->precio + 670; // precio de credito con accesorio Kit Satelital por defecto
         } else {
             return $modeloversion->precio;
@@ -995,6 +996,19 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
+    
+    public function getNombreConcesionario($id) {
+        //die('id-----: '.$id);
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $usuarios = Dealers::model()->find($criteria);
+        if ($usuarios) {
+            return $usuarios->name;
+        } else {
+            return 'NA';
+        }
+    }
 
     public function getNameConcesionario($id) {
         //die('id: '.$id);
@@ -1008,7 +1022,7 @@ class Controller extends CController {
             $cri = new CDbCriteria(array(
                 'condition' => "id={$usuario->concesionario_id}"
             ));
-            $deal = Dealers::model()->findByPk($cri);
+            $deal = Dealers::model()->findAll($cri);
             return $deal->name;
         } else {
             $criteria2 = new CDbCriteria(array(
@@ -1267,17 +1281,13 @@ class Controller extends CController {
         }
     }
 
-    public function getFinanciamiento($id_informacion) {
-        $con = Yii::app()->db;
-        $sql = "SELECT gc.preg6 FROM gestion_consulta gc 
-        INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
-        WHERE gi.id = {$id_informacion} ";
-        $request = $con->createCommand($sql)->query();
-        $tipo = '';
-        foreach ($request as $value) {
-            $tipo = $value['preg6'];
+    public function getFinanciamiento($id_informacion,$id_vehiculo) {
+        $tipo = GestionVehiculo::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id = {$id_vehiculo}"));
+        if ($tipo) {
+            return $tipo->tipo_credito;
+        } else {
+            return 0;
         }
-        return $tipo;
     }
 
     public function getFotoEntregaDetail($id_informacion) {
@@ -2233,6 +2243,11 @@ class Controller extends CController {
         }
 
         echo $data;
+    }
+    
+    public function getNameBanco($id) {
+        $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
+        return $banco->nombre;
     }
 
 }

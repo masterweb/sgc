@@ -18,6 +18,7 @@
  * @property string $fecha
  * @property string $cierre
  * @property string $num_pdf
+ * @property int $tipo_credito
  *
  * The followings are the available model relations:
  * @property GestionInformacion $idInformacion
@@ -48,7 +49,7 @@ class GestionVehiculo extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('id_informacion, modelo', 'required'),
-            array('modelo, version', 'numerical', 'integerOnly'=>true),
+            array('modelo, version, tipo_credito', 'numerical', 'integerOnly'=>true),
             array('id_informacion', 'length', 'max' => 15),
             array('modelo, precio, dispositivo, accesorios, seguro, plazo, total, forma_pago', 'length', 'max' => 45),
             array('observaciones, fecha', 'safe'),
@@ -88,6 +89,7 @@ class GestionVehiculo extends CActiveRecord {
             'fecha' => 'Fecha',
             'cierre' => 'Cierre',
             'num_pdf' => 'Numero de Proforma',
+            'tipo_credito' => 'Tipo Credito',
         );
     }
 

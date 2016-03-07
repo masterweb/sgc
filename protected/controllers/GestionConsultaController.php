@@ -747,8 +747,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionSetFinanciamiento() {
         $idInformacion = isset($_POST["idInformacion"]) ? $_POST["idInformacion"] : "";
+        $idVehiculo = isset($_POST["idVehiculo"]) ? $_POST["idVehiculo"] : "";
         $tipo = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
-        $sql = "UPDATE gestion_consulta SET preg6 = {$tipo} WHERE id_informacion = {$idInformacion}";
+        $sql = "UPDATE gestion_vehiculo SET tipo_credito = {$tipo} WHERE id_informacion = {$idInformacion} AND id = {$idVehiculo}";
         $con = Yii::app()->db;
         $request = $con->createCommand($sql)->query();
     }

@@ -332,6 +332,20 @@ class Util {
             return 'NA';
         }
     }
+    
+    public static function getTiempoTrabajoConyugue($id_informacion) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id_informacion}"
+        ));
+        $tr = GestionSolicitudCredito::model()->find($criteria);
+        if ($tr) {
+            if (($tr->tiempo_trabajo_conyugue != '') && ($tr->meses_trabajo_conyugue != '')) {
+                return $tr->tiempo_trabajo_conyugue . ' años ' . $tr->meses_trabajo_conyugue . ' meses';
+            }
+        } else {
+            return 'NA';
+        }
+    }
 
     public static function getTiempoTrabajo($id_informacion) {
         $criteria = new CDbCriteria(array(

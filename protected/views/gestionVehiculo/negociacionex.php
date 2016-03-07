@@ -13,7 +13,7 @@
 //echo 'id vehiculo: '.$id_vehiculo;
 $id_modelo = $this->getIdModelo($id_vehiculo);
 //echo 'id vehiculo: '.$id_vehiculo;
-$tipo = $this->getFinanciamiento($id_informacion);
+$tipo = $this->getFinanciamiento($id_informacion,$id_vehiculo);
 $id_version = $this->getIdVersion($id_vehiculo);
 ?>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>

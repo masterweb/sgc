@@ -16,13 +16,15 @@
 $cri5 = new CDbCriteria;
 $cri5->condition = "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}";
 $model = GestionFinanciamiento::model()->find($cri5);
+//echo 'cuota mensual: '.$model->cuota_mensual;
 //echo 'model financiamiento: '.$model->id;
 //$id_financiamiento = $negociacion->id;
         
         
 $id_modelo = $this->getIdModelo($id_vehiculo);
 //echo 'id modelo: '.$id_modelo;
-$tipo = $this->getFinanciamiento($id_informacion);
+$tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo);
+//echo 'TIPO FINANCIAMIENTO: '.$tipo;
 $id_version = $this->getIdVersion($id_vehiculo);
 //echo 'id version: '.$id_version;
 $criteria4 = new CDbCriteria(array('condition' => "id_financiamiento = {$model->id}"));
@@ -131,7 +133,7 @@ if ($fi == 2) {
         $('#GestionFinanciamiento_seguro').val(valorseguro);
 
         var cuotamensual = parseInt($('#GestionFinanciamiento_cuota_mensual').val());
-        cuotamensual = format2(cuotamensual, '$');
+        //cuotamensual = format2(cuotamensual, '$');
         if(cuotamensual>0){
             cuotamensual = format2(cuotamensual, '$');
         }else{
@@ -278,6 +280,7 @@ if ($fi == 2) {
         $('#GestionFinanciamiento_tipo').change(function () {
             var valorFin = $('#GestionFinanciamiento_tipo').val();
             var idinfo = $('#GestionFinanciamiento_id_informacion').val();
+            var idvehiculo = $('#GestionFinanciamiento_id_vehiculo').val();
             console.log('id informacion: ' + idinfo);
             if (valorFin == 'Contado') { // cambiar a contado
                 // make a update to table gestion_consulta with value 0 in column preg6
@@ -285,7 +288,7 @@ if ($fi == 2) {
                 $.ajax({
                     url: '<?php echo Yii::app()->createAbsoluteUrl("gestionConsulta/setFinanciamiento"); ?>',
                     type: 'POST',
-                    data: {idInformacion: idinfo, tipo: 0},
+                    data: {idInformacion: idinfo, tipo: 0, idVehiculo: idvehiculo},
                     success: function (data) {
                         $('#bg_negro').show();
                         location.reload();
@@ -299,7 +302,7 @@ if ($fi == 2) {
                 $.ajax({
                     url: '<?php echo Yii::app()->createAbsoluteUrl("gestionConsulta/setFinanciamiento"); ?>',
                     type: 'POST',
-                    data: {idInformacion: idinfo, tipo: 1},
+                    data: {idInformacion: idinfo, tipo: 1, idVehiculo: idvehiculo},
                     success: function (data) {
                         $('#bg_negro').show();
                         location.reload();

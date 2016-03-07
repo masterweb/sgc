@@ -52,13 +52,13 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'dispositivo',
 		'accesorios',
             'cierre',
-		/*
+		
 		'seguro',
 		'plazo',
 		'total',
 		'forma_pago',
 		'fecha',
-		*/
+		'tipo_credito',
 		array(
 			'class'=>'CButtonColumn',
 		),
