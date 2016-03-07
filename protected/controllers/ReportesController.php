@@ -34,6 +34,9 @@ class ReportesController extends Controller {
 
         $con = Yii::app()->db;
 
+        //CARGA DE MODELOS USADOS
+        
+
         //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
         $lista_datos = array();
         if (isset($_GET['modelo'])) {array_push($lista_datos, array('modelos' => $_GET['modelo']));}
