@@ -75,6 +75,12 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 <section class="dashb">
         <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;    ?>/images/img_14.jpg"></div>-->
     <ul class="menu dashboard">
+        <li class="wrapper">
+            <div class="forma">
+                <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                    <div class="txt_menu">Reportes</div></a>
+            </div>
+        </li>
         <?php
         if ($result) {
             foreach ($result as $r) {
