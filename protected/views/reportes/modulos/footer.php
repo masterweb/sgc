@@ -10,6 +10,7 @@
 	site_route = '<?php echo Yii::app()->request->baseUrl; ?>';
 	resposable = '<?php echo $varView["js_responsable"] ;?>';
 	dealer = '<?php echo $varView["js_dealer"] ;?>';
+	cargo_id = '<?= $varView["cargo_id"]?>';
 	<?php
 		switch ($varView['cargo_id']) {
             case 4: // GERENTE GENERAL

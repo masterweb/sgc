@@ -1,5 +1,13 @@
 <div class="form">
     <?php
+        $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
+        $usuariosGeneral = array(71, 70);
+        $usuariosUsados = array(77, 76);
+        $usuariosExonerados = array(75, 72);
+        $usuariosBDC = array(73, 72);
+        $usuariosGenentes = array(69);
+        $usuariosAekia = array(4, 45, 46, 48, 57, 58, 60, 61, 62);
+
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'gestion-nueva-cotizacion-form',
             'method' => 'get',
@@ -29,7 +37,7 @@
     <div class="row">
 
     <!-- FILTRO GRUPOS O PROVINCIA-->
-    <?php if ($varView['AEKIA'] == true): ?>
+    <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes)): ?>
         <div class="row text-center">
             <h4>Seleccione el tipo de busqueda</h4>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
@@ -44,61 +52,65 @@
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="exonerados" class="tipo_busqueda"
             <?php if($varView['checked_ex'] == true){echo 'checked';} ?>
             >Exonerados</label>
-            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
-            <?php if($varView['checked_ta'] == true){echo 'checked';} ?>
-            >Tráfico Histórico hasta el 2015</label>
+            <?php if ($varView['AEKIA'] == true): ?>
+                <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
+                <?php if($varView['checked_ta'] == true){echo 'checked';} ?>
+                >Tráfico Histórico hasta el 2015</label>
+            <?php endif; ?>
             <hr/>
         </div>
-        <div id="trafico_todo">
-             
-            <div class="row text-center">
-                <!--h4>Por</h4-->
-                <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda" 
-                <?php if($varView['checked_g'] == true){echo 'checked';} ?>
-                >Por Grupos</label>
-                <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda"
-                <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-                >Por Provincias</label>
-                <hr/>
-            </div>
-            <!-- PROVINCIAS -->
-            <div class="col-md-6 cont_prov">
-                <label for="">Provincias</label>
-                <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
-                    <option value="">--Seleccione Provincias--</option>
-                    <?php
-                    if($varView['lista_provincias']){
-                        foreach ($varView['lista_provincias'] as $value) {
-                            echo '<option value="' . $value['id_provincia'] . '"';
+        <?php if ($varView['AEKIA'] == true): ?>
+            <div id="trafico_todo">
+                 
+                <div class="row text-center">
+                    <!--h4>Por</h4-->
+                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda" 
+                    <?php if($varView['checked_g'] == true){echo 'checked';} ?>
+                    >Por Grupos</label>
+                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda"
+                    <?php if($varView['checked_p'] == true){echo 'checked';} ?>
+                    >Por Provincias</label>
+                    <hr/>
+                </div>
+                <!-- PROVINCIAS -->
+                <div class="col-md-6 cont_prov">
+                    <label for="">Provincias</label>
+                    <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
+                        <option value="">--Seleccione Provincias--</option>
+                        <?php
+                        if($varView['lista_provincias']){
+                            foreach ($varView['lista_provincias'] as $value) {
+                                echo '<option value="' . $value['id_provincia'] . '"';
 
-                            if($value['id_provincia'] == $varView['id_provincia']){
-                                echo 'selected';
-                            }                       
-                            echo'>' . $value['nombre'].'</option>';
+                                if($value['id_provincia'] == $varView['id_provincia']){
+                                    echo 'selected';
+                                }                       
+                                echo'>' . $value['nombre'].'</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
-        
-            <!-- GRUPOS -->
-            <div class="col-md-6 cont_grup">
-                <label for="">Grupos</label>
-                <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
-                    <option value="">--Seleccione Grupo--</option>
-                    <?php
-                    if($varView['lista_grupo']){
-                        foreach ($varView['lista_grupo'] as $value) {
-                            echo '<option value="' . $value['id'] . '"';
-                            if($value['id'] == $varView['id_grupo']){
-                                echo 'selected';
-                            }                       
-                            echo'>' . $value['nombre_grupo'] . '</option>';
+                        ?>
+                    </select>
+                </div>
+            
+                <!-- GRUPOS -->
+                <div class="col-md-6 cont_grup">
+                    <label for="">Grupos</label>
+                    <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
+                        <option value="">--Seleccione Grupo--</option>
+                        <?php
+                        if($varView['lista_grupo']){
+                            foreach ($varView['lista_grupo'] as $value) {
+                                echo '<option value="' . $value['id'] . '"';
+                                if($value['id'] == $varView['id_grupo']){
+                                    echo 'selected';
+                                }                       
+                                echo'>' . $value['nombre_grupo'] . '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
-            </div>
+                        ?>
+                    </select>
+                </div>
+            <?php endif; ?>
     <?php endif; ?>
 
     <!-- FILTRO CONCESIONARIOS -->
@@ -125,9 +137,10 @@
     <?php endif; ?>
 
     <!-- FILTRO ASESORES -->
-    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
-        <?php 
-        $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
+    <?php 
+    
+    if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
+        <?php         
         if (in_array($varView['cargo_id'], $usuariosBajos)):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
         <?php endif; ?>
@@ -138,6 +151,7 @@
                 </select>
             </div>
     <?php endif; ?>
+<?php if (in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
     <div id="traficoGeneral">
         <!-- FILTRO MODELOS -->
         <div class="row">
@@ -151,6 +165,8 @@
             </div>
         </div>
     </div> <!-- #traficogeneral fin-->
+<?php endif; ?>
+<?php if (in_array($varView['cargo_id'], $usuariosUsados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
     <div id="traficousados">        
         <!-- FILTRO MODELOS -->
         <div class="row">
@@ -164,6 +180,8 @@
             </div>
         </div>
     </div> <!-- #traficousados fin-->
+<?php endif; ?>
+<?php if (in_array($varView['cargo_id'], $usuariosBDC) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
     <div id="traficobdc">
         <!-- FILTRO MODELOS -->
         <div class="row">
@@ -177,6 +195,8 @@
             </div>
         </div>
     </div> <!-- #traficoBDC fin-->
+<?php endif; ?>
+<?php if (in_array($varView['cargo_id'], $usuariosExonerados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
     <div id="traficoexonerados">
         <!-- FILTRO MODELOS -->
         <div class="row">
@@ -190,6 +210,7 @@
             </div>
         </div>
     </div> <!-- #traficoexonerados fin-->
+<?php endif; ?>
     <!-- TRIGER -->
 <div class="row buttons">
     <div class="col-md-6">

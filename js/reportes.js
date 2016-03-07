@@ -1,7 +1,20 @@
 $(function () {
     tipo_b = $(".tipo_busqueda").val();
+
+    //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
+        if(cargo_id != '69'){
+            vaciar();  
+        }
+        
+        checkFiltro($(this));
         tipo_b = $(this).val();
+    });
+
+    $(".tipo_busqueda").each(function() {
+        if ($(this).is(':checked')) {
+            checkFiltro($(this));
+        }
     });
     //$(".checkboxmain").on("change", function(e) {checkboxes(e.target);}); //AJAX LOAD VERSIONES EN FILTRO DE MODELOS
     $('#traficoacumulado').hide();
@@ -53,17 +66,7 @@ if(activar_dealer == 'si'){
     }
 }
 
-    //selectro tipo provincia o grupo
-    $(".tipo_busqueda").change(function () {
-        vaciar();
-        checkFiltro($(this));
-    });
-
-    $(".tipo_busqueda").each(function() {
-        if ($(this).is(':checked')) {
-            checkFiltro($(this));
-        }
-    });
+    
 
     function loadmodelos(e){
         if(e.attr('value') != ''){
@@ -248,9 +251,11 @@ if(activar_dealer == 'si'){
             $('#traficousados').hide();
             $('#traficobdc').hide();
             $('#trafico_todo').show();
-            $('#traficoexonerados').hide(); 
-            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
-            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p'); 
+            $('#traficoexonerados').hide();
+            if(cargo_id != '69'){
+                loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+                loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+            } 
             loadmodelos($('#fecha-range1'));         
         }if(e.attr('value') == 'usados'){
             $('#traficoGeneral').hide(); 
@@ -259,8 +264,10 @@ if(activar_dealer == 'si'){
             $('#traficobdc').hide();
             $('#traficoexonerados').hide();
             $('#trafico_todo').show(); 
-            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
-            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');    
+            if(cargo_id != '69'){
+                loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+                loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');   
+            } 
         }else if(e.attr('value') == 'bdc'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').hide();
@@ -268,8 +275,10 @@ if(activar_dealer == 'si'){
             $('#traficobdc').show();
             $('#traficoexonerados').hide();
             $('#trafico_todo').show();  
-            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
-            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p'); 
+            if(cargo_id != '69'){
+                loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+                loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p'); 
+            }
             loadmodelos($('#fecha-range1'));    
         }else if(e.attr('value') == 'exonerados'){
             $('#traficoGeneral').hide(); 
@@ -277,9 +286,11 @@ if(activar_dealer == 'si'){
             $('#traficousados').hide();
             $('#traficobdc').hide();
             $('#traficoexonerados').show();
-            $('#trafico_todo').show();   
-            loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
-            loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+            $('#trafico_todo').show();
+            if(cargo_id != '69'){   
+                loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+                loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+            }
             loadmodelos($('#fecha-range1'));     
         }else if(e.attr('value') == 'traficoacumulado'){
             $('#traficoGeneral').hide(); 
