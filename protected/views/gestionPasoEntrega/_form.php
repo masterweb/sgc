@@ -5,7 +5,7 @@
 
 $paso = $this->getPasoEntregaCon($id_informacion, $id_vehiculo);
 //echo 'PASO:++++++ ' . $paso . '<br>';
-$tipo = $this->getFinanciamiento($id_informacion); // tipo de financiamiento 1 - credito, 0 - contado
+$tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo); // tipo de financiamiento 1 - credito, 0 - contado
 if($tipo == 0 && $paso == 0){
     $paso = 3;
 }elseif($tipo == 1){

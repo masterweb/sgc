@@ -1367,7 +1367,28 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
 
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
-            $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
+            switch ($get_array) {
+                case 'exo':
+                    $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                        . " WHERE u.cargo_id IN (75) AND ";
+                    break;
+                case 'bdc':
+                    $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                        . " WHERE u.cargo_id IN (72,73) AND ";
+                    break;
+                case 'seg':
+                    $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                        . " WHERE u.cargo_id IN (70,71) AND ";
+                    break;
+
+                default:
+                    $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
+                    break;
+            }
+            
         }
 
         $con = Yii::app()->db;
@@ -1901,6 +1922,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('sql: '. $sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE u.cargo_id IN(70,71)
                 ORDER BY gd.id DESC";
         }
 
@@ -2000,7 +2023,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable
-                WHERE gi.bdc = 1
+                WHERE gi.bdc = 1 AND u.cargo_id IN (72,73)
                 ORDER BY gd.id DESC";
             //die('else: '.$sql);
         }
@@ -2483,7 +2506,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados'
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.tipo_form_web = 'exonerados' AND u.cargo_id IN (75)
                 ORDER BY gd.id DESC";
         }
         //die($sql);
@@ -4172,8 +4196,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die($sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
-            left JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+            left JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+            INNER JOIN usuarios u ON u.id = gi.responsable 
             WHERE (gi.tipo_form_web = 'usado' OR  gi.tipo_form_web = 'usadopago') 
+            AND u.cargo_id = 77
             ORDER BY gi.id DESC";
         }
         //die($sql);

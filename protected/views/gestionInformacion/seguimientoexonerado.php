@@ -2,6 +2,8 @@
 
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$area_id = (int) Yii::app()->user->getState('area_id');
+//echo 'ID ASESOR: '.$area_id;
 $identificacion = '';
 if (isset($model->identificacion))
     $identificacion = $model->identificacion;

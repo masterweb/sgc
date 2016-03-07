@@ -362,7 +362,8 @@ class Controller extends CController {
                 $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
                 break;
             case 3:
-                $data = '<a href="' . Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                $data = '<a href="' . Yii::app()->createUrl('site/consulta', array('id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                
                 break;
             case 4:
                 $data = '<a href="' . Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';

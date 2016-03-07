@@ -1494,10 +1494,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         // fuente showroom, exhibicion, prospeccion
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-        $model->cedula = $id;
-        $model->fuente = $fuente;
-        $model->save();
-        $id_nueva_cotizacion = $model->id;
+
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "cedula='{$id}'"
@@ -1571,329 +1568,28 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         . '<td>' . $showboton . '</td></tr>';
             }
             $data .= '</table></div></div></div>';
+
+            // LLAMADA A FUNCION DE CREATEC 
+            $data_createc = $this->Createc($id, 0);
         }
+        if ($ced == 0) {
+            $model->cedula = $id;
+            $model->fuente = $fuente;
+            $model->save();
+            $id_nueva_cotizacion = $model->id;
 
-        // BUSQUEDA EN CREATEC==================================================================================
-        //======================================================================================================
-        $id_modeloInformacion = 0;
-        $uriservicio = "http://200.31.10.92/wsa/wsa1/wsdl?targetURI=urn:aekia";
-        //die('after uri');
-        $client = new SoapClient(@$uriservicio, array('trace' => 1));
-        $response = $client->pws01_01_cl("{$id}", '');
-
-        $coin1 = FALSE;
-        $coin2 = FALSE;
-        $coincidencias;
-        $coincidencias2;
-        $count;
-        $count2;
-        $coin1_36 = FALSE;
-        $coin2_36 = FALSE;
-        $coincidencias_36;
-        $coincidencias2_36;
-        $count_36;
-        $count2_36;
-
-        $coin1_vh = FALSE;
-        $coin2_vh = FALSE;
-        $coincidencias_vh;
-        $coincidencias2_vh;
-        $count_vh;
-        $count2_vh;
-
-        $dataCrTga35 = FALSE;
-        $dataCrTga36 = FALSE;
-        $dataCrTgavh = FALSE;
-        $dataCreatec = '';
-        $dataCreatec_36 = '';
-        $dataCreatec_vh = '';
-
-        //------BUSQUEDA PARA TA TABLA TTGA35 POSTVENTA---------------------------------------------
-        if (preg_match_all('/<ttga35>/', $response['lcxml'], $coincidencias, PREG_OFFSET_CAPTURE)) {
-
-            $count = count($coincidencias[0]);
-            //echo 'numero de coincidencias: '.$count;
-            $coin1 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttga35>/', $response['lcxml'], $coincidencias2, PREG_OFFSET_CAPTURE)) {
-
-            $count2 = count($coincidencias2[0]);
-            $coin2 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        // datos de la tabla ttga35 a ser mostrados
-        $datos_tga35 = array('chasis' => 'Chasis', 'tipo_id_cliente' => 'Tipo Identificación', 'identifica_cliente' => 'Identificación',
-            'nombre_cliente' => 'Nombre del Cliente', 'direccion_cliente' => 'Dirección del Cliente', 'telefono_cliente' => 'Teléfono',
-            'telefono_celular' => 'Celular', 'mail_1' => 'Email', 'fecha_reparacion' => 'Fecha de reparación', 'reparaciones_solicitadas' => 'Reparaciones Solicitadas',
-            'tipo_ingreso' => 'Tipo de Ingreso'
-        );
-        if ($coin1 && $coin2) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count == $count2) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                $dataCreatec = '<div class="row"><h1 class="tl_seccion">Info Postventa</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Chasis</span></th>
-                        <th><span>Tipo Identificación</span></th>
-                        <th><span>Identificación</span></th>
-                        <th><span>Nombre</span></th>
-                        <th><span>Dirección</span></th>
-                        <th><span>Teléfono</span></th>
-                        <th><span>Celular</span></th>
-                        <th><span>Email</span></th>
-                        <th><span>Fecha Reparación</span></th>
-                        <th><span>Reparaciones Solicitadas</span></th>
-                        <th><span>Tipo de ingreso</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-                for ($i = 0; $i < $count; $i++) {
-                    $ini = $coincidencias[0][$i][1];
-                    $fin = $coincidencias2[0][$i][1];
-                    $ini += 8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec .= '<tr>';
-                    foreach ($datos_tga35 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtga35 = substr($str, $pos, $longitud_cadena);
-                        $dataCreatec .= '<td>' . $strtga35 . '</td>';
-                    }
-                    $dataCreatec .= '</tr>';
-                }
-                $dataCreatec .= '</table></div></div></div>';
-                $dataCrTga35 = TRUE;
-                $result = TRUE;
-            }
-        }
-        //------FIN DE BUSQUEDA TABLA TTGA35-------------------------------
-        // -------------BUSQUEDA TABLA TTGA36 REPUESTOS---------------------
-        if (preg_match_all('/<ttga36>/', $response['lcxml'], $coincidencias_36, PREG_OFFSET_CAPTURE)) {
-            ////echo 'hay coincidencia 1 <br />';
-            $count_36 = count($coincidencias_36[0]);
-            //echo 'numero de coincidencias: '.$count;
-            $coin1_36 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttga36>/', $response['lcxml'], $coincidencias2_36, PREG_OFFSET_CAPTURE)) {
-            //echo 'hay coincidencia 2 <br />';
-            $count2_36 = count($coincidencias2_36[0]);
-            $coin2_36 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-        //die('coin1 36: '.$coin1_36.', coin2 36: '.$coin2_36.', count 36: '.$count_36.', count2 36: '.$count2_36);
-        // datos de la tabla ttga36 a ser mostrados
-        $datos_tga36 = array('anio_ga35' => 'Año', 'descripcion' => 'Descripción', 'clase_registro' => 'Clase de Registro');
-        if ($coin1_36 && $coin2_36) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count_36 == $count2_36) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                //die('enter data createc 36');
-                $dataCreatec_36 = '<div class="row"><h1 class="tl_seccion">Info Repuestos</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Año</span></th>
-                        <th><span>Descripción</span></th>
-                        <th><span>Clase de Registro</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-                for ($i = 0; $i < $count_36; $i++) {
-                    $ini = $coincidencias_36[0][$i][1];
-                    $fin = $coincidencias2_36[0][$i][1];
-                    $ini +=8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str_36 = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec_36 .= '<tr>';
-                    foreach ($datos_tga36 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str_36, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str_36, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtga36 = substr($str_36, $pos, $longitud_cadena);
-                        $dataCreatec_36 .= '<td>' . $strtga36 . '</td>';
-                    }
-                    $dataCreatec_36 .= '</tr>';
-                }
-                $dataCreatec_36 .= '</table></div></div></div>';
-                //die('data cr 36: '.$dataCreatec_36);
-                $dataCrTga36 = TRUE;
-                $result = TRUE;
-            }
-        }
-        // -------------FIN DE BUSQUEDA TABLA TTGH36-----------------------
-        // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
-        $data_save = array();
-        if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
-
-            $count_vh = count($coincidencias_vh[0]);
-            $coin1_vh = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttvh01>/', $response['lcxml'], $coincidencias2_vh, PREG_OFFSET_CAPTURE)) {
-
-            $count2_vh = count($coincidencias2_vh[0]);
-            $coin2_vh = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        // datos de la tabla vh01 a ser mostrados
-        $datos_vh01 = array(
-            'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'nombre_propietario' => 'Nombre Propietario', 'color_vehiculo' => 'Color Vehículo',
-            'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
-            'tipo_id_propietario' => 'Tipo Id', 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
-            'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
-            'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
-            'forma_pago_retail' => 'Forma de Pago'
-        );
-        if ($coin1_vh && $coin2_vh) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count_vh == $count2_vh) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                //die('enter vec');
-                $dataCreatec_vh = '<div class="row"><h1 class="tl_seccion">Info Venta Vehículos</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Chasis</span></th>
-                        <th><span>Código Modelo</span></th>
-                        <th><span>Nombre</span></th>
-                        <th><span>Color</span></th>
-                        <th><span>Fecha de Venta</span></th>
-                        <th><span>Año</span></th>
-                        <th><span>Color orígen</span></th>
-                        <th><span>Tipo ID</span></th>
-                        <th><span>Id Propietario</span></th>
-                        <th><span>Precio de Venta</span></th>
-                        <th><span>Direccion</span></th>
-                        <th><span>Número</span></th>
-                        <th><span>Teléfono</span></th>
-                        <th><span>Grupo Conc.</span></th>
-                        <th><span>Forma de pago</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                // GRABAR DATOS EN MODELO GESGION INFORMACION
-                $modelInformacion = new GestionInformacion;
-                $modelInformacion->setscenario('createc');
-
-
-                for ($i = 0; $i < $count_vh; $i++) {
-                    $ini = $coincidencias_vh[0][$i][1];
-                    $fin = $coincidencias2_vh[0][$i][1];
-                    $ini += 8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str_vh = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec_vh .= '<tr>';
-                    foreach ($datos_vh01 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str_vh, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str_vh, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtgavh = substr($str_vh, $pos, $longitud_cadena);
-                        $params = explode(">", $strtgavh);
-                        $dataCreatec_vh .= '<td>' . $strtgavh . '</td>';
-                        $data_save[$value] = "{$params[1]}";
-                    }
-                    $dataCreatec_vh .= '</tr>';
-                }
-                $dataCreatec_vh .= '</table></div></div></div>';
-//                echo '<pre>';
-//                print_r($data_save);
-//                echo '</pre>';
-
-                $dataCrTgavh = TRUE;
-                $result = TRUE;
-
-                //GRABAR DATOS A GESTION INFORMACION
-                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $modelInformacion->fecha = date("Y-m-d H:i:s");
-                $modelInformacion->responsable = $id_responsable;
-                $modelInformacion->dealer_id = $dealer_id;
-                if (strlen($data_save['Teléfono del Propietario']) == 10) {
-                    $modelInformacion->celular = $data_save['Teléfono del Propietario'];
-                } else {
-                    $modelInformacion->celular = '0999999999';
-                }
-                $modelInformacion->cedula = $data_save['Id del Propietario'];
-                $modelInformacion->nombres = $data_save['Nombre Propietario'];
-                $modelInformacion->direccion = $data_save['Calle Principal'];
-                $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
-                //die('before validare');
-//                if ($modelInformacion->validate()) {
-//                    die( 'validate');
-//                } else {
-//                    echo '<pre>';
-//                    print_r($modelInformacion->getErrors());
-//                    echo '</pre>';
-//                    die( 'validate errors');
-//                }
-                if ($modelInformacion->save()) {
-                    //die('enter model save');
-                    $id_modeloInformacion = $modelInformacion->id;
-                }
-
-                // GRABAR PASO INICIAL GESTION DIARIA
-                $gestion = new GestionDiaria;
-                $gestion->id_informacion = $modelInformacion->id;
-                $gestion->id_vehiculo = 0;
-                $gestion->observaciones = 'Prospección';
-                $gestion->medio_contacto = 'telefono';
-                $gestion->fuente_contacto = 'prospeccion';
-                $gestion->codigo_vehiculo = 0;
-                $gestion->primera_visita = 1;
-                $gestion->status = 1;
-                $gestion->paso = 3;
-                $gestion->proximo_seguimiento = '';
-                $gestion->fecha = date("Y-m-d H:i:s");
-                $gestion->save();
-
-                // GRABAR PASO INICIAL EN GESTION CONSULTA
-                $consulta = new GestionConsulta;
-                $consulta->id_informacion = $modelInformacion->id;
-                $consulta->fecha = date("Y-m-d H:i:s");
-                $consulta->status = 'ACTIVO';
-                $consulta->save();
-            }
-        }
-        //----------FIN DE BUSQUEDA TABLA VH01---------------------------
-
+            // LLAMADA A FUNCION DE CREATEC 
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion);
+        }// ----FIN DE NI CEDULA-----------
         $options = array('data' => $data,
             'result' => $result,
-            'datattga35' => $dataCreatec,
-            'datattga36' => $dataCreatec_36,
-            'datavh01' => $dataCreatec_vh,
-            'flagttga35' => $dataCrTga35,
-            'flagttga36' => $dataCrTga36,
-            'flagvh01' => $dataCrTgavh,
-            'id_informacion' => $id_modeloInformacion,
+            'datattga35' => $data_createc['datattga35'],
+            'datattga36' => $data_createc['datattga36'],
+            'datavh01' => $data_createc['datavh01'],
+            'flagttga35' => $data_createc['flagttga35'],
+            'flagttga36' => $data_createc['flagttga36'],
+            'flagvh01' => $data_createc['flagvh01'],
+            'id_informacion' => $data_createc['id_informacion'],
             'id_nueva_cotizacion' => $id_nueva_cotizacion
         );
         echo json_encode($options);
@@ -1905,10 +1601,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-        $model->ruc = $id;
-        $model->fuente = $fuente;
-        $model->save();
-        $id_nueva_cotizacion = $model->id;
+        
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "ruc='{$id}'"
@@ -1982,329 +1675,28 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         . '<td>' . $showboton . '</td></tr>';
             }
             $data .= '</table></div></div></div>';
+            // LLAMADA A FUNCION DE CREATEC 
+            $data_createc = $this->Createc($id, 0);
         }
-        // BUSQUEDA EN CREATEC==================================================================================
-        //======================================================================================================
-        $id_modeloInformacion = 0;
-        $uriservicio = "http://200.31.10.92/wsa/wsa1/wsdl?targetURI=urn:aekia";
-        //die('after uri');
-        $client = new SoapClient(@$uriservicio, array('trace' => 1));
-        $response = $client->pws01_01_cl("{$id}", '');
+        if ($ced == 0) {
+            $model->ruc = $id;
+            $model->fuente = $fuente;
+            $model->save();
+            $id_nueva_cotizacion = $model->id;
 
-        $coin1 = FALSE;
-        $coin2 = FALSE;
-        $coincidencias;
-        $coincidencias2;
-        $count;
-        $count2;
-        $coin1_36 = FALSE;
-        $coin2_36 = FALSE;
-        $coincidencias_36;
-        $coincidencias2_36;
-        $count_36;
-        $count2_36;
-
-        $coin1_vh = FALSE;
-        $coin2_vh = FALSE;
-        $coincidencias_vh;
-        $coincidencias2_vh;
-        $count_vh;
-        $count2_vh;
-
-        $dataCrTga35 = FALSE;
-        $dataCrTga36 = FALSE;
-        $dataCrTgavh = FALSE;
-        $dataCreatec = '';
-        $dataCreatec_36 = '';
-        $dataCreatec_vh = '';
-
-        //------BUSQUEDA PARA TA TABLA TTGA35 POSTVENTA---------------------------------------------
-        if (preg_match_all('/<ttga35>/', $response['lcxml'], $coincidencias, PREG_OFFSET_CAPTURE)) {
-
-            $count = count($coincidencias[0]);
-            //echo 'numero de coincidencias: '.$count;
-            $coin1 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttga35>/', $response['lcxml'], $coincidencias2, PREG_OFFSET_CAPTURE)) {
-
-            $count2 = count($coincidencias2[0]);
-            $coin2 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        // datos de la tabla ttga35 a ser mostrados
-        $datos_tga35 = array('chasis' => 'Chasis', 'tipo_id_cliente' => 'Tipo Identificación', 'identifica_cliente' => 'Identificación',
-            'nombre_cliente' => 'Nombre del Cliente', 'direccion_cliente' => 'Dirección del Cliente', 'telefono_cliente' => 'Teléfono',
-            'telefono_celular' => 'Celular', 'mail_1' => 'Email', 'fecha_reparacion' => 'Fecha de reparación', 'reparaciones_solicitadas' => 'Reparaciones Solicitadas',
-            'tipo_ingreso' => 'Tipo de Ingreso'
-        );
-        if ($coin1 && $coin2) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count == $count2) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                $dataCreatec = '<div class="row"><h1 class="tl_seccion">Info Postventa</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Chasis</span></th>
-                        <th><span>Tipo Identificación</span></th>
-                        <th><span>Identificación</span></th>
-                        <th><span>Nombre</span></th>
-                        <th><span>Dirección</span></th>
-                        <th><span>Teléfono</span></th>
-                        <th><span>Celular</span></th>
-                        <th><span>Email</span></th>
-                        <th><span>Fecha Reparación</span></th>
-                        <th><span>Reparaciones Solicitadas</span></th>
-                        <th><span>Tipo de ingreso</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-                for ($i = 0; $i < $count; $i++) {
-                    $ini = $coincidencias[0][$i][1];
-                    $fin = $coincidencias2[0][$i][1];
-                    $ini +=8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec .= '<tr>';
-                    foreach ($datos_tga35 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtga35 = substr($str, $pos, $longitud_cadena);
-                        $dataCreatec .= '<td>' . $strtga35 . '</td>';
-                    }
-                    $dataCreatec .= '</tr>';
-                }
-                $dataCreatec .= '</table></div></div></div>';
-                $dataCrTga35 = TRUE;
-                $result = TRUE;
-            }
-        }
-        //------FIN DE BUSQUEDA TABLA TTGA35-------------------------------
-        // -------------BUSQUEDA TABLA TTGA36 REPUESTOS---------------------
-        if (preg_match_all('/<ttga36>/', $response['lcxml'], $coincidencias_36, PREG_OFFSET_CAPTURE)) {
-            ////echo 'hay coincidencia 1 <br />';
-            $count_36 = count($coincidencias_36[0]);
-            //echo 'numero de coincidencias: '.$count;
-            $coin1_36 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttga36>/', $response['lcxml'], $coincidencias2_36, PREG_OFFSET_CAPTURE)) {
-            //echo 'hay coincidencia 2 <br />';
-            $count2_36 = count($coincidencias2_36[0]);
-            $coin2_36 = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-        //die('coin1 36: '.$coin1_36.', coin2 36: '.$coin2_36.', count 36: '.$count_36.', count2 36: '.$count2_36);
-        // datos de la tabla ttga36 a ser mostrados
-        $datos_tga36 = array('anio_ga35' => 'Año', 'descripcion' => 'Descripción', 'clase_registro' => 'Clase de Registro');
-        if ($coin1_36 && $coin2_36) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count_36 == $count2_36) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                //die('enter data createc 36');
-                $dataCreatec_36 = '<div class="row"><h1 class="tl_seccion">Info Repuestos</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Año</span></th>
-                        <th><span>Descripción</span></th>
-                        <th><span>Clase de Registro</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-                for ($i = 0; $i < $count_36; $i++) {
-                    $ini = $coincidencias_36[0][$i][1];
-                    $fin = $coincidencias2_36[0][$i][1];
-                    $ini +=8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str_36 = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec_36 .= '<tr>';
-                    foreach ($datos_tga36 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str_36, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str_36, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtga36 = substr($str_36, $pos, $longitud_cadena);
-                        $dataCreatec_36 .= '<td>' . $strtga36 . '</td>';
-                    }
-                    $dataCreatec_36 .= '</tr>';
-                }
-                $dataCreatec_36 .= '</table></div></div></div>';
-                //die('data cr 36: '.$dataCreatec_36);
-                $dataCrTga36 = TRUE;
-                $result = TRUE;
-            }
-        }
-        // -------------FIN DE BUSQUEDA TABLA TTGH36-----------------------
-        // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
-        $data_save = array();
-        if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
-
-            $count_vh = count($coincidencias_vh[0]);
-            //echo 'numero de coincidencias: '.$count;
-            $coin1_vh = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        if (preg_match_all('/<\/ttvh01>/', $response['lcxml'], $coincidencias2_vh, PREG_OFFSET_CAPTURE)) {
-
-            $count2_vh = count($coincidencias2_vh[0]);
-            $coin2_vh = TRUE;
-        } else {
-            //echo "NO HAY COINCIDENCIA";
-        }
-
-        // datos de la tabla vh01 a ser mostrados
-        $datos_vh01 = array(
-            'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'nombre_propietario' => 'Nombre Propietario', 'color_vehiculo' => 'Color Vehículo',
-            'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
-            'tipo_id_propietario' => 'Tipo Id', 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
-            'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
-            'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
-            'forma_pago_retail' => 'Forma de Pago'
-        );
-        if ($coin1_vh && $coin2_vh) {// si las dos busquedas son true en etiqueta de apertura y cierre
-            if ($count_vh == $count2_vh) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                //die('enter vec');
-                $dataCreatec_vh = '<div class="row"><h1 class="tl_seccion">Info Venta Vehículos</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
-                        <table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Chasis</span></th>
-                        <th><span>Código Modelo</span></th>
-                        <th><span>Nombre</span></th>
-                        <th><span>Color</span></th>
-                        <th><span>Fecha de Venta</span></th>
-                        <th><span>Año</span></th>
-                        <th><span>Color orígen</span></th>
-                        <th><span>Tipo ID</span></th>
-                        <th><span>Id Propietario</span></th>
-                        <th><span>Precio de Venta</span></th>
-                        <th><span>Direccion</span></th>
-                        <th><span>Número</span></th>
-                        <th><span>Teléfono</span></th>
-                        <th><span>Grupo Conc.</span></th>
-                        <th><span>Forma de pago</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
-
-                // GRABAR DATOS EN MODELO GESGION INFORMACION
-                $modelInformacion = new GestionInformacion;
-                $modelInformacion->setscenario('createc');
-
-
-                for ($i = 0; $i < $count_vh; $i++) {
-                    $ini = $coincidencias_vh[0][$i][1];
-                    $fin = $coincidencias2_vh[0][$i][1];
-                    $ini +=8; // sumamos el numero de caracteres (8) de <ttga35>
-                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                    $str_vh = substr($response['lcxml'], $ini, $longitudchr);
-                    $dataCreatec_vh .= '<tr>';
-                    foreach ($datos_vh01 as $key => $value) {
-                        // primero encontramos la posicion de la cadena a encontrar
-                        $pos = strpos($str_vh, '<' . $key . '>');
-                        // encontramos la posicion final de la cadena final
-                        $posfinal = strpos($str_vh, '</' . $key . '>');
-                        // longitud de la cadena a impriimir
-                        $longitud_cadena = $posfinal - $pos;
-                        // cadena a imprimir, con posicion inicial y longitud
-                        $strtgavh = substr($str_vh, $pos, $longitud_cadena);
-                        $params = explode(">", $strtgavh);
-                        $dataCreatec_vh .= '<td>' . $strtgavh . '</td>';
-                        $data_save[$value] = "{$params[1]}";
-                    }
-                    $dataCreatec_vh .= '</tr>';
-                }
-                $dataCreatec_vh .= '</table></div></div></div>';
-//                echo '<pre>';
-//                print_r($data_save);
-//                echo '</pre>';
-                $dataCrTgavh = TRUE;
-                $result = TRUE;
-
-                //GRABAR DATOS A GESTION INFORMACION
-                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $modelInformacion->fecha = date("Y-m-d H:i:s");
-                $modelInformacion->responsable = $id_responsable;
-                $modelInformacion->dealer_id = $dealer_id;
-                if (strlen($data_save['Teléfono del Propietario']) == 10) {
-                    $modelInformacion->celular = $data_save['Teléfono del Propietario'];
-                } else {
-                    $modelInformacion->celular = '0999999999';
-                }
-
-                $modelInformacion->ruc = $data_save['Id del Propietario'];
-                $modelInformacion->nombres = $data_save['Nombre Propietario'];
-                $modelInformacion->direccion = $data_save['Calle Principal'];
-                $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
-                //die('before validare');
-//                if ($modelInformacion->validate()) {
-//                    die( 'validate');
-//                } else {
-//                    echo '<pre>';
-//                    print_r($modelInformacion->getErrors());
-//                    echo '</pre>';
-//                    die( 'validate errors');
-//                }
-                if ($modelInformacion->save()) {
-                    //die('enter model save');
-                    $id_modeloInformacion = $modelInformacion->id;
-                }
-
-                // GRABAR PASO INICIAL GESTION DIARIA
-                $gestion = new GestionDiaria;
-                $gestion->id_informacion = $modelInformacion->id;
-                $gestion->id_vehiculo = 0;
-                $gestion->observaciones = 'Prospección';
-                $gestion->medio_contacto = 'telefono';
-                $gestion->fuente_contacto = 'prospeccion';
-                $gestion->codigo_vehiculo = 0;
-                $gestion->primera_visita = 1;
-                $gestion->status = 1;
-                $gestion->paso = 3;
-                $gestion->proximo_seguimiento = '';
-                $gestion->fecha = date("Y-m-d H:i:s");
-                $gestion->save();
-
-                // GRABAR PASO INICIAL EN GESTION CONSULTA
-                $consulta = new GestionConsulta;
-                $consulta->id_informacion = $modelInformacion->id;
-                $consulta->fecha = date("Y-m-d H:i:s");
-                $consulta->status = 'ACTIVO';
-                $consulta->save();
-            }
-        }
-        //----------FIN DE BUSQUEDA TABLA VH01---------------------------
+            // LLAMADA A FUNCION DE CREATEC 
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion);
+        }// ----FIN DE NO RUC-----------
 
         $options = array('data' => $data,
             'result' => $result,
-            'datattga35' => $dataCreatec,
-            'datattga36' => $dataCreatec_36,
-            'datavh01' => $dataCreatec_vh,
-            'flagttga35' => $dataCrTga35,
-            'flagttga36' => $dataCrTga36,
-            'flagvh01' => $dataCrTgavh,
-            'id_informacion' => $id_modeloInformacion,
+            'datattga35' => $data_createc['datattga35'],
+            'datattga36' => $data_createc['datattga36'],
+            'datavh01' => $data_createc['datavh01'],
+            'flagttga35' => $data_createc['flagttga35'],
+            'flagttga36' => $data_createc['flagttga36'],
+            'flagvh01' => $data_createc['flagvh01'],
+            'id_informacion' => $data_createc['id_informacion'],
             'id_nueva_cotizacion' => $id_nueva_cotizacion
         );
         echo json_encode($options);
@@ -2396,6 +1788,334 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }
         $options = array('data' => $data, 'result' => $result);
         echo json_encode($options);
+    }
+
+    private function Createc($id, $id_nueva_cotizacion) {
+        $id_responsable = Yii::app()->user->getId();
+        $dealer_id = $this->getDealerId($id_responsable);
+        // BUSQUEDA EN CREATEC==================================================================================
+        //======================================================================================================
+        $id_modeloInformacion = 0;
+        $uriservicio = "http://200.31.10.92/wsa/wsa1/wsdl?targetURI=urn:aekia";
+        //die('after uri');
+        $client = new SoapClient(@$uriservicio, array('trace' => 1));
+        $response = $client->pws01_01_cl("{$id}", '');
+
+        $coin1 = FALSE;
+        $coin2 = FALSE;
+        $coincidencias;
+        $coincidencias2;
+        $count;
+        $count2;
+        $coin1_36 = FALSE;
+        $coin2_36 = FALSE;
+        $coincidencias_36;
+        $coincidencias2_36;
+        $count_36;
+        $count2_36;
+
+        $coin1_vh = FALSE;
+        $coin2_vh = FALSE;
+        $coincidencias_vh;
+        $coincidencias2_vh;
+        $count_vh;
+        $count2_vh;
+
+        $dataCrTga35 = FALSE;
+        $dataCrTga36 = FALSE;
+        $dataCrTgavh = FALSE;
+        $dataCreatec = '';
+        $dataCreatec_36 = '';
+        $dataCreatec_vh = '';
+
+        //------BUSQUEDA PARA TA TABLA TTGA35 POSTVENTA---------------------------------------------
+        if (preg_match_all('/<ttga35>/', $response['lcxml'], $coincidencias, PREG_OFFSET_CAPTURE)) {
+
+            $count = count($coincidencias[0]);
+            //echo 'numero de coincidencias: '.$count;
+            $coin1 = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+
+        if (preg_match_all('/<\/ttga35>/', $response['lcxml'], $coincidencias2, PREG_OFFSET_CAPTURE)) {
+
+            $count2 = count($coincidencias2[0]);
+            $coin2 = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+
+        // datos de la tabla ttga35 a ser mostrados
+        $datos_tga35 = array('chasis' => 'Chasis', 'tipo_id_cliente' => 'Tipo Identificación', 'identifica_cliente' => 'Identificación',
+            'nombre_cliente' => 'Nombre del Cliente', 'direccion_cliente' => 'Dirección del Cliente', 'telefono_cliente' => 'Teléfono',
+            'telefono_celular' => 'Celular', 'mail_1' => 'Email', 'fecha_reparacion' => 'Fecha de reparación', 'reparaciones_solicitadas' => 'Reparaciones Solicitadas',
+            'tipo_ingreso' => 'Tipo de Ingreso'
+        );
+        if ($coin1 && $coin2) {// si las dos busquedas son true en etiqueta de apertura y cierre
+            if ($count == $count2) {// si las dos busquedas devuelven el mismo numero de coincidencias
+                $dataCreatec = '<div class="row"><h1 class="tl_seccion">Info Postventa</h1></div>'
+                        . '<div class="row"><div class="col-md-12">'
+                        . '<div class="table-responsive">
+                        <table class="tables tablesorter" id="keywords">
+                <thead>
+                    <tr>
+                        <th><span>Chasis</span></th>
+                        <th><span>Tipo Identificación</span></th>
+                        <th><span>Identificación</span></th>
+                        <th><span>Nombre</span></th>
+                        <th><span>Dirección</span></th>
+                        <th><span>Teléfono</span></th>
+                        <th><span>Celular</span></th>
+                        <th><span>Email</span></th>
+                        <th><span>Fecha Reparación</span></th>
+                        <th><span>Reparaciones Solicitadas</span></th>
+                        <th><span>Tipo de ingreso</span></th>
+                    </tr>
+                </thead>
+                <tbody>';
+                for ($i = 0; $i < $count; $i++) {
+                    $ini = $coincidencias[0][$i][1];
+                    $fin = $coincidencias2[0][$i][1];
+                    $ini += 8; // sumamos el numero de caracteres (8) de <ttga35>
+                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
+                    $str = substr($response['lcxml'], $ini, $longitudchr);
+                    $dataCreatec .= '<tr>';
+                    foreach ($datos_tga35 as $key => $value) {
+                        // primero encontramos la posicion de la cadena a encontrar
+                        $pos = strpos($str, '<' . $key . '>');
+                        // encontramos la posicion final de la cadena final
+                        $posfinal = strpos($str, '</' . $key . '>');
+                        // longitud de la cadena a impriimir
+                        $longitud_cadena = $posfinal - $pos;
+                        // cadena a imprimir, con posicion inicial y longitud
+                        $strtga35 = substr($str, $pos, $longitud_cadena);
+                        $dataCreatec .= '<td>' . $strtga35 . '</td>';
+                    }
+                    $dataCreatec .= '</tr>';
+                }
+                $dataCreatec .= '</table></div></div></div>';
+                $dataCrTga35 = TRUE;
+                $result = TRUE;
+            }
+        }
+        //------FIN DE BUSQUEDA TABLA TTGA35-------------------------------
+        // -------------BUSQUEDA TABLA TTGA36 REPUESTOS---------------------
+        if (preg_match_all('/<ttga36>/', $response['lcxml'], $coincidencias_36, PREG_OFFSET_CAPTURE)) {
+            ////echo 'hay coincidencia 1 <br />';
+            $count_36 = count($coincidencias_36[0]);
+            //echo 'numero de coincidencias: '.$count;
+            $coin1_36 = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+
+        if (preg_match_all('/<\/ttga36>/', $response['lcxml'], $coincidencias2_36, PREG_OFFSET_CAPTURE)) {
+            //echo 'hay coincidencia 2 <br />';
+            $count2_36 = count($coincidencias2_36[0]);
+            $coin2_36 = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+        //die('coin1 36: '.$coin1_36.', coin2 36: '.$coin2_36.', count 36: '.$count_36.', count2 36: '.$count2_36);
+        // datos de la tabla ttga36 a ser mostrados
+        $datos_tga36 = array('anio_ga35' => 'Año', 'descripcion' => 'Descripción', 'clase_registro' => 'Clase de Registro');
+        if ($coin1_36 && $coin2_36) {// si las dos busquedas son true en etiqueta de apertura y cierre
+            if ($count_36 == $count2_36) {// si las dos busquedas devuelven el mismo numero de coincidencias
+                //die('enter data createc 36');
+                $dataCreatec_36 = '<div class="row"><h1 class="tl_seccion">Info Repuestos</h1></div>'
+                        . '<div class="row"><div class="col-md-12">'
+                        . '<div class="table-responsive">
+                        <table class="tables tablesorter" id="keywords">
+                <thead>
+                    <tr>
+                        <th><span>Año</span></th>
+                        <th><span>Descripción</span></th>
+                        <th><span>Clase de Registro</span></th>
+                    </tr>
+                </thead>
+                <tbody>';
+                for ($i = 0; $i < $count_36; $i++) {
+                    $ini = $coincidencias_36[0][$i][1];
+                    $fin = $coincidencias2_36[0][$i][1];
+                    $ini +=8; // sumamos el numero de caracteres (8) de <ttga35>
+                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
+                    $str_36 = substr($response['lcxml'], $ini, $longitudchr);
+                    $dataCreatec_36 .= '<tr>';
+                    foreach ($datos_tga36 as $key => $value) {
+                        // primero encontramos la posicion de la cadena a encontrar
+                        $pos = strpos($str_36, '<' . $key . '>');
+                        // encontramos la posicion final de la cadena final
+                        $posfinal = strpos($str_36, '</' . $key . '>');
+                        // longitud de la cadena a impriimir
+                        $longitud_cadena = $posfinal - $pos;
+                        // cadena a imprimir, con posicion inicial y longitud
+                        $strtga36 = substr($str_36, $pos, $longitud_cadena);
+                        $dataCreatec_36 .= '<td>' . $strtga36 . '</td>';
+                    }
+                    $dataCreatec_36 .= '</tr>';
+                }
+                $dataCreatec_36 .= '</table></div></div></div>';
+                //die('data cr 36: '.$dataCreatec_36);
+                $dataCrTga36 = TRUE;
+                $result = TRUE;
+            }
+        }
+        // -------------FIN DE BUSQUEDA TABLA TTGH36-----------------------
+        // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
+        $data_save = array();
+        if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
+
+            $count_vh = count($coincidencias_vh[0]);
+            $coin1_vh = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+
+        if (preg_match_all('/<\/ttvh01>/', $response['lcxml'], $coincidencias2_vh, PREG_OFFSET_CAPTURE)) {
+
+            $count2_vh = count($coincidencias2_vh[0]);
+            $coin2_vh = TRUE;
+        } else {
+            //echo "NO HAY COINCIDENCIA";
+        }
+
+        // datos de la tabla vh01 a ser mostrados
+        $datos_vh01 = array(
+            'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'nombre_propietario' => 'Nombre Propietario', 'color_vehiculo' => 'Color Vehículo',
+            'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
+            'tipo_id_propietario' => 'Tipo Id', 'numero_id_propietario' => 'Id del Propietario', 'precio_venta' => 'Precio de Venta',
+            'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
+            'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
+            'forma_pago_retail' => 'Forma de Pago'
+        );
+        if ($coin1_vh && $coin2_vh) {// si las dos busquedas son true en etiqueta de apertura y cierre
+            if ($count_vh == $count2_vh) {// si las dos busquedas devuelven el mismo numero de coincidencias
+                //die('enter vec');
+                $dataCreatec_vh = '<div class="row"><h1 class="tl_seccion">Info Venta Vehículos</h1></div>'
+                        . '<div class="row"><div class="col-md-12">'
+                        . '<div class="table-responsive">
+                        <table class="tables tablesorter" id="keywords">
+                <thead>
+                    <tr>
+                        <th><span>Chasis</span></th>
+                        <th><span>Código Modelo</span></th>
+                        <th><span>Nombre</span></th>
+                        <th><span>Color</span></th>
+                        <th><span>Fecha de Venta</span></th>
+                        <th><span>Año</span></th>
+                        <th><span>Color orígen</span></th>
+                        <th><span>Tipo ID</span></th>
+                        <th><span>Id Propietario</span></th>
+                        <th><span>Precio de Venta</span></th>
+                        <th><span>Direccion</span></th>
+                        <th><span>Número</span></th>
+                        <th><span>Teléfono</span></th>
+                        <th><span>Grupo Conc.</span></th>
+                        <th><span>Forma de pago</span></th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+                // GRABAR DATOS EN MODELO GESTION INFORMACION
+                $modelInformacion = new GestionInformacion;
+                $modelInformacion->setscenario('createc');
+
+
+                for ($i = 0; $i < $count_vh; $i++) {
+                    $ini = $coincidencias_vh[0][$i][1];
+                    $fin = $coincidencias2_vh[0][$i][1];
+                    $ini += 8; // sumamos el numero de caracteres (8) de <ttga35>
+                    $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
+                    $str_vh = substr($response['lcxml'], $ini, $longitudchr);
+                    $dataCreatec_vh .= '<tr>';
+                    foreach ($datos_vh01 as $key => $value) {
+                        // primero encontramos la posicion de la cadena a encontrar
+                        $pos = strpos($str_vh, '<' . $key . '>');
+                        // encontramos la posicion final de la cadena final
+                        $posfinal = strpos($str_vh, '</' . $key . '>');
+                        // longitud de la cadena a impriimir
+                        $longitud_cadena = $posfinal - $pos;
+                        // cadena a imprimir, con posicion inicial y longitud
+                        $strtgavh = substr($str_vh, $pos, $longitud_cadena);
+                        $params = explode(">", $strtgavh);
+                        $dataCreatec_vh .= '<td>' . $strtgavh . '</td>';
+                        $data_save[$value] = "{$params[1]}";
+                    }
+                    $dataCreatec_vh .= '</tr>';
+                }
+                $dataCreatec_vh .= '</table></div></div></div>';
+//                echo '<pre>';
+//                print_r($data_save);
+//                echo '</pre>';
+
+                $dataCrTgavh = TRUE;
+                $result = TRUE;
+
+                if ($id_nueva_cotizacion != 0) { // SI NUEVA COTIZACION NO ES CERO PUEDE REGISTRAR UN NUEVO CLIENTE EN GESTION INFORMACION, GESTION CONSULA Y GESTION DIARIA
+                    //GRABAR DATOS A GESTION INFORMACION
+                    date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                    $modelInformacion->fecha = date("Y-m-d H:i:s");
+                    $modelInformacion->responsable = $id_responsable;
+                    $modelInformacion->dealer_id = $dealer_id;
+                    if (strlen($data_save['Teléfono del Propietario']) == 10) {
+                        $modelInformacion->celular = $data_save['Teléfono del Propietario'];
+                    } else {
+                        $modelInformacion->celular = '0999999999';
+                    }
+                    $modelInformacion->cedula = $data_save['Id del Propietario'];
+                    $modelInformacion->nombres = $data_save['Nombre Propietario'];
+                    $modelInformacion->direccion = $data_save['Calle Principal'];
+                    $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
+                    //die('before validare');
+//                if ($modelInformacion->validate()) {
+//                    die( 'validate');
+//                } else {
+//                    echo '<pre>';
+//                    print_r($modelInformacion->getErrors());
+//                    echo '</pre>';
+//                    die( 'validate errors');
+//                }
+                    if ($modelInformacion->save()) {
+                        //die('enter model save');
+                        $id_modeloInformacion = $modelInformacion->id;
+                    }
+
+                    // GRABAR PASO INICIAL GESTION DIARIA
+                    $gestion = new GestionDiaria;
+                    $gestion->id_informacion = $modelInformacion->id;
+                    $gestion->id_vehiculo = 0;
+                    $gestion->observaciones = 'Prospección';
+                    $gestion->medio_contacto = 'telefono';
+                    $gestion->fuente_contacto = 'prospeccion';
+                    $gestion->codigo_vehiculo = 0;
+                    $gestion->primera_visita = 1;
+                    $gestion->status = 1;
+                    $gestion->paso = 3;
+                    $gestion->proximo_seguimiento = '';
+                    $gestion->fecha = date("Y-m-d H:i:s");
+                    $gestion->save();
+
+                    // GRABAR PASO INICIAL EN GESTION CONSULTA
+                    $consulta = new GestionConsulta;
+                    $consulta->id_informacion = $modelInformacion->id;
+                    $consulta->fecha = date("Y-m-d H:i:s");
+                    $consulta->status = 'ACTIVO';
+                    $consulta->save();
+                }
+            }
+        }
+        //----------FIN DE BUSQUEDA TABLA VH01---------------------------
+        $options = array(
+            'datattga35' => $dataCreatec,
+            'datattga36' => $dataCreatec_36,
+            'datavh01' => $dataCreatec_vh,
+            'flagttga35' => $dataCrTga35,
+            'flagttga36' => $dataCrTga36,
+            'flagvh01' => $dataCrTgavh,
+            'id_informacion' => $id_modeloInformacion
+        );
+        return $options;
     }
 
     /**
@@ -2838,7 +2558,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             $datos_search = array(
                 'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo',
                 'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',
-                'fsc' => 'Factura', 'codigo_concesionario' => 'Concesionario','fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
+                'fsc' => 'Factura', 'codigo_concesionario' => 'Concesionario', 'fecha_retail' => 'Fecha de Venta', 'anio_modelo' => 'Año', 'color_origen' => 'Color de Orígen',
                 'numero_id_propietario' => 'Identificación', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
@@ -2941,7 +2661,6 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                         $result = 'nofind'; // Year doesn't match 
                     }
                     //die('result 2: ' . $result);
-
                     //die('SALIDA ENCUENTRA INDENTIFICACION: '.print_r($data_save));
                     //die('result: '.$result);
                     $this->render('facturacierre', array('id_informacion' => $_POST['Factura']['id_informacion'], 'id_vehiculo' => $_POST['Factura']['id_vehiculo'], 'data' => $data, 'data_save' => $data_save, 'search' => TRUE, 'result' => $result));
@@ -3374,7 +3093,22 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
-            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+            switch ($tipo) {
+                case 'exo':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) ORDER BY nombres ASC";
+                    break;
+                case 'seg':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+                    break;
+                case 'bdc':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (73,72) ORDER BY nombres ASC";
+                    break;
+
+                default:
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+                    break;
+            }
+            
         }
         /* else{
           $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
@@ -3688,14 +3422,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
-    
-    /*public function actionAlterTable() {
-        $sql = "ALTER TABLE gestion_vehiculo ADD tipo_credito INT unsigned default 1";
-        $con = Yii::app()->db;
-        $request = $con->createCommand($sql)->execute();
-        echo 'result: '.$request;
-        
-    }*/
+
+    /* public function actionAlterTable() {
+      $sql = "ALTER TABLE gestion_vehiculo ADD tipo_credito INT unsigned default 1";
+      $con = Yii::app()->db;
+      $request = $con->createCommand($sql)->execute();
+      echo 'result: '.$request;
+
+      } */
 
     //
 }

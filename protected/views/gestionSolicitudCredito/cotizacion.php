@@ -68,7 +68,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
             <div class="target">
 
-                <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
+                <div class="col-xs-12"><p><?php echo $this->getResponsableNombres($id_asesor); ?></p></div>
                 <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
                 <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
                 <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
@@ -96,8 +96,8 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h5><strong>Solicitud No. <?php echo $codigoconcesionario; ?>-SC-<?php echo $codigo_asesor; ?>-<?php echo $id_hoja; ?></strong></h5></div>
     </div>
-    <div class="row">
-        <div class="col-xs-4">
+<!--    <div class="row">
+        <div class="col-xs-6">
             <?php //echo $form->label class="tit-lab"Ex($model, 'concesionario');   ?>
             <?php //echo $form->textField($model, 'concesionario', array('class' => 'form-control', 'value' => 'Asiauto Mariana de Jesús', 'disabled' => 'true')); ?>
             <?php //echo $form->error($model, 'concesionario'); ?>
@@ -112,7 +112,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <em class="tit-lab" for="GestionSolicitudCredito_concesionario">Asesor de Ventas: </em>
             <?php echo $this->getResponsable($id_asesor); ?>
         </div>
-    </div>     
+    </div>     -->
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Datos del Vehículo</h4></div> 
     </div> 
@@ -183,10 +183,24 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div>
 
     <div class="row">
+        <?php if(!empty($value['cedula'])){ ?>
         <div class="col-xs-4">
             <em class="tit-lab" for="">Cédula: </em>
             <?php echo $value['cedula']; ?>
         </div>
+        <?php } ?>
+        <?php if(!empty($value['ruc'])){ ?>
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Ruc: </em>
+            <?php echo $value['ruc']; ?>
+        </div>
+        <?php } ?>
+        <?php if(!empty($value['pasaporte'])){ ?>
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Pasaporte: </em>
+            <?php echo $value['pasaporte']; ?>
+        </div>
+        <?php } ?>
         <div class="col-xs-4"><em class="tit-lab" for="">Fecha de Nacimiento: </em>
             <?php echo $value['fecha_nacimiento']; ?>
         </div>

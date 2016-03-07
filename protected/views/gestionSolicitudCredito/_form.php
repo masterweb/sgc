@@ -271,7 +271,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 },
                 success: function (data) {
                     //alert(data.options)
-                    $('#GestionInformacion_ciudad_domicilio').html(data);
+                    $('#GestionSolicitudCredito_ciudad_domicilio').html(data);
                     $('#info3').hide();
                 }
             });

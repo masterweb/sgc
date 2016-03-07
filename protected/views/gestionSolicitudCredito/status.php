@@ -61,7 +61,16 @@
                     <tr class="odd"><th>Apellido Paterno</th><td><?php echo $modelst->apellido_paterno; ?></td></tr>
                     <tr class="even"><th>Apellido Materno</th><td><?php echo $modelst->apellido_materno; ?></td></tr>
                     <tr class="odd"><th>Nombres</th><td><?php echo $modelst->nombres; ?></td></tr>
-                    <tr class="even"><th>Cédula</th><td><?php echo $modelst->cedula; ?></td></tr>
+                    <?php if(!empty($modelst->cedula)){ ?>
+                     <tr class="even"><th>Cédula</th><td><?php echo $modelst->cedula; ?></td></tr>
+                    <?php } ?>
+                     <?php if(!empty($modelst->ruc)){ ?>
+                     <tr class="even"><th>Ruc</th><td><?php echo $modelst->ruc; ?></td></tr>
+                    <?php } ?>
+                     <?php if(!empty($modelst->pasaporte)){ ?>
+                     <tr class="even"><th>Pasaporte</th><td><?php echo $modelst->pasaporte; ?></td></tr>
+                    <?php } ?>
+                   
                     <tr class="odd"><th>Fecha Nacimiento</th><td><?php echo $modelst->fecha_nacimiento; ?></td></tr>
                     <tr class="even"><th>Nacionalidad</th><td><?php echo $modelst->nacionalidad; ?></td></tr>
                     <tr class="odd"><th>Estado Civil</th><td><?php echo $modelst->estado_civil; ?></td></tr>
@@ -87,11 +96,15 @@
                     <tr class="even"><th>Dirección Empresa Cónyugue</th><td><?php echo $modelst->direccion_empresa_conyugue; ?></td></tr>
                     <tr class="odd"><th>Tipo Relación Laboral Cónyugue</th><td><?php echo $modelst->tipo_relacion_laboral_conyugue; ?></td></tr>
                     <?php } ?>
-                    <tr class="even"><th>Domicilio Actual</th><td><?php echo $modelst->domicilio_actual; ?></td></tr>
-                    <tr class="odd"><th>Tipo de Propiedad</th><td>Rentada</td></tr>
-                    <tr class="even"><th>Avalúo Propiedad</th><td></td></tr>
-                    <tr class="odd"><th>Vive</th><td><?php echo $modelst->vive; ?></td></tr>
-                    <tr class="even"><th>Valor Arriendo</th><td>$. <?php echo $modelst->valor_arriendo; ?></td></tr>
+                    <tr class="even"><th>Domicilio Actual</th><td><?php echo $this->getProvincia($modelst->provincia_domicilio); ?></td></tr>
+                    <tr class="odd"><th>Tipo de Propiedad</th><td><?php echo $modelst->habita; ?></td></tr>
+                    <?php if($modelst->habita == 'Propia'){ ?>
+                    <tr class="even"><th>Avalúo Propiedad</th><td><?php echo '$. '.number_format($modelst->avaluo_propiedad); ?></td></tr>
+                    <?php } ?>
+                    <?php if($modelst->habita == 'Rentada'){ ?>
+                    <tr class="even"><th>Valor de Arriendo</th><td><?php echo '$. '.number_format($modelst->valor_arriendo); ?></td></tr>
+                    <?php } ?>
+                    
                     <tr class="odd"><th>Calle Principal</th><td><?php echo $modelst->calle; ?></td></tr>
                     <tr class="even"><th>Barrio</th><td><?php echo $modelst->barrio; ?></td></tr>
                     <tr class="odd"><th>Referencia Domicilio</th><td><?php echo $modelst->referencia_domicilio; ?></td></tr>
@@ -102,9 +115,11 @@
                     <tr class="odd"><th>Sueldo Mensual Conyugue</th><td>$. <?php echo $modelst->sueldo_mensual_conyugue; ?></td></tr>
                     <?php } ?>
                     <tr class="even"><th>Banco 1</th><td><?php echo util::getBanco($modelst->banco1); ?></td></tr>
-                    <tr class="odd"><th>Cuenta1</th><td><?php //echo $modelst->cuenta1; ?></td></tr>
+                    <tr class="odd"><th>Cuenta1</th><td><?php echo $modelst->cuenta_ahorros1; ?></td></tr>
+                    <?php if(!empty($modelst->banco2)){ ?>
                     <tr class="even"><th>Banco 2</th><td><?php echo util::getBanco($modelst->banco2); ?></td></tr>
-                    <tr class="odd"><th>Cuenta2</th><td><?php //echo $modelst->cuenta2; ?></td></tr>
+                    <tr class="odd"><th>Cuenta2</th><td><?php echo $modelst->cuenta_ahorros2; ?></td></tr>
+                    <?php } ?>
                     <tr class="even"><th>Referencia Personal 1</th><td><?php echo $modelst->referencia_personal1; ?></td></tr>
                     <tr class="even"><th>Parentesco</th><td><?php echo $modelst->parentesco1; ?></td></tr>
                     <tr class="even"><th>Teléfono Referencia 1</th><td><?php echo $modelst->telefono_referencia1; ?></td></tr>
