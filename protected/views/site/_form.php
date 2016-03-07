@@ -427,7 +427,7 @@
                     $(".datepicker").datepicker({
                         changeMonth: true,
                         changeYear: true,
-                        dateFormat: 'dd-mm-yy',
+                        dateFormat: 'yy-mm-dd',
                         minDate: new Date(1950, 10 - 1, 25),
                         yearRange: '1950:2016'
                     });
