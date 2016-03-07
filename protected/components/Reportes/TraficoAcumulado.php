@@ -40,7 +40,6 @@ class TraficoAcumulado{
     	$sql = "SELECT distinct concesionario from trafico_acumulado where ".$where." ((DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."') OR (DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'))";
         $request = $con->createCommand($sql);
         $concesionarios = $request->queryAll();
-
         echo self::optionsConstructor($concesionarios, 'concesionario', $TAresp_activo);
     }
 

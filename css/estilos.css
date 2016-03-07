@@ -730,16 +730,16 @@ hr{
 
 /*FILTRO MODELOS REPORTES*/
 .modelo{
-    height: 67px;
+    height: 90px;
     margin-bottom: 10px;
 }
 .contcheck{
     padding: 0px !important;
 }
 .checkmodelo{
-    height: 67px;
+    height: 90px;
     border-right: 1px solid #3271b3;
-    padding: 20px 0 0;
+    padding: 35px 0 0;
     margin: 0px;
     text-align: center;
 }
@@ -786,4 +786,10 @@ ul.versiones li input{
 .select2-container{
     width: 100% !important;
     font-size: 12px !important;
+}
+.mod_usado{
+    height: 100px !important;
+}
+.mod_usado select{
+    font-size: 12px;
 }
