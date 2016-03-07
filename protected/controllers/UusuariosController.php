@@ -640,7 +640,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }
     }
 
-    public function actionPerfil() {
+     public function actionPerfil() {
         $model = $this->loadModel((int) Yii::app()->user->id);
         $fotoAnterior = $model->foto;
         if (isset($_POST['Usuarios'])) {
@@ -656,7 +656,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $date = date("Ymdhis");
                     $extension = explode('.', $uploadedFile);
                     $paso = 0;
-                    switch ($extension[1]) {
+                    /*switch ($extension[1]) {
                         case "gif":
                             $paso = 1;
                             break;
@@ -675,7 +675,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         Yii::app()->user->setFlash('error', '<div class="alert alert-danger"><strong>Ups!</strong>  Solamente puedes subir im�genes con la extensi�n GIF, JPG, JPEG, PJPEG o PNG.</div>');
                         $this->redirect(array('uusuarios/perfil/'));
                         die();
-                    }
+                    }*/
+					$paso = 1;
                     if (!empty($uploadedFile) && $paso == 1) {
                         $mime = array('image/jpg', 'image/jpeg', 'image/pjpeg', 'image/gif', 'image/png');
                         # Buscamos si el archivo que subimos tiene el MIME type que permitimos en nuestra subida
@@ -684,7 +685,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             $this->redirect(array('uusuarios/perfil/'));
                             die();
                         }
-                        if ($uploadedFile->size > 1048576) {
+                        if ($uploadedFile->size > 5048576) {
 
                             Yii::app()->user->setFlash('error', '<div class="alert alert-danger"><strong>Ups!</strong>  La imagen que ha ingresado tiene un peso mayor a 1MB, lo cual no esta permitido.</div>');
                             $this->redirect(array('uusuarios/perfil/'));

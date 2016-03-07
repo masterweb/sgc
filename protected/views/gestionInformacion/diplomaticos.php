@@ -832,7 +832,7 @@ if ($ced != '') {
                             <h4 class="modal-title">SGC</h4>
                         </div>
                         <div class="modal-body">
-                            <h4>Tu proceso se ha ido a exonerados</h4>
+                            <h4>Tu proceso se ha enviado a exonerados.</h4>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal" id="closemodal">Continuar</button>

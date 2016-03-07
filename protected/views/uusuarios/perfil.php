@@ -233,21 +233,22 @@
                             <?php echo $form->error($model, 'fechanacimiento'); ?>
                         </div>
                         <?php echo $form->labelEx($model, 'celular', array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-4">
-                            <?php echo $form->textField($model, 'celular', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'celular'); ?>
-                        </div>
+						<div class="col-sm-4">
+							<input size="10" maxlength="10" value="<?php echo $model->celular?>" class="form-control" placeholder="09999999999" name="Usuarios[celular]" id="Usuarios_celular" type="tel" onkeypress="return numeros(event);">
+							<label class="error" style="display: none;" id="celular2">Ingrese correctamente su celular</label>
+							<?php echo $form->error($model, 'celular'); ?>
+						</div>
                     </div>
 
                     <div class="form-group">
-                        <?php echo $form->labelEx($model, 'telefono', array('class' => 'col-sm-2 control-label')); ?>
-                        <div class="col-sm-4">
-                            <?php echo $form->textField($model, 'telefono', array('size' => 15, 'maxlength' => 15, 'class' => 'form-control')); ?>
-                            <?php echo $form->error($model, 'telefono'); ?>
-                        </div>
+                         <?php echo $form->labelEx($model, 'telefono', array('class' => 'col-sm-2 control-label')); ?>
+						<div class="col-sm-4">
+							<input  maxlength="9" value="<?php echo $model->telefono?>" placeholder="022222222" class="form-control" name="Usuarios[telefono]" onkeypress="return numeros(event);" id="Usuarios_telefono" type="tel">                    
+							<?php echo $form->error($model, 'telefono'); ?>
+						</div>
                         <?php echo $form->labelEx($model, 'extension', array('class' => 'col-sm-2 control-label')); ?>
                         <div class="col-sm-4">
-                            <?php echo $form->textField($model, 'extension', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                            <input  maxlength="9" value="<?php echo $model->extension?>"  placeholder="Extensión de teléfono aquí" class="form-control" name="Usuarios[extension]" onkeypress="return numeros(event);" id="Usuarios_extension" type="tel">                    
                             <?php echo $form->error($model, 'extension'); ?>
                         </div>
 
@@ -256,7 +257,7 @@
                     <div class="form-group">
                         <label class = 'col-sm-8 control-label'>Para actualizar la informaci&oacute;n ingrese su contrase&ntilde;a <span class="required">*</span></label>
                         <div class="col-sm-4">
-                            <input type="password" name="repetirpass" id="repetirpass" class="form-control" autocomplete="off" placeholder="Ingresa tu contrase&ntilde;a aqu&iacute;">
+                            <input required type="password" name="repetirpass" id="repetirpass" class="form-control" autocomplete="off" placeholder="Ingresa tu contrase&ntilde;a aqu&iacute;">
                         </div>
                     </div>
                     <?php
@@ -324,8 +325,7 @@
             minDate: new Date(1950, 10 - 1, 25),
             yearRange: '1970:2016'
         });
-        $("#Usuarios_celular").mask('(09)-999-99999');
-        $("#Usuarios_telefono").mask('(09)-999-9999');
+      
 
 
     });
@@ -391,4 +391,28 @@
         return true;
         //		alert('bien');
     }
+	 function numeros(evt)
+	{
+		var code = (evt.which) ? evt.which : evt.keyCode;
+		if (code == 8)
+		{
+			//backspace
+			return true;
+		}
+		else if (code >= 48 && code <= 57)
+		{
+			//is a number
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	$("#Usuarios_celular").focus(function () {
+		celular(this.id)
+	});
+	function celular(vl) {
+		$("#" + vl).val('09');
+	}
 </script>
