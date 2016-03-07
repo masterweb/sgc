@@ -810,10 +810,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <p>$ <?php echo number_format($c1['precio_vehiculo'], 2); ?></p>
                             </div>
                         </div>
-                        <?php if ($c1['forma_pago'] == 'Credito'):?>
+                        <?php if ($c1['forma_pago'] == 'Crédito'):?>
                         <div class="col-md-8">
                             <h4 class="text-danger">Solicitud de Crédito</h4>
                             <?php
+                            //echo 'id informacion: '.$c1['id_informacion'].', id vehiculo: '.$c1['id_vehiculo'];
                             $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
                             switch ($status) {
                                 case 'na':
@@ -844,6 +845,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     break;
                             }
                             ?>
+                            <a href="" class="btn btn-xs btn-success">Solicitud de Crédito</a>
 
                         </div>
                         <?php endif; ?>
@@ -1074,12 +1076,15 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 <div class="row" style="padding-left: 15px;">
                     <?php 
                     $tipo = $this->getExonerado($id);
+                    
                     ?>
                     <div class="col-md-2">
-                        <?php if($tipo > 0){ ?>
+                        <?php if($tipo == 'exo'){ ?>
                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientoexonerados'); ?>" type="button" class="btn btn-danger">RGD</a>
-                        <?php }else{ ?>
+                        <?php }if($tipo == 'seg'){?>
                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" type="button" class="btn btn-danger">RGD</a>
+                        <?php } if($tipo == 'bdc'){?>
+                        <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>" type="button" class="btn btn-danger">RGD</a>
                         <?php } ?>
                     </div>
                     <?php
@@ -1097,7 +1102,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             }
                             break;
                         case '3':
-                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id']));
+                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
                             echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
                             break;
                         case '4':

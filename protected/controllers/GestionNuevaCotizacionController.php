@@ -327,12 +327,15 @@ class GestionNuevaCotizacionController extends Controller {
                     //die('ente pros ' . $documento);
                     switch ($documento) {
                         case 'ci':
+                            $ident = 'ci';
                             $model->cedula = $_POST['GestionNuevaCotizacion']['cedula'];
                             break;
                         case 'ruc':
+                            $ident = 'ruc';
                             $model->ruc = $_POST['GestionNuevaCotizacion']['ruc'];
                             break;
                         case 'pasaporte':
+                            $ident = 'pasaporte';
                             $model->pasaporte = $_POST['GestionNuevaCotizacion']['pasaporte'];
                             break;
 
@@ -341,7 +344,7 @@ class GestionNuevaCotizacionController extends Controller {
                     }
                     if ($model->save()) {
                         //die('enter save');
-                        $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id,));
+                        $this->redirect(array('gestionInformacion/create', 'tipo' => $tipo, 'id' => $model->id, 'fuente' => $_POST['GestionNuevaCotizacion']['fuente'], 'iden' => $ident));
                     }
                     break;
                 case 'trafico':

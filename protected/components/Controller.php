@@ -1942,11 +1942,32 @@ class Controller extends CController {
 
     public function getExonerado($id) {
         //die('id: '.$id);
+        $tipo = '';
         $criteria = new CDbCriteria(array(
-            "condition" => "id = {$id} AND tipo_form_web = 'exonerados'",
+            "condition" => "id = {$id}",
         ));
-        $dealers = GestionInformacion::model()->count($criteria);
-        return $dealers;
+        $dealers = GestionInformacion::model()->find($criteria);
+        if(!empty($dealers->tipo_form_web)){
+            switch ($dealers->tipo_form_web) {
+                case 'exonerados':
+                    $tipo =  'exo';
+                    break;
+                case 'usadopago':
+                case 'usado': 
+                    $tipo =  'usado';
+                    break;
+
+                default:
+                    break;
+            }
+        }else{
+            if($dealers->bdc == 1){
+                $tipo =  'bdc';
+            }else{
+                $tipo = 'seg';
+            }
+        }
+        return $tipo;
     }
 
     // profile

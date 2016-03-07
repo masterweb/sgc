@@ -170,13 +170,13 @@ $rol = Yii::app()->user->getState('roles');
     <div class="row">
         <div class="table-responsive">
 		<div>
-			<a href="<?php echo Yii::app()->createUrl('uusuarios/celebraciones'); ?>" class="btn btn-primary btn-xs btn-danger btnCrear">Ver Cumplea&ntilde;eros del mes</a>
+			<!--<a href="<?php echo Yii::app()->createUrl('uusuarios/celebraciones'); ?>" class="btn btn-primary btn-xs btn-danger btnCrear">Ver Cumplea&ntilde;eros del mes</a>-->
 			
 		</div>
 		<div class="input-group"> <span class="input-group-addon">Filtrar por Apellidos y Nombres</span>
 			<input id="filter" type="text" class="form-control" placeholder="Ingrese aqu&iacute;">
 		</div>
-            <table class="tables tablesorter" id="keywords">
+            <table class="tables tablesorter table-striped" id="keywords">
                 <thead>
                     <tr>
                         <th><span>ID</span></th>

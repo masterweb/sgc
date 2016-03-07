@@ -1884,7 +1884,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion ";
+                LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion ";
 
         if ($cargo_id == 46) {// SUPER ADMINISTRADOR AEKIA
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
