@@ -138,7 +138,6 @@
 
     <!-- FILTRO ASESORES -->
     <?php 
-    
     if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76): ?>
         <?php         
         if (in_array($varView['cargo_id'], $usuariosBajos)):?>

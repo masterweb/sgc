@@ -589,6 +589,8 @@ class ReportesController extends Controller {
 
             if( $cargo_id == 70){
                 $active_cargo = '70, 71';
+            }else if( $cargo_id == 76){
+                $active_cargo = '76, 77';
             }else if( $cargo_id == 69 || 
                 $cargo_id == 70 || 
                 $cargo_id == 4 || 
@@ -614,7 +616,8 @@ class ReportesController extends Controller {
                 $cargo_id == 58 ||
                 $cargo_id == 60 ||
                 $cargo_id == 61 ||
-                $cargo_id == 62){
+                $cargo_id == 62 ||
+                $cargo_id == 76){
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
