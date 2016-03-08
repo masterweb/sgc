@@ -294,9 +294,9 @@ class Controller extends CController {
     public function getAsesorCelular($id) {
         $dealers = Usuarios::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
-            $params = explode('-', $dealers->celular);
-            return $params[1] . '-' . $params[2];
-            //return $dealers->celular;
+            //$params = explode('-', $dealers->celular);
+            //return $params[1] . '-' . $params[2];
+            return $dealers->celular;
         } else {
             return 'NA';
         }

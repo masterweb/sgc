@@ -3425,13 +3425,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
 
-    /* public function actionAlterTable() {
-      $sql = "ALTER TABLE gestion_vehiculo ADD tipo_credito INT unsigned default 1";
+     public function actionAlterTable() {
+      $sql = "DELETE from gestion_informacion where id = 2573";
       $con = Yii::app()->db;
       $request = $con->createCommand($sql)->execute();
       echo 'result: '.$request;
 
-      } */
+      }
 
     //
 }
