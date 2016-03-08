@@ -45,8 +45,8 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
 
                     <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
                     <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
-                    <div class="col-xs-5"><p><strong>T </strong> (593) <?php echo $telefono; ?></p></div>
-                    <div class="col-xs-5"><p><strong>M </strong> (593 9) <?php echo $celular; ?></p></div>
+                    <div class="col-xs-5"><p><strong>T </strong> <?php echo $telefono; ?></p></div>
+                    <div class="col-xs-5"><p><strong>M </strong> <?php echo $celular; ?></p></div>
                     <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
                     <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
                 </div>

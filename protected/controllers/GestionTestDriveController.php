@@ -178,8 +178,8 @@ class GestionTestDriveController extends Controller {
                                               <td colspan="2">' . $this->getConcesionarioDireccion($id_asesor) . '</td>
                                             </tr>
                                             <tr>
-                                              <td><strong style="color:#AB1F2C;">T</strong> (593) <a href="tel:' . $this->getAsesorTelefono($id_asesor) . '">' . $this->getAsesorTelefono($id_asesor) . '</a> ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
-                                              <td><strong style="color:#AB1F2C;">M</strong> (593) <a href="tel:' . $this->getAsesorCelular($id_asesor) . '">' . $this->getAsesorCelular($id_asesor) . '</a></td>
+                                              <td><strong style="color:#AB1F2C;">T</strong> <a href="tel:' . $this->getAsesorTelefono($id_asesor) . '">' . $this->getAsesorTelefono($id_asesor) . '</a> ext. ' . $this->getAsesorExtension($id_asesor) . '</td>
+                                              <td><strong style="color:#AB1F2C;">M</strong> <a href="tel:' . $this->getAsesorCelular($id_asesor) . '">' . $this->getAsesorCelular($id_asesor) . '</a></td>
                                             </tr>
                                             <tr>
                                               <td><strong style="color:#AB1F2C;">E</strong> ' . $this->getAsesorEmail($id_asesor) . ' </td>

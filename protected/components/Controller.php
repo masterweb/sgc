@@ -295,7 +295,7 @@ class Controller extends CController {
         $dealers = Usuarios::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             //$params = explode('-', $dealers->celular);
-            //return $params[1] . '-' . $params[2];
+
             return $dealers->celular;
         } else {
             return 'NA';
@@ -363,7 +363,7 @@ class Controller extends CController {
                 break;
             case 3:
                 $data = '<a href="' . Yii::app()->createUrl('site/consulta', array('id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                
+
                 break;
             case 4:
                 $data = '<a href="' . Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
@@ -997,7 +997,7 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
-    
+
     public function getNombreConcesionario($id) {
         //die('id-----: '.$id);
         $criteria = new CDbCriteria(array(
@@ -1282,7 +1282,7 @@ class Controller extends CController {
         }
     }
 
-    public function getFinanciamiento($id_informacion,$id_vehiculo) {
+    public function getFinanciamiento($id_informacion, $id_vehiculo) {
         $tipo = GestionVehiculo::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id = {$id_vehiculo}"));
         if ($tipo) {
             return $tipo->tipo_credito;
@@ -1947,23 +1947,23 @@ class Controller extends CController {
             "condition" => "id = {$id}",
         ));
         $dealers = GestionInformacion::model()->find($criteria);
-        if(!empty($dealers->tipo_form_web)){
+        if (!empty($dealers->tipo_form_web)) {
             switch ($dealers->tipo_form_web) {
                 case 'exonerados':
-                    $tipo =  'exo';
+                    $tipo = 'exo';
                     break;
                 case 'usadopago':
-                case 'usado': 
-                    $tipo =  'usado';
+                case 'usado':
+                    $tipo = 'usado';
                     break;
 
                 default:
                     break;
             }
-        }else{
-            if($dealers->bdc == 1){
-                $tipo =  'bdc';
-            }else{
+        } else {
+            if ($dealers->bdc == 1) {
+                $tipo = 'bdc';
+            } else {
                 $tipo = 'seg';
             }
         }
@@ -2266,7 +2266,7 @@ class Controller extends CController {
 
         echo $data;
     }
-    
+
     public function getNameBanco($id) {
         $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
         return $banco->nombre;
