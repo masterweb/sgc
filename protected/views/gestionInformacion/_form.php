@@ -12,7 +12,7 @@ $dealer_id = $this->getDealerId($id_responsable);
 //die();
 $city_id = $this->getCityId($dealer_id);
 $provincia_id = $this->getProvinciaId($city_id);
-echo 'provincia id: ' . $provincia_id;
+//echo 'provincia id: ' . $provincia_id;
 $cedula = $this->getCedulaCotizacion($id);
 $ced = $this->getCedula($id);
 $nombres = '';
