@@ -564,6 +564,7 @@ class ReportesController extends Controller {
             $extra_where = " tipo_ex IS NOT NULL AND ";
         }
 
+
         //GET asesores activos en rango de fechas
         $con_aa = Yii::app()->db;
         $sql_asesores_act = "SELECT distinct responsable FROM gestion_informacion WHERE ".$extra_where." DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
@@ -586,6 +587,23 @@ class ReportesController extends Controller {
             $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             $con = Yii::app()->db;
 
+            if( $cargo_id == 70){
+                $active_cargo = '70, 71';
+            }else if( $cargo_id == 69 || 
+                $cargo_id == 70 || 
+                $cargo_id == 4 || 
+                $cargo_id == 45 ||
+                $cargo_id == 46 ||
+                $cargo_id == 48 ||
+                $cargo_id == 57 ||
+                $cargo_id == 58 ||
+                $cargo_id == 60 ||
+                $cargo_id == 61 ||
+                $cargo_id == 62){
+
+                $active_cargo = '70, 71, 72, 73, 75, 76, 77';
+            }
+
             if( $cargo_id == 69 || 
                 $cargo_id == 70 || 
                 $cargo_id == 4 || 
@@ -597,7 +615,7 @@ class ReportesController extends Controller {
                 $cargo_id == 60 ||
                 $cargo_id == 61 ||
                 $cargo_id == 62){
-                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (70, 71, 72, 73, 75, 76, 77) AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 

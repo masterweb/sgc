@@ -1,4 +1,5 @@
 upload/*
 protected/**/runtime/*
 protected/**/config/*
+protected/config/main.php
 /nbproject/private/
