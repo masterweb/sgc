@@ -1523,6 +1523,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     </tr>
                 </thead>
                 <tbody>';
+            
+            
             foreach ($cd as $value) {
                 $criteria = new CDbCriteria(array(
                     'condition' => "id_informacion = {$value['id']}"
