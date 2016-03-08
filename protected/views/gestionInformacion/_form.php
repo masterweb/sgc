@@ -12,6 +12,7 @@ $dealer_id = $this->getDealerId($id_responsable);
 //die();
 $city_id = $this->getCityId($dealer_id);
 $provincia_id = $this->getProvinciaId($city_id);
+echo 'provincia id: ' . $provincia_id;
 $cedula = $this->getCedulaCotizacion($id);
 $ced = $this->getCedula($id);
 $nombres = '';
@@ -261,7 +262,9 @@ $tipo = $_GET['tipo'];
                     break;
                 case '4':// si estoy interesado
                     $('.cont-vec').hide();
-                    $('.cont-interesado').show();$('.cont_encuentro').show();$('.cont-conc').show();
+                    $('.cont-interesado').show();
+                    $('.cont_encuentro').show();
+                    $('.cont-conc').show();
                     $('.cont-nocont').hide();
                     //validateInteresado();
                     break;
@@ -270,7 +273,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').show();
                     $('.cont-int-price').hide();
                     $('.cont-interesado').hide();
-                    $('.cont-interesado').show();$('.cont_encuentro').hide();$('.cont-lugar').hide();$('.cont-conc').hide();
+                    $('.cont-interesado').show();
+                    $('.cont_encuentro').hide();
+                    $('.cont-lugar').hide();
+                    $('.cont-conc').hide();
                     break;
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
@@ -369,17 +375,17 @@ $tipo = $_GET['tipo'];
             console.log('enter gestion');
             $('#gestion-informacion-form').validate({
                 rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                    'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[direccion]': {required: true},
+                    'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[direccion]': {required: true},
                     'GestionInformacion[provincia_domicilio]': {required: true}, 'GestionInformacion[ciudad_domicilio]': {required: true},
-                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true},
+                    'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true},
                     //'GestionInformacion[telefono_oficina]': {required: true},
-                    'GestionInformacion[telefono_casa]': {required: true, minlength: 9,number:true}},
+                    'GestionInformacion[telefono_casa]': {required: true, minlength: 9, number: true}},
                 messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                     'GestionInformacion[cedula]': {required: 'Ingrese el número'}, 'GestionInformacion[direccion]': {required: 'Ingrese la dirección'},
                     'GestionInformacion[provincia_domicilio]': {required: 'Seleccione la provincia'}, 'GestionInformacion[ciudad_domicilio]': {required: 'Seleccione la ciudad'},
-                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos',number:'Ingrese números'},
+                    'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese números'},
                     //'GestionInformacion[telefono_oficina]': {required: 'Ingrese el teléfono'},
-                    'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number:'Ingrese números'}
+                    'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number: 'Ingrese números'}
                 },
                 submitHandler: function (form) {
                     $('#GestionInformacion_provincia_conc').removeAttr('disabled');
@@ -453,10 +459,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números',number:'Ingrese números'}},
+                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}},
                         submitHandler: function (form) {
                             form.submit();
                         }
@@ -468,9 +474,9 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
+                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
                             form.submit();
@@ -483,10 +489,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números',number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
+                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
                         submitHandler: function (form) {
                             var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
@@ -518,7 +524,7 @@ $tipo = $_GET['tipo'];
                                     var endTime = parseInt(startTime) + 100;
                                     //console.log('start time:'+fechaStart+startTime);
                                     //console.log('fecha end:'+fechaStart+endTime);
-                                    var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente '+cliente+' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
+                                    var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente ' + cliente + ' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
                                     $('#event-download').attr('href', href);
                                     $('.calendar-content').show();
                                     $("#event-download").click(function () {
@@ -546,9 +552,9 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').show();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números',number:'Ingrese números'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
                         submitHandler: function (form) {
                             var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
@@ -587,10 +593,10 @@ $tipo = $_GET['tipo'];
                 case '15':
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true,number:true,minlength:10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10,number:true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula',number:'Ingrese sólo números',minlength:'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números',number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
+                            'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
                         submitHandler: function (form) {
                             form.submit();
                         }
@@ -602,20 +608,20 @@ $tipo = $_GET['tipo'];
         }
     }
 </script>
-<?php $this->widget('application.components.Notificaciones'); ?>
+        <?php $this->widget('application.components.Notificaciones'); ?>
 <div role="tabpanel">
 
     <!-- Nav tabs -->  
     <ul class="nav nav-tabs" role="tablist">
-        <?php if ($tipo == 'prospeccion'): ?>
+<?php if ($tipo == 'prospeccion'): ?>
             <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion_on.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita_on.png" alt="" /></span> Cita</a></li>
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
-        <?php else: ?>
+<?php else: ?>
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
             <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
-        <?php endif; ?>
+<?php endif; ?>
         <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
         <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
         <li role="presentation"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion.png" alt="" /></span> Negociación</a></li>
@@ -646,113 +652,113 @@ $tipo = $_GET['tipo'];
                     </div>  
                     <div class="row"><p class="note">Campos con <span class="required">*</span> son requeridos.</p></div>
 
-                    <?php echo $form->errorSummary($model); ?>
+                                <?php echo $form->errorSummary($model); ?>
 
                     <div class="row">
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'nombres', array('required' => 'required')); ?>
+                                <?php //echo $form->labelEx($model, 'nombres', array('required' => 'required')); ?>
                             <label class="" for="">Nombres <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
-                            <?php echo $form->textField($model, 'nombres', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $nombres)); ?>
-                            <?php echo $form->error($model, 'nombres'); ?>
+                            if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
+                                <?php echo $form->textField($model, 'nombres', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $nombres)); ?>
+                                <?php echo $form->error($model, 'nombres'); ?>
                         </div>
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'apellidos');  ?>
+                                <?php //echo $form->labelEx($model, 'apellidos');  ?>
                             <label class="" for="">Primer Apellido <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
+                            if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
                             <?php echo $form->textField($model, 'apellidos', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $apellidos)); ?>
                             <?php echo $form->error($model, 'apellidos'); ?>
                         </div>
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'apellidos');  ?>
+<?php //echo $form->labelEx($model, 'apellidos');   ?>
                             <label class="" for="">Segundo Apellido</label>
-                            <?php echo $form->textField($model, 'last_name', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $apellidos)); ?>
-                            <?php echo $form->error($model, 'last_name'); ?>
+                        <?php echo $form->textField($model, 'last_name', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $apellidos)); ?>
+                        <?php echo $form->error($model, 'last_name'); ?>
                         </div>
                     </div>
 
                     <div class="row">
-                        <?php
-                        $identificacion = $this->getIdentificacion($id);
-                        //echo '--------- IDENT: '.$identificacion;
-                        ?>
-                        <?php if ($identificacion == 'ci'): ?>
+                            <?php
+                            $identificacion = $this->getIdentificacion($id);
+                            //echo '--------- IDENT: '.$identificacion;
+                            ?>
+                                <?php if ($identificacion == 'ci'): ?>
                             <div class="col-md-3">
-                                <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                    <?php //echo $form->labelEx($model, 'cedula');   ?>
                                 <label class="" for="">Cédula <?php
-                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                        echo '<span class="required">*</span>';
-                                    }
-                                    ?></label>
-                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
-                                <input size="20" maxlength="10" class="form-control" name="GestionInformacion[cedula]" id="GestionInformacion_cedula" type="text" value="<?php
-                                if (isset($id)) {
-                                    echo $ced;
-                                }
-                                ?>">
-                                       <?php echo $form->error($model, 'cedula'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if ($identificacion == 'ruc'): ?>
-                            <div class="col-md-3">
-                                <?php //echo $form->labelEx($model, 'cedula');   ?>
-                                <label class="" for="">RUC <?php
-                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                        echo '<span class="required">*</span>';
-                                    }
-                                    ?></label>
-                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
-                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
-                                if (isset($id)) {
-                                    echo $this->getIdentificacionRuc($id);
-                                }
-                                ?>">
-                                       <?php echo $form->error($model, 'ruc'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <?php if ($identificacion == 'pasaporte'): ?>
-                            <div class="col-md-3">
-                                <?php //echo $form->labelEx($model, 'cedula');   ?>
-                                <label class="" for="">Pasaporte <?php
-                                    if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                        echo '<span class="required">*</span>';
-                                    }
-                                    ?></label>
-                                <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
-                                <input size="20" maxlength="50" class="form-control" name="GestionInformacion[pasaporte]" id="GestionInformacion_pasaporte" type="text" value="<?php
-                                if (isset($id)) {
-                                    echo $this->getIdentificacionPasaporte($id);
-                                }
-                                ?>">
-                                       <?php echo $form->error($model, 'pasaporte'); ?>
-                            </div>
-                        <?php endif; ?>
-                        <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'direccion');    ?>
-                            <label class="" for="">Dirección <?php
-                                if ($_GET['tipo'] == 'gestion') {
+                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
                                     echo '<span class="required">*</span>';
                                 }
-                                ?></label>
-                            <?php echo $form->textField($model, 'direccion', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => $direccion)); ?>
+                                    ?></label>
+                                       <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="10" class="form-control" name="GestionInformacion[cedula]" id="GestionInformacion_cedula" type="text" value="<?php
+                                   if (isset($id)) {
+                                       echo $ced;
+                                   }
+                                   ?>">
+                                <?php echo $form->error($model, 'cedula'); ?>
+                            </div>
+                                <?php endif; ?>
+                                <?php if ($identificacion == 'ruc'): ?>
+                            <div class="col-md-3">
+                                    <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                <label class="" for="">RUC <?php
+                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                    echo '<span class="required">*</span>';
+                                }
+                                    ?></label>
+                                       <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
+                                   if (isset($id)) {
+                                       echo $this->getIdentificacionRuc($id);
+                                   }
+                                   ?>">
+                                <?php echo $form->error($model, 'ruc'); ?>
+                            </div>
+                                <?php endif; ?>
+                                <?php if ($identificacion == 'pasaporte'): ?>
+                            <div class="col-md-3">
+                                    <?php //echo $form->labelEx($model, 'cedula');   ?>
+                                <label class="" for="">Pasaporte <?php
+                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                    echo '<span class="required">*</span>';
+                                }
+                                    ?></label>
+                                       <?php //echo $form->textField($model, 'cedula', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <input size="20" maxlength="50" class="form-control" name="GestionInformacion[pasaporte]" id="GestionInformacion_pasaporte" type="text" value="<?php
+                                   if (isset($id)) {
+                                       echo $this->getIdentificacionPasaporte($id);
+                                   }
+                                       ?>">
+                                    <?php echo $form->error($model, 'pasaporte'); ?>
+                            </div>
+                                <?php endif; ?>
+                        <div class="col-md-3">
+                                <?php //echo $form->labelEx($model, 'direccion');    ?>
+                            <label class="" for="">Dirección <?php
+                            if ($_GET['tipo'] == 'gestion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
+<?php echo $form->textField($model, 'direccion', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'value' => $direccion)); ?>
                             <?php echo $form->error($model, 'direccion'); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'email');   ?>
+                                <?php //echo $form->labelEx($model, 'email');   ?>
                             <label class="" for="">Provincia Domicilio <?php
-                                if ($_GET['tipo'] == 'gestion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
+                            if ($_GET['tipo'] == 'gestion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
                             <?php
                             $criteria = new CDbCriteria(array(
                                 'order' => 'nombre'
@@ -795,15 +801,15 @@ $tipo = $_GET['tipo'];
                                 )
                             ));
                             ?>
-                            <?php echo $form->error($model, 'provincia_domicilio'); ?>
+                                <?php echo $form->error($model, 'provincia_domicilio'); ?>
                         </div>
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'celular');  ?>
+                                <?php //echo $form->labelEx($model, 'celular');  ?>
                             <label class="" for="">Ciudad Domicilio <?php
-                                if ($_GET['tipo'] == 'gestion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
+                            if ($_GET['tipo'] == 'gestion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
                             <div id="info3" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                             <?php //echo $form->dropDownList($model, 'ciudad_domicilio', array('' => '---Seleccione una ciudad---'),array('class' => 'form-control'));   ?>
                             <?php
@@ -820,53 +826,53 @@ $tipo = $_GET['tipo'];
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'email');   ?>
+                                <?php //echo $form->labelEx($model, 'email');   ?>
                             <label class="" for="">Email <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
-                            <?php echo $form->textField($model, 'email', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $email)); ?>
-                            <?php echo $form->error($model, 'email'); ?>
+                            if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
+                                <?php echo $form->textField($model, 'email', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $email)); ?>
+                                <?php echo $form->error($model, 'email'); ?>
                         </div>
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'celular');  ?>
+                                <?php //echo $form->labelEx($model, 'celular');  ?>
                             <label class="" for="">Celular <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
-                            <?php echo $form->textField($model, 'celular', array('size' => 15, 'maxlength' => 10, 'class' => 'form-control', 'value' => $celular, 'onkeypress' => 'return validateNumbers(event)')); ?>
+                            if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
+<?php echo $form->textField($model, 'celular', array('size' => 15, 'maxlength' => 10, 'class' => 'form-control', 'value' => $celular, 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'celular'); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-3">
                             <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
-                            <?php //echo $form->labelEx($model, 'telefono_casa');  ?>
+                                <?php //echo $form->labelEx($model, 'telefono_casa');  ?>
                             <label class="" for="">Teléfono Domicilio <?php
-                                if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
-                                    echo '<span class="required">*</span>';
-                                }
-                                ?></label>
-                            <?php echo $form->textField($model, 'telefono_casa', array('size' => 15, 'maxlength' => 9, 'class' => 'form-control', 'value' => $telefono_casa, 'onkeypress' => 'return validateNumbers(event)')); ?>
-                            <?php echo $form->error($model, 'telefono_casa'); ?>
+                            if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
+                                echo '<span class="required">*</span>';
+                            }
+                            ?></label>
+                                <?php echo $form->textField($model, 'telefono_casa', array('size' => 15, 'maxlength' => 9, 'class' => 'form-control', 'value' => $telefono_casa, 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
                         <div class="col-md-3">
-                            <?php //echo $form->labelEx($model, 'telefono_oficina');    ?>
+                                <?php //echo $form->labelEx($model, 'telefono_oficina');    ?>
                             <label class="" for="">Teléfono Oficina <?php
-                                /* if ($_GET['tipo'] == 'gestion') {
-                                  echo '<span class="required">*</span>';
-                                  } */
-                                ?></label>
-                            <?php echo $form->textField($model, 'telefono_oficina', array('size' => 15, 'maxlength' => 9, 'class' => 'form-control', 'value' => $telefono_oficina, 'onkeypress' => 'return validateNumbers(event)')); ?>
-                            <?php echo $form->error($model, 'telefono_oficina'); ?>
+                            /* if ($_GET['tipo'] == 'gestion') {
+                              echo '<span class="required">*</span>';
+                              } */
+                            ?></label>
+                    <?php echo $form->textField($model, 'telefono_oficina', array('size' => 15, 'maxlength' => 9, 'class' => 'form-control', 'value' => $telefono_oficina, 'onkeypress' => 'return validateNumbers(event)')); ?>
+                    <?php echo $form->error($model, 'telefono_oficina'); ?>
                         </div>
 
                     </div>
-                    <?php
-                    if (isset($_GET['tipo']) && (isset($_GET['tipo_fuente']) == 'usado') && ($_GET['tipo'] == 'prospeccion') || (($_GET['tipo'] == 'trafico') && ($_GET['tipo_fuente']) == 'usado')) {
-                        ?>
+<?php
+if (isset($_GET['tipo']) && (isset($_GET['tipo_fuente']) == 'usado') && ($_GET['tipo'] == 'prospeccion') || (($_GET['tipo'] == 'trafico') && ($_GET['tipo_fuente']) == 'usado')) {
+    ?>
                         <div class="row">
                             <div class="col-md-2">
                                 <label class="" for="">Presupuesto </label>
@@ -874,83 +880,10 @@ $tipo = $_GET['tipo'];
                             </div>
                         </div>
 <?php } ?>
-                    <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'gestion'): ?>
+                            <?php if (isset($_GET['tipo']) && $_GET['tipo'] == 'gestion'): ?>
                         <div class="row">
                             <h1 class="tl_seccion_rf">Datos del Concesionario</h1>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-    <?php echo $form->labelEx($model, 'provincia_conc'); ?>
-                                <?php
-                                $criteria = new CDbCriteria(array(
-                                    'condition' => "estado='s'",
-                                    'order' => 'nombre'
-                                ));
-                                $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
-                                ?>
-                                <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));  ?>
-                                <?php echo $form->error($model, 'provincia_conc'); ?>
-                            </div>
-                            <div class="col-md-3">
-    <?php echo $form->labelEx($model, 'ciudad_conc'); ?>
-                                <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
-                                <?php
-                                $criteria2 = new CDbCriteria(array('condition' => "id={$city_id}", 'order' => 'name'));
-                                $ciudades = CHtml::listData(Dealercities::model()->findAll($criteria2), "id", "name");
-                                ?>
-                                <?php echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php echo $form->error($model, 'ciudad_conc'); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-    <?php echo $form->labelEx($model, 'concesionario'); ?>
-                                <div id="info6" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
-                                <?php
-                                $criteria3 = new CDbCriteria(array('condition' => "cityid={$city_id}", 'order' => 'name'));
-                                $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
-                                ?>
-                                <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control')); ?>
-                                <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php echo $form->error($model, 'concesionario'); ?>
-                            </div>
-                        </div>
-
-                        <div class="row buttons">
-                            <div class="col-md-8">
-                                <input type="hidden" name="GestionInformacion[fuente]" id="GestionInformacion_fuente" value="<?php echo $fuente; ?>">
-                                <input name="GestionInformacion[paso]" id="GestionInformacion_paso" type="hidden" value="3">
-                                <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php
-                            if (isset($_GET['tipo'])) {
-                                echo $_GET['tipo'];
-                            }
-                                ?>">
-                                <input name="GestionInformacion[iden]" id="GestionInformacion_iden" type="hidden" value="<?php
-                                       if (isset($_GET['iden'])) {
-                                           echo $_GET['iden'];
-                                       }
-                                       ?>">
-                                <input type="hidden" name="tipo" id="tipo" value="<?php echo $_GET['tipo']; ?>">
-                                       <?php
-                                       if ($_GET['tipo'] == 'prospeccion'):
-                                           echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="prospeccion">';
-                                       else:
-                                           echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="primera_visita">';
-                                       endif;
-                                       ?>
-                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
-
-                            </div>
-                        </div>
-<?php endif; ?>
-                </div><!-- ==========END DATOS CLIENTE Y CONCESIONARIO=============-->
-                <br>
-<?php
-if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
-        (isset($_GET['tipo_fuente']) != 'usado')) {
-    ?>
-                    <div style="display: none;">
                         <div class="row">
                             <div class="col-md-3">
                                 <?php echo $form->labelEx($model, 'provincia_conc'); ?>
@@ -962,7 +895,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                 $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
                                 ?>
                                 <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));  ?>
+                                <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
                             </div>
                             <div class="col-md-3">
@@ -984,9 +917,82 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                 $criteria3 = new CDbCriteria(array('condition' => "cityid={$city_id}", 'order' => 'name'));
                                 $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
                                 ?>
-                                <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control')); ?>
-                                <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php echo $form->error($model, 'concesionario'); ?>
+    <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control'));  ?>
+    <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
+    <?php echo $form->error($model, 'concesionario'); ?>
+                            </div>
+                        </div>
+
+                        <div class="row buttons">
+                            <div class="col-md-8">
+                                <input type="hidden" name="GestionInformacion[fuente]" id="GestionInformacion_fuente" value="<?php echo $fuente; ?>">
+                                <input name="GestionInformacion[paso]" id="GestionInformacion_paso" type="hidden" value="3">
+                                <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php
+                                if (isset($_GET['tipo'])) {
+                                    echo $_GET['tipo'];
+                                }
+                                ?>">
+                                <input name="GestionInformacion[iden]" id="GestionInformacion_iden" type="hidden" value="<?php
+                                if (isset($_GET['iden'])) {
+                                    echo $_GET['iden'];
+                                }
+                                ?>">
+                                <input type="hidden" name="tipo" id="tipo" value="<?php echo $_GET['tipo']; ?>">
+                                <?php
+                                if ($_GET['tipo'] == 'prospeccion'):
+                                    echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="prospeccion">';
+                                else:
+                                    echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="primera_visita">';
+                                endif;
+                                ?>
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
+
+                            </div>
+                        </div>
+                <?php endif; ?>
+                </div><!-- ==========END DATOS CLIENTE Y CONCESIONARIO=============-->
+                <br>
+<?php
+if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
+        (isset($_GET['tipo_fuente']) != 'usado')) {
+    ?>
+                    <div style="display: none;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <?php echo $form->labelEx($model, 'provincia_conc'); ?>
+                                <?php
+                                $criteria = new CDbCriteria(array(
+                                    'condition' => "estado='s'",
+                                    'order' => 'nombre'
+                                ));
+                                $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
+                                ?>
+                                <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
+                                <?php echo $form->error($model, 'provincia_conc'); ?>
+                            </div>
+                            <div class="col-md-3">
+                                <?php echo $form->labelEx($model, 'ciudad_conc'); ?>
+                                <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
+                                <?php
+                                $criteria2 = new CDbCriteria(array('condition' => "id={$city_id}", 'order' => 'name'));
+                                $ciudades = CHtml::listData(Dealercities::model()->findAll($criteria2), "id", "name");
+                                ?>
+                                <?php echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php echo $form->error($model, 'ciudad_conc'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <?php echo $form->labelEx($model, 'concesionario'); ?>
+                                <div id="info6" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
+                                <?php
+                                $criteria3 = new CDbCriteria(array('condition' => "cityid={$city_id}", 'order' => 'name'));
+                                $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
+                                ?>
+    <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control'));  ?>
+    <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
+    <?php echo $form->error($model, 'concesionario'); ?>
                             </div>
                         </div>
                     </div>
@@ -999,7 +1005,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             Datos grabados correctamente en seguimiento.
                         </div>
                         <div class="form cont-seguimiento">
-                            <?php $prospeccion = new GestionProspeccionPr; ?>
+    <?php $prospeccion = new GestionProspeccionPr; ?>
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="">Observaciones</label>
@@ -1038,57 +1044,57 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                                     $criteria = new CDbCriteria(array('group' => 'modelo', 'order' => 'id asc'));
                                                     //$marcas = CHtml::listData(Marcas::model()->findAll($criteria), "marca", "marca");
                                                     $marcas = array(
-                                            '' => '--Seleccione--',
-                                            "ALFA ROMEO" => 'ALFA ROMEO',
-                                            "AUDI" => 'AUDI',
-                                            "BAW" => 'BAW',
-                                            "BMW" => 'BMW',
-                                            "BYD" => 'BYD',
-                                            "CHANA" => 'CHANA',
-                                            "CHANGHE" => 'CHANGHE',
-                                            "CHERY" => 'CHERY',
-                                            "CHEVROLET" => 'CHEVROLET',
-                                            "CHRYSLER" => 'CHRYSLER',
-                                            "CITROEN" => 'CITROEN',
-                                            "DAIHATSU" => 'DAIHATSU',
-                                            "DODGE" => 'DODGE',
-                                            "D.F.S.K. (DONGFENG)" => 'D.F.S.K. (DONGFENG)',
-                                            "FIAT" => 'FIAT',
-                                            "FORD" => 'FORD',
-                                            "GEELY" => 'GEELY',
-                                            "GREAT WALL" => 'GREAT WALL',
-                                            "HAFEI" => 'HAFEI',
-                                            "HONDA" => 'HONDA',
-                                            "HYUNDAI" => 'HYUNDAI',
-                                            "JAC MOTORS" => 'JAC MOTORS',
-                                            "JEEP" => 'JEEP',
-                                            "JINBEI" => 'JINBEI',
-                                            "JMC" => 'JMC',
-                                            "KIA" => 'KIA',
-                                            "LADA" => 'LADA',
-                                            "LAND ROVER" => 'LAND ROVER',
-                                            "LEXUS" => 'LEXUS',
-                                            "LIFAN" => 'LIFAN',
-                                            "MAHINDRA" => 'MAHINDRA',
-                                            "MAZDA" => 'MAZDA',
-                                            "MERCEDES BENZ" => 'MERCEDES BENZ',
-                                            "MITSUBISHI" => 'MITSUBISHI',
-                                            "NISSAN" => 'NISSAN',
-                                            "PEUGEOT" => 'PEUGEOT',
-                                            "PORSCHE" => 'PORSCHE',
-                                            "QMC" => 'QMC',
-                                            "RENAULT" => 'RENAULT',
-                                            "SAIC WULING" => 'SAIC WULING',
-                                            "SKODA" => 'SKODA',
-                                            "SSANGYONG" => 'SSANGYONG',
-                                            "TOYOTA" => 'TOYOTA',
-                                            "VOLKSWAGEN" => 'VOLKSWAGEN',
-                                            "VOLVO" => 'VOLVO',
-                                            "ZNA" => 'ZNA',
-                                            "ZOTYE" => 'ZOTYE',
-                                            "ZX AUTO" => 'ZX AUTO',
-                                            "DAEWOO" => 'DAEWOO'
-                                        );
+                                                        '' => '--Seleccione--',
+                                                        "ALFA ROMEO" => 'ALFA ROMEO',
+                                                        "AUDI" => 'AUDI',
+                                                        "BAW" => 'BAW',
+                                                        "BMW" => 'BMW',
+                                                        "BYD" => 'BYD',
+                                                        "CHANA" => 'CHANA',
+                                                        "CHANGHE" => 'CHANGHE',
+                                                        "CHERY" => 'CHERY',
+                                                        "CHEVROLET" => 'CHEVROLET',
+                                                        "CHRYSLER" => 'CHRYSLER',
+                                                        "CITROEN" => 'CITROEN',
+                                                        "DAIHATSU" => 'DAIHATSU',
+                                                        "DODGE" => 'DODGE',
+                                                        "D.F.S.K. (DONGFENG)" => 'D.F.S.K. (DONGFENG)',
+                                                        "FIAT" => 'FIAT',
+                                                        "FORD" => 'FORD',
+                                                        "GEELY" => 'GEELY',
+                                                        "GREAT WALL" => 'GREAT WALL',
+                                                        "HAFEI" => 'HAFEI',
+                                                        "HONDA" => 'HONDA',
+                                                        "HYUNDAI" => 'HYUNDAI',
+                                                        "JAC MOTORS" => 'JAC MOTORS',
+                                                        "JEEP" => 'JEEP',
+                                                        "JINBEI" => 'JINBEI',
+                                                        "JMC" => 'JMC',
+                                                        "KIA" => 'KIA',
+                                                        "LADA" => 'LADA',
+                                                        "LAND ROVER" => 'LAND ROVER',
+                                                        "LEXUS" => 'LEXUS',
+                                                        "LIFAN" => 'LIFAN',
+                                                        "MAHINDRA" => 'MAHINDRA',
+                                                        "MAZDA" => 'MAZDA',
+                                                        "MERCEDES BENZ" => 'MERCEDES BENZ',
+                                                        "MITSUBISHI" => 'MITSUBISHI',
+                                                        "NISSAN" => 'NISSAN',
+                                                        "PEUGEOT" => 'PEUGEOT',
+                                                        "PORSCHE" => 'PORSCHE',
+                                                        "QMC" => 'QMC',
+                                                        "RENAULT" => 'RENAULT',
+                                                        "SAIC WULING" => 'SAIC WULING',
+                                                        "SKODA" => 'SKODA',
+                                                        "SSANGYONG" => 'SSANGYONG',
+                                                        "TOYOTA" => 'TOYOTA',
+                                                        "VOLKSWAGEN" => 'VOLKSWAGEN',
+                                                        "VOLVO" => 'VOLVO',
+                                                        "ZNA" => 'ZNA',
+                                                        "ZOTYE" => 'ZOTYE',
+                                                        "ZX AUTO" => 'ZX AUTO',
+                                                        "DAEWOO" => 'DAEWOO'
+                                                    );
 
                                                     //echo $form->dropDownList($prospeccionrp, "preg3_sec2", $marcas, array('empty' => '---Seleccione una marca---', 'class' => 'form-control'));
                                                     ?> 
@@ -1137,7 +1143,7 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="cont-interesado" style="display:none;">
                                 <div class="row">
                                     <div class="col-md-4">
@@ -1213,24 +1219,24 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                     <label for="">Ingreso</label>
                                     <input type="text" name="GestionProspeccionRp[ingresolugar]" id="GestionProspeccion_ingreso_lugar" class="form-control">
                                 </div>
-                                
+
                             </div>
                             <div class="cont-int-price" style="display: none;">
-                                
+
                             </div>
-                            
+
                             <div class="row buttons">
                                 <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
                                 <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
                                 <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
                                 <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php
-                                    if (isset($_GET['tipo'])) {
-                                        echo $_GET['tipo'];
-                                    }
-                                        ?>">
+                            if (isset($_GET['tipo'])) {
+                                echo $_GET['tipo'];
+                            }
+                            ?>">
                                 <input name="GestionInformacion[paso]" id="GestionInformacion_paso" type="hidden" value="1-2">
-                                <input name="GestionDiaria[id_informacion]" id="GestionDiaria_id_informacion" type="hidden" value="<?php //echo $id_informacion;          ?>">
-                                <input name="GestionDiaria[id_vehiculo]" id="GestionDiaria_id_vehiculo" type="hidden" value="<?php //echo $id_vehiculo;          ?>">
+                                <input name="GestionDiaria[id_informacion]" id="GestionDiaria_id_informacion" type="hidden" value="<?php //echo $id_informacion;           ?>">
+                                <input name="GestionDiaria[id_vehiculo]" id="GestionDiaria_id_vehiculo" type="hidden" value="<?php //echo $id_vehiculo;           ?>">
                                 <input name="GestionDiaria[primera_visita]" id="GestionDiaria_seguimiento" type="hidden" value="1">
                                 <input name="GestionDiaria[seguimiento]" id="GestionDiaria_seguimiento" type="hidden" value="0">
 
@@ -1251,11 +1257,13 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                                 echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="primera_visita">';
                             endif;
                             ?>
-                            <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
-                            <?php if ($_GET['tipo'] == 'prospeccion'){echo '<a href="'.Yii::app()->request->baseUrl.'/images/precios_24.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';} ?>
-                            
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
+    <?php if ($_GET['tipo'] == 'prospeccion') {
+        echo '<a href="' . Yii::app()->request->baseUrl . '/images/precios_24.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+    } ?>
+
                             <a href="" class="btn btn-primary calendar-content" id="event-download" style="display: none;">Descargar Evento</a>
-                            
+
                             <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                         </div>
                         <div class="col-md-2">
@@ -1264,27 +1272,27 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             </div>
                         </div>
                         <div class="col-md-2">
-                            
+
                         </div>
                     </div>
-                <?php }elseif (isset($_GET['tipo']) && ($_GET['tipo'] == 'gestion') && (isset($_GET['fuente']) != 'web')) { ?>
+                        <?php } elseif (isset($_GET['tipo']) && ($_GET['tipo'] == 'gestion') && (isset($_GET['fuente']) != 'web')) { ?>
                     <div class="row buttons">
                         <div class="col-md-2">
                             <input type="hidden" name="GestionInformacion[fuente]" id="GestionInformacion_fuente" value="<?php echo $fuente; ?>">
                             <input type="hidden" name="tipo" id="tipo" value="<?php echo $_GET['tipo']; ?>">
-                            <input type="hidden" name="tipo_fuente" id="tipo_fuente" value="<?php //echo $_GET['tipo_fuente'];   ?>">
+                            <input type="hidden" name="tipo_fuente" id="tipo_fuente" value="<?php //echo $_GET['tipo_fuente'];    ?>">
                             <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php
-                    if (isset($_GET['tipo'])) {
-                        echo $_GET['tipo'];
-                    }
-                    ?>">
-                                   <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
+                               if (isset($_GET['tipo'])) {
+                                   echo $_GET['tipo'];
+                               }
+                            ?>">
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                         </div>
 
                     </div>
 
-                <?php } elseif (isset($_GET['tipo']) && (isset($_GET['tipo_fuente']) == 'usado')) { ?>
+<?php } elseif (isset($_GET['tipo']) && (isset($_GET['tipo_fuente']) == 'usado')) { ?>
 
                     <div class="row buttons">
                         <div class="col-md-2">
@@ -1295,22 +1303,22 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                             <input type="hidden" name="GestionProspeccionPr[pregunta]" id="GestionProspeccionPr_pregunta" value="15"/>
                             <input type="hidden" name="tipo_fuente" id="tipo_fuente" value="<?php //echo $_GET['tipo_fuente'];   ?>">
                             <input name="GestionInformacion[tipo]" id="GestionInformacion_tipo" type="hidden" value="<?php
-                    if (isset($_GET['tipo'])) {
-                        echo $_GET['tipo'];
-                    }
-                    ?>">
+                            if (isset($_GET['tipo'])) {
+                                echo $_GET['tipo'];
+                            }
+                            ?>">
                             <input name="GestionInformacion[iden]" id="GestionInformacion_iden" type="hidden" value="<?php
-                        if (isset($_GET['iden'])) {
-                            echo $_GET['iden'];
-                        }
-                    ?>">
-                                   <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
+                            if (isset($_GET['iden'])) {
+                                echo $_GET['iden'];
+                            }
+                            ?>">
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                         </div>
                     </div>
-                <?php } ?>
+<?php } ?>
 
-                <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
             </div><!-- form -->
         </div>
         <div role="tabpanel" class="tab-pane" id="profile"></div>
@@ -1320,6 +1328,6 @@ if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
 </div>
 
 <!-- Nav tabs -->  
-    <?php 
-        $this->renderPartial('//layouts/rgd/footer', array('tipo' => $tipo));
-    ?>
+<?php
+$this->renderPartial('//layouts/rgd/footer', array('tipo' => $tipo));
+?>
