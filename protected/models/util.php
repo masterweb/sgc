@@ -372,6 +372,26 @@ class Util {
             return $br->nombre;
         }
     }
+    
+    public static function getAsesoresByCredito($grupo_id) {
+        $array_dealers = Controller::getDealerGrupoConc($grupo_id);
+        $dealerList = implode(', ', $array_dealers);
+        $con = Yii::app()->db;
+        $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        //die($sql);
+        $requestr1 = $con->createCommand($sql);
+        $requestr1 = $requestr1->queryAll();
+        $data = '<option value="">--Seleccione Asesor--</option>';
+        $data .= '<option value="all">Todos</option>';
+        foreach ($requestr1 as $value) {
+            $data .= '<option value="' . $value['id'] . '">';
+            $data .= Controller::getResponsableNombres($value['id']);
+            $data .= '</option>';
+        }
+
+        return $data;
+        
+    }
 
 }
 

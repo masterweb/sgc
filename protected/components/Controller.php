@@ -1145,6 +1145,7 @@ class Controller extends CController {
     }
 
     public function getProvinciaId($id) {
+        //echo 'id en get provincia: '.$id.'<br />';
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));

@@ -147,8 +147,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="col-md-6">
                             <label for="">Responsable</label>
                             <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
-                                <option value="">--Seleccione responsable--</option>
-                                <option value="Jorge Rodriguez">Jorge Rodriguez</option>
+                                <?php echo util::getAsesoresByCredito($grupo_id); ?>
                             </select>
                         </div>
                     </div>

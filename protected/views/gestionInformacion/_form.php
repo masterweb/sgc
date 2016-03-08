@@ -8,9 +8,10 @@
 $id_responsable = Yii::app()->user->getId();
 //echo 'responsable id: '.$id_responsable;
 $dealer_id = $this->getDealerId($id_responsable);
-//echo '<br>dealer id: '.$dealer_id;
+//echo '<br>dealer id: '.$dealer_id.'<br />';
 //die();
 $city_id = $this->getCityId($dealer_id);
+//die('city id: '.$city_id);
 $provincia_id = $this->getProvinciaId($city_id);
 //echo 'provincia id: ' . $provincia_id;
 $cedula = $this->getCedulaCotizacion($id);
