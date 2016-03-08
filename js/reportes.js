@@ -49,22 +49,22 @@ $(function () {
            loadresponsables($('#GestionInformacionConcesionario'));
         }
     });
-if(activar_dealer == 'si'){ 
-    $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
-    $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
-    loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
-    loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
-}
+    if(activar_dealer == 'si'){ 
+        $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
+        $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
+        loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
+        loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
+    }
     $('#GestionInformacionConcesionario').change(function () {loadresponsables($(this));});    
     loadresponsables($('#GestionInformacionConcesionario'));
 
-if(activar_dealer == 'si'){ 
-    if(id_grupo != ''){  
-        loaddealers($('#GestionInformacionGrupo'), 'g');
-    }else{    
-        loaddealers($('#GestionInformacionProvincias'), 'p');
+    if(activar_dealer == 'si'){ 
+        if(id_grupo != ''){  
+            loaddealers($('#GestionInformacionGrupo'), 'g');
+        }else{    
+            loaddealers($('#GestionInformacionProvincias'), 'p');
+        }
     }
-}
 
     
 
@@ -167,77 +167,78 @@ if(activar_dealer == 'si'){
             });
         }        
     }
-
-if(activar_dealer == 'si'){  
-    //TRAFICO ACUMULADO 
-    $(".tipo_busqueda_TA").change(function () {
-        checkFiltro($(this)); 
-        //loadprovincia($('#TA_provincias'));
-        //loadgrupo($('#TA_grupos')); 
-    });
-    //TODOS TA
-    $('.filtros_modelos_ta').on('change', '#todos_ta', function(){
-        if(this.checked){
-            check = true;
-        }else{
-            check = false;
-        }
-        $('.modelos_TA input').each(function () {
-            $(this).prop('checked', check);
-        });
-    });
-    //carga responsables   
-    $('#TAprovincia').change(function () {
-        $('#TAgrupo option:selected').prop("selected", false);
-        $('#TAconcesionarios option:selected').prop("selected", false);
-        loadconcesionariosTA($(this));      
-    });
-    $('#TAgrupo').change(function () {
-        $('#TAprovincia option:selected').prop("selected", false);
-        $('#TAconcesionarios option:selected').prop("selected", false);
-        
-        loadconcesionariosTA($(this));  
-    });
-
-    if(TAchecked_gp === 'p'){
-        loadconcesionariosTA($('#TAprovincia'));
-        $('#cont_TAprovincia').show(); 
-        $('#cont_TAgrupo').hide(); 
-    }else{
-        loadconcesionariosTA($('#TAgrupo')); 
-        $('#cont_TAprovincia').hide(); 
-        $('#cont_TAgrupo').show(); 
-    }
-
     function loadconcesionariosTA(e){
-        if(e.attr('value') != ''){
-            var where = '';
-            var value = e.attr('value');
-            var fecha1 = $('#fecha-range1').attr('value');
-            var fecha2 = $('#fecha-range2').attr('value');
-            if(e.attr('id') == 'TAprovincia'){
-                where = "provincia = '" + value + "' AND ";
-            }else{
-                where = "grupo = '"+ value + "' AND ";
-            }
-            $.ajax({
-                url: url_footer_var_asesoresTA,
-                beforeSend: function (xhr) {
-                },
-                type: 'POST', 
-                data: {
-                    where: where, 
-                    fecha1: fecha1, 
-                    fecha2: fecha2,
-                    TAresp_activo: TAresp_activo
-                },
-                success: function (data) {
-                    $('#TAconcesionarios').html(data);                  
+            if(e.attr('value') != ''){
+                var where = '';
+                var value = e.attr('value');
+                var fecha1 = $('#fecha-range1').attr('value');
+                var fecha2 = $('#fecha-range2').attr('value');
+                if(e.attr('id') == 'TAprovincia'){
+                    where = "provincia = '" + value + "' AND ";
+                }else{
+                    where = "grupo = '"+ value + "' AND ";
                 }
+                $.ajax({
+                    url: url_footer_var_asesoresTA,
+                    beforeSend: function (xhr) {
+                    },
+                    type: 'POST', 
+                    data: {
+                        where: where, 
+                        fecha1: fecha1, 
+                        fecha2: fecha2,
+                        TAresp_activo: TAresp_activo
+                    },
+                    success: function (data) {
+                        $('#TAconcesionarios').html(data);                  
+                    }
+                });
+            }        
+        }
+
+    if(activar_dealer == 'si'){  
+        //TRAFICO ACUMULADO 
+        $(".tipo_busqueda_TA").change(function () {
+            checkFiltro($(this)); 
+            //loadprovincia($('#TA_provincias'));
+            //loadgrupo($('#TA_grupos')); 
+        });
+        //TODOS TA
+        $('.filtros_modelos_ta').on('change', '#todos_ta', function(){
+            if(this.checked){
+                check = true;
+            }else{
+                check = false;
+            }
+            $('.modelos_TA input').each(function () {
+                $(this).prop('checked', check);
             });
-        }        
-    }
-}   
+        });
+        //carga responsables   
+        $('#TAprovincia').change(function () {
+            $('#TAgrupo option:selected').prop("selected", false);
+            $('#TAconcesionarios option:selected').prop("selected", false);
+            loadconcesionariosTA($(this));      
+        });
+        $('#TAgrupo').change(function () {
+            $('#TAprovincia option:selected').prop("selected", false);
+            $('#TAconcesionarios option:selected').prop("selected", false);
+            
+            loadconcesionariosTA($(this));  
+        });
+
+        if(TAchecked_gp === 'p'){
+            loadconcesionariosTA($('#TAprovincia'));
+            $('#cont_TAprovincia').show(); 
+            $('#cont_TAgrupo').hide(); 
+        }else{
+            loadconcesionariosTA($('#TAgrupo')); 
+            $('#cont_TAprovincia').hide(); 
+            $('#cont_TAgrupo').show(); 
+        }
+
+        
+    }   
     function checkFiltro(e){
         if(e.attr('value') == 'grupos'){
             $('.cont_grup').show();
