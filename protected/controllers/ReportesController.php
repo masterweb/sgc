@@ -11,11 +11,12 @@ class ReportesController extends Controller {
 
         $varView = array();
 
-        $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
+        $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');        
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
         $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
+        $varView['provincia_id'] = $varView['nombre_usuario']->provincia_id;
         $varView['cargo_usuario'] = Cargo::model()->findByPk($varView['nombre_usuario']->cargo_id);
         if($varView['nombre_usuario']->dealers_id != ''){
             $varView['consecionario_usuario'] = '<b>Concesionario:</b> '.GrConcesionarios::model()->find('dealer_id='.$varView['nombre_usuario']->dealers_id)['nombre'];
@@ -545,7 +546,7 @@ class ReportesController extends Controller {
 
     public function actionAjaxGetAsesores() {
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
-        $resposable = isset($_POST["resposable"]) ? $_POST["resposable"] : "";
+        $resposable = isset($_POST["responsable"]) ? $_POST["responsable"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
 
         //FECHAS RENDER
@@ -562,6 +563,8 @@ class ReportesController extends Controller {
             //echo $extra_where;
         }else if($tipo_b == 'exonerados'){
             $extra_where = " tipo_ex IS NOT NULL AND ";
+        }
+        else if($tipo_b == 'usados'){
         }
 
 
@@ -587,22 +590,19 @@ class ReportesController extends Controller {
             $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             $con = Yii::app()->db;
 
-            if( $cargo_id == 70){
-                $active_cargo = '70, 71';
-            }else if( $cargo_id == 76){
+            if($tipo_b == 'bdc'){
+                $extra_where = " bdc = 1 AND ";
+                $active_cargo = '70, 71, 72, 73, 75, 76, 77';
+                //echo $extra_where;
+            }else if($tipo_b == 'exonerados'){
+                $extra_where = " tipo_ex IS NOT NULL AND ";
+                $active_cargo = '72, 75';
+            }
+            else if($tipo_b == 'usados'){
                 $active_cargo = '76, 77';
-            }else if( $cargo_id == 69 || 
-                $cargo_id == 70 || 
-                $cargo_id == 4 || 
-                $cargo_id == 45 ||
-                $cargo_id == 46 ||
-                $cargo_id == 48 ||
-                $cargo_id == 57 ||
-                $cargo_id == 58 ||
-                $cargo_id == 60 ||
-                $cargo_id == 61 ||
-                $cargo_id == 62){
-
+            }elseif($tipo_b == 'general'){
+                $active_cargo = '70, 71';
+            }else{
                 $active_cargo = '70, 71, 72, 73, 75, 76, 77';
             }
 
@@ -617,8 +617,10 @@ class ReportesController extends Controller {
                 $cargo_id == 60 ||
                 $cargo_id == 61 ||
                 $cargo_id == 62 ||
-                $cargo_id == 76){
+                $cargo_id == 76||
+                $cargo_id == 72){
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
+            echo $sql;
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
@@ -662,12 +664,15 @@ class ReportesController extends Controller {
         $extra_where = '';
         if($tipo_b == 'bdc'){
             $extra_where = " bdc = 1 AND ";
-            //echo $extra_where;
         }else if($tipo_b == 'exonerados'){
             $extra_where = " tipo_ex IS NOT NULL AND ";
+        }else if($tipo_b == 'usados'){
+            $extra_where = " marca_usado IS NOT NULL AND ";
+        }elseif($tipo_b == 'general'){
+            $extra_where = " tipo_ex IS NULL AND marca_usado IS NULL AND bdc = 0 AND ";
         }
 
-        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE ".$extra_where." DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."' ORDER BY dealer_id ASC";
+        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."') ORDER BY dealer_id ASC";
         echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
@@ -687,6 +692,7 @@ class ReportesController extends Controller {
             $where = "id_grupo = {$grupo_id} AND ";
         }
         $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE ".$where.$concesionario." ORDER BY nombre ASC";
+        echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 
@@ -719,15 +725,19 @@ class ReportesController extends Controller {
 
         //controlador de tipo de busqueda
         $extra_where = '';
+        //echo $tipo_b;
         if($tipo_b == 'bdc'){
             $extra_where = " bdc = 1 AND ";
-            //echo $extra_where;
         }else if($tipo_b == 'exonerados'){
             $extra_where = " tipo_ex IS NOT NULL AND ";
+        }else if($tipo_b == 'usados'){
+            $extra_where = " marca_usado IS NOT NULL AND ";
+        }elseif($tipo_b == 'general'){
+            $extra_where = " tipo_form_web IS NULL AND bdc = 0 AND ";
         }
 
         $con = Yii::app()->db;
-        $sql = "SELECT distinct provincia_conc FROM gestion_informacion WHERE ".$extra_where." DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        $sql = "SELECT distinct provincia_conc FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
         echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
@@ -755,7 +765,7 @@ class ReportesController extends Controller {
                 $cargo_id == 61 ||
                 $cargo_id == 62){
                 $sql = "SELECT * FROM provincias WHERE id_provincia IN (".$provincias.") ORDER BY nombre ASC";
-
+                echo $sql;
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
@@ -795,17 +805,21 @@ class ReportesController extends Controller {
         //GET concesionarios activos en rango de fechas
 
         //controlador de tipo de busqueda
-       //controlador de tipo de busqueda
         $extra_where = '';
+        //echo $tipo_b;
         if($tipo_b == 'bdc'){
-            $extra_where = " bdc = 1 AND ";
-            //echo $extra_where;
+            $extra_where = " bdc = 1 AND dealer_id > 0 AND ";
         }else if($tipo_b == 'exonerados'){
-            $extra_where = " tipo_ex IS NOT NULL AND ";
+            $extra_where = " tipo_ex IS NOT NULL AND dealer_id > 0 AND ";
+        }else if($tipo_b == 'usados'){
+            $extra_where = " marca_usado IS NOT NULL AND dealer_id > 0 AND ";
+        }elseif($tipo_b == 'general'){
+            $extra_where = " tipo_form_web IS NULL AND bdc = 0 AND dealer_id > 0 AND ";
         }
 
         $con = Yii::app()->db;
-        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE".$extra_where." DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'";           
+        $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
+        echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 
@@ -818,7 +832,8 @@ class ReportesController extends Controller {
 
             //GET grupos activos en rango de fechas
             $con = Yii::app()->db;
-            $sql = "SELECT distinct id_grupo FROM gr_concesionarios WHERE dealer_id IN (".$grupos.") ORDER BY nombre ASC";           
+            $sql = "SELECT distinct id_grupo FROM gr_concesionarios WHERE dealer_id IN (".$grupos.") ORDER BY nombre ASC";
+            echo $sql;           
             $request2 = $con->createCommand($sql);
             $request2 = $request2->queryAll();
 

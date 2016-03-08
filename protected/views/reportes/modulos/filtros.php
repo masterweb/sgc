@@ -6,6 +6,7 @@
         $usuariosExonerados = array(75, 72);
         $usuariosBDC = array(73, 72);
         $usuariosGenentes = array(69);
+        $usuariosJafeBDCyExonerados = array(72);
         $usuariosAekia = array(4, 45, 46, 48, 57, 58, 60, 61, 62);
 
         $form = $this->beginWidget('CActiveForm', array(
@@ -37,6 +38,26 @@
     <div class="row">
 
     <!-- FILTRO GRUPOS O PROVINCIA-->
+    <?php if (in_array($varView['cargo_id'], $usuariosGeneral)): ?>
+        <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="general"/>
+    <?php endif; ?>
+    <?php if (in_array($varView['cargo_id'], $usuariosUsados)): ?>
+        <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="usados"/>
+    <?php endif; ?>
+    <?php if (in_array($varView['cargo_id'], $usuariosExonerados)): 
+            if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)):?>
+                <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="exonerados"/>
+            <?php endif; ?>
+    <?php endif; ?>
+    <?php if (in_array($varView['cargo_id'], $usuariosBDC)):
+            if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)):?>
+                <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="bdc"/>
+            <?php endif; ?>
+    <?php endif; ?>
+    <?php if (in_array($varView['cargo_id'], $usuariosGenentes)): ?>
+        <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionProvincias" value="<?=$varView['provincia_id']?>"/>      
+    <?php endif; ?>
+
     <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes)): ?>
         <div class="row text-center">
             <h4>Seleccione el tipo de busqueda</h4>
@@ -64,10 +85,10 @@
                  
                 <div class="row text-center">
                     <!--h4>Por</h4-->
-                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda" 
+                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda_por" 
                     <?php if($varView['checked_g'] == true){echo 'checked';} ?>
                     >Por Grupos</label>
-                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda"
+                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda_por"
                     <?php if($varView['checked_p'] == true){echo 'checked';} ?>
                     >Por Provincias</label>
                     <hr/>
@@ -138,7 +159,7 @@
 
     <!-- FILTRO ASESORES -->
     <?php 
-    if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76): ?>
+    if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76 || $varView['cargo_id'] == 72): ?>
         <?php         
         if (in_array($varView['cargo_id'], $usuariosBajos)):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>

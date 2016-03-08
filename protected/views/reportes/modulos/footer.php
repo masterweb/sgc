@@ -8,7 +8,7 @@
 	url_footer_var_provincia = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetProvincias"); ?>';
 	url_footer_var_grupo = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetGrupo"); ?>';
 	site_route = '<?php echo Yii::app()->request->baseUrl; ?>';
-	resposable = '<?php echo $varView["js_responsable"] ;?>';
+	responsable = '<?php echo $varView["js_responsable"] ;?>';
 	dealer = '<?php echo $varView["js_dealer"] ;?>';
 	cargo_id = '<?= $varView["cargo_id"]?>';
 	<?php

@@ -3,15 +3,23 @@ $(function () {
 
     //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
+        tipo_b = $(this).val();
         if(cargo_id != '69'){
             vaciar();  
         }
         
-        checkFiltro($(this));
-        tipo_b = $(this).val();
+        checkFiltro($(this)); 
     });
 
     $(".tipo_busqueda").each(function() {
+        if ($(this).is(':checked')) {
+            checkFiltro($(this));
+        }
+    });
+    $(".tipo_busqueda_por").change(function() {
+        checkFiltro($(this));
+    });
+    $(".tipo_busqueda_por").each(function() {
         if ($(this).is(':checked')) {
             checkFiltro($(this));
         }
@@ -136,7 +144,7 @@ $(function () {
                 success: function (data) {
                     $('#GestionInformacionConcesionario').html(data);
                     filtros_notification();
-                    $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
+                    $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
                     loadresponsables($('#GestionInformacionConcesionario'));                   
                 }
             });
@@ -155,7 +163,7 @@ $(function () {
                 type: 'POST', 
                 data: {
                     dealer_id: value, 
-                    resposable: resposable, 
+                    responsable: responsable, 
                     fecha1: fecha1, 
                     fecha2: fecha2,
                     tipo_b: tipo_b
@@ -256,7 +264,9 @@ $(function () {
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
-            } 
+            }else{
+                loaddealers($('#GestionInformacionProvincias'), 'p');
+            }   
             loadmodelos($('#fecha-range1'));         
         }if(e.attr('value') == 'usados'){
             $('#traficoGeneral').hide(); 
@@ -268,7 +278,9 @@ $(function () {
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');   
-            } 
+            }else{
+                loaddealers($('#GestionInformacionProvincias'), 'p');
+            }           
         }else if(e.attr('value') == 'bdc'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').hide();
@@ -279,7 +291,9 @@ $(function () {
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p'); 
-            }
+            }else{
+                loaddealers($('#GestionInformacionProvincias'), 'p');
+            }  
             loadmodelos($('#fecha-range1'));    
         }else if(e.attr('value') == 'exonerados'){
             $('#traficoGeneral').hide(); 
@@ -291,7 +305,9 @@ $(function () {
             if(cargo_id != '69'){   
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
-            }
+            }else{
+                loaddealers($('#GestionInformacionProvincias'), 'p');
+            }  
             loadmodelos($('#fecha-range1'));     
         }else if(e.attr('value') == 'traficoacumulado'){
             $('#traficoGeneral').hide(); 
@@ -313,7 +329,7 @@ $(function () {
 
     //vaciar selects
     function vaciar(){
-        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Resposable</option>').val('');
+        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
         $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">Concesionario</option>').val('');
         $("#GestionInformacionGrupo option:selected").prop("selected", false);
         $("#GestionInformacionProvincias option:selected").prop("selected", false);
