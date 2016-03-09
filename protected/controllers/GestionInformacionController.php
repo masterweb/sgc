@@ -1328,19 +1328,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 69) { // gerente comercial
             //die('enter ge');
-            if($get_array == 'bdc'){
+            if ($get_array == 'bdc') {
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                    . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73) AND ";
+                        . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73) AND ";
             }
-            if($get_array == 'exo'){
+            if ($get_array == 'exo') {
                 $sql_cargos .= " INNER JOIN usuarios u ON u.id = gi.responsable INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                    . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75) AND ";
+                        . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75) AND ";
             }
-            if($get_array == 'seg'){
+            if ($get_array == 'seg') {
                 $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                    . " WHERE gr.id_grupo = {$grupo_id} AND ";
+                        . " WHERE gr.id_grupo = {$grupo_id} AND ";
             }
-            
         }
         if ($cargo_id == 70) { // jefe de almacen
             $sql_cargos .= "WHERE gi.dealer_id = {$dealer_id} AND ";
@@ -1370,25 +1369,24 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             switch ($get_array) {
                 case 'exo':
                     $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
-                        . " WHERE u.cargo_id IN (75) AND ";
+                            . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . " WHERE u.cargo_id IN (75) AND ";
                     break;
                 case 'bdc':
                     $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
-                        . " WHERE u.cargo_id IN (72,73) AND ";
+                            . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . " WHERE u.cargo_id IN (72,73) AND ";
                     break;
                 case 'seg':
                     $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
-                        . "  INNER JOIN usuarios u ON u.id = gi.responsable "
-                        . " WHERE u.cargo_id IN (70,71) AND ";
+                            . "  INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . " WHERE u.cargo_id IN (70,71) AND ";
                     break;
 
                 default:
                     $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
                     break;
             }
-            
         }
 
         $con = Yii::app()->db;
@@ -1945,11 +1943,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $fechaPk = 1;
             }
             //die('55d: '.$_GET['GestionDiaria']['tipo']);
-            
-                $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'seg');
-                $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
-                exit();
-            
+
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'seg');
+            $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
+            exit();
         }
 
         $request = $con->createCommand($sql);
@@ -2003,6 +2000,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 72) { // JEFE DE  BDC
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
             $sql = "SELECT u.id as id_resp, gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -2440,9 +2439,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $con = Yii::app()->db;
 
         $array_dealers = $this->getDealerGrupo($id_responsable);
-        $dealerList = implode(', ', $array_dealers);
 
-        if ($cargo_id == 71 || $cargo_id == 75) { // ASESOR DE VENTAS Y EXONERADOS           
+        $dealerList = implode(', ', $array_dealers);
+        //die('array: '.$dealerList);
+
+        if ($cargo_id == 71) { // ASESOR DE VENTAS         
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $dealer_id = $this->getDealerId($id_responsable);
             //die($dealer_id);
@@ -2456,6 +2457,24 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
             //die($sql);
         }
+
+        if ($cargo_id == 75) { // ASESOR DE EXONERADOS           
+            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+            $dealer_id = $this->getDealerId($id_responsable);
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
+            //die($dealer_id);
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
+            gd.*, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) 
+                ORDER BY gd.id DESC";
+            //die($sql);
+        }
+
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
@@ -2467,6 +2486,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 72) { // JEFE DE BDC
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
@@ -4043,8 +4064,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     exit();
                 }
             }
-            
-            
+
+
             //---- BUSQUEDA GENERAL EN JEFE USADOS----
             if (!empty($_GET['GestionSolicitudCredito']['general']) &&
                     empty($_GET['GestionSolicitudCredito']['responsable'])) {
@@ -4067,7 +4088,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ));
                     exit();
                 }
-                
+
                 /* BUSQUEDA POR CEDULA,RUC O PASAPORTE */
                 $sql = "SELECT gi.*, gd.proximo_seguimiento FROM gestion_informacion gi 
                         LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id
@@ -4075,7 +4096,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         AND (gi.cedula LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' 
                         OR gi.ruc LIKE '%{$_GET['GestionSolicitudCredito']['general']}%' "
                         . "OR gi.pasaporte LIKE '%{$_GET['GestionSolicitudCredito']['general']}%')";
-                $sql .= " AND gi.dealer_id IN ({$dealerList})";        
+                $sql .= " AND gi.dealer_id IN ({$dealerList})";
                 //die('sql cedula: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -4092,7 +4113,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id
                         WHERE gi.tipo_form_web = 'usado' 
                         AND gi.id = '{$_GET['GestionSolicitudCredito']['general']}'";
-                $sql .= " AND gi.dealer_id IN ({$dealerList})";          
+                $sql .= " AND gi.dealer_id IN ({$dealerList})";
                 //die('sql id: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -4112,13 +4133,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
                         INNER JOIN usuarios u ON u.id = gi.responsable 
                         WHERE (gi.tipo_form_web = 'usado' OR gi.tipo_form_web = 'usadopago')";
-                if($_GET['GestionSolicitudCredito']['responsable'] == 'all'){
+                if ($_GET['GestionSolicitudCredito']['responsable'] == 'all') {
                     $sql .= " AND u.grupo_id = {$grupo_id} AND cargo_id = 77
                             ORDER BY gi.id DESC";
-                }else{
+                } else {
                     $sql .= " AND gi.dealer_id = {$dealer_id} AND gi.responsable = {$_GET['GestionSolicitudCredito']['responsable']}";
                 }
-                
+
                 //die('sql responsable: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();

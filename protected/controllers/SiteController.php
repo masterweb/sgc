@@ -3426,7 +3426,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
      public function actionAlterTable() {
-      $sql = "DELETE from gestion_informacion where id = 2573";
+      $sql = "DELETE from gestion_informacion where id = 2616";
       $con = Yii::app()->db;
       $request = $con->createCommand($sql)->execute();
       echo 'result: '.$request;
