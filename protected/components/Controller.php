@@ -213,9 +213,14 @@ class Controller extends CController {
     }
 
     public function getConcesionarioDireccionById($id) {
-        $dealer = Dealers::model()->find(array('condition' => "id={$id}"));
-        if ($dealer) {
-            return $dealer->direccion;
+        if (empty($id)) {
+            return '';
+        } else {
+            $dealer = Dealers::model()->find(array('condition' => "id={$id}"));
+            if ($dealer) {
+                return $dealer->direccion;
+            }
+            
         }
     }
 
@@ -1051,15 +1056,21 @@ class Controller extends CController {
 
     public function getNameConcesionarioById($id) {
         //die('id: '.$id);
-        $criteria = new CDbCriteria(array(
-            'condition' => "id={$id}"
-        ));
-        $dealer = Dealers::model()->find($criteria);
-        //return $dealer->concesionario_id;
-        if ($dealer) {
-            return $dealer->name;
+        if (empty($id)) {
+            $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+            $grupo = GrGrupo::model()->find(array('condition' => "id={$grupo_id}"));
+            return $grupo->nombre_grupo;
         } else {
-            return 0;
+            $criteria = new CDbCriteria(array(
+                'condition' => "id={$id}"
+            ));
+            $dealer = Dealers::model()->find($criteria);
+            //return $dealer->concesionario_id;
+            if ($dealer) {
+                return $dealer->name;
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -2049,6 +2060,7 @@ class Controller extends CController {
         // GENERACION Y ASIGNACION DE USUARIOS EXONERADOS DE LOS CLIENTES GENERADOS
         $array_ids = array();
         $id_responsable = Yii::app()->user->getId();
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         //$dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $con = Yii::app()->db;
         $sql = "SELECT gr.*,u.status_asesor FROM grupoconcesionariousuario gr 

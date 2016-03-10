@@ -2461,17 +2461,25 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 75) { // ASESOR DE EXONERADOS           
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $dealer_id = $this->getDealerId($id_responsable);
-            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $array_dealers = $this->getDealerGrupo($id_responsable);
             $dealerList = implode(', ', $array_dealers);
+            //die('count: '.count($array_dealers));
             //die($dealer_id);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) 
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+            if(count($array_dealers)>0){
+                $sql .= "WHERE gi.tipo_form_web = 'exonerados' AND gi.responsable = $id_responsable";
+            }else{
+                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                $dealerList = implode(', ', $array_dealers);
+                $sql .= " WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) 
                 ORDER BY gd.id DESC";
+            }
+            
             //die($sql);
         }
 

@@ -59,6 +59,7 @@ class GestionAgendamientoController extends Controller {
      */
     public function actionCreate() {
         $model = new GestionAgendamiento;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -81,7 +82,7 @@ class GestionAgendamientoController extends Controller {
             if ($_POST['GestionAgendamiento']['observaciones'] == 'Otro')
                 $model->otro_observacion = $_POST['GestionAgendamiento']['otro'];
 
-
+//DIE('CASE: '.$_POST['GestionAgendamiento']['observaciones']);
             switch ($_POST['GestionAgendamiento']['observaciones']) {
                 case 'Falta de tiempo':
                 case 'Llamada de emergencia':
@@ -202,7 +203,23 @@ class GestionAgendamientoController extends Controller {
                 $not->fecha = date("Y-m-d H:i:s");
                 $not->id_agendamiento = $model->id;
                 $not->save();
-                $this->redirect(array('gestionInformacion/seguimiento'));
+                switch ($cargo_id) {
+                    case 71: // asesor de ventas
+                    case 70: // jefe sucursal
+                        $this->redirect(array('gestionInformacion/seguimiento'));
+                        break;
+                    case 75: // asesor de exonerados
+                        $this->redirect(array('gestionInformacion/seguimientoexonerados'));
+                        break;
+                    case 73: // asesor bdc
+                    case 72: // jefe bdc   
+                        $this->redirect(array('gestionInformacion/seguimientobdc'));
+                        break;
+
+                    default:
+                        break;
+                }
+                
             }
         }
 
