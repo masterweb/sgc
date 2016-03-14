@@ -1786,6 +1786,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                //die('get array: '.$get_array);
                 if ($cargo_id == 46) { // super administrador
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
                     $title = "Busqueda Total País";
@@ -1805,6 +1806,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
                             . "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
                             . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN (75)";
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'seg') { // gerente comercial
+                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
+                            . "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id "
+                            . " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN (71)";
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 70) { // jefe de almacen

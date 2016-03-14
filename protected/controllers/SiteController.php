@@ -2342,7 +2342,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output('prueba-test-drive.pdf', 'I');
+        $mPDF1->Output('formulario-test-drive.pdf', 'I');
 
 
         ////////////////////////////////////////////////////////////////////////////////////
@@ -3426,12 +3426,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
      public function actionAlterTable() {
-      $sql = "DELETE from gestion_informacion where id = 2616";
+      $sql = "DELETE from gestion_informacion where id = 2673";
       $con = Yii::app()->db;
       $request = $con->createCommand($sql)->execute();
       echo 'result: '.$request;
 
       }
+      
 
     //
 }

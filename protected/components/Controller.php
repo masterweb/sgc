@@ -2284,5 +2284,10 @@ class Controller extends CController {
         $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
         return $banco->nombre;
     }
+    
+    public function getResponsableFirma($id_informacion) {
+        $firma = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
+        return $firma->responsable;
+    }
 
 }

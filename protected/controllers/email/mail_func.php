@@ -112,8 +112,8 @@ function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'u
     }
 
     $mail->AddAddress($to);
-    $mail->AddAddress('gansaldo72@hotmail.com');
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddAddress('gansaldo72@hotmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     //$mail->AddBCC('jorge.rodriguez@ariadna.com.ec');
     //$mail->AddBCC('javier.alban@ariadna.com.ec');
     if ($cc) {

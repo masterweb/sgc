@@ -131,9 +131,10 @@ $id_responsable = Yii::app()->user->getId();
                     <?php endif; ?>
                 </div>
                 <div class="col-xs-6">
-                    <?php 
+                    <?php
+                    $id_responsable_firma = $this->getResponsableFirma($_GET['id_informacion']);
                     $cri2 = new CDbCriteria(array(
-                                'condition' => "id={$id_responsable}"
+                                'condition' => "id={$id_responsable_firma}"
                             ));
                     $firmaasesor = Usuarios::model()->find($cri2);
                     $firma = $firmaasesor->firma;
