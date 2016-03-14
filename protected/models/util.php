@@ -334,6 +334,7 @@ class Util {
     }
     
     public static function getTiempoTrabajoConyugue($id_informacion) {
+        //echo 'id informacion: '.$id_informacion;
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id_informacion}"
         ));
@@ -341,6 +342,9 @@ class Util {
         if ($tr) {
             if (($tr->tiempo_trabajo_conyugue != '') && ($tr->meses_trabajo_conyugue != '')) {
                 return $tr->tiempo_trabajo_conyugue . ' años ' . $tr->meses_trabajo_conyugue . ' meses';
+            }
+            if (($tr->tiempo_trabajo_conyugue != '') && ($tr->meses_trabajo_conyugue == '')) {
+                return $tr->tiempo_trabajo_conyugue . ' años ';
             }
         } else {
             return 'NA';
@@ -355,6 +359,9 @@ class Util {
         if ($tr) {
             if (($tr->tiempo_trabajo != '') && ($tr->meses_trabajo != '')) {
                 return $tr->tiempo_trabajo . ' años ' . $tr->meses_trabajo . ' meses';
+            }
+            if (($tr->tiempo_trabajo != '') && ($tr->meses_trabajo == '')) {
+                return $tr->tiempo_trabajo . ' años ';
             }
         } else {
             return 'NA';

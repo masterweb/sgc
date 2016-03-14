@@ -90,9 +90,9 @@
                     <tr class="even"><th>Fecha Nacimiento Cónyugue</th><td><?php echo $modelst->fecha_nacimiento_conyugue; ?></td></tr>
                     <tr class="odd"><th>Nacionalidad Cónyugue</th><td><?php echo $modelst->nacionalidad_conyugue; ?></td></tr>
                     <tr class="even"><th>Empresa Trabajo</th><td><?php echo $modelst->empresa_trabajo_conyugue; ?></td></tr>
-                    <tr class="odd"><th>Teléfono Trabajo</th><td><?php echo $modelst->telefonos_trabajo_conyugue; ?></td></tr>
+                    <tr class="odd"><th>Teléfono Trabajo</th><td><?php echo $modelst->telefono_trabajo_conyugue; ?></td></tr>
                     <tr class="even"><th>Años de Trabajo</th><td><?php echo util::getTiempoTrabajoConyugue($modelst->id_informacion); ?></td></tr>
-                    <tr class="odd"><th>Cargo Cónyugue</th><?php echo $modelst->cargo_conyugue; ?><td></td></tr>
+                    <tr class="odd"><th>Cargo Cónyugue</th><td><?php echo ucfirst($modelst->cargo_conyugue); ?></td></tr>
                     <tr class="even"><th>Dirección Empresa Cónyugue</th><td><?php echo $modelst->direccion_empresa_conyugue; ?></td></tr>
                     <tr class="odd"><th>Tipo Relación Laboral Cónyugue</th><td><?php echo $modelst->tipo_relacion_laboral_conyugue; ?></td></tr>
                     <?php } ?>
