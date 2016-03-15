@@ -177,11 +177,13 @@ class GestionNotificacionesController extends Controller {
                     break;
                 case '3':
                     //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $value['id']));
-                    $this->redirect(array('gestionVehiculo/create/' . $id_informacion));
+                    $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                    $this->redirect(array('site/consulta/','id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
                     break;
                 case '4':
                     //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion));
-                    $this->redirect(array('gestionVehiculo/create/' . $id_informacion));
+                    //$this->redirect(array('gestionVehiculo/create/' . $id_informacion));
+                    $this->redirect(array('site/consulta/','id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
                     break;
                 case '5':
                     //$url = Yii::app()->createUrl('site/presentacion', array('id' => $id_informacion));
