@@ -1,7 +1,8 @@
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $con = Yii::app()->db;
-if ($cargo_id == 718) { // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
+if ($cargo_id == 71) { // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
+    //die('enter cargo ventas');
     $id_responsable = Yii::app()->user->getId();
     $dealer_id = $this->getDealerId($id_responsable);
     /* @var $this Controller */
@@ -25,22 +26,25 @@ if ($cargo_id == 718) { // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENT
         if ($c['agendamiento'] != '') {
             // update gestion informacion BDC 1
             $fecha = $c['agendamiento'];
-            //echo '<h3>FECHA AGENDAMIENTO: '.$fecha.'</h3><br />';
+            //echo '<h3>FECHA AGENDAMIENTO: ' . $fecha . '</h3><br />';
             $segundos = strtotime('now') - strtotime($fecha);
+            //echo '<h3>FECHA NOW: '.strtotime('now').'</h3><br />';
             $diferencia_horas = intval($segundos / 60 / 60);
-            //echo "La cantidad de horas para id informacion: ".$c['id_informacion'].", entre el ".$fecha." y hoy es <b>".$diferencia_horas."</b><br />"; 
+            //echo "La cantidad de horas para id informacion: " . $c['id_informacion'] . ", entre el " . $fecha . " y hoy es <b>" . $diferencia_horas . "</b><br />";
             $fuente = $this->getFuenteExonerados($c['id_informacion']);
-            //echo 'FUENTE: '.$fuente.'<br />';
-            if ($diferencia_horas > 24 && $fuente != 'usado' && $fuente != 'usadopago' && $fuente != 'exonerados' ) { // SI LA DIFERENCIA DE HORAS ES MAYOR A 12 Y FUENTE ES VACIO, ES DECIR NO ES USADO NI EXONERADO
-              
-                // ASIGNAR A LOS ASESORES BDC DE ACUERDO A LA ID DEL CONCESIONARIO
+            //echo 'FUENTE: ' . $fuente . '<br />';
+            if ($diferencia_horas >= 22 && $fuente != 'usado' && $fuente != 'usadopago' && $fuente != 'exonerados') { // SI LA DIFERENCIA DE HORAS ES MAYOR A 12 Y FUENTE ES VACIO, ES DECIR NO ES USADO NI EXONERADO
+                //ASIGNAR A LOS ASESORES BDC DE ACUERDO A LA ID DEL CONCESIONARIO
                 $responsable = $this->getRandomKey(73, $dealer_id);
-                $sql = "UPDATE gestion_informacion SET bdc = 1, responsable = {$responsable}, responsable_origen = {$id_responsable} WHERE id = {$c['id_informacion']}";
-                $request = $con->createCommand($sql)->query();
-                $sql2 = "UPDATE gestion_agendamiento SET caducado = 1 WHERE id_informacion = {$c['id_informacion']}";
-                $request = $con->createCommand($sql2)->query();
-                $sql3 = "UPDATE gestion_diaria SET medio_contacto = 'caduco' WHERE id_informacion = {$c['id_informacion']}";
-                $request = $con->createCommand($sql3)->query();
+                //echo 'id responsable: '.$responsable.'<br />';
+                if (!empty($responsable)) {
+                    $sql = "UPDATE gestion_informacion SET bdc = 1, responsable = {$responsable}, responsable_origen = {$id_responsable} WHERE id = {$c['id_informacion']}";
+                    $request = $con->createCommand($sql)->query();
+                    $sql2 = "UPDATE gestion_agendamiento SET caducado = 1 WHERE id_informacion = {$c['id_informacion']}";
+                    $request = $con->createCommand($sql2)->query();
+                    $sql3 = "UPDATE gestion_diaria SET medio_contacto = 'caduco' WHERE id_informacion = {$c['id_informacion']}";
+                    $request = $con->createCommand($sql3)->query();
+                }
             }
         }
     }
@@ -65,15 +69,15 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 ?>
 <section>
     <div>
-        <?php //if(Yii::app()->user->getState('area_id') == 17):  ?>
+        <?php //if(Yii::app()->user->getState('area_id') == 17):   ?>
 <!--        <img class="img_rs" id="imgmenu" src="<?php echo Yii::app()->request->baseUrl; ?>/images/stage_ventas.jpg">-->
-        <?php //else: ?>
+        <?php //else:  ?>
         <img class="img_rs" id="imgmenu" src="<?php echo Yii::app()->request->baseUrl; ?>/images/perfil-intranet2.jpg">
-        <?php //endif; ?>
+        <?php //endif;  ?>
     </div>
 </section>
 <section class="dashb">
-        <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;    ?>/images/img_14.jpg"></div>-->
+        <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;     ?>/images/img_14.jpg"></div>-->
     <ul class="menu dashboard">
         <li class="wrapper">
             <div class="forma">
@@ -85,7 +89,6 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         if ($result) {
             foreach ($result as $r) {
                 ?>
-
                 <?php if ($r->descripcion == 'Ventas') { ?>
                     <li class="wrapper">
                         <div class="forma">
@@ -136,7 +139,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                         <div class="txt_menu">Directorio de Contactos</div></a>
                 </div>
             </li><?php
-        }
+    }
         ?>
     </ul>
 </section>
