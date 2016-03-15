@@ -31,8 +31,8 @@ $id = $_GET['id'];
         $('#GestionInformacion_fecha_cita').datetimepicker({
             lang: 'es',
             onGenerate: function (ct) {
-                $(this).find('.xdsoft_date.xdsoft_weekend')
-                        .addClass('xdsoft_disabled');
+                //$(this).find('.xdsoft_date.xdsoft_weekend')
+                //        .addClass('xdsoft_disabled');
             },
             allowTimes: [
                 '08:00', '08:15', '08:30', '08:45', '09:00', '09:15', '09:30', '09:45', '10:00', '10:15', '10:30', '10:45', '11:15', '11:30', '11:45',

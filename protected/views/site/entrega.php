@@ -59,8 +59,8 @@
         $('#agendamiento1').datetimepicker({
             lang: 'es',
             onGenerate: function (ct) {
-                $(this).find('.xdsoft_date.xdsoft_weekend')
-                        .addClass('xdsoft_disabled');
+                //$(this).find('.xdsoft_date.xdsoft_weekend')
+                //        .addClass('xdsoft_disabled');
             },
             //format:'d/m/Y H:i',
             minTime: '08:00', maxTime: '20:00',

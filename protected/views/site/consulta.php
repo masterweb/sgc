@@ -41,8 +41,8 @@ if (isset($id)) {
         $('#GestionAgendamiento_agendamiento').datetimepicker({
             lang: 'es',
             onGenerate: function (ct) {
-                $(this).find('.xdsoft_date.xdsoft_weekend')
-                        .addClass('xdsoft_disabled');
+                //$(this).find('.xdsoft_date.xdsoft_weekend')
+                //        .addClass('xdsoft_disabled');
             },
             weekends: ['01.01.2014', '02.01.2014', '03.01.2014', '04.01.2014', '05.01.2014', '06.01.2014'],
             minDate: '-1970/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
