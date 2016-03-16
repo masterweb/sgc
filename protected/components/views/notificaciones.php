@@ -6,14 +6,31 @@
     $notificaciones = Yii::app()->db->createCommand($sql)->query();
     $count = count($notificaciones);
     $fecha_actual = date("Y/m/d");
+
+    $abierto = "";
+    $abiertoSQL = "SELECT gn.*, ga.agendamiento, gi.nombres, gi.apellidos FROM gestion_notificaciones gn 
+                    INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+                    INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
+                    WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
+                    AND gn.id_asesor = {$responsable_id} AND DATE(ga.agendamiento) = '$fecha_actual' ";
+    //die('sql: '.$abiertoSQL);
+    $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
+    $abierto2 = "";
+    $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
+                    INNER JOIN gestion_status_solicitud gs ON gs.id_informacion = gt.id_informacion 
+                    INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
+            . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
+    $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
+    
+    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2);
     ?>
     <div class="cont_tl_notificaciones" onclick="verN(<?php echo $count; ?>)">
         <?php
-        if ($count > 0):
+        if ($num_noficicaciones > 0):
             ?>
-            <div class="no_notificaciones"><?php echo $count; ?></div>
+            <div class="no_notificaciones"><?php echo $num_noficicaciones; ?></div>
         <?php else: ?>
-            <div class="no_notificaciones no-not"><?php echo $count; ?></div>
+            <div class="no_notificaciones no-not"><?php echo $num_noficicaciones; ?></div>
         <?php endif; ?>
 
         <div class="tl_notificaciones">Notificaciones</div>
@@ -24,22 +41,11 @@
             <ul id="myTab" class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#seguimiento" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Seguimiento</a></li>
                 <li role="presentation"><a href="#solicitudes" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Crédito</a></li>
+                <li role="presentation"><a href="#caducidad" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Caducidad</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="seguimiento" aria-labelledby="abierto-tab">
                     <?php
-                    $abierto = "";
-                    //$abiertoSQL = "SELECT gt.*, ga.agendamiento FROM gestion_notificaciones gt "
-                    //        . "INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gt.id_informacion"
-                    //        . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 1";
-
-                    $abiertoSQL = "SELECT gn.*, ga.agendamiento, gi.nombres, gi.apellidos FROM gestion_notificaciones gn 
-                    INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
-                    INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
-                    WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
-                    AND gn.id_asesor = {$responsable_id} AND DATE(ga.agendamiento) = '$fecha_actual' ";
-                    //die('sql: '.$abiertoSQL);
-                    $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
                     echo '<ul id="lAbierto">';
                     if (count($notificacionesAbiertas) > 0) {
                         //die('enter');
@@ -48,14 +54,14 @@
                                 "condition" => "id = {$value['id_agendamiento']}",
                             ));
                             $modelo = GestionAgendamiento::model()->find($criteria);
-                            $seg =  $modelo->agendamiento;
+                            $seg = $modelo->agendamiento;
                             //$id_gd = $this->getGestionDiariaId($value['id_informacion']);
                             //$paso= $this->getGestionDiariaPaso($value['id_informacion']);
                             $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion']));
                             //$url = Yii::app()->createUrl('gestionDiaria/create', array('id' => $value['id_informacion'], 'paso' => $paso, 'id_gt' => $id_gd));
 
                             $abierto .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'
-                                    . '<a href="' . $url . '">' . $value["nombres"] . ' - ' . $value["apellidos"] . ' - '. $seg . '</a>'
+                                    . '<a href="' . $url . '">' . $value["nombres"] . ' - ' . $value["apellidos"] . ' - ' . $seg . '</a>'
                                     . '</li>';
                         }
                         echo $abierto;
@@ -70,17 +76,13 @@
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="solicitudes" aria-labelledby="abierto-tab">
                     <?php
-                    $abierto2 = "";
-                    $abiertoSQL2 = "SELECT gt.* FROM gestion_notificaciones gt "
-                            . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
-                    $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
                     echo '<ul id="lAbierto">';
                     if (count($notificacionesAbiertas2) > 0) {
                         foreach ($notificacionesAbiertas2 as $value) {
                             $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion']));
 
-                            $abierto2 .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'
-                                    . '<a href="' . $url . '">' . $value["id_informacion"] . ' - ' . $value['descripcion'] . '</a>'
+                            $abierto2 .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value["nombres"] . ' ' . $value['apellidos'] . ' - ' . $value['descripcion'] . '</a>'
                                     . '</li>';
                         }
                         echo $abierto2;

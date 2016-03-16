@@ -845,7 +845,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     break;
                             }
                             ?>
-                            <a href="" class="btn btn-xs btn-success">Solicitud de Crédito</a>
+                            <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/cotizacion/', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
 
                         </div>
                         <?php endif; ?>

@@ -2057,6 +2057,7 @@ class Controller extends CController {
     }
 
     public function getRandomKey($cargo_id, $dealer_id) {
+        //echo 'dealer id: '.$dealer_id;
         // GENERACION Y ASIGNACION DE USUARIOS EXONERADOS DE LOS CLIENTES GENERADOS
         $array_ids = array();
         $id_responsable = Yii::app()->user->getId();

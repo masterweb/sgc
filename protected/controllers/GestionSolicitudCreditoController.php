@@ -507,7 +507,8 @@ class GestionSolicitudCreditoController extends Controller {
             $agen->save();
 
             $not = new GestionNotificaciones;
-            $id_asesor = Yii::app()->user->getId();
+            //$id_asesor = Yii::app()->user->getId();
+            $id_asesor = $this->getResponsableId($_POST['GestionStatus']['id_informacion']);
             $not->tipo = 2; // tipo solicitud credito
             $not->id_informacion = $_POST['GestionStatus']['id_informacion'];
             $not->id_asesor = $id_asesor;

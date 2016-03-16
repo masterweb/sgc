@@ -1932,7 +1932,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
         }
 
-        // die('asdas'.$sql);
+        //die('asdas'.$sql);
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
