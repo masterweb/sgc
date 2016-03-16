@@ -67,6 +67,7 @@ if (!empty($modulos)) {
 $idasesor = Yii::app()->user->getState('concesionario_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 //echo 'ID ASESOR: '.$idasesor;
+
 ?>
 <section>
     <div>
@@ -80,12 +81,16 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 <section class="dashb">
         <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;     ?>/images/img_14.jpg"></div>-->
     <ul class="menu dashboard">
-        <li class="wrapper">
-            <div class="forma">
-                <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
-                    <div class="txt_menu">Reportes</div></a>
-            </div>
-        </li>
+        <?php 
+        $restricted_reportes = ['74', '76', '77'];
+        if(!in_array($cargo_id, $restricted_reportes)):?>
+            <li class="wrapper">
+                <div class="forma">
+                    <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
+                        <div class="txt_menu">Reportes</div></a>
+                </div>
+            </li>
+        <?php endif ?>
         <?php
         if ($result) {
             foreach ($result as $r) {
