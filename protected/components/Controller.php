@@ -2299,4 +2299,12 @@ class Controller extends CController {
         return $firma->responsable;
     }
     
+    public function getPrice($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_versiones='{$id}'"
+        ));
+        $vec = Versiones::model()->find($criteria);
+        return $vec->precio;
+    }
+    
 }   
