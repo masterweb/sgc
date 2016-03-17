@@ -158,61 +158,67 @@ class GestionNotificacionesController extends Controller {
         }
     }
 
-    public function actionVernotificacion($id, $id_informacion) {
+    public function actionVernotificacion($id = NULL, $id_informacion = NULL) {
         //echo 'id: '.$id.' ,caso id: '.$caso_id;
         //die();
-        $model = $this->loadModel($id);
-        $not = new GestionNotificaciones;
-        $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";
-        //die('sql: '.$sql);
-        $con = Yii::app()->db;
-        $request = $con->createCommand($sql)->query();
-        
-        //echo $rowCount;x
+        if ($id == 0) {
+            $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = $this->getPasoNotificacionDiaria($id_informacion);
+        } else {
+            $model = $this->loadModel($id);
+            $not = new GestionNotificaciones;
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacion($id);
-            switch ($paso) {
-                case '1-2':
-                    $url = Yii::app()->createUrl('gestionInformacion/update/', array('id' => $id_informacion, 'tipo' => 'gestion'));
-                    $this->redirect(array('gestionInformacion/update/' . $id_informacion));
-                    break;
-                case '3':
-                    //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $value['id']));
-                    $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
-                    $this->redirect(array('site/consulta/','id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
-                    break;
-                case '4':
-                    //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion));
-                    //$this->redirect(array('gestionVehiculo/create/' . $id_informacion));
-                    $this->redirect(array('site/consulta/','id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
-                    break;
-                case '5':
-                    //$url = Yii::app()->createUrl('site/presentacion', array('id' => $id_informacion));
-                    $this->redirect(array('site/presentacion/' . $id_informacion));
-                    break;
-                case '6':
-                    //$url = Yii::app()->createUrl('site/demostracion', array('id' => $value['id_informacion']));
-                    $this->redirect(array('site/demostracion/' . $id_informacion));
-                    break;
-                case '7':
-                    //$url = Yii::app()->createUrl('site/negociacion', array('id' => $value['id_informacion']));
-                    $this->redirect(array('site/negociacion/' . $id_informacion));
-                    break;
-                case '8':
-                    //$url = Yii::app()->createUrl('site/negociacion', array('id' => $value['id_informacion']));
-                    $this->redirect(array('site/negociacion/' . $id_informacion));
-                    break;
-                case '9':
-                    //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
-                    $this->redirect(array('site/cierre/' . $id_informacion));
-                    break;
-                case '11':
-                    //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
-                    $this->redirect(array('site/negociacion/' . $id_informacion));
-                    break;
-                default:
-                    break;
-            }
-        
+        }
+
+        switch ($paso) {
+            case '1-2':
+                $url = Yii::app()->createUrl('gestionInformacion/update/', array('id' => $id_informacion, 'tipo' => 'gestion'));
+                $this->redirect(array('gestionInformacion/update/' . $id_informacion));
+                break;
+            case '3':
+                //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $value['id']));
+                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                $this->redirect(array('site/consulta/', 'id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
+                break;
+            case '4':
+                //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion));
+                //$this->redirect(array('gestionVehiculo/create/' . $id_informacion));
+                $this->redirect(array('site/consulta/', 'id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
+                break;
+            case '5':
+                //$url = Yii::app()->createUrl('site/presentacion', array('id' => $id_informacion));
+                $this->redirect(array('site/presentacion/' . $id_informacion));
+                break;
+            case '6':
+                //$url = Yii::app()->createUrl('site/demostracion', array('id' => $value['id_informacion']));
+                $this->redirect(array('site/demostracion/' . $id_informacion));
+                break;
+            case '7':
+                //$url = Yii::app()->createUrl('site/negociacion', array('id' => $value['id_informacion']));
+                $this->redirect(array('site/negociacion/' . $id_informacion));
+                break;
+            case '8':
+                //$url = Yii::app()->createUrl('site/negociacion', array('id' => $value['id_informacion']));
+                $this->redirect(array('site/negociacion/' . $id_informacion));
+                break;
+            case '9':
+                //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
+                $this->redirect(array('site/cierre/' . $id_informacion));
+                break;
+            case '11':
+                //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
+                $this->redirect(array('site/negociacion/' . $id_informacion));
+                break;
+            default:
+                break;
+        }
     }
 
 }

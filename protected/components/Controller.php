@@ -1200,6 +1200,14 @@ class Controller extends CController {
         $ps = GestionNotificaciones::model()->find($criteria);
         return $ps->paso;
     }
+    
+    public function getPasoNotificacionDiaria($id_informacion) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion = {$id_informacion}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->paso;
+    }
 
     public function getPasoSeguimiento($id) {
         switch ($id) {
@@ -2290,5 +2298,5 @@ class Controller extends CController {
         $firma = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
         return $firma->responsable;
     }
-
-}
+    
+}   

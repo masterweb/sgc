@@ -1,6 +1,9 @@
 <div class="cont_notificaciones">
     <?php
     date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador`
+    $dt = time();
+    $fecha_actual = (string) strftime("%Y-%m-%d", $dt);
+    //echo 'lenght fecha actual: '.strlen($fecha_actual);
     $responsable_id = Yii::app()->user->getId();
     $sql = "SELECT * FROM gestion_notificaciones WHERE leido = 'UNREAD' AND id_asesor = {$responsable_id}";
     $notificaciones = Yii::app()->db->createCommand($sql)->query();
@@ -21,10 +24,168 @@
                     INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
             . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
     $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
-    
-    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2);
+
+    $abierto3 = "";
+    $abiertoSQL3 = "SELECT gi.id, gi.nombres, gi.apellidos, gc.preg7, gc.fecha FROM gestion_informacion gi 
+INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
+WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
+    $notificacionesAbiertas3 = Yii::app()->db->createCommand($abiertoSQL3)->query();
+    $dias = 0;
+    //$fecha_caducidad = '';
+    $data = '';
+    $count_cat = 0;
+    foreach ($notificacionesAbiertas3 as $value3) {
+        $fecha_array = explode('-', $value3['fecha']);
+        $mes = (int) $fecha_array[1];
+        $dia_array = explode(' ', $fecha_array[2]);
+        $dia = (int) $dia_array[0];
+        //echo '<h1>Fecha: ' . $value3['fecha'] . '</h1>';
+        switch ($value3['preg7']) {
+            case 'Hot A (hasta 7 dias)':
+                $dias = 7;
+                $dia = (string) $dia + 7;
+                $mes = (string) $mes;
+                $dias_mes = getMesDias($fecha_array[1]);
+                if ($dia >= $dias_mes && $dias_mes == 30) {
+                    $dia = $dia - 30;
+                    $mes = (string) $mes + 1;
+                }
+                if ($dia >= $dias_mes && $dias_mes >= 31) {
+                    $dia = $dia - 31;
+                    $mes = (string) $mes + 1;
+                }
+                if (strlen($mes) == 1) {
+                    $mes = '0' . $mes;
+                }
+                if (strlen($dia) == 1) {
+                    $dia = '0' . $dia;
+                }
+                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
+                //echo $fecha_caducidad.'<br />';
+                if ($fecha_actual == $fecha_caducidad) {
+                    $data .= '<ul id="lAbierto">';
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+
+                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT A Caduca hoy</a>'
+                            . '</li>';
+
+                    $data .= '</ul>';
+                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                    $count_cat++;
+                }
+                break;
+            case 'Hot B (hasta 15 dias)':
+                $dias = 15;
+                $dia = (string) $dia + 15;
+
+                $mes = (string) $mes;
+                $dias_mes = getMesDias($fecha_array[1]);
+                if ($dia >= $dias_mes && $dias_mes == 30) {
+                    $dia = $dia - 30;
+                    $mes = (string) $mes + 1;
+                }
+                if ($dia >= $dias_mes && $dias_mes >= 31) {
+                    $dia = $dia - 31;
+                    $mes = (string) $mes + 1;
+                }
+                if (strlen($mes) == 1) {
+                    $mes = '0' . $mes;
+                }
+                if (strlen($dia) == 1) {
+                    $dia = '0' . $dia;
+                }
+                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
+                //echo $fecha_caducidad.'<br />';
+                if ($fecha_actual == $fecha_caducidad) {
+                    $data .= '<ul id="lAbierto">';
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+
+                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT B Caduca hoy</a>'
+                            . '</li>';
+
+                    $data .= '</ul>';
+                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                    $count_cat++;
+                }
+                break;
+            case 'Hot C (hasta 30 dias)':
+                //echo 'Enter 30 dias';
+                $dias = 30;
+                $mes = (string) $mes + 1;
+                if (strlen($mes) == 1) {
+                    $mes = '0' . $mes;
+                }
+                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                //echo $fecha_caducidad.'<br />';
+                //echo 'fecha caducidad: '.$fecha_caducidad . '<br />';
+                //echo 'fecha actual: '.$fecha_actual. '<br />';
+                if ($fecha_actual == $fecha_caducidad) {
+                    $data .= '<ul id="lAbierto">';
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+
+                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT C Caduca hoy</a>'
+                            . '</li>';
+
+                    $data .= '</ul>';
+                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                    $count_cat++;
+                }
+
+                break;
+            case 'Warm (hasta 3 meses)':
+                $dias = 90;
+                $mes = (string) $mes + 3;
+                if (strlen($mes) == 1) {
+                    $mes = '0' . $mes;
+                }
+                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                //echo $fecha_caducidad.'<br />';
+                if ($fecha_actual == $fecha_caducidad) {
+                    $data .= '<ul id="lAbierto">';
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+
+                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - WARM 3 meses Caduca hoy</a>'
+                            . '</li>';
+
+                    $data .= '</ul>';
+                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                    $count_cat++;
+                }
+                break;
+            case 'Cold (hasta 6 meses)':
+                $dias = 180;
+                $mes = (string) $mes + 6;
+                if (strlen($mes) == 1) {
+                    $mes = '0' . $mes;
+                }
+                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                //echo $fecha_caducidad.'<br />';
+                if ($fecha_actual == $fecha_caducidad) {
+                    $data .= '<ul id="lAbierto">';
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+
+                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - COLD 6 meses Caduca hoy</a>'
+                            . '</li>';
+
+                    $data .= '</ul>';
+                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                    $count_cat++;
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat;
     ?>
-    <div class="cont_tl_notificaciones" onclick="verN(<?php echo $count; ?>)">
+    <div class="cont_tl_notificaciones" onclick="verN(<?php echo $num_noficicaciones; ?>)">
         <?php
         if ($num_noficicaciones > 0):
             ?>
@@ -95,7 +256,64 @@
                     }
                     ?>
                 </div>
+                <div role="tabpanel" class="tab-pane fade" id="caducidad" aria-labelledby="abierto-tab">
+                    <?php 
+                    if($count_cat > 0){
+                        echo $data;
+                    }
+                    ?>
+                    
+                </div>
             </div>
         </div>
     </div>
 </div>
+<?php
+
+function getMesDias($mes) {
+    $dias = 0;
+    switch ($mes) {
+        case '01':
+            $dias = 31;
+            break;
+        case '02':
+            $dias = 29;
+            break;
+        case '03':
+            $dias = 31;
+            break;
+        case '04':
+            $dias = 30;
+            break;
+        case '05':
+            $dias = 31;
+            break;
+        case '06':
+            $dias = 30;
+            break;
+        case '07':
+            $dias = 31;
+            break;
+        case '08':
+            $dias = 31;
+            break;
+        case '09':
+            $dias = 30;
+            break;
+        case '10':
+            $dias = 30;
+            break;
+        case '11':
+            $dias = 31;
+            break;
+        case '12':
+            $dias = 31;
+            break;
+
+
+        default:
+            break;
+    }
+    return $dias;
+}
+?>

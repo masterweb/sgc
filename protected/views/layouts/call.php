@@ -65,13 +65,21 @@
                 }
 
             }
+			
         </script>
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
         <style>
             .cometchat_trayiconimage {display: none !important;}
         </style>
-<!--        <link type="text/css" href="/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
-        <script type="text/javascript" src="/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php" charset="utf-8"></script>-->
+        <link type="text/css" href="/intranet.kia.com.ec/web/usuario/cometchat/cometchatcss.php" rel="stylesheet" charset="utf-8">
+        <script type="text/javascript" src="/intranet.kia.com.ec/web/usuario/cometchat/cometchatjs.php" charset="utf-8"></script>
+		<script>
+		
+			$( window ).load(function() {
+			   $(".cometchat_avatarbox a").removeAttr('href');
+			   $(".cometchat_name a").removeAttr('href');
+			});
+		</script>
     </head>
     <body>
         <div id="bg_negro" style="display:none">
