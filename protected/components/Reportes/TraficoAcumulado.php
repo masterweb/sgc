@@ -142,7 +142,7 @@ class TraficoAcumulado{
             $modelos_ta = rtrim($modelos_ta, ", ");
 
     		$modelos = "modelo IN (".$modelos_ta.") AND";
-            $where = "AND ";
+            $where = "";
     	}
 
         if($consulta['concesionarios']){
@@ -155,11 +155,12 @@ class TraficoAcumulado{
             }
         }
     	$con = Yii::app()->db;    	
-    	$sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."'";
+    	$sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." (DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."')";
+        //die($sql);
         $request = $con->createCommand($sql);
         $busqueda['mant'] = $request->queryAll();
 
-        $sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."'";
+        $sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." (DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."')";
         $request = $con->createCommand($sql);
         $busqueda['mact'] = $request->queryAll();
 
