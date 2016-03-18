@@ -79,8 +79,6 @@ $(function () {
         }
     }
 
-    
-
     function loadmodelos(e){    
 
         tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
@@ -296,9 +294,10 @@ $(function () {
         }
 
         
-    }   
+    }
+
+    checkFiltro($('.tipo_busqueda_por:checked'));   
     function checkFiltro(e){
-        //alert('checkfiltro = ' + e.attr('value'));
         if(e.attr('value') == 'grupos'){
             $('.cont_grup').show();
             $('.cont_prov').hide();           
@@ -318,7 +317,9 @@ $(function () {
             }else{
                 loaddealers($('#GestionInformacionProvincias'), 'p');
             }   
-            loadmodelos($('#fecha-range1'));         
+            loadmodelos($('#fecha-range1'));
+            $('.cont_grup').show();
+            $('.cont_prov').hide();         
         }if(e.attr('value') == 'usados'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').hide();
@@ -331,7 +332,9 @@ $(function () {
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');   
             }else{
                 loaddealers($('#GestionInformacionProvincias'), 'p');
-            }           
+            }
+            $('.cont_grup').show();
+            $('.cont_prov').hide();           
         }else if(e.attr('value') == 'bdc'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').hide();
@@ -345,7 +348,9 @@ $(function () {
             }else{
                 loaddealers($('#GestionInformacionProvincias'), 'p');
             }  
-            loadmodelos($('#fecha-range1'));  
+            loadmodelos($('#fecha-range1')); 
+            $('.cont_grup').show();
+            $('.cont_prov').hide(); 
         }else if(e.attr('value') == 'exonerados'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').hide();
@@ -360,6 +365,8 @@ $(function () {
                 loaddealers($('#GestionInformacionProvincias'), 'p');
             }  
             loadmodelos($('#fecha-range1')); 
+            $('.cont_grup').show();
+            $('.cont_prov').hide();
         }else if(e.attr('value') == 'traficoacumulado'){
             $('#traficoGeneral').hide(); 
             $('#traficoacumulado').show();

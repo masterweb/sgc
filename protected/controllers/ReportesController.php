@@ -232,12 +232,17 @@ class ReportesController extends Controller {
         }
 
         //GET Modelos activos en rango de fechas
-        $modelos_ma = $this->getModleosActivos($varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['lista_datos'], 'general');
-        $varView['filtro_modelos'] = $modelos_ma;
+        if($_GET['GI']['tipo'] == 'traficoacumulado'){
+            $modelos_ma = $this->getModleosActivos('2016-01-01', '2016-01-31', '2016-02-01', '2016-02-28', $varView['lista_datos'], 'general');
+        }else{
+            $modelos_ma = $this->getModleosActivos($varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['lista_datos'], 'general');  
+        }
+        $varView['filtro_modelos'] = $modelos_ma; 
 
         //Check if TRAFICO ACUMLADO ESTA ACTIVO
         $varView['TA'] = false;
         $varView['TAchecked_gp'] = 'p';
+
         if($_GET['GI']['tipo'] == 'traficoacumulado'){
             $varView['TA'] = true;
             $varView['TAconsulta'] = [];
