@@ -45,6 +45,7 @@
 
 	TAchecked_gp = '<?= $varView["TAchecked_gp"] ?>';
 	TAresp_activo = '<?= $varView["TAresp_activo"] ?>';
+	url_footer_var_modelosTA = '<?= Yii::app()->createAbsoluteUrl("Reportes/AjaxGetModelos2TA"); ?>'; 
 </script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/moment.min.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/daterangepicker.js"></script>
