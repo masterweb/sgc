@@ -400,6 +400,11 @@ $(function () {
     }
 
     function vaciar2(){
+        if($(".tipo_busqueda_por:checked").val() == 'provincias'){        
+            $('#GestionInformacionGrupo option:selected').prop("selected", false);
+        }else{
+            $('#GestionInformacionProvincias option:selected').prop("selected", false);
+        }
         $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
         $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
         $('#TAprovincia').prop("selected", false);
@@ -448,43 +453,6 @@ $(function () {
                 active_selects = active_selects +'<b>'+ campo +':</b> ' + $( this ).text()+' <b>/</b> ';
             }
         });
-    
-       /* var filtros_fecha1 = '<span class="filt_act"><b>Fecha Inicial:</b> ' + $('#fecha-range1').attr('value') + '</span>';
-        var filtros_fecha2 = '<span class="filt_act"><b>Fecha Final:</b> ' + $('#fecha-range2').attr('value') + '</span>';
-        var filtros_concesionario = '';
-        var filtros_asesores = '';
-        var filtros_modelos = '';
-
-        if ( $( "#GestionInformacionConcesionario" ).length && $( "#GestionInformacionConcesionario" ).is('select')) {
-            var selected_Concesionario = $('#GestionInformacionConcesionario').val();
-            if(selected_Concesionario != ''){
-                filtros_concesionario = '<span class="filt_act"><b>Concesionario:</b> ' + $('#GestionInformacionConcesionario option:selected' ).text() + '</span>';
-            }else{
-                filtros_concesionario = '<span class="filt_act">'+ nombre_concecionario +'</span>';
-            }
-        }
-        
-        if ( $( "#GestionDiariaresponsable" ).length ) {
-            var selected_responsable = $('#GestionDiariaresponsable').val();
-            if(selected_responsable != ''){
-                filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + $('#GestionDiariaresponsable option:selected' ).text() + '</span>';
-            }else{
-                if(selected_Concesionario == ''){
-                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> ' + nombre_usuario + '</span>';
-                }else{
-                    filtros_asesores = '<span class="filt_act"><b>Asesor:</b> Todos</span>';
-                }               
-            }
-        }
-
-        var selected = [];
-        $('.modelos_filtros input:checked').each(function() {
-            selected.push($(this).parent().text());
-        });
-
-        if(!jQuery.isEmptyObject(selected)){
-            filtros_modelos = '<br><br><span class="filt_act"><b>Modelos:</b> ' + selected + '</span>';
-        }*/
         
         var var_filtros_activos = '<h4>Filtros Activos:</h4> <b>Perfil:</b> ' + nombre_usuario + '<br>'+active_selects;
         $('.resultados_embudo').html(var_filtros_activos);
