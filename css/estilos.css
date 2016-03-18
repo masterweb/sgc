@@ -450,7 +450,7 @@ footer{
 }
 .cont_notificaciones {
         position: fixed;
-        bottom: 25px;
+        bottom: 25px !important;
     max-width: 250px;
     margin: auto;
     border: #C21930 solid 1px;

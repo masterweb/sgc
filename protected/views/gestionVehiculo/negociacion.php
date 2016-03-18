@@ -1279,7 +1279,7 @@ function calcFinanciamiento3() {
             },
             dataType: 'json',
             type: 'POST',
-            data: {taza: 15, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+            data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
             success: function (data) {
                 var cuotamensual = parseInt(data.cuota);
                 cuotamensual = format2(cuotamensual, '$');
@@ -1293,6 +1293,7 @@ function calcFinanciamiento3() {
     }
 }
 function calcFinanciamiento() {
+console.log('enter calcfinanciammiento 1');
     var valorEntrada1 = $('#GestionFinanciamiento_entrada').attr('value');
     var valorVehiculo = $('#GestionFinanciamiento_precio').val();
     console.log('valor vehiculo: ' + valorVehiculo);
@@ -1372,7 +1373,7 @@ function calcFinanciamiento() {
             },
             dataType: 'json',
             type: 'POST',
-            data: {taza: 15, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+            data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
             success: function (data) {
                 var cuotamensual = parseInt(data.cuota);
                 cuotamensual = format2(cuotamensual, '$');
@@ -1464,7 +1465,7 @@ function calcFinanciamiento2() {
             },
             dataType: 'json',
             type: 'POST',
-            data: {taza: 15, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+            data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
             success: function (data) {
                 var cuotamensual = parseInt(data.cuota);
                 cuotamensual = format2(cuotamensual, '$');

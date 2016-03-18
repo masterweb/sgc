@@ -1310,6 +1310,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionPago() {
 
         $taza = isset($_POST["taza"]) ? $_POST["taza"] : "";
+        $taza = 16.06;
         $numpagos = isset($_POST["numpagos"]) ? $_POST["numpagos"] : "";
         $valorPrest = isset($_POST["valorPrest"]) ? $_POST["valorPrest"] : "";
         $plazo = isset($_POST["plazo"]) ? $_POST["plazo"] : "";
