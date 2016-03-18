@@ -689,7 +689,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <div class="row">
                                 <div class="col-md-4"><strong>Modelo: </strong><?php echo $this->getModel($val['modelo']); ?></div>
                                 <div class="col-md-4"><strong>Versión: </strong><?php echo $this->getVersion($val['version']); ?></div>
-                                <div class="col-md-4"><strong>Precio: </strong>$ <?php echo number_format($val['precio'], 2); ?></div>
+                                <div class="col-md-4"><strong>Precio: </strong>$ <?php if(!empty($val['precio'])){echo number_format($val['precio'], 2);} ?></div>
                             </div>
                         <?php } ?>
                     </div>

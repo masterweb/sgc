@@ -40,7 +40,7 @@ function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $bo
     if ((int) $cu == 1) {
         $mail->AddBCC('comunidad@kiamail.com.ec');
     }
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     //$mail->AddBCC('encaladayadira@gmail.com');
 
 
@@ -74,7 +74,7 @@ function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $sub
     $mail->IsHTML(true);
 
     $mail->AddAddress($to);
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     
     if ($ccarray != '') {
         for ($j = 0; $j < count($ccarray); $j++) {
@@ -162,7 +162,7 @@ function sendEmailFunctionConc($from, $fromname, $to, $subject, $body, $charset 
 
     $mail->AddAddress($to);
     //$mail->AddAddress('leticiaserranopro@gmail.com');// concesionario
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     $mail->AddAddress($emailVP);
     if ($emailCallCenter != '') {
         $mail->AddAddress($emailCallCenter);
@@ -222,7 +222,7 @@ function sendEmailFunctionExonerados($from, $fromname, $to, $names, $subject, $b
     }
 
     $mail->AddAddress("jaguirre@aekia.com.ec");
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
 
     //$mail->AddAddress("jorge.rodriguez@ariadna.com.ec");
 
@@ -272,8 +272,8 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
 
     $mail->AddAddress($to);
     //$mail->AddAddress('vlondono@kia.com.ec'); // call center
-    $mail->AddAddress('carlacalderonsalazar@gmail.com'); // call center
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddAddress('carlacalderonsalazar@gmail.com'); // call center
+    //$mail->AddBCC('alkanware@gmail.com');
     
     if (!$mail->Send()) {
         return false;
@@ -303,8 +303,8 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
     $mail->AddAddress($to);
     $mail->AddAddress($toAsesor);
     //$mail->AddAddress('vlondono@kia.com.ec'); // call center
-    $mail->AddAddress('gansaldo72@hotmail.com');
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddAddress('gansaldo72@hotmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     
     if (!$mail->Send()) {
         return false;
@@ -331,7 +331,7 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail->IsHTML(true);
 
     $mail->AddAddress($to);
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
     
 
 
@@ -363,7 +363,7 @@ function sendEmailCliente($from, $fromname, $to, $subject, $body, $tipo) {
 
     $mail->AddAddress($to);
     //$mail->AddAddress('jorge.rodriguez@ariadna.com.ec'); // email al administrador
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
 
 
     if (!$mail->Send()) {

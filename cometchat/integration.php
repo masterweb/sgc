@@ -15,16 +15,27 @@ define('FORCE_MAGIC_QUOTES','0');
 /* DATABASE */
 
 
-//$db = include_once(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'settings'.DIRECTORY_SEPARATOR.'database.php');
-
 // DO NOT EDIT DATABASE VALUES BELOW
 // DO NOT EDIT DATABASE VALUES BELOW
 // DO NOT EDIT DATABASE VALUES BELOW
 
-define('DB_SERVER',"localhost");
+/*define('DB_SERVER',				$db['params']['host']		);
+define('DB_PORT',				'3306'				);
+define('DB_USERNAME',				$db['params']['username']	);
+define('DB_PASSWORD',				$db['params']['password']	);
+define('DB_NAME',				$db['params']['dbname']		);
+define('TABLE_PREFIX',				$db['tablePrefix']		);
+define('DB_USERTABLE',				'users'				);
+define('DB_USERTABLE_NAME',			'displayname'			);
+define('DB_USERTABLE_USERID',                   'user_id'			);
+define('DB_AVATARTABLE',                        " left join ".TABLE_PREFIX."storage_files on file_id = ".TABLE_PREFIX.DB_USERTABLE.".photo_id" );
+define('DB_AVATARFIELD',                        " (select storage_path from ".TABLE_PREFIX."storage_files where parent_file_id is null and file_id = ".TABLE_PREFIX.DB_USERTABLE.".photo_id)");
+
+*/
+define('DB_SERVER',	'localhost');
 define('DB_PORT','3306');			
 define('DB_USERNAME','root');
-define('DB_PASSWORD','');
+define('DB_PASSWORD','k143c89?4Fg&2');
 define('DB_NAME','callcenter');
 define('TABLE_PREFIX','');
 define('DB_USERTABLE','usuarios');
@@ -32,7 +43,6 @@ define('DB_USERTABLE_NAME','nombres');
 define('DB_USERTABLE_USERID','id');
 define('DB_AVATARTABLE',"" );
 define('DB_AVATARFIELD',"foto");
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /* FUNCTIONS */
@@ -40,7 +50,7 @@ define('DB_AVATARFIELD',"foto");
 function getUserID(){ 
 	$userid = 0;
 
-	if (!empty($_SESSION['user'])){ 
+	if (!empty($_SESSION['user'])){  
 		$userid = $_SESSION['user']; 
 	}
 	$userid = intval($userid); 
@@ -50,9 +60,8 @@ function getUserID(){
 
 
 function getFriendsList($userid,$time) {
-$sql = ("select DISTINCT usuarios.id userid, concat(usuarios.apellido,' ', usuarios.nombres,' ',c.nombre) username, usuarios.usuario link, usuarios.id avatar, cometchat_status.lastactivity lastactivity, cometchat_status.status, cometchat_status.message, cometchat_status.isdevice 
+$sql = ("select DISTINCT usuarios.id userid, concat(usuarios.apellido,' ', usuarios.nombres) username, usuarios.id link, usuarios.id avatar, cometchat_status.lastactivity lastactivity, cometchat_status.status, cometchat_status.message, cometchat_status.isdevice 
 from usuarios left join cometchat_status on usuarios.id = cometchat_status.userid 
-inner join gr_concesionarios c on usuarios.concesionario_id = c.id
 order by username asc");
 	
 	return $sql;
@@ -87,15 +96,13 @@ function fetchLink($link) {
 }
 
 function getAvatar($image) {
-	return BASE_URL."../images/img_06.jpg";
-	/*if (!empty($_SESSION['foto']) && isset($_SESSION['foto'])){ 
-		return BASE_URL."../images/img_06.jpg";
-	}else{
-		
-		return BASE_URL."../upload/perfiles/thumb/".$_SESSION['foto'];
-	}*/
-	
-
+	/*if (is_file(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.''.$image)) {
+		return BASE_URL."../".$image;
+	} else {
+		*/
+		//return BASE_URL."../application/modssules/User/externals/images/nophoto_usedddr_thumb_icon.png";
+		return "https://www.kia.com.ec/intranet/usuario/images/img_06.jpg";
+	//} 
 }
 
 function getTimeStamp() {

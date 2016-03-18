@@ -75,7 +75,7 @@ $trayicon = array();
 
 /* PLUGINS START */
 
-$plugins = array('smilies','clearconversation','chattime');
+$plugins = array();
 
 /* PLUGINS END */
 
@@ -83,7 +83,7 @@ $plugins = array('smilies','clearconversation','chattime');
 
 /* EXTENSIONS START */
 
-$extensions = array('mobileapp','jabber');
+$extensions = array('mobileapp');
 
 /* EXTENSIONS END */
 
@@ -191,7 +191,7 @@ $announcementTime = '15000';			// The number of milliseconds for which an announ
 $scrollTime = '1';			// Can be set to 800 for smooth scrolling when moving from one chatbox to another
 $armyTime = '0';			// If set to yes, show time plugin will use 24-hour clock format
 $disableForIE6 = '0';			// If set to yes, CometChat will be hidden in IE6
-$hideBar = '0';			// Hide bar for non-logged in users?
+$hideBar = '1';			// Hide bar for non-logged in users?
 $disableForMobileDevices = '0';			// If set to yes, CometChat bar will be hidden in mobile devices
 $startOffline = '0';			// Load bar in offline mode for all first time users?
 $fixFlash = '0';			// Set to yes, if Adobe Flash animations/ads are appearing on top of the bar (experimental)
@@ -214,12 +214,12 @@ $notificationsFeature = 1;      // Set to yes, only if you are using notificatio
 
 /* MEMCACHE START */
 
-define('MEMCACHE','1');       // Set to 0 if you want to disable caching and 1 to enable it.
-define('MC_SERVER','localhost');  // Set name of your memcache  server
-define('MC_PORT','11211');      // Set port of your memcache  server
-define('MC_USERNAME','');           // Set username of memcachier  server
-define('MC_PASSWORD','');           // Set password your memcachier  server
-define('MC_NAME','files');      // Set name of caching method if 0 : '', 1 : memcache, 2 : files, 3 : memcachier, 4 : apc, 5 : wincache, 6 : sqlite & 7 : memcached
+define('MEMCACHE','1');
+define('MC_SERVER','localhost');	// Set name of your memcache  server
+define('MC_PORT','11211');			// Set port of your memcache  server
+define('MC_USERNAME','');							// Set username of memcachier  server
+define('MC_PASSWORD','');			// Set password your memcachier  server
+define('MC_NAME','files');			// Set name of caching method if 0 : '', 1 : memcache, 2 : files, 3 : memcachier, 4 : apc, 5 : wincache, 6 : sqlite & 7 : memcached
 
 /* MEMCACHE END */
 

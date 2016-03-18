@@ -70,6 +70,11 @@ class GestionTestDriveController extends Controller {
 //            echo '</pre>';
 //            die();
             $id_informacion = $_POST['GestionTestDrive']['id_informacion'];
+            $responsable_id = $this->getResponsableId($_POST['GestionTestDrive']['id_informacion']);
+            $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
+            //die('concesionario id: '.$concesionarioid);
+            //echo 'nombre: '.$this->getNombreConcesionario($concesionarioid);
+            //die();
             $id_vehiculo = $_POST['GestionTestDrive']['id_vehiculo'];
             $criteria = new CDbCriteria(array(
                 'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
@@ -153,7 +158,7 @@ class GestionTestDriveController extends Controller {
                                         
                                         <table width="600">
                                         <tr><td><strong>Asesor Comercial:</strong></td><td>' . $this->getResponsable($id_asesor) . '</td></tr>
-                                        <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
+                                        <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNombreConcesionario($concesionarioid) . '</td></tr> 
                                         <tr><td><strong>Modelo:</strong></td><td>' . $this->getModeloTestDrive($_POST['GestionTestDrive']['id_vehiculo']) . '</td></tr>
                                         <tr><td><strong>Fecha:</strong></td><td>' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                         <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>
@@ -171,7 +176,7 @@ class GestionTestDriveController extends Controller {
                                             </tr>
                                             <tr>
                                               <td width="178" rowspan="5"><img src="images/logo_pdf2.png" /></td>
-                                              <td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNameConcesionario($id_asesor)) . '</strong></td>
+                                              <td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNombreConcesionario($concesionarioid)) . '</strong></td>
                                             </tr>
                                             
                                             <tr>
@@ -222,7 +227,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 foreach ($art as $vl) {
                     $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
                             . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
-                                <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
+                                <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNombreConcesionario($concesionarioid) . '</td></tr> 
                                 <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionTestDrive']['id_vehiculo']) . '</td></tr>
                                 <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>'; 

@@ -349,7 +349,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $vehiculo->attributes = $_POST['GestionVehiculo'];
             $vehiculo->fecha = date("Y-m-d H:i:s");
             $vehiculo->id_informacion = $_POST['GestionInformacion']['id_informacion'];
-            $vehiculo->precio = $_POST['GestionVehiculo']['precio'];
+            $precio = $this->getPrice($_POST['GestionVehiculo']['version']);
+            $vehiculo->precio = $precio;
             $vehiculo->save();
 
             $historial = new GestionHistorial;
@@ -386,6 +387,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionConsulta'])) {
+            
+            //die();
             $currencys = array("$", ".");
             $id_info = $_POST['GestionInformacion']['id_informacion'];
             //die('id info: '.$id_info);
@@ -652,7 +655,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $vehiculo->attributes = $_POST['GestionVehiculo'];
             $vehiculo->fecha = date("Y-m-d H:i:s");
             $vehiculo->id_informacion = $_POST['GestionInformacion']['id_informacion'];
-            $vehiculo->precio = $_POST['GestionVehiculo']['precio'];
+            $precio = $this->getPrice($_POST['GestionVehiculo']['version']);
+            $vehiculo->precio = $precio;
             $vehiculo->save();
 
             $historial = new GestionHistorial;
