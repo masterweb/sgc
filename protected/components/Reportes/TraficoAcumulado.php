@@ -27,7 +27,7 @@ class TraficoAcumulado{
         return $varView;
     }
 
-    public static function ConcesionariosTA($where, $fecha1, $fecha2, $TAresp_activo){        
+    public static function ConcesionariosTA($where, $fecha1, $fecha2, $TAresp_activo, $model_info){        
     	//concesionario
     	$fecha1 = explode(" - ", $fecha1);
     	$fecha2 = explode(" - ", $fecha2);
@@ -40,7 +40,36 @@ class TraficoAcumulado{
     	$sql = "SELECT distinct concesionario from trafico_acumulado where ".$where." ((DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."') OR (DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'))";
         $request = $con->createCommand($sql);
         $concesionarios = $request->queryAll();
-        echo self::optionsConstructor($concesionarios, 'concesionario', $TAresp_activo);
+
+        $respuestaJson = array();
+        $concesionarios = self::optionsConstructor($concesionarios, 'concesionario', $TAresp_activo);
+        array_push($respuestaJson, $concesionarios);
+
+        //Modelos
+        $sqlModelos_nv = "SELECT distinct modelo from trafico_acumulado where ".$model_info[0]." = '".$model_info[1]."' AND ((DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."') OR (DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'))";
+        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+        $modelos = $requestModelos_nv->queryAll();
+        $modelos = self::modelos($modelos, []);
+        array_push($respuestaJson, $modelos);
+
+        echo json_encode($respuestaJson);
+    }
+    public static function modelos2TA($fecha1, $fecha2, $model_info){
+        //Modelos
+        $fecha1 = explode(" - ", $fecha1);
+        $fecha2 = explode(" - ", $fecha2);
+        $fecha1[0] = str_replace('-', '/', $fecha1[0]);
+        $fecha1[1] = str_replace('-', '/', $fecha1[1]);
+        $fecha2[0] = str_replace('-', '/', $fecha2[0]);
+        $fecha2[1] = str_replace('-', '/', $fecha2[1]);
+
+        $con = Yii::app()->db;
+        $sqlModelos_nv = "SELECT distinct modelo from trafico_acumulado where concesionario = '".$model_info."' AND ((DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."') OR (DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."'))";
+        $requestModelos_nv = $con->createCommand($sqlModelos_nv);
+        $modelos = $requestModelos_nv->queryAll();
+        $modelos = self::modelos($modelos, []);
+
+        echo $modelos;
     }
 
     public static function optionsConstructor($array, $name, $TAresp_activo){
@@ -113,7 +142,7 @@ class TraficoAcumulado{
             $modelos_ta = rtrim($modelos_ta, ", ");
 
     		$modelos = "modelo IN (".$modelos_ta.") AND";
-            $where = "AND ";
+            $where = "";
     	}
 
         if($consulta['concesionarios']){
@@ -126,11 +155,12 @@ class TraficoAcumulado{
             }
         }
     	$con = Yii::app()->db;    	
-    	$sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."'";
+    	$sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." (DATE(fecha) BETWEEN '".$fechas[0]."' AND '".$fechas[1]."')";
+        //die($sql);
         $request = $con->createCommand($sql);
         $busqueda['mant'] = $request->queryAll();
 
-        $sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."'";
+        $sql = "SELECT tipo, modelo from trafico_acumulado where ".$where." ".$modelos." (DATE(fecha) BETWEEN '".$fechas[2]."' AND '".$fechas[3]."')";
         $request = $con->createCommand($sql);
         $busqueda['mact'] = $request->queryAll();
 

@@ -37,7 +37,7 @@
 
     <div class="row">
 
-    <!-- FILTRO GRUPOS O PROVINCIA-->
+    <!-- TIPO DE BUSQUEDA -->
     <?php if (in_array($varView['cargo_id'], $usuariosGeneral)): ?>
         <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="general"/>
     <?php endif; ?>
@@ -64,9 +64,9 @@
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
             <?php if($varView['checked_ge'] == true){echo 'checked';} ?>
             >General</label>
-            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="usados" class="tipo_busqueda"
+            <!--label class="radio-inline"><input type="radio" name="GI[tipo]" value="usados" class="tipo_busqueda"
             <?php if($varView['checked_us'] == true){echo 'checked';} ?>
-            >Usados</label>
+            >Usados</label-->
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="bdc" class="tipo_busqueda"
             <?php if($varView['checked_bdc'] == true){echo 'checked';} ?>
             >BDC</label>
@@ -138,7 +138,7 @@
     <?php if ($varView['cargo_id'] == 69 || $varView['AEKIA'] == true): ?>
         <div class="col-md-6">
             <label for="">Concesionarios</label>
-            <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control">
+            <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" >
                 <option value="">--Seleccione Concesionario--</option>
                 <?php
                 if($varView['lista_conce'] != 'null'){
@@ -231,32 +231,15 @@
         </div>
     </div> <!-- #traficoexonerados fin-->
 <?php endif; ?>
-    <!-- TRIGER -->
-<div class="row buttons">
-    <div class="col-md-6">
-        <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-    </div>
-</div>
+
 <?php if ($varView['AEKIA'] == true): ?>    
 </div><!-- #trafico-todo fin-->
 <?php endif; ?>
 </div>
 
-<?php $this->endWidget(); ?>
 
 <?php if ($varView['AEKIA'] == true): ?>
-<?php
-    $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'gestion-nueva-cotizacion-form',
-        'method' => 'get',
-        'action' => Yii::app()->createUrl('Reportes/inicio'),
-        'enableAjaxValidation' => false,
-        'htmlOptions' => array(
-            'class' => 'form-horizontal form-search',
-            'autocomplete' => 'off'
-        ),
-    ));
-?>
+
 <div id="traficoacumulado"> <!-- #traficoacumulado fin-->
     <div class="row text-center">
         <!--h4>Seleccione el tipo de busqueda de Tráfico Histórico</h4-->
@@ -272,7 +255,7 @@
         <?= $varView['traficoAcumulado']['ini_filtros']['grupo'] ?>
         <div class="col-md-6" id="cont_TAconcesionarios">
             <label for="">Concesionarios</label>
-            <select name="TA[concesionarios]" id="TAconcesionarios" class="form-control" required>
+            <select name="TA[concesionarios]" id="TAconcesionarios" class="form-control">
                 <option value="">-- Concesionarios --</option>
             </select>
         </div>
@@ -280,13 +263,14 @@
     <div class="row">
         <?= $varView['traficoAcumulado']['ini_filtros']['modelo'] ?>
     </div>
+</div> <!-- #traficoacumulado fin-->
+
+<?php endif; ?>
     <!-- TRIGER -->
     <div class="row buttons">
         <div class="col-md-6">
             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
         </div>
     </div>
-</div> <!-- #traficoacumulado fin-->
-<?php $this->endWidget(); ?>
-<?php endif; ?>
+    <?php $this->endWidget(); ?>
 </div>
