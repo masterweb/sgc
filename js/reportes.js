@@ -13,6 +13,7 @@ $(function () {
 
     $('#GestionDiariaresponsable').change(function () {
         loadmodelos($(this));
+        filtros_notification();
     });
 
     $(".tipo_busqueda").each(function() {
@@ -197,6 +198,7 @@ $(function () {
     }
     $('#TAconcesionarios').change(function () {
         loadmodelosTA($(this));
+        filtros_notification();
     });
     function loadmodelosTA(e){
         var fecha1 = $('#fecha-range1').attr('value');
@@ -274,13 +276,15 @@ $(function () {
         $('#TAprovincia').change(function () {
             $('#TAgrupo option:selected').prop("selected", false);
             $('#TAconcesionarios option:selected').prop("selected", false);
-            loadconcesionariosTA($(this));      
+            loadconcesionariosTA($(this)); 
+            filtros_notification();     
         });
         $('#TAgrupo').change(function () {
             $('#TAprovincia option:selected').prop("selected", false);
             $('#TAconcesionarios option:selected').prop("selected", false);
             
-            loadconcesionariosTA($(this));  
+            loadconcesionariosTA($(this));
+            filtros_notification();  
         });
 
         if(TAchecked_gp === 'p'){
@@ -389,15 +393,23 @@ $(function () {
 
     //vaciar selects
     function vaciar(){
-        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
-        $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">Concesionario</option>').val('');
+        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+        $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
         $("#GestionInformacionGrupo option:selected").prop("selected", false);
         $("#GestionInformacionProvincias option:selected").prop("selected", false);
     }
 
     function vaciar2(){
-        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
-        $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">Concesionario</option>').val('');
+        $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+        $('#GestionInformacionConcesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
+        $('#TAprovincia').prop("selected", false);
+        $('#TAgrupo').prop("selected", false);
+    }
+
+    function vaciarTA(){
+        $('#TAprovincia option').prop("selected", false);
+        $('#TAgrupo option').prop("selected", false);
+        $('#TAconcesionarios option').prop("selected", false);
     }
 
     
@@ -414,7 +426,30 @@ $(function () {
 
     //NOTIFICACION DE FILTROS Y VARIABLES ACTIVAS
     function filtros_notification(){
-        var filtros_fecha1 = '<span class="filt_act"><b>Fecha Inicial:</b> ' + $('#fecha-range1').attr('value') + '</span>';
+        active_selects = '';
+        if(tipo_b != 'traficoacumulado'){
+            vaciarTA();            
+            tipo_form = $('#gestion-nueva-cotizacion-form option:selected');
+        }else{
+            vaciar();
+            tipo_form = $('#gestion-nueva-cotizacion-form option:selected');
+        }
+        tipo_form.each(function( index ) {
+            console.log(index + ": " + $( this ).text());
+            char_ini = $( this ).text().substr(0, 2);
+            if(char_ini != '--'){
+                campo = $( this ).parent().attr('name');
+                campo = campo.substr(3, campo.length);
+                campo = campo.substring(0,campo.length - 1);
+
+                campo = campo.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+                    return letter.toUpperCase();
+                });
+                active_selects = active_selects +'<b>'+ campo +':</b> ' + $( this ).text()+' <b>/</b> ';
+            }
+        });
+    
+       /* var filtros_fecha1 = '<span class="filt_act"><b>Fecha Inicial:</b> ' + $('#fecha-range1').attr('value') + '</span>';
         var filtros_fecha2 = '<span class="filt_act"><b>Fecha Final:</b> ' + $('#fecha-range2').attr('value') + '</span>';
         var filtros_concesionario = '';
         var filtros_asesores = '';
@@ -449,9 +484,9 @@ $(function () {
 
         if(!jQuery.isEmptyObject(selected)){
             filtros_modelos = '<br><br><span class="filt_act"><b>Modelos:</b> ' + selected + '</span>';
-        }
+        }*/
         
-        var var_filtros_activos = '<h4>Filtros Activos:</h4> <b>Perfil:</b> ' + nombre_usuario + '<br>' + nombre_concecionario + '<br><br>' + filtros_fecha1 + filtros_fecha2 + filtros_concesionario + filtros_asesores + filtros_modelos;
+        var var_filtros_activos = '<h4>Filtros Activos:</h4> <b>Perfil:</b> ' + nombre_usuario + '<br>'+active_selects;
         $('.resultados_embudo').html(var_filtros_activos);
     }
 
