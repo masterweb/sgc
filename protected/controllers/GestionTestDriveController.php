@@ -138,6 +138,7 @@ class GestionTestDriveController extends Controller {
                 $demostracion->save();
                 $emailCliente = $this->getEmailCliente($_POST['GestionTestDrive']['id_informacion']);
                 $id_asesor = Yii::app()->user->getId();
+                $dealer_id = $this->getDealerId($id_asesor);
                 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionTestDrive']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionTestDrive']['id_informacion']);
@@ -249,7 +250,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $codigohtml = $general;
                 $headers = 'From: info@kia.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
+                $email = $this->getEmailJefeConcesion(70, $grupo_id, $dealer_id); //email administrador
                 $emailAsesor = $this->getAsesorEmail($id_asesor);
                 sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
                 //die('after send email admin');

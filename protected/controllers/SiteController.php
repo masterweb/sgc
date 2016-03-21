@@ -1523,8 +1523,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     </tr>
                 </thead>
                 <tbody>';
-            
-            
+
+
             foreach ($cd as $value) {
                 $criteria = new CDbCriteria(array(
                     'condition' => "id_informacion = {$value['id']}"
@@ -1554,7 +1554,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         . '<td>' . $value['nombres'] . '</td>'
                         . '<td>' . $value['apellidos'] . '</td>'
                         . '<td>' . $value['cedula'] . '</td>'
-                        . '<td>' . $this->getConcesionario($dealer_id) . '</td>'
+                        . '<td>' . $this->getNombreConcesionario($value['dealer_id']) . '</td>'
                         . '<td>' . $value['fecha'] . '</td>'
                         . '<td>';
                 if ($countvec > 0) {
@@ -1572,7 +1572,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $data .= '</table></div></div></div>';
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0);
+            $data_createc = $this->Createc($id, 0,'cedula');
         }
         if ($ced == 0) {
             $model->cedula = $id;
@@ -1581,7 +1581,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion);
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion,'cedula');
+            $result = $data_createc['result'];
         }// ----FIN DE NI CEDULA-----------
         $options = array('data' => $data,
             'result' => $result,
@@ -1598,12 +1599,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionGetRuc() {
+        //die('enter action get ruc');
         $model = new GestionNuevaCotizacion;
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
-        
+
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
             'condition' => "ruc='{$id}'"
@@ -1614,6 +1616,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $cd = GestionInformacion::model()->findAll($criteria);
         //die('ced: '.$ced);
         if ($ced > 0) {
+            //die('enter ruc');
             $result = TRUE;
             $data = '<div class="row"><h1 class="tl_seccion">Cliente existente</h1></div>'
                     . '<div class="row"><div class="col-md-12">'
@@ -1661,7 +1664,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         . '<td>' . $value['nombres'] . '</td>'
                         . '<td>' . $value['apellidos'] . '</td>'
                         . '<td>' . $value['ruc'] . '</td>'
-                        . '<td>' . $this->getConcesionario($dealer_id) . '</td>'
+                        . '<td>' . $this->getNombreConcesionario($value['dealer_id']) . '</td>'
                         . '<td>' . $value['fecha'] . '</td>'
                         . '<td>';
                 if ($countvec > 0) {
@@ -1678,7 +1681,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
             $data .= '</table></div></div></div>';
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0);
+            $data_createc = $this->Createc($id, 0,'ruc');
         }
         if ($ced == 0) {
             $model->ruc = $id;
@@ -1687,7 +1690,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion);
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion,'ruc');
+            $result = $data_createc['result'];
         }// ----FIN DE NO RUC-----------
 
         $options = array('data' => $data,
@@ -1792,7 +1796,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         echo json_encode($options);
     }
 
-    private function Createc($id, $id_nueva_cotizacion) {
+    private function Createc($id, $id_nueva_cotizacion, $tipo_identificacion) {
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
         // BUSQUEDA EN CREATEC==================================================================================
@@ -1802,6 +1806,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //die('after uri');
         $client = new SoapClient(@$uriservicio, array('trace' => 1));
         $response = $client->pws01_01_cl("{$id}", '');
+        
+        $result = FALSE;
 
         $coin1 = FALSE;
         $coin2 = FALSE;
@@ -2064,8 +2070,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         $modelInformacion->celular = $data_save['Teléfono del Propietario'];
                     } else {
                         $modelInformacion->celular = '0999999999';
+                    }    
+                    if($tipo_identificacion == 'cedula'){
+                        $modelInformacion->cedula = $data_save['Id del Propietario'];
                     }
-                    $modelInformacion->cedula = $data_save['Id del Propietario'];
+                    if($tipo_identificacion == 'ruc'){
+                        $modelInformacion->ruc = $data_save['Id del Propietario'];
+                    }
                     $modelInformacion->nombres = $data_save['Nombre Propietario'];
                     $modelInformacion->direccion = $data_save['Calle Principal'];
                     $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
@@ -2081,32 +2092,33 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     if ($modelInformacion->save()) {
                         //die('enter model save');
                         $id_modeloInformacion = $modelInformacion->id;
+                        
+                        // GRABAR PASO INICIAL GESTION DIARIA
+//                        $gestion = new GestionDiaria;
+//                        $gestion->id_informacion = $modelInformacion->id;
+//                        $gestion->id_vehiculo = 0;
+//                        $gestion->observaciones = 'Prospección';
+//                        $gestion->medio_contacto = 'telefono';
+//                        $gestion->fuente_contacto = 'prospeccion';
+//                        $gestion->codigo_vehiculo = 0;
+//                        $gestion->primera_visita = 1;
+//                        $gestion->status = 1;
+//                        $gestion->paso = 3;
+//                        $gestion->proximo_seguimiento = '';
+//                        $gestion->fecha = date("Y-m-d H:i:s");
+//                        $gestion->save();
+//
+//                        // GRABAR PASO INICIAL EN GESTION CONSULTA
+//                        $consulta = new GestionConsulta;
+//                        $consulta->id_informacion = $modelInformacion->id;
+//                        $consulta->fecha = date("Y-m-d H:i:s");
+//                        $consulta->status = 'ACTIVO';
+//                        $consulta->save();
                     }
-
-                    // GRABAR PASO INICIAL GESTION DIARIA
-                    $gestion = new GestionDiaria;
-                    $gestion->id_informacion = $modelInformacion->id;
-                    $gestion->id_vehiculo = 0;
-                    $gestion->observaciones = 'Prospección';
-                    $gestion->medio_contacto = 'telefono';
-                    $gestion->fuente_contacto = 'prospeccion';
-                    $gestion->codigo_vehiculo = 0;
-                    $gestion->primera_visita = 1;
-                    $gestion->status = 1;
-                    $gestion->paso = 3;
-                    $gestion->proximo_seguimiento = '';
-                    $gestion->fecha = date("Y-m-d H:i:s");
-                    $gestion->save();
-
-                    // GRABAR PASO INICIAL EN GESTION CONSULTA
-                    $consulta = new GestionConsulta;
-                    $consulta->id_informacion = $modelInformacion->id;
-                    $consulta->fecha = date("Y-m-d H:i:s");
-                    $consulta->status = 'ACTIVO';
-                    $consulta->save();
                 }
             }
         }
+        //die('id informacion: '.$id_modeloInformacion);
         //----------FIN DE BUSQUEDA TABLA VH01---------------------------
         $options = array(
             'datattga35' => $dataCreatec,
@@ -2115,7 +2127,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             'flagttga35' => $dataCrTga35,
             'flagttga36' => $dataCrTga36,
             'flagvh01' => $dataCrTgavh,
-            'id_informacion' => $id_modeloInformacion
+            'id_informacion' => $id_modeloInformacion,
+            'result' => $result,
         );
         return $options;
     }
@@ -3110,7 +3123,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
                     break;
             }
-            
         }
         /* else{
           $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
@@ -3425,14 +3437,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
 
-     public function actionAlterTable() {
-      $sql = "DELETE from gestion_informacion where id = 2673";
-      $con = Yii::app()->db;
-      $request = $con->createCommand($sql)->execute();
-      echo 'result: '.$request;
-
-      }
-      
+    /*public function actionAlterTable() {
+        $sql = "DELETE from gestion_informacion where id = 2673";
+        $con = Yii::app()->db;
+        $request = $con->createCommand($sql)->execute();
+        echo 'result: ' . $request;
+    }*/
 
     //
 }

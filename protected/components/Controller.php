@@ -347,7 +347,7 @@ class Controller extends CController {
         }
     }
 
-    public function getEmailJefeConcesion($cargo_id, $grupo_id) {
+    public function getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
         $criteria = new CDbCriteria;
         $criteria->condition = "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}";
         $usuario = Usuarios::model()->find($criteria);
@@ -356,6 +356,13 @@ class Controller extends CController {
         } else {
             return 'alkanware@gmail.com';
         }
+        
+        // buscar en tabla usuarios el jefe de almacen con el dealer id
+        /*$criteria->condition = "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}";
+        $usuario = Usuarios::model()->count($criteria);
+        if($usuario > 0){
+
+        }*/
     }
 
     public function setBotonCotizacion($paso, $id, $fuente, $id_informacion) {

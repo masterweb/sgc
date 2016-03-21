@@ -1142,6 +1142,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $ficha_tecnica = $this->getPdf($id_modelo);
         $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
         $id_asesor = Yii::app()->user->getId();
+        $dealer_id = $this->getDealerId($id_asesor);
 
         $estadoCredito = $this->getTipoVenta($id_informacion);
         // ENVIAR EMAIL AL CLIENTE CON AGRADECIMIENTO DE VISITA Y ADJUNTO EL CATALOGO Y PROFORMA
@@ -1286,7 +1287,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $headers = 'From: info@kia.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         //$email = $emailCliente; //email administrador
-        $email = $this->getEmailJefeConcesion(70, $grupo_id); //email administrador
+        $email = $this->getEmailJefeConcesion(70, $grupo_id, $dealer_id); //email administrador
         //$email = 'gansaldo72@hotmail.com';
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
