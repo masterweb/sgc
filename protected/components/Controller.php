@@ -220,7 +220,6 @@ class Controller extends CController {
             if ($dealer) {
                 return $dealer->direccion;
             }
-            
         }
     }
 
@@ -348,21 +347,32 @@ class Controller extends CController {
     }
 
     public function getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
-        $criteria = new CDbCriteria;
-        $criteria->condition = "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}";
-        $usuario = Usuarios::model()->find($criteria);
-        if (!is_null($usuario) && !empty($usuario)) {
-            return $usuario->correo;
-        } else {
-            return 'alkanware@gmail.com';
-        }
-        
+//        $criteria = new CDbCriteria;
+//        $criteria->condition = "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}";
+//        $usuario = Usuarios::model()->find($criteria);
+//        if (!is_null($usuario) && !empty($usuario)) {
+//            return $usuario->correo;
+//        } else {
+//            return 'alkanware@gmail.com';
+//        }
         // buscar en tabla usuarios el jefe de almacen con el dealer id
-        /*$criteria->condition = "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}";
-        $usuario = Usuarios::model()->count($criteria);
-        if($usuario > 0){
+        $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
+        
+        if (count($us) > 0) {
+            return $us->correo;
+        } else {
+            $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
+            INNER JOIN usuarios u ON u.id = gr.usuario_id 
+            WHERE gr.concesionario_id = {$dealer_id}
+            AND u.cargo_id = 70 ";
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            //die('count request: '.count($request));
+            foreach ($request as $value) {
+                return $value['correo'];
+            }
 
-        }*/
+        }
     }
 
     public function setBotonCotizacion($paso, $id, $fuente, $id_informacion) {
@@ -1207,7 +1217,7 @@ class Controller extends CController {
         $ps = GestionNotificaciones::model()->find($criteria);
         return $ps->paso;
     }
-    
+
     public function getPasoNotificacionDiaria($id_informacion) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion = {$id_informacion}"
@@ -2300,12 +2310,12 @@ class Controller extends CController {
         $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
         return $banco->nombre;
     }
-    
+
     public function getResponsableFirma($id_informacion) {
         $firma = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
         return $firma->responsable;
     }
-    
+
     public function getPrice($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_versiones='{$id}'"
@@ -2313,5 +2323,5 @@ class Controller extends CController {
         $vec = Versiones::model()->find($criteria);
         return $vec->precio;
     }
-    
-}   
+
+}

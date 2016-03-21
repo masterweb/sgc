@@ -15,6 +15,7 @@
  * @property string $tipo
  * @property string $lugar_exhibicion
  * @property string $empresa_flotas
+ * @property string $datos_cliente
  */
 class GestionNuevaCotizacion extends CActiveRecord {
 
@@ -47,7 +48,7 @@ class GestionNuevaCotizacion extends CActiveRecord {
             array('cedula', 'length', 'max' => 40, 'on' => 'consulta'),
             array('cedula', 'validateDocument', 'on' => 'consulta'),
             array('ruc', 'validateRuc', 'on' => 'ruc'),
-            array('fecha, tipo, lugar_exhibicion, empresa_flotas', 'safe'),
+            array('fecha, tipo, lugar_exhibicion, empresa_flotas, datos_cliente', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, fuente, cedula, fecha', 'safe', 'on' => 'search'),
@@ -80,6 +81,7 @@ class GestionNuevaCotizacion extends CActiveRecord {
             'tipo' => 'Tipo',
             'lugar_exhibicion' => 'Lugar Exhibicion',
             'empresa_flotas' => 'Empresa Flotas',
+            'datos_cliente' => 'Datos Cliente',
         );
     }
 

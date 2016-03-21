@@ -1579,7 +1579,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $model->fuente = $fuente;
             $model->save();
             $id_nueva_cotizacion = $model->id;
-
+            
             // LLAMADA A FUNCION DE CREATEC 
             $data_createc = $this->Createc($id, $id_nueva_cotizacion,'cedula');
             $result = $data_createc['result'];
