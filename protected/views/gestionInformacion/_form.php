@@ -4,7 +4,8 @@
 /* @var $form CActiveForm */
 //die('id: '.$id);
 ?>
-<?php
+<?php 
+
 $id_responsable = Yii::app()->user->getId();
 //echo 'responsable id: '.$id_responsable;
 $dealer_id = $this->getDealerId($id_responsable);
@@ -23,6 +24,19 @@ $email = '';
 $celular = '';
 $telefono_oficina = '';
 $telefono_casa = '';
+if(isset($id)){
+    $cotizacion = GestionNuevaCotizacion::model()->findByPk($id);
+    $datos_cliente = explode(',', $cotizacion->datos_cliente);
+    $nombres = $datos_cliente[2];
+    $direccion = $datos_cliente[10];
+    if(strlen($datos_cliente[12]) == 10){
+        $celular = $datos_cliente[12];
+    }
+    if(strlen($datos_cliente[12]) == 9){
+        $telefono_casa = $datos_cliente[12];
+    }
+    
+}
 if ($ced != '') {
     $criteria = new CDbCriteria(array(
         'condition' => "cedula={$cedula}"

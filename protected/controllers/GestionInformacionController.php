@@ -253,6 +253,7 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
+                            die('gestion save');
 
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
@@ -318,6 +319,7 @@ class GestionInformacionController extends Controller {
                     $this->redirect(array('gestionInformacion/seguimientobdc'));
                 }
                 if ($_POST['tipo'] == 'gestion') {
+                    //die('enter gestion');
                     $fecha_actual = date("Y-m-d H:i:s");
                     $fecha_posterior = strtotime('+2 day', strtotime($fecha_actual));
                     $fecha_posterior = date('Y-m-d H:i:s', $fecha_posterior);

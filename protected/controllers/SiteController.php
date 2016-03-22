@@ -1577,11 +1577,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         if ($ced == 0) {
             $model->cedula = $id;
             $model->fuente = $fuente;
+            $model->identificacion = 'ci';
             $model->save();
             $id_nueva_cotizacion = $model->id;
             
             // LLAMADA A FUNCION DE CREATEC 
             $data_createc = $this->Createc($id, $id_nueva_cotizacion,'cedula');
+            $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
+            $gn->datos_cliente =  implode(',', $data_createc['data_save']);
+            $gn->update();
             $result = $data_createc['result'];
         }// ----FIN DE NI CEDULA-----------
         $options = array('data' => $data,
@@ -1686,11 +1690,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         if ($ced == 0) {
             $model->ruc = $id;
             $model->fuente = $fuente;
+            $model->identificacion = 'ruc';
             $model->save();
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
             $data_createc = $this->Createc($id, $id_nueva_cotizacion,'ruc');
+            $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
+            $gn->datos_cliente =  implode(',', $data_createc['data_save']);
+            $gn->update();
             $result = $data_createc['result'];
         }// ----FIN DE NO RUC-----------
 
@@ -2062,38 +2070,38 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
                 if ($id_nueva_cotizacion != 0) { // SI NUEVA COTIZACION NO ES CERO PUEDE REGISTRAR UN NUEVO CLIENTE EN GESTION INFORMACION, GESTION CONSULA Y GESTION DIARIA
                     //GRABAR DATOS A GESTION INFORMACION
-                    date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                    $modelInformacion->fecha = date("Y-m-d H:i:s");
-                    $modelInformacion->responsable = $id_responsable;
-                    $modelInformacion->dealer_id = $dealer_id;
-                    if (strlen($data_save['Teléfono del Propietario']) == 10) {
-                        $modelInformacion->celular = $data_save['Teléfono del Propietario'];
-                    } else {
-                        $modelInformacion->celular = '0999999999';
-                    }    
-                    if($tipo_identificacion == 'cedula'){
-                        $modelInformacion->cedula = $data_save['Id del Propietario'];
-                    }
-                    if($tipo_identificacion == 'ruc'){
-                        $modelInformacion->ruc = $data_save['Id del Propietario'];
-                    }
-                    $modelInformacion->nombres = $data_save['Nombre Propietario'];
-                    $modelInformacion->direccion = $data_save['Calle Principal'];
-                    $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
-                    //die('before validare');
-//                if ($modelInformacion->validate()) {
-//                    die( 'validate');
-//                } else {
-//                    echo '<pre>';
-//                    print_r($modelInformacion->getErrors());
-//                    echo '</pre>';
-//                    die( 'validate errors');
-//                }
-                    if ($modelInformacion->save()) {
-                        //die('enter model save');
-                        $id_modeloInformacion = $modelInformacion->id;
-                        
-                        // GRABAR PASO INICIAL GESTION DIARIA
+//                    date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+//                    $modelInformacion->fecha = date("Y-m-d H:i:s");
+//                    $modelInformacion->responsable = $id_responsable;
+//                    $modelInformacion->dealer_id = $dealer_id;
+//                    if (strlen($data_save['Teléfono del Propietario']) == 10) {
+//                        $modelInformacion->celular = $data_save['Teléfono del Propietario'];
+//                    } else {
+//                        $modelInformacion->celular = '0999999999';
+//                    }    
+//                    if($tipo_identificacion == 'cedula'){
+//                        $modelInformacion->cedula = $data_save['Id del Propietario'];
+//                    }
+//                    if($tipo_identificacion == 'ruc'){
+//                        $modelInformacion->ruc = $data_save['Id del Propietario'];
+//                    }
+//                    $modelInformacion->nombres = $data_save['Nombre Propietario'];
+//                    $modelInformacion->direccion = $data_save['Calle Principal'];
+//                    $modelInformacion->id_cotizacion = $id_nueva_cotizacion;
+//                    //die('before validare');
+////                if ($modelInformacion->validate()) {
+////                    die( 'validate');
+////                } else {
+////                    echo '<pre>';
+////                    print_r($modelInformacion->getErrors());
+////                    echo '</pre>';
+////                    die( 'validate errors');
+////                }
+//                    if ($modelInformacion->save()) {
+//                        //die('enter model save');
+//                        $id_modeloInformacion = $modelInformacion->id;
+//                        
+//                        // GRABAR PASO INICIAL GESTION DIARIA
 //                        $gestion = new GestionDiaria;
 //                        $gestion->id_informacion = $modelInformacion->id;
 //                        $gestion->id_vehiculo = 0;
@@ -2114,7 +2122,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 //                        $consulta->fecha = date("Y-m-d H:i:s");
 //                        $consulta->status = 'ACTIVO';
 //                        $consulta->save();
-                    }
+//                    }
                 }
             }
         }
@@ -2127,8 +2135,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             'flagttga35' => $dataCrTga35,
             'flagttga36' => $dataCrTga36,
             'flagvh01' => $dataCrTgavh,
-            'id_informacion' => $id_modeloInformacion,
+            'id_informacion' => 0,
             'result' => $result,
+            'data_save' => $data_save,
         );
         return $options;
     }
