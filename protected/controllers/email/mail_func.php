@@ -5,13 +5,13 @@ include("class.phpmailer1.php");
 function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $body, $cc, $cco, $cu) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -38,7 +38,7 @@ function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $bo
         }
     }
     if ((int) $cu == 1) {
-        $mail->AddBCC('comunidad@kiamail.com.ec');
+        $mail->AddBCC('servicioalcliente@kiamail.com.ec');
     }
     //$mail->AddBCC('alkanware@gmail.com');
     //$mail->AddBCC('encaladayadira@gmail.com');
@@ -54,13 +54,13 @@ function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $bo
 function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -92,13 +92,13 @@ function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $sub
 function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'utf-8', $mails, $cc, $cco) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -139,13 +139,13 @@ function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'u
 function sendEmailFunctionConc($from, $fromname, $to, $subject, $body, $charset = 'utf-8', $mails, $cc, $cco, $emailVP, $emailCallCenter) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -193,13 +193,13 @@ function sendEmailFunctionExonerados($from, $fromname, $to, $names, $subject, $b
     //die('antra a sendEmailExonerados');
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -255,13 +255,13 @@ function sendEmailFunctionExonerados($from, $fromname, $to, $names, $subject, $b
 function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = "UTF-8";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -285,13 +285,13 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
 function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -315,13 +315,13 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
 function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -346,13 +346,13 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
 function sendEmailCliente($from, $fromname, $to, $subject, $body, $tipo) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
     $mail->CharSet = 'UTF-8';
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Port = 25;
 
     $mail->From = $from;
     $mail->FromName = $fromname;

@@ -94,6 +94,7 @@ if (isset($search)) {
         $cr->alias = "gc";
         $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
         $cr->condition = "gc.concesionario IN ({$dealerList})";
+        $cr->order = 'id DESC';
     } else {
         $cr = new CDbCriteria(array(
             "condition" => "concesionario = {$concesionarioid} ",
