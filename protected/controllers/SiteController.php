@@ -2271,7 +2271,7 @@ gf.observaciones, gf.cuota_mensual, gv.accesorios
 FROM gestion_informacion gi 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
 INNER JOIN gestion_financiamiento gf ON gf.id_informacion = gi.id 
-WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
+WHERE gv.id_informacion = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
         $num_proforma = $this->getProformaCliente($id_informacion, $id_vehiculo);
