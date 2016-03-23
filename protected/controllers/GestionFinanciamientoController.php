@@ -576,6 +576,7 @@ class GestionFinanciamientoController extends Controller {
             $tipoFinanciamiento = $_POST['GestionFinanciamiento1']['tipo_financiamiento'];
 
             if ($tipoFinanciamiento == 0) {// financiamiento al contado
+                //die('enter contado');
                 $model->attributes = $_POST['GestionFinanciamiento1'];
 
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado']);
@@ -587,6 +588,7 @@ class GestionFinanciamientoController extends Controller {
                 $seguro = (int) str_replace('$', "", $seguro);
 
                 $model->precio_vehiculo = $precio_vehiculo;
+                //die('precio vehiculo: '.$model->precio_vehiculo);
                 $model->ts = $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'];
 
                 if (!empty($_POST['GestionFinanciamiento1']['tiempo_seguro_contado']) && $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'] != 0) {
@@ -601,6 +603,7 @@ class GestionFinanciamientoController extends Controller {
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
             } else {
+                //die('enter else');
                 $model->attributes = $_POST['GestionFinanciamiento1'];
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio']);
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
@@ -652,6 +655,7 @@ class GestionFinanciamientoController extends Controller {
             }
             //die('before save:');
             if ($model->update()) {
+                //die('enter update');
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_diaria SET paso = '7' WHERE id_informacion = {$_POST['GestionFinanciamiento1']['id_informacion']}";
                 $request = $con->createCommand($sql)->query();

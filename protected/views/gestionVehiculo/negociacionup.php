@@ -846,7 +846,7 @@ if ($fi == 2) {
         }
         var dataform = $("#gestion-negociacion-form").serialize();
         $.ajax({
-            url: '/intranet/usuario/index.php/gestionFinanciamiento/updatefn',
+            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionFinanciamiento/updatefn"); ?>',
             beforeSend: function (xhr) {
                 //$('#bg_negro').show();  // #bg_negro must be defined somewhere
             },
