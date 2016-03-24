@@ -345,6 +345,15 @@ class Controller extends CController {
             return 'alkanware@gmail.com';
         }
     }
+    
+    public function getAsesorCodigo($id) {
+        $dealers = Usuarios::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->codigo_asesor;
+        } else {
+            return 'NA';
+        }
+    }
 
     public function getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
 //        $criteria = new CDbCriteria;
