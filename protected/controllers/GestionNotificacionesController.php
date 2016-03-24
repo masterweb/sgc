@@ -158,16 +158,24 @@ class GestionNotificacionesController extends Controller {
         }
     }
 
-    public function actionVernotificacion($id = NULL, $id_informacion = NULL) {
+    public function actionVernotificacion($id = NULL, $id_informacion = NULL, $cargo_id = NULL, $tipo = NULL) {
         //echo 'id: '.$id.' ,caso id: '.$caso_id;
         //die();
-        if ($id == 0) {
+        if ($tipo == 4) {
             $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
             //die('sql: '.$sql);
             $con = Yii::app()->db;
             $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacionDiaria($id_informacion);
-        } else {
+        } 
+        if ($tipo == 3) {
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = $this->getPasoNotificacionDiaria($id_informacion);
+        }
+        else {
             $model = $this->loadModel($id);
             $not = new GestionNotificaciones;
             $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";

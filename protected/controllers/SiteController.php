@@ -397,11 +397,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         </body>';
                 $codigohtml = $general;
                 $tipo = 'informativo';
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $model->correo; //email administrador
 
-                if ($send = sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                if ($send = sendEmailInfoD('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
                     //die('send email: '.$send);
                     Yii::app()->user->setFlash('success', '<div class="exitoRegistro"><img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/><br>Tu usuario ha sido creado exitosamente, por favor revisa la bandeja de entrada de tu correo electr&oacute;nico para activar la cuenta.</div>');
                     $this->redirect(array('site/registro'));
@@ -1572,7 +1572,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $data .= '</table></div></div></div>';
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0,'cedula');
+            $data_createc = $this->Createc($id, 0, 'cedula');
         }
         if ($ced == 0) {
             $model->cedula = $id;
@@ -1580,11 +1580,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $model->identificacion = 'ci';
             $model->save();
             $id_nueva_cotizacion = $model->id;
-            
+
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion,'cedula');
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'cedula');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
-            $gn->datos_cliente =  implode(',', $data_createc['data_save']);
+            $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
             $result = $data_createc['result'];
         }// ----FIN DE NI CEDULA-----------
@@ -1685,7 +1685,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
             $data .= '</table></div></div></div>';
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0,'ruc');
+            $data_createc = $this->Createc($id, 0, 'ruc');
         }
         if ($ced == 0) {
             $model->ruc = $id;
@@ -1695,9 +1695,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion,'ruc');
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'ruc');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
-            $gn->datos_cliente =  implode(',', $data_createc['data_save']);
+            $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
             $result = $data_createc['result'];
         }// ----FIN DE NO RUC-----------
@@ -1814,7 +1814,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //die('after uri');
         $client = new SoapClient(@$uriservicio, array('trace' => 1));
         $response = $client->pws01_01_cl("{$id}", '');
-        
+
         $result = FALSE;
 
         $coin1 = FALSE;
@@ -2469,6 +2469,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
     }
 
     public function actionFacturaCorrecta($id_informacion = NULL, $id_vehiculo = NULL) {
+        $id_asesor = $this->getResponsableId($_POST['id_informacion']);
         $con = Yii::app()->db;
         $sql = "UPDATE gestion_vehiculo SET cierre = 'ACTIVO' WHERE id = {$id_vehiculo}";
 
@@ -2491,11 +2492,22 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $factura->fecha = date("Y-m-d H:i:s");
         $factura->save();
 
+        $not = new GestionNotificaciones;
+        $not->tipo = 3; // tipo cierre
+        $not->paso = 8;
+        $not->id_informacion = $_POST['id_informacion'];
+        $not->id_asesor = $id_asesor;
+        $not->id_dealer = $this->getDealerId($id_asesor);
+        $not->descripcion = 'Se ha cerrado la venta';
+        $not->fecha = date("Y-m-d H:i:s");
+        $not->save();
+
         $this->redirect(array('site/cierre/' . $id_informacion));
         //$this->render('cierre',  array('id' => $id_informacion, 'vec' => $vec));
     }
 
     public function actionFacturaIncorrecta($id_informacion = NULL, $id_vehiculo = NULL) {
+        $id_asesor = $this->getResponsableId($_POST['id_informacion']);
         /* echo '<pre>';
           print_r($_POST);
           echo '</pre>';
@@ -2516,6 +2528,16 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
         $factura->save();
+        
+        $not = new GestionNotificaciones;
+        $not->tipo = 3; // tipo cierre
+        $not->paso = 8;
+        $not->id_informacion = $_POST['id_informacion'];
+        $not->id_asesor = $id_asesor;
+        $not->id_dealer = $this->getDealerId($id_asesor);
+        $not->descripcion = 'Se ha cerrado la venta';
+        $not->fecha = date("Y-m-d H:i:s");
+        $not->save();
 
         $this->redirect(array('site/cierre/' . $id_informacion));
     }
@@ -3446,12 +3468,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
 
-    /*public function actionAlterTable() {
-        $sql = "DELETE from gestion_informacion where id = 2673";
-        $con = Yii::app()->db;
-        $request = $con->createCommand($sql)->execute();
-        echo 'result: ' . $request;
-    }*/
+    /* public function actionAlterTable() {
+      $sql = "DELETE from gestion_informacion where id = 2673";
+      $con = Yii::app()->db;
+      $request = $con->createCommand($sql)->execute();
+      echo 'result: ' . $request;
+      } */
 
     //
 }

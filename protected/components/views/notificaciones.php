@@ -1,3 +1,12 @@
+<?php
+Yii::import("application.protected.components.Controller.php");
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$id_responsable = Yii::app()->user->getId();
+$dealer_id = Controller::getConcesionarioDealerId($id_responsable);
+$array_dealers = Controller::getDealerGrupoConc($grupo_id);
+$dealerList = implode(', ', $array_dealers);
+?>
 <div class="cont_notificaciones">
     <?php
     date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador`
@@ -11,11 +20,23 @@
     $fecha_actual = date("Y/m/d");
 
     $abierto = "";
-    $abiertoSQL = "SELECT gn.*, ga.agendamiento, gi.nombres, gi.apellidos FROM gestion_notificaciones gn 
+    $abiertoSQL = "SELECT gn.*, ga.agendamiento, gi.nombres, gi.apellidos, gd.* FROM gestion_notificaciones gn 
                     INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
                     INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
-                    WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
-                    AND gn.id_asesor = {$responsable_id} AND DATE(ga.agendamiento) = '$fecha_actual' ";
+                    INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
+                    WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 ";
+    switch ($cargo_id) {
+        case 71: // asesor de ventas
+        case 70: // jefe de sucursal    
+            $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+            break;
+        //case 70: // jefe de sucursal
+        //    $abiertoSQL .= " AND gn.id_dealer = {$dealer_id} AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+        //    break;
+        default:
+            break;
+    }
+
     //die('sql: '.$abiertoSQL);
     $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
     $abierto2 = "";
@@ -64,7 +85,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 //echo $fecha_caducidad.'<br />';
                 if ($fecha_actual == $fecha_caducidad) {
                     $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'cid' => $cargo_id, 'tipo' => 4));
 
                     $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                             . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT A Caduca hoy</a>'
@@ -99,7 +120,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 //echo $fecha_caducidad.'<br />';
                 if ($fecha_actual == $fecha_caducidad) {
                     $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
 
                     $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                             . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT B Caduca hoy</a>'
@@ -123,7 +144,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 //echo 'fecha actual: '.$fecha_actual. '<br />';
                 if ($fecha_actual == $fecha_caducidad) {
                     $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
 
                     $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                             . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT C Caduca hoy</a>'
@@ -145,7 +166,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 //echo $fecha_caducidad.'<br />';
                 if ($fecha_actual == $fecha_caducidad) {
                     $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
 
                     $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                             . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - WARM 3 meses Caduca hoy</a>'
@@ -166,7 +187,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 //echo $fecha_caducidad.'<br />';
                 if ($fecha_actual == $fecha_caducidad) {
                     $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id']));
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
 
                     $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                             . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - COLD 6 meses Caduca hoy</a>'
@@ -182,6 +203,23 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 break;
         }
     }
+
+    $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
+            . "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion"
+            . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer = {$dealer_id}";
+    $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
+    foreach ($notificacionesCierre as $nt) {
+        $datac .= '<ul id="lAbierto">';
+        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nt['id'], 'id_informacion' => $nt['id_informacion'], 'tipo' => 3));
+
+        $datac .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                . '<a href="' . $url . '">' . $nt["nombres"] . ' ' . $nt['apellidos'] . ' - Cierre de Venta</a>'
+                . '</li>';
+
+        $datac .= '</ul>';
+        $datac .= '<input type="hidden" id="actualAbierto" value="10">';
+    }
+
 
     $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat;
     ?>
@@ -201,8 +239,13 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
         <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#seguimiento" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Seguimiento</a></li>
-                <li role="presentation"><a href="#solicitudes" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Crédito</a></li>
-                <li role="presentation"><a href="#caducidad" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Caducidad</a></li>
+                <?php if ($cargo_id == 71): ?>
+                    <li role="presentation"><a href="#solicitudes" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Crédito</a></li>
+                    <li role="presentation"><a href="#caducidad" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Caducidad</a></li>
+                <?php endif; ?>
+                <?php if ($cargo_id == 70): ?>
+                    <li role="presentation"><a href="#cierre" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Cierre</a></li>
+                <?php endif; ?>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="seguimiento" aria-labelledby="abierto-tab">
@@ -218,7 +261,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                             $seg = $modelo->agendamiento;
                             //$id_gd = $this->getGestionDiariaId($value['id_informacion']);
                             //$paso= $this->getGestionDiariaPaso($value['id_informacion']);
-                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion']));
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 1));
                             //$url = Yii::app()->createUrl('gestionDiaria/create', array('id' => $value['id_informacion'], 'paso' => $paso, 'id_gt' => $id_gd));
 
                             $abierto .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'
@@ -240,7 +283,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                     echo '<ul id="lAbierto">';
                     if (count($notificacionesAbiertas2) > 0) {
                         foreach ($notificacionesAbiertas2 as $value) {
-                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion']));
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 2));
 
                             $abierto2 .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                                     . '<a href="' . $url . '">' . $value["nombres"] . ' ' . $value['apellidos'] . ' - ' . $value['descripcion'] . '</a>'
@@ -257,12 +300,17 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                     ?>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="caducidad" aria-labelledby="abierto-tab">
-                    <?php 
-                    if($count_cat > 0){
+                    <?php
+                    if ($count_cat > 0) {
                         echo $data;
                     }
                     ?>
-                    
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="cierre" aria-labelledby="abierto-tab">
+                    <?php
+                    echo $datac;
+                    ?>
                 </div>
             </div>
         </div>
