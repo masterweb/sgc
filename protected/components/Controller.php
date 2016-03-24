@@ -306,7 +306,7 @@ class Controller extends CController {
         }
     }
 
-    public function getAsesorCodigo($id) {
+    public function mailgetAsesorCodigo($id) {
         $dealers = Usuarios::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
             return $dealers->codigo_asesor;
@@ -357,7 +357,7 @@ class Controller extends CController {
 //        }
         // buscar en tabla usuarios el jefe de almacen con el dealer id
         $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
-        
+
         if (count($us) > 0) {
             return $us->correo;
         } else {
@@ -371,7 +371,6 @@ class Controller extends CController {
             foreach ($request as $value) {
                 return $value['correo'];
             }
-
         }
     }
 
@@ -479,6 +478,22 @@ class Controller extends CController {
         $modelo = GestionVehiculo::model()->find($criteria);
         $name_version = $this->getVersion($modelo->version);
         return $name_version;
+    }
+
+    public function getPrecioContado($id, $tipo, $id_modelo) {
+        //echo 'tipo: '.$tipo;
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id}",
+        ));
+        $modelo = GestionVehiculo::model()->find($criteria);
+        $version = $modelo->version;
+        $criteria2 = new CDbCriteria(array(
+            "condition" => "id_versiones = {$version}",
+        ));
+        //    die ('version: '.$version);
+        $modeloversion = Versiones::model()->find($criteria2);
+
+        return $modeloversion->precio;
     }
 
     public function getPrecio($id, $tipo, $id_modelo) {

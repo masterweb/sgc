@@ -3,7 +3,8 @@
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
 //echo 'id vehiculo: '.$id_vehiculo;
-$id_asesor = Yii::app()->user->getId();
+//$id_asesor = Yii::app()->user->getId();
+$id_asesor = $this->getResponsableId($id_informacion);
 $dealer_id = $this->getConcesionarioId($id_informacion);
 //$id_responsable = $this->getResponsableId($id_informacion);
 $id_modelo = $this->getIdModelo($id_vehiculo);
@@ -53,7 +54,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row title">
         <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
         <div class="col-xs-8" style="border-left:1px solid #888890;">
-            <h4><?php echo strtoupper($this->getNameConcesionario($id_asesor)); ?></h4>
+            <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
             <div class="target">
 
                 <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>

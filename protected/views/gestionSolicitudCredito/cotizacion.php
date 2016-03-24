@@ -3,7 +3,8 @@
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
 //echo 'id vehiculo: '.$id_vehiculo;
-$id_asesor = Yii::app()->user->getId();
+//$id_asesor = Yii::app()->user->getId();
+$id_asesor = $this->getResponsableId($id_informacion);
 //die('id asesor: '.$id_asesor);
 $dealer_id = $this->getConcesionarioId($id_informacion);
 //$id_responsable = $this->getResponsableId($id_informacion);
