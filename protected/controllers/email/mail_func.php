@@ -315,13 +315,11 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
 function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
+    $mail->Host = "mail.ariadna.us"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
     $mail->SMTPAuth = true;
-    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
-    $mail->CharSet = 'UTF-8';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 25;
+    $mail->Username = "envios@ariadna.com.co"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
+    $mail->Password = "envio9685"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->CharSet = $charset;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
