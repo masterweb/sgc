@@ -20,7 +20,7 @@ $dealerList = implode(', ', $array_dealers);
     $fecha_actual = date("Y/m/d");
 
     $abierto = "";
-    $abiertoSQL = "SELECT gn.*, ga.agendamiento, gi.nombres, gi.apellidos, gd.* FROM gestion_notificaciones gn 
+    $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* FROM gestion_notificaciones gn 
                     INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
                     INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
                     INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
@@ -261,7 +261,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                             $seg = $modelo->agendamiento;
                             //$id_gd = $this->getGestionDiariaId($value['id_informacion']);
                             //$paso= $this->getGestionDiariaPaso($value['id_informacion']);
-                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 1));
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id_not'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 1));
                             //$url = Yii::app()->createUrl('gestionDiaria/create', array('id' => $value['id_informacion'], 'paso' => $paso, 'id_gt' => $id_gd));
 
                             $abierto .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'

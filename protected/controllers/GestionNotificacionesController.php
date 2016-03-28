@@ -175,9 +175,7 @@ class GestionNotificacionesController extends Controller {
             $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacionDiaria($id_informacion);
         }
-        else {
-            $model = $this->loadModel($id);
-            $not = new GestionNotificaciones;
+        if ($tipo == 1) {
             $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";
             //die('sql: '.$sql);
             $con = Yii::app()->db;
