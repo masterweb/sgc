@@ -616,10 +616,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionConfirmar($t) {
+        //die('enter confirmar');
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $token = explode("-", $token);
+        die('token: '.$token[1]);
         $user = Usuarios::model()->find(array('condition' => "md5(id)=:match  AND estado='PENDIENTE'", 'params' => array(':match' => $token[1])));
         if (!empty($user)) {
             $verificar = md5($user->correo . '--' . $user->id . '--' . $user->usuario);
@@ -658,7 +660,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                       print_r($cc);
                       die(); */
 
-                    if (sendEmailFunction('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo, $cc, '', '')) {
+                    if (sendEmailFunction('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo, $cc, '', '')) {
+                        //die('after send email');
                         $user->estado = "CONFIRMADO";
                         if ($user->update()) {
                             Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Correo Electr&oacute;nico Confirmado</h1><p>Estimad@ <b>' . $user->nombres . ' ' . $user->apellido . '</b> su correo ha sido confirmado, ahora su registro deber&aacute; ser aprobado por el administrador para poder acceder a la intranet, cuando este proceso se realice recibirá un correo electr&oacute;nico con su contrase&ntilde;a de acceso.</div>');
