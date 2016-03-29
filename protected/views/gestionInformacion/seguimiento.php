@@ -602,9 +602,9 @@ $count = count($users);
                                     }
                                     ?>
                                     <?php 
-                                    if($c['bdc'] == 1){
-                                        echo '<button type="button" class="btn btn-xs btn-success">BDC</button>'; 
-                                    }
+                                    //if($c['bdc'] == 1){
+                                    //    echo '<button type="button" class="btn btn-xs btn-success">BDC</button>'; 
+                                    //}
                                     ?>
                                     <?php 
                                     if($c['desiste'] == 1){
@@ -721,7 +721,7 @@ $count = count($users);
                                     else{ echo $c['fuente']; } ?> 
                                 </td>
                                 <td>
-                                    <?php if($c['bdc'] == 0){ ?>
+                                    <?php //if($c['bdc'] == 0){ ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                         <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1){ ?>
                                             <?php if ($c['paso'] == '1-2' && $c['fuente'] == 'showroom') { ?>
@@ -737,7 +737,7 @@ $count = count($users);
                                         <?php if ($c['status'] == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14) { ?>
                                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                         <?php } ?>
-                                    <?php } ?>
+                                    <?php //} ?>
                                     <?php if($c['bdc'] == 1  && ( $area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14)){ ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a><em></em>
                                     <?php } ?>            

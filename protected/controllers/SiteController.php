@@ -621,7 +621,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $token = $p->purify($t);
         $token = explode("-", $token);
-        die('token: '.$token[1]);
+        //die('token: '.$token[1]);
         $user = Usuarios::model()->find(array('condition' => "md5(id)=:match  AND estado='PENDIENTE'", 'params' => array(':match' => $token[1])));
         if (!empty($user)) {
             $verificar = md5($user->correo . '--' . $user->id . '--' . $user->usuario);

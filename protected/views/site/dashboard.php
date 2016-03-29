@@ -1,7 +1,7 @@
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $con = Yii::app()->db;
-if ($cargo_id == 71) { // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
+if ($cargo_id == 71644) {  // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
     //die('enter cargo ventas');
     $id_responsable = Yii::app()->user->getId();
     $dealer_id = $this->getDealerId($id_responsable);
