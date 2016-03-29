@@ -1143,6 +1143,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
         $id_asesor = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_asesor);
+        $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 
         $estadoCredito = $this->getTipoVenta($id_informacion);
         // ENVIAR EMAIL AL CLIENTE CON AGRADECIMIENTO DE VISITA Y ADJUNTO EL CATALOGO Y PROFORMA
@@ -1182,7 +1183,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                                 </tr>
                                 <tr>
                                   <td width="178" rowspan="5"><img src="images/logo_pdf2.png" /></td>
-                                  <td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNameConcesionario($id_asesor)) . '</strong></td>
+                                  <td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNombreConcesionario($concesionarioid)) . '</strong></td>
                                 </tr>
 
                                 <tr>
