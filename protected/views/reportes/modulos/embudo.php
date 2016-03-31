@@ -10,6 +10,7 @@
                         <th style="background:#848485;">Variación</th>
                         <th style="background:#b6b5b6;">Diferencia</th>
                     </tr>
+                </thead>
                 <tbody>
                     <tr><td>TRÁFICO</td>
                         <td><?= $varView['trafico_mes_actual']; ?></td>
@@ -58,8 +59,7 @@
                         <td><?=  $varView['tasa_cierre_anterior'] ?></td>
                         <td><?= $varView['tasa_dif_cierre'] ?></td>
                         <td></td>
-                    </tr>
-                    
+                    </tr>                    
                 </tbody>
             </table>
         </div>

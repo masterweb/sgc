@@ -80,8 +80,8 @@ $(function () {
         }
     }
 
-    function loadmodelos(e){    
-
+    function loadmodelos(e){
+        loading('activar');
         tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
         concesion_active = $('#GestionInformacionConcesionario option:selected').val();
         resp_active = $('#GestionDiariaresponsable option:selected').val();
@@ -108,7 +108,8 @@ $(function () {
                     GestionInformacionGrupo: GestionInformacionGrupo
                 },
                 success: function (data) {
-                    $('.modelos_filtros').html(data);                   
+                    $('.modelos_filtros').html(data);
+                    loading('desactivar');                 
                 }
             });
         }        
@@ -133,7 +134,8 @@ $(function () {
                     tipo_b: tipo_b
                 },
                 success: function (data) {
-                    e.html(data);                   
+                    e.html(data); 
+                    loading('desactivar');                  
                 }
             });
         //}        
@@ -165,7 +167,8 @@ $(function () {
                     $('#GestionInformacionConcesionario').html(data);
                     filtros_notification();
                     $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
-                    loadresponsables($('#GestionInformacionConcesionario'));                   
+                    loadresponsables($('#GestionInformacionConcesionario'));    
+                    loading('desactivar');               
                 }
             });
         }        
@@ -191,7 +194,8 @@ $(function () {
                 },
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);
-                    filtros_notification();                    
+                    filtros_notification();    
+                    loading('desactivar');                
                 }
             });
         }        
@@ -215,11 +219,13 @@ $(function () {
                 model_info: model_info
             },
             success: function (data) {
-                $('.filtros_modelos_ta').html(data);                  
+                $('.filtros_modelos_ta').html(data);  
+                loading('desactivar');                
             }
         });
     }
     function loadconcesionariosTA(e){
+            loading('activar');
             if(e.attr('value') != ''){
                 var where = '';
                 var value = e.attr('value');
@@ -248,7 +254,8 @@ $(function () {
                     cache: false,
                     success: function (data) {
                         $('#TAconcesionarios').html(data[0]); 
-                        $('.filtros_modelos_ta').html(data[1]);                  
+                        $('.filtros_modelos_ta').html(data[1]); 
+                        loading('desactivar');                 
                     }
                 });
             }        
@@ -553,4 +560,10 @@ function checkboxes(e){
             }
         }                                                    
     }
+}
+
+function loading(estado){
+    $.getScript(site_route+'/js/loading.js', function(e) {
+      inicia(estado, site_route);
+   });
 }
