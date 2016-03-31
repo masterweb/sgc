@@ -81,7 +81,6 @@ $(function () {
     }
 
     function loadmodelos(e){
-        loading('activar');
         tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
         concesion_active = $('#GestionInformacionConcesionario option:selected').val();
         resp_active = $('#GestionDiariaresponsable option:selected').val();
@@ -145,6 +144,7 @@ $(function () {
     function loaddealers(e, t){
         vaciar2();
         loadmodelos(e);
+        loading('activar');
         if(e.attr('value') != ''){
             var value = e.attr('value');
 
@@ -176,6 +176,7 @@ $(function () {
     //carga responsables   
     function loadresponsables(e){
         loadmodelos(e);
+        loading('activar');
         if(e.attr('value') != ''){
             var value = e.attr('value');
             var fecha1 = $('#fecha-range1').attr('value');
