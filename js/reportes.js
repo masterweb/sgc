@@ -144,8 +144,8 @@ $(function () {
     function loaddealers(e, t){
         vaciar2();
         loadmodelos(e);
-        loading('activar');
         if(e.attr('value') != ''){
+            loading('activar');
             var value = e.attr('value');
 
             var fecha1 = $('#fecha-range1').attr('value');
@@ -176,8 +176,8 @@ $(function () {
     //carga responsables   
     function loadresponsables(e){
         loadmodelos(e);
-        loading('activar');
         if(e.attr('value') != ''){
+            loading('activar');
             var value = e.attr('value');
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
@@ -225,9 +225,9 @@ $(function () {
             }
         });
     }
-    function loadconcesionariosTA(e){
-            loading('activar');
+    function loadconcesionariosTA(e){          
             if(e.attr('value') != ''){
+                loading('activar');
                 var where = '';
                 var value = e.attr('value');
                 var fecha1 = $('#fecha-range1').attr('value');
