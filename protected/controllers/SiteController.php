@@ -176,8 +176,8 @@ class SiteController extends Controller {
             $model->password = md5($_POST['LoginForm']['password']);
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
-                $usuarios = Usuarios::model()->findAll(array('condition' => "estado=:match AND ultimavisita is not null AND id!=:id", 'params' => array(':match' => "ACTIVO", ':id' => (int) Yii::app()->user->id)));
-                if (!empty($usuarios)) {
+              //  $usuarios = Usuarios::model()->findAll(array('condition' => "estado=:match AND ultimavisita is not null AND id!=:id", 'params' => array(':match' => "ACTIVO", ':id' => (int) Yii::app()->user->id)));
+               /* if (!empty($usuarios)) {
                     foreach ($usuarios as $item) {
                         $datetime1 = date_create($item->ultimavisita);
                         $datetime2 = date_create("now");
@@ -193,7 +193,7 @@ class SiteController extends Controller {
                         //if($interval->format('%a')>0 && $reto->fechaFin >= date('Y-m-d')){
                     }
                     //die();
-                }
+                }*/
                 //$this->redirect(Yii::app()->user->returnUrl);
                 //FUNCION PARA CALL CENTER SI TIENE COTIZACIONES AUTOMATICAS.
 
