@@ -171,6 +171,32 @@
                 </select>
             </div>
     <?php endif; ?>
+
+    <!--FILTRO BDC DESISTE O CADUCA-->
+    <?php if (in_array($varView['cargo_id'], $usuariosBDC) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
+        <div class="col-md-6 estadoBDC">
+            <label for="">Estado BDC</label>
+            <select name="GI[estadoBDC]" id="GestionInformacionTipoBDC" class="form-control" >
+                <option value="">--Seleccione un estado BDC--</option>
+                <option value="desiste">Desiste</option>
+                <option value="caducados">Caducados</option>
+            </select>
+        </div>
+    <?php endif; ?>
+
+    <!--FILTRO Exonerados-->
+    <?php if (in_array($varView['cargo_id'], $usuariosExonerados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes)):?>
+        <div class="col-md-6 tipoExonerados">
+            <label for="">Tipo de exonerado</label>
+            <select name="GI[tipoExo]" id="GestionInformacionTipoExo" class="form-control" >
+                <option value="">--Seleccione un tipo--</option>
+                <option value="Exonerado Conadis">Conadis</option>
+                <option value="Exonerado Diplomatico">Diplomáticos</option>
+            </select>
+        </div>
+    <?php endif; ?>
+
+    <!--MODELOS-->
 <?php if (in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
     <div id="traficoGeneral">
         <!-- FILTRO MODELOS -->

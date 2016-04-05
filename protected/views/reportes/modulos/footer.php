@@ -7,6 +7,9 @@
 	url_footer_var_asesoresTA = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetConsecionariosTA"); ?>';
 	url_footer_var_provincia = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetProvincias"); ?>';
 	url_footer_var_grupo = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetGrupo"); ?>';
+	url_footer_var_tipoexo = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetExonerados"); ?>';
+	url_footer_var_tipoBDC = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetTipoBDC"); ?>';
+	url_footer_var_exel = '<?php echo Yii::app()->createAbsoluteUrl("Reportes/AjaxGetExcel"); ?>';
 	site_route = '<?php echo Yii::app()->request->baseUrl; ?>';
 	responsable = '<?php echo $varView["js_responsable"] ;?>';
 	dealer = '<?php echo $varView["js_dealer"] ;?>';

@@ -1,4 +1,5 @@
 $(function () {
+
     tipo_b = $(".tipo_busqueda").val();
 
     //selectro tipo provincia o grupo
@@ -13,6 +14,11 @@ $(function () {
 
     $('#GestionDiariaresponsable').change(function () {
         loadmodelos($(this));
+        if(tipo_b == 'exonerados'){
+            loadExonerados($(this));
+        }else if(tipo_b == 'bdc'){
+            loadEstadoBDC($(this))
+        }
         filtros_notification();
     });
 
@@ -39,6 +45,11 @@ $(function () {
     $('#fecha-range1').change(function () {
         if(activar_dealer == 'si'){ 
             loadmodelos($(this));
+            if(tipo_b == 'exonerados'){
+                loadExonerados($(this));
+            }else if(tipo_b == 'bdc'){
+                loadEstadoBDC($(this))
+            }
             loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
             loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
@@ -53,6 +64,11 @@ $(function () {
     $('#fecha-range2').change(function () {
         if(activar_dealer == 'si'){ 
             loadmodelos($(this));
+            if(tipo_b == 'exonerados'){
+                loadExonerados($(this));
+            }else if(tipo_b == 'bdc'){
+                loadEstadoBDC($(this));
+            }
             loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo);
             loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia);
 
@@ -80,8 +96,70 @@ $(function () {
         }
     }
 
-    function loadmodelos(e){    
+    function loadEstadoBDC(){
+        tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
+        concesion_active = $('#GestionInformacionConcesionario option:selected').val();
+        resp_active = $('#GestionDiariaresponsable option:selected').val();
+        GestionInformacionProvincias = $('#GestionInformacionProvincias option:selected').val();
+        GestionInformacionGrupo = $('#GestionInformacionGrupo option:selected').val();
+        
+        var fecha1 = $('#fecha-range1').attr('value');
+        var fecha2 = $('#fecha-range2').attr('value');
+        $.ajax({
+            url:  url_footer_var_tipoBDC,
+            beforeSend: function (xhr) {
+            },
+            type: 'POST', 
+            data: {
+                fecha1: fecha1, 
+                fecha2: fecha2,
+                tipo_b: tipo_b,
+                tipo_busqueda_por: tipo_busqueda_por,
+                concesion_active: concesion_active,
+                resp_active: resp_active,
+                GestionInformacionProvincias: GestionInformacionProvincias,
+                GestionInformacionGrupo: GestionInformacionGrupo
+            },
+            success: function (data) {
+                $('#GestionInformacionTipoBDC').html(data);
+                loading('desactivar');                 
+            }
+        }); 
 
+    }
+
+    function loadExonerados(e){
+        tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
+        concesion_active = $('#GestionInformacionConcesionario option:selected').val();
+        resp_active = $('#GestionDiariaresponsable option:selected').val();
+        GestionInformacionProvincias = $('#GestionInformacionProvincias option:selected').val();
+        GestionInformacionGrupo = $('#GestionInformacionGrupo option:selected').val();
+        
+        var fecha1 = $('#fecha-range1').attr('value');
+        var fecha2 = $('#fecha-range2').attr('value');
+        $.ajax({
+            url:  url_footer_var_tipoexo,
+            beforeSend: function (xhr) {
+            },
+            type: 'POST', 
+            data: {
+                fecha1: fecha1, 
+                fecha2: fecha2,
+                tipo_b: tipo_b,
+                tipo_busqueda_por: tipo_busqueda_por,
+                concesion_active: concesion_active,
+                resp_active: resp_active,
+                GestionInformacionProvincias: GestionInformacionProvincias,
+                GestionInformacionGrupo: GestionInformacionGrupo
+            },
+            success: function (data) {
+                $('#GestionInformacionTipoExo').html(data);
+                loading('desactivar');                 
+            }
+        });       
+    }
+
+    function loadmodelos(e){
         tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
         concesion_active = $('#GestionInformacionConcesionario option:selected').val();
         resp_active = $('#GestionDiariaresponsable option:selected').val();
@@ -108,7 +186,8 @@ $(function () {
                     GestionInformacionGrupo: GestionInformacionGrupo
                 },
                 success: function (data) {
-                    $('.modelos_filtros').html(data);                   
+                    $('.modelos_filtros').html(data);
+                    loading('desactivar');                 
                 }
             });
         }        
@@ -133,7 +212,8 @@ $(function () {
                     tipo_b: tipo_b
                 },
                 success: function (data) {
-                    e.html(data);                   
+                    e.html(data); 
+                    loading('desactivar');                  
                 }
             });
         //}        
@@ -143,7 +223,13 @@ $(function () {
     function loaddealers(e, t){
         vaciar2();
         loadmodelos(e);
+        if(tipo_b == 'exonerados'){
+            loadExonerados(e);
+        }else if(tipo_b == 'bdc'){
+            loadEstadoBDC(e)
+        }
         if(e.attr('value') != ''){
+            loading('activar');
             var value = e.attr('value');
 
             var fecha1 = $('#fecha-range1').attr('value');
@@ -165,7 +251,8 @@ $(function () {
                     $('#GestionInformacionConcesionario').html(data);
                     filtros_notification();
                     $('#GestionDiariaresponsable').find('option').remove().end().append('<option value="">Responsable</option>').val('');
-                    loadresponsables($('#GestionInformacionConcesionario'));                   
+                    loadresponsables($('#GestionInformacionConcesionario'));    
+                    loading('desactivar');               
                 }
             });
         }        
@@ -173,7 +260,13 @@ $(function () {
     //carga responsables   
     function loadresponsables(e){
         loadmodelos(e);
+        if(tipo_b == 'exonerados'){
+            loadExonerados(e);
+        }else if(tipo_b == 'bdc'){
+            loadEstadoBDC(e)
+        }
         if(e.attr('value') != ''){
+            loading('activar');
             var value = e.attr('value');
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
@@ -191,7 +284,8 @@ $(function () {
                 },
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);
-                    filtros_notification();                    
+                    filtros_notification();    
+                    loading('desactivar');                
                 }
             });
         }        
@@ -215,12 +309,14 @@ $(function () {
                 model_info: model_info
             },
             success: function (data) {
-                $('.filtros_modelos_ta').html(data);                  
+                $('.filtros_modelos_ta').html(data);  
+                loading('desactivar');                
             }
         });
     }
-    function loadconcesionariosTA(e){
+    function loadconcesionariosTA(e){          
             if(e.attr('value') != ''){
+                loading('activar');
                 var where = '';
                 var value = e.attr('value');
                 var fecha1 = $('#fecha-range1').attr('value');
@@ -248,7 +344,8 @@ $(function () {
                     cache: false,
                     success: function (data) {
                         $('#TAconcesionarios').html(data[0]); 
-                        $('.filtros_modelos_ta').html(data[1]);                  
+                        $('.filtros_modelos_ta').html(data[1]); 
+                        loading('desactivar');                 
                     }
                 });
             }        
@@ -313,8 +410,10 @@ $(function () {
             $('#traficoacumulado').hide();
             $('#traficousados').hide();
             $('#traficobdc').hide();
+            $('.estadoBDC').hide();
             $('#trafico_todo').show();
             $('#traficoexonerados').hide();
+            $('.tipoExonerados').hide();
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
@@ -329,7 +428,9 @@ $(function () {
             $('#traficoacumulado').hide();
             $('#traficousados').show();
             $('#traficobdc').hide();
+            $('.estadoBDC').hide();
             $('#traficoexonerados').hide();
+            $('.tipoExonerados').hide();
             $('#trafico_todo').show(); 
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
@@ -344,7 +445,9 @@ $(function () {
             $('#traficoacumulado').hide();
             $('#traficousados').hide();
             $('#traficobdc').show();
+            $('.estadoBDC').show();
             $('#traficoexonerados').hide();
+            $('.tipoExonerados').hide();
             $('#trafico_todo').show();  
             if(cargo_id != '69'){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
@@ -360,7 +463,9 @@ $(function () {
             $('#traficoacumulado').hide();
             $('#traficousados').hide();
             $('#traficobdc').hide();
+            $('.estadoBDC').hide();
             $('#traficoexonerados').show();
+            $('.tipoExonerados').show();
             $('#trafico_todo').show();
             if(cargo_id != '69'){   
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
@@ -368,7 +473,7 @@ $(function () {
             }else{
                 loaddealers($('#GestionInformacionProvincias'), 'p');
             }  
-            loadmodelos($('#fecha-range1')); 
+            loadmodelos($('#fecha-range1'));
             $('.cont_grup').show();
             $('.cont_prov').hide();
         }else if(e.attr('value') == 'traficoacumulado'){
@@ -376,7 +481,9 @@ $(function () {
             $('#traficoacumulado').show();
             $('#traficousados').hide();
             $('#traficobdc').hide();
+            $('.estadoBDC').hide();
             $('#traficoexonerados').hide();
+            $('.tipoExonerados').hide();
             $('#trafico_todo').hide();
             $('#fecha-range1').val('2015-12-01 - 2015-12-31');
             $('#fecha-range2').val('2015-11-01 - 2015-11-30');
@@ -527,6 +634,9 @@ $(function () {
         $(this).parents('.contcheck').find('.subcheckbox').prop('checked', check);
     });
 
+    $('#get_excel').click(function() {
+        get_excel();
+    });
 });
 
 //Load versiones via ajax // ACTUALMENTE NO ESTA EN USO
@@ -553,4 +663,17 @@ function checkboxes(e){
             }
         }                                                    
     }
+}
+
+function loading(estado){
+    $.getScript(site_route+'/js/loading.js', function(e) {
+      inicia(estado, site_route);
+   });
+}
+
+
+function get_excel(){
+    $.getScript(site_route+'/js/get_excel.js', function(e) {
+      inicia(url_footer_var_exel);
+   });
 }
