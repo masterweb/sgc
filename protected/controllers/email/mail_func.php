@@ -5,13 +5,13 @@ include("class.phpmailer1.php");
 function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $body, $cc, $cco, $cu) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
-    $mail->Host = "hairfree.com.ec"; //"webmail.etb.net.co";//"66.132.131.192"; // SMTP server
-    $mail->SMTPAuth = true;
-    $mail->Username = "cotizacionesguayaquil"; //"cristian.cogollo@etb.net.co";//"movistar@ariadna.co";//"envios@ariadna.com.co";
-    $mail->Password = "hairfree2014"; //"1sysadmas0";//"1qa2ws3e";//envio9685";
+    $mail->Host = "email-smtp.us-east-1.amazonaws.com"; // SMTP server
+    $mail->SMTPAuth = true;                  // enable SMTP authentication
+    $mail->SMTPSecure = 'tls'; //
+    $mail->Port = 587;                    // set the SMTP port for the GMAIL server
+    $mail->Username = "AKIAIZYNPI5NVVUM6XYA"; // SMTP account username
+    $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ";        // SMTP account password
     $mail->CharSet = 'UTF-8';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
 
     $mail->From = $from;
     $mail->FromName = $fromname;
@@ -279,7 +279,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail->AddAddress($to);
     //$mail->AddAddress('vlondono@kia.com.ec'); // call center
     //$mail->AddAddress('carlacalderonsalazar@gmail.com'); // call center
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
 
     if (!$mail->Send()) {
         return false;
