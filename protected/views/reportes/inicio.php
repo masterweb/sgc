@@ -15,20 +15,9 @@
                 <div class="col-md-12">
                     <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
                     <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
-                    <?php 
-                        $form = $this->beginWidget('CActiveForm', array(
-                            'id' => 'exel_form',
-                            'method' => 'post',
-                            'action' => Yii::app()->createUrl('Reportes/AjaxGetExcel'),
-                            'enableAjaxValidation' => false,
-                            'htmlOptions' => array(
-                                'class' => 'form-horizontal form-search',
-                                'autocomplete' => 'off'
-                            ),
-                        ));
-                    ?>
-                        <input type="submit" name="" id="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
-                    <?php $this->endWidget(); ?>
+                    <form id="excel_form" method="post">
+                        <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
+                    </form>
                     <div class="resultados_embudo bg-danger"></div>
                     <div class="highlight filtrosReportes">
                         <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView));?>

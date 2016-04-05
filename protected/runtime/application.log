@@ -12954,3 +12954,63 @@ Stack trace:
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
 HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
 ---
+2016/04/05 14:46:23 [error] [php] Invalid argument supplied for foreach() (C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php:1543)
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): ReportesController->runAction()
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): ReportesController->runActionWithFilters()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): ReportesController->run()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
+2016/04/05 14:46:49 [error] [php] Invalid argument supplied for foreach() (C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php:1543)
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): ReportesController->runAction()
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): ReportesController->runActionWithFilters()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): ReportesController->run()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
+2016/04/05 14:46:50 [error] [php] Invalid argument supplied for foreach() (C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php:1543)
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): ReportesController->runAction()
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): ReportesController->runActionWithFilters()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): ReportesController->run()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
+2016/04/05 15:37:43 [error] [exception.PHPExcel_Exception] exception 'PHPExcel_Exception' with message 'Invalid cell coordinate 'A0'' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\extensions\phpexcel\vendor\PHPExcel\Cell.php:558
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\extensions\phpexcel\vendor\PHPExcel\Worksheet.php(1227): PHPExcel_Cell::coordinateFromString(''A0'')
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\extensions\phpexcel\vendor\PHPExcel\Worksheet.php(1186): PHPExcel_Worksheet->_createNewCell(''A0'')
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\extensions\phpexcel\vendor\PHPExcel\Worksheet.php(1095): PHPExcel_Worksheet->getCell(''A0'')
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(1587): PHPExcel_Worksheet->setCellValue(''A0'', '''')
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetExcel()
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetExcel')
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#12 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/04/05 15:39:41 [error] [exception.PHPExcel_Exception] exception 'PHPExcel_Exception' with message 'You tried to set a sheet active by the out of bounds index: 1. The actual number of sheets is 1.' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\extensions\phpexcel\vendor\PHPExcel.php:688
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(1587): PHPExcel->setActiveSheetIndex(1)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetExcel()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetExcel')
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#9 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetExcel
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---

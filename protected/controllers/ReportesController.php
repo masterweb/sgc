@@ -1539,7 +1539,7 @@ class ReportesController extends Controller {
     }
 
     public function actionAjaxGetExcel() {
-        $data = isset($_POST["data"]) ? $_POST["data"] : "";
+        $data = isset($_POST["excel"]) ? $_POST["excel"] : "";
 
         Yii::import('ext.phpexcel.XPHPExcel');
         $objPHPExcel = XPHPExcel::createPHPExcel();
@@ -1550,30 +1550,136 @@ class ReportesController extends Controller {
                 ->setSubject("Office 2007 XLSX Test Document")
                 ->setDescription("Embudo")
                 ->setKeywords("office 2007 openxml php")
-                ->setCategory("Test result file");
+                ->setCategory("Embudo");
 
-        $objPHPExcel->setActiveSheetIndex(0)
-                ->mergeCells('A1:J1');
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("B14:C14");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("D14:E14");
+        $objPHPExcel->setActiveSheetIndex(0)->mergeCells("F14:G14");
 
-        $objPHPExcel->setActiveSheetIndex(0)
-                ->setCellValue('A1', $tituloReporte) 
-                ->setCellValue('A2', 'Status')
-                ->setCellValue('B2', 'ID')
-                ->setCellValue('C2', 'Nombres')
-                ->setCellValue('D2', 'Apellidos')
-                ->setCellValue('E2', 'Identificación')
-                ->setCellValue('F2', 'Email')
-                ->setCellValue('G2', 'Responsable')
-                ->setCellValue('H2', 'Concesionario')
-                ->setCellValue('I2', 'Proximo Seguimiento')
-                ->setCellValue('J2', 'Fecha')
-                ->setCellValue('K2', 'Categorización')
-                ->setCellValue('L2', 'Fuente');
-        
-        $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
+        foreach ($data as $key_col => $columna) {
+            if($key_col == 'columna_0'){
+                $columna_print = 'A';
+            }else if($key_col == 'columna_1'){
+                $columna_print = 'B';
+            }else if($key_col == 'columna_2'){
+                $columna_print = 'C';
+            }else if($key_col == 'columna_3'){
+                $columna_print = 'D';
+            }else if($key_col == 'columna_4'){
+                $columna_print = 'E';
+            }else if($key_col == 'columna_5'){
+                $columna_print = 'F';
+            }else if($key_col == 'columna_6'){
+                $columna_print = 'G';
+            }
+
+            foreach ($columna as $key_fil => $fila) {
+                if($fila == 'undefined' || $fila == '&nbsp;'){
+                    $val_print = '';
+                }else{
+                    $val_print = $fila;
+                }
+                $val_print = strip_tags($val_print);
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($columna_print.($key_fil + 1), $val_print);
+            }
+        }
+
+        //ESTILOS EXCEL
+        $headers_verde = array(
+            'font' => array(
+                'name' => 'Arial',
+                'bold' => true,
+                'size' => 12,
+                'color' => array(
+                    'rgb' => 'FFFFFF'
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array(
+                    'rgb' => '5cb85c')
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
+            )
+        );
+
+        $headers_amarillo = array(
+            'font' => array(
+                'name' => 'Arial',
+                'bold' => true,
+                'size' => 12,
+                'color' => array(
+                    'rgb' => 'FFFFFF'
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array(
+                    'rgb' => 'f0ad4e')
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
+            )
+        );
+
+        $headers_gris = array(
+            'font' => array(
+                'name' => 'Arial',
+                'bold' => true,
+                'size' => 12,
+                'color' => array(
+                    'rgb' => 'FFFFFF'
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array(
+                    'rgb' => '848485')
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
+            )
+        );
+
+        $subtitulo = array(
+            'font' => array(
+                'name' => 'Arial',
+                'bold' => true,
+                'size' => 9,
+                'color' => array(
+                    'rgb' => 'FFFFFF'
+                )
+            ),
+            'fill' => array(
+                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array(
+                    'rgb' => '7E8083')
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                'wrap' => TRUE
+            )
+        );
+
+        $objPHPExcel->getActiveSheet()->getStyle('B1:B1')->applyFromArray($headers_verde);
+        $objPHPExcel->getActiveSheet()->getStyle('B14:C14')->applyFromArray($headers_verde);
+        $objPHPExcel->getActiveSheet()->getStyle('C1:C1')->applyFromArray($headers_amarillo);
+        $objPHPExcel->getActiveSheet()->getStyle('D14:E14')->applyFromArray($headers_amarillo);
+        $objPHPExcel->getActiveSheet()->getStyle('D1:E1')->applyFromArray($headers_gris);
+        $objPHPExcel->getActiveSheet()->getStyle('F14:G14')->applyFromArray($headers_gris); 
+        $objPHPExcel->getActiveSheet()->getStyle('B15:G15')->applyFromArray($subtitulo);
+        $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 2);
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename=' . $name_file . '');
+        header('Content-Disposition: attachment;filename=Embudo.xls');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
 
@@ -1584,7 +1690,5 @@ class ReportesController extends Controller {
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
-
-        echo 'llego';
     }
 }
