@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
                     <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
-                    <form id="excel_form" method="post">
+                    <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
                     </form>
                     <div class="resultados_embudo bg-danger"></div>
