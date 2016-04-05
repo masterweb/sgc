@@ -214,14 +214,41 @@ class ReportesController extends Controller {
                     $varView['checked_us']  = false;
                     $varView['checked_ex']  = false;
                     $varView['checked_bdc']  = true;
-                    $consultaBDC = " AND gi.bdc = 1 ";
+                    if($_GET['GI']['estadoBDC'] != ''){
+                        $estadoBDC = $_GET['GI']['estadoBDC'];
+                        if($estadoBDC == 'desiste'){
+                            $estadoBDC_val = ' desiste != 0';
+                        }else{
+                            $estadoBDC_val = ' desiste = 0';
+                        }
+                        $con = Yii::app()->db;
+
+                        $sql_estadoBDC = "select distinct id_informacion, desiste from  gestion_diaria where".$estadoBDC_val;           
+                        $request_estadoBDC = $con->createCommand($sql_estadoBDC);
+                        $request_estadoBDC = $request_estadoBDC->queryAll();
+
+                        $id_info_estadoBD = '';
+                        foreach ( $request_estadoBDC as $key_estadoBDC => $value_estadoBDC) {
+                            $id_info_estadoBD .= $value_estadoBDC['id_informacion'].', ';
+                        }
+                        $id_info_estadoBD = rtrim($id_info_estadoBD, ", ");
+                        //die($id_info_estadoBD);
+                        $consultaBDC .= " AND gi.id IN (".$id_info_estadoBD.") ";
+                    }else{
+                        $consultaBDC .= " AND gi.bdc = 1 ";
+                    }
                 } else if($_GET['GI']['tipo'] == 'exonerados'){
                     $varView['checked_ta'] = false;
                     $varView['checked_ge']  = false; 
                     $varView['checked_us']  = false;
                     $varView['checked_ex']  = true;
                     $varView['checked_bdc']  = false;
-                    $consultaBDC = " AND gi.tipo_ex IS NOT NULL ";
+                    if($_GET['GI']['tipoExo'] != ''){
+                        $tipoexo = $_GET['GI']['tipoExo'];
+                        $consultaBDC = " AND  gi.tipo_ex = '".$tipoexo."' ";
+                    }else{
+                        $consultaBDC .= " AND gi.tipo_ex IS NOT NULL ";
+                    }
                 }                   
             }
 
@@ -604,6 +631,126 @@ class ReportesController extends Controller {
 
         $modelos_ma = $this->getModleosActivos($fecha1[0], $fecha1[1], $fecha2[0], $fecha2[1], null, $tipo_b, $tipo_busqueda_por, $concesion_active, $resp_active, $GestionInformacionProvincias, $GestionInformacionGrupo);
         echo ''.$modelos_ma;
+    }
+
+    public function actionAjaxGetTipoBDC() {
+        
+        $dealer_id = isset($_POST["concesion_active"]) ? $_POST["concesion_active"] : "";
+        $resposable = isset($_POST["resp_active"]) ? $_POST["resp_active"] : "";
+        $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
+
+        $tipo_busqueda_por = isset($_POST["tipo_busqueda_por"]) ? $_POST["tipo_busqueda_por"] : "";
+        $GestionInformacionProvincias = isset($_POST["GestionInformacionProvincias"]) ? $_POST["GestionInformacionProvincias"] : "";
+        $GestionInformacionGrupo = isset($_POST["GestionInformacionGrupo"]) ? $_POST["GestionInformacionGrupo"] : "";
+
+        $extraWhere = '';
+        if($tipo_busqueda_por == 'provincias'){
+            if($GestionInformacionProvincias != ''){
+                $extraWhere .= '';
+            }
+        }else{
+            if($GestionInformacionGrupo != ''){
+                $extraWhere .= '';
+            }
+        }
+
+        if($dealer_id != ''){
+            $extraWhere .= ' dealer_id = '.$dealer_id.' AND ';
+        }
+        if($resposable != ''){
+            $extraWhere .= ' responsable = '.$resposable.' AND ';
+        }
+
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        $con = Yii::app()->db;
+
+        $sql_select = "SELECT distinct id FROM gestion_informacion WHERE bdc = 1 AND ".$extraWhere." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
+        $request = $con->createCommand($sql_select);
+        $request = $request->queryAll();
+
+        foreach ($request as $value) {
+            $id_info_BDC_GI .= $value['id'].', ';
+        }
+        $id_info_BDC_GI = rtrim($id_info_BDC_GI, ", ");
+
+        $id_info_BDC_GI = " id_informacion IN (".$id_info_BDC_GI.") ";
+
+        $sql_BDC_activos = "select distinct desiste from  gestion_diaria where".$id_info_BDC_GI;          
+        $request_BDC_activos = $con->createCommand($sql_BDC_activos);
+        $request_BDC_activos = $request_BDC_activos->queryAll();
+
+        $BDC_activos = '<option value="">--Seleccione un estado BDC--</option>';
+        $control_BDC_activos = 0;
+        foreach ( $request_BDC_activos as $key_BDC_activos => $value_BDC_activos) {
+            if($value_BDC_activos['desiste'] == 0){
+                $BDC_activos .= '<option value="caducados">Caducados</option>';
+            }else{
+                if($control_BDC_activos == 0){
+                    $BDC_activos .= '<option value="desiste">Desiste</option>';
+                    $control_BDC_activos = 1;
+                }
+            }
+        }
+
+        echo $BDC_activos;
+
+    }
+
+    public function actionAjaxGetExonerados() {
+        $dealer_id = isset($_POST["concesion_active"]) ? $_POST["concesion_active"] : "";
+        $resposable = isset($_POST["resp_active"]) ? $_POST["resp_active"] : "";
+        $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
+
+        $tipo_busqueda_por = isset($_POST["tipo_busqueda_por"]) ? $_POST["tipo_busqueda_por"] : "";
+        $GestionInformacionProvincias = isset($_POST["GestionInformacionProvincias"]) ? $_POST["GestionInformacionProvincias"] : "";
+        $GestionInformacionGrupo = isset($_POST["GestionInformacionGrupo"]) ? $_POST["GestionInformacionGrupo"] : "";
+
+        $extraWhere = '';
+        if($tipo_busqueda_por == 'provincias'){
+            if($GestionInformacionProvincias != ''){
+                $extraWhere .= '';
+            }
+        }else{
+            if($GestionInformacionGrupo != ''){
+                $extraWhere .= '';
+            }
+        }
+
+        if($dealer_id != ''){
+            $extraWhere .= ' dealer_id = '.$dealer_id.' AND ';
+        }
+        if($resposable != ''){
+            $extraWhere .= ' responsable = '.$resposable.' AND ';
+        }
+
+        //FECHAS RENDER
+        $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
+        $fecha1 = explode(" - ", $fecha1);
+
+        $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $fecha2 = explode(" - ", $fecha2);
+
+        $con = Yii::app()->db;
+
+        $sql_select = "SELECT distinct tipo_ex FROM gestion_informacion WHERE tipo_ex IS NOT NULL AND ".$extraWhere." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
+        $request = $con->createCommand($sql_select);
+        $request = $request->queryAll();
+
+        $data = '<option value="">--Seleccione un tipo--</option>';
+        foreach ($request as $value) {
+            if($value['nombre'] != 'TODOS'){
+                $data .= '<option value="' . $value['tipo_ex'].'">'.$value['tipo_ex'];
+                $data .= '</option>';
+            }
+        }
+
+        echo $data;
     }
 
     public function actionAjaxGetAsesores() {
@@ -1389,5 +1536,55 @@ class ReportesController extends Controller {
 
         $traficoAcumulado = new traficoAcumulado;
         $traficoAcumulado->modelos2TA($fecha1, $fecha2, $model_info);
+    }
+
+    public function actionAjaxGetExcel() {
+        $data = isset($_POST["data"]) ? $_POST["data"] : "";
+
+        Yii::import('ext.phpexcel.XPHPExcel');
+        $objPHPExcel = XPHPExcel::createPHPExcel();
+
+        $objPHPExcel->getProperties()->setCreator("SGC Kia Ecuador")
+                ->setLastModifiedBy("SGC")
+                ->setTitle("Office 2007 XLSX Test Document")
+                ->setSubject("Office 2007 XLSX Test Document")
+                ->setDescription("Embudo")
+                ->setKeywords("office 2007 openxml php")
+                ->setCategory("Test result file");
+
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->mergeCells('A1:J1');
+
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', $tituloReporte) 
+                ->setCellValue('A2', 'Status')
+                ->setCellValue('B2', 'ID')
+                ->setCellValue('C2', 'Nombres')
+                ->setCellValue('D2', 'Apellidos')
+                ->setCellValue('E2', 'Identificación')
+                ->setCellValue('F2', 'Email')
+                ->setCellValue('G2', 'Responsable')
+                ->setCellValue('H2', 'Concesionario')
+                ->setCellValue('I2', 'Proximo Seguimiento')
+                ->setCellValue('J2', 'Fecha')
+                ->setCellValue('K2', 'Categorización')
+                ->setCellValue('L2', 'Fuente');
+        
+        $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=' . $name_file . '');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); 
+        header('Cache-Control: cache, must-revalidate'); 
+        header('Pragma: public'); 
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+
+        echo 'llego';
     }
 }
