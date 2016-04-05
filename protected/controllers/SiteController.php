@@ -1497,6 +1497,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         // fuente showroom, exhibicion, prospeccion
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
+        $model->cedula = $id;
+        $model->fuente = $fuente;
+        $model->save();
+        $id_nueva_cotizacion = $model->id;
 
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(

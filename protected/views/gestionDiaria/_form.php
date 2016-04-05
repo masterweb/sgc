@@ -555,7 +555,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 <!--  =========================          PASO 3-4   =========================    -->
                 <?php
                 $criteria4 = new CDbCriteria(array(
-                    'condition' => "id_informacion={$_GET['id']}"
+                    'condition' => "id_informacion={$_GET['id']}",
+                            'limit' => 1,
+                            
                 ));
                 $art = GestionConsulta::model()->findAll($criteria4);
                 foreach ($art as $c){
