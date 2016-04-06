@@ -634,8 +634,9 @@ $(function () {
         $(this).parents('.contcheck').find('.subcheckbox').prop('checked', check);
     });
 
-    $('#get_excel').click(function() {
-        get_excel();
+    $( "#get_excel" ).click(function( event ) {
+      event.preventDefault();
+      get_excel();
     });
 });
 
@@ -673,7 +674,7 @@ function loading(estado){
 
 
 function get_excel(){
-    $.getScript(site_route+'/js/get_excel.js', function(e) {
+    $.getScript(site_route+'/js/get_excel.js', function(e, resp) {
       inicia(url_footer_var_exel);
    });
 }

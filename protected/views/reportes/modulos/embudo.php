@@ -114,14 +114,14 @@
                         <td id="mi_c20" style="background:#c6f4c6;"><?= $varView['tasa_testdrive_cbu_m1'] ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_a22">TASA PROFORMAS</td>
-                        <td id="mi_b22"><?= $varView['tasa_proforma_ckd_m1'] ?></td>
-                        <td id="mi_c22"><?= $varView['tasa_proforma_cbu_m1'] ?></td>
+                        <td id="mi_a21">TASA PROFORMAS</td>
+                        <td id="mi_b21"><?= $varView['tasa_proforma_ckd_m1'] ?></td>
+                        <td id="mi_c21"><?= $varView['tasa_proforma_cbu_m1'] ?></td>
                     </tr>                    
                     <tr>
-                        <td id="mi_a23">TASA CIERRE</td>
-                        <td id="mi_b23" style="background:#c6f4c6;"><?= $varView['tasa_cierre_ckd_m1'] ?></td>
-                        <td id="mi_c23" style="background:#c6f4c6;"><?= $varView['tasa_cierre_cbu_m1'] ?></td>
+                        <td id="mi_a22">TASA CIERRE</td>
+                        <td id="mi_b22" style="background:#c6f4c6;"><?= $varView['tasa_cierre_ckd_m1'] ?></td>
+                        <td id="mi_c22" style="background:#c6f4c6;"><?= $varView['tasa_cierre_cbu_m1'] ?></td>
                     </tr>
                 </tbody>
             </table>

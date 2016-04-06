@@ -7,7 +7,7 @@ function inicia(url_footer_var_exel){
 	f = [];
 	g = [];
 	i = 1;
-	while (i < 22) {
+	while (i < 23) {
 	  	a.push($('#mi_a'+i).html());
 	  	b.push($('#mi_b'+i).html());
 	  	c.push($('#mi_c'+i).html());
@@ -18,26 +18,27 @@ function inicia(url_footer_var_exel){
 		i++;
 	}
 	data = [a, b, c, d, e, f, g];
-	sendData(data, url_footer_var_exel);
+	return sendData(data, url_footer_var_exel);
 }
 
 
 function sendData(data, url_footer_var_exel){
+	container = $('#excel_form');
+	container.empty();
+	container.append('<input type="submit" name="" id="" value="Exportar a Excel" class="btn btn-warning">');
+	for (i=0;i<data.length;i++){
+		$.each(data[i], function( key, value ) {
+			var input = document.createElement("input");
+	        input.type = "hidden";
+	        input.name = "excel[columna_" + i+']['+key+']';
+	        input.value = value;
+	        container.append(input);
+		});
 
-	$.post(url_footer_var_exel, { id: "1", next_id: "2" }, function(data) {
-        alert("Data Loaded: " + data);
-    });
-
-	/*$.ajax({            
-        url: url_footer_var_exel,
-        beforeSend: function (xhr) {
-        },
-        type: 'POST',
-        data: {
-        	data: data
-        },
-        success: function (data) {
-            
-        }
-    });*/
+		if(i < data.length - 1){     
+	    }else{	
+			$( "#excel_form" ).attr('action', url_footer_var_exel);
+    		$( "#excel_form" ).submit();
+		}
+    }
 }
