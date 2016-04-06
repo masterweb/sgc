@@ -332,7 +332,7 @@ class Util {
             return 'NA';
         }
     }
-    
+
     public static function getTiempoTrabajoConyugue($id_informacion) {
         //echo 'id informacion: '.$id_informacion;
         $criteria = new CDbCriteria(array(
@@ -379,12 +379,19 @@ class Util {
             return $br->nombre;
         }
     }
-    
-    public static function getAsesoresByCredito($grupo_id) {
-        $array_dealers = Controller::getDealerGrupoConc($grupo_id);
-        $dealerList = implode(', ', $array_dealers);
+
+    public static function getAsesoresByCredito($grupo_id, $id_asesor) {
+        $dealer_id = Controller::getDealerId($id_asesor);
+        //die('dealer_id: ' . $dealer_id);
         $con = Yii::app()->db;
-        $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        if (empty($dealer_id)) {
+            $array_dealers = Controller::getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
+            $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }else{
+            $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id  = ({$dealer_id}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }
+
         //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
@@ -397,7 +404,6 @@ class Util {
         }
 
         return $data;
-        
     }
 
 }

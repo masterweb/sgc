@@ -88,13 +88,23 @@ if (isset($search)) {
         ));
     }
     if ($cargo_id == 74) { // asesor de ventas que puede tener un solo concesionario o varios
-        $array_dealers = $this->getDealerGrupoConc($grupo_id);
-        $dealerList = implode(', ', $array_dealers);
-        $cr = new CDbCriteria;
-        $cr->alias = "gc";
-        $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
-        $cr->condition = "gc.concesionario IN ({$dealerList})";
-        $cr->order = 'id DESC';
+        $dealer_id = $this->getDealerId($id_asesor);
+        if (empty($dealer_id)) {
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
+            $cr = new CDbCriteria;
+            $cr->alias = "gc";
+            $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
+            $cr->condition = "gc.concesionario IN ({$dealerList})";
+            $cr->order = 'id DESC';
+        } else {
+            $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+            $cr = new CDbCriteria;
+            $cr->alias = "gc";
+            $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
+            $cr->condition = "gc.concesionario = {$concesionarioid}";
+            $cr->order = 'id DESC';
+        }
     } else {
         $cr = new CDbCriteria(array(
             "condition" => "concesionario = {$concesionarioid} ",
@@ -113,17 +123,17 @@ if (isset($search)) {
             <div class="highlight">
                 <div class="form">
                     <h4>Búsqueda:</h4>
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'casos-form',
-    'method' => 'get',
-    'action' => Yii::app()->createUrl('gestionSolicitudCredito/admin'),
-    'enableAjaxValidation' => true,
-    'htmlOptions' => array(
-        'class' => 'form-horizontal form-search'
-    ),
-        ));
-?>
+                    <?php
+                    $form = $this->beginWidget('CActiveForm', array(
+                        'id' => 'casos-form',
+                        'method' => 'get',
+                        'action' => Yii::app()->createUrl('gestionSolicitudCredito/admin'),
+                        'enableAjaxValidation' => true,
+                        'htmlOptions' => array(
+                            'class' => 'form-horizontal form-search'
+                        ),
+                    ));
+                    ?>
                     <div class="row">
                         <div class="col-md-6">
                             <label for="GestionDiariafecha">Búsqueda General</label>
@@ -148,7 +158,7 @@ $form = $this->beginWidget('CActiveForm', array(
                         <div class="col-md-6">
                             <label for="">Responsable</label>
                             <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
-                                <?php echo util::getAsesoresByCredito($grupo_id); ?>
+                                <?php echo util::getAsesoresByCredito($grupo_id, $id_asesor); ?>
                             </select>
                         </div>
                     </div>
@@ -157,7 +167,7 @@ $form = $this->beginWidget('CActiveForm', array(
                             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
                         </div>
                     </div>
-<?php $this->endWidget(); ?>
+                    <?php $this->endWidget(); ?>
                 </div>
             </div>
         </div>
@@ -183,61 +193,61 @@ $form = $this->beginWidget('CActiveForm', array(
                         </tr>
                     </thead>
                     <tbody>
-<?php foreach ($sol as $c): ?>
+                        <?php foreach ($sol as $c): ?>
                             <tr>
                                 <td><?php echo $c['id_informacion']; ?></td>
                                 <td><?php echo $c['nombres']; ?></td>
                                 <td><?php echo $c['apellido_paterno'] . ' ' . $c['apellido_materno']; ?></td>
                                 <td>
-    <?php
-    if ($c['cedula'] != '') {
-        echo $c['cedula'];
-    }
-    if ($c['pasaporte'] != '') {
-        echo $c['pasaporte'];
-    }
-    if ($c['ruc'] != '') {
-        echo $c['ruc'];
-    }
-    ?> 
+                                    <?php
+                                    if ($c['cedula'] != '') {
+                                        echo $c['cedula'];
+                                    }
+                                    if ($c['pasaporte'] != '') {
+                                        echo $c['pasaporte'];
+                                    }
+                                    if ($c['ruc'] != '') {
+                                        echo $c['ruc'];
+                                    }
+                                    ?> 
                                 </td>
                                 <td><?php echo $this->getResponsable($c['vendedor']); ?></td>
                                 <td><?php echo $c['email']; ?></td>
                                 <td><a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/cotizacion/', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-info btn-xs" target="_blank">Solicitud</a></td>
                                 <td>
-    <?php
-    $status = $this->getStatusSolicitud($c['id_informacion'], $c['id_vehiculo']);
-    //echo 'status: '.$status;
-    switch ($status) {
-        case 'na':
-            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
-            break;
-        case 1:
-            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
-            break;
-        case 2:
-            echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
-            break;
-        case 3:
-            echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>';
-            break;
-        case 4:
-            echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>';
-            break;
-        default:
-            break;
-    }
-    ?>
+                                    <?php
+                                    $status = $this->getStatusSolicitud($c['id_informacion'], $c['id_vehiculo']);
+                                    //echo 'status: '.$status;
+                                    switch ($status) {
+                                        case 'na':
+                                            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
+                                            break;
+                                        case 1:
+                                            echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>';
+                                            break;
+                                        case 2:
+                                            echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+                                            break;
+                                        case 3:
+                                            echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>';
+                                            break;
+                                        case 4:
+                                            echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>';
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    ?>
                                 </td>
                                 <td>
-    <?php if ($status == 1 || $status == 4 || $status == 'na') { ?>
+                                    <?php if ($status == 1 || $status == 4 || $status == 'na') { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $c['id'], 'id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'], 'id_status' => $c['id'])); ?>" class="btn btn-primary btn-xs">Ingresar</a>
                                     <?php } else { ?>
 
                                     <?php } ?>
                                 </td>
                             </tr>
-<?php endforeach; ?>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
