@@ -466,13 +466,14 @@ $count = count($users);
                         <tr>
                             <th><span>Status</span></th>
                             <th><span>ID</span></th>
+                            <th><span>Fecha de Registro</span></th>
                             <th><span>Nombres</span></th>
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
-                            <th><span>Email</span></th>
+                            <th><span>Modelo Vehículo</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Exp. de Categ.</span></th>
                             <th><span>Fuente</span></th>
@@ -614,6 +615,11 @@ $count = count($users);
                                     ?>
                                 </td>
                                 <td><?php echo $c['id_info']; ?> </td>
+                                <td>
+                                <?php 
+                                $pr = explode(' ', $c['fecha']);
+                                echo $pr[0];
+                                ?></td>
                                 <td><?php echo ucfirst($c['nombres']); ?> </td>
                                 <td><?php echo ucfirst($c['apellidos']); ?> </td>
                                 <td><?php 
@@ -635,7 +641,18 @@ $count = count($users);
                                 <td><?php 
                                 echo $this->getNameConcesionarioById($c['dealer_id']); 
                                 //esta dando error en las busquedas revisar ?></td>
-                                <td><?php echo $c['email']; ?> </td>
+                                <td>
+                                <?php
+                                $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id_info']}")); 
+                                if ($countvec > 0) {
+                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id_info']}",'limit' => '1', 'offset' => '0','order' => 'id desc'));
+                                    foreach ($vec as $val) {
+                                        $data = '<em>' . $this->getVersion($val['version']) . '. </em><br />';
+                                    }
+                                } 
+                                echo $data;
+                                ?>
+                                </td>
                                 <td><?php echo $c['categorizacion']; ?> </td>
                                 <td> 
                                     <?php

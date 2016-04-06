@@ -176,27 +176,36 @@ class SiteController extends Controller {
             $model->password = md5($_POST['LoginForm']['password']);
             // validate user input and redirect to the previous page if valid
             if ($model->validate() && $model->login()) {
-              //  $usuarios = Usuarios::model()->findAll(array('condition' => "estado=:match AND ultimavisita is not null AND id!=:id", 'params' => array(':match' => "ACTIVO", ':id' => (int) Yii::app()->user->id)));
-               /* if (!empty($usuarios)) {
-                    foreach ($usuarios as $item) {
-                        $datetime1 = date_create($item->ultimavisita);
-                        $datetime2 = date_create("now");
-                        $interval = date_diff($datetime1, $datetime2);
-                        if ($interval->format('%a') > 21) {
-                            $item->estado = "INACTIVO";
-                            $item->update();
-                        } else if ($interval->format('%a') > 62) {
-                            $item->estado = "BAJA";
-                            $item->update();
-                        }
+                //  $usuarios = Usuarios::model()->findAll(array('condition' => "estado=:match AND ultimavisita is not null AND id!=:id", 'params' => array(':match' => "ACTIVO", ':id' => (int) Yii::app()->user->id)));
+                /* if (!empty($usuarios)) {
+                  foreach ($usuarios as $item) {
+                  $datetime1 = date_create($item->ultimavisita);
+                  $datetime2 = date_create("now");
+                  $interval = date_diff($datetime1, $datetime2);
+                  if ($interval->format('%a') > 21) {
+                  $item->estado = "INACTIVO";
+                  $item->update();
+                  } else if ($interval->format('%a') > 62) {
+                  $item->estado = "BAJA";
+                  $item->update();
+                  }
 
-                        //if($interval->format('%a')>0 && $reto->fechaFin >= date('Y-m-d')){
-                    }
-                    //die();
-                }*/
+                  //if($interval->format('%a')>0 && $reto->fechaFin >= date('Y-m-d')){
+                  }
+                  //die();
+                  } */
                 //$this->redirect(Yii::app()->user->returnUrl);
                 //FUNCION PARA CALL CENTER SI TIENE COTIZACIONES AUTOMATICAS.
-
+                
+                //SOLUCION PARA LOS USUARIOS QUE YA INGRESARON ALGUNA VEZ; PERMANEZCAN ACTIVOS
+                $models_users = Usuarios::model()->findAll(array('condition' => "ultimavisita is not null AND id!=:id", 'params' => array(':id' => (int) Yii::app()->user->id)));
+                if (!empty($models_users)) {
+                    foreach ($models_users as $models_users) {
+                        $models_users->estado = 'ACTIVO';
+                        $models_users->update();
+                    }
+                }
+                
                 $user = Usuarios::model()->findByPk(Yii::app()->user->id);
                 if ($user->cargo->codigo == Constantes::CDG) {
                     $this->traercotizaciones();
@@ -2535,7 +2544,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $factura->fecha = date("Y-m-d H:i:s");
         $factura->save();
-        
+
         $not = new GestionNotificaciones;
         $not->tipo = 3; // tipo cierre
         $not->paso = 8;

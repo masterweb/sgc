@@ -505,7 +505,7 @@ class Controller extends CController {
         return $modeloversion->precio;
     }
 
-    public function getPrecio($id, $tipo, $id_modelo,$flag) {
+    public function getPrecio($id, $tipo, $id_modelo) {
         //echo 'tipo: '.$tipo;
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",

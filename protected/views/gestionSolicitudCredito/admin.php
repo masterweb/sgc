@@ -75,43 +75,43 @@ $id_asesor = Yii::app()->user->getId();
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-
+$con = Yii::app()->db;
 //die('conce: '.$concesionarioid);
 
 if (isset($search)) {
     $sol = $users;
 } else {
+    switch ($cargo_id) {
+        case 46:
+        case 69:
+            $cr = new CDbCriteria(array(
+                'order' => "id DESC"
+            ));
+            break;
 
-    if ($cargo_id == 46 || $cargo_id == 69) { // gerente comercial y super administrador
-        $cr = new CDbCriteria(array(
-            'order' => "id DESC"
-        ));
+        case 74:
+            $dealer_id = $this->getDealerId($id_asesor);
+            if (empty($dealer_id)) {
+                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                $dealerList = implode(', ', $array_dealers);
+                $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
+                INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.concesionario IN ({$dealerList})";
+            } else {
+                $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+                $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
+                INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.concesionario = {$concesionarioid}";
+            }
+            break;
+
+        default:
+            break;
     }
-    if ($cargo_id == 74) { // asesor de ventas que puede tener un solo concesionario o varios
-        $dealer_id = $this->getDealerId($id_asesor);
-        if (empty($dealer_id)) {
-            $array_dealers = $this->getDealerGrupoConc($grupo_id);
-            $dealerList = implode(', ', $array_dealers);
-            $cr = new CDbCriteria;
-            $cr->alias = "gc";
-            $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
-            $cr->condition = "gc.concesionario IN ({$dealerList})";
-            $cr->order = 'id DESC';
-        } else {
-            $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-            $cr = new CDbCriteria;
-            $cr->alias = "gc";
-            $cr->join = 'INNER JOIN usuarios u ON u.id = gc.vendedor';
-            $cr->condition = "gc.concesionario = {$concesionarioid}";
-            $cr->order = 'id DESC';
-        }
-    } else {
-        $cr = new CDbCriteria(array(
-            "condition" => "concesionario = {$concesionarioid} ",
-            'order' => "id DESC"
-        ));
-    }
-    $sol = GestionSolicitudCredito::model()->findAll($cr);
+    $sol = $con->createCommand($sql)->queryAll();
+    //$sol = GestionSolicitudCredito::model()->findAll($cr);
 }
 ?>
 <div class="container">
