@@ -79,8 +79,8 @@ class GestionAgendamientoController extends Controller {
                 $model->observacion_seguimiento = $_POST['GestionAgendamiento']['observacion_seguimiento'];
 
             //if (isset($_POST['GestionAgendamiento']['tipo_form_web']) && !empty($_POST['GestionAgendamiento']['tipo_form_web']))
-            if ($_POST['GestionAgendamiento']['observaciones'] == 'Otro')
-                $model->otro_observacion = $_POST['GestionAgendamiento']['otro'];
+            //if ($_POST['GestionAgendamiento']['observaciones'] == 'Otro')
+            $model->otro_observacion = $_POST['GestionAgendamiento']['otro'];
 
 //DIE('CASE: '.$_POST['GestionAgendamiento']['observaciones']);
             switch ($_POST['GestionAgendamiento']['observaciones']) {

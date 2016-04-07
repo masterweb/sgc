@@ -295,12 +295,6 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <div id="cont-obs-cat" style="display: none;">
-                                    <label for="">Observación de Categorización</label>
-                                    <input type="text" class="form-control" name="GestionAgendamiento[observacion_categorizacion]" id="GestionAgendamiento_observacion_categorizacion"/>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
                                 <div id="cont-otro" style="display: none;">
                                     <label for="">Observaciones</label>
                                     <input type="text" class="form-control" name="GestionAgendamiento[otro]" id="GestionAgendamiento_otro"/>
@@ -335,15 +329,21 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                         <div class="col-md-8">
                             <h4 class="text-danger">Historial</h4>
                         </div>
-                        <div class="col-md-8">
-                            <?php }
-                            foreach ($ag5 as $a) { ?>
-                                <div class="row">
-                                <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
-                                </div>
-                            <?php } ?>
+                        <div class="col-md-12">
+                            <table class="table table-striped">
+                                <thead> <tr><th>Fecha Agendamiento</th> <th>Motivo</th> <th>Categorización</th> <th>Observaciones</th></tr> </thead>
+                                <tbody>
+                        <?php } foreach ($ag5 as $a) { ?>
+                                    <tr>
+                                        <td><?php echo $a['agendamiento']; ?></td>
+                                        <td><?php echo $a['observaciones']; ?></td>
+                                        <td><?php echo $a['categorizacion']; ?></td>
+                                        <td><?php echo $a['otro_observacion']; ?></td>
+                                    </tr>
+
+                        <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div><!--  END OF HIGHLIGHT -->

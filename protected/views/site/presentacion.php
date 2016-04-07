@@ -29,14 +29,6 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
             minDate: '-1970/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
             disabledDates: ['03.04.2015', '01.05.2015', '10.08.2015', '09.10.2015', '02.11.2015', '03.11.2015', '25.12.2015'], formatDate: 'd.m.Y'
         });
-        $('#GestionAgendamiento_observaciones').change(function () {
-            var value = $(this).attr('value');
-            if (value == 'Otro') {
-                $('#cont-otro').show();
-            } else {
-                $('#cont-otro').hide();
-            }
-        });
         /*$('#btn-cat').click(function(){
          $('#btn-pres').removeAttr('disabled');
          $('#btn-pres').removeClass('btn-primary').addClass('btn-success');
@@ -326,21 +318,26 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                     <div class="row">
                         <?php $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 5"));
                             $agen5 = GestionAgendamiento::model()->count($crit5);
-
                             $ag5 = GestionAgendamiento::model()->findAll($crit5);
-                            if ($agen5 > 0) { ?>
+                        if ($agen5 > 0) { ?>
                         <div class="col-md-8">
                             <h4 class="text-danger">Historial</h4>
                         </div>
-                        <div class="col-md-8">
-                            <?php }
-                            foreach ($ag5 as $a) { ?>
-                                <div class="row">
-                                <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
-                                </div>
-                            <?php } ?>
+                        <div class="col-md-12">
+                            <table class="table table-striped">
+                                <thead> <tr><th>Fecha Agendamiento</th> <th>Motivo</th> <th>Categorización</th> <th>Observaciones</th></tr> </thead>
+                                <tbody>
+                        <?php } foreach ($ag5 as $a) { ?>
+                                    <tr>
+                                        <td><?php echo $a['agendamiento']; ?></td>
+                                        <td><?php echo $a['observaciones']; ?></td>
+                                        <td><?php echo $a['categorizacion']; ?></td>
+                                        <td><?php echo $a['otro_observacion']; ?></td>
+                                    </tr>
+
+                        <?php } ?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div><!--  END OF HIGHLIGHT -->

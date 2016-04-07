@@ -333,17 +333,22 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                             <div class="col-md-8">
                                 <h4 class="text-danger">Historial</h4>
                             </div>
-                            <div class="col-md-8">
-<?php }
-foreach ($ag5 as $a) {
-    ?>
-                                <div class="row">
-                                    <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                    <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                    <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
-                                </div>
-<?php } ?>
-                        </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead> <tr><th>Fecha Agendamiento</th> <th>Motivo</th> <th>Categorización</th> <th>Observaciones</th></tr> </thead>
+                                    <tbody>
+                            <?php } foreach ($ag5 as $a) { ?>
+                                        <tr>
+                                            <td><?php echo $a['agendamiento']; ?></td>
+                                            <td><?php echo $a['observaciones']; ?></td>
+                                            <td><?php echo $a['categorizacion']; ?></td>
+                                            <td><?php echo $a['otro_observacion']; ?></td>
+                                        </tr>
+
+                            <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
                 </div><!--  END OF HIGHLIGHT -->
                 <br />

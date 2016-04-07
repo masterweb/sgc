@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+    $('#cont-otro').show();
     $('#GestionFinanciamiento_tiempo_seguro').change(function () {
         var valorFin = $('#GestionFinanciamiento_entrada').val();
         if (valorFin != '') {
@@ -529,32 +529,32 @@ $(document).ready(function () {
         var value = $(this).attr('value');
         switch (value) {
             case 'Seguimiento':
-                $('#cont-otro').hide();
+                //$('#cont-otro').hide();
                 $('.agendamiento').show();
                 addReglas();
                 break;
             case 'Falta de tiempo':
-                $('#cont-otro').hide();
+                //$('#cont-otro').hide();
                 $('.agendamiento').show();
                 addReglas();
                 break;
             case 'Llamada de emergencia':
-                $('#cont-otro').hide();
+                //$('#cont-otro').hide();
                 $('.agendamiento').show();
                 addReglas();
                 break;
             case 'Busca solo precio':
-                $('#cont-otro').hide();
+                //$('#cont-otro').hide();
                 $('.agendamiento').hide();
                 removeReglas();
                 break;
             case 'Desiste':
-                $('#cont-otro').hide();
+                //$('#cont-otro').hide();
                 $('.agendamiento').hide();
                 removeReglas();
                 break;
             case 'Otro':
-                $('#cont-otro').show();
+                //$('#cont-otro').show();
                 $('.agendamiento').hide();
                 removeReglas();
                 break;

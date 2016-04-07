@@ -340,8 +340,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                   <thead>
                                       <tr>
                                           <th>Paso</th>
-                                          <th>Observaciones</th>
+                                          <th>Motivo</th>
                                           <th>Fecha seguimiento</th>
+                                          <th>Observaciones</th>
                                       </tr>
                                   </thead>
                                   <tbody>
@@ -349,7 +350,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             foreach ($seg as $vseg) {
                                 echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
                                         . '<td>'.$vseg['observaciones'].'</td>'
-                                . '<td>'.$vseg['agendamiento'].'</td></tr>';
+                                . '<td>'.$vseg['agendamiento'].'</td><td>'.$vseg['otro_observacion'].'</td></tr>';
                             }
                             ?>
                                 </tbody>
@@ -704,8 +705,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
                         <?php } foreach ($ag as $a) { ?>
                             <div class="row">
-                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
+                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                <div class="col-md-4"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
                         <?php } ?>
                     </div>
@@ -736,8 +738,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         foreach ($ag5 as $a) {
                             ?>
                             <div class="row">
-                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
+                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
                         </div>
                     <?php }
@@ -783,6 +786,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div class="row">
                                     <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                     <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                    <div class="col-md-6"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                                 </div>
                             </div>    
                         <?php }// end foreach
@@ -868,6 +872,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <div class="row">
                                 <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                 <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                <div class="col-md-6"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
                 <?php } }?>
                     </div>

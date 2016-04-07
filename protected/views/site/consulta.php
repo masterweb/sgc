@@ -6,11 +6,11 @@
 $model = new GestionVehiculo;
 $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
-if($cargo_id != 46){
-$concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
-$nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+if ($cargo_id != 46) {
+    $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+    $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
+    $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
+    $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
 }
 //echo $nombre_cliente;
 $count = 0;
@@ -102,9 +102,9 @@ if (isset($id)) {
             submitHandler: function (form) {
                 var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
                 var observaciones = $('#GestionAgendamiento_observaciones').val();
-                if(observaciones == 'Busca solo precio' || observaciones == 'Desiste' || observaciones == 'Otro'){
+                if (observaciones == 'Busca solo precio' || observaciones == 'Desiste' || observaciones == 'Otro') {
                     form.submit();
-                }else{
+                } else {
                     //console.log(proximoSeguimiento);
                     var fechaSeguimiento = proximoSeguimiento.replace('/', '-');
                     fechaSeguimiento = fechaSeguimiento.replace('/', '-');
@@ -389,7 +389,8 @@ if (isset($id)) {
                                                 <td></td>
                                                 <td></td>
                                                 <td><a href="<?php echo Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente)); ?>" class="btn btn-danger btn-xs">Consulta</a></td>
-                                                <td><?php echo '<a href="'.Yii::app()->request->baseUrl.'/images/precios_24.pdf" class="btn btn-default btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';; ?></td>
+                                                <td><?php echo '<a href="' . Yii::app()->request->baseUrl . '/images/precios_24.pdf" class="btn btn-default btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+            ; ?></td>
                                             </tr>
 
                                         </tbody>
@@ -400,12 +401,12 @@ if (isset($id)) {
                             <hr>
                         </div>
                         <div class="form vehicle-cont">
-                            <?php if ($count == 0): ?>
+<?php if ($count == 0): ?>
                             </div><!-- form -->
                         </div><!-- highlight -->
                     </div>    
                     <br>
-                    <?php else: ?>
+<?php else: ?>
                     <div class="row">
                         <div class="cont-vc">
                             <div class="table-responsive">
@@ -425,7 +426,8 @@ if (isset($id)) {
                                                 <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                                 <td><?php echo $this->getVersion($c['version']); ?> </td>
                                                 <td><?php echo $this->getNecesidad($c['id_informacion']); ?> </td>
-                                                <td><?php echo '<a href="'.Yii::app()->request->baseUrl.'/images/Lista-de-Precios-Nov2015.pdf" class="btn btn-warning btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';; ?></td>
+                                                <td><?php echo '<a href="' . Yii::app()->request->baseUrl . '/images/Lista-de-Precios-Nov2015.pdf" class="btn btn-warning btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+                                            ; ?></td>
                                             </tr>
                                             <?php
                                         endforeach;
@@ -438,7 +440,7 @@ if (isset($id)) {
                         <hr>
                     </div>
                 </div>
-        <?php endif; ?>
+<?php endif; ?>
         </div>
     </div>
     <div class="row">
@@ -448,9 +450,9 @@ if (isset($id)) {
         }
         ?>><div class="col-md-3"><a class="btn btn-success" style="margin: 20px 0px;" onclick="createVec(<?php echo $id_informacion; ?>)">Agregar otro vehículo</a></div>
         </div>
-        
+
     </div>
-    
+
     <br />
     <div class="highlight">
         <div class="row">
@@ -466,7 +468,7 @@ if (isset($id)) {
                 'enableAjaxValidation' => false,
             ));
             ?>
-                    <?php //echo $form->errorSummary($agendamiento);   ?>
+                    <?php //echo $form->errorSummary($agendamiento);    ?>
             <div class="row">
                 <div class="col-md-4" style="display: none;">
                     <?php echo $form->labelEx($agendamiento, 'categorizacion'); ?>
@@ -485,13 +487,13 @@ if (isset($id)) {
                 </div>
                 <div class="col-md-4">
                     <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                    <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--','Seguimiento' => 'Seguimiento', 'Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+<?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento', 'Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
                     <?php echo $form->error($agendamiento, 'observaciones'); ?>
                 </div>
                 <div class="col-md-4 agendamiento">
                     <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
-                    <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
-                    <?php echo $form->error($agendamiento, 'agendamiento'); ?>
+<?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+<?php echo $form->error($agendamiento, 'agendamiento'); ?>
                 </div>
             </div>
             <div class="row">
@@ -505,15 +507,15 @@ if (isset($id)) {
             <div class="row buttons">
                 <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
                 <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
-                <?php if ($_GET['fuente'] == 'prospeccion'){ ?>
-                <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
-                <?php }else{ ?>
+                <?php if ($_GET['fuente'] == 'prospeccion') { ?>
                     <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
-                <?php } ?>
-                
+                <?php } else { ?>
+                    <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
+<?php } ?>
+
                 <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
                 <div class="col-md-2">
-                <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
+<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
                 </div>
                 <div class="col-md-3">
                     <div id="calendar-content" style="display: none;">
@@ -527,28 +529,31 @@ if (isset($id)) {
             <?php
             $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id_informacion} AND paso = 4"));
             $agen5 = GestionAgendamiento::model()->count($crit5);
-
             $ag5 = GestionAgendamiento::model()->findAll($crit5);
             if ($agen5 > 0) {
                 ?>
                 <div class="col-md-8">
                     <h4 class="text-danger">Historial</h4>
                 </div>
-                <div class="col-md-8">
-    <?php
-}
-foreach ($ag5 as $a) {
-    ?>
-                    <div class="row">
-                        <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                        <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                        <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
-                    </div>
-<?php } ?>
-            </div>
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead> <tr><th>Fecha Agendamiento</th> <th>Motivo</th> <th>Categorización</th> <th>Observaciones</th></tr> </thead>
+                        <tbody>
+                <?php } foreach ($ag5 as $a) { ?>
+                            <tr>
+                                <td><?php echo $a['agendamiento']; ?></td>
+                                <td><?php echo $a['observaciones']; ?></td>
+                                <td><?php echo $a['categorizacion']; ?></td>
+                                <td><?php echo $a['otro_observacion']; ?></td>
+                            </tr>
+                    
+                <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
         </div>
     </div><!--  END OF HIGHLIGHT -->
     <br />
     <br>
-    <?= $this->renderPartial('//layouts/rgd/links');?>
+<?= $this->renderPartial('//layouts/rgd/links'); ?>
 </div>
