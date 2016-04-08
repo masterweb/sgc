@@ -351,6 +351,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $vehiculo->id_informacion = $_POST['GestionInformacion']['id_informacion'];
             $precio = $this->getPrice($_POST['GestionVehiculo']['version']);
             $vehiculo->precio = $precio;
+            $vehiculo->tipo_credito = $_POST['GestionConsulta']['preg6'];
             $vehiculo->save();
 
             $historial = new GestionHistorial;
@@ -657,6 +658,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $vehiculo->id_informacion = $_POST['GestionInformacion']['id_informacion'];
             $precio = $this->getPrice($_POST['GestionVehiculo']['version']);
             $vehiculo->precio = $precio;
+            $vehiculo->tipo_credito = $_POST['GestionConsulta']['preg6'];
             $vehiculo->save();
 
             $historial = new GestionHistorial;
