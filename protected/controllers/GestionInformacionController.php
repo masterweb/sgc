@@ -1455,7 +1455,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 16;
         }
 
-        //die('search type: '.$search_type);
+        //Sdie('search type: '.$search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -1471,7 +1471,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= $sql_cargos;
                 $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
-                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')";
+                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%') "
+                        . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);       
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -1491,7 +1492,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR CEDULA, RUC O PASAPORTE */
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')";
+                $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
+                . " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die('cedula ruc; '.$sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -1510,7 +1512,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR ID */
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}'";
+                $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
+                . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
