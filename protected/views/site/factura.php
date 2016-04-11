@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="cont-chasis" style="display: none;">
                                     <label for="chasis">Número de Chasis</label>
-                                    <input type="text" name="Factura[chasis]" id="Factura_chasis" class="form-control" maxlength="14"/>
+                                    <input type="text" name="Factura[chasis]" id="Factura_chasis" class="form-control" maxlength="17"/>
                                 </div>
                             </div>
                         </div>

@@ -240,11 +240,9 @@ if (isset($search)) {
                                     ?>
                                 </td>
                                 <td>
-                                    <?php if ($status == 1 || $status == 4 || $status == 'na') { ?>
+                                    <?php //if ($status == 1 || $status == 4 || $status == 'na') { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $c['id'], 'id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'], 'id_status' => $c['id'])); ?>" class="btn btn-primary btn-xs">Ingresar</a>
-                                    <?php } else { ?>
-
-                                    <?php } ?>
+                                    <?php //} ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

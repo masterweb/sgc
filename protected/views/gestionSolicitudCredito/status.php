@@ -30,11 +30,11 @@
         });
         $('#GestionStatus_status').change(function () {
             var value = $(this).attr('value');
-            if (value == '2') {
+            /*if (value == '2') {
                 $('.cont-obs').hide();
             } else {
                 $('.cont-obs').show();
-            }
+            }*/
         });
     });
 </script>

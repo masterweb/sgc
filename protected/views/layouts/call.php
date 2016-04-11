@@ -116,6 +116,7 @@
                                 <?php echo Yii::app()->user->getState('first_name'); ?> <span class="caret"></span>
                             </button>
                             <ul role="menu" class="dropdown-menu">
+                                <li><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>">Inicio</a></li>
                                 <li><a href="<?php echo Yii::app()->createUrl('uusuarios/perfil'); ?>">Editar Perfil</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<?php echo Yii::app()->createUrl('site/logout'); ?>">Salir </a></li>

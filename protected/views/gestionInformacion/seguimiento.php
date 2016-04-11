@@ -768,4 +768,7 @@ $count = count($users);
             </div>
         </div>
     </div>
+    <br />
+    <br />
+    <?= $this->renderPartial('//layouts/rgd/links');?>
 </div>
