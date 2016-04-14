@@ -28,7 +28,7 @@ $dealerList = implode(', ', $array_dealers);
     switch ($cargo_id) {
         case 71: // asesor de ventas
         case 70: // jefe de sucursal    
-            $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+            $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
             break;
         //case 70: // jefe de sucursal
         //    $abiertoSQL .= " AND gn.id_dealer = {$dealer_id} AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
