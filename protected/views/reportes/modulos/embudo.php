@@ -190,16 +190,16 @@
                         <td id="mi_g16"><?= $varView['dif_cbu_trafico'] ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_f17"><?= $varView['tdckd1'] - $varView['tdckd2']?></td>
-                        <td id="mi_g17"><?= $varView['tdcbu1'] - $varView['tdcbu2']?></td>
+                        <td id="mi_f17"><?= $varView['tdckd2'] - $varView['tdckd1']?></td>
+                        <td id="mi_g17"><?= $varView['tdcbu2'] - $varView['tdcbu1']?></td>
                     </tr>
                     <tr>
-                        <td id="mi_f18"><?= $varView['proformackd1'] - $varView['proformackd2']?></td>
-                        <td id="mi_g18"><?= $varView['proformacbu1'] - $varView['proformacbu2']?></td>
+                        <td id="mi_f18"><?= $varView['proformackd2'] - $varView['proformackd1']?></td>
+                        <td id="mi_g18"><?= $varView['proformacbu2'] - $varView['proformacbu1']?></td>
                     </tr>                    
                     <tr>
-                        <td id="mi_f19"><?= $varView['vhckd1'] - $varView['vhckd2']?></td>
-                        <td id="mi_g19"><?= $varView['vhcbu1'] - $varView['vhcbu2']?></td>
+                        <td id="mi_f19"><?= $varView['vhckd2'] - $varView['vhckd1']?></td>
+                        <td id="mi_g19"><?= $varView['vhcbu2'] - $varView['vhcbu1']?></td>
                     </tr>
                     <tr>
                         <td id="mi_f20"><?= $varView['tasa_td_dif_ckd'].'%';?> </td>

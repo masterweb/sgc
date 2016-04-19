@@ -429,8 +429,8 @@ class ReportesController extends Controller {
             $varView['vhcbu2'] = $retorno[23];            
         }
 
-        $varView['dif_ckd_trafico'] = $varView['traficockd1'] - $varView['traficockd2'];
-        $varView['dif_cbu_trafico'] = $varView['traficocbu1'] - $varView['traficocbu2'];
+        $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
+        $varView['dif_cbu_trafico'] = $varView['traficocbu2'] - $varView['traficocbu1'];
         //$varView['usu'] = $usu;
         //$varView['mod'] = $mod;      
 
@@ -484,12 +484,12 @@ class ReportesController extends Controller {
         $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']); 
 
         //set diferencias ckd y cbu
-        $varView['tasa_td_dif_ckd'] = rtrim($varView['tasa_testdrive_ckd_m2'], "%") - rtrim($varView['tasa_testdrive_ckd_m1'], "%");
-        $varView['tasa_td_dif_cbu'] = rtrim($varView['tasa_testdrive_cbu_m2'], "%") - rtrim($varView['tasa_testdrive_cbu_m1'], "%");
-        $varView['tasa_pr_dif_ckd'] = rtrim($varView['tasa_proforma_ckd_m2'], "%") - rtrim($varView['tasa_proforma_ckd_m1'], "%");
-        $varView['tasa_pr_dif_cbu'] = rtrim($varView['tasa_proforma_cbu_m2'], "%") - rtrim($varView['tasa_proforma_cbu_m1'], "%");
-        $varView['tasa_cierre_dif_ckd'] = rtrim($varView['tasa_cierre_ckd_m2'], "%") - rtrim($varView['tasa_cierre_ckd_m1'], "%");
-        $varView['tasa_cierre_dif_cbu'] = rtrim($varView['tasa_cierre_cbu_m2'], "%") - rtrim($varView['tasa_cierre_cbu_m1'], "%");
+        $varView['tasa_td_dif_ckd'] = rtrim($varView['tasa_testdrive_ckd_m1'], "%") - rtrim($varView['tasa_testdrive_ckd_m2'], "%");
+        $varView['tasa_td_dif_cbu'] = rtrim($varView['tasa_testdrive_cbu_m1'], "%") - rtrim($varView['tasa_testdrive_cbu_m2'], "%");
+        $varView['tasa_pr_dif_ckd'] = rtrim($varView['tasa_proforma_ckd_m1'], "%") - rtrim($varView['tasa_proforma_ckd_m2'], "%");
+        $varView['tasa_pr_dif_cbu'] = rtrim($varView['tasa_proforma_cbu_m1'], "%") - rtrim($varView['tasa_proforma_cbu_m2'], "%");
+        $varView['tasa_cierre_dif_ckd'] = rtrim($varView['tasa_cierre_ckd_m1'], "%") - rtrim($varView['tasa_cierre_ckd_m2'], "%");
+        $varView['tasa_cierre_dif_cbu'] = rtrim($varView['tasa_cierre_cbu_m1'], "%") - rtrim($varView['tasa_cierre_cbu_m2'], "%");
 
         $this->render('inicio', array('varView' => $varView));
     }
@@ -1165,7 +1165,7 @@ class ReportesController extends Controller {
     }
 
     function tasa_dif($var1, $var2){
-        $dfpr = $var2 - $var1;
+        $dfpr = $var1 - $var2;
         if($dfpr >= 0){
             return $dfpr.' %';
         }else{
@@ -1174,7 +1174,7 @@ class ReportesController extends Controller {
     }
     
     function DIFconstructor($var1, $var2, $tipo){
-        $dif = $var2 - $var1;
+        $dif = $var1 - $var2;
 
         if($dif < 0){
             $divisor = $var1;
@@ -1195,12 +1195,13 @@ class ReportesController extends Controller {
             $dif = -($dif * 100) / $divisor;            
             $dif = round($dif, 2);*/
             if($var1 == 0){
-                $dif = 100;
+                $dif = -$var2;
+            }else if($var2 == 0){
+                $dif = $var1;
             }else{
                $dif = ($var2 * 100) / $var1; 
+               $dif = 100 - round($dif, 2);
             }
-            
-            $dif = 100 - round($dif, 2);
         }
 
         if($var1 == 0 && $var2 == 0){$dif = 0;}
