@@ -1184,7 +1184,7 @@ class ReportesController extends Controller {
         $unidad = '';        
         if($tipo == 'var'){
             $unidad = '%';
-            if($divisor == 0){
+            /*if($divisor == 0){
                 if($var1 != 0){
                     $divisor = $var1;
                 }else{
@@ -1192,7 +1192,12 @@ class ReportesController extends Controller {
                     $divisor = 100;
                 }                
             }     
-            $dif = ($dif * 100) / $divisor;            
+            $dif = -($dif * 100) / $divisor;            
+            $dif = round($dif, 2);*/
+            $dif = ($var2 * 100) / $var1;
+            if($var1<$var2){
+                $dif = -$dif;
+            }
             $dif = round($dif, 2);
         }
 
