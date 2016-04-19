@@ -1194,11 +1194,13 @@ class ReportesController extends Controller {
             }     
             $dif = -($dif * 100) / $divisor;            
             $dif = round($dif, 2);*/
-            $dif = ($var2 * 100) / $var1;
-            if($var1<$var2){
-                $dif = -$dif;
+            if($var1 == 0){
+                $dif = 100;
+            }else{
+               $dif = ($var2 * 100) / $var1; 
             }
-            $dif = round($dif, 2);
+            
+            $dif = 100 - round($dif, 2);
         }
 
         if($var1 == 0 && $var2 == 0){$dif = 0;}
