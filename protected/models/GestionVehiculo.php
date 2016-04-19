@@ -19,6 +19,7 @@
  * @property string $cierre
  * @property string $num_pdf
  * @property int $tipo_credito
+ * @property string $accesorios_manual
  *
  * The followings are the available model relations:
  * @property GestionInformacion $idInformacion
@@ -55,7 +56,7 @@ class GestionVehiculo extends CActiveRecord {
             array('observaciones, fecha', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, id_informacion, modelo, precio, dispositivo, accesorios, seguro, plazo, total, fecha, cierre', 'safe', 'on' => 'search'),
+            array('id, id_informacion, modelo, precio, dispositivo, accesorios, accesorios_manual, seguro, plazo, total, fecha, cierre', 'safe', 'on' => 'search'),
         );
     }
 
@@ -90,6 +91,7 @@ class GestionVehiculo extends CActiveRecord {
             'cierre' => 'Cierre',
             'num_pdf' => 'Numero de Proforma',
             'tipo_credito' => 'Tipo Credito',
+            'accesorios_manual' => 'Accosorios Manual',
         );
     }
 

@@ -196,7 +196,6 @@ class SiteController extends Controller {
                   } */
                 //$this->redirect(Yii::app()->user->returnUrl);
                 //FUNCION PARA CALL CENTER SI TIENE COTIZACIONES AUTOMATICAS.
-                
                 //SOLUCION PARA LOS USUARIOS QUE YA INGRESARON ALGUNA VEZ; PERMANEZCAN ACTIVOS
                 $models_users = Usuarios::model()->findAll(array('condition' => "ultimavisita is not null AND id!=:id", 'params' => array(':id' => (int) Yii::app()->user->id)));
                 if (!empty($models_users)) {
@@ -205,7 +204,7 @@ class SiteController extends Controller {
                         $models_users->update();
                     }
                 }
-                
+
                 $user = Usuarios::model()->findByPk(Yii::app()->user->id);
                 if ($user->cargo->codigo == Constantes::CDG) {
                     $this->traercotizaciones();
@@ -2281,9 +2280,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
 
         $con = Yii::app()->db;
-        $sql = "SELECT gf.forma_pago, gf.precio_vehiculo,gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, 
+        $sql = "SELECT gf.forma_pago, gf.precio_vehiculo,gf.total_accesorios,gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, 
 gf.entidad_financiera, gf.id as id_financiamiento, gf.ts, gf.observaciones, gf.cuota_mensual, gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa, 
-gi.responsable, gv.modelo, gv.version, gv.accesorios
+gi.responsable, gv.modelo, gv.version, gv.accesorios, gv.accesorios_manual
 FROM gestion_financiamiento gf 
 INNER JOIN gestion_informacion gi ON gi.id =  gf.id_informacion 
 INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo 
@@ -2595,7 +2594,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             $client = new SoapClient(@$uriservicio, array('trace' => 1));
 
             try {
-                $response = $client->pws01_01_cl("{$identificacion}", '');
+                if ($_POST['Factura']['tipo'] == 'chasis') {
+                    //die('enter chasis');
+                    $response = $client->pws01_01_cl("", "{$identificacion}");
+                } else {
+                    $response = $client->pws01_01_cl("{$identificacion}", '');
+                }
             } catch (Exception $exc) {
                 Yii::app()->user->setFlash('error', "Error al conectarse a la pirámide");
             }

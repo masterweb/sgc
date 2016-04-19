@@ -161,20 +161,6 @@ class GestionNotificacionesController extends Controller {
     public function actionVernotificacion($id = NULL, $id_informacion = NULL, $cargo_id = NULL, $tipo = NULL) {
         //echo 'id: '.$id.' ,caso id: '.$caso_id;
         //die();
-        if ($tipo == 4) {
-            $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
-            //die('sql: '.$sql);
-            $con = Yii::app()->db;
-            $request = $con->createCommand($sql)->query();
-            $paso = $this->getPasoNotificacionDiaria($id_informacion);
-        } 
-        if ($tipo == 3) {
-            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id_informacion={$id_informacion}";
-            //die('sql: '.$sql);
-            $con = Yii::app()->db;
-            $request = $con->createCommand($sql)->query();
-            $paso = $this->getPasoNotificacionDiaria($id_informacion);
-        }
         if ($tipo == 1) {
             $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";
             //die('sql: '.$sql);
@@ -182,6 +168,29 @@ class GestionNotificacionesController extends Controller {
             $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacion($id);
         }
+        if ($tipo == 2) {
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id={$id}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = $this->getPasoNotificacionDiaria($id_informacion);
+        }
+        if ($tipo == 3) {
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = $this->getPasoNotificacionDiaria($id_informacion);
+        }
+        if ($tipo == 4) {
+            $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = $this->getPasoNotificacionDiaria($id_informacion);
+        } 
+        
+        
 
         switch ($paso) {
             case '1-2':

@@ -16,14 +16,25 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
 $tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo); 
 $id_version = $this->getIdVersion($id_vehiculo);
 ?>
-<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
+<style type="text/css">
+    #sum-accesorios-val2{color:#AA1F2C};
+    #btn-ot{padding-left: 0px !important;}
+    .ag-btn{padding-left: 0px !important;}
+</style>
 <script type="text/javascript">
     var acc1 = new Array();
     var acc2 = new Array();
     var acc3 = new Array();
+    var acco1 = new Array();
+    var acco2 = new Array();
+    var acco3 = new Array();
+    var accsum1 = 0;
+    var accsum2 = 0;
+    var accsum3 = 0;
     var preciovec1;
     var preciovec2;
     var preciovec3;
+    var tipo_financiamiento = <?php echo $tipo; ?>;
     $(document).ready(function () {
 <?php if ($tipo == 1): // credito            ?>
             //$('.cont-contado').hide();
@@ -34,21 +45,8 @@ $id_version = $this->getIdVersion($id_vehiculo);
             $('#GestionFinanciamiento_tipo_financiamiento').val(0);
             //$('.cont-financ').hide();
 <?php endif; ?>
-        /*$('#accesorio1').click(function () {
-         var accesorio1 = $('#accesorio1').val();
-         var precioanterior = $('#precio_accesorios').val();
-         if ($('#accesorio1').prop('checked')) {
-         var precionuevo = parseInt(precioanterior) + parseInt(accesorio1);
-         $('#precio_accesorios').val(precionuevo);
-         } else {
-         //console.log('precio anterior: '+precioanterior);
-         var precionuevo = parseInt(precioanterior) - parseInt(accesorio1);
-         $('#precio_accesorios').val(precionuevo);
-         
-         }
-         });*/
-        //$('#precio_normal').maskMoney();
-        $('#GestionFinanciamiento_entrada').keyup(function () {
+    //$('#btn-acc').prop('disabled',true);
+    $('#GestionFinanciamiento_entrada').keyup(function () {
         calcFinanciamiento();
     });
     $('#GestionFinanciamiento_entrada2').keyup(function () {
@@ -57,7 +55,50 @@ $id_version = $this->getIdVersion($id_vehiculo);
     $('#GestionFinanciamiento_entrada3').keyup(function () {
         calcFinanciamiento3();
     });
-
+//    $('#GestionFinanciamiento_seguro').keyup(function () {
+//        calcSeguro();
+//    });
+//    $('#GestionFinanciamiento_seguro2').keyup(function () {
+//        calcSeguro2();
+//    });
+//    $('#GestionFinanciamiento_seguro3').keyup(function () {
+//        calcSeguro3();
+//    });
+    $('#GestionFinanciamiento_precio').keyup(function () {
+        //if($('#GestionFinanciamiento_entrada').val() != ''){
+            //calcFinanciamiento();
+        //}
+    });
+    $('#GestionFinanciamiento_precio2').keyup(function () {
+        //if($('#GestionFinanciamiento_entrada2').val() != ''){
+        //    calcFinanciamiento2();
+       //}
+    });
+    $('#GestionFinanciamiento_precio3').keyup(function () {
+        //if($('#GestionFinanciamiento_entrada3').val() != ''){
+        //    calcFinanciamiento3();
+        //}
+    });
+    $('#GestionFinanciamiento_precio_contado').keyup(function () {
+        calcFinanciamientoContado();
+    });
+    $('#GestionFinanciamiento_precio_contado2').keyup(function () {
+        calcFinanciamientoContado2();
+    });
+    $('#GestionFinanciamiento_precio_contado3').keyup(function () {
+        calcFinanciamientoContado3();
+    });
+//    $('#GestionFinanciamiento_valor_financiamiento').keyup(function () {
+//        calcFinanciamiento();
+//    });
+    
+    // SUMAR VALORES DE ACCESORIOS INGRESADOS MANUALMENTE
+    $('#valor_otro_accesorios1').keyup(function () {$('.error-accesorio1').hide();getvalortotal(1);});
+    $('#valor_otro_accesorios2').keyup(function () {$('.error-accesorio2').hide();getvalortotal(2);});
+    $('#valor_otro_accesorios3').keyup(function () {$('.error-accesorio3').hide();getvalortotal(3);});
+    $('#otro_accesorios_nombre1').keyup(function () {$('.error-nombre1').hide();getvalortotal(3);});
+    $('#otro_accesorios_nombre2').keyup(function () {$('.error-nombre2').hide();getvalortotal(3);});
+    $('#otro_accesorios_nombre3').keyup(function () {$('.error-nombre3').hide();getvalortotal(3);});
     $('#btngenerate').click(function(){
         $('#btngenerate').hide();
     });
@@ -67,20 +108,23 @@ $id_version = $this->getIdVersion($id_vehiculo);
 
     var finanprecio2 = parseInt($('#GestionFinanciamiento_precio2').val());
     var finanprecioformat2 = format2(finanprecio2, '$');
-    $('#GestionFinanciamiento_precio2').val(finanprecioformat);
-
+        $('#GestionFinanciamiento_precio2').val(finanprecioformat2);
+    
     var finanprecio3 = parseInt($('#GestionFinanciamiento_precio3').val());
     var finanprecioformat3 = format2(finanprecio3, '$');
-    $('#GestionFinanciamiento_precio3').val(finanprecioformat);
+        $('#GestionFinanciamiento_precio3').val(finanprecioformat3);
 
     var precionormal = parseInt($('#precio_normal').val());
     var precioformat = format2(precionormal, '$');
     $('#precio_normal').val(precioformat);
     var precioaccesorios = parseInt($('#precio_accesorios').val());
-    var precioformatacc = format2(precioaccesorios, '$');
-    $('#precio_accesorios').val(precioformatacc);
-
-
+    if(isNaN(precioaccesorios)){
+        var precioformatacc = format2(0, '$');
+        $('#precio_accesorios').val(precioformatacc);
+    }else{
+        var precioformatacc = format2(precioaccesorios, '$');
+        $('#precio_accesorios').val(precioformatacc);
+    }
     var precioContado = parseInt($('#GestionFinanciamiento_precio_contado').val());
     var precioContado = format2(precioContado, '$');
     $('#GestionFinanciamiento_precio_contado').val(precioContado);
@@ -92,7 +136,6 @@ $id_version = $this->getIdVersion($id_vehiculo);
     var precioContado3 = parseInt($('#GestionFinanciamiento_precio_contado3').val());
     var precioContado3 = format2(precioContado3, '$');
     $('#GestionFinanciamiento_precio_contado3').val(precioContado3);
-
     
     
         $('#btngenerate').click(function () {
@@ -116,6 +159,36 @@ $id_version = $this->getIdVersion($id_vehiculo);
         $('#GestionFinanciamiento_entrada').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionFinanciamiento_entrada2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionFinanciamiento_entrada3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_precio').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_precio2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});   
+        $('#GestionFinanciamiento_precio3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_valor_financiamiento').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_valor_financiamiento2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_valor_financiamiento3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_precio_contado').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_precio_contado2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});   
+        $('#GestionFinanciamiento_precio_contado3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true}); 
+        $('#GestionFinanciamiento_precio_contado_total').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_precio_contado_total2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});   
+        $('#GestionFinanciamiento_precio_contado_total3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true}); 
+        $('#GestionFinanciamiento_seguro_contado').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_seguro_contado2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_seguro_contado3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#valor_otro_accesorios1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#valor_otro_accesorios2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#valor_otro_accesorios3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#precio_accesorios2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#precio_normal').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_seguro').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_tasa').maskMoney({thousands: '.', decimal: ',', affixesStay: true});
+        $('#GestionFinanciamiento_seguro2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_tasa2').maskMoney({thousands: '.', decimal: ',', affixesStay: true});
+        $('#GestionFinanciamiento_seguro3').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_tasa3').maskMoney({thousands: '.', decimal: ',', affixesStay: true});
+        $('#GestionFinanciamiento_cuota_mensual').maskMoney({prefix: '$ ',thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_cuota_mensual2').maskMoney({prefix: '$ ',thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionFinanciamiento_cuota_mensual3').maskMoney({prefix: '$ ',thousands: ',', decimal: '.', affixesStay: true});
+        
         //$('#GestionFinanciamiento_valor_financiamiento').maskMoney({prefix:'$ ', allowNegative: true, thousands:',', decimal:'.', affixesStay: true});
         //$('#GestionFinanciamiento_cuota_mensual').maskMoney({prefix:'$ ', allowNegative: true, thousands:',', decimal:'.', affixesStay: true});
 
@@ -167,10 +240,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
         });
 
         $("input[name='accesorios[]']").click(function () {
+            var kit = $('.kit').val();
             var accesorio2 = $(this).val();
             var idacc = $(this).prop('id');
             var id = idacc.split("-");
-            var precioanterior = $('#precio_accesorios').val();
+            var precioanterior = formatnumber($('#precio_accesorios').val());
+            var precioanterior2 = $('#precio_accesorios2').val();
+            console.log('precio anterior2: '+precioanterior2);
             var valorFin = $('#GestionFinanciamiento_entrada').val();
             var valorFin2 = $('#GestionFinanciamiento_entrada2').val();
             var valorFin3 = $('#GestionFinanciamiento_entrada3').val();
@@ -179,9 +255,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
             // valor del contador de proformas
             var savecounter = 0; // numero de formulario a editar original
             // si no se ha generado una proforma, continua el proceso normal
-            if(flag == 0){
-                
-            }
+            
             // ya se ha generado una proforma
             if(flag == 1){
                 savecounter = $('#options-cont').val();// guardamos el valor del contador de formularios
@@ -191,17 +265,17 @@ $id_version = $this->getIdVersion($id_vehiculo);
             
             var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val();
             var accesorioscont = $('#accesorioscont').val();
-            var stracc1 = '';
-            var stracc2 = '';
-            var stracc3 = '';
+            var stracc1 = '';var stracc2 = '';var stracc3 = '';
             
-            precioanterior = precioanterior.replace(',', '');
-            precioanterior = precioanterior.replace('.', ',');
-            precioanterior = precioanterior.replace('$', '');
-            precioanterior = parseInt(precioanterior);
+            if(kit && $('.kit').prop('checked') && counter == 2){
+                
+            }
             if ($(this).prop('checked')) {
-                var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
-                $('#precio_accesorios').val(format2(precionuevo, '$'));
+                var precionuevo = parseInt(precioanterior2) + parseInt(accesorio2);
+                console.log('precio nuevo: '+precionuevo);
+                var accesorios_sum = parseInt(precioanterior) + parseInt(accesorio2);
+                $('#precio_accesorios').val(format2(accesorios_sum, '$'));
+                $('#precio_accesorios2').val(precionuevo);
                 switch (counter) {
                     case '2':
                         acc1.length = 0;
@@ -232,6 +306,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             }
                         }
                         //console.log('string accesorios3: '+stracc3);
+                        
                         $('#GestionFinanciamiento_acc1').val(stracc1);
                         console.log('ARRAY ACCESORIOS 1: '+acc1);
                         if(flag == 1){// si se ha generado una proforma
@@ -311,8 +386,12 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $('#accspan-' + id[1]).addClass('label-price');
 
             } else {
-                var precionuevo = parseInt(precioanterior) - parseInt(accesorio2);
-                $('#precio_accesorios').val(format2(precionuevo, '$'));
+                var precionuevo = parseInt(precioanterior2) - parseInt(accesorio2);
+                console.log('precio nuevo: '+precionuevo);
+                var accesorios_sum = parseInt(precioanterior) - parseInt(accesorio2);
+                
+                $('#precio_accesorios').val(format2(accesorios_sum, '$'));
+                $('#precio_accesorios2').val(precionuevo);
                 switch (counter) {
                     case '2':
                         acc1.length = 0;
@@ -431,7 +510,467 @@ $id_version = $this->getIdVersion($id_vehiculo);
     function format2(n, currency) {
         return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
-    function op() {
+    
+    function getvalortotal(num_acc){
+        options_cont = $('#options-cont').val();
+        if($('#cont-acc2').val() == 1 || $('#cont-acc3').val() == 1 || $('#cont-acc4').val() == 1){
+            $('#btn-acc').prop('disabled', false);
+        }
+        switch(options_cont){
+            case '2':
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                var precioaccres = precioaccesorios;
+                value = 0;
+                str_acc_op = '';
+                for(var i = 1; i <= 3 ; i++){
+                    value += formatnumber($('#valor_otro_accesorios'+i).val());
+                }
+                value = format2(value, '$');
+                $("#sum-accesorios2").val(value);
+                $("#desc-accesorios2").val(str_acc_op);
+                $('#sum-accesorios-val2').html(value);
+                break;
+            case '3':
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                var precioaccres = precioaccesorios;
+                value = 0;
+                for(var i = 1; i <= 3 ; i++){
+                    value += formatnumber($('#valor_otro_accesorios'+i).val());
+                }
+                value = format2(value, '$');
+                $("#sum-accesorios3").val(value);
+                //$("#desc-accesorios3").val($('#otro_accesorios_nombre1').val());
+                $('#sum-accesorios-val2').html(value);
+                break;
+            case '4':
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                var precioaccres = precioaccesorios;
+                value = 0;
+                for(var i = 1; i <= 3 ; i++){
+                    value += formatnumber($('#valor_otro_accesorios'+i).val());
+                }
+                value = format2(value, '$');
+                $("#sum-accesorios4").val(value);
+                //$("#desc-accesorios4").val($('#otro_accesorios_nombre1').val());
+                $('#sum-accesorios-val2').html(value);
+                break;    
+        }
+        
+        
+            
+    }
+    function formatnumber(precioanterior) {
+        if (precioanterior == '') {
+            return 0;
+        } else {
+            precioanterior = precioanterior.replace(',', '');
+            precioanterior = precioanterior.replace('.', ',');
+            precioanterior = precioanterior.replace('$', '');
+            precioanterior = parseInt(precioanterior);
+            return precioanterior;
+        }
+
+    }
+    function sco(){
+        tipo_finan = $('#GestionFinanciamiento_tipo_financiamiento').val();
+        options_cont = $('#options-cont').val();
+        //console.log('options cont: '+options_cont);
+        switch(options_cont){
+            case '2':
+                sumaccres = $('#sum-accesorios-res2').val();
+                accmanuales = formatnumber($('#sum-accesorios2').val());
+                //console.log('accmanuales: '+accmanuales);
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                //console.log('precio accesorios: '+precioaccesorios);
+                precioaccesorios2 = parseInt($('#precio_accesorios2').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado').val());
+                }
+                
+                if($('#cont-acc2').val() == 1){
+                    sumaccres = formatnumber(sumaccres);
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }  
+
+                tacc = accmanuales + precioaccesorios;
+                //precio_finan = precio + accmanuales;
+                precio_finan = tacc + formatnumber($('#precio_normal').val());
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                $("#precio_accesorios").val(tacc);
+                
+                $('#btn-accd').show();
+                $('#cont-acc2').val(1);
+                $('#btn-acc').prop('disabled',true);
+                $('#sum-accesorios-res2').val($('#sum-accesorios2').val());
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado').val(precio_finan);
+                }
+                str_acc_op = '';
+                str_acc_total = '';
+                error = 0;
+                for(var i = 1; i < $('#cont-otro2').val() ; i++){
+                    if($('#otro_accesorios_nombre'+i).val() ==  ''){
+                        $('.error-nombre'+i).show();$('#otro_accesorios_nombre'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    if($('#valor_otro_accesorios'+i).val() ==  ''){
+                        $('.error-accesorio'+i).show();$('#valor_otro_accesorios'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    
+                }
+                for(var i = 1; i < $('#cont-otro2').val() ; i++){
+                    // cadena de accesorios a mano, precio + nombre accesorio
+                    str_acc_total += formatnumber($('#valor_otro_accesorios'+i).val())+'-'+$('#otro_accesorios_nombre'+i).val()+ '@';
+                    str_acc_op += $('#otro_accesorios_nombre'+i).val() + '@';
+                }
+                
+                $('#desc-accesorios2').val(str_acc_op);
+                $('#sum-accesorios-total2').val(str_acc_total);
+                accsum1 = tacc;
+                console.log('ACC01: '+accsum1);
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada').val() != ''){
+                    calcFinanciamiento();
+                }
+                
+                break;
+            case '3':
+                console.log('enter sum cae 3');
+                sumaccres = $('#sum-accesorios-res3').val();
+                accmanuales = formatnumber($('#sum-accesorios3').val());
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                precioaccesorios2 = parseInt($('#precio_accesorios3').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio2').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado2').val());
+                }
+                if($('#cont-acc3').val() == 1){
+                    sumaccres = formatnumber(sumaccres);
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }
+                //console.log('enter sco');       
+
+                tacc = accmanuales + precioaccesorios;
+                //precio_finan = precio + accmanuales;
+                precio_finan = tacc + formatnumber($('#precio_normal').val());
+                //console.log('precio finan: '+precio_finan);
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                //console.log('tacc: '+tacc);
+                $("#precio_accesorios").val(tacc);
+                
+                $('#btn-accd').show();
+                $('#cont-acc3').val(1);
+                $('#sum-accesorios-res3').val($('#sum-accesorios3').val());
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio2').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado2').val(precio_finan);
+                }
+                str_acc_op = '';
+                str_acc_total = '';
+                error = 0;
+                for(var i = 1; i < $('#cont-otro3').val() ; i++){
+                    if($('#otro_accesorios_nombre'+i).val() ==  ''){
+                        $('.error-nombre'+i).show();$('#otro_accesorios_nombre'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    if($('#valor_otro_accesorios'+i).val() ==  ''){
+                        $('.error-accesorio'+i).show();$('#valor_otro_accesorios'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    
+                }
+                for(var i = 1; i < $('#cont-otro3').val()  ; i++){
+                    // cadena de accesorios a mano, precio + nombre accesorio
+                    str_acc_total += formatnumber($('#valor_otro_accesorios'+i).val())+'-'+$('#otro_accesorios_nombre'+i).val()+ '@';
+                    str_acc_op += $('#otro_accesorios_nombre'+i).val() + '@';
+                }
+                $('#desc-accesorios3').val(str_acc_op);
+                $('#sum-accesorios-total3').val(str_acc_total);
+                console.log('str_acc_op3: '+str_acc_op);
+                accsum2 = tacc;
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada2').val() != ''){
+                    calcFinanciamiento2();
+                }
+                
+                console.log('ACC02: '+accsum2);
+                $('#btn-acc').prop('disabled',true);
+                break;
+            case '4':
+                sumaccres = $('#sum-accesorios-res4').val();
+                accmanuales = formatnumber($('#sum-accesorios4').val());
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                precioaccesorios2 = parseInt($('#precio_accesorios4').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio3').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado3').val())
+                }
+                if($('#cont-acc3').val() == 1){
+                    sumaccres = formatnumber(sumaccres);
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }
+                //console.log('enter sco');       
+
+                tacc = accmanuales + precioaccesorios;
+                //precio_finan = precio + accmanuales;
+                precio_finan = tacc + formatnumber($('#precio_normal').val());
+                //console.log('precio finan: '+precio_finan);
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                console.log('tacc: '+tacc);
+                $("#precio_accesorios").val(tacc);
+                $('#btn-accd').show();
+                $('#cont-acc4').val(1);
+                $('#sum-accesorios-res4').val($('#sum-accesorios4').val());
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio3').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado3').val(precio_finan);
+                }
+                str_acc_op = '';
+                str_acc_total = '';
+                error = 0;
+                for(var i = 1; i < $('#cont-otro4').val() ; i++){
+                    if($('#otro_accesorios_nombre'+i).val() ==  ''){
+                        $('.error-nombre'+i).show();$('#otro_accesorios_nombre'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    if($('#valor_otro_accesorios'+i).val() ==  ''){
+                        $('.error-accesorio'+i).show();$('#valor_otro_accesorios'+i).focus();
+                        error++;
+                        return false;
+                    }
+                    
+                }
+                for(var i = 1; i < $('#cont-otro4').val()  ; i++){
+                    // cadena de accesorios a mano, precio + nombre accesorio
+                    str_acc_total += formatnumber($('#valor_otro_accesorios'+i).val())+'-'+$('#otro_accesorios_nombre'+i).val()+ '@';
+                    str_acc_op += $('#otro_accesorios_nombre'+i).val() + '@';
+                }
+                $('#desc-accesorios4').val(str_acc_op);
+                $('#sum-accesorios-total4').val(str_acc_total);
+                accsum3 = tacc;
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada3').val() != ''){
+                    calcFinanciamiento3();
+                }
+                $('#btn-acc').prop('disabled',true);
+                console.log('ACC03: '+accsum3);
+                break;    
+        }
+        
+        
+    }
+    
+    function scod(){
+        tipo_finan = $('#GestionFinanciamiento_tipo_financiamiento').val();
+        options_cont = $('#options-cont').val();
+        $('.error-nombre1').hide();$('.error-nombre2').hide();$('.error-nombre3').hide();
+        $('.error-accesorio1').hide();$('.error-accesorio2').hide();$('.error-accesorio3').hide();
+        switch(options_cont){
+            case '2':
+                sumaccres = formatnumber($('#sum-accesorios-res2').val());
+                accmanuales = formatnumber($('#sum-accesorios2').val());
+                console.log('accmanuales: '+accmanuales);
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                console.log('precio accesorios: '+precioaccesorios);
+                precioaccesorios2 = parseInt($('#precio_accesorios2').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado').val());
+                }
+                
+                if($('#cont-acc2').val() == 1){
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }
+                tacc = 0;
+                precio_finan = precio - accmanuales;
+                console.log('precio finan: '+precio_finan);
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                $("#precio_accesorios").val(format2(precioaccesorios,'$'));
+                $('#btn-accd').hide();
+                $('#cont-acc2').val(1);
+                $('#sum-accesorios-res2').val('');
+                $('#sum-accesorios2').val('');
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado').val(precio_finan);
+                }
+                for(var i = 1; i < $('#cont-otro2').val() ; i++){
+                    $('#valor_otro_accesorios'+i).val('');
+                    $('#otro_accesorios_nombre'+i).val('');
+                }
+                $('#sum-accesorios-val2').html('');
+                $('#desc-accesorios2').val('');
+                $('#sum-accesorios-total2').val('');
+                accsum1 = tacc;
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada').val() != ''){
+                    calcFinanciamiento();
+                }
+                
+                console.log('ACC01: '+accsum1);
+            break;
+            case '3':
+                sumaccres = formatnumber($('#sum-accesorios-res3').val());
+                accmanuales = formatnumber($('#sum-accesorios3').val());
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                precioaccesorios2 = parseInt($('#precio_accesorios3').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio2').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado2').val());
+                }
+                
+                if($('#cont-acc3').val() == 1){
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }
+                tacc = 0;
+                precio_finan = precio - accmanuales;
+                console.log('precio finan: '+precio_finan);
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                $("#precio_accesorios").val(format2(precioaccesorios,'$'));
+                $('#btn-accd').hide();
+                $('#cont-acc3').val(1);
+                $('#sum-accesorios-res3').val('');
+                $('#sum-accesorios3').val('');
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio2').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado2').val(precio_finan);
+                }
+                for(var i = 1; i < $('#cont-otro3').val() ; i++){
+                    $('#valor_otro_accesorios'+i).val('');
+                    $('#otro_accesorios_nombre'+i).val('');
+                }
+                $('#sum-accesorios-val2').html('');
+                $('#desc-accesorios3').val('');
+                $('#sum-accesorios-total3').val('');
+                accsum2 = tacc;
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada2').val() != ''){
+                    calcFinanciamiento2();
+                }
+                break;
+            case '4':
+                sumaccres = formatnumber($('#sum-accesorios-res4').val());
+                accmanuales = formatnumber($('#sum-accesorios4').val());
+                precioaccesorios = formatnumber($('#precio_accesorios').val());
+                precioaccesorios2 = parseInt($('#precio_accesorios4').val());
+                if(tipo_finan == 1){
+                    precio = formatnumber($('#GestionFinanciamiento_precio3').val());
+                }else{
+                    precio = formatnumber($('#GestionFinanciamiento_precio_contado3').val());
+                }
+                
+                if($('#cont-acc4').val() == 1){
+                    precioaccesorios = precioaccesorios - sumaccres;
+                }
+                tacc = 0;
+                precio_finan = precio - accmanuales;
+                console.log('precio finan: '+precio_finan);
+                $('#precio_accesorios2').val(precio_finan);
+                tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
+                $("#precio_accesorios").val(format2(precioaccesorios,'$'));
+                $('#btn-accd').hide();
+                $('#cont-acc4').val(1);
+                $('#sum-accesorios-res4').val('');
+                $('#sum-accesorios4').val('');
+                if(tipo_finan == 1){
+                    $('#GestionFinanciamiento_precio3').val(precio_finan);
+                }else{
+                    $('#GestionFinanciamiento_precio_contado3').val(precio_finan);
+                }
+                for(var i = 1; i < $('#cont-otro4').val() ; i++){
+                    $('#valor_otro_accesorios'+i).val('');
+                    $('#otro_accesorios_nombre'+i).val('');
+                }
+                $('#sum-accesorios-val2').html('');
+                $('#desc-accesorios4').val('');
+                $('#sum-accesorios-total4').val('');
+                accsum3 = tacc;
+                // si la cuota de entrada no esta vacio 
+                if($('#GestionFinanciamiento_entrada3').val() != ''){
+                    calcFinanciamiento3();
+                }
+                break;    
+        }
+    }
+    
+    function ot(){
+        options_cont = $('#options-cont').val();
+        cont_otro = $('#cont-otro').val();
+        cotr = $('#options-cont-otro').val();
+        if (cotr == 3) {
+            $('#btn-ot').removeClass('btn-success').prop( "disabled", true );
+        }
+        $('.btn-canc-otro').show();
+        $('.cont-opt-acc' + cotr).show();
+        if (cotr <= 4) {
+            cotr++;
+            $('#options-cont-otro').val(cotr);
+            switch(options_cont){
+                case '2':
+                    $('#cont-otro2').val(cotr);
+                break;
+                case '3':
+                    $('#cont-otro3').val(cotr);
+                break;
+                case '4':
+                    $('#cont-otro4').val(cotr);
+                break;
+
+            }
+        }
+    }
+    function otcanc(){
+        options_cont = $('#options-cont').val();
+        cont_otro = $('#cont-otro').val();
+        cotr = $('#options-cont-otro').val();
+        if (cotr != 3) {
+            $('#btn-ot').removeClass('btn-danger').addClass('btn-success').prop( "disabled", false );
+        }
+        cotr--;
+        if (cotr > 1) {
+            $('.cont-opt-acc' + cotr).hide();
+            $('#options-cont-otro').val(cotr);
+            switch(options_cont){
+                case '2':
+                    $('#cont-otro2').val(cotr);
+                break;
+                case '3':
+                    $('#cont-otro3').val(cotr);
+                break;
+                case '4':
+                    $('#cont-otro4').val(cotr);
+                break;
+
+            }
+        }
+        if ($('#options-cont-otro').val() == 2) {
+            $('.btn-canc-otro').hide();
+        }
+    }
+    function op(){
         //acc1.length = 0;
         //acc2.length = 0;
         //acc3.length = 0;
@@ -444,12 +983,36 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var stracc1 = '';
         var stracc2 = '';
         var stracc3 = '';
-        //console.log('COTIZACION: '+counter);
+        console.log('counter: '+counter);
         switch (counter) {
             case '2':
+                $('#btn-accd').hide();
+                $('#total-acc1').val($('#precio_accesorios').val());
+                $('#precio_accesorios2').val(formatnumber(precionormal));
+                console.log('enter case 2');
+                cont_otro = $('#cont-otro3').val();
+                for (i = 1; i < 4; i++) {
+                    $('#otro_accesorios_nombre'+i).val('');
+                    $('#valor_otro_accesorios'+i).val('');
+                    if(i < cont_otro){
+                        $('.cont-opt-acc'+i).show();
+                    }else{
+                        $('.cont-opt-acc'+i).hide();
+                    }
+                }
+                cont_otro_n = $('#cont-otro3').val();
+                if(cont_otro_n == 2){
+                    $('#btn-ot').prop('disabled', false);$('.btn-canc-otro').hide();
+                    $('#btn-ot').addClass('btn-success');$('#options-cont-otro').val(2);
+                }
                 acc1.length = 0;
-                $('#precio_accesorios').val(precionormal);
-                //console.log('llenar array de accesorios 1');
+                console.log('accsum2: '+accsum2);
+                if(accsum2 == 0){
+                    $('#precio_accesorios').val(format2(parseInt(accsum2),'$'));
+                }else{
+                    $('#precio_accesorios').val(accsum2);
+                }
+                
                 if(flag == 0){ // Se llena por primera vez
                     for (var i = 1; i <= accesorioscont; i++) {
                         if ($('#accesorio-' + i).prop('checked')) {
@@ -458,11 +1021,11 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             sat = $('#accesorio-' + i).val();
                             param = sat.split('-');
                             stracc1 += sat + '@';
-                            if (param[1] != 'Kit Satelital') {
+                            //if (param[1] != 'Kit Satelital') {
                                 //console.log('enter kit1');
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
-                            }
+                            //}
                             if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
@@ -475,11 +1038,38 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $('#GestionFinanciamiento_entrada').attr('disabled', true);
                 $('#GestionFinanciamiento_tiempo_seguro').attr('disabled', true);
                 $('#GestionFinanciamiento_plazo').attr('disabled', true);
+                $('#valor_otro_accesorios1').val('');$('#sum-accesorios-val2').html('');$('#otro_accesorios_nombre1').val('');
+                
                 console.log('array accesorios op 1: '+acc1);
                 break;
             case '3':
+                $('#btn-accd').hide();
+                $('#total-acc2').val($('#precio_accesorios').val());
+                $('#precio_accesorios2').val(formatnumber(precionormal));
+                console.log('enter case 3');
+                cont_otro = $('#cont-otro4').val();
+                for (i = 1; i < 4; i++) {
+                    $('#otro_accesorios_nombre'+i).val('');
+                    $('#valor_otro_accesorios'+i).val('');
+                    if(i < cont_otro){
+                        $('.cont-opt-acc'+i).show();
+                    }else{
+                        $('.cont-opt-acc'+i).hide();
+                    }
+                }
+                cont_otro_n = $('#cont-otro4').val();
+                if(cont_otro_n == 2){
+                    $('#btn-ot').prop('disabled', false);$('.btn-canc-otro').hide();
+                    $('#btn-ot').addClass('btn-success');$('#options-cont-otro').val(2);
+                }
                 acc2.length = 0;
-                $('#precio_accesorios').val(precionormal);
+                console.log('ACCSUM3: '+accsum3);
+                if(accsum3 == 0){
+                    $('#precio_accesorios').val(format2(parseInt(accsum3),'$'));
+                }else{
+                    $('#precio_accesorios').val(accsum3);
+                }
+                
                 //console.log('llenar array de accesorios 2');
                 if(flag == 0){ // Se llena por primera vez
                     for (var i = 1; i <= accesorioscont; i++) {
@@ -489,10 +1079,10 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             sat = $('#accesorio-' + i).val();
                             param = sat.split('-');
                             stracc2 += sat + '@';
-                            if (param[1] != 'Kit Satelital') {
+                            //if (param[1] != 'Kit Satelital') {
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
-                            }
+                            //}
                             if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
@@ -505,10 +1095,27 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 $('#GestionFinanciamiento_entrada2').attr('disabled', true);
                 $('#GestionFinanciamiento_tiempo_seguro2').attr('disabled', true);
                 $('#GestionFinanciamiento_plazo2').attr('disabled', true);
+                $('#valor_otro_accesorios1').val('');$('#sum-accesorios-val2').html('');$('#otro_accesorios_nombre1').val('');
+                
                 console.log('array accesorios op 2: '+acc2);
                 break;
             case '4':
+                $('#btn-accd').hide();
+                $('#total-acc3').val($('#precio_accesorios').val());
+                $('#precio_accesorios2').val(formatnumber(precionormal));
                 acc3.length = 0;
+                console.log('enter case 4');
+                cont_otro = $('#cont-otro4').val();
+                for (i = 1; i < cont_otro; i++) { 
+                    $('#otro_accesorios_nombre'+i).val('');
+                    $('#valor_otro_accesorios'+i).val('');
+                    $('.cont-opt-acc'+i).show();
+                }
+                cont_otro_n = $('#cont-otro4').val();
+                if(cont_otro_n == 2){
+                    $('#btn-ot').prop('disabled', false);$('.btn-canc-otro').hide();
+                    $('#btn-ot').addClass('btn-success');$('#options-cont-otro').val(2);
+                }
                 if(flag == 0){ // Se llena por primera vez
                     for (var i = 1; i <= accesorioscont; i++) {
                         if ($('#accesorio-' + i).prop('checked')) {
@@ -517,10 +1124,10 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             sat = $('#accesorio-' + i).val();
                             param = sat.split('-');
                             stracc3 += sat + '@';
-                            if (param[1] != 'Kit Satelital') {
+                            //if (param[1] != 'Kit Satelital') {
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
-                            }
+                            //}
                             if(tipoFinanc ==  0 && param[1] == 'Kit Satelital'){
                                 $('#accesorio-' + i).attr('checked', false);
                                 $('#accspan-' + i).removeClass('label-price');
@@ -528,6 +1135,8 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         }
                     }
                     $('#GestionFinanciamiento_acc3').val(stracc3);
+                    $('#valor_otro_accesorios1').val('');$('#sum-accesorios-val2').html('');$('#otro_accesorios_nombre1').val('');
+                    
                     console.log('array accesorios op 3: '+acc3);
                 }
                 break;
@@ -543,17 +1152,28 @@ $id_version = $this->getIdVersion($id_vehiculo);
         }
     }
     function opcanc() {
-        console.log('accesorios1 opcanc: ' + acc1);
-        console.log('accesorios2 opcanc: ' + acc2);
-        console.log('accesorios3 opcanc: ' + acc3);
+        //console.log('accesorios1 opcanc: ' + acc1);
+        //console.log('accesorios2 opcanc: ' + acc2);
+        //console.log('accesorios3 opcanc: ' + acc3);
         var counter = $('#options-cont').val();
         var accesorioscont = $('#accesorioscont').val();
         var precionormal = $('#precio_normal').val();
         var tipoFinanc = $('#GestionFinanciamiento_tipo_financiamiento').val();
         var flag = $('#GestionFinanciamiento_flag').val();
-        console.log('counter en opcanc: ' + counter);
+        //console.log('COUNTER OP CANC: ' + counter);
         switch (counter) {
             case '3': // volcar datos al primer cotizador, checks 
+                // vaciar los campos de los accesorios manuales con su descripcion
+
+                cont_otro = $('#cont-otro2').val();
+                for (i = 1; i < 4; i++) {
+                    
+                    if(i < cont_otro){
+                        $('.cont-opt-acc'+i).show();
+                    }else{
+                        $('.cont-opt-acc'+i).hide();
+                    }
+                }
                 $('#GestionFinanciamiento_precio').attr('disabled', false);
                 $('#GestionFinanciamiento_entrada').attr('disabled', false);
                 $('#GestionFinanciamiento_tiempo_seguro').attr('disabled', false);
@@ -578,15 +1198,27 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     $('#accesorio-' + acc1[i]).attr('checked', true);
                     $('#accspan-' + acc1[i]).addClass('label-price');
                 }
+                
                 //acc1.length = 0;
                 if(tipoFinanc == 1){
-                    $('#precio_accesorios').val($('#GestionFinanciamiento_precio').val());
+                    finaciamiento = formatnumber($('#GestionFinanciamiento_precio').val()) - formatnumber($('#precio_normal').val());
+                    $('#precio_accesorios').val(format2(finaciamiento, '$'));
+                    $('#valor_otro_accesorios1').val(accsum1);$('#sum-accesorios-val2').html(accsum1);
                 }else{
-                    $('#precio_accesorios').val($('#GestionFinanciamiento_precio_contado').val());
+                    finaciamiento = formatnumber($('#GestionFinanciamiento_precio_contado').val()) - formatnumber($('#precio_normal').val());
+                    $('#precio_accesorios').val(format2(finaciamiento, '$'));
                 }
                 
                 break;
             case '4':// volcar datos al segundo cotizador, checks 
+                cont_otro = $('#cont-otro3').val();
+                for (i = 1; i < 4; i++) {
+                    if(i < cont_otro){
+                        $('.cont-opt-acc'+i).show();
+                    }else{
+                        $('.cont-opt-acc'+i).hide();
+                    }
+                }
                 $('#GestionFinanciamiento_precio2').attr('disabled', false);
                 $('#GestionFinanciamiento_entrada2').attr('disabled', false);
                 $('#GestionFinanciamiento_tiempo_seguro2').attr('disabled', false);
@@ -610,10 +1242,15 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     $('#accspan-' + acc2[i]).addClass('label-price');
                 }
                 //acc2.length = 0;
+                
                 if(tipoFinanc == 1){
-                    $('#precio_accesorios').val($('#GestionFinanciamiento_precio2').val());
+                    finaciamiento = formatnumber($('#GestionFinanciamiento_precio2').val()) - formatnumber($('#precio_normal').val());
+                    console.log('acc02: '+accsum2);
+                    $('#precio_accesorios').val(format2(finaciamiento, '$'));
+                    $('#valor_otro_accesorios1').val(accsum2);$('#sum-accesorios-val2').html(accsum2);
                 }else{
-                    $('#precio_accesorios').val($('#GestionFinanciamiento_precio_contado2').val());
+                    finaciamiento = formatnumber($('#GestionFinanciamiento_precio_contado2').val()) - formatnumber($('#precio_normal').val());
+                    $('#precio_accesorios').val(format2(finaciamiento, '$'));
                 }
                 
                 break;
@@ -768,9 +1405,11 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     required: true
                 }, 'GestionFinanciamiento1[plazo]': {
                     required: true
-                }, 'GestionFinanciamiento1[seguro]': {
+                }, 
+                'GestionFinanciamiento1[seguro]': {
                     required: true
-                }, 'GestionFinanciamiento1[couta_mensual]': {
+                },
+                'GestionFinanciamiento1[couta_mensual]': {
                     required: true
                 }, 'GestionFinanciamiento1[valor_financiamiento]': {
                     required: true
@@ -785,9 +1424,11 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     required: 'Ingrese tasa'
                 }, 'GestionFinanciamiento1[plazo]': {
                     required: 'Ingrese plazo'
-                }, 'GestionFinanciamiento1[seguro]': {
+                }
+                , 'GestionFinanciamiento1[seguro]': {
                     required: 'Ingrese seguro'
-                }, 'GestionFinanciamiento1[couta_mensual]': {
+                }
+                , 'GestionFinanciamiento1[couta_mensual]': {
                     required: 'Ingrese cuota mensual'
                 }, 'GestionFinanciamiento1[valor_financiamiento]': {
                     required: 'Ingrese valor financiamiento'
@@ -808,12 +1449,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         $('#GestionFinanciamiento_precio').removeAttr('disabled');
                         $('#GestionFinanciamiento_tasa').removeAttr('disabled');
                         //$('#GestionFinanciamiento_plazo').removeAttr('disabled');
-                        $('#GestionFinanciamiento_seguro').removeAttr('disabled');
+                        //$('#GestionFinanciamiento_seguro').removeAttr('disabled');
                         $('#GestionFinanciamiento_cuota_mensual').removeAttr('disabled');
                         $('#GestionFinanciamiento_plazo').removeAttr('disabled');
                         $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                         if ($('#GestionFinanciamiento_tipo_financiamiento').val() == 1)
                             $('.def').removeAttr('disabled');
+                        $('#total-acc1').val($('#precio_accesorios').val());
                         //$('#GestionFinanciamiento_acc1').val(stracc1);
                         break;
                     case '3':
@@ -833,6 +1475,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         $('#GestionFinanciamiento_plazo2').removeAttr('disabled');
                         $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                         $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
+                        $('#total-acc2').val($('#precio_accesorios').val());
                         //$('#GestionFinanciamiento_acc2').val(stracc2);
                         break;
                     case '4':
@@ -859,6 +1502,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                         $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
                         $('#GestionFinanciamiento_tiempo_seguro3').removeAttr('disabled');
+                        $('#total-acc3').val($('#precio_accesorios').val());
                         //$('#GestionFinanciamiento_acc3').val(stracc3);
                         break;
                 }
@@ -1066,306 +1710,599 @@ $id_version = $this->getIdVersion($id_vehiculo);
     //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
     $('#GestionFinanciamiento_seguro_contado').val(valorSeguro);
 }
-function calcFinanciamientoContado2() {
-    //var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
-    var valorVehiculo = $('#GestionFinanciamiento_precio_contado2').val();
-    //var plazo = $('#GestionFinanciamiento_plazo3').val();
-    var seguro = $('#GestionFinanciamiento_tiempo_seguro_contado2').val();
+    function calcFinanciamientoContado2() {
+        //var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
+        var valorVehiculo = formatnumber($('#GestionFinanciamiento_precio_contado2').val());
+        //var plazo = $('#GestionFinanciamiento_plazo3').val();
+        var seguro = $('#GestionFinanciamiento_tiempo_seguro_contado2').val();
 
-    valorVehiculo = valorVehiculo.replace(',', '');
-    valorVehiculo = valorVehiculo.replace('.', ',');
-    valorVehiculo = valorVehiculo.replace('$', '');
-    //console.log('valor vehiculo ant: '+valorVehiculo);
-    valorVehiculo = parseInt(valorVehiculo);
-    //console.log('valor vehiculo: '+valorVehiculo);
+        // valor del porcentaje del seguro
+        var porcentajePrimaNeta;
+        var porcentajeDerechos;
+        switch (seguro) {
+            case '0':
+                porcentajePrimaNeta = 0;
+                porcentajeDerechos = 0;
+                break;
+            case '1':
+                porcentajePrimaNeta = 0.04;
+                porcentajeDerechos = 0.0042;
+                break;
+            case '2':
+                porcentajePrimaNeta = 0.0740;
+                porcentajeDerechos = 0.00318;
+                break;
+            case '3':
+                porcentajePrimaNeta = 0.1046;
+                porcentajeDerechos = 0.0022;
+                break;
+            case '4':
+            case '5':
+                porcentajePrimaNeta = 0.13214;
+                porcentajeDerechos = 0.0017;
+                break;
+            default:
 
-    // valor del porcentaje del seguro
-    var porcentajePrimaNeta;
-    var porcentajeDerechos;
-    switch (seguro) {
-        case '0':
-            porcentajePrimaNeta = 0;
-            porcentajeDerechos = 0;
-            break;
-        case '1':
-            porcentajePrimaNeta = 0.04;
-            porcentajeDerechos = 0.0042;
-            break;
-        case '2':
-            porcentajePrimaNeta = 0.0740;
-            porcentajeDerechos = 0.00318;
-            break;
-        case '3':
-            porcentajePrimaNeta = 0.1046;
-            porcentajeDerechos = 0.0022;
-            break;
-        case '4':
-        case '5':
-            porcentajePrimaNeta = 0.13214;
-            porcentajeDerechos = 0.0017;
-            break;
-        default:
+        }
+        //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
+        var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
+        //console.log('PRIMA NETA--: '+primaNeta);
+        var superBancos = primaNeta * 0.035;
+        var seguroCampesino = primaNeta * 0.00500;
+        var derechosEmision = primaNeta * porcentajeDerechos;
+        var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
+        var iva = subtotal * 0.12;
+        var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
+        //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
+        var precioAccesorios = formatnumber($('#precio_accesorios').val());
+        var entrada = precioAccesorios / 4;
+        var valorSeguro = format2(primaTotal, '$');
+        var valorTotal = valorVehiculo + primaTotal;
+        valorTotal = format2(valorTotal, '$');
+        //alert(valorTotal);
+        $('#GestionFinanciamiento_precio_contado_total2').val(valorTotal);
+        //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+        $('#GestionFinanciamiento_seguro_contado2').val(valorSeguro);
     }
-    //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
-    var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
-    //console.log('PRIMA NETA--: '+primaNeta);
-    var superBancos = primaNeta * 0.035;
-    var seguroCampesino = primaNeta * 0.00500;
-    var derechosEmision = primaNeta * porcentajeDerechos;
-    var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
-    var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
-    //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
-    var precioAccesorios = $('#precio_accesorios').val();
-    precioAccesorios = precioAccesorios.replace(',', '');
-    precioAccesorios = precioAccesorios.replace('.', ',');
-    precioAccesorios = precioAccesorios.replace('$', '');
-    precioAccesorios = parseInt(precioAccesorios);
-    var entrada = precioAccesorios / 4;
+    function calcFinanciamientoContado3() {
+        //var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
+        var valorVehiculo = formatnumber($('#GestionFinanciamiento_precio_contado3').val());
+        //var plazo = $('#GestionFinanciamiento_plazo3').val();
+        var seguro = $('#GestionFinanciamiento_tiempo_seguro_contado3').val();
 
-    var valorSeguro = format2(primaTotal, '$');
-    var valorTotal = valorVehiculo + primaTotal;
-    valorTotal = format2(valorTotal, '$');
-    //alert(valorTotal);
-    $('#GestionFinanciamiento_precio_contado_total2').val(valorTotal);
-    //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-    $('#GestionFinanciamiento_seguro_contado2').val(valorSeguro);
-}
+        // valor del porcentaje del seguro
+        var porcentajePrimaNeta;
+        var porcentajeDerechos;
+        switch (seguro) {
+            case '0':
+                porcentajePrimaNeta = 0;
+                porcentajeDerechos = 0;
+                break;
+            case '1':
+                porcentajePrimaNeta = 0.04;
+                porcentajeDerechos = 0.0042;
+                break;
+            case '2':
+                porcentajePrimaNeta = 0.0740;
+                porcentajeDerechos = 0.00318;
+                break;
+            case '3':
+                porcentajePrimaNeta = 0.1046;
+                porcentajeDerechos = 0.0022;
+                break;
+            case '4':
+            case '5':
+                porcentajePrimaNeta = 0.13214;
+                porcentajeDerechos = 0.0017;
+                break;
+            default:
 
-function calcFinanciamientoContado3() {
-    //var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
-    var valorVehiculo = $('#GestionFinanciamiento_precio_contado3').val();
-    //var plazo = $('#GestionFinanciamiento_plazo3').val();
-    var seguro = $('#GestionFinanciamiento_tiempo_seguro_contado3').val();
+        }
+        //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
+        var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
+        //console.log('PRIMA NETA--: '+primaNeta);
+        var superBancos = primaNeta * 0.035;
+        var seguroCampesino = primaNeta * 0.00500;
+        var derechosEmision = primaNeta * porcentajeDerechos;
+        var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
+        var iva = subtotal * 0.12;
+        var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
+        //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
-    valorVehiculo = valorVehiculo.replace(',', '');
-    valorVehiculo = valorVehiculo.replace('.', ',');
-    valorVehiculo = valorVehiculo.replace('$', '');
-    //console.log('valor vehiculo ant: '+valorVehiculo);
-    valorVehiculo = parseInt(valorVehiculo);
-    //console.log('valor vehiculo: '+valorVehiculo);
+        var precioAccesorios = formatnumber($('#precio_accesorios').val());
+        var entrada = precioAccesorios / 4;
 
-    // valor del porcentaje del seguro
-    var porcentajePrimaNeta;
-    var porcentajeDerechos;
-    switch (seguro) {
-        case '0':
-            porcentajePrimaNeta = 0;
-            porcentajeDerechos = 0;
-            break;
-        case '1':
-            porcentajePrimaNeta = 0.04;
-            porcentajeDerechos = 0.0042;
-            break;
-        case '2':
-            porcentajePrimaNeta = 0.0740;
-            porcentajeDerechos = 0.00318;
-            break;
-        case '3':
-            porcentajePrimaNeta = 0.1046;
-            porcentajeDerechos = 0.0022;
-            break;
-        case '4':
-        case '5':
-            porcentajePrimaNeta = 0.13214;
-            porcentajeDerechos = 0.0017;
-            break;
-        default:
-
+        var valorSeguro = format2(primaTotal, '$');
+        var valorTotal = valorVehiculo + primaTotal;
+        valorTotal = format2(valorTotal, '$');
+        //alert(valorTotal);
+        $('#GestionFinanciamiento_precio_contado_total3').val(valorTotal);
+        //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+        $('#GestionFinanciamiento_seguro_contado3').val(valorSeguro);
     }
-    //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
-    var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
-    //console.log('PRIMA NETA--: '+primaNeta);
-    var superBancos = primaNeta * 0.035;
-    var seguroCampesino = primaNeta * 0.00500;
-    var derechosEmision = primaNeta * porcentajeDerechos;
-    var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
-    var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
-    //console.log('----PRIMA TOTAL----: ' + primaTotal);
+    function calcFinanciamiento3() {
+        var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
+        var valorVehiculo = $('#GestionFinanciamiento_precio3').val();
+        var plazo = $('#GestionFinanciamiento_plazo3').val();
+        var seguro = $('#GestionFinanciamiento_tiempo_seguro3').val();
 
-    var precioAccesorios = $('#precio_accesorios').val();
-    precioAccesorios = precioAccesorios.replace(',', '');
-    precioAccesorios = precioAccesorios.replace('.', ',');
-    precioAccesorios = precioAccesorios.replace('$', '');
-    precioAccesorios = parseInt(precioAccesorios);
-    var entrada = precioAccesorios / 4;
+        valorVehiculo = formatnumber(valorVehiculo);
+        //console.log('valor vehiculo: '+valorVehiculo);
 
-    var valorSeguro = format2(primaTotal, '$');
-    var valorTotal = valorVehiculo + primaTotal;
-    valorTotal = format2(valorTotal, '$');
-    //alert(valorTotal);
-    $('#GestionFinanciamiento_precio_contado_total3').val(valorTotal);
-    //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-    $('#GestionFinanciamiento_seguro_contado3').val(valorSeguro);
-}
-function calcFinanciamiento3() {
-    var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
-    var valorVehiculo = $('#GestionFinanciamiento_precio3').val();
-    var plazo = $('#GestionFinanciamiento_plazo3').val();
-    var seguro = $('#GestionFinanciamiento_tiempo_seguro3').val();
+        // valor del porcentaje del seguro
+        var porcentajePrimaNeta;
+        var porcentajeDerechos;
+        switch (seguro) {
+            case '0':
+                porcentajePrimaNeta = 0;
+                porcentajeDerechos = 0;
+                break;
+            case '1':
+                porcentajePrimaNeta = 0.04;
+                porcentajeDerechos = 0.0042;
+                break;
+            case '2':
+                porcentajePrimaNeta = 0.0740;
+                porcentajeDerechos = 0.00318;
+                break;
+            case '3':
+                porcentajePrimaNeta = 0.1046;
+                porcentajeDerechos = 0.0022;
+                break;
+            case '4':
+            case '5':
+                porcentajePrimaNeta = 0.13214;
+                porcentajeDerechos = 0.0017;
+                break;
+            default:
 
-    valorVehiculo = valorVehiculo.replace(',', '');
-    valorVehiculo = valorVehiculo.replace('.', ',');
-    valorVehiculo = valorVehiculo.replace('$', '');
-    //console.log('valor vehiculo ant: '+valorVehiculo);
-    valorVehiculo = parseInt(valorVehiculo);
-    //console.log('valor vehiculo: '+valorVehiculo);
-
-    // valor del porcentaje del seguro
-    var porcentajePrimaNeta;
-    var porcentajeDerechos;
-    switch (seguro) {
-        case '1':
-            porcentajePrimaNeta = 0.04;
-            porcentajeDerechos = 0.0042;
-            break;
-        case '2':
-            porcentajePrimaNeta = 0.0740;
-            porcentajeDerechos = 0.00318;
-            break;
-        case '3':
-            porcentajePrimaNeta = 0.1046;
-            porcentajeDerechos = 0.0022;
-            break;
-        case '4':
-        case '5':
-            porcentajePrimaNeta = 0.13214;
-            porcentajeDerechos = 0.0017;
-            break;
-        default:
-
+        }
+        //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
+        var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
+        //console.log('PRIMA NETA--: '+primaNeta);
+        var superBancos = primaNeta * 0.035;
+        var seguroCampesino = primaNeta * 0.00500;
+        var derechosEmision = primaNeta * porcentajeDerechos;
+        var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
+        var iva = subtotal * 0.12;
+        var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
+        //console.log('----PRIMA TOTAL----: ' + primaTotal);
+        var precioEntrada = valorEntrada1.replace(',', '');
+        precioEntrada = precioEntrada.replace('.', ',');
+        precioEntrada = precioEntrada.replace('$', '');
+        precioEntrada = parseInt(precioEntrada);
+        var precioAccesorios = formatnumber($('#precio_normal').val());
+        var entrada = precioAccesorios / 4;
+        if (precioEntrada < entrada) {
+            $('.error-entrada3').show();$('#GestionFinanciamiento_entrada3').focus();
+            return false;
+        } else {
+            $('.error-entrada3').hide();
+            var valorFinanciamiento = precioAccesorios - precioEntrada;
+            var valorFinanciamientoAnt = valorFinanciamiento;
+            //console.log('valor fin: '+valorFinanciamiento);
+            valorFinanciamiento += primaTotal + 475.75;
+            valorFinanciamientoAnt += primaTotal + 475.75;
+            valorFinanciamiento = format2(valorFinanciamiento, '$');
+            var valorSeguro = format2(primaTotal, '$');
+            //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+            $('#GestionFinanciamiento_seguro3').val(valorSeguro);
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
+                beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },
+                dataType: 'json',
+                type: 'POST',
+                data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+                success: function (data) {
+                    var cuotamensual = parseInt(data.cuota);
+                    cuotamensual = format2(cuotamensual, '$');
+                    $('#GestionFinanciamiento_cuota_mensual3').val(cuotamensual);
+                    var valorFin = parseInt(data.valorFinanciamiento);
+                    valorFin = format2(valorFin, '$');
+                    $('#GestionFinanciamiento_valor_financiamiento3').val(valorFin);
+                    $('#bg_negro').hide();
+                }
+            });
+        }
     }
-    //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
-    var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
-    //console.log('PRIMA NETA--: '+primaNeta);
-    var superBancos = primaNeta * 0.035;
-    var seguroCampesino = primaNeta * 0.00500;
-    var derechosEmision = primaNeta * porcentajeDerechos;
-    var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
-    var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
-    //console.log('----PRIMA TOTAL----: ' + primaTotal);
-    var precioEntrada = valorEntrada1.replace(',', '');
-    precioEntrada = precioEntrada.replace('.', ',');
-    precioEntrada = precioEntrada.replace('$', '');
-    precioEntrada = parseInt(precioEntrada);
-    var precioAccesorios = $('#precio_accesorios').val();
-    precioAccesorios = precioAccesorios.replace(',', '');
-    precioAccesorios = precioAccesorios.replace('.', ',');
-    precioAccesorios = precioAccesorios.replace('$', '');
-    precioAccesorios = parseInt(precioAccesorios);
-    var entrada = precioAccesorios / 4;
-    if (precioEntrada < entrada) {
-        $('.error-entrada3').show();
-        return false;
-    } else {
-        $('.error-entrada3').hide();
+    function calcFinanciamiento() {
+    //console.log('enter calcfinanciammiento 1');
+        var valorEntrada1 = $('#GestionFinanciamiento_entrada').attr('value');
+        var valorVehiculo = $('#GestionFinanciamiento_precio').val();
+        console.log('valor vehiculo: ' + valorVehiculo);
+        var plazo = $('#GestionFinanciamiento_plazo').val();
+        var seguro = $('#GestionFinanciamiento_tiempo_seguro').val();
+
+        valorVehiculo = formatnumber(valorVehiculo);
+                // valor del porcentaje del seguro
+        var porcentajePrimaNeta;
+        var porcentajeDerechos;
+        switch (seguro) {
+            case '0':
+                porcentajePrimaNeta = 0;
+                porcentajeDerechos = 0;
+                break;
+            case '1':
+                porcentajePrimaNeta = 0.04;
+                porcentajeDerechos = 0.0042;
+                break;
+            case '2':
+                porcentajePrimaNeta = 0.0740;
+                porcentajeDerechos = 0.00318;
+                break;
+            case '3':
+                porcentajePrimaNeta = 0.1046;
+                porcentajeDerechos = 0.0022;
+                break;
+            case '4':
+            case '5':
+                porcentajePrimaNeta = 0.13214;
+                porcentajeDerechos = 0.0017;
+                break;
+            default:
+
+        }
+        //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
+        var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
+        //console.log('PRIMA NETA--: '+primaNeta);
+        var superBancos = primaNeta * 0.035;
+        var seguroCampesino = primaNeta * 0.00500;
+        var derechosEmision = primaNeta * porcentajeDerechos;
+        var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
+        var iva = subtotal * 0.12;
+        var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
+        //console.log('----PRIMA TOTAL----: ' + primaTotal);
+        
+        precioEntrada = formatnumber(valorEntrada1);
+        //var precioAccesorios = $('#precio_accesorios').val();
+        var precioAccesorios = formatnumber($('#precio_normal').val());
+        var entrada = precioAccesorios / 4;
+        if (precioEntrada < entrada) {
+            $('.error-entrada').show();$('#GestionFinanciamiento_entrada').focus();
+            return false;
+        } else {
+            $('.error-entrada').hide();
+            var valorFinanciamiento = precioAccesorios - precioEntrada;
+            var valorFinanciamientoAnt = valorFinanciamiento;
+            //console.log('valor fin: '+valorFinanciamiento);
+            valorFinanciamiento += primaTotal + 475.75;
+            valorFinanciamientoAnt += primaTotal + 475.75;
+            valorFinanciamiento = format2(valorFinanciamiento, '$');
+            var valorSeguro = format2(primaTotal, '$');
+            //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+            $('#GestionFinanciamiento_seguro').val(valorSeguro);
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
+                beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },
+                dataType: 'json',
+                type: 'POST',
+                data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+                success: function (data) {
+                    var cuotamensual = parseInt(data.cuota);
+                    cuotamensual = format2(cuotamensual, '$');
+                    $('#GestionFinanciamiento_cuota_mensual').val(cuotamensual);
+                    var valorFin = parseInt(data.valorFinanciamiento);
+                    valorFin = format2(valorFin, '$');
+                    $('#GestionFinanciamiento_valor_financiamiento').val(valorFin);
+                    $('#bg_negro').hide();
+                    console.log('VALOR ACCCESORIO 1 FINAN: '+acc1);
+                }
+            });
+        }
+    }
+    function calcFinanciamiento2() {
+        var valorEntrada1 = $('#GestionFinanciamiento_entrada2').attr('value');
+        var valorVehiculo = $('#GestionFinanciamiento_precio2').val();
+        var plazo = $('#GestionFinanciamiento_plazo2').val();
+        var seguro = $('#GestionFinanciamiento_tiempo_seguro2').val();
+
+        valorVehiculo = formatnumber(valorVehiculo);
+        //console.log('valor vehiculo: '+valorVehiculo);
+
+        // valor del porcentaje del seguro
+        var porcentajePrimaNeta;
+        var porcentajeDerechos;
+        switch (seguro) {
+            case '0':
+                porcentajePrimaNeta = 0;
+                porcentajeDerechos = 0;
+                break;
+            case '1':
+                porcentajePrimaNeta = 0.04;
+                porcentajeDerechos = 0.0042;
+                break;
+            case '2':
+                porcentajePrimaNeta = 0.0740;
+                porcentajeDerechos = 0.00318;
+                break;
+            case '3':
+                porcentajePrimaNeta = 0.1046;
+                porcentajeDerechos = 0.0022;
+                break;
+            case '4':
+            case '5':
+                porcentajePrimaNeta = 0.13214;
+                porcentajeDerechos = 0.0017;
+                break;
+            default:
+
+        }
+        //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
+        var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
+        //console.log('PRIMA NETA--: '+primaNeta);
+        var superBancos = primaNeta * 0.035;
+        var seguroCampesino = primaNeta * 0.00500;
+        var derechosEmision = primaNeta * porcentajeDerechos;
+        var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
+        var iva = subtotal * 0.12;
+        var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
+        //console.log('----PRIMA TOTAL----: ' + primaTotal);
+        var precioEntrada = valorEntrada1.replace(',', '');
+        precioEntrada = precioEntrada.replace('.', ',');
+        precioEntrada = precioEntrada.replace('$', '');
+        precioEntrada = parseInt(precioEntrada);
+        var precioAccesorios = formatnumber($('#precio_normal').val());
+        var entrada = precioAccesorios / 4;
+        if (precioEntrada < entrada) {
+            $('.error-entrada2').show();$('#GestionFinanciamiento_entrada2').focus();
+            return false;
+        } else {
+            $('.error-entrada2').hide();
+            var valorFinanciamiento = precioAccesorios - precioEntrada;
+            var valorFinanciamientoAnt = valorFinanciamiento;
+            //console.log('valor fin: '+valorFinanciamiento);
+            valorFinanciamiento += primaTotal + 475.75;
+            valorFinanciamientoAnt += primaTotal + 475.75;
+            valorFinanciamiento = format2(valorFinanciamiento, '$');
+            var valorSeguro = format2(primaTotal, '$');
+            //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+            $('#GestionFinanciamiento_seguro2').val(valorSeguro);
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
+                beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },
+                dataType: 'json',
+                type: 'POST',
+                data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+                success: function (data) {
+                    var cuotamensual = parseInt(data.cuota);
+                    cuotamensual = format2(cuotamensual, '$');
+                    $('#GestionFinanciamiento_cuota_mensual2').val(cuotamensual);
+                    var valorFin = parseInt(data.valorFinanciamiento);
+                    valorFin = format2(valorFin, '$');
+                    $('#GestionFinanciamiento_valor_financiamiento2').val(valorFin);
+                    $('#bg_negro').hide();
+                }
+            });
+        }
+    }
+    function edit(id){
+        var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val(); 
+        //console.log('tipo financiamiento: '+tipoFinanciamiento);
+        var accesorioscont = $('#accesorioscont').val();
+        var precioanterior = formatnumber($('#precio_accesorios2').val());
+        var accesorio2 = 0;
+        //console.log('valor id: '+id);
+        switch(id){
+            case 1:
+                console.log('EDITAR ACCESORIOS 1: '+acc1);
+                $('.cont-options1').addClass('cont-options1-after');
+                $('.cont-options2').removeClass('cont-options1-after');
+                $('.cont-options3').removeClass('cont-options1-after');
+                $('#GestionFinanciamiento_mod').val(2);
+                $('#GestionFinanciamiento_entrada').removeAttr('disabled');
+                $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
+                $('#GestionFinanciamiento_plazo').removeAttr('disabled');
+
+
+                // primero quitar los checks de los otros que esten seleccionados
+                if(tipoFinanciamiento == 0){
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        //console.log('enter checked false: '+ j);
+                        $('#accesorio-' + j).attr('checked', false);
+                        $('#accspan-' + j).removeClass('label-price');
+                    }
+                }else{// para credito no quitar check al Kit Satelital
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        if (param[1] != 'Kit Satelital') {
+                            //console.log('enter checked false: '+ j);
+                            $('#accesorio-' + j).attr('checked', false);
+                            $('#accspan-' + j).removeClass('label-price');
+                        }
+                    }
+                }
+
+                // poner checks a los elementos correspondientes
+                var lt = acc1.length;
+                for (var i = 0; i <= lt; i++) {
+                    $('#accesorio-' + acc1[i]).attr('checked', true);
+                    // llamar funcion de financiamiento
+                    $('#accspan-' + acc1[i]).addClass('label-price');
+                }
+
+                for (var k = 0; k < lt; k++) {
+                   pri = $('#accesorio-' + acc1[k]).val();
+                    //console.log('val pri:'+pri);
+                    params2 = pri.split('-');
+                    if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
+                }
+                // sumar todo los valores de los checks al precio vehiculo
+                finaciamiento = formatnumber($('#GestionFinanciamiento_precio').val()) - formatnumber($('#precio_normal').val());
+                var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
+                $('#precio_accesorios').val(format2(finaciamiento, '$'));
+                if(tipoFinanciamiento == 0){ // TIPO CONTADO
+                    secure = $('#GestionFinanciamiento_tiempo_seguro_contado').val();
+                    if(secure != '' || secure != '0'){
+                        calcFinanciamientoContado();
+                    }
+                }else{
+                    $('#GestionFinanciamiento_precio').val(format2(precionuevo, '$'));
+                    calcFinanciamiento();
+                }
+                break;
+            case 2:
+                console.log('EDITAR ACCESORIOS 2: '+acc2);
+                $('#GestionFinanciamiento_mod').val(3);
+                $('.cont-options2').addClass('cont-options1-after');
+                $('.cont-options1').removeClass('cont-options1-after');
+                $('.cont-options3').removeClass('cont-options1-after');
+                $('#GestionFinanciamiento_entrada2').removeAttr('disabled');
+                $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
+                $('#GestionFinanciamiento_plazo2').removeAttr('disabled');
+                // primero quitar los checks de los otros que esten seleccionados
+                if(tipoFinanciamiento == 0){
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        //console.log('enter checked false: '+ j);
+                        $('#accesorio-' + j).attr('checked', false);
+                        $('#accspan-' + j).removeClass('label-price');
+                    }
+                }else{// para credito no quitar check al Kit Satelital
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        if (param[1] != 'Kit Satelital') {
+                            //console.log('enter checked false: '+ j);
+                            $('#accesorio-' + j).attr('checked', false);
+                            $('#accspan-' + j).removeClass('label-price');
+                        }
+                    }
+                }
+                // poner checks a los elementos correspondientes
+                var lt = acc2.length;
+                for (var i = 0; i <= lt; i++) {
+                    $('#accesorio-' + acc2[i]).attr('checked', true);
+                    // llamar funcion de financiamiento
+                    $('#accspan-' + acc2[i]).addClass('label-price');
+                }
+
+                for (var k = 0; k < lt; k++) {
+                   pri = $('#accesorio-' + acc2[k]).val();
+                    console.log('val pri:'+pri);
+                    params2 = pri.split('-');
+                    if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
+                }
+                // sumar todo los valores de los checks al precio vehiculo
+
+                var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
+                finaciamiento = formatnumber($('#GestionFinanciamiento_precio2').val()) - formatnumber($('#precio_normal').val());
+                $('#precio_accesorios').val(format2(finaciamiento, '$'));
+
+                if(tipoFinanciamiento == 0){ // TIPO CONTADO
+                    secure = $('#GestionFinanciamiento_tiempo_seguro_contado2').val();
+                    if(secure != '' || secure != '0'){
+                        calcFinanciamientoContado2();
+                    }
+                }else{
+                    $('#GestionFinanciamiento_precio2').val(format2(precionuevo, '$'));
+                    calcFinanciamiento2();
+                }
+
+                break;
+            case 3:
+                console.log('EDITAR ACCESORIOS 2: '+acc3);
+                $('#GestionFinanciamiento_mod').val(4);
+                $('.cont-options3').addClass('cont-options1-after');
+                $('.cont-options1').removeClass('cont-options1-after');
+                $('.cont-options2').removeClass('cont-options1-after');
+                $('#GestionFinanciamiento_entrada3').removeAttr('disabled');
+                $('#GestionFinanciamiento_tiempo_seguro3').removeAttr('disabled');
+                $('#GestionFinanciamiento_plazo3').removeAttr('disabled');
+                // primero quitar los checks de los otros que esten seleccionados
+                if(tipoFinanciamiento == 0){
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        //console.log('enter checked false: '+ j);
+                        $('#accesorio-' + j).attr('checked', false);
+                        $('#accspan-' + j).removeClass('label-price');
+                    }
+                }else{// para credito no quitar check al Kit Satelital
+                    for (var j = 1; j <= accesorioscont; j++) {
+                        sat = $('#accesorio-' + j).val();
+                        param = sat.split('-');
+                        if (param[1] != 'Kit Satelital') {
+                            //console.log('enter checked false: '+ j);
+                            $('#accesorio-' + j).attr('checked', false);
+                            $('#accspan-' + j).removeClass('label-price');
+                        }
+                    }
+                }
+                // poner checks a los elementos correspondientes
+                var lt = acc3.length;
+                for (var i = 0; i <= lt; i++) {
+                    $('#accesorio-' + acc3[i]).attr('checked', true);
+                    // llamar funcion de financiamiento
+                    $('#accspan-' + acc3[i]).addClass('label-price');
+                }
+
+                for (var k = 0; k < lt; k++) {
+                   pri = $('#accesorio-' + acc3[k]).val();
+                    console.log('val pri:'+pri);
+                    params2 = pri.split('-');
+                    if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
+                }
+                // sumar todo los valores de los checks al precio vehiculo
+
+                var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
+                finaciamiento = formatnumber($('#GestionFinanciamiento_precio3').val()) - formatnumber($('#precio_normal').val());
+                $('#precio_accesorios').val(format2(finaciamiento, '$'));
+
+                if(tipoFinanciamiento == 0){ // TIPO CONTADO
+                    secure = $('#GestionFinanciamiento_tiempo_seguro_contado3').val();
+                    if(secure != '' || secure != '0'){
+                        calcFinanciamientoContado3();
+                    }
+                }else{
+                    $('#GestionFinanciamiento_precio3').val(format2(precionuevo, '$'));
+                    calcFinanciamiento3();
+                }
+
+                break;
+        }
+    }
+    function save(id){
+        switch(id){
+            case 1:
+               calcFinanciamiento();$('.cont-options1').removeClass('cont-options1-after');
+            case 2:
+               calcFinanciamiento2();$('.cont-options2').removeClass('cont-options2-after'); 
+            break;
+            case 3:
+               calcFinanciamiento3();$('.cont-options3').removeClass('cont-options3-after'); 
+            break;
+        }    
+    }
+
+    function deleter(id){
+        console.log(id);
+    }
+    function calcSeguro(){
+        console.log('enter calc seguro');
+        var precioEntrada = formatnumber($('#GestionFinanciamiento_entrada').attr('value'));
+        var precioAccesorios = formatnumber($('#GestionFinanciamiento_precio').val());
+        
         var valorFinanciamiento = precioAccesorios - precioEntrada;
+        var plazo = $('#GestionFinanciamiento_plazo').val();
+        primaTotal = formatnumber($('#GestionFinanciamiento_seguro').val());
         var valorFinanciamientoAnt = valorFinanciamiento;
-        //console.log('valor fin: '+valorFinanciamiento);
         valorFinanciamiento += primaTotal + 475.75;
         valorFinanciamientoAnt += primaTotal + 475.75;
-        valorFinanciamiento = format2(valorFinanciamiento, '$');
-        var valorSeguro = format2(primaTotal, '$');
+        //valorFinanciamiento = format2(valorFinanciamiento, '$');
+        //var valorSeguro = format2(primaTotal, '$');
         //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-        $('#GestionFinanciamiento_seguro3').val(valorSeguro);
-        $.ajax({
-            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
-            beforeSend: function (xhr) {
-                $('#bg_negro').show();  // #bg_negro must be defined somewhere
-            },
-            dataType: 'json',
-            type: 'POST',
-            data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
-            success: function (data) {
-                var cuotamensual = parseInt(data.cuota);
-                cuotamensual = format2(cuotamensual, '$');
-                $('#GestionFinanciamiento_cuota_mensual3').val(cuotamensual);
-                var valorFin = parseInt(data.valorFinanciamiento);
-                valorFin = format2(valorFin, '$');
-                $('#GestionFinanciamiento_valor_financiamiento3').val(valorFin);
-                $('#bg_negro').hide();
-            }
-        });
-    }
-}
-function calcFinanciamiento() {
-console.log('enter calcfinanciammiento 1');
-    var valorEntrada1 = $('#GestionFinanciamiento_entrada').attr('value');
-    var valorVehiculo = $('#GestionFinanciamiento_precio').val();
-    console.log('valor vehiculo: ' + valorVehiculo);
-    var plazo = $('#GestionFinanciamiento_plazo').val();
-    var seguro = $('#GestionFinanciamiento_tiempo_seguro').val();
-
-
-    valorVehiculo = valorVehiculo.replace(',', '');
-    valorVehiculo = valorVehiculo.replace('.', ',');
-    valorVehiculo = valorVehiculo.replace('$', '');
-    //console.log('valor vehiculo ant: '+valorVehiculo);
-    valorVehiculo = parseInt(valorVehiculo);
-    //console.log('valor vehiculo: '+valorVehiculo);
-
-    // valor del porcentaje del seguro
-    var porcentajePrimaNeta;
-    var porcentajeDerechos;
-    switch (seguro) {
-        case '1':
-            porcentajePrimaNeta = 0.04;
-            porcentajeDerechos = 0.0042;
-            break;
-        case '2':
-            porcentajePrimaNeta = 0.0740;
-            porcentajeDerechos = 0.00318;
-            break;
-        case '3':
-            porcentajePrimaNeta = 0.1046;
-            porcentajeDerechos = 0.0022;
-            break;
-        case '4':
-        case '5':
-            porcentajePrimaNeta = 0.13214;
-            porcentajeDerechos = 0.0017;
-            break;
-        default:
-
-    }
-    //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
-    var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
-    //console.log('PRIMA NETA--: '+primaNeta);
-    var superBancos = primaNeta * 0.035;
-    var seguroCampesino = primaNeta * 0.00500;
-    var derechosEmision = primaNeta * porcentajeDerechos;
-    var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
-    var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
-    //console.log('----PRIMA TOTAL----: ' + primaTotal);
-    var precioEntrada = valorEntrada1.replace(',', '');
-    precioEntrada = precioEntrada.replace('.', ',');
-    precioEntrada = precioEntrada.replace('$', '');
-    precioEntrada = parseInt(precioEntrada);
-    var precioAccesorios = $('#precio_accesorios').val();
-    precioAccesorios = precioAccesorios.replace(',', '');
-    precioAccesorios = precioAccesorios.replace('.', ',');
-    precioAccesorios = precioAccesorios.replace('$', '');
-    precioAccesorios = parseInt(precioAccesorios);
-    var entrada = precioAccesorios / 4;
-    if (precioEntrada < entrada) {
-        $('.error-entrada').show();
-        return false;
-    } else {
-        $('.error-entrada').hide();
-        var valorFinanciamiento = precioAccesorios - precioEntrada;
-        var valorFinanciamientoAnt = valorFinanciamiento;
-        //console.log('valor fin: '+valorFinanciamiento);
-        valorFinanciamiento += primaTotal + 475.75;
-        valorFinanciamientoAnt += primaTotal + 475.75;
-        valorFinanciamiento = format2(valorFinanciamiento, '$');
-        var valorSeguro = format2(primaTotal, '$');
-        //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-        $('#GestionFinanciamiento_seguro').val(valorSeguro);
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
             beforeSend: function (xhr) {
@@ -1385,79 +2322,23 @@ console.log('enter calcfinanciammiento 1');
                 console.log('VALOR ACCCESORIO 1 FINAN: '+acc1);
             }
         });
+        
     }
-}
-function calcFinanciamiento2() {
-    var valorEntrada1 = $('#GestionFinanciamiento_entrada2').attr('value');
-    var valorVehiculo = $('#GestionFinanciamiento_precio2').val();
-    var plazo = $('#GestionFinanciamiento_plazo2').val();
-    var seguro = $('#GestionFinanciamiento_tiempo_seguro2').val();
 
-    valorVehiculo = valorVehiculo.replace(',', '');
-    valorVehiculo = valorVehiculo.replace('.', ',');
-    valorVehiculo = valorVehiculo.replace('$', '');
-    //console.log('valor vehiculo ant: '+valorVehiculo);
-    valorVehiculo = parseInt(valorVehiculo);
-    //console.log('valor vehiculo: '+valorVehiculo);
-
-    // valor del porcentaje del seguro
-    var porcentajePrimaNeta;
-    var porcentajeDerechos;
-    switch (seguro) {
-        case '1':
-            porcentajePrimaNeta = 0.04;
-            porcentajeDerechos = 0.0042;
-            break;
-        case '2':
-            porcentajePrimaNeta = 0.0740;
-            porcentajeDerechos = 0.00318;
-            break;
-        case '3':
-            porcentajePrimaNeta = 0.1046;
-            porcentajeDerechos = 0.0022;
-            break;
-        case '4':
-        case '5':
-            porcentajePrimaNeta = 0.13214;
-            porcentajeDerechos = 0.0017;
-            break;
-        default:
-
-    }
-    //console.log('porcentaje prime neta: '+porcentajePrimaNeta);
-    var primaNeta = valorVehiculo * parseFloat(porcentajePrimaNeta);
-    //console.log('PRIMA NETA--: '+primaNeta);
-    var superBancos = primaNeta * 0.035;
-    var seguroCampesino = primaNeta * 0.00500;
-    var derechosEmision = primaNeta * porcentajeDerechos;
-    var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
-    var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
-    //console.log('----PRIMA TOTAL----: ' + primaTotal);
-    var precioEntrada = valorEntrada1.replace(',', '');
-    precioEntrada = precioEntrada.replace('.', ',');
-    precioEntrada = precioEntrada.replace('$', '');
-    precioEntrada = parseInt(precioEntrada);
-    var precioAccesorios = $('#precio_accesorios').val();
-    precioAccesorios = precioAccesorios.replace(',', '');
-    precioAccesorios = precioAccesorios.replace('.', ',');
-    precioAccesorios = precioAccesorios.replace('$', '');
-    precioAccesorios = parseInt(precioAccesorios);
-    var entrada = precioAccesorios / 4;
-    if (precioEntrada < entrada) {
-        $('.error-entrada2').show();
-        return false;
-    } else {
-        $('.error-entrada2').hide();
+    function calcSeguro2(){
+        console.log('enter calc seguro2');
+        var precioEntrada = formatnumber($('#GestionFinanciamiento_entrada2').attr('value'));
+        var precioAccesorios = formatnumber($('#GestionFinanciamiento_precio2').val());
+        
         var valorFinanciamiento = precioAccesorios - precioEntrada;
+        var plazo = $('#GestionFinanciamiento_plazo2').val();
+        primaTotal = formatnumber($('#GestionFinanciamiento_seguro2').val());
         var valorFinanciamientoAnt = valorFinanciamiento;
-        //console.log('valor fin: '+valorFinanciamiento);
         valorFinanciamiento += primaTotal + 475.75;
         valorFinanciamientoAnt += primaTotal + 475.75;
-        valorFinanciamiento = format2(valorFinanciamiento, '$');
-        var valorSeguro = format2(primaTotal, '$');
+        //valorFinanciamiento = format2(valorFinanciamiento, '$');
+        //var valorSeguro = format2(primaTotal, '$');
         //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-        $('#GestionFinanciamiento_seguro2').val(valorSeguro);
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
             beforeSend: function (xhr) {
@@ -1476,215 +2357,43 @@ function calcFinanciamiento2() {
                 $('#bg_negro').hide();
             }
         });
+        
     }
-}
-function edit(id){
-    var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val(); 
-    //console.log('tipo financiamiento: '+tipoFinanciamiento);
-    var accesorioscont = $('#accesorioscont').val();
-    var precioanterior = $('#precio_normal').val();
-    precioanterior = precioanterior.replace(',', '');
-    precioanterior = precioanterior.replace('.', ',');
-    precioanterior = precioanterior.replace('$', '');
-    precioanterior = parseInt(precioanterior);
-    var accesorio2 = 0;
-    //console.log('valor id: '+id);
-    switch(id){
-        case 1:
-            console.log('EDITAR ACCESORIOS 1: '+acc1);
-            $('.cont-options1').addClass('cont-options1-after');
-            $('.cont-options2').removeClass('cont-options1-after');
-            $('.cont-options3').removeClass('cont-options1-after');
-            $('#GestionFinanciamiento_mod').val(2);
-            $('#GestionFinanciamiento_entrada').removeAttr('disabled');
-            $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
-            $('#GestionFinanciamiento_plazo').removeAttr('disabled');
-            
-            // primero quitar los checks de los otros que esten seleccionados
-            if(tipoFinanciamiento == 0){
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    //console.log('enter checked false: '+ j);
-                    $('#accesorio-' + j).attr('checked', false);
-                    $('#accspan-' + j).removeClass('label-price');
-                }
-            }else{// para credito no quitar check al Kit Satelital
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    if (param[1] != 'Kit Satelital') {
-                        //console.log('enter checked false: '+ j);
-                        $('#accesorio-' + j).attr('checked', false);
-                        $('#accspan-' + j).removeClass('label-price');
-                    }
-                }
-            }
-            
-            // poner checks a los elementos correspondientes
-            var lt = acc1.length;
-            for (var i = 0; i <= lt; i++) {
-                $('#accesorio-' + acc1[i]).attr('checked', true);
-                // llamar funcion de financiamiento
-                $('#accspan-' + acc1[i]).addClass('label-price');
-            }
-            
-            for (var k = 0; k < lt; k++) {
-               pri = $('#accesorio-' + acc1[k]).val();
-                //console.log('val pri:'+pri);
-                params2 = pri.split('-');
-                if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
-            }
-            // sumar todo los valores de los checks al precio vehiculo
-            
-            var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
-            $('#precio_accesorios').val(format2(precionuevo, '$'));
-            if(tipoFinanciamiento == 0){ // TIPO CONTADO
-                secure = $('#GestionFinanciamiento_tiempo_seguro_contado').val();
-                if(secure != '' || secure != '0'){
-                    calcFinanciamientoContado();
-                }
-            }else{
-                $('#GestionFinanciamiento_precio').val(format2(precionuevo, '$'));
-                calcFinanciamiento();
-            }
-            break;
-        case 2:
-            console.log('EDITAR ACCESORIOS 2: '+acc2);
-            $('#GestionFinanciamiento_mod').val(3);
-            $('.cont-options2').addClass('cont-options1-after');
-            $('.cont-options1').removeClass('cont-options1-after');
-            $('.cont-options3').removeClass('cont-options1-after');
-            $('#GestionFinanciamiento_entrada2').removeAttr('disabled');
-            $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
-            $('#GestionFinanciamiento_plazo2').removeAttr('disabled');
-            // primero quitar los checks de los otros que esten seleccionados
-            if(tipoFinanciamiento == 0){
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    //console.log('enter checked false: '+ j);
-                    $('#accesorio-' + j).attr('checked', false);
-                    $('#accspan-' + j).removeClass('label-price');
-                }
-            }else{// para credito no quitar check al Kit Satelital
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    if (param[1] != 'Kit Satelital') {
-                        //console.log('enter checked false: '+ j);
-                        $('#accesorio-' + j).attr('checked', false);
-                        $('#accspan-' + j).removeClass('label-price');
-                    }
-                }
-            }
-            // poner checks a los elementos correspondientes
-            var lt = acc2.length;
-            for (var i = 0; i <= lt; i++) {
-                $('#accesorio-' + acc2[i]).attr('checked', true);
-                // llamar funcion de financiamiento
-                $('#accspan-' + acc2[i]).addClass('label-price');
-            }
-            
-            for (var k = 0; k < lt; k++) {
-               pri = $('#accesorio-' + acc2[k]).val();
-                console.log('val pri:'+pri);
-                params2 = pri.split('-');
-                if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
-            }
-            // sumar todo los valores de los checks al precio vehiculo
-            
-            var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
-            $('#precio_accesorios').val(format2(precionuevo, '$'));
-            
-            if(tipoFinanciamiento == 0){ // TIPO CONTADO
-                secure = $('#GestionFinanciamiento_tiempo_seguro_contado2').val();
-                if(secure != '' || secure != '0'){
-                    calcFinanciamientoContado2();
-                }
-            }else{
-                $('#GestionFinanciamiento_precio2').val(format2(precionuevo, '$'));
-                calcFinanciamiento2();
-            }
-            
-            break;
-        case 3:
-            console.log('EDITAR ACCESORIOS 2: '+acc3);
-            $('#GestionFinanciamiento_mod').val(4);
-            $('.cont-options3').addClass('cont-options1-after');
-            $('.cont-options1').removeClass('cont-options1-after');
-            $('.cont-options2').removeClass('cont-options1-after');
-            $('#GestionFinanciamiento_entrada3').removeAttr('disabled');
-            $('#GestionFinanciamiento_tiempo_seguro3').removeAttr('disabled');
-            $('#GestionFinanciamiento_plazo3').removeAttr('disabled');
-            // primero quitar los checks de los otros que esten seleccionados
-            if(tipoFinanciamiento == 0){
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    //console.log('enter checked false: '+ j);
-                    $('#accesorio-' + j).attr('checked', false);
-                    $('#accspan-' + j).removeClass('label-price');
-                }
-            }else{// para credito no quitar check al Kit Satelital
-                for (var j = 1; j <= accesorioscont; j++) {
-                    sat = $('#accesorio-' + j).val();
-                    param = sat.split('-');
-                    if (param[1] != 'Kit Satelital') {
-                        //console.log('enter checked false: '+ j);
-                        $('#accesorio-' + j).attr('checked', false);
-                        $('#accspan-' + j).removeClass('label-price');
-                    }
-                }
-            }
-            // poner checks a los elementos correspondientes
-            var lt = acc3.length;
-            for (var i = 0; i <= lt; i++) {
-                $('#accesorio-' + acc3[i]).attr('checked', true);
-                // llamar funcion de financiamiento
-                $('#accspan-' + acc3[i]).addClass('label-price');
-            }
-            
-            for (var k = 0; k < lt; k++) {
-               pri = $('#accesorio-' + acc3[k]).val();
-                console.log('val pri:'+pri);
-                params2 = pri.split('-');
-                if (params2[1] != 'Kit Satelital') {accesorio2 += parseInt(params2[0]);}
-            }
-            // sumar todo los valores de los checks al precio vehiculo
-            
-            var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
-            $('#precio_accesorios').val(format2(precionuevo, '$'));
-            
-            if(tipoFinanciamiento == 0){ // TIPO CONTADO
-                secure = $('#GestionFinanciamiento_tiempo_seguro_contado3').val();
-                if(secure != '' || secure != '0'){
-                    calcFinanciamientoContado3();
-                }
-            }else{
-                $('#GestionFinanciamiento_precio3').val(format2(precionuevo, '$'));
-                calcFinanciamiento3();
-            }
-            
-            break;
-    }
-}
-function save(id){
-    switch(id){
-        case 1:
-           calcFinanciamiento();$('.cont-options1').removeClass('cont-options1-after');
-        case 2:
-           calcFinanciamiento2();$('.cont-options2').removeClass('cont-options2-after'); 
-        break;
-        case 3:
-           calcFinanciamiento3();$('.cont-options3').removeClass('cont-options3-after'); 
-        break;
-    }    
-}
 
-function deleter(id){
-    console.log(id)
-}
+    function calcSeguro3(){
+        console.log('enter calc seguro3');
+        var precioEntrada = formatnumber($('#GestionFinanciamiento_entrada3').attr('value'));
+        var precioAccesorios = formatnumber($('#GestionFinanciamiento_precio3').val());
+        
+        var valorFinanciamiento = precioAccesorios - precioEntrada;
+        var plazo = $('#GestionFinanciamiento_plazo3').val();
+        primaTotal = formatnumber($('#GestionFinanciamiento_seguro3').val());
+        var valorFinanciamientoAnt = valorFinanciamiento;
+        valorFinanciamiento += primaTotal + 475.75;
+        valorFinanciamientoAnt += primaTotal + 475.75;
+        //valorFinanciamiento = format2(valorFinanciamiento, '$');
+        //var valorSeguro = format2(primaTotal, '$');
+        //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
+        $.ajax({
+            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/pago"); ?>',
+            beforeSend: function (xhr) {
+                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+            },
+            dataType: 'json',
+            type: 'POST',
+            data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
+            success: function (data) {
+                var cuotamensual = parseInt(data.cuota);
+                cuotamensual = format2(cuotamensual, '$');
+                $('#GestionFinanciamiento_cuota_mensual3').val(cuotamensual);
+                var valorFin = parseInt(data.valorFinanciamiento);
+                valorFin = format2(valorFin, '$');
+                $('#GestionFinanciamiento_valor_financiamiento3').val(valorFin);
+                $('#bg_negro').hide();
+            }
+        });
+        
+    }
 
 </script>
 
@@ -1843,7 +2552,7 @@ function deleter(id){
                                                             <div class="col-md-7">
                                                                 <div class="checkbox">
                                                                     <label>
-                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" disabled="" class="def" <?php } ?>>
+                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> <?php } ?>>
                                                                         <?php echo $value['accesorio']; ?>
                                                                         <input type="hidden" name="<?php echo $value['accesorio']; ?>" id="acc<?php echo $count; ?>" value="0"/>
                                                                     </label>
@@ -1853,7 +2562,7 @@ function deleter(id){
                                                                 <div class="checkbox">
                                                                     <span class="label label-default <?php
                                                                     if ($value['codigo'] == 7 && $tipo == 1) {
-                                                                        echo 'label-price';
+                                                                        //echo 'label-price';
                                                                     }
                                                                     ?>" id="accspan-<?php echo $count; ?>"><?php echo 'USD. ' . $value['precio']; ?></span>
                                                                 </div>
@@ -1870,7 +2579,7 @@ function deleter(id){
                                                             <div class="col-md-7">
                                                                 <div class="checkbox">
                                                                     <label>
-                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" disabled="" class="def" <?php } ?>>
+                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> <?php } ?>>
                                                                         <?php echo $value['accesorio']; ?>
                                                                         <input type="hidden" name="<?php echo $value['accesorio']; ?>" id="acc<?php echo $count; ?>" value="0"/>
                                                                     </label>
@@ -1880,7 +2589,7 @@ function deleter(id){
                                                                 <div class="checkbox">
                                                                     <span class="label label-default <?php
                                                                     if ($value['codigo'] == 7 && $tipo == 1) {
-                                                                        echo 'label-price';
+                                                                        //echo 'label-price';
                                                                     }
                                                                     ?>" id="accspan-<?php echo $count; ?>"><?php echo 'USD. ' . $value['precio']; ?></span>
                                                                 </div>
@@ -1890,6 +2599,99 @@ function deleter(id){
                                                         $count++;
                                                     endforeach;
                                                     ?>
+                                                </div>
+                                                <hr />
+                                                <div class="col-md-12">
+                                                    <div class="row" style="display:none;">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label for="">
+                                                                    <input type="checkbox" value="1" name="otro" id="otro" class="" checked=""/>Otro
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row otro_accesorio">
+                                                         <div class="row">
+                                                            <div class="col-md-1">
+                                                            <div class="checkbox ag-btn"><button type="button" class="btn btn-success btn-xs" onclick="ot();" id="btn-ot">+ Agregar</button>
+                                                            </div>
+                                                            </div>
+                                                            <div class="col-md-1 btn-canc-otro" style="display: none;">
+                                                                <div class="checkbox"><button type="button" class="btn btn-info btn-inverse btn-xs" onclick="otcanc();">− Eliminar</button></div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="row cont-opt-acc1">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre1" id="otro_accesorios_nombre1" cols="30" rows="3" draggable=""></textarea>
+                                                                <label class="error error-nombre1" style="display:none;">Ingrese una descripción</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <label class="error error-accesorio1" style="display:none;">Ingrese un valor</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row cont-opt-acc2" style="display: none;">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre2" id="otro_accesorios_nombre2" cols="30" rows="3" draggable=""></textarea>
+                                                                <label class="error error-nombre2" style="display:none;">Ingrese una descripción</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <label class="error error-accesorio2" style="display:none;">Ingrese un valor</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row cont-opt-acc3" style="display: none;">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre3" id="otro_accesorios_nombre3" cols="30" rows="3" draggable=""></textarea>
+                                                                <label class="error error-nombre3" style="display:none;">Ingrese una descripción</label>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <label class="error error-accesorio3" style="display:none;">Ingrese un valor</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-success btn-xs" onclick="sco();" id="btn-acc">Sumar Accesorios</button>
+                                                                <input type="hidden" name="cont-acc2" id="cont-acc2" value="0" />
+                                                                <input type="hidden" name="cont-acc3" id="cont-acc3" value="0" />
+                                                                <input type="hidden" name="cont-acc4" id="cont-acc4" value="0" />
+                                                                <input type="hidden" name="options-cont-otro" id="options-cont-otro" value="2" />
+                                                                <input type="hidden" name="sum-accesorios2" id="sum-accesorios2" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-total2" id="sum-accesorios-total2" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-res2" id="sum-accesorios-res2" value=""/>
+                                                                <input type="hidden" name="desc-accesorios2" id="desc-accesorios2" value=""/>
+                                                                <input type="hidden" name="sum-accesorios3" id="sum-accesorios3" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-total3" id="sum-accesorios-total3" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-res3" id="sum-accesorios-res3" value=""/>
+                                                                <input type="hidden" name="desc-accesorios3" id="desc-accesorios3" value=""/>
+                                                                <input type="hidden" name="sum-accesorios4" id="sum-accesorios4" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-total4" id="sum-accesorios-total4" value=""/>
+                                                                <input type="hidden" name="sum-accesorios-res4" id="sum-accesorios-res4" value=""/>
+                                                                <input type="hidden" name="desc-accesorios4" id="desc-accesorios4" value=""/>
+                                                                <input type="hidden" name="cont-otro2" id="cont-otro2" value="2"/>
+                                                                <input type="hidden" name="cont-otro3" id="cont-otro3" value="2"/>
+                                                                <input type="hidden" name="cont-otro4" id="cont-otro4" value="2"/>
+                                                                <input type="hidden" name="total-acc1" id="total-acc1" value=''>
+                                                                <input type="hidden" name="total-acc2" id="total-acc2" value=''>
+                                                                <input type="hidden" name="total-acc3" id="total-acc3" value=''>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-info btn-inverse btn-xs" onclick="scod();" id="btn-accd" style="display:none;">Quitar Accesorios</button>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <b id="sum-accesorios-val2"></b>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1929,14 +2731,18 @@ function deleter(id){
                             <?php } ?>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="precio_normal">Precio Normal</label>
-                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>">
+                                    <label for="precio_accesorios">Valor Total Accesorios</label>
+                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="" data-symbol="$ " data-thousands="." data-decimal=",">
+                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value=""/>
+                                    <input type="hidden" name="precio_accesorios2" id="precio_accesorios2" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" data-symbol="$ " data-thousands="." data-decimal="," />
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-4">
-                                    <label for="precio_accesorios">Precio con Accesorios</label>
-                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>" data-symbol="$ " data-thousands="." data-decimal=",">
-                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                    <label for="precio_normal">Precio Normal</label>
+                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>">
                                 </div>
+                                
                             </div>
                             <br />
                             <div class="row">
@@ -1956,7 +2762,6 @@ function deleter(id){
                             <?php if ($tipo == 1): // credito            ?>
 <!-- ==================================INICIO COTIZACION A CREDITO===================================-->
                             <div class="cont-financ">
-                                
                                 <div class="row">
                                     <div class="col-md-4 cont-options1">
                                         <div class="row">
@@ -1970,15 +2775,23 @@ function deleter(id){
                                                 <label for="">Entidad Financiera</label>
                                                 <select name="GestionFinanciamiento1[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
                                                     <option value="Banco del Austro">Banco del Austro</option>
-                                                    <option value="CFC">CFC</option>
                                                     <option value="Banco del Pichincha">Banco del Pichincha</option>
+                                                    <option value="BPAC">BPAC</option>
+                                                    <option value="Capital">Capital</option>
+                                                    <option value="CFC" selected="true">CFC</option>
+                                                    <option value="CPN">CPN</option>
+                                                    <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
+                                                    <option value="ISSA">ISSFA</option>
+                                                    <option value="Originarsa">Originarsa</option>
+                                                    <option value="Produbanco">Produbanco</option>
+                                                    <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento1[precio]" id="GestionFinanciamiento_precio" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento1[precio]" id="GestionFinanciamiento_precio" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -1997,6 +2810,7 @@ function deleter(id){
                                                     <option value="3">3 años</option>
                                                     <option value="2">2 años</option>
                                                     <option value="1" selected="true">1 año</option>
+                                                    <option value="0">Ninguno</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2017,26 +2831,26 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor Financiamiento</label>
-                                                <input type="text" name="GestionFinanciamiento1[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento1[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Tasa</label>
-                                                <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" disabled=""/>
+                                                <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" maxlength="5"/>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento1[seguro]" id="GestionFinanciamiento_seguro" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento1[seguro]" id="GestionFinanciamiento_seguro" class="form-control" maxlength="10"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Cuota Mensual Aproximada</label>
-                                                <input type="text" name="GestionFinanciamiento1[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento1[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual" class="form-control" maxlength="10"/>
                                             </div>
                                         </div>
 
@@ -2064,15 +2878,23 @@ function deleter(id){
                                                 <label for="">Entidad Financiera</label>
                                                 <select name="GestionFinanciamiento2[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
                                                     <option value="Banco del Austro">Banco del Austro</option>
-                                                    <option value="CFC">CFC</option>
                                                     <option value="Banco del Pichincha">Banco del Pichincha</option>
+                                                    <option value="BPAC">BPAC</option>
+                                                    <option value="Capital">Capital</option>
+                                                    <option value="CFC" selected="true">CFC</option>
+                                                    <option value="CPN">CPN</option>
+                                                    <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
+                                                    <option value="ISSA">ISSFA</option>
+                                                    <option value="Originarsa">Originarsa</option>
+                                                    <option value="Produbanco">Produbanco</option>
+                                                    <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento2[precio]" id="GestionFinanciamiento_precio2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento2[precio]" id="GestionFinanciamiento_precio2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2091,6 +2913,7 @@ function deleter(id){
                                                     <option value="3">3 años</option>
                                                     <option value="2">2 años</option>
                                                     <option value="1" selected="true">1 año</option>
+                                                    <option value="0">Ninguno</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2111,25 +2934,25 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor Financiamiento</label>
-                                                <input type="text" name="GestionFinanciamiento2[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento2" class="form-control" onkeypress="return validateNumbers(event)" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento2[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento2" class="form-control" onkeypress="return validateNumbers(event)"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Tasa</label>
-                                                <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="16,06" disabled=""/>
+                                                <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="16,06" maxlength="5"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento2[seguro]" id="GestionFinanciamiento_seguro2" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento2[seguro]" id="GestionFinanciamiento_seguro2" class="form-control" maxlength="10"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Cuota Mensual Aproximada</label>
-                                                <input type="text" name="GestionFinanciamiento2[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual2" class="form-control" onkeypress="return validateNumbers(event)" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento2[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual2" class="form-control" onkeypress="return validateNumbers(event)" maxlength="10"/>
                                             </div>
                                         </div>
 
@@ -2158,15 +2981,23 @@ function deleter(id){
                                                 <label for="">Entidad Financiera</label>
                                                 <select name="GestionFinanciamiento3[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
                                                     <option value="Banco del Austro">Banco del Austro</option>
-                                                    <option value="CFC">CFC</option>
                                                     <option value="Banco del Pichincha">Banco del Pichincha</option>
+                                                    <option value="BPAC">BPAC</option>
+                                                    <option value="Capital">Capital</option>
+                                                    <option value="CFC" selected="true">CFC</option>
+                                                    <option value="CPN">CPN</option>
+                                                    <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
+                                                    <option value="ISSA">ISSFA</option>
+                                                    <option value="Originarsa">Originarsa</option>
+                                                    <option value="Produbanco">Produbanco</option>
+                                                    <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento3[precio]" id="GestionFinanciamiento_precio3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento3[precio]" id="GestionFinanciamiento_precio3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2184,6 +3015,7 @@ function deleter(id){
                                                     <option value="3">3 años</option>
                                                     <option value="2">2 años</option>
                                                     <option value="1" selected="true">1 año</option>
+                                                    <option value="0">Ninguno</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -2204,26 +3036,26 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor Financiamiento</label>
-                                                <input type="text" name="GestionFinanciamiento3[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento3" class="form-control" onkeypress="return validateNumbers(event)" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento3[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento3" class="form-control" onkeypress="return validateNumbers(event)" />
                                                 <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Tasa</label>
-                                                <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="16,06" disabled=""/>
+                                                <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="16,06" maxlength="5"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento3[seguro]" id="GestionFinanciamiento_seguro3" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento3[seguro]" id="GestionFinanciamiento_seguro3" class="form-control" maxlength="10"/>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Cuota Mensual Aproximada</label>
-                                                <input type="text" name="GestionFinanciamiento3[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual3" class="form-control" onkeypress="return validateNumbers(event)" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento3[cuota_mensual]" id="GestionFinanciamiento_cuota_mensual3" class="form-control" onkeypress="return validateNumbers(event)" maxlength="10"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2259,7 +3091,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2279,7 +3111,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento1[seguro_contado]" id="GestionFinanciamiento_seguro_contado" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento1[seguro_contado]" id="GestionFinanciamiento_seguro_contado" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2310,7 +3142,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2330,7 +3162,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento2[seguro_contado]" id="GestionFinanciamiento_seguro_contado2" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento2[seguro_contado]" id="GestionFinanciamiento_seguro_contado2" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2363,7 +3195,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2383,7 +3215,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Seguro</label>
-                                                <input type="text" name="GestionFinanciamiento3[seguro_contado]" id="GestionFinanciamiento_seguro_contado3" class="form-control" readonly="true"/>
+                                                <input type="text" name="GestionFinanciamiento3[seguro_contado]" id="GestionFinanciamiento_seguro_contado3" class="form-control"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2431,9 +3263,12 @@ function deleter(id){
                                     <input type="hidden" name="GestionFinanciamiento1[id_financiamiento]" id="GestionFinanciamiento_id_financiamiento" value="0" />
                                     <input type="hidden" name="GestionFinanciamiento1[flag]" id="GestionFinanciamiento_flag" value="0" />
                                     <input type="hidden" name="GestionFinanciamiento1[mod]" id="GestionFinanciamiento_mod" value="" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc1]" id="GestionFinanciamiento_acc1" value="<?php echo (($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc2]" id="GestionFinanciamiento_acc2" value="<?php echo ($tipo == 1 && ($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
-                                    <input type="hidden" name="GestionFinanciamiento1[acc3]" id="GestionFinanciamiento_acc3" value="<?php echo ($tipo == 1 && ($id_modelo != 90 && $id_modelo != 93)) ? '670-Kit Satelital@' : ''; ?>" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc1]" id="GestionFinanciamiento_acc1" value="" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc2]" id="GestionFinanciamiento_acc2" value="" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acc3]" id="GestionFinanciamiento_acc3" value="" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acco1]" id="GestionFinanciamiento_acco1" value="" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acco2]" id="GestionFinanciamiento_acco2" value="" />
+                                    <input type="hidden" name="GestionFinanciamiento1[acco3]" id="GestionFinanciamiento_acco3" value="" />
                                     <input type="hidden" name="GestionFinanciamiento1[tipo_financiamiento]" id="GestionFinanciamiento_tipo_financiamiento" value="<?php echo $tipo; ?>" />
                                     <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Generar Proforma" onclick="send();">
                                 </div>

@@ -17,7 +17,6 @@ $codigo_asesor = $this->getAsesorCodigo($responsable_id);
 //echo $this->getResponsable($id_asesor);
 $mpdf = Yii::app()->ePdf->mpdf();
 $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
-
 ?>
 <style>
     /*.container{width: 800px;}*/
@@ -86,10 +85,22 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         $paramAutos = explode('@', $strAcc);
         //$co = count($paramAutos);
         //echo $co;
+        if (!empty($value['accesorios'])) {
+            foreach ($paramAutos as $val) {
+                $strD = explode('-', $val);
+                $strinAcc .= $strD[1] . ',';
+            }
+        }
 
-        foreach ($paramAutos as $val) {
-            $strD = explode('-', $val);
-            $strinAcc .= $strD[1] . ',';
+
+        if (!empty($value['accesorios_manual'])) {
+            $strAccManuales = $value['accesorios_manual'];
+            $strAccManuales = substr($strAccManuales, 0, -1);
+            $paramsAccManuales = explode('@', $strAccManuales);
+            foreach ($paramsAccManuales as $val) {
+                $strD = explode('-', $val);
+                $strinAcc .= $strD[1] . ',';
+            }
         }
         $strinAcc = trim(substr($strinAcc, 0, -1));
         $precioNormal = $this->getPrecioNormal($value['version']);
@@ -104,7 +115,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($precioAccesorios); ?></div>    
+            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($value['total_accesorios']); ?></div>    
         </div>
         <div class="row">
             <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($value['precio_vehiculo']); ?></div>
@@ -126,33 +137,50 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
         <div class="row">
             <div class="col-xs-4"><strong>PLAZO MESES: </strong><?php echo $value['plazos']; ?></div><div class="col-xs-4"><strong>CUOTA MENSUAL APROX: </strong> $ <?php echo number_format($value['cuota_mensual']); ?></div>
         </div>
-        <div class="row">
-            <div class="col-xs-6">
-                <strong>ENTIDAD FINANCIERA: </strong><?php echo $value['entidad_financiera']; ?></div>
-        </div>
-        <?php if($value['observaciones'] != ''): ?>
-        <div class="row">
-            <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $value['observaciones']; ?></div>
-        </div>
+        
+        <?php if ($value['observaciones'] != ''): ?>
+            <div class="row">
+                <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $value['observaciones']; ?></div>
+            </div>
         <?php endif; ?>
         <br />
     <?php else: ?>
         <div class="row"><div class="col-xs-6"><h4 style="color:#911714;">VENTA AL CONTADO</h4></div></div>
         <div class="row"><div class="col-md-12">Opción 1<hr style="color:#911714;"></div></div>
-        
+
         <?php
         $paramAutos = explode('@', $value['accesorios']);
         $strinAcc = '';
         $valAcc = 0;
         foreach ($paramAutos as $val) {
             $strD = explode('-', $val);
-            $strinAcc .= $strD[1].',';
+            $strinAcc .= $strD[1] . ',';
             $valAcc += (int) $strD[0];
         }
-        $strinAcc = substr($strinAcc, 0, -1);
+
+        if (!empty($value['accesorios_manual'])) {
+            $strAccManuales = $value['accesorios_manual'];
+            $strAccManuales = substr($strAccManuales, 0, -1);
+            $paramsAccManuales = explode('@', $strAccManuales);
+
+            foreach ($paramsAccManuales as $val) {
+                $strD = explode('-', $val);
+                $strinAcc .= $strD[1] . ',';
+            }
+            // calcular diferencia de los accesorios manuales
+            $precioNormal = $this->getPrecioNormal($value['version']);
+            $dif = $value['precio_vehiculo'] - $precioNormal - $valAcc;
+            $valAcc += (int) $dif;
+        }
+
+        $strinAcc = trim(substr($strinAcc, 0, -1));
+
         $precioNormal = $this->getPrecioNormal($value['version']);
-        $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
-        
+        if (count($paramAutos) > 0) {
+            $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
+        } else {
+            $precioAccesorios = 0;
+        }
         ?>
 
         <div class="row">
@@ -163,7 +191,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($valAcc); ?></div>    
+            <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($value['total_accesorios']); ?></div>    
         </div>
         <div class="row">
             <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($value['precio_vehiculo']); ?></div>
@@ -173,12 +201,12 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-4"><strong>SEGURO / AÑOS:</strong></div><div class="col-xs-4"> $ <?php echo number_format($value['seguro']); ?> / <?php echo $value['ts'] ?> </div>
         </div>
         <div class="row">
-                <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($value['precio_vehiculo']); ?></div>
-            </div>
-        <?php if($value['observaciones'] != ''): ?>
-        <div class="row">
-            <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $value['observaciones']; ?></div>
+            <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($value['precio_vehiculo']); ?></div>
         </div>
+        <?php if ($value['observaciones'] != ''): ?>
+            <div class="row">
+                <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $value['observaciones']; ?></div>
+            </div>
         <?php endif; ?>
         <br />
     <?php endif; ?>
@@ -199,93 +227,114 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
                 $strD2 = explode('-', $val);
                 $strinAcc2 .= $strD2[1] . ',';
             }
-            $strinAcc2 = substr($strinAcc2, 0, -1);
+
+            if (!empty($vals['accesorios_manual'])) {
+                $strAccManuales = $vals['accesorios_manual'];
+                $strAccManuales = substr($strAccManuales, 0, -1);
+                $paramsAccManuales = explode('@', $strAccManuales);
+                foreach ($paramsAccManuales as $val) {
+                    $strD = explode('-', $val);
+                    $strinAcc2 .= $strD[1] . ',';
+                }
+                // calcular diferencia de los accesorios manuales
+                $dif = $vals['precio_vehiculo'] - $precioNormal - $valAcc;
+                $valAcc += (int) $dif;
+            }
+            $strinAcc2 = trim(substr($strinAcc2, 0, -1));
             $precioAccesorios2 = $vals['precio_vehiculo'] - $precioNormal;
             ?>
-        <?php if($credito == 1): ?>
-            <div class="row"><div class="col-md-12">Opción <?php echo $c; ?><hr style="color:#911714;"></div></div>
-            <div class="row">
-                <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precioNormal); ?></div>
+            <?php if ($credito == 1): ?>
+                <div class="row"><div class="col-md-12">Opción <?php echo $c; ?><hr style="color:#911714;"></div></div>
+                <div class="row">
+                    <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precioNormal); ?></div>
 
-            </div>
-            <div class="row">
-                <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc2; ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($precioAccesorios2); ?></div>    
-            </div>
-            <div class="row">
-                <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc2; ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($vals['total_accesorios']); ?></div>    
+                </div>
+                <div class="row">
+                    <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
 
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><strong>SEGURO / AÑOS:</strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['seguro']); ?>/ <?php echo $vals['ts']; ?></div>
-            </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>SEGURO / AÑOS:</strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['seguro']); ?>/ <?php echo $vals['ts']; ?></div>
+                </div>
 
-            <div class="row">
-                <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><strong>VALOR DE ENTRADA: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['cuota_inicial']); ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><strong>SALDO A FINANCIAR: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['saldo_financiar']); ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><strong>PLAZO MESES: </strong><?php echo $vals['plazos']; ?></div><div class="col-xs-4"><strong>CUOTA MENSUAL APROX: </strong> $ <?php echo number_format($vals['cuota_mensual']); ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <strong>ENTIDAD FINANCIERA: </strong><?php echo $vals['entidad_financiera']; ?></div>
-            </div>
-            <?php if($vals['observaciones'] != ''): ?>
-            <div class="row">
-                <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $vals['observaciones']; ?></div>
-            </div>
-            <?php endif; ?>
-            <br />
-            <?php $c++; 
-            else: 
-            $paramAutosContado = explode('@', $vals['accesorios']); 
-            $valAcc = 0;
-            foreach ($paramAutosContado as $valc) {
-                $strC = explode('-', $valc);
-                $valAcc += (int) $strC[0];
-            }
-            $precioAcceContado = $vals['precio_vehiculo'] - $valAcc;
-            ?>
-            <div class="row"><div class="col-md-12">Opción <?php echo $c; ?><hr style="color:#911714;"></div></div>
-            <div class="row">
-                <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precioNormal); ?></div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>VALOR DE ENTRADA: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['cuota_inicial']); ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>SALDO A FINANCIAR: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['saldo_financiar']); ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>PLAZO MESES: </strong><?php echo $vals['plazos']; ?></div><div class="col-xs-4"><strong>CUOTA MENSUAL APROX: </strong> $ <?php echo number_format($vals['cuota_mensual']); ?></div>
+                </div>
+                
+                <?php if ($vals['observaciones'] != ''): ?>
+                    <div class="row">
+                        <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $vals['observaciones']; ?></div>
+                    </div>
+                <?php endif; ?>
+                <br />
+                <?php
+                $c++;
+            else:
+                $paramAutosContado = explode('@', $vals['accesorios']);
+                $valAcc = 0;
+                foreach ($paramAutosContado as $valc) {
+                    $strC = explode('-', $valc);
+                    $valAcc += (int) $strC[0];
+                }
+                if (!empty($vals['accesorios_manual'])) {
+                    $strAccManuales = $vals['accesorios_manual'];
+                    $paramsAccManuales = explode('-', $strAccManuales);
+                    $valAcc += (int) $paramsAccManuales[0];
 
-            </div>
-            <div class="row">
-                <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc2; ?></div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($valAcc); ?></div>    
-            </div>
-            <div class="row">
-                <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
+                    // calcular diferencia de los accesorios manuales
+                    $dif = $vals['precio_vehiculo'] - $precioNormal - $valAcc;
+                    $valAcc += (int) $dif;
+                }
+                $precioAcceContado = $vals['precio_vehiculo'] - $valAcc;
+                ?>
+                <div class="row"><div class="col-md-12">Opción <?php echo $c; ?><hr style="color:#911714;"></div></div>
+                <div class="row">
+                    <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precioNormal); ?></div>
 
-            </div>
-            <div class="row">
-                <div class="col-xs-4"><strong>SEGURO / AÑOS:</strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['seguro']); ?>/ <?php echo $vals['ts']; ?></div>
-            </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12"><strong>ACCESORIOS: </strong><?php echo $strinAcc2; ?></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($vals['total_accesorios']); ?></div>    
+                </div>
+                <div class="row">
+                    <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
 
-            <div class="row">
-                <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
-            </div>
-            <?php if($vals['observaciones'] != ''): ?>
-            <div class="row">
-                <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $vals['observaciones']; ?></div>
-            </div>
-            <?php endif; ?>
-            <br />
-            <?php $c++; endif;
+                </div>
+                <div class="row">
+                    <div class="col-xs-4"><strong>SEGURO / AÑOS:</strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['seguro']); ?>/ <?php echo $vals['ts']; ?></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-4"><strong>TOTAL: </strong></div><div class="col-xs-4"> $ <?php echo number_format($vals['precio_vehiculo']); ?></div>
+                </div>
+                <?php if ($vals['observaciones'] != ''): ?>
+                    <div class="row">
+                        <div class="col-xs-12"><strong>OBSERVACIONES: </strong><?php echo $vals['observaciones']; ?></div>
+                    </div>
+                <?php endif; ?>
+                <br />
+                <?php
+                $c++;
+            endif;
         }
     }
-    
     ?>
     <?php if ($credito == 1): ?>
         <br />
@@ -312,7 +361,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             </div>
         </div>
     <?php endif; ?>
-    
+
 
     <div class="row"><div class="col-md-12"><hr style="border-top: 4px solid #911714;"></div></div>
     <?php if ($credito == 1): ?>
@@ -335,7 +384,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
                     </li>
                 </ol>
             </div>
-    <?php else: ?>
+        <?php else: ?>
             <div class="row">
                 <div class="col-xs-12"><h4>REQUISITOS PARA VENTA AL CONTADO</h4></div>
                 <div class="col-xs-8">
@@ -345,10 +394,10 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
                         <li>Recibo de pago de luz, agua o teléfono</li>
                     </ol>
                 </div>
-    <?php endif; ?>
+            <?php endif; ?>
         </div>
         <div class="row"><div class="col-xs-12"><strong>NOTA: </strong>Si no posee bienes o el vehículo es para trabajo es indispensable garante.</div></div>
         <div class="row"><div class="col-xs-12"><em>Proforma válida por 48 horas, precios sujetos a cambios sin previo aviso</em></div></div>
     </div>
-<?php
+    <?php
 endforeach;

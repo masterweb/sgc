@@ -35,6 +35,31 @@ $count = count($users);
     
 
     $(function () {
+        $('#GestionDiaria_general').keyup(function(){
+            if($(this).val() != ''){
+               $('#busqueda_general').val(1); 
+            }else{
+                $('#busqueda_general').val(0); 
+            }
+        });
+        $('#gestion_diaria_categorizacion').change(function(){
+            var value = $(this).attr('value');
+            if(value != ''){
+                $('#categorizacion').val(1);
+            }else{$('#categorizacion').val(0);}
+        });
+        $('#gestion_diaria_status').change(function(){
+            var value = $(this).attr('value');
+            if(value != ''){
+                $('#status').val(1);
+            }else{$('#status').val(0);}
+        });
+        $('#GestionDiaria_responsable').change(function(){
+            var value = $(this).attr('value');
+            if(value != ''){
+                $('#responsable').val(1);
+            }else{$('#responsable').val(0);}
+        });
         $('#GestionNuevaCotizacion_cedula').keyup(function (){
             $('#cedula2').hide();
         });

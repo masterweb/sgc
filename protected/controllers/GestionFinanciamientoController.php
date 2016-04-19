@@ -138,11 +138,25 @@ class GestionFinanciamientoController extends Controller {
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
                 $precio_vehiculo = (int) str_replace('$', "", $precio_vehiculo);
 
+                $precio_normal = str_replace(',', "", $_POST['precio_normal']);
+                $precio_normal = str_replace('.', ",", $precio_normal);
+                $precio_normal = (int) str_replace('$', "", $precio_normal);
+
                 $seguro = str_replace(',', "", $_POST['GestionFinanciamiento1']['seguro_contado']);
                 $seguro = str_replace('.', ",", $seguro);
                 $seguro = (int) str_replace('$', "", $seguro);
 
+                $total_accesorios = str_replace(',', "", $_POST['total-acc1']);
+                $total_accesorios = str_replace('.', ",", $total_accesorios);
+                $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+
+                $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento1']['cuota_mensual']);
+                $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+
                 $model->precio_vehiculo = $precio_vehiculo;
+                $model->precio_normal = $precio_normal;
+                $model->total_accesorios = $total_accesorios;
                 $model->ts = $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'];
 
                 if (!empty($_POST['GestionFinanciamiento1']['tiempo_seguro_contado']) && $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'] != 0) {
@@ -156,6 +170,7 @@ class GestionFinanciamientoController extends Controller {
                 $model->observaciones = $_POST['GestionFinanciamiento1']['observaciones_contado'];
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
+                $model->cuota_mensual = $cuota_mensual;
             } else {
                 $model->attributes = $_POST['GestionFinanciamiento1'];
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio']);
@@ -178,6 +193,10 @@ class GestionFinanciamientoController extends Controller {
                 $seguro = str_replace('.', ",", $seguro);
                 $seguro = (int) str_replace('$', "", $seguro);
 
+                $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento1']['cuota_mensual']);
+                $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+
                 $model->precio_vehiculo = $precio_vehiculo;
                 $model->cuota_inicial = $precio_entrada;
                 $model->tasa = (int) $_POST['GestionFinanciamiento1']['tasa'];
@@ -191,6 +210,7 @@ class GestionFinanciamientoController extends Controller {
                 $model->observaciones = $_POST['GestionFinanciamiento1']['observaciones'];
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
+                $model->cuota_mensual = $cuota_mensual;
             }
 
             if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
@@ -204,6 +224,19 @@ class GestionFinanciamientoController extends Controller {
                 $accesorios = substr($accesorios, 0, -1);
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+                $request = $con->createCommand($sql)->query();
+            }
+            
+            if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+                $acc1 = $_POST['sum-accesorios2'];
+                $acc1 = str_replace(',', "", $acc1);
+                $acc1 = str_replace('.', ",", $acc1);
+                $acc1 = (int) str_replace('$', "", $acc1);
+                //$string_acc1 = $_POST['desc-accesorios2'];
+                $string_acc1 = $_POST['sum-accesorios-total2'];
+                //die('sgtring acc1: '.$string_acc1);
+                $con = Yii::app()->db;
+                $sql = "UPDATE gestion_vehiculo SET accesorios_manual = '{$string_acc1}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
                 $request = $con->createCommand($sql)->query();
             }
             //die('before save:');
@@ -319,6 +352,10 @@ class GestionFinanciamientoController extends Controller {
                         $seguro2 = (int) str_replace('$', "", $seguro2);
                     }
 
+                    $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento2']['cuota_mensual']);
+                    $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                    $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+
                     $model2->precio_vehiculo = $precio_vehiculo2;
                     $model2->cuota_inicial = $precio_entrada2;
                     if (isset($_POST['GestionFinanciamiento1']['tasa']))
@@ -331,6 +368,7 @@ class GestionFinanciamientoController extends Controller {
                     $model2->valor_financiamiento = $precio_financiamiento2;
                     $model2->cuota_mensual = $precio_cuota_mensual2;
                     $model2->seguro = $seguro2;
+                    $model2->cuota_mensual = $cuota_mensual;
                     $model2->forma_pago = $_POST['GestionFinanciamiento']['tipo']; // forma de pago
                     if (isset($_POST['GestionFinanciamiento2']['entidad_financiera']))
                         $model2->entidad_financiera = $_POST['GestionFinanciamiento2']['entidad_financiera'];
@@ -344,8 +382,23 @@ class GestionFinanciamientoController extends Controller {
                     $model2->fecha = date("Y-m-d H:i:s");
                     $model2->id_financiamiento = $model->id;
                     $model2->num_cotizacion = 3;
+
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc2']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model2->total_accesorios = $total_accesorios;
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+                        $acc1 = $_POST['sum-accesorios3'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (int) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios3'];
+                        $string_acc1 = $_POST['sum-accesorios-total3'];
+                        //die('string acc 2: '.$string_acc1);
+                        $model2->accesorios_manual = $string_acc1;
                     }
                     $model2->save();
                 }
@@ -411,6 +464,10 @@ class GestionFinanciamientoController extends Controller {
                         $seguro2 = (int) str_replace('$', "", $seguro2);
                     }
 
+                    $cuota_mensual2 = str_replace(',', "", $_POST['GestionFinanciamiento2']['cuota_mensual']);
+                    $cuota_mensual2 = str_replace('.', ",", $cuota_mensual2);
+                    $cuota_mensual2 = (int) str_replace('$', "", $cuota_mensual2);
+
                     $model2->precio_vehiculo = $precio_vehiculo2;
                     $model2->cuota_inicial = $precio_entrada2;
                     if (isset($_POST['GestionFinanciamiento1']['tasa']))
@@ -423,6 +480,7 @@ class GestionFinanciamientoController extends Controller {
                     $model2->valor_financiamiento = $precio_financiamiento2;
                     $model2->cuota_mensual = $precio_cuota_mensual2;
                     $model2->seguro = $seguro2;
+                    $model2->cuota_mensual = $cuota_mensual2;
 
                     //$model2->precio_vehiculo = $_POST['GestionFinanciamiento2']['precio'];
                     //$model2->cuota_inicial = $_POST['GestionFinanciamiento2']['entrada'];
@@ -443,8 +501,25 @@ class GestionFinanciamientoController extends Controller {
                     $model2->fecha = date("Y-m-d H:i:s");
                     $model2->id_financiamiento = $model->id;
                     $model2->num_cotizacion = 3;
+
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc2']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model2->total_accesorios = $total_accesorios;
+
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+
+                        $acc1 = $_POST['sum-accesorios3'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (int) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios3'];
+                        $string_acc1 = $_POST['sum-accesorios-total3'];
+                        //die('string acc 2: '.$string_acc1);
+                        $model2->accesorios_manual = $string_acc1;
                     }
                     $model2->save();
 
@@ -508,6 +583,10 @@ class GestionFinanciamientoController extends Controller {
                         $seguro3 = (int) str_replace('$', "", $seguro3);
                     }
 
+                    $cuota_mensual3 = str_replace(',', "", $_POST['GestionFinanciamiento3']['cuota_mensual']);
+                    $cuota_mensual3 = str_replace('.', ",", $cuota_mensual3);
+                    $cuota_mensual3 = (int) str_replace('$', "", $cuota_mensual3);
+
                     $model3->precio_vehiculo = $precio_vehiculo3;
                     $model3->cuota_inicial = $precio_entrada3;
 
@@ -522,6 +601,7 @@ class GestionFinanciamientoController extends Controller {
                     $model3->cuota_mensual = $precio_cuota_mensual3;
                     $model3->seguro = $seguro3;
                     $model3->forma_pago = $_POST['GestionFinanciamiento']['tipo']; // forma de pago
+                    $model3->cuota_mensual = $cuota_mensual3;
 
                     if (isset($_POST['GestionFinanciamiento3']['entidad_financiera']))
                         $model3->entidad_financiera = $_POST['GestionFinanciamiento3']['entidad_financiera'];
@@ -535,8 +615,22 @@ class GestionFinanciamientoController extends Controller {
                     $model3->fecha = date("Y-m-d H:i:s");
                     $model3->id_financiamiento = $model->id;
                     $model3->num_cotizacion = 4;
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc3']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model3->total_accesorios = $total_accesorios;
                     if (isset($_POST['GestionFinanciamiento1']['acc3']) && !empty($_POST['GestionFinanciamiento1']['acc3'])) {
                         $model3->accesorios = substr($_POST['GestionFinanciamiento1']['acc3'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+
+                        $acc1 = $_POST['sum-accesorios4'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (string) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios4'];
+                        $string_acc1 = $_POST['sum-accesorios-total4'];
+                        $model3->accesorios_manual = $string_acc1;
                     }
                     $model3->save();
                 }
