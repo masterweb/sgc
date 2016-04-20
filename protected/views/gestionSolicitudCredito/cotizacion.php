@@ -56,14 +56,14 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     .img-logo{position: relative; right: 150px;}
     @page {
           size: auto;
-          margin-top:4cm;
+          margin-top:2cm;
           margin-bottom:3cm;
           odd-header-name: html_myHeader1;
           odd-footer-name: html_myFooter1;
         }
 </style>
 <htmlpageheader name="myHeader1" style="display:none">
-    <div class="row title">
+<!--    <div class="row title">
         <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
         <div class="col-xs-8" style="border-left:1px solid #888890;">
             <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
@@ -77,7 +77,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
                 <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
             </div>
         </div>
-    </div>
+    </div>-->
 </htmlpageheader>
 <htmlpagefooter name="myFooter1" style="display:none">
     <table width="100%" style="vertical-align: bottom; font-family: sans; font-size: 8pt; 
@@ -181,6 +181,12 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <?php echo $value['nombres']; ?>
         </div>
 
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Celular: </em>
+            <?php echo $value['celular']; ?>
+        </div>
     </div>
 
     <div class="row">
@@ -424,17 +430,18 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
                 <?php echo $value['cuenta_ahorros1']; ?>
             </div>
         </div>
-
+        <?php if (!empty($value['banco2'])){?>
         <div class="row">
             <div class="col-xs-4">
                 <em class="tit-lab" for="">Banco 2: </em>
-                <?php echo $value['banco2']; ?>
+                <?php echo $this->getNameBanco($value['banco2']); ?>
             </div>
             <div class="col-xs-4">
                 <em class="tit-lab" for="">Cuenta 2: </em>
                 <?php echo $value['cuenta_ahorros2']; ?>
             </div>
         </div>
+        <?php } ?>
     <?php endif; ?>
 
     <div class="row">

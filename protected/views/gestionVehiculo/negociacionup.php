@@ -76,6 +76,9 @@ if ($fi == 2) {
     $total_accesorios3 = $fin2->total_accesorios;
 }
 ?>
+<style type="text/css">
+    .ag-btn{padding-left: 0px !important;}
+</style>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
 <script type="text/javascript">
     <?php if ($fi == 0): ?>
@@ -2738,6 +2741,7 @@ if ($fi == 2) {
     
      // FUNCION PARA ASIGNAR ACCESORIOS MANUALES EN EL BOTON EDITAR
     function setAccesoriosManuales(sum_accesorios_total){
+        $('#btn-acc').prop('disabled',true);
         sum_accesorios_total = sum_accesorios_total.slice(0,-1);
         //console.log('sum acc total: '+sum_accesorios_total);
         sum_accesorios_total = sum_accesorios_total.split('@');
