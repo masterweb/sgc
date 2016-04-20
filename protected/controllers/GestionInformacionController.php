@@ -99,6 +99,10 @@ class GestionInformacionController extends Controller {
                     $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
                 }
             }
+            
+            if(isset($_POST['GestionInformacion']['pasaporte']) && !empty($_POST['GestionInformacion']['pasaporte'])){
+                $model->pasaporte = $_POST['GestionInformacion']['pasaporte'];
+            }
 
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
