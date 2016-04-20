@@ -53,7 +53,11 @@ if ($fi == 1) {
         $stringAccesoriosManual2 = substr($fin1->accesorios_manual,0,-1);
     $stringAcc = $fin1->accesorios;
     $arrayAcc = $this->getListAccesorios($id_modelo, $id_version, $stringAcc);
-    $total_accesorios2 = $fin1->total_accesorios;
+    if($fin1->total_accesorios != 0){
+       $total_accesorios2 = $fin1->total_accesorios; 
+    }else{
+       $total_accesorios2 = 0; 
+    }
 }
 if ($fi == 2) {
     $fin1 = GestionFinanciamientoOp::model()->find(array('condition' => "id_financiamiento=:match AND num_cotizacion = 3", 'params' => array(':match' => (int) $model->id)));
@@ -198,12 +202,20 @@ if ($fi == 2) {
                 default:
                     break;
             }
-            $('#cont-otro3').val(3);$('.cont-opt-acc2').show();$('#precio_accesorios').val(totalAccesorios);$('.btn-canc').show();
+            $('#cont-otro3').val(3);$('.cont-opt-acc2').show();
+            if(totalAccesorios != 0){
+                $('#precio_accesorios').val(totalAccesorios);
+            }else{
+                $('#precio_accesorios').val(0);
+            }
+            
+            $('.btn-canc').show();
             $('#sum-accesorios3').val(format2(<?php echo $total_accesorios2; ?>,'$'));$('#sum-accesorios-total3').val(accManual2+'@');
             $('#sum-accesorios-res3').val(format2(<?php echo $total_accesorios2; ?>,'$'));$('#desc-accesorios3').val(stringDesc2);
             
         }
-        $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>, '$'));$('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
+        $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
+        $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
         
 <?php endif; ?>
 <?php if ($fi == 2): ?>
@@ -341,7 +353,9 @@ if ($fi == 2) {
                     break;
             }
             $('#total-acc3').val(format2(<?php echo $total_accesorios3; ?>, '$'));$('#cont-acc4').val(1);
-            $('#cont-otro3').val(3);$('.cont-opt-acc2').show();$('#precio_accesorios').val(<?php echo $total_accesorios3; ?>);$('.btn-canc').show();
+            $('#cont-otro3').val(3);$('.cont-opt-acc2').show();
+            $('#precio_accesorios').val(<?php echo $total_accesorios3; ?>);
+            $('.btn-canc').show();
             $('#sum-accesorios-total3').val(accManual2+'@');
             $('#desc-accesorios4').val(stringDesc3);
         }
@@ -520,7 +534,12 @@ if ($fi == 2) {
         var precioformat = format2(precionormal, '$');
         $('#precio_normal').val(precioformat);
         var precioaccesorios = parseInt($('#precio_accesorios').val());
-        var precioformatacc = format2(precioaccesorios, '$');
+        if(isNaN(precioaccesorios)){
+            var precioformatacc = format2(0, '$');
+        }else{
+            var precioformatacc = format2(precioaccesorios, '$');
+        }
+        
         $('#precio_accesorios').val(precioformatacc);
 
 
@@ -2725,7 +2744,12 @@ if ($fi == 2) {
         switch(sum_accesorios_total.length){
             case 1:
                 tot1 = sum_accesorios_total[0].split('-');
-                $('#valor_otro_accesorios1').val(format2(parseInt(tot1[0]), '$'));
+                if(tot1[0] == ''){
+                    $('#valor_otro_accesorios1').val(format2(0, '$'));
+                }else{
+                    $('#valor_otro_accesorios1').val(format2(parseInt(tot1[0]), '$'));
+                }
+                
                 $('#otro_accesorios_nombre1').val(tot1[1]);
                 break;
             case 2:

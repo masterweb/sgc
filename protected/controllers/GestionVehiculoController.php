@@ -662,7 +662,7 @@ class GestionVehiculoController extends Controller {
                 $model->fecha = date("Y-m-d H:i:s");
                 $model->cuota_mensual = $cuota_mensual;
             }
-            if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
+            //if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
                 //die('enter accesorios');
 //                $counter = $_POST['accesorios'];
 //                $accesorios = '';
@@ -675,12 +675,13 @@ class GestionVehiculoController extends Controller {
                 $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
                 //die('sql: '.$sql);
                 $request = $con->createCommand($sql)->query();
-            } else {
-                $con = Yii::app()->db;
-                $sql = "UPDATE gestion_vehiculo SET accesorios = '' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
-                //die('sql: '.$sql);
-                $request = $con->createCommand($sql)->query();
-            }
+            //} 
+//            else {
+//                $con = Yii::app()->db;
+//                $sql = "UPDATE gestion_vehiculo SET accesorios = '' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+//                //die('sql: '.$sql);
+//                $request = $con->createCommand($sql)->query();
+//            }
             if (isset($_POST['otro']) && $_POST['otro'] == 1) {
                 $acc1 = $_POST['sum-accesorios2'];
                 $acc1 = str_replace(',', "", $acc1);

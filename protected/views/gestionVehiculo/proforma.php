@@ -394,7 +394,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
                 </div>
             <?php endif; ?>
         </div>
-        <div class="row"><div class="col-xs-12"><strong>NOTA: </strong>Si no posee bienes o el vehículo es para trabajo es indispensable garante.</div></div>
+        
         <div class="row"><div class="col-xs-12"><em>Proforma válida por 48 horas, precios sujetos a cambios sin previo aviso</em></div></div>
     </div>
     <?php
