@@ -1455,7 +1455,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 16;
         }
 
-        //Sdie('search type: '.$search_type);
+        //die('search type: '.$search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -1551,23 +1551,23 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= $sql_cargos;
                 switch ($_GET['GestionDiaria']['status']) {
                     case 'Cierre':
-                        $sql .= " gd.cierre = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.cierre = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Desiste':
-                        $sql .= " gd.desiste = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.desiste = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Entrega':
-                        $sql .= " gd.entrega = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'PrimeraVisita':
                         //$sql .= " gd.primera_visita = 1 AND gd.seguimiento = 0 AND gd.cierre = 0 ORDER BY gd.id DESC";
-                        $sql .= " gd.paso = '1-2' ORDER BY gd.id DESC";
+                        $sql .= " gd.paso = '1-2' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Seguimiento':
-                        $sql .= " gd.seguimiento = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.seguimiento = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'SeguimientoEntrega':
-                        $sql .= " gd.seguimiento_entrega = 1 ORDER BY gd.id DESC";
+                        $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     default:
                         break;
@@ -1587,7 +1587,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('after params');
                 $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}'";
+                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -1602,7 +1602,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
-                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 $sql .= $sql_cargos;
                 $sql .= " gn.fuente = '{$_GET['GestionDiaria']['fuente']}'";
                 //die($sql);
@@ -1621,7 +1622,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($cargo_id == 69 && $_GET['GestionDiaria']['responsable'] == 'all') { // GERENTE COMERCIAL
                     $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
-                            . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) ";
+                            . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 }
                 /* if($_GET['GestionDiaria']['responsable'] == 'all'){
@@ -1629,17 +1630,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                   . "WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 ";
                   $title = "Busqueda Total";
                   } */ else {
-                    $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' ";
+                    $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
                 }
 
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 if ($_GET['GestionDiaria']['tipo'] == 'exo') {
-                    $sql .= " AND gd.desiste = 0 ORDER BY gd.id DESC";
+                    $sql .= " AND gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 }
                 if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
-                    $sql .= " AND gi.bdc = 1 ORDER BY gd.id DESC";
+                    $sql .= " AND gi.bdc = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 }
                 //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
                 //die($sql);
@@ -1676,7 +1677,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                   $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
                   } */
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gd.desiste = 0
+                $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
                 //die($sql);
                 $request = $con->createCommand($sql);
@@ -1697,7 +1698,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gd.desiste = 0
+                $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
                 //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -1734,7 +1735,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $$sql .= " AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                     $title = "Busqueda por Concesionario Total: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
                 }
-                $sql .= " ORDER BY gd.id DESC";
+                $sql .= " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -1752,7 +1753,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                        WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0
+                        WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 
+                            GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                         ORDER BY gd.id DESC";
                     //die('sql sucursal'. $sql);
                 }
@@ -1765,7 +1767,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                         LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                        WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0
+                        WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0 
+                            GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                         ORDER BY gd.id DESC";
                     //die('sql: '. $sql);
                 }
@@ -1777,6 +1780,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
                     INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                     INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id 
+                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                     ORDER BY gd.id DESC";
                 }
                 $request = $con->createCommand($sql);
@@ -1858,7 +1862,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id ";
                     $title = "Busqueda por Total País";
                 }
-                $sql .= " ORDER BY gd.id DESC";
+                $sql .= " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $users = $request->queryAll();
@@ -1899,6 +1903,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 46) {// SUPER ADMINISTRADOR AEKIA
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
+                GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
             //die('sql sucursal'. $sql);
         }
@@ -1919,6 +1924,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE u.grupo_id = {$grupo_id} AND u.cargo_id = 71 
+                GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
             //die('sql sucursal'. $sql);
         }
@@ -1935,7 +1941,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE u.cargo_id IN(70,71)
+                WHERE u.cargo_id IN(70,71) 
+                GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
         }
 
@@ -1995,7 +2002,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable  
-                WHERE gi.bdc = 1 AND u.grupo_id = {$grupo_id}
+                WHERE gi.bdc = 1 AND u.grupo_id = {$grupo_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 73) { // ASESOR BDC
@@ -2008,7 +2015,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND gi.responsable = {$id_responsable}
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND gi.responsable = {$id_responsable} 
+                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
             //die($sql);
         }
@@ -2024,7 +2032,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73
+                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73 
+                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
             //die($sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
@@ -2036,7 +2045,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable
-                WHERE gi.bdc = 1 AND u.cargo_id IN (72,73)
+                WHERE gi.bdc = 1 AND u.cargo_id IN (72,73) 
+                GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
             //die('else: '.$sql);
         }
@@ -2467,7 +2477,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) AND gi.responsable = $id_responsable
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) AND gi.responsable = $id_responsable 
+                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
             //die($sql);
         }
@@ -2486,11 +2497,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
             if(count($array_dealers)>0){
-                $sql .= "WHERE gi.tipo_form_web = 'exonerados' AND gi.responsable = $id_responsable";
+                $sql .= "WHERE gi.tipo_form_web = 'exonerados' AND gi.responsable = $id_responsable GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
             }else{
                 $array_dealers = $this->getDealerGrupoConc($grupo_id);
                 $dealerList = implode(', ', $array_dealers);
-                $sql .= " WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) 
+                $sql .= " WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ($dealerList) GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
             }
             
@@ -2504,7 +2515,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id = {$dealer_id}
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id = {$dealer_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 72) { // JEFE DE BDC
@@ -2517,7 +2528,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75
+                WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
@@ -2527,7 +2538,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.tipo_form_web = 'exonerados'
+                WHERE gi.tipo_form_web = 'exonerados' GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         }
 
@@ -2540,7 +2551,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id}
+                WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
@@ -2550,7 +2561,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.tipo_form_web = 'exonerados' AND u.cargo_id IN (75)
+                WHERE gi.tipo_form_web = 'exonerados' AND u.cargo_id IN (75) GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         }
         //die($sql);
