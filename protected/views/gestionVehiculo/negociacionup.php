@@ -2751,6 +2751,7 @@ if ($fi == 2) {
                 }
                 
                 $('#otro_accesorios_nombre1').val(tot1[1]);
+                $('.cont-opt-acc1').show(); $('.cont-opt-acc2').hide();$('.cont-opt-acc3').hide();
                 break;
             case 2:
                 tot1 = sum_accesorios_total[0].split('-');
@@ -2759,6 +2760,7 @@ if ($fi == 2) {
                 tot2 = sum_accesorios_total[1].split('-');
                 $('#valor_otro_accesorios2').val(format2(parseInt(tot2[0]), '$'));
                 $('#otro_accesorios_nombre2').val(tot2[1]);
+                $('.cont-opt-acc1').show(); $('.cont-opt-acc2').show();$('.cont-opt-acc3').hide();
                 break;    
             case 3:
                 tot1 = sum_accesorios_total[0].split('-');
@@ -2770,6 +2772,7 @@ if ($fi == 2) {
                 tot3 = sum_accesorios_total[2].split('-');
                 $('#valor_otro_accesorios3').val(format2(parseInt(tot3[0]), '$'));
                 $('#otro_accesorios_nombre3').val(tot3[1]);
+                $('.cont-opt-acc1').show(); $('.cont-opt-acc2').show();$('.cont-opt-acc3').show();
                 break; 
             default:
                 break;
