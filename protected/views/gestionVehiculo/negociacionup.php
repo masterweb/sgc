@@ -1798,7 +1798,13 @@ if ($fi == 2) {
                 var returnedData = JSON.parse(data);
                 $('#bg_negro').hide();
                 alert('Datos actualizados correctamente');
-                $("#btnverprf").show();
+                $("#btnverprf").show();$('#btnagendamiento').show();
+                if($('#GestionFinanciamiento_tipo_financiamiento').val() == 1){
+                    $('#btn-continuar').show();
+                }else{
+                    $('#btn-continuar-ct').show();
+                }
+                
             }
         });
     }
