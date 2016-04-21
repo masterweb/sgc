@@ -25,6 +25,7 @@
  * @property string $fecha
  * @property string $ts
  * @property integer $order
+ * @property string $total_accesorios
  */
 class GestionFinanciamiento extends CActiveRecord {
 
@@ -54,7 +55,7 @@ class GestionFinanciamiento extends CActiveRecord {
             array('id_informacion, id_vehiculo', 'required'),
             array('id_informacion, id_vehiculo, id_pdf, order', 'numerical', 'integerOnly' => true),
             array('cuota_inicial, saldo_financiar, tarjeta_credito, otro, plazos, cuota_mensual, avaluo, categoria', 'length', 'max' => 45),
-            array('fecha_cita, observaciones, fecha', 'safe'),
+            array('fecha_cita, observaciones, fecha, total_accesorios', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, id_informacion, cuota_inicial, saldo_financiar, tarjeta_credito, otro, plazos, cuota_mensual, avaluo, observaciones, fecha', 'safe', 'on' => 'search'),
@@ -98,7 +99,8 @@ class GestionFinanciamiento extends CActiveRecord {
             'entidad_financiera' => 'Entidad Financiera',
             'fecha' => 'Fecha',
             'ts' => 'Tiempo Seguro',
-            'order' => 'Orden'
+            'order' => 'Orden',
+            'total_accesorios' => 'Total Accesorios'
         );
     }
 

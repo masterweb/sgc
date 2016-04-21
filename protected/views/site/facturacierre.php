@@ -124,6 +124,7 @@
                                             <input type="submit" name="send" value="Continuar" class="btn btn-primary"/>
                                             <input type="hidden" name="id_informacion" value="<?php echo $id_informacion; ?>" />
                                             <input type="hidden" name="id_vehiculo" value="<?php echo $id_vehiculo; ?>" />
+                                            <input type="hidden" name="datos_vehiculo" value="<?php echo implode(',', $data_save); ?>"/>
                                         </div>
                                     </div>
                                     <?php $this->endWidget(); ?>

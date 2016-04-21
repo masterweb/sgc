@@ -30,7 +30,7 @@ class GestionVehiculoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('admin', 'create', 'update', 'createAjax', 'createAjax2', 'negociacion', 'negociacionup','proformaexo',
+                'actions' => array('admin', 'create', 'update', 'createAjax', 'createAjax2', 'negociacion', 'negociacionup', 'proformaexo', 'negociacion_res',
                     'proforma', 'negociacionAjax', 'hojaEntrega', 'solicitud', 'pago', 'sendProforma', 'modProforma', 'negociacionex'),
                 'users' => array('@'),
             ),
@@ -264,7 +264,7 @@ class GestionVehiculoController extends Controller {
      * @param type $id_vehiculo
      */
     public function actionNegociacion($id_informacion = NULL, $id_vehiculo = NULL) {
-        
+
         if (isset($_POST['GestionFinanciamiento'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -290,8 +290,12 @@ class GestionVehiculoController extends Controller {
         $this->render('negociacion', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
     }
 
+    public function actionNegociacion_res($id_informacion = NULL, $id_vehiculo = NULL) {
+        $this->render('negociacion_res', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
+    }
+
     public function actionNegociacionup($id_informacion = NULL, $id_vehiculo = NULL) {
-        
+
         if (isset($_POST['GestionFinanciamiento'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -316,9 +320,9 @@ class GestionVehiculoController extends Controller {
         }
         $this->render('negociacionup', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo));
     }
-    
+
     public function actionNegociacionex($id_informacion = NULL, $id_vehiculo = NULL) {
-        
+
         if (isset($_POST['GestionFinanciamiento'])) {
 //            echo '<pre>';
 //            print_r($_POST);
@@ -573,7 +577,7 @@ class GestionVehiculoController extends Controller {
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado']);
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
                 $precio_vehiculo = (int) str_replace('$', "", $precio_vehiculo);
-                
+
                 $precio_normal = str_replace(',', "", $_POST['precio_normal']);
                 $precio_normal = str_replace('.', ",", $precio_normal);
                 $precio_normal = (int) str_replace('$', "", $precio_normal);
@@ -582,8 +586,18 @@ class GestionVehiculoController extends Controller {
                 $seguro = str_replace('.', ",", $seguro);
                 $seguro = (int) str_replace('$', "", $seguro);
 
+                $total_accesorios = str_replace(',', "", $_POST['total-acc1']);
+                $total_accesorios = str_replace('.', ",", $total_accesorios);
+                $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+
+                $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento1']['cuota_mensual']);
+                $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+
+
                 $model->precio_vehiculo = $precio_vehiculo;
                 $model->precio_normal = $precio_normal;
+                $model->total_accesorios = $total_accesorios;
                 $model->ts = $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'];
                 if (!empty($_POST['GestionFinanciamiento1']['tiempo_seguro_contado']) && $_POST['GestionFinanciamiento1']['tiempo_seguro_contado'] != 0) {
                     $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado_total']);
@@ -597,6 +611,7 @@ class GestionVehiculoController extends Controller {
                 $model->observaciones = $_POST['GestionFinanciamiento1']['observaciones_contado'];
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
+                $model->cuota_mensual = $cuota_mensual;
             } else {
                 $model = new GestionFinanciamiento;
                 $model->attributes = $_POST['GestionFinanciamiento1'];
@@ -617,10 +632,21 @@ class GestionVehiculoController extends Controller {
                 $precio_cuota_mensual = str_replace('.', ",", $precio_cuota_mensual);
                 $precio_cuota_mensual = (int) str_replace('$', "", $precio_cuota_mensual);
 
+                $total_accesorios = str_replace(',', "", $_POST['total-acc1']);
+                $total_accesorios = str_replace('.', ",", $total_accesorios);
+                $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+
+
                 $seguro = str_replace(',', "", $_POST['GestionFinanciamiento1']['seguro']);
                 $seguro = str_replace('.', ",", $seguro);
                 $seguro = (int) str_replace('$', "", $seguro);
 
+                $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento1']['cuota_mensual']);
+                $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+                //die('cuota mensual: '.$cuota_mensual);
+
+                $model->total_accesorios = $total_accesorios;
                 $model->precio_vehiculo = $precio_vehiculo;
                 $model->cuota_inicial = $precio_entrada;
                 $model->tasa = (int) $_POST['GestionFinanciamiento1']['tasa'];
@@ -634,8 +660,9 @@ class GestionVehiculoController extends Controller {
                 $model->observaciones = $_POST['GestionFinanciamiento1']['observaciones'];
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
+                $model->cuota_mensual = $cuota_mensual;
             }
-            if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
+            //if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
                 //die('enter accesorios');
 //                $counter = $_POST['accesorios'];
 //                $accesorios = '';
@@ -647,6 +674,24 @@ class GestionVehiculoController extends Controller {
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
                 //die('sql: '.$sql);
+                $request = $con->createCommand($sql)->query();
+            //} 
+//            else {
+//                $con = Yii::app()->db;
+//                $sql = "UPDATE gestion_vehiculo SET accesorios = '' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+//                //die('sql: '.$sql);
+//                $request = $con->createCommand($sql)->query();
+//            }
+            if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+                $acc1 = $_POST['sum-accesorios2'];
+                $acc1 = str_replace(',', "", $acc1);
+                $acc1 = str_replace('.', ",", $acc1);
+                $acc1 = (int) str_replace('$', "", $acc1);
+                //$string_acc1 = $_POST['desc-accesorios2'];
+                $string_acc1 = $_POST['sum-accesorios-total2'];
+                //die('sgtring acc1: '.$string_acc1);
+                $con = Yii::app()->db;
+                $sql = "UPDATE gestion_vehiculo SET accesorios_manual = '{$string_acc1}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
                 $request = $con->createCommand($sql)->query();
             }
             //die('before save:');
@@ -724,6 +769,10 @@ class GestionVehiculoController extends Controller {
                         $seguro2 = (int) str_replace('$', "", $seguro2);
                     }
 
+                    $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento2']['cuota_mensual']);
+                    $cuota_mensual = str_replace('.', ",", $cuota_mensual);
+                    $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+
                     $model2->precio_vehiculo = $precio_vehiculo2;
                     $model2->cuota_inicial = $precio_entrada2;
                     if (isset($_POST['GestionFinanciamiento1']['tasa']))
@@ -736,6 +785,7 @@ class GestionVehiculoController extends Controller {
                     $model2->valor_financiamiento = $precio_financiamiento2;
                     $model2->cuota_mensual = $precio_cuota_mensual2;
                     $model2->seguro = $seguro2;
+                    $model2->cuota_mensual = $cuota_mensual;
 
                     //$model2->precio_vehiculo = $_POST['GestionFinanciamiento2']['precio'];
                     //$model2->cuota_inicial = $_POST['GestionFinanciamiento2']['entrada'];
@@ -757,8 +807,23 @@ class GestionVehiculoController extends Controller {
                     $model2->id_financiamiento = $model->id;
                     $model2->num_cotizacion = 3;
 
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc2']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model2->total_accesorios = $total_accesorios;
+
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+                        $acc1 = $_POST['sum-accesorios3'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (int) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios3'];
+                        $string_acc1 = $_POST['sum-accesorios-total3'];
+                        //die('string acc 2: '.$string_acc1);
+                        $model2->accesorios_manual = $string_acc1;
                     }
                     $model2->save();
                 }
@@ -816,6 +881,10 @@ class GestionVehiculoController extends Controller {
                         $seguro2 = str_replace('.', ",", $seguro2);
                         $seguro2 = (int) str_replace('$', "", $seguro2);
                     }
+                    
+                    $cuota_mensual2 = str_replace(',', "", $_POST['GestionFinanciamiento2']['cuota_mensual']);
+                    $cuota_mensual2 = str_replace('.', ",", $cuota_mensual2);
+                    $cuota_mensual2 = (int) str_replace('$', "", $cuota_mensual2);
 
                     $model2->precio_vehiculo = $precio_vehiculo2;
                     $model2->cuota_inicial = $precio_entrada2;
@@ -829,6 +898,7 @@ class GestionVehiculoController extends Controller {
                     $model2->valor_financiamiento = $precio_financiamiento2;
                     $model2->cuota_mensual = $precio_cuota_mensual2;
                     $model2->seguro = $seguro2;
+                    $model2->cuota_mensual = $cuota_mensual2;
 
                     //$model2->precio_vehiculo = $_POST['GestionFinanciamiento2']['precio'];
                     //$model2->cuota_inicial = $_POST['GestionFinanciamiento2']['entrada'];
@@ -850,8 +920,24 @@ class GestionVehiculoController extends Controller {
                     $model2->id_financiamiento = $model->id;
                     $model2->num_cotizacion = 3;
 
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc2']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model2->total_accesorios = $total_accesorios;
+
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+
+                        $acc1 = $_POST['sum-accesorios3'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (int) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios3'];
+                        $string_acc1 = $_POST['sum-accesorios-total3'];
+                        //die('string acc 2: '.$string_acc1);
+                        $model2->accesorios_manual = $string_acc1;
                     }
                     $model2->save();
 
@@ -910,6 +996,10 @@ class GestionVehiculoController extends Controller {
                         $seguro3 = str_replace('.', ",", $seguro3);
                         $seguro3 = (int) str_replace('$', "", $seguro3);
                     }
+                    
+                    $cuota_mensual3 = str_replace(',', "", $_POST['GestionFinanciamiento3']['cuota_mensual']);
+                    $cuota_mensual3 = str_replace('.', ",", $cuota_mensual3);
+                    $cuota_mensual3 = (int) str_replace('$', "", $cuota_mensual3);
 
                     $model3->precio_vehiculo = $precio_vehiculo3;
                     $model3->cuota_inicial = $precio_entrada3;
@@ -925,6 +1015,7 @@ class GestionVehiculoController extends Controller {
                     $model3->cuota_mensual = $precio_cuota_mensual3;
                     $model3->seguro = $seguro3;
                     $model3->forma_pago = $_POST['GestionFinanciamiento']['tipo']; // forma de pago
+                    $model3->cuota_mensual = $cuota_mensual3;
 
                     if (isset($_POST['GestionFinanciamiento3']['entidad_financiera']))
                         $model3->entidad_financiera = $_POST['GestionFinanciamiento3']['entidad_financiera'];
@@ -938,9 +1029,24 @@ class GestionVehiculoController extends Controller {
                     $model3->fecha = date("Y-m-d H:i:s");
                     $model3->id_financiamiento = $model->id;
                     $model3->num_cotizacion = 4;
+                    $total_accesorios = str_replace(',', "", $_POST['total-acc3']);
+                    $total_accesorios = str_replace('.', ",", $total_accesorios);
+                    $total_accesorios = (int) str_replace('$', "", $total_accesorios);
+                    $model3->total_accesorios = $total_accesorios;
+
 
                     if (isset($_POST['GestionFinanciamiento1']['acc3']) && !empty($_POST['GestionFinanciamiento1']['acc3'])) {
                         $model3->accesorios = substr($_POST['GestionFinanciamiento1']['acc3'], 0, -1);
+                    }
+                    if (isset($_POST['otro']) && $_POST['otro'] == 1) {
+
+                        $acc1 = $_POST['sum-accesorios4'];
+                        $acc1 = str_replace(',', "", $acc1);
+                        $acc1 = str_replace('.', ",", $acc1);
+                        $acc1 = (string) str_replace('$', "", $acc1);
+                        //$string_acc1 = $_POST['desc-accesorios4'];
+                        $string_acc1 = $_POST['sum-accesorios-total4'];
+                        $model3->accesorios_manual = $string_acc1;
                     }
                     $model3->save();
                 }
@@ -973,7 +1079,6 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $hoja_entrega->fecha = date("Y-m-d H:i:s");
         $hoja_entrega->save();
         # mPDF        
-
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
         $mPDF1->SetTitle('Hoja de Entrega');
@@ -1013,9 +1118,9 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
 //echo $this->getResponsable($id_asesor);
         //die('enter prof');
         $con = Yii::app()->db;
-        $sql = "SELECT gf.forma_pago, gf.precio_vehiculo,gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, 
+        $sql = "SELECT gf.forma_pago, gf.precio_vehiculo,gf.total_accesorios, gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, 
 gf.entidad_financiera, gf.id as id_financiamiento, gf.ts, gf.observaciones, gf.cuota_mensual, gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa, 
-gi.responsable, gv.modelo, gv.version, gv.accesorios
+gi.responsable, gv.modelo, gv.version, gv.accesorios, gv.accesorios_manual
 FROM gestion_financiamiento gf 
 INNER JOIN gestion_informacion gi ON gi.id =  gf.id_informacion 
 INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo 
@@ -1042,7 +1147,6 @@ WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} 
           } */
         $proforma->save();
         # mPDF        
-
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
         $mPDF1->SetTitle('Proforma de Cotización');
@@ -1057,9 +1161,9 @@ WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} 
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma.'.pdf', 'I');
+        $mPDF1->Output($nombreproforma . '.pdf', 'I');
     }
-    
+
     /**
      * Generate a pdf document with vehicle accesories and charts
      * @param type $id_informacion
@@ -1125,12 +1229,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $mPDF1->WriteHTML($stylesheet, 1);
         # renderPartial (only 'view' of current controller)
         $mPDF1->WriteHTML($this->renderPartial('proformaexo', array('data' => $request, 'id_hoja' => $num_proforma, 'id_informacion' => $id_informacion,
-            'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc,'tipo_exonerado' => $tipo_exonerado), true));
+                    'nombre_responsable' => $nombre_responsable, 'responsable_id' => $responsable_id, 'ruc' => $ruc, 'tipo_exonerado' => $tipo_exonerado), true));
 
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma.'.pdf', 'I');
+        $mPDF1->Output($nombreproforma . '.pdf', 'I');
     }
 
     public function actionSendProforma() {
@@ -1265,7 +1369,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $general .= '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr> 
                             </table>';
         }
-		
+
 
         $general .= '<p style="margin: 2px 0;">Para descargar la proforma haga click <a href="https://www.kia.com.ec/intranet/usuario/index.php/site/proformacliente?id_informacion=' . $id_informacion . '&amp;id_vehiculo=' . $id_vehiculo . '">Aquí</a></p>
 		<p style="margin: 2px 0;">Para descargar el catálogo haga click <a href="https://www.kia.com.ec/images/Fichas_Tecnicas/' . $ficha_tecnica . '">Aquí</a></p>
@@ -1293,7 +1397,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
         $send = sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
-        
     }
 
     /**

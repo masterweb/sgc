@@ -71,7 +71,7 @@ $id_responsable = Yii::app()->user->getId();
             ));
             $art = GestionConsulta::model()->findAll($criteria4);
             ?>
-            <?php if (count($art) > 1): ?>
+            <?php if (count($art) > 0): ?>
             <div class="row">
                 <div class="col-xs-12">
                     <label for="">Modelo de vehículo que posee actualmente</label>

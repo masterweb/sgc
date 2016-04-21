@@ -48,7 +48,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
          }
          });*/
         //$('#precio_normal').maskMoney();
-        $('#GestionFinanciamiento_entrada').keyup(function () {
+    $('#GestionFinanciamiento_precio').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true}); 
+    $('#GestionFinanciamiento_precio2').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true});    
+    $('#GestionFinanciamiento_precio3').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true});    
+    $('#valor_otro_accesorios1').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true});
+    $('#valor_otro_accesorios2').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true}); 
+    $('#valor_otro_accesorios3').maskMoney({prefix: '$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true}); 
+    $('#GestionFinanciamiento_entrada').keyup(function () {
         calcFinanciamiento();
     });
     $('#GestionFinanciamiento_entrada2').keyup(function () {
@@ -67,11 +73,11 @@ $id_version = $this->getIdVersion($id_vehiculo);
 
     var finanprecio2 = parseInt($('#GestionFinanciamiento_precio2').val());
     var finanprecioformat2 = format2(finanprecio2, '$');
-    $('#GestionFinanciamiento_precio2').val(finanprecioformat);
-
+        $('#GestionFinanciamiento_precio2').val(finanprecioformat2);
+    
     var finanprecio3 = parseInt($('#GestionFinanciamiento_precio3').val());
     var finanprecioformat3 = format2(finanprecio3, '$');
-    $('#GestionFinanciamiento_precio3').val(finanprecioformat);
+        $('#GestionFinanciamiento_precio3').val(finanprecioformat3);
 
     var precionormal = parseInt($('#precio_normal').val());
     var precioformat = format2(precionormal, '$');
@@ -167,6 +173,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         });
 
         $("input[name='accesorios[]']").click(function () {
+            var kit = $('.kit').val();
             var accesorio2 = $(this).val();
             var idacc = $(this).prop('id');
             var id = idacc.split("-");
@@ -179,9 +186,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
             // valor del contador de proformas
             var savecounter = 0; // numero de formulario a editar original
             // si no se ha generado una proforma, continua el proceso normal
-            if(flag == 0){
-                
-            }
+            
             // ya se ha generado una proforma
             if(flag == 1){
                 savecounter = $('#options-cont').val();// guardamos el valor del contador de formularios
@@ -199,7 +204,12 @@ $id_version = $this->getIdVersion($id_vehiculo);
             precioanterior = precioanterior.replace('.', ',');
             precioanterior = precioanterior.replace('$', '');
             precioanterior = parseInt(precioanterior);
+            
+            if(kit && $('.kit').prop('checked') && counter == 2){
+                
+            }
             if ($(this).prop('checked')) {
+                
                 var precionuevo = parseInt(precioanterior) + parseInt(accesorio2);
                 $('#precio_accesorios').val(format2(precionuevo, '$'));
                 switch (counter) {
@@ -431,7 +441,35 @@ $id_version = $this->getIdVersion($id_vehiculo);
     function format2(n, currency) {
         return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
-    function op() {
+    
+    function ot(){
+        var cotr = $('#options-cont-otro').val();
+        //console.log('cotr: '+cotr);
+        if (cotr == 3) {
+            $('#btn-ot').removeClass('btn-success').prop( "disabled", true );
+        }
+        $('.btn-canc-otro').show();
+        $('.cont-opt-acc' + cotr).show();
+        if (cotr <= 4) {
+            cotr++;
+            $('#options-cont-otro').val(cotr);
+        }
+    }
+    function otcanc(){
+        var cotr = $('#options-cont-otro').val();
+        if (cotr != 3) {
+            $('#btn-ot').removeClass('btn-danger').addClass('btn-success').prop( "disabled", false );
+        }
+        cotr--;
+        if (cotr > 1) {
+            $('.cont-opt-acc' + cotr).hide();
+            $('#options-cont-otro').val(cotr);
+        }
+        if ($('#options-cont-otro').val() == 2) {
+            $('.btn-canc-otro').hide();
+        }
+    }
+    function op(){
         //acc1.length = 0;
         //acc2.length = 0;
         //acc3.length = 0;
@@ -1293,7 +1331,7 @@ function calcFinanciamiento3() {
     }
 }
 function calcFinanciamiento() {
-console.log('enter calcfinanciammiento 1');
+//console.log('enter calcfinanciammiento 1');
     var valorEntrada1 = $('#GestionFinanciamiento_entrada').attr('value');
     var valorVehiculo = $('#GestionFinanciamiento_precio').val();
     console.log('valor vehiculo: ' + valorVehiculo);
@@ -1843,7 +1881,7 @@ function deleter(id){
                                                             <div class="col-md-7">
                                                                 <div class="checkbox">
                                                                     <label>
-                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" disabled="" class="def" <?php } ?>>
+                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" class="def kit" <?php } ?>>
                                                                         <?php echo $value['accesorio']; ?>
                                                                         <input type="hidden" name="<?php echo $value['accesorio']; ?>" id="acc<?php echo $count; ?>" value="0"/>
                                                                     </label>
@@ -1870,7 +1908,7 @@ function deleter(id){
                                                             <div class="col-md-7">
                                                                 <div class="checkbox">
                                                                     <label>
-                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" disabled="" class="def" <?php } ?>>
+                                                                        <input type="checkbox" value="<?php echo $value['precio'] . '-' . $value['accesorio']; ?>" name="accesorios[]" id="accesorio-<?php echo $count; ?>" <?php if ($value['codigo'] == 7 && $tipo == 1) { ?> checked="" class="def kit" <?php } ?>>
                                                                         <?php echo $value['accesorio']; ?>
                                                                         <input type="hidden" name="<?php echo $value['accesorio']; ?>" id="acc<?php echo $count; ?>" value="0"/>
                                                                     </label>
@@ -1890,6 +1928,59 @@ function deleter(id){
                                                         $count++;
                                                     endforeach;
                                                     ?>
+                                                </div>
+                                                <hr />
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-1">
+                                                            <div class="checkbox">
+                                                                <label for="">
+                                                                    <input type="checkbox" value="" name="otro" id="otro" class=""/>Otro
+                                                                    
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="checkbox"><button type="button" class="btn btn-success btn-xs" onclick="ot();" id="btn-ot">+ Agregar</button>
+                                                            <input type="hidden" name="options-cont-otro" id="options-cont-otro" value="2" /></div>
+                                                            
+                                                        </div>
+                                                        <div class="col-md-1 btn-canc-otro" style="display: none;">
+                                                            <div class="checkbox"><button type="button" class="btn btn-info btn-inverse btn-xs" onclick="otcanc();">− Eliminar</button></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" class="otro_accesorio">
+                                                        <div class="row cont-opt-acc1">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre1" id="otro_accesorios_nombre1" cols="30" rows="3" draggable=""></textarea>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="." data-decimal=",">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row cont-opt-acc2" style="display: none;">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre2" id="otro_accesorios_nombre2" cols="30" rows="3" draggable=""></textarea>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="." data-decimal=",">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row cont-opt-acc3" style="display: none;">
+                                                            <div class="col-md-4">
+                                                                <label for="precio_normal">Accesorios</label>
+                                                                <textarea name="otro_accesorios_nombre3" id="otro_accesorios_nombre1" cols="30" rows="3" draggable=""></textarea>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="precio_accesorios">Valor</label>
+                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="." data-decimal=",">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1929,14 +2020,17 @@ function deleter(id){
                             <?php } ?>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="precio_normal">Precio Normal</label>
-                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>">
+                                    <label for="precio_accesorios">Valor con Accesorios</label>
+                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>" data-symbol="$ " data-thousands="." data-decimal=",">
+                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-4">
-                                    <label for="precio_accesorios">Precio con Accesorios</label>
-                                    <input type="text" name="precio_accesorios" id="precio_accesorios" class="form-control input-acc" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>" data-symbol="$ " data-thousands="." data-decimal=",">
-                                    <input type="hidden" name="precio_accesorios_anterior" id="precio_accesorios_anterior" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                    <label for="precio_normal">Precio Normal</label>
+                                    <input type="text" name="precio_normal" id="precio_normal" class="form-control" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>">
                                 </div>
+                                
                             </div>
                             <br />
                             <div class="row">
@@ -1978,7 +2072,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento1[precio]" id="GestionFinanciamiento_precio" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento1[precio]" id="GestionFinanciamiento_precio" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2072,7 +2166,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento2[precio]" id="GestionFinanciamiento_precio2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento2[precio]" id="GestionFinanciamiento_precio2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2166,7 +2260,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento3[precio]" id="GestionFinanciamiento_precio3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento3[precio]" id="GestionFinanciamiento_precio3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,0) ?>" maxlength="11"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2259,7 +2353,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento1[precio_contado]" id="GestionFinanciamiento_precio_contado" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2310,7 +2404,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento2[precio_contado]" id="GestionFinanciamiento_precio_contado2" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2363,7 +2457,7 @@ function deleter(id){
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Precio Vehículo</label>
-                                                <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo) ?>"/>
+                                                <input type="text" name="GestionFinanciamiento3[precio_contado]" id="GestionFinanciamiento_precio_contado3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $this->getPrecio($id_vehiculo, $tipo,$id_modelo,1) ?>"/>
                                             </div>
                                         </div>
                                         <div class="row">

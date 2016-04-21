@@ -530,9 +530,12 @@ footer{
 /*.dsc{color: #999999;}
 .dscchk{color: #ffffff;}*/
 
-.cont-options1-after{border: 1px solid #999999};
-.cont-options2-after{border: 1px solid #999999};
-.cont-options3-after{border: 1px solid #999999};
+.cont-options1-after{border: 1px solid #999999;
+    background: rgba(255, 255, 255, 0.46);};
+.cont-options2-after{border: 1px solid #999999;
+    background: rgba(255, 255, 255, 0.46);};
+.cont-options3-after{border: 1px solid #999999;
+    background: rgba(255, 255, 255, 0.46);};
 #resalt{color:#aa1f2c;font-size:14px;}
 
 

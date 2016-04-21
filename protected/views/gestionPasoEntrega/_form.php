@@ -93,6 +93,16 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
         }
     }
     $(document).ready(function () {
+        $('#GestionAgendamiento_agendamiento').datetimepicker({
+            lang: 'es',
+            onGenerate: function (ct) {
+                //$(this).find('.xdsoft_date.xdsoft_weekend')
+                //        .addClass('xdsoft_disabled');
+            },
+            weekends: ['01.01.2014', '02.01.2014', '03.01.2014', '04.01.2014', '05.01.2014', '06.01.2014'],
+            minDate: '-1970/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
+            disabledDates: ['03.04.2015', '01.05.2015', '10.08.2015', '09.10.2015', '02.11.2015', '03.11.2015', '25.12.2015'], formatDate: 'd.m.Y'
+        });
         var paso_entrega = $('#GestionPasoEntrega_paso').val();
         var tipo = '<?php echo $tipo; ?>';
         $('.fancybox').fancybox();
@@ -677,6 +687,7 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                             <?php }else{ ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
                             <?php } ?>
+                            <a href="<?php echo Yii::app()->createUrl('site/entrega/', array('id_informacion' => $id_informacion)); ?>" class="btn btn-danger">Agendar Seguimiento</a>
                             
                             <input type="hidden" name="GestionPasoEntrega[paso]" id="GestionPasoEntrega_paso" value="<?php echo $paso; ?>"/>
                             <input type="hidden" name="GestionPasoEntrega[id_informacion]" id="GestionPasoEntrega_id_informacion" value="<?php echo $id_informacion; ?>"/>
@@ -689,11 +700,9 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                     </div><!-- form -->
                     <br />
                 <br />
+                
                 <?= $this->renderPartial('//layouts/rgd/links');?>
                 </div>
             </div>
         </div>
     </div>
-
-
-</div>

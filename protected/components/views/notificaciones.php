@@ -44,6 +44,7 @@ $dealerList = implode(', ', $array_dealers);
                     INNER JOIN gestion_status_solicitud gs ON gs.id_informacion = gt.id_informacion 
                     INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
             . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
+            //die($abiertoSQL2);
     $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
 
     $abierto3 = "";

@@ -30,7 +30,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             <?php if ($cargo_id == 71 || $cargo_id == 70 || $cargo_id == 69 || $cargo_id == 46): ?>
                 <div class="col-md-6">
                     <label for="">Categorización</label>
-                    <select name="GestionDiaria[categorizacion]" id="" class="form-control">
+                    <select name="GestionDiaria[categorizacion]" class="form-control" id="gestion_diaria_categorizacion">
                         <option value="">--Seleccione categorización--</option>
                         <option value="Hot A (hasta 7 dias)">Hot A(hasta 7 dias)</option>
                         <option value="Hot B (hasta 15 dias)">Hot B(hasta 15 dias)</option>
@@ -45,7 +45,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         <div class="row">
             <div class="col-md-6">
                 <label for="GestionNuevaCotizacion_fuente">Status</label>
-                <select type="text" id="" name="GestionDiaria[status]" class="form-control">
+                <select type="text" name="GestionDiaria[status]" class="form-control" id="gestion_diaria_status">
                     <option value="">--Seleccione status--</option>
                     <option value="Cierre">Cierre</option>
                     <option value="Desiste">Desiste</option>
@@ -177,9 +177,13 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         <div class="row">
             <div class="col-md-6">
                 <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-
+                <input type="hidden" name="busqueda_general" id="busqueda_general" value="0" />
+                <input type="hidden" name="categorizacion" id="categorizacion" value="0" />
+                <input type="hidden" name="status" id="status" value="0" />
+                <input type="hidden" name="responsable" id="responsable" value="0" />
+                <input type="hidden" name="fecha" id="fecha" value="0" />
+                <input type="hidden" name="search_type" id="search_type" value="0" />
             </div>
-
         </div>
         <?php $this->endWidget(); ?>
         <div class="row">

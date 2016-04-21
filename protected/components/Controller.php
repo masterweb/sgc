@@ -965,7 +965,7 @@ class Controller extends CController {
             $usuario = Grupoconcesionariousuario::model()->find($criteria2);
             return $usuario->concesionario_id;
         } else {
-            return $dealer->concesionario_id;
+            return $dealer->dealers_id;
         }
     }
 

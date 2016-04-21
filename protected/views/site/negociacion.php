@@ -20,7 +20,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
 <?php
 // si la solicitud es al contado entonces el boton continuar var por defecto
 $crit5 = new CDbCriteria(array(
-    'condition' => "id_informacion={$id} AND forma_pago = 'Contado'"
+    'condition' => "id_informacion={$id} AND (forma_pago = 'Contado' OR forma_pago = 'Crédito')"
         ));
 $gf = GestionFinanciamiento::model()->count($crit5);
 ?>
@@ -180,7 +180,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                 ));
                 $sl = GestionSolicitudCredito::model()->count($criteria5);
                 if ($sl > 0 || $gf > 0):
-                    ?>
+                ?>
                     <div class="row"></div>
                     <br />
                     <div class="row">
@@ -190,15 +190,15 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                     </div>
                 <?php endif; ?>
 
-                <?php if ($gf > 216546): ?>
-                    <div class="row"></div>
+                <?php //if ($gf > 216546): ?>
+<!--                    <div class="row"></div>
                     <br />
                     <div class="row">
                         <div class="col-md-3">
                             <a href="<?php echo Yii::app()->createUrl('site/cierre/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    </div>-->
+                <?php //endif; ?>
                 <div class="row"></div>
                 <br />
                 <div class="highlight">
