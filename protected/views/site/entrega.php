@@ -28,6 +28,16 @@
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#GestionAgendamiento_agendamiento').datetimepicker({
+            lang: 'es',
+            onGenerate: function (ct) {
+                //$(this).find('.xdsoft_date.xdsoft_weekend')
+                //        .addClass('xdsoft_disabled');
+            },
+            weekends: ['01.01.2014', '02.01.2014', '03.01.2014', '04.01.2014', '05.01.2014', '06.01.2014'],
+            minDate: '-1970/01/01', //yesterday is minimum date(for today use 0 or -1970/01/01)
+            disabledDates: ['03.04.2015', '01.05.2015', '10.08.2015', '09.10.2015', '02.11.2015', '03.11.2015', '25.12.2015'], formatDate: 'd.m.Y'
+        });
         $('#closemodal').click(function () {
             var url = window.location.href;
             $(location).attr('href', url);
@@ -376,62 +386,60 @@
                 <div class="row">
                     <h1 class="tl_seccion">Lista de Entrega</h1>
                 </div>
-                <div class="rows">
+                <div class="row  highlight">
                     <div class="col-md-12">
-                        <div class="row highlight">
-                            <div class="table-responsive">
-                                <table class="tables tablesorter" id="keywords">
-                                    <thead>
+                        <div class="table-responsive">
+                            <table class="tables tablesorter" id="keywords">
+                                <thead>
+                                    <tr>
+                                        <th><span>Modelo</span></th>
+                                        <th><span>Versión</span></th>
+                                        <!--<th><span>Precio</span></th>-->
+                                        <th><span>Entrega</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($vec as $c): ?>
                                         <tr>
-                                            <th><span>Modelo</span></th>
-                                            <th><span>Versión</span></th>
-                                            <!--<th><span>Precio</span></th>-->
-                                            <th><span>Entrega</span></th>
+                                            <td><?php echo $this->getModel($c['modelo']); ?> </td>
+                                            <td><?php echo $this->getVersion($c['version']); ?> </td>
+
+                                            <td>
+                                                <?php
+                                                $test = $this->getPasoEntregaCon($c['id_informacion'], $c['id']);
+                                                //echo 'test: '.$test;
+                                                ?>
+                                                <?php if ($test == 10) { ?>
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Entrega</a>
+                                                <?php } ?>
+                                                <?php if ($test == 0) { ?>  
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Entrega</a>
+                                                <?php } ?>
+                                                <?php if ($test > 0 && $test < 10) { ?> 
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-tomate btn-xs btn-rf">Entrega</a>
+                                                <?php } ?>    
+
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($vec as $c): ?>
-                                            <tr>
-                                                <td><?php echo $this->getModel($c['modelo']); ?> </td>
-                                                <td><?php echo $this->getVersion($c['version']); ?> </td>
-
-                                                <td>
-                                                    <?php
-                                                    $test = $this->getPasoEntregaCon($c['id_informacion'], $c['id']);
-                                                    //echo 'test: '.$test;
-                                                    ?>
-                                                    <?php if ($test == 10) { ?>
-                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Entrega</a>
-                                                    <?php } ?>
-                                                    <?php if ($test == 0) { ?>  
-                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Entrega</a>
-                                                    <?php } ?>
-                                                    <?php if ($test > 0 && $test < 10) { ?> 
-                                                        <a href="<?php echo Yii::app()->createUrl('gestionPasoEntrega/create', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-tomate btn-xs btn-rf">Entrega</a>
-                                                    <?php } ?>    
-
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
                         <?php
                         $criteria2 = new CDbCriteria(array(
                             'condition' => "id_informacion = {$_GET['id_informacion']} AND paso = 10"
                         ));
                         $entre = GestionPasoEntrega::model()->count($criteria2);
-                        if($entre > 0){
-                        $ent = GestionPasoEntrega::model()->find($criteria2);    
-                        ?>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-4">
-                                <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_informacion' => $_GET['id_informacion'],'id_vehiculo' => $ent->id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
+                        if ($entre > 0) {
+                            $ent = GestionPasoEntrega::model()->find($criteria2);
+                            ?>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a href="<?php echo Yii::app()->createUrl('gestionSeguimiento/create/', array('id_informacion' => $_GET['id_informacion'], 'id_vehiculo' => $ent->id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
+                                </div>
                             </div>
-                        </div>
-                        <br />
+                            <br />
                         <?php } ?>
 
                     </div>
@@ -439,7 +447,76 @@
             </div>
             <br />
             <br />
-            <?= $this->renderPartial('//layouts/rgd/links');?>
+            <div class="row highlight">
+                <h1 class="tl_seccion_green2">Seguimiento</h1>
+            
+            <div class="form">
+                <?php $agendamiento = new GestionAgendamiento; ?>
+
+                <?php
+                $form = $this->beginWidget('CActiveForm', array(
+                    'action' => Yii::app()->createUrl('gestionAgendamiento/create'),
+                    'id' => 'gestion-agendamiento-form',
+                    'enableAjaxValidation' => false,
+                ));
+                ?>
+                <?php //echo $form->errorSummary($agendamiento);   ?>
+                <div class="row">
+                    <div class="col-md-4" style="display: none;">
+                        <?php echo $form->labelEx($agendamiento, 'categorizacion'); ?>
+                        <?php
+                        $categorizacion = $this->getCategorizacion($id_informacion);
+                        echo $form->dropDownList($agendamiento, 'categorizacion', array(
+                            '' => '-Seleccione categoría-',
+                            'Hot A (hasta 7 dias)' => 'Hot A(hasta 7 dias)',
+                            'Hot B (hasta 15 dias)' => 'Hot B(hasta 15 dias)',
+                            'Hot C (hasta 30 dias)' => 'Hot C(hasta 30 dias)',
+                            'Warm (hasta 3 meses)' => 'Warm(hasta 3 meses)',
+                            'Cold (hasta 6 meses)' => 'Warm(hasta 6 meses)',
+                            'Very Cold(mas de 6 meses)' => 'Very Cold(mas de 6 meses)'), array('class' => 'form-control', 'options' => array($categorizacion => array('selected' => true))));
+                        ?>
+                        <?php echo $form->error($agendamiento, 'categorizacion'); ?>
+                    </div>
+                    <div class="col-md-4">
+                        <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
+                        <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento', 'Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                        <?php echo $form->error($agendamiento, 'observaciones'); ?>
+                    </div>
+                    <div class="col-md-4 agendamiento">
+                        <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
+                        <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                        <?php echo $form->error($agendamiento, 'agendamiento'); ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="cont-otro" style="display: none;">
+                            <label for="">Observaciones</label>
+                            <input type="text" class="form-control" name="GestionAgendamiento[otro]" id="GestionAgendamiento_otro"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row buttons">
+                    <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
+                    <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
+                    <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="9">
+                    <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
+                    <input type="hidden" name="GestionAgendamiento[nombre_cliente]" id="GestionAgendamiento_nombre_cliente" value="<?php echo $nombre_cliente; ?>">
+                    <input type="hidden" name="GestionAgendamiento[nombre_concesionario]" id="GestionAgendamiento_nombre_concesionario" value="<?php echo $nombreConcesionario; ?>">
+                    <input type="hidden" name="GestionAgendamiento[direccion_concesionario]" id="GestionAgendamiento_direccion_concesionario" value="<?php echo $direccion_concesionario; ?>">
+                    <div class="col-md-2">
+                        <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
+                    </div>
+                    <div class="col-md-3">
+                        <div id="calendar-content" style="display: none;">
+                            <a href="" class="btn btn-primary" id="event-download">Descargar Evento</a>
+                        </div>
+                    </div>
+                </div>
+                <?php $this->endWidget(); ?>
+            </div><!-- END FORM  -->
+            </div>
+            <?= $this->renderPartial('//layouts/rgd/links'); ?>
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
