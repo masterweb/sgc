@@ -687,6 +687,7 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                             <?php }else{ ?>
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
                             <?php } ?>
+                            <a href="<?php echo Yii::app()->createUrl('site/entrega/', array('id_informacion' => $id_informacion)); ?>" class="btn btn-danger">Agendar Seguimiento</a>
                             
                             <input type="hidden" name="GestionPasoEntrega[paso]" id="GestionPasoEntrega_paso" value="<?php echo $paso; ?>"/>
                             <input type="hidden" name="GestionPasoEntrega[id_informacion]" id="GestionPasoEntrega_id_informacion" value="<?php echo $id_informacion; ?>"/>
