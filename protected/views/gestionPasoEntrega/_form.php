@@ -699,60 +699,7 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                     </div><!-- form -->
                     <br />
                 <br />
-                <div class="row">
-                        <h1 class="tl_seccion_green2">Seguimiento</h1>
-                    </div>
-                <div class="form">
-                        <?php $agendamiento = new GestionAgendamiento; ?>
-
-                        <?php
-                        $form = $this->beginWidget('CActiveForm', array(
-                            'action' => Yii::app()->createUrl('gestionAgendamiento/create'),
-                            'id' => 'gestion-agendamiento-form',
-                            'enableAjaxValidation' => false,
-                        ));
-                        ?>
-                                <?php //echo $form->errorSummary($agendamiento);   ?>
-                        <div class="row">
-                            
-                            <div class="col-md-4">
-                            <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
-                                <?php echo $form->error($agendamiento, 'observaciones'); ?>
-                            </div>
-                            <div class="col-md-4 agendamiento">
-                            <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
-                            <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
-                            <?php echo $form->error($agendamiento, 'agendamiento'); ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div id="cont-otro" style="display: none;">
-                                    <label for="">Observaciones</label>
-                                    <input type="text" class="form-control" name="GestionAgendamiento[otro]" id="GestionAgendamiento_otro"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row buttons">
-                            <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
-                            <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
-                            <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="9">
-                            <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
-                            <input type="hidden" name="GestionAgendamiento[nombre_cliente]" id="GestionAgendamiento_nombre_cliente" value="<?php echo $nombre_cliente; ?>">
-                            <input type="hidden" name="GestionAgendamiento[nombre_concesionario]" id="GestionAgendamiento_nombre_concesionario" value="<?php echo $nombreConcesionario; ?>">
-                            <input type="hidden" name="GestionAgendamiento[direccion_concesionario]" id="GestionAgendamiento_direccion_concesionario" value="<?php echo $direccion_concesionario; ?>">
-                            <div class="col-md-2">
-<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
-                            </div>
-                            <div class="col-md-3">
-                                <div id="calendar-content" style="display: none;">
-                                    <a href="" class="btn btn-primary" id="event-download">Descargar Evento</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php $this->endWidget(); ?>
-                    </div><!-- END FORM  -->
+                
                 <?= $this->renderPartial('//layouts/rgd/links');?>
                 </div>
             </div>
