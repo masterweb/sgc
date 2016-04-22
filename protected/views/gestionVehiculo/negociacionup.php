@@ -741,9 +741,7 @@ if ($fi == 2) {
             var precioanterior = formatnumber($('#precio_accesorios').val());
             var precioanterior2 = $('#precio_accesorios2').val();
             console.log('precio anterior2: '+precioanterior2);
-            var valorFin = $('#GestionFinanciamiento_entrada').val();
-            var valorFin2 = $('#GestionFinanciamiento_entrada2').val();
-            var valorFin3 = $('#GestionFinanciamiento_entrada3').val();
+            var valorFin = $('#GestionFinanciamiento_entrada').val();var valorFin2 = $('#GestionFinanciamiento_entrada2').val();var valorFin3 = $('#GestionFinanciamiento_entrada3').val();
             var counter = $('#options-cont').val();// valor del contador de formularios
             var flag = $('#GestionFinanciamiento_flag').val();// saber si se ha generado una proforma
             // valor del contador de proformas
@@ -892,6 +890,7 @@ if ($fi == 2) {
                 switch (counter) {
                     case '2':
                         acc1.length = 0;
+                        precionuevo = formatnumber($('#GestionFinanciamiento_precio').val())- parseInt(accesorio2);
                         $('#GestionFinanciamiento_precio').val(format2(precionuevo, '$'));
                         $('#GestionFinanciamiento_precio_contado').val(format2(precionuevo, '$'));
                         preciovec1 = format2(precionuevo, '$');
@@ -925,6 +924,7 @@ if ($fi == 2) {
                         break;
                     case '3':
                         acc2.length = 0;
+                        precionuevo = formatnumber($('#GestionFinanciamiento_precio2').val())- parseInt(accesorio2);
                         //console.log('enter no check');
                         $('#GestionFinanciamiento_precio2').val(format2(precionuevo, '$'));
                         $('#GestionFinanciamiento_precio_contado2').val(format2(precionuevo, '$'));
@@ -960,6 +960,7 @@ if ($fi == 2) {
                         break;
                     case '4':
                         acc3.length = 0;
+                        precionuevo = formatnumber($('#GestionFinanciamiento_precio3').val())- parseInt(accesorio2);
                         $('#GestionFinanciamiento_precio3').val(format2(precionuevo, '$'));
                         $('#GestionFinanciamiento_precio_contado3').val(format2(precionuevo, '$'));
                         preciovec3 = format2(precionuevo, '$');
