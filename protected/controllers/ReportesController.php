@@ -547,7 +547,7 @@ class ReportesController extends Controller {
             $bdcs .= $value2['id'].', ';
         }
         $bdcs = rtrim($bdcs, ", ");
-        print_r($bdcs);
+        
         if($bdcs != ''){
             $bdcs = ' id_informacion IN ('.$bdcs.') AND ';
         }else{

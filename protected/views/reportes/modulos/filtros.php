@@ -58,17 +58,19 @@
         <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionProvincias" value="<?=$varView['provincia_id']?>"/>      
     <?php endif; ?>
 
-    <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes)): ?>
+    <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)): ?>
         <div class="row text-center">
             <h4>Seleccione el tipo de busqueda</h4>
-            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
-            <?php if($varView['checked_ge'] == true){echo 'checked';} ?>
-            >General</label>
+            <?php if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)):?>
+                <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
+                <?php if($varView['checked_ge'] == true){echo 'checked';} ?>
+                >General</label>
+            <?php endif; ?>
             <!--label class="radio-inline"><input type="radio" name="GI[tipo]" value="usados" class="tipo_busqueda"
             <?php if($varView['checked_us'] == true){echo 'checked';} ?>
             >Usados</label-->
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="bdc" class="tipo_busqueda"
-            <?php if($varView['checked_bdc'] == true){echo 'checked';} ?>
+            <?php if($varView['checked_bdc'] == true || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)){echo 'checked';} ?>
             >BDC</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="exonerados" class="tipo_busqueda"
             <?php if($varView['checked_ex'] == true){echo 'checked';} ?>
