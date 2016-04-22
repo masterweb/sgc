@@ -116,6 +116,74 @@ if ($fi == 2) {
     var stringDesc3 = '';
     $(document).ready(function () {
        $('#GestionFinanciamiento_acc1').val('<?php echo $stringAccesorios; ?>'+'@'); 
+<?php if ($fi == 0): ?>    
+        $('.cont-options1').addClass('cont-options1-after');
+        var totalAccesorios = '<?php echo $total_accesorios1; ?>';
+        var accManual1 = '<?php echo $stringAccesoriosManual1; ?>';
+        var sum1 = 0; 
+        var sum2 = 0;
+        var sum3 = 0;
+        if (accManual1 != ''){
+            console.log('enter case one');
+            strManual1 = accManual1.split('@');
+            switch(strManual1.length){
+                case 1:
+                    val1 = strManual1[0].split('-');
+                    valorman1 = parseInt(val1[0]);$('#valor_otro_accesorios1').val(format2(valorman1,'$'));
+                    sum2 = sum2 + parseInt(val1[0]);
+                    descripcion1 = val1[1];$('#otro_accesorios_nombre1').val(descripcion1);
+                    stringDesc1 += descripcion1 + '@';
+                    $('#options-cont-otro').val(2);$('#cont-otro2').val(2);
+                    $('#cont-otro2').val(2);
+                    break
+                case 2:
+                    val1 = strManual1[0].split('-');
+                    valorman1 = parseInt(val1[0]);$('#valor_otro_accesorios1').val(format2(valorman1,'$'));
+                    sum2 = sum2 + parseInt(val1[0]);
+                    descripcion1 = val1[1];$('#otro_accesorios_nombre1').val(descripcion1);
+                    val2 = strManual1[1].split('-');
+                    valorman2 = parseInt(val2[0]);$('#valor_otro_accesorios2').val(format2(valorman2,'$'));
+                    sum2 = sum2 + parseInt(val2[0]);
+                    descripcion2 = val2[1];$('#otro_accesorios_nombre2').val(descripcion2);
+                    stringDesc1 += descripcion1 + '@';
+                    stringDesc1 += descripcion2 + '@';
+                    $('#options-cont-otro').val(3);$('#cont-otro2').val(3);
+                    $('#cont-otro2').val(3);
+                    break;
+                case 3:
+                    val1 = strManual1[0].split('-');
+                    valorman1 = parseInt(val1[0]);$('#valor_otro_accesorios1').val(format2(valorman1,'$'));
+                    descripcion1 = val1[1];$('#otro_accesorios_nombre1').val(descripcion1);
+                    sum2 = sum2 + parseInt(val1[0]);
+                    val2 = strManual1[1].split('-');
+                    valorman2 = parseInt(val2[0]);$('#valor_otro_accesorios2').val(format2(valorman2,'$'));
+                    descripcion2 = val2[1];$('#otro_accesorios_nombre2').val(descripcion2);
+                    sum2 = sum2 + parseInt(val2[0]);
+                    val3 = strManual1[2].split('-');
+                    valorman3 = parseInt(val3[0]);$('#valor_otro_accesorios3').val(format2(valorman3,'$'));
+                    descripcion3 = val3[1];$('#otro_accesorios_nombre3').val(descripcion3);
+                    sum2 = sum2 + parseInt(val3[0]);
+                    stringDesc1 += descripcion1 + '@';
+                    stringDesc1 += descripcion2 + '@';
+                    stringDesc1 += descripcion3 + '@';
+                    $('#options-cont-otro').val(4);$('#cont-otro2').val(4);
+                    break;
+                default:
+                    break;
+            }
+            
+            if(totalAccesorios != 0){
+                $('#precio_accesorios').val(totalAccesorios);
+            }else{
+                $('#precio_accesorios').val(0);
+            }
+            
+            $('.btn-canc').show();$('#cont-acc2').val(1);
+            $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>,'$'));$('#sum-accesorios-total2').val(accManual1+'@');
+            $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>,'$'));$('#desc-accesorios2').val(stringDesc1);
+            
+        }
+<?php endif; ?>    
 <?php if ($fi == 1): ?>
         $('#options-cont').val(3);
         $('.cont-options2').show();
@@ -943,6 +1011,7 @@ if ($fi == 2) {
         if($('#cont-acc2').val() == 1 || $('#cont-acc3').val() == 1 || $('#cont-acc4').val() == 1){
             $('#btn-acc').prop('disabled', false);
         }
+        console.log('options cont: '+options_cont);
         switch(options_cont){
             case '2':
                 precioaccesorios = formatnumber($('#precio_accesorios').val());
