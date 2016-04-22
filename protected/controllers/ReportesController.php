@@ -67,7 +67,7 @@ class ReportesController extends Controller {
         $select_ext = null;
         $tit_init = 'Búsqueda entre ';
         $varView['AEKIA'] = false;
-       
+        
         //TIPOS DE USUARIO QUE VEN REPORTES
         //MODIFICAR LA SELECCION DE RESPONSABLES
         switch ($varView['cargo_id']) {
@@ -187,8 +187,9 @@ class ReportesController extends Controller {
                     $conse_active .= $value3['dealer_id'].', ';
                 }
                 $conse_active = rtrim($conse_active, ", ");
-                $condicion_GP = ' AND (dealer_id IN ('.$conse_active.')) ';                  
+                $condicion_GP = ' AND (dealer_id IN ('.$conse_active.')) ';                 
             }
+              
             if($_GET['GI']['tipo'] != ''){
                if($_GET['GI']['tipo'] == 'traficoacumulado'){
                     $varView['checked_ta'] = true;
@@ -250,9 +251,7 @@ class ReportesController extends Controller {
                         $consultaBDC .= " AND gi.tipo_ex IS NOT NULL ";
                     }
                 }                   
-            }
-
-            
+            }           
         }else{
                 $varView['checked_g'] = true;
                 $varView['checked_ge']  = true; 
@@ -495,7 +494,6 @@ class ReportesController extends Controller {
     }
 
     public function getModleosActivos($fecha1_1, $fecha1_2, $fecha2_1, $fecha2_2, $lista_datos, $tipo_b, $tipo_busqueda_por = null, $concesion_active = null, $resp_active = null, $GestionInformacionProvincias = null, $GestionInformacionGrupo = null){
-
         $condicion = '';
         $con = Yii::app()->db;
 
@@ -549,13 +547,18 @@ class ReportesController extends Controller {
             $bdcs .= $value2['id'].', ';
         }
         $bdcs = rtrim($bdcs, ", ");
-        $bdcs = ' id_informacion IN ('.$bdcs.') AND ';
-                  
+        
+        if($bdcs != ''){
+            $bdcs = ' id_informacion IN ('.$bdcs.') AND ';
+        }else{
+            $bdcs = '';
+        }   
 
         //Modelos y versiones activos
         $sql_modelos_act = "SELECT distinct version, modelo FROM gestion_vehiculo WHERE ".$bdcs." (DATE(fecha) BETWEEN '".$fecha1_1."' AND '".$fecha1_2."' OR DATE(fecha) BETWEEN '".$fecha2_1."' AND '".$fecha2_2."')";
         $request_ma = $con->createCommand($sql_modelos_act);
         $request_ma = $request_ma->queryAll();
+
         $modelos_ma = '';
         $versiones_activas = [];
         $modelos_no_rep = [];
