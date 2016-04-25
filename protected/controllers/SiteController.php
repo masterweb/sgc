@@ -1534,7 +1534,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         <th><span>Concesionario</span></th>
                         <th><span>Fecha Registro</span></th>
                         <th><span>Modelo</span></th>
-                        <th><span>Edición</span></th>
+                        <!--<th><span>Edición</span></th>-->
                     </tr>
                 </thead>
                 <tbody>';
@@ -1582,7 +1582,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
 
                 $data .= '</td>'
-                        . '<td>' . $showboton . '</td></tr>';
+                        . '<td></td></tr>';
             }
             $data .= '</table></div></div></div>';
 

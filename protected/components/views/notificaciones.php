@@ -36,6 +36,7 @@ $dealerList = implode(', ', $array_dealers);
         default:
             break;
     }
+    $abiertoSQL .= ' GROUP BY gd.id_informacion';
 
     //die('sql: '.$abiertoSQL);
     $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
