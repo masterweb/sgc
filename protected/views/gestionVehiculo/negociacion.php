@@ -2748,6 +2748,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             <div class="row">
                                     <h1 class="tl_seccion">Proforma</h1>
                                 </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-warning" role="alert"><strong>Importante:</strong> Si usted edita manualmente alguno de los campos del cotizador, recuerde que el sistema ya no realizará ningún cálculo automático. 
+                                        Por favor revisar que todos los valores estén correctos y que la información que va a ser enviada al cliente sea la correcta.</div>
+                                </div>
+                            </div>
+                            <br />
                                 <div class="row">
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-success btn-xs" onclick="op();" id="btn-opt">+ Agregar opción</button>

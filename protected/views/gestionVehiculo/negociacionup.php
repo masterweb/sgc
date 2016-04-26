@@ -465,9 +465,18 @@ if ($fi == 2) {
             $('#sum-accesorios-total3').val(accManual2+'@');
             $('#desc-accesorios4').val(stringDesc3);
         }
+        
+        $('#total-acc2').val(format2(<?php echo $total_accesorios2; ?>, '$'));
+        $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
+        $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
+        
         $('#total-acc3').val(format2(<?php echo $total_accesorios3; ?>, '$'));
-        $('#sum-accesorios4').val(format2(sum3,'$'));$('#sum-accesorios-res4').val(format2(sum3, '$'));
+        $('#sum-accesorios4').val(format2(<?php echo $total_accesorios3; ?>,'$'));
+        $('#sum-accesorios-res4').val(format2(<?php echo $total_accesorios3; ?>, '$'));
         $('#sum-accesorios-total4').val(accManual3+'@');
+        
+        $('#sum-accesorios3').val(format2(<?php echo $total_accesorios2; ?>,'$'));
+        $('#sum-accesorios-res3').val(format2(<?php echo $total_accesorios2; ?>,'$'));
 <?php endif; ?>
 <?php if ($tipo == 1): // credito              ?>
         //$('.cont-contado').hide();
@@ -2897,17 +2906,30 @@ if ($fi == 2) {
         }
     }
     function save(id) {
+        console.log('id: '+id);
         switch (id) {
             case 1:
+                console.log('enter save 1');
                 calcFinanciamiento();
                 $('.cont-options1').removeClass('cont-options1-after');
+                $('#total-acc1').val($('#precio_accesorios').val());
+                $('#sum-accesorios2').val($('#precio_accesorios').val());
+                $('#sum-accesorios-res2').val($('#precio_accesorios').val());
+                break;
             case 2:
+                console.log('enter save 2');
                 calcFinanciamiento2();
                 $('.cont-options2').removeClass('cont-options2-after');
+                $('#total-acc2').val($('#precio_accesorios').val());
+                $('#sum-accesorios3').val($('#precio_accesorios').val());
+                $('#sum-accesorios-res3').val($('#precio_accesorios').val());
                 break;
             case 3:
                 calcFinanciamiento3();
                 $('.cont-options3').removeClass('cont-options3-after');
+                $('#total-acc3').val($('#precio_accesorios').val());
+                $('#sum-accesorios4').val($('#precio_accesorios').val());
+                $('#sum-accesorios-res4').val($('#precio_accesorios').val());
                 break;
         }
     }
@@ -3526,14 +3548,19 @@ if ($fi == 2) {
                                         <button type="button" class="btn btn-info btn-inverse btn-xs" onclick="opcanc();">− Eliminar opción</button>
                                     </div>
                                 </div>
+                            <br />
                             <?php if ($tipo == 1): // credito             ?>
                                 <!-- ==================================INICIO COTIZACION A CREDITO===================================-->
                                 <div class="cont-financ">
                                     <div class="row">
                                         <div class="col-md-4 cont-options1">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <h4 class="text-danger">Primera Opción</h4>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-danger">Primera Opción</h5>
+                                                </div>
+                                                <div class="col-md-6" id="cont-edit1">
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit1" onclick="edit(1);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);">Guardar</button>
                                                 </div>
                                             </div>
 
@@ -3627,12 +3654,7 @@ if ($fi == 2) {
                                                     <textarea name="GestionFinanciamiento1[observaciones]" id="GestionFinanciamiento_observaciones" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $model->observaciones; ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="row" id="cont-edit1">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit1" onclick="edit(1);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);">Guardar</button>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                         <?php
                                             $fin1 = GestionFinanciamientoOp::model()->find(array('condition' => "id_financiamiento=:match AND num_cotizacion = 3", 'params' => array(':match' => (int) $model->id)));
@@ -3640,8 +3662,13 @@ if ($fi == 2) {
                                         <?php //if ($fin1) { ?>
                                         <div class="col-md-4 cont-options2" style="display: none;">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h4 class="text-danger">Segunda Opción</h4>
+                                                    <div class="col-md-6">
+                                                        <h5 class="text-danger">Segunda Opción</h5>
+                                                    </div>
+                                                    <div class="col-md-6" id="cont-edit2">
+                                                        <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
+                                                        <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);">Guardar</button>
+                                                        <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -3755,13 +3782,7 @@ if ($fi == 2) {
                                                         <textarea name="GestionFinanciamiento2[observaciones]" id="GestionFinanciamiento_observaciones2" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $fin1->observaciones; ?></textarea>
                                                     </div>
                                                 </div>
-                                                <div class="row" id="cont-edit2">
-                                                    <div class="col-md-12">
-                                                        <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
-                                                        <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);">Guardar</button>
-                                                        <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                             <?php //} ?>
                                         <?php
@@ -3771,8 +3792,13 @@ if ($fi == 2) {
                                         
                                         <div class="col-md-4 cont-options3" style="display: none;">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <h4 class="text-danger">Tercera Opción</h4>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-danger">Tercera Opción</h5>
+                                                </div>
+                                                <div class="col-md-6" id="cont-edit3">
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete3" onclick="deleter(3);">Borrar</button>-->
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -3884,13 +3910,7 @@ if ($fi == 2) {
                                                     <textarea name="GestionFinanciamiento3[observaciones]" id="GestionFinanciamiento_observaciones3" cols="30" rows="7" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"><?php echo $fin2->observaciones; ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="row" id="cont-edit3">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);">Guardar</button>
-                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete3" onclick="deleter(3);">Borrar</button>-->
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                         <?php// } ?>
                                     </div>
@@ -3904,8 +3924,13 @@ if ($fi == 2) {
                                     <div class="row">
                                         <div class="col-md-4 cont-options1">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <h4 class="text-danger">Primera Opción</h4>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-danger">Primera Opción</h5>
+                                                </div>
+                                                <div class="col-md-6" id="cont-edit1">
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(1);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(1);">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
                                             <?php if($model->seguro == 0 && ($this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo == $model->precio_vehiculo))){ ?>
@@ -3964,20 +3989,19 @@ if ($fi == 2) {
                                                     <textarea name="GestionFinanciamiento1[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado" cols="30" rows="7"><?php echo $model->observaciones; ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="row" id="cont-edit1">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit1" onclick="edit(1);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);">Guardar</button>
-                                                </div>
-                                            </div>
                                         </div>
                                         <?php
                                             $fin1 = GestionFinanciamientoOp::model()->find(array('condition' => "id_financiamiento=:match AND num_cotizacion = 3", 'params' => array(':match' => (int) $model->id)));
                                         ?>
                                         <div class="col-md-4 cont-options2" style="display: none;">
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <h4 class="text-danger">Segunda Opción</h4>
+                                                <div class="col-md-6">
+                                                    <h5 class="text-danger">Segunda Opción</h5>
+                                                </div>
+                                                <div class="col-md-6" id="cont-edit2">
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(2);">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
                                             <?php if($fin1->seguro == 0 && $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo == $fin1->precio_vehiculo)){ ?>
@@ -4028,18 +4052,17 @@ if ($fi == 2) {
                                                     <textarea name="GestionFinanciamiento2[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado2" cols="30" rows="7"><?php echo $fin1->observaciones; ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="row" id="cont-edit2">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(2);">Guardar</button>
-                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                         <div class="col-md-4 cont-options3" style="display: none;">
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <h4 class="text-danger">Tercera Opción</h4>
+                                                </div>
+                                                <div class="col-md-6" id="cont-edit3">
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(3);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(3);">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
                                             <?php if($fin2->seguro == 0 && $this->getPrecio($id_vehiculo, $tipo,$id_modelo,$id_modelo == $fin1->precio_vehiculo)){ ?>
@@ -4090,13 +4113,7 @@ if ($fi == 2) {
                                                     <textarea name="GestionFinanciamiento3[observaciones_contado]" id="GestionFinanciamiento_observaciones_contado3" cols="30" rows="7"></textarea>
                                                 </div>
                                             </div>
-                                            <div class="row" id="cont-edit3">
-                                                <div class="col-md-12">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="edit(3);">Guardar</button>
-                                                    <!--<button type="button" class="btn btn-default btn-xs" id="delete3" onclick="deleter(3);">Borrar</button>-->
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>  
                                 </div>

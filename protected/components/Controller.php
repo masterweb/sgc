@@ -2347,5 +2347,14 @@ class Controller extends CController {
         $vec = Versiones::model()->find($criteria);
         return $vec->precio;
     }
+    
+    public function getNombreCliente($id_informacion){
+        $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
+        if ($gestion) {
+            return ucfirst($gestion->nombres).'-'.ucfirst($gestion->apellidos);
+        } else {
+            return 'NA';
+        }
+    }
 
 }

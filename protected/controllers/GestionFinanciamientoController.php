@@ -284,9 +284,9 @@ class GestionFinanciamientoController extends Controller {
                             break;
                         case 4:
                             $con = Yii::app()->db;
-                            $sql = "UPDATE gestion_financiamiento_op SET status = 'INACTIVO' WHERE id_financiamiento = {$_POST['GestionFinanciamiento1']['id_financiamiento']} AND num_cotizacion = 3";
+                            $sql = "UPDATE gestion_financiamiento_op SET status = 'ACTIVO' WHERE id_financiamiento = {$_POST['GestionFinanciamiento1']['id_financiamiento']} AND num_cotizacion = 3";
                             $request = $con->createCommand($sql)->query();
-                            $sql2 = "UPDATE gestion_financiamiento_op SET status = 'INACTIVO' WHERE id_financiamiento = {$_POST['GestionFinanciamiento1']['id_financiamiento']} AND num_cotizacion = 4";
+                            $sql2 = "UPDATE gestion_financiamiento_op SET status = 'ACTIVO' WHERE id_financiamiento = {$_POST['GestionFinanciamiento1']['id_financiamiento']} AND num_cotizacion = 4";
                             $request2 = $con->createCommand($sql2)->query();
                             break;
                         default:
@@ -521,6 +521,9 @@ class GestionFinanciamientoController extends Controller {
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
                     }
+                    if (isset($_POST['GestionFinanciamiento1']['acc2']) && empty($_POST['GestionFinanciamiento1']['acc2'])) {
+                        $model2->accesorios = '';
+                    }
                     if (isset($_POST['otro']) && $_POST['otro'] == 1) {
 
                         $acc1 = $_POST['sum-accesorios3'];
@@ -632,6 +635,9 @@ class GestionFinanciamientoController extends Controller {
                     $model3->total_accesorios = $total_accesorios;
                     if (isset($_POST['GestionFinanciamiento1']['acc3']) && !empty($_POST['GestionFinanciamiento1']['acc3'])) {
                         $model3->accesorios = substr($_POST['GestionFinanciamiento1']['acc3'], 0, -1);
+                    }
+                    if (isset($_POST['GestionFinanciamiento1']['acc3']) && empty($_POST['GestionFinanciamiento1']['acc3'])) {
+                        $model3->accesorios = '';
                     }
                     if (isset($_POST['otro']) && $_POST['otro'] == 1) {
 

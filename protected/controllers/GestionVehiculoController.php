@@ -1107,6 +1107,7 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $responsable_id = $this->getResponsableId($id_informacion);
         $nombre_responsable = $this->getResponsableNombres($responsable_id);
         $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
+        $nombre_cliente = $this->getNombreCliente($id_informacion);
 
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
@@ -1161,7 +1162,7 @@ WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} 
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma . '.pdf', 'I');
+        $mPDF1->Output($nombreproforma .'-'.$nombre_cliente. '.pdf', 'I');
     }
 
     /**
