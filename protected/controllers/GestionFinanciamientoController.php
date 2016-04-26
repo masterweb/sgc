@@ -196,6 +196,10 @@ class GestionFinanciamientoController extends Controller {
                 $cuota_mensual = str_replace(',', "", $_POST['GestionFinanciamiento1']['cuota_mensual']);
                 $cuota_mensual = str_replace('.', ",", $cuota_mensual);
                 $cuota_mensual = (int) str_replace('$', "", $cuota_mensual);
+                
+                $total_accesorios = str_replace(',', "", $_POST['total-acc1']);
+                $total_accesorios = str_replace('.', ",", $total_accesorios);
+                $total_accesorios = (int) str_replace('$', "", $total_accesorios);
 
                 $model->precio_vehiculo = $precio_vehiculo;
                 $model->cuota_inicial = $precio_entrada;
@@ -211,6 +215,7 @@ class GestionFinanciamientoController extends Controller {
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
                 $model->cuota_mensual = $cuota_mensual;
+                $model->total_accesorios = $total_accesorios;
             }
 
             if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
@@ -237,7 +242,10 @@ class GestionFinanciamientoController extends Controller {
                 //die('sgtring acc1: '.$string_acc1);
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_vehiculo SET accesorios_manual = '{$string_acc1}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+                //die('sql: '.$sql);
                 $request = $con->createCommand($sql)->query();
+                
+                
             }
             //die('before save:');
             if ($model->update()) {
