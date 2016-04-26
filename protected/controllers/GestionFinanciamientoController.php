@@ -218,7 +218,7 @@ class GestionFinanciamientoController extends Controller {
                 $model->total_accesorios = $total_accesorios;
             }
 
-            if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
+            //if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
 //                //die('enter accesorios');
 //                $counter = $_POST['accesorios'];
 //                $accesorios = '';
@@ -230,7 +230,7 @@ class GestionFinanciamientoController extends Controller {
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
                 $request = $con->createCommand($sql)->query();
-            }
+            //}
             
             if (isset($_POST['otro']) && $_POST['otro'] == 1) {
                 $acc1 = $_POST['sum-accesorios2'];
@@ -397,6 +397,9 @@ class GestionFinanciamientoController extends Controller {
                     $model2->total_accesorios = $total_accesorios;
                     if (isset($_POST['GestionFinanciamiento1']['acc2']) && !empty($_POST['GestionFinanciamiento1']['acc2'])) {
                         $model2->accesorios = substr($_POST['GestionFinanciamiento1']['acc2'], 0, -1);
+                    }
+                    if (isset($_POST['GestionFinanciamiento1']['acc2']) && empty($_POST['GestionFinanciamiento1']['acc2'])) {
+                        $model2->accesorios = '';
                     }
                     if (isset($_POST['otro']) && $_POST['otro'] == 1) {
                         $acc1 = $_POST['sum-accesorios3'];
