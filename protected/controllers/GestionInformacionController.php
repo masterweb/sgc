@@ -1217,10 +1217,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('F2', 'Email')
                 ->setCellValue('G2', 'Responsable')
                 ->setCellValue('H2', 'Concesionario')
-                ->setCellValue('I2', 'Proximo Seguimiento')
-                ->setCellValue('J2', 'Fecha')
-                ->setCellValue('K2', 'Categorización')
-                ->setCellValue('L2', 'Fuente');
+                ->setCellValue('I2', 'Modelo Vehículo')
+                ->setCellValue('J2', 'Proximo Seguimiento')
+                ->setCellValue('K2', 'Fecha')
+                ->setCellValue('L2', 'Categorización')
+                ->setCellValue('M2', 'Fuente');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1247,10 +1248,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('F' . $i, $row['email'])
                     ->setCellValue('G' . $i, $this->getResponsableNombres($row['resp']))
                     ->setCellValue('H' . $i, $this->getNameConcesionarioById($row['dealer_id']))
-                    ->setCellValue('I' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('J' . $i, $row['fecha'])
-                    ->setCellValue('K' . $i, $row['categorizacion'])
-                    ->setCellValue('L' . $i, $row['fuente']);
+                    ->setCellValue('J' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('K' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('L' . $i, $row['fecha'])
+                    ->setCellValue('M' . $i, $row['categorizacion'])
+                    ->setCellValue('N' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);

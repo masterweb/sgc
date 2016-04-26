@@ -1083,9 +1083,9 @@ if ($fi == 2) {
     }
     function getvalortotal(num_acc){
         options_cont = $('#options-cont').val();
-        if($('#cont-acc2').val() == 1 || $('#cont-acc3').val() == 1 || $('#cont-acc4').val() == 1){
+        //if($('#cont-acc2').val() == 1 || $('#cont-acc3').val() == 1 || $('#cont-acc4').val() == 1){
             $('#btn-acc').prop('disabled', false);
-        }
+        //}
         console.log('options cont: '+options_cont);
         switch(options_cont){
             case '2':
