@@ -181,11 +181,13 @@ if ($fi == 2) {
             }
             
             $('.btn-canc').show();$('#cont-acc2').val(1);
-            $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>,'$'));$('#sum-accesorios-total2').val(accManual1+'@');
-            $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>,'$'));$('#desc-accesorios2').val(stringDesc1);
+            $('#sum-accesorios-total2').val(accManual1+'@');
+            $('#desc-accesorios2').val(stringDesc1);
             
             
         }
+        $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>,'$'));
+        $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>,'$'));
         if(totalAccesorios != 0){
             $('#precio_accesorios').val(totalAccesorios);
         }else{
@@ -292,17 +294,20 @@ if ($fi == 2) {
                     break;
             }
             $('#cont-otro3').val(3);$('.cont-opt-acc2').show();
-            if(totalAccesorios != 0){
+                      
+            
+            $('.btn-canc').show();$('#cont-acc3').val(1);
+            $('#sum-accesorios-total3').val(accManual2+'@');
+            $('#desc-accesorios3').val(stringDesc2);
+            
+        }
+        $('#sum-accesorios3').val(format2(<?php echo $total_accesorios2; ?>,'$'));
+        $('#sum-accesorios-res3').val(format2(<?php echo $total_accesorios2; ?>,'$'));
+        if(totalAccesorios != 0){
                 $('#precio_accesorios').val(totalAccesorios);
             }else{
                 $('#precio_accesorios').val(0);
-            }            
-            
-            $('.btn-canc').show();$('#cont-acc3').val(1);
-            $('#sum-accesorios3').val(format2(<?php echo $total_accesorios2; ?>,'$'));$('#sum-accesorios-total3').val(accManual2+'@');
-            $('#sum-accesorios-res3').val(format2(<?php echo $total_accesorios2; ?>,'$'));$('#desc-accesorios3').val(stringDesc2);
-            
-        }
+            }  
         $('#total-acc2').val(format2(<?php echo $total_accesorios2; ?>, '$'));
         $('#sum-accesorios2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
         $('#sum-accesorios-res2').val(format2(<?php echo $total_accesorios1; ?>, '$'));
