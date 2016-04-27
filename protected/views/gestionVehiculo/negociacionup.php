@@ -2705,7 +2705,7 @@ if ($fi == 2) {
         //console.log('valor id: '+id);
         switch(id){
             case 1:
-                $('#btn-accd').show();
+                $('#btn-accd').show();$('#save1').prop('disabled',false);
                 $('#options-cont').val(2);
                 console.log('EDITAR ACCESORIOS 1: '+acc1);
                 $('.cont-options1').addClass('cont-options1-after');
@@ -2770,7 +2770,7 @@ if ($fi == 2) {
                 }
                 break;
             case 2:
-                $('#btn-accd').show();
+                $('#btn-accd').show();$('#save2').prop('disabled',false);
                 $('#options-cont').val(3);
                 console.log('EDITAR ACCESORIOS 2: '+acc2);
                 $('#GestionFinanciamiento_mod').val(3);
@@ -2837,7 +2837,7 @@ if ($fi == 2) {
 
                 break;
             case 3:
-                $('#btn-accd').show();
+                $('#btn-accd').show();$('#save3').prop('disabled',false);
                 $('#options-cont').val(4);
                 console.log('EDITAR ACCESORIOS 2: '+acc3);
                 $('#GestionFinanciamiento_mod').val(4);
@@ -2910,26 +2910,29 @@ if ($fi == 2) {
         switch (id) {
             case 1:
                 console.log('enter save 1');
-                calcFinanciamiento();
-                $('.cont-options1').removeClass('cont-options1-after');
+                if($('#GestionFinanciamiento_tipo_financiamiento').val() == 1){calcFinanciamiento();}else{calcFinanciamientoContado(1);}
+                //$('.cont-options1').removeClass('cont-options1-after');
                 $('#total-acc1').val($('#precio_accesorios').val());
                 $('#sum-accesorios2').val($('#precio_accesorios').val());
                 $('#sum-accesorios-res2').val($('#precio_accesorios').val());
+                $('#save1').prop('disabled',true);
                 break;
             case 2:
                 console.log('enter save 2');
-                calcFinanciamiento2();
-                $('.cont-options2').removeClass('cont-options2-after');
+                if($('#GestionFinanciamiento_tipo_financiamiento').val() == 1){calcFinanciamiento2();}else{calcFinanciamientoContado2(1);}
+                //$('.cont-options2').removeClass('cont-options2-after');
                 $('#total-acc2').val($('#precio_accesorios').val());
                 $('#sum-accesorios3').val($('#precio_accesorios').val());
                 $('#sum-accesorios-res3').val($('#precio_accesorios').val());
+                $('#save2').prop('disabled',true);
                 break;
             case 3:
-                calcFinanciamiento3();
-                $('.cont-options3').removeClass('cont-options3-after');
+                if($('#GestionFinanciamiento_tipo_financiamiento').val() == 1){calcFinanciamiento3();}else{calcFinanciamientoContado3(1);}
+                //$('.cont-options3').removeClass('cont-options3-after');
                 $('#total-acc3').val($('#precio_accesorios').val());
                 $('#sum-accesorios4').val($('#precio_accesorios').val());
                 $('#sum-accesorios-res4').val($('#precio_accesorios').val());
+                $('#save3').prop('disabled',true);
                 break;
         }
     }
@@ -3560,7 +3563,7 @@ if ($fi == 2) {
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit1">
                                                     <button type="button" class="btn btn-default btn-xs" id="edit1" onclick="edit(1);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);">Guardar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>
                                                 </div>
                                             </div>
 
@@ -3568,17 +3571,17 @@ if ($fi == 2) {
                                                 <div class="col-md-12">
                                                     <label for="">Entidad Financiera</label>
                                                     <select name="GestionFinanciamiento1[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
-                                                        <option value="Banco del Austro">Banco del Austro</option>
-                                                    <option value="Banco del Pichincha">Banco del Pichincha</option>
-                                                    <option value="BPAC">BPAC</option>
-                                                    <option value="Capital">Capital</option>
-                                                    <option value="CFC" selected="true">CFC</option>
-                                                    <option value="CPN">CPN</option>
-                                                    <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
-                                                    <option value="ISSA">ISSFA</option>
-                                                    <option value="Originarsa">Originarsa</option>
-                                                    <option value="Produbanco">Produbanco</option>
-                                                    <option value="Unifinsa">Unifinsa</option>
+                                                        <option value="Banco del Austro" <?php if($model->entidad_financiera == 'Banco del Austro'){echo "selected";} ?>>Banco del Austro</option>
+                                                        <option value="Banco del Pichincha" <?php if($model->entidad_financiera == 'Banco del Pichincha'){echo "selected";} ?>>Banco del Pichincha</option>
+                                                        <option value="BPAC" <?php if($model->entidad_financiera == 'BPAC'){echo "selected";} ?>>BPAC</option>
+                                                        <option value="Capital" <?php if($model->entidad_financiera == 'Capital'){echo "selected";} ?>>Capital</option>
+                                                        <option value="CFC" <?php if($model->entidad_financiera == 'CFC'){echo "selected";} ?>>CFC</option>
+                                                        <option value="CPN" <?php if($model->entidad_financiera == 'CPN'){echo "selected";} ?>>CPN</option>
+                                                        <option value="Coop 29 de Octubre" <?php if($model->entidad_financiera == 'Coop 29 de Octubre'){echo "selected";} ?>>Coop 29 de Octubre</option>
+                                                        <option value="ISSA" <?php if($model->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
+                                                        <option value="Originarsa" <?php if($model->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
+                                                        <option value="Produbanco" <?php if($model->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                        <option value="Unifinsa" <?php if($model->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -3631,7 +3634,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Tasa</label>
-                                                    <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" maxlength="5"/>
+                                                    <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="<?php echo $model->tasa; ?>" maxlength="5"/>
                                                 </div>
                                             </div>
 
@@ -3667,7 +3670,7 @@ if ($fi == 2) {
                                                     </div>
                                                     <div class="col-md-6" id="cont-edit2">
                                                         <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
-                                                        <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);">Guardar</button>
+                                                        <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>
                                                         <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                     </div>
                                                 </div>
@@ -3675,17 +3678,17 @@ if ($fi == 2) {
                                                     <div class="col-md-12">
                                                         <label for="">Entidad Financiera</label>
                                                         <select name="GestionFinanciamiento2[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
-                                                            <option value="Banco del Austro">Banco del Austro</option>
-                                                            <option value="Banco del Pichincha">Banco del Pichincha</option>
-                                                            <option value="BPAC">BPAC</option>
-                                                            <option value="Capital">Capital</option>
-                                                            <option value="CFC" selected="true">CFC</option>
-                                                            <option value="CPN">CPN</option>
-                                                            <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
-                                                            <option value="ISSA">ISSFA</option>
-                                                            <option value="Originarsa">Originarsa</option>
-                                                            <option value="Produbanco">Produbanco</option>
-                                                            <option value="Unifinsa">Unifinsa</option>
+                                                            <option value="Banco del Austro" <?php if($fin1->entidad_financiera == 'Banco del Austro'){echo "selected";} ?>>Banco del Austro</option>
+                                                            <option value="Banco del Pichincha" <?php if($fin1->entidad_financiera == 'Banco del Pichincha'){echo "selected";} ?>>Banco del Pichincha</option>
+                                                            <option value="BPAC" <?php if($fin1->entidad_financiera == 'BPAC'){echo "selected";} ?>>BPAC</option>
+                                                            <option value="Capital" <?php if($fin1->entidad_financiera == 'Capital'){echo "selected";} ?>>Capital</option>
+                                                            <option value="CFC" <?php if($fin1->entidad_financiera == 'CFC'){echo "selected";} ?>>CFC</option>
+                                                            <option value="CPN" <?php if($fin1->entidad_financiera == 'CPN'){echo "selected";} ?>>CPN</option>
+                                                            <option value="Coop 29 de Octubre" <?php if($fin1->entidad_financiera == 'Coop 29 de Octubre'){echo "selected";} ?>>Coop 29 de Octubre</option>
+                                                            <option value="ISSA" <?php if($fin1->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
+                                                            <option value="Originarsa" <?php if($fin1->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
+                                                            <option value="Produbanco" <?php if($fin1->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                            <option value="Unifinsa" <?php if($fin1->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -3752,7 +3755,7 @@ if ($fi == 2) {
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="">Tasa</label>
-                                                        <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="16,06" maxlength="5" />
+                                                        <input type="text" name="GestionFinanciamiento2[tasa]" id="GestionFinanciamiento_tasa2" class="form-control" value="<?php echo $fin1->tasa; ?>" maxlength="5" />
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -3797,7 +3800,7 @@ if ($fi == 2) {
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit3">
                                                     <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);">Guardar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>
                                                     <!--<button type="button" class="btn btn-default btn-xs" id="delete3" onclick="deleter(3);">Borrar</button>-->
                                                 </div>
                                             </div>
@@ -3805,17 +3808,17 @@ if ($fi == 2) {
                                                 <div class="col-md-12">
                                                     <label for="">Entidad Financiera</label>
                                                     <select name="GestionFinanciamiento3[entidad_financiera]" id="GestionFinanciamiento_entidad_financiera" class="form-control">
-                                                        <option value="Banco del Austro">Banco del Austro</option>
-                                                        <option value="Banco del Pichincha">Banco del Pichincha</option>
-                                                        <option value="BPAC">BPAC</option>
-                                                        <option value="Capital">Capital</option>
-                                                        <option value="CFC" selected="true">CFC</option>
-                                                        <option value="CPN">CPN</option>
-                                                        <option value="Coop 29 de Octubre">Coop 29 de Octubre</option>
-                                                        <option value="ISSA">ISSFA</option>
-                                                        <option value="Originarsa">Originarsa</option>
-                                                        <option value="Produbanco">Produbanco</option>
-                                                        <option value="Unifinsa">Unifinsa</option>
+                                                        <option value="Banco del Austro" <?php if($fin2->entidad_financiera == 'Banco del Austro'){echo "selected";} ?>>Banco del Austro</option>
+                                                        <option value="Banco del Pichincha" <?php if($fin2->entidad_financiera == 'Banco del Pichincha'){echo "selected";} ?>>Banco del Pichincha</option>
+                                                        <option value="BPAC" <?php if($fin2->entidad_financiera == 'BPAC'){echo "selected";} ?>>BPAC</option>
+                                                        <option value="Capital" <?php if($fin2->entidad_financiera == 'Capital'){echo "selected";} ?>>Capital</option>
+                                                        <option value="CFC" <?php if($fin2->entidad_financiera == 'CFC'){echo "selected";} ?>>CFC</option>
+                                                        <option value="CPN" <?php if($fin2->entidad_financiera == 'CPN'){echo "selected";} ?>>CPN</option>
+                                                        <option value="Coop 29 de Octubre" <?php if($fin2->entidad_financiera == 'Coop 29 de Octubre'){echo "selected";} ?>>Coop 29 de Octubre</option>
+                                                        <option value="ISSA" <?php if($fin2->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
+                                                        <option value="Originarsa" <?php if($fin2->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
+                                                        <option value="Produbanco" <?php if($fin2->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                        <option value="Unifinsa" <?php if($fin2->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -3881,7 +3884,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Tasa</label>
-                                                    <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="16,06" maxlength="5" />
+                                                    <input type="text" name="GestionFinanciamiento3[tasa]" id="GestionFinanciamiento_tasa3" class="form-control" value="<?php echo $fin2->tasa; ?>" maxlength="5" />
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -3928,8 +3931,8 @@ if ($fi == 2) {
                                                     <h5 class="text-danger">Primera Opción</h5>
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit1">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(1);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(1);">Guardar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit1" onclick="edit(1);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>
                                                     <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
@@ -4000,7 +4003,7 @@ if ($fi == 2) {
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit2">
                                                     <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(2);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(2);">Guardar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>
                                                     <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
@@ -4060,8 +4063,8 @@ if ($fi == 2) {
                                                     <h4 class="text-danger">Tercera Opción</h4>
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit3">
-                                                    <button type="button" class="btn btn-default btn-xs" id="edit2" onclick="edit(3);">Editar</button>
-                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="edit(3);">Guardar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
+                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>
                                                     <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
