@@ -644,10 +644,6 @@ if ($fi == 2) {
         var precioContadoTotal2 = parseInt($('#GestionFinanciamiento_precio_contado_total2').val());
         precioContadoTotal2 = format2(precioContadoTotal2, '$');
         $('#GestionFinanciamiento_precio_contado_total2').val(precioContadoTotal2);
-        
-        var precioContadoTotal3 = parseInt($('#GestionFinanciamiento_precio_contado_total3').val());
-        precioContadoTotal3 = format2(precioContadoTotal3, '$');
-        $('#GestionFinanciamiento_precio_contado_total3').val(precioContadoTotal3);
 
 
         var precionormal = parseInt($('#precio_normal').val());
@@ -2313,9 +2309,9 @@ if ($fi == 2) {
         var valorTotal = valorVehiculo + primaTotal;
         valorTotal = format2(valorTotal, '$');
 
-        if(edit == 0){$('#GestionFinanciamiento_precio_contado_total').val(valorTotal);$('#GestionFinanciamiento_seguro_contado').val(valorSeguro);}
+        if(edit == 0){$('#GestionFinanciamiento_precio_contado_total').val(valorTotal);}
         //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-            
+            $('#GestionFinanciamiento_seguro_contado').val(valorSeguro);
     }
     function calcFinanciamientoContado2(edit) {
         //var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
@@ -2434,9 +2430,9 @@ if ($fi == 2) {
         var valorTotal = valorVehiculo + primaTotal;
         valorTotal = format2(valorTotal, '$');
         //alert(valorTotal);
-        if(edit == 0){$('#GestionFinanciamiento_precio_contado_total3').val(valorTotal);$('#GestionFinanciamiento_seguro_contado3').val(valorSeguro);}
+        if(edit == 0){$('#GestionFinanciamiento_precio_contado_total3').val(valorTotal);}
         //$('#GestionFinanciamiento_valor_financiamiento').val(valorFinanciamiento);
-        
+        $('#GestionFinanciamiento_seguro_contado3').val(valorSeguro);
     }
     function calcFinanciamiento3() {
         var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
@@ -2539,7 +2535,6 @@ if ($fi == 2) {
         var porcentajeDerechos;
         switch (seguro) {
             case '0':
-                console.log('enter seguro 0');
                 porcentajePrimaNeta = 0;
                 porcentajeDerechos = 0;
                 break;
@@ -3612,7 +3607,7 @@ if ($fi == 2) {
                                                         <option value="3" <?php if($model->ts == 3){echo "selected";} ?>>3 años</option>
                                                         <option value="2" <?php if($model->ts == 2){echo "selected";} ?>>2 años</option>
                                                         <option value="1" <?php if($model->ts == 1){echo "selected";} ?>>1 año</option>
-                                                        <option value="0" <?php if($model->ts == 0){echo "selected";} ?>>Ninguno</option>
+                                                        <option value="1" <?php if($model->ts == 0){echo "selected";} ?>>Ninguno</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -3987,7 +3982,7 @@ if ($fi == 2) {
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Precio Total Vehículo Seguro</label>
-                                                    <input type="text" name="GestionFinanciamiento1[precio_contado_total]" id="GestionFinanciamiento_precio_contado_total" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $model->precio_vehiculo; ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento1[precio_contado_total]" id="GestionFinanciamiento_precio_contado_total" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $model->precio_vehiculo; ?>0"/>
                                                 </div>
                                             </div>
                                             <?php } ?>
@@ -4065,7 +4060,7 @@ if ($fi == 2) {
                                         <div class="col-md-4 cont-options3" style="display: none;">
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <h5 class="text-danger">Tercera Opción</h5>
+                                                    <h4 class="text-danger">Tercera Opción</h4>
                                                 </div>
                                                 <div class="col-md-6" id="cont-edit3">
                                                     <button type="button" class="btn btn-default btn-xs" id="edit3" onclick="edit(3);">Editar</button>
@@ -4093,25 +4088,25 @@ if ($fi == 2) {
                                                     <label for="">Tiempo de seguro</label>
                                                     <select name="GestionFinanciamiento3[tiempo_seguro_contado]" id="GestionFinanciamiento_tiempo_seguro_contado3" class="form-control">
                                                         <option value="">----Seleccione tiempo----</option>
-                                                        <option value="0" <?php if($fin2->ts == 0){echo "selected";} ?>>Ninguno</option>
-                                                        <option value="1" <?php if($fin2->ts == 1){echo "selected";} ?>>1 año</option>
-                                                        <option value="2" <?php if($fin2->ts == 2){echo "selected";} ?>>2 años</option>
-                                                        <option value="3" <?php if($fin2->ts == 3){echo "selected";} ?>>3 años</option>
-                                                        <option value="4" <?php if($fin2->ts == 4){echo "selected";} ?>>4 años</option>
-                                                        <option value="5" <?php if($fin2->ts == 5){echo "selected";} ?>>5 años</option>
+                                                        <option value="0">Ninguno</option>
+                                                        <option value="1">1 año</option>
+                                                        <option value="2">2 años</option>
+                                                        <option value="3">3 años</option>
+                                                        <option value="4">4 años</option>
+                                                        <option value="5">5 años</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Seguro</label>
-                                                    <input type="text" name="GestionFinanciamiento3[seguro_contado]" id="GestionFinanciamiento_seguro_contado3" class="form-control" value="<?php echo $fin2->seguro; ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento3[seguro_contado]" id="GestionFinanciamiento_seguro_contado3" class="form-control"/>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="">Precio Total Vehículo Seguro</label>
-                                                    <input type="text" name="GestionFinanciamiento3[precio_contado_total]" id="GestionFinanciamiento_precio_contado_total3" class="form-control" onkeypress="return validateNumbers(event)" value="<?php echo $fin2->precio_vehiculo; ?>"/>
+                                                    <input type="text" name="GestionFinanciamiento3[precio_contado_total]" id="GestionFinanciamiento_precio_contado_total3" class="form-control" onkeypress="return validateNumbers(event)" value=""/>
                                                 </div>
                                             </div>
 
