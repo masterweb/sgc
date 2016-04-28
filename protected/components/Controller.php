@@ -1464,6 +1464,15 @@ class Controller extends CController {
                     return TRUE;
                 }
                 break;
+            case 8:
+                $criteria = new CDbCriteria(array(
+                    'condition' => "paso=10 AND id_informacion = {$id}"
+                ));
+                $pr = GestionDiaria::model()->count($criteria);
+                if ($pr > 0) {
+                    return TRUE;
+                }
+                break;    
 
             default:
                 break;
@@ -2355,6 +2364,19 @@ class Controller extends CController {
         } else {
             return 'NA';
         }
+    }
+    
+    public function getResponsablesAgencia($id_responsable) {
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        $cre = new CDbCriteria();
+        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
+        $cre->order = " nombres ASC";
+        $asesores = Usuarios::model()->findAll($cre);
+        $data = '';
+        foreach ($asesores as $value) {
+            $data .= '<li><a href="" id="'.$value['id'].'">'.$value['nombres'].' '.$value['apellido'].'</a></li>';
+        }
+        return $data;
     }
 
 }
