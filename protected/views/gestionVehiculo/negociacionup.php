@@ -1980,6 +1980,7 @@ if ($fi == 2) {
                 $('#bg_negro').hide();
                 alert('Datos actualizados correctamente');
                 $("#btnverprf").show();$('#btnagendamiento').show();
+                $("#btnsendprof").show();
                 if($('#GestionFinanciamiento_tipo_financiamiento').val() == 1){
                     $('#btn-continuar').show();
                 }else{

@@ -1074,7 +1074,17 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     </table>
                     </div>
                                         
-                <?php } ?> 
+                <?php } ?>
+                <?php if ($this->getAnswer(8, $id) > 0){ ?>
+                    <div class="col-md-9" id="entrega">
+                        <h3 class="tl_seccion_rf" id="entrega">
+                            <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 10 - Seguimiento</h3>
+                    </div>
+                    <div class="col-md-8">
+                        <?php //$modelos = $this->getModelosPr($id); ?>
+                        <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('site/cartabienvenida/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Carta de Bienvenida</a></div>
+                    </div>
+                <?php } ?>   
                     <div class="row">
                     <div class="col-md-9">
                         <hr style="border-top: 1px solid #AE5858;" />

@@ -3487,6 +3487,25 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
+    
+    public function actionCartabienvenida($id_informacion = null, $id_vehiculo = null) {
+        $this->layout = '//layouts/call-print';
+        # mPDF        
+        # You can easily override default constructor's params
+        $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
+        $mPDF1->SetTitle('Carta de Bienvenida');
+
+        //$mPDF1->WriteHTML($this->render('pdf2', array('data' => $request), true));
+        # Load a stylesheet
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
+        $mPDF1->WriteHTML($stylesheet, 1);
+        $mPDF1->WriteHTML($this->render('cartabienvenida', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo), true));
+        
+        # Renders image
+        //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
+        # Outputs ready PDF
+        $mPDF1->Output('carta de bienvenida.pdf', 'I');
+    }
 
     /* public function actionAlterTable() {
       $sql = "DELETE from gestion_informacion where id = 2673";
