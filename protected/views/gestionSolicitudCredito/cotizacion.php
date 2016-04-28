@@ -95,6 +95,14 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <div class="col-xs-12"><h3><strong>SOLICITUD DE CRÉDITO EXPRESS</strong></h3></div>
     </div>
     <div class="row">
+        <div class="col-xs-12">
+            <em class="tit-lab" for="">Asesor Comercial: </em><?php echo $this->getResponsableNombres($id_asesor); ?>
+        </div>
+        <div class="col-xs-12">
+            <em class="tit-lab" for="">Concesionario: </em><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12"><h5><strong>Solicitud No. <?php echo $codigoconcesionario; ?>-SC-<?php echo $codigo_asesor; ?>-<?php echo $id_hoja; ?></strong></h5></div>
     </div>
 <!--    <div class="row">
