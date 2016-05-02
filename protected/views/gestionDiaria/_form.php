@@ -754,7 +754,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
             <?php if ($this->getAnswer(4, $id) > 0){ ?>
                     <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
-                        'condition' => "id_informacion={$_GET['id']}"
+                        'condition' => "id_informacion={$_GET['id']}",
+                        'group' => 'id_vehiculo'
                     ));
                     $art3 = GestionDemostracion::model()->findAll($criteria8);
                     foreach ($art3 as $c){
