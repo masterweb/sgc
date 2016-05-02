@@ -2374,9 +2374,22 @@ class Controller extends CController {
         $asesores = Usuarios::model()->findAll($cre);
         $data = '';
         foreach ($asesores as $value) {
-            $data .= '<li><a href="" id="'.$value['id'].'">'.$value['nombres'].' '.$value['apellido'].'</a></li>';
+            $data .= '<li><a id="'.$value['id'].'" onclick="asignar('.$value['id'].');" class="asign-lt">'.$value['nombres'].' '.$value['apellido'].'</a></li>';
         }
         return $data;
+    }
+    
+    public function getConcesionariosli($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_grupo={$id}",
+            'order' => 'nombre asc'
+        ));
+        $conc = Concesionarios::model()->findAll($criteria);
+        $data = '';
+        foreach ($conc as $ciudad) {
+            $data .= '<li><a id="' . $ciudad['dealer_id'] . '" class="asign-lt" onclick="asesor(' . $ciudad['dealer_id'] . ')">' . $ciudad['nombre'] . '</a></li>';
+        }
+        echo $data;
     }
 
 }

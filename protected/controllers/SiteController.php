@@ -3114,6 +3114,20 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         echo $data;
     }
 
+    public function actionGetConcesionariosli() {
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_grupo={$id}",
+            'order' => 'nombre asc'
+        ));
+        $conc = Concesionarios::model()->findAll($criteria);
+        $data = '';
+        foreach ($conc as $ciudad) {
+            $data .= '<li><a id="' . $ciudad['dealer_id'] . '" class="asign-lt" onclick="asesor(' . $ciudad['dealer_id'] . ')">' . $ciudad['nombre'] . '</a></li>';
+        }
+        echo $data;
+    }
+
     public function actionGetmodelos() {
         $modeloAuto = isset($_POST["marca"]) ? $_POST["marca"] : "";
         $data = '<option value="">--Seleccione un modelo--</option>';
@@ -3190,6 +3204,60 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $data .= '</option>';
         }
 
+        echo $data;
+    }
+
+    public function actionGetAsesoresli() {
+        $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+        $tipo = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $area_id = (int) Yii::app()->user->getState('area_id');
+        $con = Yii::app()->db;
+        if ($cargo_id == 69 && $tipo == 'seg') { // GERENTE COMERCIAL
+            //die('enter gerente');
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }
+        if ($cargo_id == 69 && $tipo == 'exo') { // GERENTE COMERCIAL
+            //die('enter gerente');
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) ORDER BY nombres ASC";
+        }
+        if ($cargo_id == 69 && $tipo == 'bdc') { // GERENTE COMERCIAL
+            //die('enter gerente');
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (72,73) ORDER BY nombres ASC";
+        }
+        if ($cargo_id == 70) { // JEFE SUCURSAL
+            $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
+            switch ($tipo) {
+                case 'exo':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) ORDER BY nombres ASC";
+                    break;
+                case 'seg':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+                    break;
+                case 'bdc':
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (73,72) ORDER BY nombres ASC";
+                    break;
+
+                default:
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
+                    break;
+            }
+        }
+        /* else{
+          $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id = 71 ORDER BY nombres ASC";
+          } */
+
+        //die($sql);
+        $requestr1 = $con->createCommand($sql);
+        $requestr1 = $requestr1->queryAll();
+        $data = '';
+        foreach ($requestr1 as $value) {
+            $data .= '<li><a id="' . $value['id'] . '" onclick="asignar(' . $value['id'] . ')" class="asign-lt">';
+            $data .= $this->getResponsableNombres($value['id']);
+            $data .= '</a></li>';
+        }
         echo $data;
     }
 
@@ -3487,7 +3555,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('solicitud-de-credito.pdf', 'I');
     }
-    
+
     public function actionCartabienvenida($id_informacion = null, $id_vehiculo = null) {
         $this->layout = '//layouts/call-print';
         # mPDF        
@@ -3500,7 +3568,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.bootstrap.css') . '/bootstrap.css');
         $mPDF1->WriteHTML($stylesheet, 1);
         $mPDF1->WriteHTML($this->render('cartabienvenida', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo), true));
-        
+
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF

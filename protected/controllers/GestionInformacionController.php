@@ -31,7 +31,7 @@ class GestionInformacionController extends Controller {
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('create', 'update', 'seguimiento', 'seguimientobdc', 'seguimientoexonerados', 'seguimientoexcel',
-                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos', 'admin'),
+                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos', 'setAsignamiento'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -582,7 +582,7 @@ class GestionInformacionController extends Controller {
                             break;
 
                         default:
-                            die('enter def');
+                            //die('enter def');
                             $con = Yii::app()->db;
                             if ($_POST['yt0'] == 'Grabar') {
                                 $sql = "UPDATE gestion_diaria SET status = 1, proximo_seguimiento = '{$_POST['GestionDiaria']['agendamiento']}' WHERE id_informacion = {$id}";
@@ -5524,6 +5524,33 @@ GROUP BY gv.id_informacion";
                 }
                 break;
         }
+    }
+
+    /**
+     * Function that change to new id responsable for selected data
+     * return true or false
+     */
+    
+    public function actionSetAsignamiento() {
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        $checkboxvalues = isset($_POST["checkboxvalues"]) ? $_POST["checkboxvalues"] : "";
+        $con = Yii::app()->db;
+        $result = TRUE;
+        foreach ($checkboxvalues as $value) {
+            $param = explode(',', $value);
+            $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]} WHERE id = {$param[0]}";
+            if(!$request = $con->createCommand($sql)->execute()){
+               $result = FALSE; 
+            }
+            $sqlNot = "UPDATE gestion_notificaciones SET id_asesor = {$id} WHERE id_informacion = {$param[0]}";
+            $request2 = $con->createCommand($sqlNot)->execute();
+            
+            $sqlSC = "UPDATE gestion_solicitud_credito SET vendedor = {$id} where id_informacion = {$param[0]}";
+            $request3 = $con->createCommand($sqlSC)->execute();
+        }
+        $options = array('result' => $result);
+        echo json_encode($options);
+        
     }
 
 }

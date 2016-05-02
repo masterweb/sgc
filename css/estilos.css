@@ -797,3 +797,8 @@ ul.versiones li input{
 .mod_usado select{
     font-size: 12px;
 }
+.multislt{margin: 0 !important;}
+.asign-lt{
+    font-size: 11px;
+    cursor: pointer;
+}
