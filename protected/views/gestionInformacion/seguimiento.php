@@ -548,7 +548,7 @@ $count = count($users);
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>
     </div>
-    <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+    <?php if($cargo_id == 2015){ ?>
     <div class="row">
         <div class="col-md-8">
                  <!-- Split button -->
@@ -567,7 +567,7 @@ $count = count($users);
                 <li><a class="asign-lt">BORRAR</a></li>
               </ul>
             </div>
-                 <?php if ($cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { ?>
+                 <?php if ($cargo_id == 2015) { ?>
                 <div class="btn-group">
                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      Grupo <span class="caret"></span>
@@ -618,7 +618,7 @@ $count = count($users);
                 <table class="table tablesorter table-striped" id="keywords">
                     <thead>
                         <tr>
-                            <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+                            <?php if($cargo_id == 2015){ ?>
                             <th>Asignar</th>
                             <?php } ?>
                             <th><span>Status</span></th>
