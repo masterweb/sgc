@@ -829,6 +829,9 @@ $count = count($users);
                                     //    echo '<button type="button" class="btn btn-xs btn-success">BDC</button>'; 
                                     //}
                                     ?>
+                                    <?php if($c['reasignado'] == 1): ?>
+                                        <button type="button" class="btn btn-xs btn-warning">Reasignado</button>
+                                    <?php endif; ?>
                                     <?php 
                                     if($c['desiste'] == 1){
                                         echo '<button type="button" class="btn btn-xs btn-success">Desiste</button>'; 

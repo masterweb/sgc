@@ -1333,7 +1333,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,gi.reasignado,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1910,9 +1910,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         //die($dealer_id);
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
+        $criteria = new CDbCriteria;
+        $criteria->select = "gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gd.*, gc.preg7 as categorizacion, gn.fuente";
+        
 
         $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.reasignado,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1993,6 +1998,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $count = count($users);
         //die('count: '.$count);
         $tipo = '';
+        
+//        // Count total records
+//        $pages = new CPagination(Casos::model()->count($criteria));
+//
+//        // Set Page Limit
+//        $pages->pageSize = 10;
+//
+//        // Apply page criteria to CDbCriteria
+//        $pages->applyLimit($criteria);
+        
         $this->render('seguimiento', array('users' => $users, 'model' => $model));
     }
 
