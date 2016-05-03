@@ -177,12 +177,12 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         <div class="row">
             <div class="col-md-6">
                 <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-                <input type="hidden" name="busqueda_general" id="busqueda_general" value="0" />
+<!--                <input type="hidden" name="busqueda_general" id="busqueda_general" value="0" />
                 <input type="hidden" name="categorizacion" id="categorizacion" value="0" />
                 <input type="hidden" name="status" id="status" value="0" />
                 <input type="hidden" name="responsable" id="responsable" value="0" />
                 <input type="hidden" name="fecha" id="fecha" value="0" />
-                <input type="hidden" name="search_type" id="search_type" value="0" />
+                <input type="hidden" name="search_type" id="search_type" value="0" />-->
             </div>
         </div>
         <?php $this->endWidget(); ?>
