@@ -1339,7 +1339,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
         $sql_ini = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,gi.reasignado,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd ";
         $sql_cargos = "";
