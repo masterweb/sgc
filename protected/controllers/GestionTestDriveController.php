@@ -260,30 +260,30 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 ));
                 $info = GestionInformacion::model()->find($cr);
 
-                $casos = new Casos;
-                $casos->tema = 6; // sugerencias
-                $casos->subtema = 20; // quejas
-                $casos->nombres = $this->getNombresInfo($id_informacion);
-                $casos->apellidos = $this->getApellidosInfo($id_informacion);
-                $casos->identificacion = 'ci';
-                $casos->cedula = $info->cedula;
-                $casos->ciudad = $info->ciudad_domicilio;
-                $casos->concesionario = $info->dealer_id;
-                $casos->direccion = $info->direccion;
-                $casos->provincia_domicilio = $info->provincia_domicilio;
-                $casos->ciudad_domicilio = $info->ciudad_domicilio;
-                $casos->sector = $info->direccion;
-                $casos->telefono = $info->telefono_casa;
-                $casos->celular = $info->celular;
-                $casos->email = $info->email;
-                $casos->comentario = $_POST['GestionTestDrive']['observaciones_form'];
-                $casos->estado = 'Abierto';
-                $casos->tipo_form = 'caso';
-                $casos->responsable = 32;
-                $casos->origen = 2;
-                $casos->fecha = date("Y-m-d H:i:s");
-                $casos->provincia = $info->provincia_domicilio;
-                $casos->save();
+//                $casos = new Casos;
+//                $casos->tema = 6; // sugerencias
+//                $casos->subtema = 20; // quejas
+//                $casos->nombres = $this->getNombresInfo($id_informacion);
+//                $casos->apellidos = $this->getApellidosInfo($id_informacion);
+//                $casos->identificacion = 'ci';
+//                $casos->cedula = $info->cedula;
+//                $casos->ciudad = $info->ciudad_domicilio;
+//                $casos->concesionario = $info->dealer_id;
+//                $casos->direccion = $info->direccion;
+//                $casos->provincia_domicilio = $info->provincia_domicilio;
+//                $casos->ciudad_domicilio = $info->ciudad_domicilio;
+//                $casos->sector = $info->direccion;
+//                $casos->telefono = $info->telefono_casa;
+//                $casos->celular = $info->celular;
+//                $casos->email = $info->email;
+//                $casos->comentario = $_POST['GestionTestDrive']['observaciones_form'];
+//                $casos->estado = 'Abierto';
+//                $casos->tipo_form = 'caso';
+//                $casos->responsable = 32;
+//                $casos->origen = 2;
+//                $casos->fecha = date("Y-m-d H:i:s");
+//                $casos->provincia = $info->provincia_domicilio;
+//                $casos->save();
                 //die('casos save');
             } else if ($_POST['GestionTestDrive']['preg1'] == 'No') { // If not make Test Drive
                 //$model->setscenario('observacion');
