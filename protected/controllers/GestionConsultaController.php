@@ -102,7 +102,7 @@ class GestionConsultaController extends Controller {
                     // subir foto del auto para Seminuevos
                     //die('count file: '.count($_FILES));
                     $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-                    
+
                     $archivoThumb1 = CUploadedFile::getInstance($model, 'img1');
                     $fileName1 = "{$archivoThumb1}";  // file name
                     $archivoThumb2 = CUploadedFile::getInstance($model, 'img2');
@@ -164,8 +164,8 @@ class GestionConsultaController extends Controller {
                         // SACAR INFORMACION DEL CLIENTE REGISTRADO
                         $marca_usado = $_POST['GestionConsulta']['preg1_sec1']; // marca
                         $par = explode('@', $_POST['Cotizador']['modelo']);
-                        $modelo_usado = $par[1].' '.$par[2];
-                        
+                        $modelo_usado = $par[1] . ' ' . $par[2];
+
                         $con = Yii::app()->db;
                         $sql = "UPDATE gestion_informacion SET tipo_form_web = 'usadopago', marca_usado = '{$marca_usado}', modelo_usado = '{$modelo_usado}'  WHERE id = {$id_info}";
                         $request = $con->createCommand($sql)->query();
@@ -186,15 +186,15 @@ class GestionConsultaController extends Controller {
                           print_r($paramString);
                           echo '<pre>';
                           die(); */
-						/*$usr = new CDbCriteria;
-						$usr->select = (['telefono_casa', 'celular']);
-						$usr->condition = "id = '".$id_info."'";
-						$usertelf = Gestioninformacion::model()->findAll($usr);
-						$return = array();
-						foreach($usertelf as $row)
-						{
-							$return[] = $row->attributes;
-						}*/
+                        /* $usr = new CDbCriteria;
+                          $usr->select = (['telefono_casa', 'celular']);
+                          $usr->condition = "id = '".$id_info."'";
+                          $usertelf = Gestioninformacion::model()->findAll($usr);
+                          $return = array();
+                          foreach($usertelf as $row)
+                          {
+                          $return[] = $row->attributes;
+                          } */
                         $asunto = 'Kia Motors Ecuador SGC -  Solicitud de Pre Avalúo Vehículo Usado ID Cliente # ' . $id_info;
                         $general = '<body style="margin: 10px;">
                                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
@@ -224,9 +224,9 @@ class GestionConsultaController extends Controller {
                             
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
-                            <p style="margin: 2px 0;"><strong>Tlf. Concesionario: </strong>'.$this->getConcesionarioTlf($this->getDealerId(Yii::app()->user->getId())).'</p>
-                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>'.$this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']).' </p>
-                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>'.$this->getCelularCliente($_POST['GestionInformacion']['id_informacion']).'</p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Concesionario: </strong>' . $this->getConcesionarioTlf($this->getDealerId(Yii::app()->user->getId())) . '</p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>' . $this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']) . ' </p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>' . $this->getCelularCliente($_POST['GestionInformacion']['id_informacion']) . '</p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
@@ -266,7 +266,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $model->preg8 = $necesidades;
                 }
                 $model->fecha = date("Y-m-d H:i:s");
-                $model->save();
                 $ges = $this->getGestion($id_informacion);
                 if ($ges == TRUE) {
                     $con = Yii::app()->db;
@@ -278,7 +277,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $gestion->id_vehiculo = 0;
                     $gestion->observaciones = 'Prospección';
                     $gestion->medio_contacto = 'telefono';
-                    $gestion->fuente_contacto = $_POST['GestionInformacion']['fuente'];;
+                    $gestion->fuente_contacto = $_POST['GestionInformacion']['fuente'];
+                    ;
                     $gestion->codigo_vehiculo = 0;
                     $gestion->primera_visita = 1;
                     $gestion->status = 1;
@@ -322,7 +322,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                   die('errors');
                   } */
                 $con = $this->getConsulta($id_informacion);
-                $model->save();
+
+
                 //die('after save');
                 $ges = $this->getGestion($id_informacion);
                 if ($ges == TRUE) {
@@ -335,7 +336,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $gestion->id_vehiculo = 0;
                     $gestion->observaciones = 'Prospección';
                     $gestion->medio_contacto = 'telefono';
-                    $gestion->fuente_contacto = $_POST['GestionInformacion']['fuente'];;
+                    $gestion->fuente_contacto = $_POST['GestionInformacion']['fuente'];
                     $gestion->codigo_vehiculo = 0;
                     $gestion->primera_visita = 1;
                     $gestion->status = 1;
@@ -345,6 +346,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $gestion->save();
                 }
             }
+            if (isset($_POST['colores']) && !empty($_POST['colores'])) {
+                //die('enter colores');
+                $counter = $_POST['colores'];
+                $stringColores = '';
+                foreach ($counter as $key => $entry) {
+                    $stringColores .= $entry . '@';
+                }
+                $stringColores = substr($stringColores, 0, -1);
+                //die("necesidades: ".$necesidades);
+                $model->colores = $stringColores;
+            }
+            $model->save();
             $vehiculo = new GestionVehiculo;
             $vehiculo->attributes = $_POST['GestionVehiculo'];
             $vehiculo->fecha = date("Y-m-d H:i:s");
@@ -388,7 +401,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionConsulta'])) {
-            
+
             //die();
             $currencys = array("$", ".");
             $id_info = $_POST['GestionInformacion']['id_informacion'];
@@ -493,18 +506,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                         /* echo '<pre>';
                           print_r($paramString);
                           echo '<pre>';
-                          die(); 
-						$model2 = new Gestioninformacion();
-						$usr = new CDbCriteria;
-						$usr->select = (['telefono_casa', 'celular']);
-						$usr->condition = "id = '".$id_info."'";
-						$usertelf = $model2->findAll($usr);
-						$return = array();
-						foreach($usertelf as $row)
-						{
-							$return[] = $row->attributes;
-						}*/
-                        $asunto = 'Kia Motors Ecuador SGC -  Solicitud de Pre Avalúo Vehículo Usado ID Cliente # ' . $id_info ;
+                          die();
+                          $model2 = new Gestioninformacion();
+                          $usr = new CDbCriteria;
+                          $usr->select = (['telefono_casa', 'celular']);
+                          $usr->condition = "id = '".$id_info."'";
+                          $usertelf = $model2->findAll($usr);
+                          $return = array();
+                          foreach($usertelf as $row)
+                          {
+                          $return[] = $row->attributes;
+                          } */
+                        $asunto = 'Kia Motors Ecuador SGC -  Solicitud de Pre Avalúo Vehículo Usado ID Cliente # ' . $id_info;
                         $general = '<body style="margin: 10px;">
                                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
                                             <div align="">
@@ -532,8 +545,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             
                             <p style="margin: 2px 0;"><strong>Asesor Comercial: </strong>' . $this->getResponsable(Yii::app()->user->getId()) . '</p>
                             <p style="margin: 2px 0;"><strong>Concesionario: </strong>' . $this->getConcesionario($this->getDealerId(Yii::app()->user->getId())) . '</p>
-                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>'.$this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']).' </p>
-                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>'.$this->getCelularCliente($_POST['GestionInformacion']['id_informacion']).'</p>
+                            <p style="margin: 2px 0;"><strong>Tlf. Cliente: </strong>' . $this->getTelefonoCliente($_POST['GestionInformacion']['id_informacion']) . ' </p>
+                            <p style="margin: 2px 0;"><strong>Celular cliente: </strong>' . $this->getCelularCliente($_POST['GestionInformacion']['id_informacion']) . '</p>
 							<p>Saludos cordiales,<br> SGC<br> Kia Motors Ecuador </p>
 							<p>Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.<br>
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.</p>
@@ -573,7 +586,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $model->preg8 = $necesidades;
                 }
                 $model->fecha = date("Y-m-d H:i:s");
-                $model->save();
                 $ges = $this->getGestion($id_informacion);
                 if ($ges == TRUE) {
                     $con = Yii::app()->db;
@@ -629,7 +641,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                   die('errors');
                   } */
                 $con = $this->getConsulta($id_informacion);
-                $model->save();
                 //die('after save');
                 $ges = $this->getGestion($id_informacion);
                 if ($ges == TRUE) {
@@ -652,6 +663,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $gestion->save();
                 }
             }
+            if (isset($_POST['colores']) && !empty($_POST['colores'])) {
+                //die('enter colores');
+                $counter = $_POST['colores'];
+                $stringColores = '';
+                foreach ($counter as $key => $entry) {
+                    $stringColores .= $entry . '@';
+                }
+                $stringColores = substr($stringColores, 0, -1);
+                //die("necesidades: ".$necesidades);
+                $model->colores = $stringColores;
+            }
+            $model->save();
             $vehiculo = new GestionVehiculo;
             $vehiculo->attributes = $_POST['GestionVehiculo'];
             $vehiculo->fecha = date("Y-m-d H:i:s");
@@ -669,16 +692,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $historial->fecha = date("Y-m-d H:i:s");
             $historial->save();
 
-            if($_POST["tipo"]){
+            if ($_POST["tipo"]) {
                 $tipo2 = $_POST["tipo"];
-                $fuente2  = $_POST["fuente"]; 
-            }else{
+                $fuente2 = $_POST["fuente"];
+            } else {
                 $tipo2 = '';
-                $fuente2  = '';  
+                $fuente2 = '';
             }
 
 
-            $this->redirect(array('gestionVehiculo/create/' . $id_info. '?tipo='. $tipo2. '&fuente='. $fuente2));
+            $this->redirect(array('gestionVehiculo/create/' . $id_info . '?tipo=' . $tipo2 . '&fuente=' . $fuente2));
 
             //if ($model->save())
             //    $this->redirect(array('view', 'id' => $model->id));
