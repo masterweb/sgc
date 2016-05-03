@@ -1325,6 +1325,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //        echo '<pre>';
 //        print_r($_GET);
 //        echo '</pre>';
+//        echo 'fechapk: '.$fechaPk;
 //        die();
         //echo 'cargo id: '.$cargo_id;
         $title = '';
@@ -1413,7 +1414,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $search_type = 0;
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
         if (!empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
-                $fechaPk == 0 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
             $search_type = 1;
         }
         // BUSQUEDA POR CATEGORIZACION
@@ -1421,7 +1422,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 2;
         }
         // BUSQUEDA POR STATUS
-        if (!empty($_GET['GestionDiaria']['status']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['responsable']) &&
+        if (!empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['responsable']) &&
                 empty($_GET['GestionDiaria']['tipo_fecha'])) {
             $search_type = 3;
         }
@@ -1433,24 +1434,24 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         // BUSQUEDA POR FUENTE
         if (!empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
-                empty($_GET['GestionDiaria']['status']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['tipo_fecha'])) {
+                empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['tipo_fecha'])) {
             $search_type = 5;
         }
         // BUSQUEDA POR CONCESIONARIO
-        if (empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['general']) &&
+        if (empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
                 empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['tipo_fecha']) &&
                 empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo']) &&
                 !empty($_GET['GestionDiaria']['concesionario'])) {
             $search_type = 12;
         }
         // BUSQUEDA POR RESPONSABLE
-        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['general']) &&
+        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
                 empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo']) &&
                 !empty($_GET['GestionDiaria']['concesionario'])) {
             $search_type = 13;
         }
         // BUSQUEDA POR RESPONSABLE JEFE SUCURSAL
-        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['general']) &&
+        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
                 empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo'])) {
             $search_type = 6;
         }
@@ -1467,7 +1468,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         // BUSQUEDA CAMPOS VACIOS ASESOR VENTAS
         if (empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
-                $fechaPk == 0 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente']) &&
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente']) &&
                 empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) &&
                 empty($_GET['GestionDiaria']['responsable'])) {
             $search_type = 16;
