@@ -1562,7 +1562,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $paso = $gd->paso;
                 }
 
-                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id']);
+                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'],$id_responsable, $value['responsable']);
                 //die('paso: '.$paso);
 
                 $data .= '<tr><td>Cliente</td>'
@@ -1580,9 +1580,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 } else {
                     $data .= '<em>' . $this->getModel($value['modelo']) . '</em>, <em>' . $this->getVersion($value['version']) . '. </em><br />';
                 }
-
+                
                 $data .= '</td>'
-                        . '<td></td></tr>';
+                        . '<td>' . $showboton . '</td></tr>';
             }
             $data .= '</table></div></div></div>';
 
@@ -1676,7 +1676,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $paso = $gd->paso;
                 }
 
-                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id']);
+                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'],$id_responsable, $value['responsable']);
                 //die('paso: '.$paso);
 
                 $data .= '<tr><td>Cliente</td>'
