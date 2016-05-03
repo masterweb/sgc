@@ -345,7 +345,7 @@ class Controller extends CController {
             return 'alkanware@gmail.com';
         }
     }
-    
+
     public function getAsesorCodigo($id) {
         $dealers = Usuarios::model()->findByPk($id);
         if (!is_null($dealers) && !empty($dealers)) {
@@ -383,43 +383,45 @@ class Controller extends CController {
         }
     }
 
-    public function setBotonCotizacion($paso, $id, $fuente, $id_informacion) {
+    public function setBotonCotizacion($paso, $id, $fuente, $id_informacion, $id_responsable, $resp) {
         //die('id: '.$id);
         $data = '';
-        switch ($paso) {
-            case 1:
-            case 2:
-                $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 3:
-                $data = '<a href="' . Yii::app()->createUrl('site/consulta', array('id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+        if ($id_responsable == $resp) {
+            switch ($paso) {
+                case 1:
+                case 2:
+                    $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 3:
+                    $data = '<a href="' . Yii::app()->createUrl('site/consulta', array('id_informacion' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web')) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
 
-                break;
-            case 4:
-                $data = '<a href="' . Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 5:
-                $data = '<a href="' . Yii::app()->createUrl('site/presentacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 6:
-                $data = '<a href="' . Yii::app()->createUrl('site/demostracion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 7:
-                $data = '<a href="' . Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 8:
-                $data = '<a href="' . Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 9:
-                $data = '<a href="' . Yii::app()->createUrl('site/cierre', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
-                break;
-            case 10:
-                $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Nueva Cotización</a>';
-                break;
+                    break;
+                case 4:
+                    $data = '<a href="' . Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 5:
+                    $data = '<a href="' . Yii::app()->createUrl('site/presentacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 6:
+                    $data = '<a href="' . Yii::app()->createUrl('site/demostracion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 7:
+                    $data = '<a href="' . Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 8:
+                    $data = '<a href="' . Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 9:
+                    $data = '<a href="' . Yii::app()->createUrl('site/cierre', array('id' => $id_informacion)) . '" class="btn btn-primary btn-xs btn-danger">Continuar</a>';
+                    break;
+                case 10:
+                    $data = '<a href="' . Yii::app()->createUrl('gestionInformacion/update', array('id' => $id_informacion, 'tipo' => 'gestion')) . '" class="btn btn-primary btn-xs btn-danger">Nueva Cotización</a>';
+                    break;
 
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
         return $data;
     }
@@ -1472,7 +1474,7 @@ class Controller extends CController {
                 if ($pr > 0) {
                     return TRUE;
                 }
-                break;    
+                break;
 
             default:
                 break;
@@ -2356,16 +2358,16 @@ class Controller extends CController {
         $vec = Versiones::model()->find($criteria);
         return $vec->precio;
     }
-    
-    public function getNombreCliente($id_informacion){
+
+    public function getNombreCliente($id_informacion) {
         $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
         if ($gestion) {
-            return ucfirst($gestion->nombres).'-'.ucfirst($gestion->apellidos);
+            return ucfirst($gestion->nombres) . '-' . ucfirst($gestion->apellidos);
         } else {
             return 'NA';
         }
     }
-    
+
     public function getResponsablesAgencia($id_responsable) {
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $cre = new CDbCriteria();
@@ -2374,11 +2376,11 @@ class Controller extends CController {
         $asesores = Usuarios::model()->findAll($cre);
         $data = '';
         foreach ($asesores as $value) {
-            $data .= '<li><a id="'.$value['id'].'" onclick="asignar('.$value['id'].');" class="asign-lt">'.$value['nombres'].' '.$value['apellido'].'</a></li>';
+            $data .= '<li><a id="' . $value['id'] . '" onclick="asignar(' . $value['id'] . ');" class="asign-lt">' . $value['nombres'] . ' ' . $value['apellido'] . '</a></li>';
         }
         return $data;
     }
-    
+
     public function getConcesionariosli($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_grupo={$id}",
