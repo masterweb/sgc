@@ -642,7 +642,7 @@ $count = count($users);
                         <?php foreach ($users as $c): ?>
 
                             <tr>
-                                <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+                                <?php if($cargo_id == 2025){ ?>
                                 <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id_info']; ?>,<?php echo $c['id_resp']; ?>"/></td>
                                 <?php } ?>
                                 <td>
