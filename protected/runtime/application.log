@@ -14198,3 +14198,326 @@ Stack trace:
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
 HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
 ---
+2016/04/22 10:21:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:21:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:21:44 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:21:44 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1. La sentencia SQL ejecutada fue: select distinct desiste from  gestion_diaria where id_informacion IN () .
+2016/04/22 10:22:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(689): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetTipoBDC()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetTipoBDC')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetTipoBDC
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1. La sentencia SQL ejecutada fue: select distinct desiste from  gestion_diaria where id_informacion IN () .
+2016/04/22 10:22:05 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(689): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetTipoBDC()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetTipoBDC')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetTipoBDC
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:05 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:06 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:06 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:07 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1. La sentencia SQL ejecutada fue: select distinct desiste from  gestion_diaria where id_informacion IN () .
+2016/04/22 10:22:07 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(689): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetTipoBDC()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetTipoBDC')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetTipoBDC
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:07 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:07 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:22:07 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia = 1 AND  ORDER BY nombre ASC.
+2016/04/22 10:22:07 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo_t%5D=1&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bconcesionario%5D=12&GI%5Bresponsable%5D=&GI%5BestadoBDC%5D=&GI%5BtipoExo%5D=
+---
+2016/04/22 10:23:30 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC.
+2016/04/22 10:23:30 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/04/22 10:23:39 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  ORDER BY nombre ASC.
+2016/04/22 10:23:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bresponsable%5D=
+---
+2016/04/22 10:43:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  ORDER BY nombre ASC.
+2016/04/22 10:43:48 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bresponsable%5D=
+---
+2016/04/22 12:09:13 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  ORDER BY nombre ASC.
+2016/04/22 12:09:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-04-01+-+2016-04-22&GI%5Bfecha2%5D=2016-05-01+-+2016-05-31&GI%5Btipo%5D=general&GI%5Bconcesionario%5D=&GI%5Bresponsable%5D=
+---
+2016/04/22 12:09:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC.
+2016/04/22 12:09:20 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/04/28 13:01:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC.
+2016/04/28 13:01:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  dealer_id IN (0, 2, 7, 12, 78)  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/05/03 17:38:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  ORDER BY nombre ASC.
+2016/05/03 17:38:34 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
+2016/05/04 09:12:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1. La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE provincia =  AND  ORDER BY nombre ASC.
+2016/05/04 09:12:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND  ORDER BY nombre ASC' at line 1' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(935): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#10 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost:8080/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---

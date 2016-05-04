@@ -18,18 +18,18 @@
                         <td id="mi_d2"><?= $varView['var_tr']?></td>
                         <td id="mi_e2"><?= $varView['dif_tr']?></td>
                     </tr>
-                    <tr><td id="mi_a3">TESTDRIVE</td>
-                        <td id="mi_b3" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
-                        <td id="mi_c3" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
-                        <td id="mi_d3"><?= $varView['var_td']?></td>
-                        <td id="mi_e3"><?= $varView['dif_td']?></td>
-                    </tr>
                     <tr><td id="mi_a4">PROFORMA</td>
                         <td id="mi_b4"><?= $varView['proforma_mes_actual']; ?></td>
                         <td id="mi_c4"><?= $varView['proforma_mes_anterior']; ?></td>
                         <td id="mi_d4"><?= $varView['var_pr']?></td>
                         <td id="mi_e4"><?= $varView['dif_pr']?></td>
-                    </tr>                    
+                    </tr>
+                    <tr><td id="mi_a3">TESTDRIVE</td>
+                        <td id="mi_b3" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
+                        <td id="mi_c3" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
+                        <td id="mi_d3"><?= $varView['var_td']?></td>
+                        <td id="mi_e3"><?= $varView['dif_td']?></td>
+                    </tr>                                        
                     <tr><td id="mi_a5">VENTAS</td>
                         <td id="mi_b5" style="background:#c6f4c6;"><?= $varView['vh_mes_actual']; ?></td>
                         <td id="mi_c5" style="background:#f9d3a5;"><?= $varView['vh_mes_anterior']; ?></td>
@@ -40,19 +40,19 @@
                         <td colspan="5" bgcolor="#ccc"></td>
                     </tr>
                     <tr>
-                        <td id="mi_a7">TASA DE TEST DRIVE</td>
-                        <td id="mi_b7"><?= $varView['tasa_testdrive_actual']  ?></td>
-                        <td id="mi_c7"> <?= $varView['tasa_testdrive_anterior'] ?></td>
-                        <td id="mi_d7"><?= $varView['tasa_dif_testdrive'] ?></td>
-                        <td id="mi_e7"></td>
-                    </tr>                  
-                    <tr>
                         <td id="mi_a8">TASA DE PROFORMAS</td>
                         <td id="mi_b8" style="background:#c6f4c6;"><?= $varView['tasa_proforma_actual'] ?></td>
                         <td id="mi_c8" style="background:#f9d3a5;"><?= $varView['tasa_proforma_anterior'] ?></td>
                         <td id="mi_d8"><?= $varView['tasa_dif_proforma'] ?></td>
                         <td id="mi_e8"></td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td id="mi_a7">TASA DE TEST DRIVE</td>
+                        <td id="mi_b7"><?= $varView['tasa_testdrive_actual']  ?></td>
+                        <td id="mi_c7"> <?= $varView['tasa_testdrive_anterior'] ?></td>
+                        <td id="mi_d7"><?= $varView['tasa_dif_testdrive'] ?></td>
+                        <td id="mi_e7"></td>
+                    </tr>                                  
                     <tr>
                         <td id="mi_a9">TASA DE CIERRE</td>
                         <td id="mi_b9"><?= $varView['tasa_cierre_actual'] ?></td>
@@ -94,30 +94,30 @@
                         <td id="mi_c16" style="background:#c6f4c6;"><?= $varView['traficocbu2']; ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_a17">TESDRIVE</td>
-                        <td id="mi_b17"><?= $varView['tdckd2']; ?></td>
-                        <td id="mi_c17"><?= $varView['tdcbu2']; ?></td>
-                    </tr>
-                    <tr>
                         <td id="mi_a18">PROFORMA</td>
                         <td id="mi_b18" style="background:#c6f4c6;"><?= $varView['proformackd2']; ?></td>
                         <td id="mi_c18" style="background:#c6f4c6;"><?= $varView['proformacbu2']; ?></td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td id="mi_a17">TESDRIVE</td>
+                        <td id="mi_b17"><?= $varView['tdckd2']; ?></td>
+                        <td id="mi_c17"><?= $varView['tdcbu2']; ?></td>
+                    </tr>                                        
                     <tr>
                         <td id="mi_a19">VENTAS</td>
                         <td id="mi_b19"><?= $varView['vhckd2']; ?></td>
                         <td id="mi_c19"><?= $varView['vhcbu2']; ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_a20">TASA TESTDRIVE</td>
-                        <td id="mi_b20" style="background:#c6f4c6;"> <?= $varView['tasa_testdrive_ckd_m1'] ?> </td>
-                        <td id="mi_c20" style="background:#c6f4c6;"><?= $varView['tasa_testdrive_cbu_m1'] ?></td>
-                    </tr>
-                    <tr>
                         <td id="mi_a21">TASA PROFORMAS</td>
                         <td id="mi_b21"><?= $varView['tasa_proforma_ckd_m1'] ?></td>
                         <td id="mi_c21"><?= $varView['tasa_proforma_cbu_m1'] ?></td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td id="mi_a20">TASA TESTDRIVE</td>
+                        <td id="mi_b20" style="background:#c6f4c6;"> <?= $varView['tasa_testdrive_ckd_m1'] ?> </td>
+                        <td id="mi_c20" style="background:#c6f4c6;"><?= $varView['tasa_testdrive_cbu_m1'] ?></td>
+                    </tr>                                        
                     <tr>
                         <td id="mi_a22">TASA CIERRE</td>
                         <td id="mi_b22" style="background:#c6f4c6;"><?= $varView['tasa_cierre_ckd_m1'] ?></td>
@@ -145,25 +145,25 @@
                         <td id="mi_e16" style="background:#f9d3a5;"><?= $varView['traficocbu1']; ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_d17"><?= $varView['tdckd1']; ?></td>
-                        <td id="mi_e17"><?= $varView['tdcbu1']; ?></td>
-                    </tr>
-                    <tr>
                         <td id="mi_d18" style="background:#f9d3a5;"><?= $varView['proformackd1']; ?></td>
                         <td id="mi_e18" style="background:#f9d3a5;"><?= $varView['proformacbu1']; ?></td>
-                    </tr>                    
+                    </tr> 
+                    <tr>
+                        <td id="mi_d17"><?= $varView['tdckd1']; ?></td>
+                        <td id="mi_e17"><?= $varView['tdcbu1']; ?></td>
+                    </tr>                                       
                     <tr>
                         <td id="mi_d19"><?= $varView['vhckd1']; ?></td>
                         <td id="mi_e19"><?= $varView['vhcbu1']; ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_d20" style="background:#f9d3a5;"><?= $varView['tasa_testdrive_ckd_m2'] ?></td>
-                        <td id="mi_e20" style="background:#f9d3a5;"><?= $varView['tasa_testdrive_cbu_m2'] ?></td>
-                    </tr>
-                    <tr>
                         <td id="mi_d21"><?= $varView['tasa_proforma_ckd_m2'] ?></td>
                         <td id="mi_e21"><?= $varView['tasa_proforma_cbu_m2'] ?></td>
-                    </tr>                    
+                    </tr> 
+                    <tr>
+                        <td id="mi_d20" style="background:#f9d3a5;"><?= $varView['tasa_testdrive_ckd_m2'] ?></td>
+                        <td id="mi_e20" style="background:#f9d3a5;"><?= $varView['tasa_testdrive_cbu_m2'] ?></td>
+                    </tr>                                       
                     <tr>
                         <td id="mi_d22" style="background:#f9d3a5;"><?= $varView['tasa_cierre_ckd_m2'] ?></td>
                         <td id="mi_e22" style="background:#f9d3a5;"><?= $varView['tasa_cierre_cbu_m2'] ?></td>
@@ -190,13 +190,13 @@
                         <td id="mi_g16"><?= $varView['dif_cbu_trafico'] ?></td>
                     </tr>
                     <tr>
-                        <td id="mi_f17"><?= $varView['tdckd2'] - $varView['tdckd1']?></td>
-                        <td id="mi_g17"><?= $varView['tdcbu2'] - $varView['tdcbu1']?></td>
-                    </tr>
-                    <tr>
                         <td id="mi_f18"><?= $varView['proformackd2'] - $varView['proformackd1']?></td>
                         <td id="mi_g18"><?= $varView['proformacbu2'] - $varView['proformacbu1']?></td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td id="mi_f17"><?= $varView['tdckd2'] - $varView['tdckd1']?></td>
+                        <td id="mi_g17"><?= $varView['tdcbu2'] - $varView['tdcbu1']?></td>
+                    </tr>                                        
                     <tr>
                         <td id="mi_f19"><?= $varView['vhckd2'] - $varView['vhckd1']?></td>
                         <td id="mi_g19"><?= $varView['vhcbu2'] - $varView['vhcbu1']?></td>
