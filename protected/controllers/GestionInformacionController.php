@@ -257,7 +257,7 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            die('gestion save');
+                            //die('gestion save');
 
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
