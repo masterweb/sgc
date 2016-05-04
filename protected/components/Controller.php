@@ -970,6 +970,24 @@ class Controller extends CController {
             return $dealer->dealers_id;
         }
     }
+    
+    public function getDealerIdAC($id) {
+        //die('id: '.$id);
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $dealer = Usuarios::model()->find($criteria);
+
+        if ($dealer->concesionario_id == 0) {
+            $criteria2 = new CDbCriteria(array(
+                'condition' => "usuario_id={$id}"
+            ));
+            $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+            return $usuario->concesionario_id;
+        } else {
+            return $dealer->dealers_id;
+        }
+    }
 
     public function getResponsablesByGrupo($grupo_id, $cargo_id) {
         $array_dealers = array();

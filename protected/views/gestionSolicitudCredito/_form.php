@@ -130,6 +130,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_avaluo_propiedad').keyup(function () {
             $('#GestionSolicitudCredito_avaluo_propiedad_error').hide();
         });
+        $('#GestionSolicitudCredito_conyugue_trabaja').change(function () {
+            $('#GestionSolicitudCredito_conyugue_trabaja_error').hide();
+        });
         $('#GestionSolicitudCreditovehiculo_valor2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCreditovalor_inversion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCreditodireccion_valor_comercial1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
@@ -208,12 +211,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     //validateCasado();
                     $('.conyugue').slideUp();
                     $('#GestionSolicitudCredito_sueldo_mensual_conyugue').val('');
+                    $('.conyugue_trabaja').hide();
                     break;
                 case 'Casado sin separación de bienes':
                 case 'Casado':
                 case 'Union Libre':
                     //validateSoltero();    
-                    $('.conyugue').slideDown();
+                    $('.conyugue').slideDown();$('.conyugue_trabaja').show();$('#GestionSolicitudCredito_conyugue_trabaja').focus();
                     break;
             }
 
@@ -373,6 +377,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 console.log('enter submit');
                 var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
                 var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
                 if(countChar(telefono_trabajo) == false){
                     $('#telefonos_trabajo_error').show();
                     $('#GestionSolicitudCredito_telefonos_trabajo').focus();
@@ -430,45 +436,52 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').focus().addClass('error');
                             error++;
                         }
-                        if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
-                            $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                        if(conyugue_trabaja == ''){
+                            $('#GestionSolicitudCredito_conyugue_trabaja_error').show();
+                            $('#GestionSolicitudCredito_conyugue_trabaja').focus().addClass('error');
                             error++;
                         }
-                        if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
-                            $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
-                            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
-                            $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_cargo_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_cargo_conyugue_error').show();
-                            $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
-                            $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
-                            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
-                            error++;
-                        }
-                        if ($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val() == '') {
-                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').show();
-                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
-                            error++;
+                        if(conyugue_trabaja == 1){
+                            if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_cargo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_cargo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
+                                $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
+                                $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').show();
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                                error++;
+                            }
                         }
                         var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
                         if(sueldo_soltero < 300){
@@ -477,12 +490,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             error++;
                             return false;
                         }
-                        var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
-                        if(sueldo_casado < 300){
-                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
-                            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
-                            errot++;
-                            return false;
+                        if(conyugue_trabaja == 1){
+                            var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+                            if(sueldo_casado < 300){
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                                errot++;
+                                return false;
+                            }
                         }
                         break;
                 }
@@ -1162,6 +1177,15 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         'Union Libre' => 'Union Libre'), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($model, 'estado_civil'); ?>
+                                </div>
+                                <div class="col-md-3 conyugue_trabaja" style="display:none;">
+                                    <label for="">Cónyugue Trabaja</label>
+                                    <select name="GestionSolicitudCredito[conyugue_trabaja]" id="GestionSolicitudCredito_conyugue_trabaja" class="form-control">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="1">Si</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                    <label for="" generated="true" class="error" id="GestionSolicitudCredito_conyugue_trabaja_error" style="display: none;">Seleccione una opción.</label>
                                 </div>
                             </div>
                         <?php } ?>

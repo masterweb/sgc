@@ -90,21 +90,40 @@ if (isset($search)) {
             break;
 
         case 74:
-            $dealer_id = $this->getDealerId($id_asesor);
-            if (empty($dealer_id)) {
-                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor);
+            //echo 'array dealers: '.count($array_dealers);
+            if(count($array_dealers) > 0){
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor);
                 $dealerList = implode(', ', $array_dealers);
+                //echo 'dealer list: '.$dealerList;
                 $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
                 INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.concesionario IN ({$dealerList})";
-            } else {
+            }else{
                 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
                 $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
                 INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.concesionario = {$concesionarioid}";
             }
+            
+//            $dealer_id = $this->getDealerId($id_asesor);
+//            if (empty($dealer_id)) {
+//                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+//                $dealerList = implode(', ', $array_dealers);
+//                //echo 'dealer list: '.$dealerList;
+//                $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
+//                INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
+//                INNER JOIN usuarios u ON u.id = gi.responsable 
+//                WHERE gi.concesionario IN ({$dealerList})";
+//            } else {
+//                $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+//                $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
+//                INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
+//                INNER JOIN usuarios u ON u.id = gi.responsable 
+//                WHERE gi.concesionario = {$concesionarioid}";
+//            }
             break;
 
         default:
