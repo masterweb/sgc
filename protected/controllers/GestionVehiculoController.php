@@ -1335,7 +1335,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $con = Yii::app()->db;
         $sql = "SELECT gi.*, gc.preg6 as formapago FROM gestion_informacion gi "
                 . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
-                . "WHERE gi.id = {$id_informacion}";
+                . "WHERE gi.id = {$id_informacion} LIMIT 0,1";
         $request = $con->createCommand($sql)->query();
 
 

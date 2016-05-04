@@ -257,7 +257,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
     $mail->Host = "email-smtp.us-east-1.amazonaws.com"; // SMTP server
-    $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
+    //$mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
     // 1 = errors and messages
     // 2 = messages only
     $mail->SMTPAuth = true;                  // enable SMTP authentication
@@ -312,7 +312,7 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
     $mail->AddAddress($toAsesor);
     //$mail->AddAddress('vlondono@kia.com.ec'); // call center
     //$mail->AddAddress('gansaldo72@hotmail.com');
-    //$mail->AddBCC('alkanware@gmail.com');
+    $mail->AddBCC('alkanware@gmail.com');
 
     if (!$mail->Send()) {
         return false;
