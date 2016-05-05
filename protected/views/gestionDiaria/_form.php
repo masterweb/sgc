@@ -771,6 +771,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 </div>
                             <?php } else if ($c['preg1'] == 'No') { ?>
                                 <div class="col-md-4"><p><?php echo $this->getNoTest($c['preg1_observaciones']); ?></p></div>
+                                <div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>
                             <?php } ?>
                         </div>
                         
