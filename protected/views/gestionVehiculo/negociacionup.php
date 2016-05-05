@@ -3431,7 +3431,7 @@ if ($fi == 2) {
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio1" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>
@@ -3443,7 +3443,7 @@ if ($fi == 2) {
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio2" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>
@@ -3455,7 +3455,7 @@ if ($fi == 2) {
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio3" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>

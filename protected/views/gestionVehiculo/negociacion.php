@@ -2630,7 +2630,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios1" id="valor_otro_accesorios1" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio1" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>
@@ -2642,7 +2642,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios2" id="valor_otro_accesorios2" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio2" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>
@@ -2654,7 +2654,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="precio_accesorios">Valor</label>
-                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal=".">
+                                                                <input type="text" name="valor_otro_accesorios3" id="valor_otro_accesorios3" class="form-control" value="" data-symbol="$ " data-thousands="," data-decimal="." autocomplete="off">
                                                                 <label class="error error-accesorio3" style="display:none;">Ingrese un valor</label>
                                                             </div>
                                                         </div>
@@ -2804,7 +2804,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
-                                                <input type="text" maxlength="11" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control"/>
+                                                <input type="text" maxlength="11" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control" autocomplete="off"/>
                                                 <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                             </div>
                                         </div>
@@ -2907,7 +2907,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
-                                                <input type="text" name="GestionFinanciamiento2[entrada]" id="GestionFinanciamiento_entrada2" class="form-control" onkeypress="return validateNumbers(event)"/>
+                                                <input type="text" name="GestionFinanciamiento2[entrada]" id="GestionFinanciamiento_entrada2" class="form-control" onkeypress="return validateNumbers(event)" autocomplete="off"/>
                                                 <label class="error error-entrada2" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                             </div>
                                         </div>
@@ -3010,7 +3010,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
-                                                <input type="text" name="GestionFinanciamiento3[entrada]" id="GestionFinanciamiento_entrada3" class="form-control" onkeypress="return validateNumbers(event)"/>
+                                                <input type="text" name="GestionFinanciamiento3[entrada]" id="GestionFinanciamiento_entrada3" class="form-control" onkeypress="return validateNumbers(event)" autocomplete="off"/>
                                             </div>
                                         </div>
                                         <div class="row">

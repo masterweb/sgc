@@ -284,7 +284,7 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                             </div>
                             <div class="col-md-4 agendamiento">
                                 <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
-                                <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                                <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'autocomplete'=>"off")); ?>
                                 <?php echo $form->error($agendamiento, 'agendamiento'); ?>
                             </div>
                         </div>
