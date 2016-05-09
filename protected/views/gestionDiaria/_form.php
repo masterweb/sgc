@@ -826,7 +826,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
                             switch ($status) {
                                 case 'na':
-                                    echo '<a class="btn btn-warning btn-xs" target="_blank">No existe</a>';
+                                    echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
                                     break;
                                 case '1':
                                     echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
