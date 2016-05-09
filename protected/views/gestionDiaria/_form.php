@@ -755,7 +755,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}",
-                        'group' => 'id_vehiculo'
+                        'group' => 'preg1'
                     ));
                     $art3 = GestionDemostracion::model()->findAll($criteria8);
                     foreach ($art3 as $c){
@@ -769,9 +769,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div id="inline1" style="width:auto;display: none;">
                                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $c['preg1_licencia']; ?>"/> 
                                 </div>
-                            <?php } else if ($c['preg1'] == 'No') { ?>
+                            <?php } if ($c['preg1'] == 'No') { ?>
                                 <div class="col-md-4"><p><?php echo $this->getNoTest($c['preg1_observaciones']); ?></p></div>
-                                <div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>
+                                <!--<div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>-->
                             <?php } ?>
                         </div>
                         

@@ -1740,6 +1740,19 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getObsevacionesTestYes($id_informacion) {
+        //die('id info: '.$id_informacion);
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion} AND test_drive = 1"
+        ));
+        $modelo = GestionTestDrive::model()->find($criteria);
+        if ($modelo) {
+            return $modelo->observacion;
+        } else {
+            return 'NA';
+        }
+    }
 
     public function sendMail($html, $subject, $to, $ccToFrom = NULL, $from = NULL, $fromName = NULL, &$result = NULL) {
         $phpExcelPath = Yii::getPathOfAlias('ext.mandrill');
