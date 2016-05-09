@@ -757,25 +757,20 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         'condition' => "id_informacion={$_GET['id']}",
                         'group' => 'preg1'
                     ));
-                    $art3 = GestionDemostracion::model()->findAll($criteria8);
-                    foreach ($art3 as $c){
-                        ?> 
-                        <div class="col-md-8">
-                            <h4 class="text-danger">1. ¿Desea realizar una prueba de manejo?</h4>
-                            <div class="col-md-2"><p><?php echo $c['preg1']; ?></p></div>
-                            <?php if ($c['preg1'] == 'Si') { ?>
-                                <div class="col-md-2"><a class="fancybox btn btn-success btn-xs" href="#inline1">Licencia</a></div>
-                                <div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>
-                                <div id="inline1" style="width:auto;display: none;">
-                                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $c['preg1_licencia']; ?>"/> 
-                                </div>
-                            <?php } if ($c['preg1'] == 'No') { ?>
-                                <div class="col-md-4"><p><?php echo $this->getNoTest($c['preg1_observaciones']); ?></p></div>
-                                <!--<div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>-->
-                            <?php } ?>
-                        </div>
-                        
-                        <?php } // endforeach?>
+                    $art3 = GestionDemostracion::model()->findAll($criteria8);?>
+                    <div class="col-md-10">
+                    <table class="table table-striped">
+                        <thead> <tr><th>Modelo</th> <th>Versión</th><th>TD</th> </tr> </thead>
+                        <tbody>
+                        <?php
+                        $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
+                        foreach ($vh as $val) {
+                            ?>
+                            <tr><td><?php echo $this->getModel($val['modelo']); ?></td><td><?php echo $this->getVersion($val['version']); ?></td><td><?php echo $this->getTestDriveYesNot($_GET['id'], $val['id']); ?></td></tr>
+                        <?php } ?>
+                    </tbody>
+                    </table>
+                    </div>    
                         <?php
                         $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 6"));
                         $agen5 = GestionAgendamiento::model()->count($crit5);
