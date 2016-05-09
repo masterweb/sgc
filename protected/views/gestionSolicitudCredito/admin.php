@@ -177,7 +177,7 @@ if (isset($search)) {
                         <div class="col-md-6">
                             <label for="">Responsable</label>
                             <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
-                                <?php echo util::getAsesoresByCredito($grupo_id, $id_asesor); ?>
+                                <?php echo util::getAsesoresByCreditoGrupo($grupo_id, $id_asesor); ?>
                             </select>
                         </div>
                     </div>
@@ -190,6 +190,9 @@ if (isset($search)) {
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <?php if (isset($title)){ ?> <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2><?php } ?>     
     </div>
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>

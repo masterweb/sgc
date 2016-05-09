@@ -388,11 +388,37 @@ class Util {
             $array_dealers = Controller::getDealerGrupoConc($grupo_id);
             $dealerList = implode(', ', $array_dealers);
             $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
-        }else{
+        } else {
             $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id  = ({$dealer_id}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }
 
         //die($sql);
+        $requestr1 = $con->createCommand($sql);
+        $requestr1 = $requestr1->queryAll();
+        $data = '<option value="">--Seleccione Asesor--</option>';
+        $data .= '<option value="all">Todos</option>';
+        foreach ($requestr1 as $value) {
+            $data .= '<option value="' . $value['id'] . '">';
+            $data .= Controller::getResponsableNombres($value['id']);
+            $data .= '</option>';
+        }
+
+        return $data;
+    }
+
+    public static function getAsesoresByCreditoGrupo($grupo_id, $id_asesor) {
+        $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor);
+        if (count($array_dealers) > 0) {
+            //echo 'mayor cero';
+            $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor);
+            $dealerList = implode(', ', $array_dealers);
+            $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        } else {
+            //echo 'menor que cero';
+            $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id  = ({$dealer_id}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
+        }
+        
+        $con = Yii::app()->db;
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
         $data = '<option value="">--Seleccione Asesor--</option>';
