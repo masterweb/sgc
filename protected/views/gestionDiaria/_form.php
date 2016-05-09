@@ -717,8 +717,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 <?php if ($this->getAnswer(3, $id) > 0){ ?> 
                     <div class="col-md-9" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
                     <div class="col-md-8">
-                        <?php //$modelos = $this->getModelosPr($id); ?>
+                        
+                        <?php //$modelos = $this->getModelosPr($id); 
+                        $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
+                        foreach ($vh as $val) {
+                        ?>
                         <div class="col-md-2"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($val['modelo']); ?>" class="btn btn-xs btn-success" target="_blank">Catálogo</a></div>
+                        <?php } ?>
                     </div>
                     <?php
                     $art2 = GestionPresentacion::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));
