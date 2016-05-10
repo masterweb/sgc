@@ -245,62 +245,7 @@ $firma = GestionFirma::model()->count($cri);
                 }
             }
         });
-        $('#gestion-agendamiento-form').validate({
-            rules: {
-                'GestionAgendamiento[agendamiento]': {
-                    required: true
-                },
-                'GestionAgendamiento[observaciones]': {
-                    required: true
-                },
-                'GestionAgendamiento[categorizacion]': {
-                    required: true
-                }
-            },
-            messages: {
-                'GestionAgendamiento[agendamiento]': {
-                    required: 'Seleccione una fecha de agendamiento'
-                },
-                'GestionAgendamiento[categorizacion]': {
-                    required: 'Seleccione una categoría'
-                }
-            },
-            submitHandler: function (form) {
-                var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
-                if (proximoSeguimiento != '') {
-                    console.log('proximo: ' + proximoSeguimiento);
-                    if ($('#GestionInformacion_check').val() != 2) {
-                        var cliente = '';
-                        var params = proximoSeguimiento.split("/");
-                        var fechaDate = params[0] + params[1] + params[2];
-                        var secDate = params[2].split(" ");
-                        var fechaStart = params[0] + params[1] + secDate[0];
-                        var start = secDate[1].split(":");
-                        var startTime = start[0] + start[1];
-                        var params2 = fechaDate.split(":");
-                        var endTime = parseInt(startTime) + 100;
-                        //console.log('start time:'+fechaStart+startTime);
-                        //console.log('fecha end:'+fechaStart+endTime);
-                        var href = '/intranet/ventas/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente&desc=Cita con el cliente prospección&location=Por definir&to_name=' + cliente + '&conc=no';
-                        //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
-                        $('#event-download').attr('href', href);
-                        $('#calendar-content').show();
-                        $("#event-download").click(function () {
-                            $('#GestionInformacion_calendar').val(1);
-                            $('#calendar-content').hide();
-                            $('#GestionInformacion_check').val(2)
-                        });
-                        if ($('#GestionInformacion_calendar').val() == 1) {
-                            form.submit();
-                        } else {
-                            alert('Debes descargar agendamiento y luego dar click en Continuar');
-                        }
-                    } else {
-                        form.submit();
-                    }
-                }
-            }
-        });
+        
     });
     function addRules(){
         $("#GestionTestDrive_observaciones_form").rules("add", "required");
@@ -344,53 +289,7 @@ $firma = GestionFirma::model()->count($cri);
 
     
 
-    function send() {
-        $('#gestion-diaria-form').validate({
-            submitHandler: function (form) {
-                var proximoSeguimiento = $('#agendamiento').val();
-                //console.log('val of agendamiento: '+proximoSeguimiento);
-                var dataform = $("#gestion-diaria-form").serialize();
-                if (proximoSeguimiento != '') {
-                    if ($('#GestionInformacion_check').val() != 2) {
-                        console.log('enter gestion informacion check');
-                        var params = proximoSeguimiento.split("/");
-                        var fechaDate = params[0] + params[1] + params[2];
-                        var params2 = fechaDate.split(":");
-                        var endTime = parseInt(params2[1]) + 100;
-                        endTime = endTime.toString();
-                        var startTime = params2[0] + params2[1];
-                        var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date=' + fechaDate + '&startTime=' + startTime + '&endTime=' + endTime + '&subject=Cita con Cliente&desc=Cita con el cliente';
-                        $('#event-download').attr('href', href);
-                        $('#calendar-content').show();
-                        $("#event-download").click(function () {
-                            $('#GestionInformacion_calendar').val(1);
-                            $('#calendar-content').hide();
-                            $('#GestionInformacion_check').val(2)
-                        });
-                        if ($('#GestionInformacion_calendar').val() == 1) {
-                            console.log('enter infomacion calendar');
-                        } else {
-                            alert('Debes descargar agendamiento y luego dar click en Continuar');
-                        }
-                    } else {
-                        $.ajax({
-                            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionDiaria/createAjax"); ?>',
-                            beforeSend: function (xhr) {
-                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
-                            },
-                            type: 'POST',
-                            data: dataform,
-                            success: function (data) {
-                                $('#bg_negro').hide();
-                                $('#cont-alert').show();
-                                $('#gestion-diaria-form').get(0).reset();
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
+    
 </script>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/jasny-bootstrap.css" rel="stylesheet"/>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/jasny-bootstrap.js"></script>

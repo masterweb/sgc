@@ -257,7 +257,7 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail = new PHPMailer();
     $mail->IsSMTP(); // telling the class to use SMTP
     $mail->Host = "email-smtp.us-east-1.amazonaws.com"; // SMTP server
-    $mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
+    //$mail->SMTPDebug = 2;                     // enables SMTP debug information (for testing)
     // 1 = errors and messages
     // 2 = messages only
     $mail->SMTPAuth = true;                  // enable SMTP authentication
@@ -332,8 +332,11 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ";        // SMTP account password
     $mail->CharSet = 'UTF-8';
 
-    $mail->From = $from;
-    $mail->FromName = $fromname;
+    //$mail->From = $from;
+    //$mail->FromName = $fromname;
+    
+    $mail->SetFrom('servicioalcliente@kiamail.com.ec', 'Kia Motors Ecuador SGC');
+    $mail->AddReplyTo("servicioalcliente@kiamail.com.ec", "Kia Motors Ecuador SGC");
 
     $mail->Subject = $subject;
     $mail->MsgHTML($body);

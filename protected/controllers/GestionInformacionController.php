@@ -257,7 +257,7 @@ class GestionInformacionController extends Controller {
                             $gestion->proximo_seguimiento = $_POST['GestionDiaria']['agendamiento2'];
                             $gestion->fecha = date("Y-m-d H:i:s");
                             $gestion->save();
-                            die('gestion save');
+                            //die('gestion save');
 
                             $consulta = new GestionConsulta;
                             $consulta->id_informacion = $model->id;
@@ -1338,6 +1338,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
         $sql_ini = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,gi.reasignado,
@@ -1486,7 +1487,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $count = 0;
                 $select = $sql;
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
@@ -1509,7 +1510,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 /* BUSQUEDA POR CEDULA, RUC O PASAPORTE */
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
                         . " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
@@ -1529,7 +1530,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 /* BUSQUEDA POR ID */
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
                         . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
@@ -1555,7 +1556,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 break;
             case 2: // BUSQUEDA POR CATEGORIZACION
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $sql .= "gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'";
                 $request = $con->createCommand($sql);
@@ -1566,7 +1567,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 return $data;
                 break;
             case 3: // BUSQUEDA POR STATUS
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 switch ($_GET['GestionDiaria']['status']) {
                     case 'Cierre':
@@ -1604,7 +1605,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
                 //die('after params');
-                $sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);
@@ -1912,10 +1913,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
         $criteria = new CDbCriteria;
-        $criteria->select = "gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
-            gd.*, gc.preg7 as categorizacion, gn.fuente";
-        
+//        $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+//            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id";
+//        $criteria->alias = 'gi';
+//        $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+//        $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+
 
         $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.reasignado,
@@ -1933,7 +1936,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             //die('enter jefe');
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
+//            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+//            $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+//            $criteria->condition = "gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)} AND u.cargo_id IN (70,71)";
+//            $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
+//            $criteria->order = "gd.id DESC";
+
+
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)} AND u.cargo_id IN (70,71) 

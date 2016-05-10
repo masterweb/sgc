@@ -11,9 +11,9 @@ $params = array(
 //echo "<pre>".htmlentities(print_r($params,true))."</pre>";
 
 $client = new SoapClient(@$uriservicio, array('trace' => 1));
-//$response = $client->pws01_01_cl('','KNCWJX72AF7939017');
+$response = $client->pws01_01_cl('','KNABE511AGT206338');
 //$response = $client->pws01_01_cl('1702509751', '');
-$response = $client->pws01_01_cl('0992786906001', '');
+//$response = $client->pws01_01_cl('0992786906001', '');
 //$cliente= $response->RecuperarDatosIndividualResult->codigo;
 echo "<pre>" . htmlentities(print_r($response, true)) . "</pre>";
 //echo '<pre>' . htmlentities($response['lcxml']) . '</pre>';

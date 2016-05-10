@@ -15,6 +15,7 @@ $id_responsable = Yii::app()->user->getId();
     <?php
     foreach ($data as $key => $value):
         $modelo = $this->getNombreModelo($value['id'], $id_vehiculo);
+        $observacion = $this->getObsevacionesTestYes($value['id']);
         ?>
         <div class="cont-form-manejo col-md-8" style="">
             <div class="row">
@@ -112,7 +113,8 @@ $id_responsable = Yii::app()->user->getId();
             <div class="row">
                 <div class="col-xs-12">
                     <label for="">Observaciones</label>
-                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/obs-text.jpg" alt="" />
+                    <input type="text" class="form-control" name="GestionTestDrive[observaciones]" id="GestionTestDrive_nombre_asesor" value="<?php echo $observacion; ?>">
+                    
                 </div>
             </div>
 

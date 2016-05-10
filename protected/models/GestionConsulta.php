@@ -27,6 +27,7 @@
  * @property string $link
  * @property string $fecha
  * @property string $status
+ * @property string $colores
  */
 class GestionConsulta extends CActiveRecord {
 
@@ -56,7 +57,7 @@ class GestionConsulta extends CActiveRecord {
             array('preg1_sec1, preg1_sec2, preg1_sec3, preg1_sec4', 'length', 'max' => 80),
             array('preg1_sec5, preg2, preg3, preg4, preg5, preg6', 'length', 'max' => 10),
             array('preg3_sec1, preg3_sec2, preg3_sec3, preg3_sec4', 'length', 'max' => 20),
-            array('preg2_sec1, preg2_sec2, fecha', 'safe'),
+            array('preg2_sec1, preg2_sec2, fecha, colores', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array('id, preg1_sec1, preg1_sec2, preg1_sec3, preg1_sec4, preg1_sec5, preg2, preg2_sec1, preg3, preg3_sec1, preg3_sec2, preg3_sec3, preg3_sec4, preg4, preg5, preg6, fecha', 'safe', 'on' => 'search'),
@@ -100,7 +101,8 @@ class GestionConsulta extends CActiveRecord {
             'preg8' => 'Preg8',
             'link' => 'Link',
             'fecha' => 'Fecha',
-            'status' => 'Status'
+            'status' => 'Status',
+            'colores' => 'Colores'
         );
     }
 

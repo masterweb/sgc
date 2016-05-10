@@ -3,7 +3,7 @@
 
 ?>
 <!doctype html>
-<html lang="es">
+<html lang="es" ng-app="app">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,11 +28,14 @@
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/angular.min.js" ></script>
         <?php Yii::app()->clientScript->registerCoreScript('jquery'); ?>
         <?php Yii::app()->clientScript->registerCoreScript('jquery.ui'); ?>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/functions.js"></script>
+        <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/script.js"></script>
         <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.tablesorter.min.js"></script>
+        
         <?php 
         $controller = Yii::app()->controller->id.'<br />'; 
         $action = Yii::app()->controller->action->id.'<br />';
@@ -81,7 +84,7 @@
 			});
 		</script>
     </head>
-    <body>
+    <body ng-controller="SiteController">
         <div id="bg_negro" style="display:none">
             <div class="cont_lbox">
                 <div class="img_preload"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader-big.gif" width="32" height="32" /></div>

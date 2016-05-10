@@ -717,8 +717,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 <?php if ($this->getAnswer(3, $id) > 0){ ?> 
                     <div class="col-md-9" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
                     <div class="col-md-8">
-                        <?php //$modelos = $this->getModelosPr($id); ?>
+                        
+                        <?php //$modelos = $this->getModelosPr($id); 
+                        $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
+                        foreach ($vh as $val) {
+                        ?>
                         <div class="col-md-2"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($val['modelo']); ?>" class="btn btn-xs btn-success" target="_blank">Catálogo</a></div>
+                        <?php } ?>
                     </div>
                     <?php
                     $art2 = GestionPresentacion::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));
@@ -755,26 +760,22 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}",
-                        'group' => 'id_vehiculo'
+                        'group' => 'preg1'
                     ));
-                    $art3 = GestionDemostracion::model()->findAll($criteria8);
-                    foreach ($art3 as $c){
-                        ?> 
-                        <div class="col-md-8">
-                            <h4 class="text-danger">1. ¿Desea realizar una prueba de manejo?</h4>
-                            <div class="col-md-2"><p><?php echo $c['preg1']; ?></p></div>
-                            <?php if ($c['preg1'] == 'Si') { ?>
-                                <div class="col-md-2"><a class="fancybox btn btn-success btn-xs" href="#inline1">Licencia</a></div>
-                                <div class="col-md-4"><a href="<?php echo Yii::app()->createUrl('site/pdf', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-warning btn-xs" target="_blank">PDF Prueba Manejo</a></div>
-                                <div id="inline1" style="width:auto;display: none;">
-                                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $c['preg1_licencia']; ?>"/> 
-                                </div>
-                            <?php } else if ($c['preg1'] == 'No') { ?>
-                                <div class="col-md-4"><p><?php echo $this->getNoTest($c['preg1_observaciones']); ?></p></div>
-                            <?php } ?>
-                        </div>
-                        
-                        <?php } // endforeach?>
+                    $art3 = GestionDemostracion::model()->findAll($criteria8);?>
+                    <div class="col-md-10">
+                    <table class="table table-striped">
+                        <thead> <tr><th>Modelo</th> <th>Versión</th><th>TD</th> </tr> </thead>
+                        <tbody>
+                        <?php
+                        $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
+                        foreach ($vh as $val) {
+                            ?>
+                            <tr><td><?php echo $this->getModel($val['modelo']); ?></td><td><?php echo $this->getVersion($val['version']); ?></td><td><?php echo $this->getTestDriveYesNot($_GET['id'], $val['id']); ?></td></tr>
+                        <?php } ?>
+                    </tbody>
+                    </table>
+                    </div>    
                         <?php
                         $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 6"));
                         $agen5 = GestionAgendamiento::model()->count($crit5);
@@ -825,7 +826,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
                             switch ($status) {
                                 case 'na':
-                                    echo '<a class="btn btn-warning btn-xs" target="_blank">No existe</a>';
+                                    echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
                                     break;
                                 case '1':
                                     echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';

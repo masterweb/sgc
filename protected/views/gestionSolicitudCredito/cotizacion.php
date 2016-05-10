@@ -19,7 +19,7 @@ if (empty($concesionarioid)) {
 
 $telefono = $this->getAsesorTelefono($id_asesor);
 $celular = $this->getAsesorCelular($id_asesor);
-$codigo_asesor = $this->getAsesorCodigo($id_asesor);
+$codigo_asesor = $this->getAsesorCodigo($id_asesor);    
 //echo $this->getResponsable($id_asesor);
 $mpdf = Yii::app()->ePdf->mpdf();
 $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
@@ -418,7 +418,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <?php if ($value['estado_civil'] == 'Casado' || $value['estado_civil'] == 'Casado sin separación de bienes') { ?>
             <div class="col-xs-4">
                 <em class="tit-lab" for="">Sueldo mensual Cónyugue: </em>
-                <?php echo '$. ' . number_format($value['sueldo_mensual_conyugue']); ?>
+                <?php echo '$. ' . ($value['sueldo_mensual_conyugue']); ?>
             </div>
         <?php } ?>
     </div>

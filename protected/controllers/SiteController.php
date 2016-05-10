@@ -2353,11 +2353,12 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
         $con = Yii::app()->db;
         $sql = "SELECT gi.id,gi.nombres, gi.apellidos, gi.direccion, gi.telefono_casa, gv.modelo, gv.version, gv.forma_pago, 
-gv.precio, gv.seguro, gv.total, gv.accesorios, gt.firma
+gv.precio, gv.seguro, gv.total, gv.accesorios, gt.firma, gt.observacion 
 FROM gestion_informacion gi 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
 INNER JOIN gestion_test_drive gt ON gt.id_informacion = gi.id 
 WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
+//die($sql);
 
         //$request = $con->createCommand($sql)->queryAll();
         $criteria = new CDbCriteria(array(
