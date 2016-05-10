@@ -312,7 +312,7 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
     $mail->AddAddress($toAsesor);
     //$mail->AddAddress('vlondono@kia.com.ec'); // call center
     //$mail->AddAddress('gansaldo72@hotmail.com');
-    $mail->AddBCC('alkanware@gmail.com');
+    //$mail->AddBCC('alkanware@gmail.com');
 
     if (!$mail->Send()) {
         return false;
@@ -332,8 +332,11 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail->Password = "AnH9ahUyZyPacdEgDIU+tlxPRPgtrm2pYMGlBtv3XaUZ";        // SMTP account password
     $mail->CharSet = 'UTF-8';
 
-    $mail->From = $from;
-    $mail->FromName = $fromname;
+    //$mail->From = $from;
+    //$mail->FromName = $fromname;
+    
+    $mail->SetFrom('servicioalcliente@kiamail.com.ec', 'Kia Motors Ecuador SGC');
+    $mail->AddReplyTo("servicioalcliente@kiamail.com.ec", "Kia Motors Ecuador SGC");
 
     $mail->Subject = $subject;
     $mail->MsgHTML($body);
