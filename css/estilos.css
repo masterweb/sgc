@@ -802,3 +802,15 @@ ul.versiones li input{
     font-size: 11px;
     cursor: pointer;
 }
+.home{
+    background:url(../images/home.png) 10px 0px no-repeat;
+    padding-left: 38px !important;
+}
+.editar{
+    background:url(../images/editar.png) 10px 0px no-repeat;
+    padding-left: 38px !important;
+}
+.salir{
+    background:url(../images/salir.png) 10px 0px no-repeat;
+    padding-left: 38px !important;
+}
