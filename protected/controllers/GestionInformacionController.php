@@ -743,7 +743,7 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['concesionario']) &&
                     empty($_GET['GestionDiaria2']['fuente']) && $cargo_id == 69) {
-                //die('enter busqueda general');
+                //echo('enter busqueda general');
                 $title_busqueda = 'Búsqueda General: ';
                 if ($cargo_id == 70) {
                     //die('enter jefe');
@@ -755,7 +755,8 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 AND u.cargo_id IN (70,71)
                 ORDER BY gd.id DESC";
                     //die('sql sucursal'. $sql);
                 }
@@ -795,7 +796,7 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['fuente']) &&
                     empty($_GET['GestionDiaria2']['grupo']) &&
                     empty($_GET['GestionDiaria2']['concesionario'])) {
-                //die('enter busqueda general jefe almacen');
+                //echo('enter busqueda general jefe almacen');
                 $title_busqueda = 'Búsqueda General: ';
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
@@ -805,7 +806,8 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 
+                INNER JOIN usuarios u ON u.id = gi.responsable 
+                WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 AND u.cargo_id IN (70,71) 
                     GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
                     //die('sql sucursal'. $sql);
@@ -842,7 +844,7 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) &&
                     !empty($_GET['GestionDiaria2']['general'])) {
-                //die('enter general');
+                //echo('enter general');
 
                 /* BUSQUEDA POR NOMBRES, APELLIDOS, CEDULA, ID */
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
@@ -882,7 +884,7 @@ class GestionInformacionController extends Controller {
                     $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) && $cargo_id == 69) {
-                //die('enter fuente');    
+                //echo('enter fuente');    
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
 gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
 FROM gestion_diaria gd 
@@ -907,7 +909,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['status']) &&
                     $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
-                //die('enter fuente asesor');    
+                //echo('enter fuente asesor');    
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
                 gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
                 FROM gestion_diaria gd 
@@ -931,7 +933,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             /* -----------------BUSQUEDA POR CATEGORIZACION------------------ */
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
-                //die('enter categorizacion');
+                //echo('enter categorizacion');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -956,7 +958,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             /* -----------------FIN BUSQUEDA POR CATEGORIZACION DE GERENTE COMERCIAL------------------ */
 
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && $cargo_id == 69 && empty($_GET['GestionDiaria2']['responsable']) && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
-                //die('enter cat');
+                //echo('enter cat');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -983,7 +985,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria2']['status']) && $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
-                //die('enter to status');
+                //echo('enter to status');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -1035,7 +1037,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     !empty($_GET['GestionDiaria2']['fecha']) &&
                     empty($_GET['GestionDiaria2']['concesionario'])) {
-                //die('enter fecha');
+                //echo('enter fecha');
                 $tipoFecha = $_GET['GestionDiaria2']['tipo_fecha'];
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
@@ -1070,7 +1072,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['grupo']) &&
                     empty($_GET['GestionDiaria2']['concesionario']) &&
                     empty($_GET['GestionDiaria2']['provincia'])) {
-                //die('enter responsable');
+                //echo('enter responsable');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -1105,7 +1107,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     !empty($_GET['GestionDiaria2']['fecha']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) &&
                     empty($_GET['GestionDiaria2']['fuente'])) {
-                //die('enter responsable jefe almacen');
+                //echo ('enter responsable jefe almacen');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -1132,6 +1134,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             //$this->render('seguimiento');
         }
+        //die('sql: '.$sql);
         Yii::import('ext.phpexcel.XPHPExcel');
         $objPHPExcel = XPHPExcel::createPHPExcel();
         $objPHPExcel->getProperties()->setCreator("SGC Kia Ecuador")
