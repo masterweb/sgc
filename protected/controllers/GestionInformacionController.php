@@ -1429,7 +1429,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 3;
         }
         // BUSQUEDA POR FECHA
-        if (empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 &&
+        if (empty($_GET['GestionDiaria']['status']) && $fechaPk == 0 &&
                 empty($_GET['GestionDiaria']['responsable']) &&
                 !empty($_GET['GestionDiaria']['fecha'])) {
             $search_type = 4;
@@ -1476,9 +1476,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 16;
         }
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
-            if (empty($_GET['GestionDiaria']['general']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 && 
+            if (empty($_GET['GestionDiaria']['general']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && 
                     !empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario']) && !empty($_GET['GestionDiaria']['responsable'])) {
                 $search_type = 17;
+            }
+            if (empty($_GET['GestionDiaria']['general']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['status']) && !empty($_GET['GestionDiaria']['fecha']) &&
+                    empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+                $search_type = 18;
             }
         }
 
@@ -1911,7 +1915,27 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $data['title'] = $title;
                 $data['users'] = $users;
                 return $data;
-                break;    
+                break;
+            
+            case 18: // BUSQUEDA POR FECHA
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                //die('after params');
+                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                $sql = $sql_ini;
+                $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+                $sql .= " AND gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
+                //die($sql);
+                $request = $con->createCommand($sql);
+                $users = $request->queryAll();
+                $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                return $data;
+                break;
 
             default:
                 break;
@@ -1928,6 +1952,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $id_responsable = Yii::app()->user->getId();
         $array_dealers = $this->getDealerGrupoConc($grupo_id);
         $dealerList = implode(', ', $array_dealers);
+        
+        $dt_hoy= date('Y-m-d'); // Fecha actual
+        $dt_unasemana_antes = date('Y-m-d', strtotime('-1 week')) ; // Fecha resta 1 semanas
+        $dt_unmes_antes = date('Y-m-d', strtotime('-4 week')) ; // Fecha resta 1 mes
         //die('responsable id: '.$id_responsable);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
@@ -1968,6 +1996,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)} AND u.cargo_id IN (70,71) 
+                AND DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'
                 GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
             //die('sql sucursal'. $sql);
@@ -1989,14 +2018,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $sql .= " LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable
                 WHERE (gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable}) 
-                AND u.cargo_id = 71 AND DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10' 
+                AND u.cargo_id = 71 
+                /*AND DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'*/ 
                 GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
             //die('sql: '. $sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
+            
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE u.cargo_id IN(70,71) AND u.cargo_id = 71 AND DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'
+                WHERE u.cargo_id IN(70,71) AND u.cargo_id = 71 AND DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'
                 GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
         }
