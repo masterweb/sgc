@@ -1344,7 +1344,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $dealer_id = $this->getDealerId($id_responsable);
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion";
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
         $criteria->alias = 'gi';
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
@@ -1829,27 +1830,27 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($cargo_id == 69 && $get_array == 'seg') { // jefe de almacen
                     $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (71,70)", 'AND');
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (71,70) AND ";
                 }
                 if ($cargo_id == 69 && $get_array == 'exo') { // jefe de almacen
                     $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (75)", 'AND');
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (75) AND ";
                 }
                 if ($cargo_id == 69 && $get_array == 'bdc') { // jefe de almacen
                     $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (72,73)", 'AND');
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND u.cargo_id IN (72,73) AND ";
                 }
                 if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $sql .= "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND ";
                 }
                 /* else {
@@ -1920,21 +1921,21 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 
                 if (!empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario'])) {
                     $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
-                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'",'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'",'AND');
                     $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                     $sql .= " AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                     $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
                 }
                 if (!empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario'])) {
                     $criteria->addCondition("u.grupo_id = {$_GET['GestionDiaria']['grupo']}", 'AND');
-                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'",'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'",'AND');
                     $nombre_grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                     $sql .= " AND u.grupo_id = {$_GET['GestionDiaria']['grupo']}";
                     $title = "Busqueda por Grupo: <strong>{$nombre_grupo}</strong>";
                 }
                 if (!empty($_GET['GestionDiaria']['responsable']) && ($_GET['GestionDiaria']['responsable'] != 'all')) {
                     $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}", 'AND');
-                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'",'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'",'AND');
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                     $sql .= " AND gi.responsable = {$_GET['GestionDiaria']['responsable']}";
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
@@ -1964,7 +1965,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 15: // BUSQUEDA POR CAMPOS VACIOS
                 $criteria = new CDbCriteria;
                 $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion";
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
                 $criteria->alias = 'gi';
                 $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
                 $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
@@ -2032,7 +2034,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 16:
                 $criteria = new CDbCriteria;
                 $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion";
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
                 $criteria->alias = 'gi';
                 $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
                 $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
@@ -2158,7 +2161,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql = $sql_ini;
                 $criteria = new CDbCriteria;
                 $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion";
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
                 $criteria->alias = 'gi';
                 $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
                 $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
@@ -2242,7 +2246,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $con = Yii::app()->db;
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion";
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
         $criteria->alias = 'gi';
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
@@ -2324,7 +2329,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->condition = "u.cargo_id IN(70,71)";
-            $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+            $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
             $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
             $criteria->order = "gi.id DESC";
 
