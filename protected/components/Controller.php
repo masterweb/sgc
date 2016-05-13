@@ -1356,9 +1356,9 @@ class Controller extends CController {
         return $ps->fuente;
     }
     
-    public function getStatusSGC($id) {
+    public function getStatusSGC($id_informacion) {
         $criteria = new CDbCriteria(array(
-            'condition' => "id={$id}"
+            'condition' => "id_informacion={$id_informacion}"
         ));
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->status;
