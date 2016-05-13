@@ -35,6 +35,10 @@ $count = count($users);
     
 
     $(function () {
+        $('.textreasignar').keyup(function(){
+            $('#textreasignarerror').hide();
+        });
+        $('[data-toggle="tooltip"]').tooltip();   
         $('#checkMain').click(function(){
             $('.checkAll').attr('checked',($(this).is(':checked')) ? true:false);
         });
@@ -422,13 +426,42 @@ $count = count($users);
     }
     
     function asignar(id){
-        if (confirm('Está seguro de reasignar el o los clientes?')) {
-            var checkboxvalues = new Array();
-            //recorremos todos los checkbox seleccionados con .each
-            $('input[name="asignar[]"]:checked').each(function() {
-                    //$(this).val() es el valor del checkbox correspondiente
-                    checkboxvalues.push($(this).val());
+        
+        $('#asesorasg').val(id);
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/getResponsable"); ?>',
+                /*beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },*/
+                type: 'POST', data: {id: id},
+                success: function (data) {
+                    $('.txtasignamiento').html(data).show();
+                }
             });
+    }
+    
+    function asignarsave(){
+        var checkboxvalues = new Array();
+        //recorremos todos los checkbox seleccionados con .each
+        $('input[name="asignar[]"]:checked').each(function() {
+                //$(this).val() es el valor del checkbox correspondiente
+                checkboxvalues.push($(this).val());
+        });
+        
+        if(checkboxvalues.length == 0){
+            alert('Seleccione uno o mas usuarios de la lista del RGD');
+            return false;
+        }
+        
+        var id = $('#asesorasg').val();
+        var textreasignar = $('.textreasignar').val();
+        if($('.textreasignar').val() == ''){
+            $('#textreasignarerror').show();
+            return false;
+        }
+        if (confirm('Está seguro de reasignar el o los clientes?')) {    
+            
+            
             //console.log(checkboxvalues.length);
             if(checkboxvalues.length == 0){
                 alert('Seleccione uno o mas usuarios de la lista del RGD');
@@ -439,7 +472,7 @@ $count = count($users);
                 beforeSend: function (xhr) {
                     $('#bg_negro').show();  // #bg_negro must be defined somewhere
                 },
-                type: 'POST', dataType: 'json', data: {id: id, checkboxvalues: checkboxvalues},
+                type: 'POST', dataType: 'json', data: {id: id, checkboxvalues: checkboxvalues, comentario:textreasignar},
                 success: function (data) {
                     //$('#bg_negro').hide();
                     if (data.result == true) {
@@ -448,9 +481,7 @@ $count = count($users);
 
                 }
             });
-            
         }
-        
     }
     
     function conc(id){
@@ -492,7 +523,18 @@ $count = count($users);
         }
         em{margin-bottom: 3px;display: block;}
     }
-    
+    #checkMain{position: relative;top: 2px;}
+    #checklabel{font-size: 14px;font-weight: normal;margin-bottom: 0px;}
+   
+    .checkbox-danger input[type="checkbox"]:checked + label::before {
+  background-color: #d9534f;
+  border-color: #d9534f; }
+.checkbox-danger input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+.textreasignar{margin-bottom: 0px;height: 33px;margin-right: 3px;border-radius: 0px;}
+#textreasignarerror{color: #C00;font-size: 12px;resize: none;}
+.txtasignamiento{position: absolute;top: -20px;color: #C21930;font-style: italic;}
+.group-asignamiento{position: relative !important;}
 </style>
 
 <?php $this->widget('application.components.Notificaciones'); ?>
@@ -548,26 +590,27 @@ $count = count($users);
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>
     </div>
-    <?php if($cargo_id == 2015){ ?>
+    <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
     <div class="row">
-        <div class="col-md-8">
+        <br />
+        <div class="col-md-12">
                  <!-- Split button -->
             <div class="btn-group">
-                <span class="button-checkbox btn btn-default" data-color="primary">
+                <span class="button-checkbox btn btn-default checkbox-danger" data-color="primary">
 <!--                    <button type="button" class="btn" data-color="primary" >Unchecked</button>-->
-                    <input type="checkbox" class="" id="checkMain" name="multislt"/>
+<input type="checkbox" class="" id="checkMain" name="multislt"/><label id="checklabel">&nbsp;Todos</label>
                 </span>
                 <!--<button type="button" class="btn btn-default" class="btn-multislt"><input type="checkbox" name="multislt" class="checkMain" id="checkMain"/></button>-->
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-              </button>
+<!--                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>-->
               <ul class="dropdown-menu">
                 <li><a class="asign-lt">REASIGNAR</a></li>
-                <li><a class="asign-lt">BORRAR</a></li>
+<!--                <li><a class="asign-lt">BORRAR</a></li>-->
               </ul>
             </div>
-                 <?php if ($cargo_id == 2015) { ?>
+                 <?php if ($cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { ?>
                 <div class="btn-group">
                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      Grupo <span class="caret"></span>
@@ -600,12 +643,21 @@ $count = count($users);
                  <?php if($cargo_id == 70){ ?>
                 <div class="btn-group">
                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Mover <span class="caret"></span>
+                     Asignar a <span class="caret"></span>
                    </button>
                     <ul class="dropdown-menu" id="asesores">
                      <?php echo $this->getResponsablesAgencia($id_responsable); ?>
                    </ul>
                 </div>
+                 <div class="btn-group group-asignamiento">
+                     <span class="txtasignamiento"></span>
+                     <textarea rows="2" cols="60" class="textreasignar" name="textreasignar" placeholder="Ingresar Comentario"></textarea>
+                     <label generated="true" class="error" id="textreasignarerror" style="display:none;">Ingrese un comentario</label>
+                 </div>    
+                 <div class="btn-group">
+                     <button type="button" class="btn btn-default btn-danger" onclick="asignarsave();">Grabar</button>
+                     <input type="hidden" name="asesorasg" id="asesorasg" value=""/>   
+                 </div>
                  <?php } ?>
         </div>
     </div>
@@ -618,7 +670,7 @@ $count = count($users);
                 <table class="table tablesorter table-striped" id="keywords">
                     <thead>
                         <tr>
-                            <?php if($cargo_id == 2015){ ?>
+                            <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
                             <th>Asignar</th>
                             <?php } ?>
                             <th><span>Status</span></th>
@@ -631,6 +683,7 @@ $count = count($users);
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
                             <th><span>Modelo Vehículo</span></th>
+                            <th><span>Test Drive</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Exp. de Categ.</span></th>
                             <th><span>Fuente</span></th>
@@ -638,11 +691,16 @@ $count = count($users);
                         </tr>
                     </thead>
                     <tbody>
-
+<?php  
+//echo '<pre>';
+//print_r($users);
+//echo '</pre>';
+//die();
+?>
                         <?php foreach ($users as $c): ?>
 
                             <tr>
-                                <?php if($cargo_id == 2025){ ?>
+                                <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
                                 <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id_info']; ?>,<?php echo $c['id_resp']; ?>"/></td>
                                 <?php } ?>
                                 <td>
@@ -768,7 +826,7 @@ $count = count($users);
                                     //}
                                     ?>
                                     <?php if($c['reasignado'] == 1): ?>
-                                        <button type="button" class="btn btn-xs btn-warning">Reasignado</button>
+                                        <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" title="<?php echo $this->getResponsable($c['responsable_cesado']).' - '.$this->getComentarioAsignamiento($c['id_comentario']); ?>">R</button>
                                     <?php endif; ?>
                                     <?php 
                                     if($c['desiste'] == 1){
@@ -816,6 +874,7 @@ $count = count($users);
                                 echo $data;
                                 ?>
                                 </td>
+                                <td></td>
                                 <td><?php echo $c['categorizacion']; ?> </td>
                                 <td> 
                                     <?php
@@ -902,7 +961,7 @@ $count = count($users);
                                 </td>
                                 <td>
                                     <?php //if($c['bdc'] == 0){ ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resúmen</a><em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                         <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1){ ?>
                                             <?php if ($c['paso'] == '1-2' && $c['fuente'] == 'showroom') { ?>
                                                 <?php if($area_id != 4 && $cargo_id != 69){ ?> 
@@ -919,7 +978,7 @@ $count = count($users);
                                         <?php } ?>
                                     <?php //} ?>
                                     <?php if($c['bdc'] == 1  && ( $area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14)){ ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resúmen</a><em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                     <?php } ?>            
                                 </td>
                             </tr>
