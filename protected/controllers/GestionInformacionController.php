@@ -1547,9 +1547,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%'",'AND');
-                $criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
-                $criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')",'AND');
+                //$criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
+                //$criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";        
                 $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
@@ -1572,6 +1572,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $data['users'] = $users;
                     $data['pages'] = $pages;
                     return $data;
+                    die('after data');
                 } else {
                     $count++;
                     $sql = $select;
@@ -2313,6 +2314,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->condition = "(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})";
             $criteria->addCondition("u.cargo_id = 71");
+            $criteria->addCondition("gd.desiste = 0", 'AND');
             //$criteria->addCondition("DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'");
             $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
             $criteria->order = "gi.id DESC";
