@@ -47,10 +47,18 @@ class ReportesController extends Controller {
         $varView['triger'] = 0;
         foreach ($lista_datos as $key => $value) {
             foreach ($value as $key => $carros) {
-                if($key == 'modelos'){$campo_car= 'modelo';}
-                else{$campo_car= 'version';}              
+                if($key == 'modelos'){
+                    $campo_car= 'modelo';
+                    $separ = ' AND (';
+                    $separ_fin = '';
+                }
+                else{
+                    $campo_car= 'version';
+                    $separ = ' OR';
+                    $separ_fin = ')';
+                }              
                 $id_carros_nv[$key] = implode(', ', $carros);
-                $SQLmodelos[$key] = " AND gv.".$campo_car." IN (".$id_carros_nv[$key].") ";
+                $SQLmodelos[$key] = $separ." gv.".$campo_car." IN (".$id_carros_nv[$key].")".$separ_fin.' ';
                 $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERmodelos_td =' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
                 $varView['triger'] = 1;
