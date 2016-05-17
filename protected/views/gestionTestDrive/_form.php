@@ -185,13 +185,14 @@ $firma = GestionFirma::model()->count($cri);
         $('#GestionTestDrive_preg1').change(function () {
             var value = $(this).attr('value');
             if (value == 'Si') {
-                addRules();
+                addRulesTD();
                 $('.cont-test-drive').show();
                 $('.cont-form-manejo').show();
                 $('.cont-obs-seg').hide();
                 //$('#cont-seg').hide();
-            } else {
-                removeRules();
+            }    
+            if (value == 'No') {
+                removeRulesTD();
                 $('.cont-form-manejo').hide();
                 $('.cont-test-drive').hide();
                 $('.cont-obs-seg').show();
@@ -233,6 +234,7 @@ $firma = GestionFirma::model()->count($cri);
                         return false;
                     } else {
                         if (validateUploadSize(d)) {
+                            $('#finalizar').prop('disabled', true);
                             form.submit();
                         } else {
                             alert('La imágen no debe superar los 2MB');
@@ -241,17 +243,18 @@ $firma = GestionFirma::model()->count($cri);
 
                     }
                 } else { //  cliente no desea hacer el test drive
+                    $('#finalizar').prop('disabled', true);
                     form.submit();
                 }
             }
         });
         
     });
-    function addRules(){
+    function addRulesTD(){
         $("#GestionTestDrive_observaciones_form").rules("add", "required");
         $("#GestionTestDrive_preg1_observaciones").rules("remove", "required");
     }
-    function removeRules(){
+    function removeRulesTD(){
         $("#GestionTestDrive_preg1_observaciones").rules("add", "required");
         $("#GestionTestDrive_observaciones_form").rules("remove", "required");
     }
@@ -686,6 +689,7 @@ $firma = GestionFirma::model()->count($cri);
                                     <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
                                     <div class="col-md-2">
                                         <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Save', array('class' => 'btn btn-danger', 'id' => 'finalizar')); ?>
+                                        <input type="hidden" name="Usuarios[firma]" id="Usuarios_firma" value=""/>
                                     </div>
                                     <div class="col-md-3">
                                         <div id="calendar-content" style="display: none;">

@@ -145,7 +145,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php
                         $con = Yii::app()->db;
                         $sql = "SELECT gi.id as id_info, gi. nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.direccion,gi.celular, 
-                                gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gi.senae, gd.*, gn.*
+                                gi.telefono_casa, gi.id_cotizacion, gi.responsable as resp, gi.senae, gi.responsable_cesado, gi.reasignado, gi.id_comentario,gd.*, gn.*
                                 FROM gestion_diaria gd 
                                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -250,6 +250,41 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         </div>
 
                     </div>
+                    <?php 
+                    $re = GestionInformacion::model()->count(array('condition' => "id = {$_GET['id']} AND reasignado = 1"));
+                    if($re > 0){
+                       $reas = GestionInformacion::model()->findAll(array('condition' => "id = {$_GET['id']} AND reasignado = 1")); 
+                    ?>
+                    <div class="row">
+                        <h1 class="tl_seccion_rf">Reasignado</h1>
+                    </div>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="detalle">
+                                <h4 class="panel-title">
+                                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                      Detalle
+                                    </a>
+                                  </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="detalle">
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <thead> <tr><th>Reasignado de</th> <th>Asignado a</th><th>Comentario</th> </tr> </thead>
+                                        <tbody>
+                                            <?php 
+                                            foreach ($reas as $rea) {
+                                                echo '<tr><td>'.$this->getResponsable($rea['responsable_cesado']).'</td><td>'.$this->getResponsable($rea['responsable']).'</td><td>'.$this->getComentarioRGD($rea['id_comentario']).'</td></tr>';
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                     <div class="row">
                         <h1 class="tl_seccion_rf">Status</h1>
                     </div>  

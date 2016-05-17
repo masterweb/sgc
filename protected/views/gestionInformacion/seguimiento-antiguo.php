@@ -590,8 +590,7 @@ $count = count($users);
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>
     </div>
-    <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
-    <?php if($cargo_id == 70){ ?>
+    <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
     <div class="row">
         <br />
         <div class="col-md-12">
@@ -611,8 +610,7 @@ $count = count($users);
 <!--                <li><a class="asign-lt">BORRAR</a></li>-->
               </ul>
             </div>
-                 <?php //if ($cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { ?>
-                 <?php if ($cargo_id == 221987) { ?>
+                 <?php if ($cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { ?>
                 <div class="btn-group">
                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      Grupo <span class="caret"></span>
@@ -672,8 +670,7 @@ $count = count($users);
                 <table class="table tablesorter table-striped" id="keywords">
                     <thead>
                         <tr>
-                            <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
-                            <?php if($cargo_id == 70){ ?>
+                            <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
                             <th>Asignar</th>
                             <?php } ?>
                             <th><span>Status</span></th>
@@ -703,9 +700,8 @@ $count = count($users);
                         <?php foreach ($users as $c): ?>
 
                             <tr>
-                                <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
-                                <?php if($cargo_id == 70){ ?>
-                                <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
+                                <?php if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>
+                                <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id_info']; ?>,<?php echo $c['id_resp']; ?>"/></td>
                                 <?php } ?>
                                 <td>
                                     <?php
@@ -713,47 +709,90 @@ $count = count($users);
                                     $status = '';
                                     $paso = '';
                                     $url = '';
-                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion='{$c['id']}'"));
+                                    if ($c['prospeccion'] != 0) {
+                                        $status = 'Prospección';
+                                    }
+                                    if ($c['primera_visita'] != 0) {
+                                        $status = 'Primera Visita';
+                                    }
+                                    if ($c['seguimiento'] != 0) {
+                                        $status = 'Seguimiento';
+                                    }
+                                    if ($c['cierre'] != 0) {
+                                        $status = 'Cierre';
+                                    }
+                                    if ($c['entrega'] != 0) {
+                                        $status = 'Entrega';
+                                    }
+                                    if ($c['seguimiento_entrega'] != 0) {
+                                        $status = 'Seguimiento Entrega';
+                                    }
+                                    if ($c['desiste'] != 0) {
+                                        $status = 'Desiste';
+                                    }
+                                    $criteria = new CDbCriteria(array(
+                                        'condition' => "id_informacion='{$c['id_info']}'"
+                                    ));
+                                    $vec = GestionVehiculo::model()->findAll($criteria);
                                     $count = count($vec);
-                                    $td = GestionTestDrive::model()->findAll(array('condition' => "id_informacion='{$c['id']}'"));
-                                    $countt = count($td);
-                                    $paso = $this->getPasoGestionDiaria($c['id']);
-                                    $medio_contacto = $this->getMedioContacto($c['id']); 
-                                    $desiste = $this->getDesiste($c['id']); 
-                                    $proximo_seguimiento = $this->getSeguimiento($c['id']);
-                                    $categorizacion = $this->getCategorizacionSGC($c['id']);
-                                    $fuente = $this->getFuenteSGC($c['id_cotizacion']);
-                                    $status = $this->getStatusSGC($c['id']);
 
-                                    switch ($paso) {
+                                    $criteria = new CDbCriteria(array(
+                                        'condition' => "id_informacion='{$c['id_info']}'"
+                                    ));
+                                    $td = GestionTestDrive::model()->findAll($criteria);
+                                    $countt = count($td);
+
+                                    //echo 'count vec: '.$count.', count test drive: '.$countt;
+                                    if ($status == 'Prospección' && $count > 0) {
+                                        $paso = '1/2';
+                                        //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                    }
+                                    if ($count > 0) {
+                                        $paso = '3/4';
+                                        //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                    }
+                                    if ($count == 0 && $countt == 0):
+                                        $paso = '3/4';
+                                    //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                    endif;
+                                    if ($count > 0 && $countt > 0):
+                                        $paso = '5/6';
+                                    //$url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id_info']));
+                                    endif;
+                                    if (($count > 0 && $countt > 0) && ($count == $countt)):
+                                        $paso = '7';
+                                    //$url = Yii::app()->createUrl('site/financiamiento', array('id' => $c['id_info']));
+                                    endif;
+
+                                    switch ($c['paso']) {
                                         case '1-2':
-                                            $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion'));
-                                            if($fuente == 'prospeccion')
-                                               $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
+                                            $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
+                                            if($c['fuente'] == 'prospeccion')
+                                               $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
                                             break;
                                         case '3':
-                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '4':
-                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '5':
-                                            $url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id_info']));
                                             break;
                                         case '6':
-                                            $url = Yii::app()->createUrl('site/demostracion', array('id' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/demostracion', array('id' => $c['id_info']));
                                             break;
                                         case '7':
-                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id_info']));
                                             break;
                                         case '8':
-                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
                                             break;
                                         case '9':
-                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id_info']));
                                             break;
                                         case '10':
-                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id']));
+                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id_info']));
                                             break;
                                         default:
                                             break;
@@ -762,10 +801,9 @@ $count = count($users);
                                     ?>
 
                                     <!--<button type="button" class="btn btn-xs btn-primary"><?php //echo $status;  ?></button>-->
-                                    <button type="button" class="btn btn-xs btn-success"><?php echo $paso; ?></button>
-                                    
+                                    <button type="button" class="btn btn-xs btn-success"><?php echo $c['paso']; ?></button>
                                     <?php
-                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == ''):
+                                    if ($c['medio_contacto'] == 'web' && $c['tipo_form_web'] == ''):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">www</button>
                                     <?php endif; ?>
@@ -775,8 +813,7 @@ $count = count($users);
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
                                     <?php endif; ?>
                                     <?php
-                                    //die('id info: '.$c['id_info']);
-                                    $credito = $this->getStatusSolicitudAll($c['id']);
+                                    $credito = $this->getStatusSolicitudAll($c['id_info']);
                                     if ($credito == true) {
                                         echo '<button type="button" class="btn btn-xs btn-success">C</button>';
                                     } else {
@@ -792,13 +829,13 @@ $count = count($users);
                                         <button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" title="<?php echo $this->getResponsable($c['responsable_cesado']).' - '.$this->getComentarioAsignamiento($c['id_comentario']); ?>">R</button>
                                     <?php endif; ?>
                                     <?php 
-                                    if($desiste == 1){
+                                    if($c['desiste'] == 1){
                                         echo '<button type="button" class="btn btn-xs btn-success">Desiste</button>'; 
                                     }
 
                                     ?>
                                 </td>
-                                <td><?php echo $c['id']; ?> </td>
+                                <td><?php echo $c['id_info']; ?> </td>
                                 <td>
                                 <?php 
                                 $pr = explode(' ', $c['fecha']);
@@ -820,16 +857,16 @@ $count = count($users);
 
                                 ?> 
                                 </td>
-                                <td><?php echo $proximo_seguimiento; ?></td>
-                                <td><?php echo $this->getResponsable($c['responsable']); ?></td>
+                                <td><?php echo $c['proximo_seguimiento']; ?></td>
+                                <td><?php echo $this->getResponsable($c['id_resp']); ?></td>
                                 <td><?php 
                                 echo $this->getNameConcesionarioById($c['dealer_id']); 
                                 //esta dando error en las busquedas revisar ?></td>
                                 <td>
                                 <?php
-                                $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id']}")); 
+                                $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id_info']}")); 
                                 if ($countvec > 0) {
-                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id']}",'limit' => '1', 'offset' => '0','order' => 'id desc'));
+                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id_info']}",'limit' => '1', 'offset' => '0','order' => 'id desc'));
                                     foreach ($vec as $val) {
                                         $data = '<em>' . $this->getVersion($val['version']) . '. </em><br />';
                                     }
@@ -838,11 +875,11 @@ $count = count($users);
                                 ?>
                                 </td>
                                 <td></td>
-                                <td><?php echo $categorizacion; ?> </td>
+                                <td><?php echo $c['categorizacion']; ?> </td>
                                 <td> 
                                     <?php
                                     $dias;
-                                    switch ($categorizacion) {
+                                    switch ($c['categorizacion']) {
                                         case 'Hot A (hasta 7 dias)':
                                             $dias = 7;
                                             $fechas = explode(' ', $c['fecha']);
@@ -919,16 +956,16 @@ $count = count($users);
                                     ?> 
                                 </td>
                                 <td> 
-                                <?php if($fuente == 'showroom'){ echo 'Tráfico'; }
-                                    else{ echo $fuente; } ?> 
+                                <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
+                                    else{ echo $c['fuente']; } ?> 
                                 </td>
                                 <td>
                                     <?php //if($c['bdc'] == 0){ ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'],'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
-                                        <?php if (($status == 1 || $status == 4)&& $desiste != 1){ ?>
-                                            <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'],'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
+                                        <?php if (($c['status'] == 1 || $c['status'] == 4)&& $c['desiste'] != 1){ ?>
+                                            <?php if ($c['paso'] == '1-2' && $c['fuente'] == 'showroom') { ?>
                                                 <?php if($area_id != 4 && $cargo_id != 69){ ?> 
-                                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <?php if($cargo_id != 72 && $cargo_id != 69 && $area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?> 
@@ -936,8 +973,8 @@ $count = count($users);
                                                 <?php } ?>
                                             <?php } ?>
                                         <?php } ?>
-                                        <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14) { ?>
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                        <?php if ($c['status'] == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14) { ?>
+                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                         <?php } ?>
                                     <?php //} ?>
                                     <?php if($c['bdc'] == 1  && ( $area_id == 4 ||  $area_id == 12 ||  $area_id == 13 ||  $area_id == 14)){ ?>
@@ -951,11 +988,6 @@ $count = count($users);
                 </table>
 
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-9">
-            <?php $this->widget('CLinkPager', array('pages' => $pages, 'maxButtonCount' => 10)); ?>
         </div>
     </div>
     <br />

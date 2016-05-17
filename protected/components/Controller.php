@@ -440,6 +440,25 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getComentarioRGD($id_comentario) {
+        //echo 'id: '.$id_comentario;
+        $responsableid = GestionReasignamiento::model()->find(array('condition' => "id = {$id_comentario}"));
+        if (!is_null($responsableid) && !empty($responsableid)) {
+            return $responsableid->comentario;
+        } else {
+            return '';
+        }
+    }
+    
+    public function getComentarioAsignamiento($id) {
+        $reas = GestionReasignamiento::model()->find(array('condition' => "id = {$id}"));
+        if (!is_null($reas) && !empty($reas)) {
+            return $reas->comentario . ' - ' . $reas->fecha;
+        } else {
+            return '';
+        }
+    }
 
     public function getEmailAsesor($id) {
         $criteria = new CDbCriteria(array(
@@ -1289,6 +1308,60 @@ class Controller extends CController {
         ));
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->paso;
+    }
+    
+    public function getPasoGestionDiaria($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->paso;
+    }
+    
+    public function getMedioContacto($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->medio_contacto;
+    }
+    public function getDesiste($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->desiste;
+    }
+    public function getSeguimiento($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->proximo_seguimiento;
+    }
+    
+    public function getCategorizacionSGC($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id}"
+        ));
+        $ps = GestionConsulta::model()->find($criteria);
+        return $ps->preg7;
+    }
+    
+    public function getFuenteSGC($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $ps = GestionNuevaCotizacion::model()->find($criteria);
+        return $ps->fuente;
+    }
+    
+    public function getStatusSGC($id_informacion) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id_informacion={$id_informacion}"
+        ));
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->status;
     }
 
     public function getPasoNotificacion($id) {
@@ -2460,6 +2533,22 @@ class Controller extends CController {
             $data .= '<li><a id="' . $ciudad['dealer_id'] . '" class="asign-lt" onclick="asesor(' . $ciudad['dealer_id'] . ')">' . $ciudad['nombre'] . '</a></li>';
         }
         echo $data;
+    }
+    
+    public function getStatusGestionDiaria($id_informacion) {
+        //echo 'id: '.$id;
+        $array_status = array();
+        $st = GestionDiaria::model()->findAll(array("condition" => "id_informacion = {$id_informacion}"));
+        
+        if (!is_null($st) && !empty($st)) {
+            foreach ($st as $value) {
+                $array_status['prospeccion'] = $value['prospeccion'];
+                $array_status['primera_visita'] = $value['primera_visita'];
+                $array_status['seguimiento'] = $value['prospeccion'];
+            }
+        } else {
+            return 'NA';
+        }
     }
 
 }

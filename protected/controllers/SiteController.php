@@ -158,6 +158,7 @@ class SiteController extends Controller {
      * Displays the login page
      */
     public function actionLogin() {
+        //$this->layout = '//layouts/call-login';
         if (Yii::app()->user->id > 0 && !empty(Yii::app()->user->id)) {
             $this->redirect(array('site/dashboard'));
             die();

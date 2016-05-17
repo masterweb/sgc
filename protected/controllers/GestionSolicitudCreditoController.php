@@ -330,12 +330,17 @@ class GestionSolicitudCreditoController extends Controller {
         $con = Yii::app()->db;
 
         if (isset($_GET['GestionSolicitudCredito'])) {
+//            echo '<pre>';
+//            print_r($_GET);
+//            echo '<pre>';
+//            die();
             $model->attributes = $_GET['GestionSolicitudCredito'];
 
             //---- BUSQUEDA GENERAL----
             if (!empty($_GET['GestionSolicitudCredito']['general']) &&
                     empty($_GET['GestionSolicitudCredito']['status']) &&
                     empty($_GET['GestionSolicitudCredito']['responsable'])) {
+                //echo 'enter general';
 
                 /* BUSQUEDA POR NOMBRES O APELLIDOS */
                 $sql = "SELECT gs.* FROM gestion_solicitud_credito gs "
@@ -369,6 +374,7 @@ class GestionSolicitudCreditoController extends Controller {
             if (empty($_GET['GestionSolicitudCredito']['general']) &&
                     !empty($_GET['GestionSolicitudCredito']['status']) &&
                     empty($_GET['GestionSolicitudCredito']['responsable'])) {
+                //echo 'status';
 
                 $sql = "SELECT gs.*, gt.`status` FROM gestion_solicitud_credito gs 
                         INNER JOIN gestion_status_solicitud gt ON gs.id_informacion = gt.id_informacion 
@@ -388,6 +394,32 @@ class GestionSolicitudCreditoController extends Controller {
                     ));
                     exit();
                 }
+            }
+            // SEARCH BY RESPONSABLE
+            
+            if (empty($_GET['GestionSolicitudCredito']['general']) &&
+                    empty($_GET['GestionSolicitudCredito']['status']) &&
+                    !empty($_GET['GestionSolicitudCredito']['responsable'])) {
+                //echo 'enter responsable'  ;
+                $sql = "SELECT gs.* FROM gestion_solicitud_credito gs 
+                        INNER JOIN usuarios u ON u.id = gs.vendedor 
+                        INNER JOIN gestion_informacion gi ON gi.id = gs.id_informacion
+                        WHERE u.id = {$_GET['GestionSolicitudCredito']['responsable']}";
+                        //die($sql);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                //die('num posts: '.count($posts));
+                if (count($posts) > 0) {
+                    $this->render('admin', array(
+                        'model' => $model, 'users' => $posts, 'search' => true
+                    ));
+                    exit();
+                } else {
+                    $this->render('admin', array(
+                        'model' => $model,'title' => 'No existen resultados'
+                    ));
+                    exit();
+                }        
             }
         }
 

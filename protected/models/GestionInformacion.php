@@ -41,6 +41,7 @@
  * @property integer $porcentaje_discapacidad
  * @property integer $senae
  * @property string $tipo_ex
+ * @property integer $id_comentario
  * 
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
@@ -150,6 +151,7 @@ class GestionInformacion extends CActiveRecord {
             'porcentaje_discapacidad' => 'porcentaje_discapacidad',
             'senae' => 'senae',
             'tipo_ex' => 'Tipo Ex',
+            'id_comentario' => 'Id Comentario',
         );
     }
 
