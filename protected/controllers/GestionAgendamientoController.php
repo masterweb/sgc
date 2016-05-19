@@ -97,6 +97,8 @@ class GestionAgendamientoController extends Controller {
                     $con = Yii::app()->db;
                     $sql = "UPDATE gestion_diaria SET desiste = 1 WHERE id_informacion = {$_POST['GestionAgendamiento']['id_informacion']}";
                     $request = $con->createCommand($sql)->query();
+                    $sql2 = "UPDATE gestion_consulta SET preg7 = 'Very Cold(mas de 6 meses)' WHERE id_informacion = {$_POST['GestionAgendamiento']['id_informacion']}";
+                    $request2 = $con->createCommand($sql2)->query();
                     break;
 
                 default:

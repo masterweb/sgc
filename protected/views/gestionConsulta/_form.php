@@ -455,6 +455,7 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
                             $('#consulta_preg5').show();
                             return false;
                         }
+                        $('#finalizar').prop('disabled',true);
                         form.submit();
                     }
                 });
@@ -478,6 +479,7 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
                             $('#consulta_preg5').show();
                             return false;
                         }
+                        $('#finalizar').prop('disabled',true);
                         form.submit();
                     }
                 });

@@ -1572,7 +1572,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $data['users'] = $users;
                     $data['pages'] = $pages;
                     return $data;
-                    die('after data');
+                    //die('after data');
                 } else {
                     $count++;
                     $sql = $select;
@@ -1668,6 +1668,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 switch ($_GET['GestionDiaria']['status']) {
                     case 'Cierre':
                         $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9",'AND');
                         $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                         $criteria->order = "gd.id DESC";
                         $sql .= " gd.cierre = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
@@ -1680,6 +1681,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                     case 'Entrega':
                         $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9",'AND');
                         $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                         $criteria->order = "gd.id DESC";
                         $sql .= " gd.entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
@@ -1699,6 +1701,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                     case 'SeguimientoEntrega':
                         $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                        $criteria->order = "gd.id DESC";
+                        $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1",'AND');
+                        $criteria->addCondition("gd.paso = 10",'AND');
+                        $criteria->addCondition("gd.status = 1",'AND');
                         $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                         $criteria->order = "gd.id DESC";
                         $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
@@ -1783,12 +1793,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->join .= "INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition ="gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70)";
                     $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                    $criteria->order = "gi.id DESC";
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
                             . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 } else {
                     $criteria->condition ="gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
                     $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                    $criteria->order = "gi.id DESC";
                     $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
@@ -1797,13 +1809,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 if ($_GET['GestionDiaria']['tipo'] == 'exo') {
                     $criteria->addCondition('gd.desiste = 0', 'AND');
-                    $criteria->order = "gd.id DESC";
-                    $sql .= " AND gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                    $criteria->order = "gi.id DESC";
+                    $sql .= " AND gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gi.id DESC";
                 }
                 if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
                     $criteria->addCondition('gi.bdc = 1', 'AND');
-                    $criteria->order = "gd.id DESC";
-                    $sql .= " AND gi.bdc = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                    $criteria->order = "gi.id DESC";
+                    $sql .= " AND gi.bdc = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gi.id DESC";
                 }
                 //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
                 //die($sql);
@@ -2265,8 +2277,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 46) {// SUPER ADMINISTRADOR AEKIA
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
             $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-            $criteria->order = "gi.id DESC";
+            $criteria->order = "gd.id DESC";
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";
@@ -2276,7 +2289,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter jefe');
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-            $criteria->condition = "gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)}";
+            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
+            $criteria->addCondition("gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)}");
             $criteria->addCondition("u.cargo_id IN (70,71)");
             $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
             $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
@@ -2295,7 +2309,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die('enter jefe');
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-            $criteria->condition = "u.grupo_id = {$grupo_id}";
+            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
+            $criteria->addCondition("u.grupo_id = {$grupo_id}");
             $criteria->addCondition("u.cargo_id = 71");
             $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
             $criteria->order = "gd.id DESC";
@@ -2312,7 +2327,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-            $criteria->condition = "(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})";
+            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
+            $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
             $criteria->addCondition("u.cargo_id = 71");
             $criteria->addCondition("gd.desiste = 0", 'AND');
             //$criteria->addCondition("DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'");
@@ -2330,7 +2346,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-            $criteria->condition = "u.cargo_id IN(70,71)";
+            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
+            $criteria->addCondition("u.cargo_id IN(70,71)");
             $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
             $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
             $criteria->order = "gi.id DESC";

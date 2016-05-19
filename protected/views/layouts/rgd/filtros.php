@@ -51,8 +51,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     <option value="Desiste">Desiste</option>
                     <option value="Entrega">Entrega</option>
                     <option value="PrimeraVisita">Primera Visita</option>
-                    <option value="Seguimiento">Seguimiento</option>
-                    <option value="SeguimientoEntrega">Seguimiento Entrega</option>
+                    <option value="Vendido">Seguimiento-Vendido</option>
                 </select>
             </div>
             <?php if ($cargo_id == 70 || $cargo_id == 72): ?>
@@ -95,19 +94,27 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         </div>
         <div class="row">
             <div class="col-md-6">
-                <label for="">Fecha</label>
+                <label for="">Fecha de Registro</label>
                 <input type="text" name="GestionDiaria[fecha]" id="fecha-range" class="form-control"/>
             </div>
-            <!--div class="col-md-6">
-                <label for="">Tipo</label>
-                <select name="GestionDiaria[tipo_fecha]" id="GestionDiaria_tipo_fecha" class="form-control">
+<!--            <div class="col-md-6">
+                <label for="">Seguimiento</label>
+                <select name="GestionDiaria[seguimiento]" id="GestionDiaria_seguimiento" class="form-control">
                     <option value="">--Seleccione tipo--</option>
-                    <option value="proximoseguimiento">Próximo seguimiento</option>
-                    <option value="fechsregistro">Fecha de registro</option>
+                    <option value="1">Hoy</option>
+                    <option value="2">Vacío</option>
+                    <option value="3">Rango de Fecha</option>
                 </select>
-            </div-->
+            </div>-->
 
         </div>
+<!--        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6" id="rango_fecha" style="display: none;">
+                <label for="">Rango de Fecha</label>
+                <input type="text" name="GestionDiaria[rango_fecha]" id="rango_fecha_seguimiento" class="form-control"/>
+            </div>
+        </div>-->
         <!--    <div class="row">
                 <div class="col-md-6">
                     <label for="">Fuente</label>

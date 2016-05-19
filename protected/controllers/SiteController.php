@@ -1563,7 +1563,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $paso = $gd->paso;
                 }
 
-                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'],$id_responsable, $value['responsable']);
+                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'], $id_responsable, $value['responsable']);
                 //die('paso: '.$paso);
 
                 $data .= '<tr><td>Cliente</td>'
@@ -1581,7 +1581,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 } else {
                     $data .= '<em>' . $this->getModel($value['modelo']) . '</em>, <em>' . $this->getVersion($value['version']) . '. </em><br />';
                 }
-                
+
                 $data .= '</td>'
                         . '<td>' . $showboton . '</td></tr>';
             }
@@ -1677,7 +1677,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $paso = $gd->paso;
                 }
 
-                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'],$id_responsable, $value['responsable']);
+                $showboton = $this->setBotonCotizacion($paso, $model->id, $fuente, $value['id'], $id_responsable, $value['responsable']);
                 //die('paso: '.$paso);
 
                 $data .= '<tr><td>Cliente</td>'
@@ -2360,7 +2360,6 @@ INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
 INNER JOIN gestion_test_drive gt ON gt.id_informacion = gi.id 
 WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 //die($sql);
-
         //$request = $con->createCommand($sql)->queryAll();
         $criteria = new CDbCriteria(array(
             'condition' => "id='{$id_informacion}'"
@@ -2747,8 +2746,15 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
     }
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {
-
-        $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+        if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 ){ // IOKARS, AUTHESA, MERQUIAUTO
+            //echo 'enter no createc';
+            $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        }else{
+            //echo 'enter cr';
+            $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        }
+        
     }
 
     public function actionEntrega($id_informacion = NULL) {

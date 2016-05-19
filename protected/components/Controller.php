@@ -382,6 +382,26 @@ class Controller extends CController {
             }
         }
     }
+    
+    public function getNombresJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
+        // buscar en tabla usuarios el jefe de almacen con el dealer id
+        $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
+
+        if (count($us) > 0) {
+            return $us->nombres.' '.$us->apellido;
+        } else {
+            $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
+            INNER JOIN usuarios u ON u.id = gr.usuario_id 
+            WHERE gr.concesionario_id = {$dealer_id}
+            AND u.cargo_id = 70 ";
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            //die('count request: '.count($request));
+            foreach ($request as $value) {
+                return $value['correo'].' '.$value['apellido'];
+            }
+        }
+    }
 
     public function setBotonCotizacion($paso, $id, $fuente, $id_informacion, $id_responsable, $resp) {
         //die('id: '.$id);
@@ -928,6 +948,7 @@ class Controller extends CController {
         //die($id_informacion);
         $data = '';
         $test = GestionDemostracion::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND preg1 = 'No'"));
+        
         foreach ($test as $value) {
             $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-tomate btn-xs btn-rf" target="_blank">No</a>';
             switch ($value['preg1_observaciones']) {
@@ -1405,6 +1426,9 @@ class Controller extends CController {
                 break;
             case '9':
                 $paso = '9 - Entrega';
+                break;
+            case '10':
+                $paso = '10 - Seguimiento';
                 break;
 
             default:
@@ -2504,6 +2528,14 @@ class Controller extends CController {
         $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
         if ($gestion) {
             return ucfirst($gestion->nombres) . '-' . ucfirst($gestion->apellidos);
+        } else {
+            return 'NA';
+        }
+    }
+    public function getNombreClienteRGD($id_informacion) {
+        $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
+        if ($gestion) {
+            return ucfirst($gestion->nombres) . ' ' . ucfirst($gestion->apellidos);
         } else {
             return 'NA';
         }
