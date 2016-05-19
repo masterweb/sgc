@@ -59,378 +59,360 @@ $count = count($users);
         });
     
 
-    $('#GestionDiaria_general').keyup(function(){
+        $('#GestionDiaria_general').keyup(function(){
             if ($(this).val() != ''){
-    $('#busqueda_general').val(1);
-    } else{
-    $('#busqueda_general').val(0);
-    }
-    });
-        $('#gestion_dia ria_categorizacion').change(function(){
+                $('#busqueda_general').val(1);
+            } else{
+                $('#busqueda_general').val(0);
+            }
+        });
+        $('#gestion_diaria_categorizacion').change(function(){
             var value = $(this).attr('value');
             if (value != '' ){
                     $('#categorizacion').val(1);
             } else{$('#categorizacion').val(0); }
         });
-            $('#gestion_diaria_status').change(function(){
-    var value = $(this).attr('value');
-             if (value != ''){
-            $( '#status').val(1);
-    } else{$('#status').val(0); }
-    });
-            $('#GestionDiaria_responsable').change(function(){
-    var value = $(this).attr('value');
-    if (value != ''){
-    $('#res ponsable').val(1);
+        $('#gestion_diaria_status').change(function(){
+            var value = $(this).attr('value');
+            if (value != ''){
+                $( '#status').val(1);
+            } else{$('#status').val(0); }
+        });
+        $('#GestionDiaria_responsable').change(function(){
+            var value = $(this).attr('value');
+            if (value != ''){
+                $('#responsable').val(1);
             } else{ $('#responsable').val(0); }
-    });
-    $('#GestionNuevaCotizacion_cedula').keyup(function (){
-            $('#cedula2').hide();
-    });
-    $('#GestionNuevaCotizacion_ruc').change(function() {
+        });
+        $('#GestionNuevaCotizacion_cedula').keyup(function (){
+                $('#cedula2').hide();
+        });
+        $('#GestionNuevaCotizacion_ruc').change(function() {
             var resp = validateruc($(this));
-    if (resp != true){
-    alert('Por favor ingrese correctamente el RUC.');
-    }
-    });
-            $('#GestionDiaria_concesionario').change(function () {
-    var value = $(this).attr('value');
-            $.ajax({
-            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
-                    beforeSend: function (xhr) {
-                    //$('#info-3').show();  // #bg_negro must be defined somewhere
-                    },
-                    type: 'POST',
-                    //dataType: 'json', 
-                    data: {dealer_id: value, tipo:'seg'},
-                    success: function (data) {
-                    //$('#info-3').hide();
-                    //alert(data);
-                    $('#GestionDiaria_responsable').html(data);
+            if (resp != true){
+                alert('Por favor ingrese correctamente el RUC.');
             }
-    });
-    });
+        });
+        $('#GestionDiaria_concesionario').change(function () {
+            var value = $(this).attr('value');
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
+                beforeSend: function (xhr) {
+                //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {dealer_id: value, tipo:'seg'},
+                success: function (data) {
+                    $('#GestionDiaria_responsable').html(data);
+                }
+            });
+        });
             //$('#toolinfo').tooltip();
-    $('#toolinfo').tooltipster({
-    content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
-<!--p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p-->\n\
-<p style="text-align:left;" class="tool">Tráfico:  10 Pasos de Ventas</p>\n\
-<p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
-'),
+        $('#toolinfo').tooltipster({
+            content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>\n\
+        <!--p style="text-align:left;" class="tool">Tráfico:  Ingreso de Base de Datos Externa o Nuevo Cliente</p-->\n\
+        <p style="text-align:left;" class="tool">Tráfico:  10 Pasos de Ventas</p>\n\
+        <p style="text-align:left;" class="tool">Exhibición:  Registro de Cliente, Consulta Y envío de Proforma</p>\n\
+        '),
             position: 'right',
             maxWidth: 500,
             theme: 'tooltipster-default '
-    });
-            $("#keywords").tablesorter();
-            $('#fecha-range').daterangepicker(
+        });
+        $("#keywords").tablesorter();
+        $('#fecha-range').daterangepicker(
             {
                 locale: {
                 format: 'YYYY/MM/DD'
                 }
             }
-            );
-    $("#rango_fecha_seguimiento").daterangepicker(
+        );
+        $("#rango_fecha_seguimiento").daterangepicker(
             {
                 locale: {
                 format: 'YYYY/MM/DD'
                 }
             }
-            );
-            $('.range_inputs .applyBtn').click(function () {
-    console.log('apply');
-            $('#fecha-range').css("color", "#555555");
-    });
-            $('#GestionNuevaCotizacion_identificacion').change(function () {
-    var value = $(this).attr('value');
+        );
+        $('.range_inputs .applyBtn').click(function () {
+            if($('#GestionDiaria_seguimiento').val() == '3'){
+                console.log('apply');
+                $('#rango_fecha_seguimiento').css("color", "#555555");
+            }else{
+                $('#fecha-range').css("color", "#555555");
+            }
+        });
+        $('#GestionNuevaCotizacion_identificacion').change(function () {
+            var value = $(this).attr('value');
             switch (value) {
-    case 'ci':
-            $('#cont-doc').show();
-            $('#cont-ruc').hide();
-            $('#cont-pasaporte').hide();
-            break
-            case 'ruc':
-            $('#cont-doc').hide();
-            $('#cont-ruc').show();
-            $('#cont-pasaporte').hide();
-            break
-            case 'pasaporte':
-            $('#cont-doc').hide();
-            $('#cont-ruc').hide();
-            $('#cont-pasaporte').show();
-            break
-    }
-    })
-            $('#GestionNuevaCotizacion_tipo').change(function(){
-    var value = $(this).attr('value');
+                case 'ci':
+                    $('#cont-doc').show();
+                    $('#cont-ruc').hide();
+                    $('#cont-pasaporte').hide();
+                break
+                case 'ruc':
+                    $('#cont-doc').hide();
+                    $('#cont-ruc').show();
+                    $('#cont-pasaporte').hide();
+                break
+                case 'pasaporte':
+                    $('#cont-doc').hide();
+                    $('#cont-ruc').hide();
+                    $('#cont-pasaporte').show();
+                break
+            }
+        })
+        $('#GestionNuevaCotizacion_tipo').change(function(){
+            var value = $(this).attr('value');
             if (value == 'Flota'){
-    $('.empresa-cont').show();
-    } else{
-    $('.empresa-cont').hide();
-    }
-    });
-//        $('#GestionNuevaCotizacion_fuente').change(function (){
-//            var valuenc = $(this).attr('value');
-//            if(valuenc == 'exhibicion')
-//                $('.exh-cont').show();
-//            else
-//                $('.exh-cont').hide();
-//        });
+                $('.empresa-cont').show();
+            } else{
+                $('.empresa-cont').hide();
+            }
+        });
 
-            $('#GestionDiaria_grupo').change(function () {
-    var valuenc = $(this).attr('value');
+        $('#GestionDiaria_grupo').change(function () {
+            var valuenc = $(this).attr('value');
             $.ajax({
-            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
-                    beforeSend: function (xhr) {
-                    //$('#info-3').show();  // #bg_negro must be defined somewhere
-                    },
-                    type: 'POST',
-                    //dataType: 'json', 
-                    data: {id: valuenc},
-                    success: function (data) {
-                    //$('#info-3').hide();
-                    //alert(data);
-                    $('#GestionDiaria_concesionario').html(data);
-                    }
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
+                beforeSend: function (xhr) {
+                //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {id: valuenc},
+                success: function (data) {
+                //$('#info-3').hide();
+                //alert(data);
+                $('#GestionDiaria_concesionario').html(data);
+                }
             });
-    });
-    });
-            function send() {
-            var fuente = $('#GestionNuevaCotizacion_fuente').val();
-                    switch (fuente) {
+        });
+    }); // END DOCUMENTE READY----------------------------------------------
+    function send() {
+        var fuente = $('#GestionNuevaCotizacion_fuente').val();
+        switch (fuente) {
             case 'showroom':
-                    case 'exhibicion':
-                    console.log('enter showroom');
-                    $('#gestion-nueva-cotizacion-form').validate({
-            rules: {
-            'GestionNuevaCotizacion[cedula]': {required: true},
+            case 'exhibicion':
+                console.log('enter showroom');
+                $('#gestion-nueva-cotizacion-form').validate({
+                rules: {
+                    'GestionNuevaCotizacion[cedula]': {required: true},
                     'GestionNuevaCotizacion[fuente]': {required: true},
                     'GestionNuevaCotizacion[tipo]': {required: true},
                     'GestionNuevaCotizacion[identificacion]': {required: true}
-            },
-                    messages: {
-                    'GestionNuevaCotizacion[cedula]': {
-                    required: 'Ingrese la cédula'
-                    }, 'GestionNuevaCotizacion[fuente]': {required: 'Seleccione fuente'},
-                            'GestionNuevaCotizacion[identificacion]': {required: 'Seleccione identificación'}
-                    },
-                    submitHandler: function (form) {
+                },
+                messages: {
+                    'GestionNuevaCotizacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionNuevaCotizacion[fuente]': {required: 'Seleccione fuente'},
+                    'GestionNuevaCotizacion[identificacion]': {required: 'Seleccione identificación'}
+                },
+                submitHandler: function (form) {
                     var identificacion = $('#GestionNuevaCotizacion_identificacion').val();
-                            var cedula = $('#GestionNuevaCotizacion_cedula').val();
-                            var fuente = $('#GestionNuevaCotizacion_fuente').val();
-                            if (identificacion == 'ci') {
-                    var validateCedula = CedulaValida(cedula);
-                            if (validateCedula == false){
-                    $('#cedula2').show();
+                    var cedula = $('#GestionNuevaCotizacion_cedula').val();
+                    var fuente = $('#GestionNuevaCotizacion_fuente').val();
+                    if (identificacion == 'ci') {
+                        var validateCedula = CedulaValida(cedula);
+                        if (validateCedula == false){
+                            $('#cedula2').show();
                             return false;
-                    }
+                        }
 
-                    $.ajax({
-                    url: '<?php echo Yii::app()->createAbsoluteUrl("site/getCedula"); ?>',
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getCedula"); ?>',
                             beforeSend: function (xhr) {
-                            $('#bg_negro').show(); // #bg_negro must be defined somewhere
+                                $('#bg_negro').show(); // #bg_negro must be defined somewhere
                             },
                             timeout:8000, // I chose 8 secs for kicks
                             type: 'POST', dataType: 'json', data: {id: cedula, fuente: fuente},
                             success: function (data) {
                             //alert(data);
-                            $('#bg_negro').hide();
-                                    if (data.result == true) {
-                            $('.cont-existente').html(data.data);
-                            }
-                            if (data.flagttga35 == true) {
-                            //alert('enter ttga35');
-                            $('.cont-createc').html(data.datattga35);
-                            }
-                            if (data.flagttga36 == true) {
-                            $('.cont-createc-tg36').html(data.datattga36);
-                            }
-                            if (data.flagvh01 == true) {
-                            $('.cont-createc-vh01').html(data.datavh01);
-                            }
-                            if (data.result != false){
-                            var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Nueva Cotización</a>';
+                                $('#bg_negro').hide();
+                                if (data.result == true) {
+                                    $('.cont-existente').html(data.data);
+                                }
+                                if (data.flagttga35 == true) {
+                                    //alert('enter ttga35');
+                                    $('.cont-createc').html(data.datattga35);
+                                }
+                                if (data.flagttga36 == true) {
+                                    $('.cont-createc-tg36').html(data.datattga36);
+                                }
+                                if (data.flagvh01 == true) {
+                                    $('.cont-createc-vh01').html(data.datavh01);
+                                }
+                                if (data.result != false){
+                                    var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Nueva Cotización</a>';
                                     $('.cont-createc-but').html(dt);
-                            }
-                            else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
-                            form.submit();
-                            }
+                                }
+                                else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
+                                    form.submit();
+                                }
                             },
                             error: function (error) {
-                            $('#myModal').modal('show');
-                                    $('#closemodal').click(function(){
-                            form.submit();
-                            });
+                                $('#myModal').modal('show');
+                                $('#closemodal').click(function(){form.submit();});
                             }
-                    });
+                        });
                     } else if (identificacion == 'ruc') {
-                    var ruc = $('#GestionNuevaCotizacion_ruc').val();
-                            var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
-                            if (resp != true){
-                    alert('Por favor ingrese correctamente el RUC.');
-                    } else{
-                    $.ajax({
-                    url: '<?php echo Yii::app()->createAbsoluteUrl("site/getRuc"); ?>',
-                            beforeSend: function (xhr) {
-                            $('#bg_negro').show(); // #bg_negro must be defined somewhere
-                            },
-                            timeout:8000, // I chose 8 secs for kicks
-                            type: 'POST', dataType: 'json', data: {id: ruc, fuente: fuente},
-                            success: function (data) {
-                            //alert(data.flagttga35);
-                            $('#bg_negro').hide();
-                                    if (data.result == true) {
-                            $('.cont-existente').html(data.data);
-                            }
-                            if (data.flagttga35 == true) {
-                            //alert('enter ttga35');
-                            $('.cont-createc').html(data.datattga35);
-                            }
-                            if (data.flagttga36 == true) {
-                            $('.cont-createc-tg36').html(data.datattga36);
-                            }
-                            if (data.flagvh01 == true) {
-                            $('.cont-createc-vh01').html(data.datavh01);
-                            }if (data.result != false){
-                            var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Continuar</a>';
-                                    $('.cont-createc-but').html(dt);
-                            }
-                            else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
-                            form.submit();
-                            }
-                            },
-                            error: function (error) {
-                            $('#myModal').modal('show');
-                                    $('#closemodal').click(function(){
-                            form.submit();
-                            });
-                            }
-                    });
-                    }
-                    } else if (identificacion == 'pasaporte'){
-                    var pasaporte = $('#GestionNuevaCotizacion_pasaporte').val();
+                        var ruc = $('#GestionNuevaCotizacion_ruc').val();
+                        var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
+                        if (resp != true){
+                            alert('Por favor ingrese correctamente el RUC.');
+                        } else{
                             $.ajax({
-                            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getPasaporte"); ?>',
-                                    beforeSend: function (xhr) {
+                                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getRuc"); ?>',
+                                beforeSend: function (xhr) {
                                     $('#bg_negro').show(); // #bg_negro must be defined somewhere
                                     },
-                                    type: 'POST', dataType: 'json', data: {id: pasaporte, fuente: fuente},
-                                    success: function (data) {
+                                timeout:8000, // I chose 8 secs for kicks
+                                type: 'POST', dataType: 'json', data: {id: ruc, fuente: fuente},
+                                success: function (data) {
+                                    //alert(data.flagttga35);
                                     $('#bg_negro').hide();
-                                            if (data.result == true) {
-                                    $('.cont-existente').html(data.data);
-                                    } else {
-                                    form.submit();
+                                    if (data.result == true) {$('.cont-existente').html(data.data);}
+                                    if (data.flagttga35 == true) {$('.cont-createc').html(data.datattga35);}
+                                    if (data.flagttga36 == true) {$('.cont-createc-tg36').html(data.datattga36);}
+                                    if (data.flagvh01 == true) {
+                                        $('.cont-createc-vh01').html(data.datavh01);
                                     }
-                                    },
-                                    error: function (error) {
-                                    form.submit();
+                                    if (data.result != false){
+                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Continuar</a>';
+                                        $('.cont-createc-but').html(dt);
                                     }
+                                    else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
+                                        form.submit();
+                                    }
+                                },
+                                error: function (error) {
+                                    $('#myModal').modal('show');
+                                    $('#closemodal').click(function(){form.submit();});
+                                }
                             });
+                        }
+                    } 
+                    else if (identificacion == 'pasaporte'){
+                        var pasaporte = $('#GestionNuevaCotizacion_pasaporte').val();
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getPasaporte"); ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show(); // #bg_negro must be defined somewhere
+                            },
+                            type: 'POST', dataType: 'json', data: {id: pasaporte, fuente: fuente},
+                            success: function (data) {
+                                $('#bg_negro').hide();
+                                if (data.result == true) {
+                                    $('.cont-existente').html(data.data);
+                                } else {
+                                    form.submit();
+                                }
+                            },
+                            error: function (error) {
+                                form.submit();
+                            }
+                        });
                     }
-                    }
+                }
             });
-                    break;
-                    case 'exonerados':
-                    $('#gestion-nueva-cotizacion-form').validate({
-            rules: {
-            'GestionNuevaCotizacion[cedula]': {required: true},
+            break;
+            case 'exonerados':
+                $('#gestion-nueva-cotizacion-form').validate({
+                rules: {
+                    'GestionNuevaCotizacion[cedula]': {required: true},
                     'GestionNuevaCotizacion[tipo]': {required: true},
                     'GestionNuevaCotizacion[motivo_exonerados]': {required: true}
-            },
-                    messages: {
+                },
+                messages: {
                     'GestionNuevaCotizacion[cedula]': {
-                    required: 'Ingrese la cédula'
+                        required: 'Ingrese la cédula'
                     },
-                            'GestionNuevaCotizacion[motivo_exonerados]': {
-                            required: 'Seleccione un motivo'
-                            }
-                    },
-                    submitHandler: function (form) {
-                    form.submit();
+                    'GestionNuevaCotizacion[motivo_exonerados]': {
+                    required: 'Seleccione un motivo'
                     }
+                },
+                submitHandler: function (form) {
+                form.submit();
+                }
             });
-                    break;
-                    case 'prospeccion':
-                    case 'trafico':
-                    $('#gestion-nueva-cotizacion-form').validate({
-            rules: {
-            'GestionNuevaCotizacion[tipo]': {required: true}
-            },
-                    submitHandler: function (form) {
-                    var identificacion = $('#GestionNuevaCotizacion_identificacion').val();
-                            var cedula = $('#GestionNuevaCotizacion_cedula').val();
-                            if (identificacion == 'ci') {
+            break;
+            case 'prospeccion':
+            case 'trafico':
+                $('#gestion-nueva-cotizacion-form').validate({
+                rules: {
+                    'GestionNuevaCotizacion[tipo]': {required: true}
+                },
+                submitHandler: function (form) {
+                var identificacion = $('#GestionNuevaCotizacion_identificacion').val();
+                var cedula = $('#GestionNuevaCotizacion_cedula').val();
+                if (identificacion == 'ci') {
                     var validateCedula = CedulaValida(cedula);
-                            if (validateCedula == false){
-                    $('#cedula2').show();
-                            return false;
+                    if (validateCedula == false){
+                        $('#cedula2').show();
+                        return false;
                     }
-                    }
-                    if ($('#GestionNuevaCotizacion_identificacion').val() == 'ruc'){
+                }
+                if ($('#GestionNuevaCotizacion_identificacion').val() == 'ruc'){
                     var resp = validateruc($('#GestionNuevaCotizacion_ruc'));
-                            if (resp != true){
-                    alert('Por favor ingrese correctamente el RUC.');
+                    if (resp != true){
+                        alert('Por favor ingrese correctamente el RUC.');
                     } else{
+                        form.submit();
+                    }
+                } else{
                     form.submit();
-                    }
-                    } else{
-                    form.submit();
-                    }
-                    }
+                }
+                }
             });
-                    break;
-                    case '':
-                    $('#gestion-nueva-cotizacion-form').validate({
-            rules: {
-            'GestionNuevaCotizacion[cedula]': {required: true},
+            break;
+            case '':
+                $('#gestion-nueva-cotizacion-form').validate({
+                rules: {
+                    'GestionNuevaCotizacion[cedula]': {required: true},
                     'GestionNuevaCotizacion[fuente]': {required: true},
                     'GestionNuevaCotizacion[tipo]': {required: true},
                     'GestionNuevaCotizacion[identificacion]': {required: true}
-            },
-                    messages: {
-                    'GestionNuevaCotizacion[cedula]': {
-                    required: 'Ingrese la cédula'
-                    }, 'GestionNuevaCotizacion[fuente]': {required: 'Seleccione fuente'},
+                },
+                messages: {
+                    'GestionNuevaCotizacion[cedula]': {required: 'Ingrese la cédula'}, 'GestionNuevaCotizacion[fuente]': {required: 'Seleccione fuente'},
                             'GestionNuevaCotizacion[identificacion]': {required: 'Seleccione identificación'}
-                    },
-                    submitHandler: function (form) {
+                },
+                submitHandler: function (form) {
                     form.submit();
-                    }
+                }
             });
-                    break;
-                    default:
-            }
+            break;
+            default:
+        }
 
-            }
-    function CedulaValida(cedula) {
-    console.log('cedula ' + cedula);
-            //Si no tiene el guión, se lo pone para la validación
-            if (cedula.match(/\d{10}/)) {
-    cedula = cedula.substr(0, 9) + "-" + cedula.substr(9);
     }
+    function CedulaValida(cedula) {
+        console.log('cedula ' + cedula);
+            //Si no tiene el guión, se lo pone para la validación
+        if (cedula.match(/\d{10}/)) {
+        cedula = cedula.substr(0, 9) + "-" + cedula.substr(9);
+        }
 
-    //Valida que la cédula sea de la forma ddddddddd-d
-    if (!cedula.match(/^\d{9}-\d{1}$/))
+        //Valida que la cédula sea de la forma ddddddddd-d
+        if (!cedula.match(/^\d{9}-\d{1}$/))
             return false;
             //Valida que el # formado por los dos primeros dígitos esté entre 1 y 24
-            var dosPrimerosDigitos = parseInt(cedula.substr(0, 2), 10);
-            if (dosPrimerosDigitos < 1 || dosPrimerosDigitos > 24)
+        var dosPrimerosDigitos = parseInt(cedula.substr(0, 2), 10);
+        if (dosPrimerosDigitos < 1 || dosPrimerosDigitos > 24)
             return false;
-            //Valida que el valor acumulado entre los primeros 9 números coincida con el último
-            var acumulado = 0, digito, aux;
-            for (var i = 1; i <= 9; i++) {
-    digito = parseInt(cedula.charAt(i - 1));
-            if (i % 2 == 0) { //si está en una posición par
-    acumulado += digito;
-    } else { //si está en una posición impar
-    aux = 2 * digito;
-            if (aux > 9)
-            aux -= 9;
-            acumulado += aux;
-    }
-    }
-    acumulado = 10 - (acumulado % 10);
-            if (acumulado == 10)
+        //Valida que el valor acumulado entre los primeros 9 números coincida con el último
+        var acumulado = 0, digito, aux;
+        for (var i = 1; i <= 9; i++) {
+            digito = parseInt(cedula.charAt(i - 1));
+                    if (i % 2 == 0) { //si está en una posición par
+            acumulado += digito;
+            } else { //si está en una posición impar
+            aux = 2 * digito;
+                    if (aux > 9)
+                    aux -= 9;
+                    acumulado += aux;
+            }
+        }
+        acumulado = 10 - (acumulado % 10);
+        if (acumulado == 10)
             acumulado = 0;
         var ultimoDigito = parseInt(cedula.charAt(10));
         if (ultimoDigito != acumulado)
@@ -766,7 +748,7 @@ $count = count($users);
                         <?php foreach ($users as $c): ?>
 
                             <tr>
-    <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
+                            <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
                                 <?php if ($cargo_id == 70) { ?>
                                     <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
                                 <?php } ?>
