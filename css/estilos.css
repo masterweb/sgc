@@ -576,7 +576,7 @@ img.cometchat_userscontentavatarimage {
 .btn-tomate{
     color: #ffffff;
     background-color: #FFB000;
-    border-color: #ff4e00;
+    border-color: rgba(255, 78, 0, 0.42);
     cursor: pointer;
 }
 .btn-tomate:hover{

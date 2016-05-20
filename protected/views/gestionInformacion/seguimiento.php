@@ -593,21 +593,21 @@ $count = count($users);
     <div class="row paleta">
         <h2 class="tl_seccion_gris">Descripción de Iconografía</h2>
         <div class="body-paleta">
-            <div class="col-md-4 paso">
+            <div class="col-md-4 col-xs-6 paso">
                 <div class="row">
                     <div class="col-md-12"><h4>Paso en el que te encuentras</h4></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">1-2</button><span>Prospección</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">7</button><span>Negociación</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">3</button><span>Recepción</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">8</button><span>Cierre</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">4</button><span>Consulta</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">9</button><span>Entrega</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">5</button><span>Presentación</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">10</button><span>Seguimiento</span></div>
-                    <div class="col-md-6"><button type="button" class="btn btn-xs btn-paso">6</button><span>Demostración</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">1-2</button><span>Prospección</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">7</button><span>Negociación</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">3</button><span>Recepción</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">8</button><span>Cierre</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">4</button><span>Consulta</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">9</button><span>Entrega</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">5</button><span>Presentación</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">10</button><span>Seguimiento</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">6</button><span>Demostración</span></div>
                 </div>
             </div>
-            <div class="col-md-3 estado">
+            <div class="col-md-3 col-xs-6 estado">
                 <div class="row">
                     <div class="col-md-12"><h4>Estado de Seguimiento</h4></div> 
                     <div class="col-md-12"><button type="button" class="btn btn-xs btn-success">S</button><span>Fecha de seguimiento futuro</span></div>
@@ -615,14 +615,14 @@ $count = count($users);
                     <div class="col-md-12"><button type="button" class="btn btn-xs btn-danger">S</button><span>Fecha de seguimiento pasado</span></div>
                 </div>
             </div>
-            <div class="col-md-3 estado-credito">
+            <div class="col-md-3 col-xs-6 estado-credito">
                 <div class="row">
                     <div class="col-md-12"><h4>Estado de Crédito</h4></div>
                     <div class="col-md-12"><button type="button" class="btn btn-xs btn-creditosn">C</button><span>Asesor de crédito no realizó movimientos</span></div>
                     <div class="col-md-12"><button type="button" class="btn btn-xs btn-credito">C</button><span>Asesor de crédito realizó movimientos (Revisa tu bandeja de entrada)</span></div>
                 </div>
             </div>
-            <div class="col-md-2 desiste">
+            <div class="col-md-2 col-xs-6 desiste">
                 <div class="row">
                     <div class="col-md-12 ft"><button type="button" class="btn btn-xs btn-credito">D</button><span class="titdesiste">Desiste</span></div>
                     <div class="col-md-12"><span>El cliente desiste de la compra</span></div>
