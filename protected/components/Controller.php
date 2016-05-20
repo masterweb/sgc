@@ -944,8 +944,8 @@ class Controller extends CController {
         return $test;
     }
     
-    public function getTestDriveYesNot($id_informacion, $id_vehiculo) {
-        //die($id_informacion);
+    public function getTestDriveYesNot($id_informacion, $id_vehiculo, $inline) {
+        //echo 'id informacion: '.$id_informacion.', id vehiculo: '.$id_vehiculo;
         $data = '';
         $test = GestionDemostracion::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND preg1 = 'No'"));
         
@@ -973,11 +973,12 @@ class Controller extends CController {
             }
             $data .= '<a class="btn btn-default btn-xs btn-rf">'.$obs.'</a><br /><br />';
         }
-        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1"));
+        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1")); 
         foreach ($test as $value) {
-            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#inline1">Licencia</a>'
+            //echo $value['img'];
+            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#'.$inline.'">Licencia</a>'
                     . '<a href="'. Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)).'" class="btn btn-warning btn-xs" target="_blank" style="margin-left:2px;">PDF Prueba Manejo</a></div><br /><br />'
-                    . '<div id="inline1" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
+                    . '<div id="'.$inline.'" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
         }
         return $data;
     }
