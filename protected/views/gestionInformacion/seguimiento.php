@@ -730,7 +730,7 @@ $count = count($users);
                             <th><span>Próximo Seguimiento</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
-                            <th><span>Modelo Vehículo</span></th>
+                            <th><span>Modelo</span></th>
                             <th><span>Test Drive</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Exp. de Categ.</span></th>
@@ -844,7 +844,9 @@ $count = count($users);
                                     } else {
                                         echo '<button type="button" class="btn btn-xs btn-creditosn-sgc">C</button>';
                                     }
-                                    echo '&nbsp' . $data_btn_semaforo;
+                                    if($desiste != 1 && $paso != 10){
+                                        echo '&nbsp' . $data_btn_semaforo;
+                                    }
                                     ?>
                                     <?php
                                     //if($c['bdc'] == 1){
@@ -887,18 +889,26 @@ $count = count($users);
                                     //esta dando error en las busquedas revisar 
                                     ?></td>
                                 <td>
-    <?php
-    $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id']}"));
-    if ($countvec > 0) {
-        $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id']}", 'limit' => '1', 'offset' => '0', 'order' => 'id desc'));
-        foreach ($vec as $val) {
-            $data = '<em>' . $this->getVersion($val['version']) . '. </em><br />';
-        }
-    }
-    echo $data;
-    ?>
+                                <?php
+                                $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id']}"));
+                                $datavc = '';
+                                if ($countvec > 0) {
+                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id']}", 'order' => 'id desc'));
+                                    foreach ($vec as $val) {
+                                        $datavc .= '<em>' . $this->getModel($val['modelo']) . '. </em>';
+                                    }
+                                }
+                                echo $datavc;
+                                ?>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <?php
+                                    foreach ($vec as $vc) {
+                                        $td = GestionTestDrive::model()->count(array('condition' => "id_informacion = {$c['id']} AND id_vehiculo = {$vc['id']} AND test_drive = 1"));
+                                        if($td > 0){echo '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br />';}else{echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br />';}
+                                    }
+                                    ?>
+                                </td>
                                 <td><?php echo $categorizacion; ?> </td>
                                 <td> 
                                     <?php
