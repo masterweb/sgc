@@ -974,11 +974,13 @@ class Controller extends CController {
             $data .= '<a class="btn btn-default btn-xs btn-rf">'.$obs.'</a><br /><br />';
         }
         $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1")); 
+        $in = 1;
         foreach ($test as $value) {
             //echo $value['img'];
-            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#'.$inline.'">Licencia</a>'
+            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#'.$in.'">Licencia</a>'
                     . '<a href="'. Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)).'" class="btn btn-warning btn-xs" target="_blank" style="margin-left:2px;">PDF Prueba Manejo</a></div><br /><br />'
-                    . '<div id="'.$inline.'" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
+                    . '<div id="'.$in.'" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
+        $in++;            
         }
         return $data;
     }

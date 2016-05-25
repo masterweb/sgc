@@ -804,12 +804,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <thead> <tr><th>Modelo</th> <th>Versión</th><th>TD</th> </tr> </thead>
                         <tbody>
                         <?php
-                        $inline = 1;
                         $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
                         foreach ($vh as $val) {
                             ?>
                             <tr><td><?php echo $this->getModel($val['modelo']); ?></td><td><?php echo $this->getVersion($val['version']); ?></td><td><?php echo $this->getTestDriveYesNot($_GET['id'], $val['id'], $inline); ?></td></tr>
-                        <?php $inline++; } ?>
+                        <?php } ?>
                         </tbody>
                     </table>
                     </div>    
