@@ -55,7 +55,7 @@
             <?php endif; ?>
     <?php endif; ?>
     <?php if (in_array($varView['cargo_id'], $usuariosGenentes)): ?>
-        <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionProvincias" value="<?=$varView['provincia_id']?>"/>      
+        <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionGrupo" value="<?=$varView['grupo_id']?>"/>      
     <?php endif; ?>
 
     <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)): ?>
