@@ -382,6 +382,26 @@ class Controller extends CController {
             }
         }
     }
+    
+    public function getNombresJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
+        // buscar en tabla usuarios el jefe de almacen con el dealer id
+        $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
+
+        if (count($us) > 0) {
+            return $us->nombres.' '.$us->apellido;
+        } else {
+            $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
+            INNER JOIN usuarios u ON u.id = gr.usuario_id 
+            WHERE gr.concesionario_id = {$dealer_id}
+            AND u.cargo_id = 70 ";
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            //die('count request: '.count($request));
+            foreach ($request as $value) {
+                return $value['correo'].' '.$value['apellido'];
+            }
+        }
+    }
 
     public function setBotonCotizacion($paso, $id, $fuente, $id_informacion, $id_responsable, $resp) {
         //die('id: '.$id);
@@ -924,10 +944,11 @@ class Controller extends CController {
         return $test;
     }
     
-    public function getTestDriveYesNot($id_informacion, $id_vehiculo) {
-        //die($id_informacion);
+    public function getTestDriveYesNot($id_informacion, $id_vehiculo, $inline) {
+        //echo 'id informacion: '.$id_informacion.', id vehiculo: '.$id_vehiculo;
         $data = '';
         $test = GestionDemostracion::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND preg1 = 'No'"));
+        
         foreach ($test as $value) {
             $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-tomate btn-xs btn-rf" target="_blank">No</a>';
             switch ($value['preg1_observaciones']) {
@@ -952,11 +973,14 @@ class Controller extends CController {
             }
             $data .= '<a class="btn btn-default btn-xs btn-rf">'.$obs.'</a><br /><br />';
         }
-        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1"));
+        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1")); 
+        $in = 1;
         foreach ($test as $value) {
-            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#inline1">Licencia</a>'
+            //echo $value['img'];
+            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#'.$in.'">Licencia</a>'
                     . '<a href="'. Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)).'" class="btn btn-warning btn-xs" target="_blank" style="margin-left:2px;">PDF Prueba Manejo</a></div><br /><br />'
-                    . '<div id="inline1" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
+                    . '<div id="'.$in.'" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
+        $in++;            
         }
         return $data;
     }
@@ -1405,6 +1429,9 @@ class Controller extends CController {
                 break;
             case '9':
                 $paso = '9 - Entrega';
+                break;
+            case '10':
+                $paso = '10 - Seguimiento';
                 break;
 
             default:
@@ -2504,6 +2531,14 @@ class Controller extends CController {
         $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
         if ($gestion) {
             return ucfirst($gestion->nombres) . '-' . ucfirst($gestion->apellidos);
+        } else {
+            return 'NA';
+        }
+    }
+    public function getNombreClienteRGD($id_informacion) {
+        $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
+        if ($gestion) {
+            return ucfirst($gestion->nombres) . ' ' . ucfirst($gestion->apellidos);
         } else {
             return 'NA';
         }

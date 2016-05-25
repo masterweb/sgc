@@ -82,7 +82,7 @@ section{
     font-weight:bold;
     margin-left:16px;
     margin-top:20px;
-    width: 97%;
+    width: 100%;
 }
 .tl_seccion_green{
     background-color: #47a447;
@@ -112,12 +112,24 @@ section{
     margin-top:20px;
     width: 97%;
 }
+.tl_seccion_gris{
+    background-color: #DDDDDD;
+    padding: 8px 28px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #333333;
+    font-weight: bold;
+    margin-left: 16px;
+    margin-top: 9px;
+    width: 100%;
+    margin-bottom: -2px;
+}
 .tl-agen{
     padding: 6px 5px;
-  background-color: rgb(83, 158, 78);
-  font-size: 12px;
-  color: white;
-  font-weight: bold;
+    background-color: rgb(83, 158, 78);
+    font-size: 12px;
+    color: white;
+    font-weight: bold;
 }
 .cont_der{
     max-width:235px;
@@ -449,8 +461,8 @@ footer{
     z-index: 9;
 }
 .cont_notificaciones {
-        position: fixed;
-        bottom: 25px !important;
+    position: fixed;
+    bottom: 25px !important;
     max-width: 250px;
     margin: auto;
     border: #C21930 solid 1px;
@@ -464,7 +476,7 @@ footer{
     background: -ms-linear-gradient(top, rgba(251, 251, 251, 1) 0%, rgba(248, 248, 248, 1) 11%, rgba(240, 240, 240, 1) 100%); /* IE10+ */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#fbfbfb', endColorstr = '#f0f0f0', GradientType = 0); /* IE6-9 */
     background: linear-gradient(top, rgba(251, 251, 251, 1) 0%, rgba(248, 248, 248, 1) 11%, rgba(240, 240, 240, 1) 100%); /* W3C */
-        bottom: 0;
+    bottom: 0;
 }
 .cont_tl_notificaciones {
     background-color: #aa1f2c;
@@ -531,11 +543,11 @@ footer{
 .dscchk{color: #ffffff;}*/
 
 .cont-options1-after{border: 1px solid #999999;
-    background: rgba(255, 255, 255, 0.46);};
+                     background: rgba(255, 255, 255, 0.46);};
 .cont-options2-after{border: 1px solid #999999;
-    background: rgba(255, 255, 255, 0.46);};
+                     background: rgba(255, 255, 255, 0.46);};
 .cont-options3-after{border: 1px solid #999999;
-    background: rgba(255, 255, 255, 0.46);};
+                     background: rgba(255, 255, 255, 0.46);};
 #resalt{color:#aa1f2c;font-size:14px;}
 
 
@@ -552,26 +564,26 @@ img.cometchat_userscontentavatarimage {
 }
 .cometchat_userlist .cometchat_userscontentname {
     max-width: 192px;
- 
+
 }
 .info-dis{
-        font-size: 13px;
+    font-size: 13px;
     font-weight: bold;
     color: #AA1F2C;
     margin-top: 26px;
-    }
+}
 
 .btn-tomate{
-  color: #ffffff;
-  background-color: #ff4e00;
-  border-color: #ff4e00;
-  cursor: pointer;
+    color: #ffffff;
+    background-color: #FFB000;
+    border-color: rgba(255, 78, 0, 0.42);
+    cursor: pointer;
 }
 .btn-tomate:hover{
-  color: #ffffff;
-  background-color: #ff4e00;
-  border-color: #ff4e00;
-  cursor: default;
+    color: #ffffff;
+    background-color: #ff4e00;
+    border-color: #ff4e00;
+    cursor: default;
 }
 
 /*REPORTES */
@@ -673,10 +685,10 @@ hr{
     top: 5px !important;
 }
 .daterangepicker td.in-range{
-        background: #97d5f7 !important;
+    background: #97d5f7 !important;
 }
 .daterangepicker td.active, .daterangepicker td.active:hover{
-        background-color: #357ebd !important;
+    background-color: #357ebd !important;
 }
 
 .filtrosReportes .form-control:focus {
@@ -814,3 +826,94 @@ ul.versiones li input{
     background:url(../images/salir.png) 10px 0px no-repeat;
     padding-left: 38px !important;
 }
+/* ESTILOS PALETA DE ICONOS */
+.paleta h4{
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+.paso{
+    background: #EEEEEE;
+    min-height: 198px;
+}
+.estado{
+    background: #ffffff;
+    min-height: 198px;
+}
+.estado-credito{
+    background: #EEEEEE;min-height: 198px;
+}
+.desiste{
+    background: #FFFFFF;min-height: 198px;
+}
+.desiste .ft{margin-top: 6px;}
+.desiste hr{border-top: 4px solid #eeeeee;}
+.btn-paso {
+    color: #ffffff;
+    background-color: #666666;
+    border-color: #666666;
+    cursor: pointer;
+}
+.btn-paso:hover {
+    color: #ffffff;
+    background-color: #666666;
+}
+.btn-creditosn{
+    color: #ffffff;
+    background-color: #CCCCCC;
+    border-color: rgba(126, 128, 131, 0.33);
+    float: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.btn-creditosn-sgc{
+    color: #ffffff;
+    background-color: #CCCCCC;
+    border-color: rgba(126, 128, 131, 0.33);
+    cursor: pointer;
+}
+.btn-creditosn:hover{
+    color: #ffffff;
+}
+.btn-credito{
+    color: #ffffff;
+    background-color: #333333;
+    border-color: #333333;
+    float: left;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.btn-credito-sgc{
+    color: #ffffff;
+    background-color: #333333;
+    border-color: #333333;
+    cursor: pointer;
+}
+.btn-credito:hover{
+    color: #ffffff;
+    background-color: #333333;
+}
+.paso span, .estado span{
+    line-height: 12px;
+    display: inline-block;
+    margin: 7px 3px;
+}
+.desiste span{
+    line-height: 12px;
+    display: inline-block;
+    margin: 5px 3px 16px;
+}
+.estado-credito span{
+    line-height: 12px;
+    display: inherit;
+    margin: 2px 0px 3px 29px;
+}
+.dsc{text-align: left !important;}
+.body-paleta{
+    border: 1px #CCCCCC solid;
+    min-height: 200px;
+    margin-left: 16px;
+    margin-right: -17px;
+    margin-top: 2px;
+}
+.titdesiste{font-weight: bold;}

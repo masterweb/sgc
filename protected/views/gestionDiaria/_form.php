@@ -1,6 +1,7 @@
 <?php
 $this->widget('application.components.Notificaciones');
 setlocale(LC_MONETARY, 'en_US');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
 ?>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
@@ -773,7 +774,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     if ($agen5 > 0) {
                         ?>
                         <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
-                            <?php
+                        <?php
 
                         foreach ($ag5 as $a) {
                             ?>
@@ -795,7 +796,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}",
-                        'group' => 'preg1'
+                        //'group' => 'preg1'
                     ));
                     $art3 = GestionDemostracion::model()->findAll($criteria8);?>
                     <div class="col-md-10">
@@ -806,9 +807,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
                         foreach ($vh as $val) {
                             ?>
-                            <tr><td><?php echo $this->getModel($val['modelo']); ?></td><td><?php echo $this->getVersion($val['version']); ?></td><td><?php echo $this->getTestDriveYesNot($_GET['id'], $val['id']); ?></td></tr>
+                            <tr><td><?php echo $this->getModel($val['modelo']); ?></td><td><?php echo $this->getVersion($val['version']); ?></td><td><?php echo $this->getTestDriveYesNot($_GET['id'], $val['id'], $inline); ?></td></tr>
                         <?php } ?>
-                    </tbody>
+                        </tbody>
                     </table>
                     </div>    
                         <?php
@@ -922,6 +923,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <h4 class="text-danger">Cierre</h4>
                             <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
                             <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
+                            <?php if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
+                            <div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura</a></div>
+                            <?php } ?>
                         </div> 
                     <?php } ?>
                     
