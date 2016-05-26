@@ -2585,5 +2585,23 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    /**
+     * Function gets the last Paso 10 + 1
+     * @param type $id_informacion
+     * return $string with last register
+     */
+    
+    public function getPasoDiez($id_informacion) {
+       $paso = GestionPasoOnce::model()->find(array("condition" => "id_informacion = {$id_informacion}","limit" => "1",'order' => "id DESC"));
+       if (!is_null($paso) && !empty($paso)) {
+           if($paso->tipo == 1){
+               return 'SI';
+           }else{
+               return 'NO';
+           }
+        } else {
+            return 'NO';
+        }
+    }
 
 }
