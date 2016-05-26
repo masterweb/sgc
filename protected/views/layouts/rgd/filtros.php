@@ -97,7 +97,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <label for="">Fecha de Registro</label>
                 <input type="text" name="GestionDiaria[fecha]" id="fecha-range" class="form-control"/>
             </div>
-    <div class="col-md-6">
+            <div class="col-md-6">
                 <label for="">Seguimiento</label>
                 <select name="GestionDiaria[seguimiento]" id="GestionDiaria_seguimiento" class="form-control">
                     <option value="">--Seleccione tipo--</option>
@@ -108,7 +108,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             </div>
 
         </div>
-      <div class="row">
+        <div class="row">
             <div class="col-md-6"></div>
             <div class="col-md-6" id="rango_fecha" style="display: none;">
                 <label for="">Rango de Fecha</label>
@@ -184,12 +184,14 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         <div class="row">
             <div class="col-md-6">
                 <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-<!--                <input type="hidden" name="busqueda_general" id="busqueda_general" value="0" />
+                <input type="hidden" name="busqueda_general" id="busqueda_general" value="0" />
                 <input type="hidden" name="categorizacion" id="categorizacion" value="0" />
                 <input type="hidden" name="status" id="status" value="0" />
                 <input type="hidden" name="responsable" id="responsable" value="0" />
                 <input type="hidden" name="fecha" id="fecha" value="0" />
-                <input type="hidden" name="search_type" id="search_type" value="0" />-->
+                <input type="hidden" name="search_type" id="search_type" value="0" />
+                <input type="hidden" name="seguimiento_rgd" id="seguimiento_rgd" value="0" />
+                <input type="hidden" name="fecha_seguimiento" id="fecha_seguimiento" value="0" />
             </div>
         </div>
         <?php $this->endWidget(); ?>
@@ -217,7 +219,16 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     <input type="hidden" name="GestionDiaria2[fuente]" id="" value="<?php echo isset($_GET["GestionDiaria"]['fuente']) ? $_GET["GestionDiaria"]['fuente'] : "" ?>">
                     <input type="hidden" name="GestionDiaria2[grupo]" id="" value="<?php echo isset($_GET["GestionDiaria"]['grupo']) ? $_GET["GestionDiaria"]['grupo'] : "" ?>">
                     <input type="hidden" name="GestionDiaria2[concesionario]" id="" value="<?php echo isset($_GET["GestionDiaria"]['concesionario']) ? $_GET["GestionDiaria"]['concesionario'] : "" ?>">
-
+                    <input type="hidden" name="GestionDiaria2[seguimiento]" id="" value="<?php echo isset($_GET["GestionDiaria"]['seguimiento']) ? $_GET["GestionDiaria"]['seguimiento'] : "" ?>">
+                    <input type="hidden" name="GestionDiaria2[rango_fecha]" id="" value="<?php echo isset($_GET["GestionDiaria"]['rango_fecha']) ? $_GET["GestionDiaria"]['rango_fecha'] : "" ?>">
+                    <input type="hidden" name="busqueda_general2" id="busqueda_general2" value="0" />
+                    <input type="hidden" name="categorizacion2" id="categorizacion2" value="<?php echo isset($_GET["categorizacion"]) ? $_GET["categorizacion"] : "" ?>" />
+                    <input type="hidden" name="status2" id="status2" value="<?php echo isset($_GET["status"]) ? $_GET["status"] : "" ?>" />
+                    <input type="hidden" name="responsable2" id="responsable2" value="<?php echo isset($_GET["responsable"]) ? $_GET["responsable"] : "" ?>" />
+                    <input type="hidden" name="fecha2" id="fecha2" value="<?php echo isset($_GET["fecha"]) ? $_GET["fecha"] : "" ?>" />
+                    <input type="hidden" name="search_type2" id="search_type2" value="0" />
+                    <input type="hidden" name="seguimiento_rgd2" id="seguimiento_rgd2" value="<?php echo isset($_GET["seguimiento_rgd"]) ? $_GET["seguimiento_rgd"] : "" ?>" />
+                    <input type="hidden" name="fecha_seguimiento2" id="fecha_seguimiento2" value="<?php echo isset($_GET["fecha_seguimiento"]) ? $_GET["fecha_seguimiento"] : "" ?>" />
                 </div>
                 <?php $this->endWidget(); ?>
             <?php endif; ?>   
@@ -245,7 +256,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <label for="GestionDiariafecha">Búsqueda General</label>
                 <input type="text" name="GestionSolicitudCredito[general]" id="GestionSolicitudCredito_general" class="form-control"/>
             </div>
-            <?php if ($cargo_id == 76 || $cargo_id == 69 ): ?>
+            <?php if ($cargo_id == 76 || $cargo_id == 69): ?>
                 <div class="col-md-6">
                     <label for="">Responsable</label>
                     <select name="GestionSolicitudCredito[responsable]" id="" class="form-control">
@@ -263,4 +274,4 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         </div>
         <?php $this->endWidget(); ?>
     </div>
-<?php endif?>
+<?php endif; ?>

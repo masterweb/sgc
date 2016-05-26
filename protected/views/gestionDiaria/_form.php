@@ -1125,12 +1125,35 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php //$modelos = $this->getModelosPr($id); ?>
                         <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('site/cartabienvenida/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Carta de Bienvenida</a></div>
                     </div>
-                <?php } ?>   
-                    <div class="row">
-                    <div class="col-md-9">
-                        <hr style="border-top: 1px solid #AE5858;" />
+                <?php } ?>  
+                    <div class="col-md-9" id="entrega">
+                        <h3 class="tl_seccion_rf" id="entrega">
+                            <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 10 + 1</h3>
                     </div>
-                </div>
+                    <div class="col-md-8">
+                        <?php $p10 = GestionPasoOnce::model()->count(array('condition' => "id_informacion = {$_GET['id']}")); ?>
+                        <?php if($p10 > 0){ ?>
+                        <table class="table table-striped">
+                            <thead> <tr><th>Presentación</th> <th>Observación</th><th>Responsable</th> </tr> </thead>
+                            <tbody>
+                            <?php
+                            $ps = GestionPasoOnce::model()->findAll(array('condition' => "id_informacion = {$_GET['id']}"));
+                            foreach ($ps as $vp) {
+                                ?>
+                                <tr><td><?php if($vp['tipo'] == 0){echo 'NO';}else{echo 'SI';} ?></td><td><?php echo $vp['observacion']; ?></td><td><?php echo $this->getResponsable($vp['responsable']); ?></td></tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                        <?php } else { ?>
+                        <div class="btn-group" role="group" aria-label="..."><a class="btn btn-default btn-xs btn-rf">Presentación con el Cliente</a><a class="btn btn-danger btn-xs btn-rf">No</a></div>
+                        <?php } ?>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <hr style="border-top: 1px solid #AE5858;" />
+                        </div>
+                    </div>
+                    
                 <div class="row" style="padding-left: 15px;">
                     <?php 
                     $tipo = $this->getExonerado($id);
