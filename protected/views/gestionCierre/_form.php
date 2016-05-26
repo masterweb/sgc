@@ -170,7 +170,7 @@
 		<?php //echo $form->labelEx($model,'year', array('class' => 'control-label col-md-2')); ?>
             <label for="" class="control-label col-md-2">Año</label>
             <div class="col-md-5">
-		<?php echo $form->dropDownList($model,'year',array('2015'=>2015, '2016' => 2016), array('class' => 'form-control')); ?>
+		<?php echo $form->dropDownList($model,'year',array('2015'=>2015, '2016' => 2016, '2017' => 2017), array('class' => 'form-control')); ?>
                 </div> 
 		<?php echo $form->error($model,'year'); ?>
 	</div>
