@@ -418,7 +418,7 @@ $(function () {
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
             }else{
-                loaddealers($('#GestionInformacionProvincias'), 'p');
+                loaddealers($('#GestionInformacionGrupo'), 'g');
             }   
             loadmodelos($('#fecha-range1'));
             $('.cont_grup').show();
