@@ -1,5 +1,5 @@
 <?= $this->renderPartial('//layouts/rgd/head'); ?>
-
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/rgd_search.js"></script>
 <?php
 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
 $fecha_actual = date("Y/m/d");
@@ -48,12 +48,18 @@ $count = count($users);
             var value = $(this).attr('value');
             //alert(value);
             switch(value){
+                case '':
+                    $('#rango_fecha').hide();
+                    $('#seguimiento_rgd').val(0);
+                    break;
                 case '1':
+                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
                     break;
                 case '2':
+                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
                     break;
                 case '3':
-                    $('#rango_fecha').show();
+                    $('#rango_fecha').show();$('#seguimiento_rgd').val(1);
                     break;    
             }
         });
@@ -138,8 +144,10 @@ $count = count($users);
             if($('#GestionDiaria_seguimiento').val() == '3'){
                 console.log('apply');
                 $('#rango_fecha_seguimiento').css("color", "#555555");
+                $('#fecha_seguimiento').val(1);
             }else{
                 $('#fecha-range').css("color", "#555555");
+                $('#fecha').val(1);
             }
         });
         $('#GestionNuevaCotizacion_identificacion').change(function () {
@@ -188,7 +196,7 @@ $count = count($users);
                 }
             });
         });
-    }); // END DOCUMENTE READY----------------------------------------------
+    }); // END DOCUMENT READY----------------------------------------------
     function send() {
         var fuente = $('#GestionNuevaCotizacion_fuente').val();
         switch (fuente) {
@@ -674,37 +682,37 @@ $count = count($users);
                     </div>
     <?php } ?>
     <?php if ($cargo_id == 69) { ?>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Concesionario <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" id="concesionarios">
-        <?php
-        if ($cargo_id == 69) {
-            echo $this->getConcesionariosli($grupo_id);
-        }
-        ?>
-                        </ul>    
-                    </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Concesionario <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="concesionarios">
+            <?php
+            if ($cargo_id == 69) {
+                echo $this->getConcesionariosli($grupo_id);
+            }
+            ?>
+            </ul>    
+        </div>
     <?php } ?>
-                <?php if ($cargo_id == 70) { ?>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Asignar a <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" id="asesores">
-        <?php echo $this->getResponsablesAgencia($id_responsable); ?>
-                        </ul>
-                    </div>
-                    <div class="btn-group group-asignamiento">
-                        <span class="txtasignamiento"></span>
-                        <textarea rows="2" cols="60" class="textreasignar" name="textreasignar" placeholder="Ingresar Comentario"></textarea>
-                        <label generated="true" class="error" id="textreasignarerror" style="display:none;">Ingrese un comentario</label>
-                    </div>    
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-danger" onclick="asignarsave();">Grabar</button>
-                        <input type="hidden" name="asesorasg" id="asesorasg" value=""/>   
-                    </div>
+    <?php if ($cargo_id == 70) { ?>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Asignar a <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="asesores">
+            <?php echo $this->getResponsablesAgencia($id_responsable); ?>
+            </ul>
+        </div>
+        <div class="btn-group group-asignamiento">
+            <span class="txtasignamiento"></span>
+            <textarea rows="2" cols="60" class="textreasignar" name="textreasignar" placeholder="Ingresar Comentario"></textarea>
+            <label generated="true" class="error" id="textreasignarerror" style="display:none;">Ingrese un comentario</label>
+        </div>    
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-danger" onclick="asignarsave();">Grabar</button>
+            <input type="hidden" name="asesorasg" id="asesorasg" value=""/>   
+        </div>
     <?php } ?>
             </div>
         </div>
@@ -730,10 +738,10 @@ $count = count($users);
                             <th><span>Próximo Seguimiento</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
-                            <th><span>Modelo</span></th>
-                            <th><span>Test Drive</span></th>
+                            <th><span>Modelo-Test Drive</span></th>
                             <th><span>Categorización</span></th>
                             <th><span>Exp. de Categ.</span></th>
+                            <th><span>10(+1)</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Resumen</span></th>
                         </tr>
@@ -887,26 +895,19 @@ $count = count($users);
                                 <td><?php
                                     echo $this->getNameConcesionarioById($c['dealer_id']);
                                     //esta dando error en las busquedas revisar 
-                                    ?></td>
-                                <td>
-                                <?php
-                                $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$c['id']}"));
-                                $datavc = '';
-                                if ($countvec > 0) {
-                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$c['id']}", 'order' => 'id desc'));
-                                    foreach ($vec as $val) {
-                                        $datavc .= '<em>' . $this->getModel($val['modelo']) . '. </em>';
-                                    }
-                                }
-                                echo $datavc;
-                                ?>
+                                    ?>
                                 </td>
-                                <td>
+                                <td class="nowr">
                                     <?php
-                                    foreach ($vec as $vc) {
-                                        $td = GestionTestDrive::model()->count(array('condition' => "id_informacion = {$c['id']} AND id_vehiculo = {$vc['id']} AND test_drive = 1"));
-                                        if($td > 0){echo '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span><br />';}else{echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br />';}
-                                    }
+                                    $tdsi = 0;
+                                    $tdno = 0;
+                                    $tdv = GestionTestDrive::model()->findAll(array('condition' => "id_informacion = {$c['id']}", 'order' => 'id_vehiculo desc'));
+                                    foreach ($tdv as $vc) {
+                                        //echo 'id_vehiculo: '.$vc['id_vehiculo'].'<br />';
+                                        if($vc['test_drive'] == 1){$tdsi++;}else{$tdno++;}
+                                        //else{echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br />';}
+                                    }                        
+                                    echo $datatd = $this->getListaTD($c['id']);
                                     ?>
                                 </td>
                                 <td><?php echo $categorizacion; ?> </td>
@@ -989,6 +990,7 @@ $count = count($users);
                                     }
                                     ?> 
                                 </td>
+                                <td><?php echo $this->getPasoDiez($c['id']); ?></td>
                                 <td> 
                                     <?php if ($fuente == 'showroom') {
                                         echo 'Tráfico';

@@ -1132,6 +1132,450 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('before render seg');
             }
 
+            // BUSQUEDAS COMBINADAS--------------------------------------------------------------------------------------
+            
+            if ($cargo_id != 46)
+                $dealer_id = $this->getDealerId($id_responsable);
+            $criteria = new CDbCriteria;
+            $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+            $criteria->alias = 'gi';
+            $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+            $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+            
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
+            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            FROM gestion_diaria gd 
+                INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
+                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
+                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
+
+            
+            if ($cargo_id == 46) { // super administrador
+                $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+            }
+            if ($cargo_id == 69) { // gerente comercial
+                //die('enter ge');
+                if ($get_array == 'bdc') {
+                    $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                    $sql .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $sql .= " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73)";
+                }
+                if ($get_array == 'exo') {
+                    $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                    $$sql .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $sql .= " WHERE gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
+                }
+                if ($get_array == 'seg') {
+                    $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $sql .= " where gr.id_grupo = {$grupo_id}";
+                }
+            }
+            if ($cargo_id == 70) { // jefe de almacen
+                $sql .= " where gi.dealer_id = {$dealer_id}";
+            }
+            if ($cargo_id == 71) { // asesor de ventas
+                $sql .= " where gi.responsable = {$id_responsable}";
+            }
+            if ($cargo_id == 73) { // asesor bdc
+                $sql .= " where gi.responsable = {$id_responsable} AND gi.bdc = 1";
+            }
+            if ($cargo_id == 75) { // asesor exonerados
+                $sql .= " where gi.responsable = {$id_responsable} AND gi.tipo_form_web = 'exonerados'";
+            }
+            if ($cargo_id == 72) { // JEFE BDC EXONERADOS
+                $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                $dealerList = implode(', ', $array_dealers);
+                if ($get_array == 'exo') {
+                    $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                    $sql .= " where gi.tipo_form_web = 'exonerados' and ";
+                    $sql .= "gi.dealer_id IN ({$dealerList}) and ";
+                    $sql .= "u.cargo_id = 75";
+                }
+                if ($get_array == 'bdc') {
+                    $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                    $sql .= " where gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})";
+                }
+            }
+
+            if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+                switch ($get_array) {
+                    case 'exo':
+                        $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                        $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                        $sql .= " where u.cargo_id IN (75)";
+                        break;
+                    case 'bdc':
+                        $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                        $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                        $sql .= " where u.cargo_id IN (72,73)";
+                        break;
+                    case 'seg':
+                        $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                        $sql .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                        $sql .= " where u.cargo_id IN (70,71)";
+                        break;
+
+                    default:
+                        $sql .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                        break;
+                }
+            }
+
+            $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+            $fechaActual = date("Y/m/d");
+            $fechaPk2 = 0;
+            if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+                $fechaPk2 = 1;
+            }
+            $search_type = '';
+            // STATUS - CATEGORIZACION
+            if ($_GET['busqueda_general2'] == 0 && $_GET['categorizacion2'] == 1 && $_GET['status2'] == 1 && $_GET['responsable2'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
+                $search_type = 20;
+                switch ($_GET['GestionDiaria2']['status']) {
+                    case 'Cierre':
+                        $sql .= " and gd.cierre = 1 and ";
+                        $sql .= " gd.paso = 9";
+                        break;
+                    case 'Desiste':
+                        $sql .= " and gd.desiste = 1";
+                        break;
+                    case 'Entrega':
+                        $sql .= "  and gd.entrega = 1 and ";
+                        $sql .= " gd.paso = 9 ";
+                        break;
+                    case 'PrimeraVisita':
+                        $sql .= "  and gd.paso = '1-2' ";
+                        break;
+                    case 'Seguimiento':
+                        $sql .="  and gd.seguimiento = 1 ";
+                        break;
+                    case 'SeguimientoEntrega':
+                        $sql .="  and gd.seguimiento_entrega = 1 ";
+                        break;
+                    case 'Vendido':
+                        $sql .="  and gd.seguimiento = 1 AND ";
+                        $sql .=" gd.paso = 10 and ";
+                        $sql .=" gd.status = 1 and ";
+                        break;
+                    default:
+                        break;
+                }
+                $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
+                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= " order by gd.id DESC";
+                //$posts = GestionInformacion::model()->findAll($criteria);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+            }
+            // STATUS - CATEGORIZACION - RESPONSABLE
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 1 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
+                $search_type = 21;
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
+                switch ($_GET['GestionDiaria2']['status']) {
+                    case 'Cierre':
+                        $sql .= " and gd.cierre = 1 and ";
+                        $sql .= " gd.paso = 9";
+                        break;
+                    case 'Desiste':
+                        $sql .= " and gd.desiste = 1";
+                        break;
+                    case 'Entrega':
+                        $sql .= "  and gd.entrega = 1 and ";
+                        $sql .= " gd.paso = 9 ";
+                        break;
+                    case 'PrimeraVisita':
+                        $sql .= "  and gd.paso = '1-2' ";
+                        break;
+                    case 'Seguimiento':
+                        $sql .="  and gd.seguimiento = 1 ";
+                        break;
+                    case 'SeguimientoEntrega':
+                        $sql .="  and gd.seguimiento_entrega = 1 ";
+                        break;
+                    case 'Vendido':
+                        $sql .="  and gd.seguimiento = 1 AND ";
+                        $sql .=" gd.paso = 10 and ";
+                        $sql .=" gd.status = 1 and ";
+                        break;
+                    default:
+                        break;
+                }
+
+                $sql .= " and gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
+                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= " order by gd.id DESC";
+                //die($sql);
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                //$posts = GestionInformacion::model()->findAll($criteria);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
+                
+            }
+            // CATEGORIZACION - RESPONSABLE
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
+                $search_type = 22;
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']} and ";
+                $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
+                $sql .= ' gd.desiste = 0';
+                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                
+                //$posts = GestionInformacion::model()->findAll($criteria);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']} y Responsable: {$responsable}";
+            }
+            // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 1 && $fechaPk2 == 1) {
+                $search_type = 23;
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']} and ";
+                $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
+                $sql .= ' gd.desiste = 0 and ';
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria2']['seguimiento']) {
+                    case 1: // TODAY
+                        $sql .= "DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ";
+                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
+                        break;
+                    case 2: // EMPTY DATE
+                        $sql .= "gd.proximo_seguimiento = '' ";
+                        $title_ag = "Agendamiento: Vacío";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $sql .= " (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ";
+                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
+                        break;
+
+                    default:
+                        break;
+                }
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Responsable: {$responsable}, {$title_ag} ";
+                
+            }
+            // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 1 && $fechaPk2 == 0) {
+                $search_type = 24;
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']} and ";
+                $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
+                $sql .= ' gd.desiste = 0 and ';
+                
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria2']['seguimiento']) {
+                    case 1: // TODAY
+                        $sql .= "DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ";
+                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
+                        break;
+                    case 2: // EMPTY DATE
+                        $sql .= "gd.proximo_seguimiento = '' ";
+                        $title_ag = "Agendamiento: Vacío";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $sql .= " (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ";
+                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
+                        break;
+
+                    default:
+                        break;
+                }
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Responsable: {$responsable}, {$title_ag} ";
+                
+            }
+            // CATEGORIZACION - FECHA DE REGISTRO
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 0 && $_GET['fecha2'] == 1 && $_GET['seguimiento_rgd2'] == 0 && $_GET['fecha_segumiento2'] == 0) {
+                $search_type = 25;
+                $params = explode('-', $_GET['GestionDiaria2']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $sql .= " (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ";
+                $sql .= " and gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' ";
+                $sql .= ' and gd.desiste = 0';
+
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Fecha: {$_GET['GestionDiaria2']['fecha']}";
+                
+            }
+            // STATUS - FECHA DE REGISTRO
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 1 && $_GET['responsable2'] == 0 && $_GET['fecha2'] == 1 && $_GET['seguimiento_rgd2'] == 0 && $_GET['fecha_segumiento2'] == 0) {
+                $search_type = 26;
+                $params = explode('-', $_GET['GestionDiaria2']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                
+                switch ($_GET['GestionDiaria2']['status']) {
+                    case 'Cierre':
+                        $sql .= " and gd.cierre = 1 and ";
+                        $sql .= " gd.paso = 9";
+                        break;
+                    case 'Desiste':
+                        $sql .= " and gd.desiste = 1";
+                        break;
+                    case 'Entrega':
+                        $sql .= "  and gd.entrega = 1 and ";
+                        $sql .= " gd.paso = 9 ";
+                        break;
+                    case 'PrimeraVisita':
+                        $sql .= "  and gd.paso = '1-2' ";
+                        break;
+                    case 'Seguimiento':
+                        $sql .="  and gd.seguimiento = 1 ";
+                        break;
+                    case 'SeguimientoEntrega':
+                        $sql .="  and gd.seguimiento_entrega = 1 ";
+                        break;
+                    case 'Vendido':
+                        $sql .="  and gd.seguimiento = 1 AND ";
+                        $sql .=" gd.paso = 10 and ";
+                        $sql .=" gd.status = 1 and ";
+                        break;
+                    default:
+                        break;
+                }
+                $sql .= "(DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')";
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Fecha: {$_GET['GestionDiaria2']['fecha']}";
+                
+            }
+            // CATEGORIZACION - RESPONSABLE - FECHA DE REGISTRO
+            if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 1 && $_GET['seguimiento_rgd2'] == 0 && $_GET['fecha_segumiento2'] == 0) {
+                $search_type = 27;
+                $params = explode('-', $_GET['GestionDiaria2']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
+                $sql .= " and (DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')";
+                $sql .= " and gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}'";
+                $sql .= ' and gd.desiste = 0';
+                $fecha_actual = (string) date("Y/m/d");
+
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria']['categorizacion']}, Responsable: {$responsable} Fecha de Registro: {$_GET['GestionDiaria']['fecha']}";
+                
+            }
+            // RESPONSABLE - SEGUIMIENTO
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 0 && $_GET['seguimiento_rgd2'] == 1 && $_GET['fecha_segumiento2'] == 0) {
+                $search_type = 28;
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
+                $sql .= ' and gd.desiste = 0 and ';
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria2']['seguimiento']) {
+                    case 1: // TODAY
+                        $sql .= "DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ";
+                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
+                        break;
+                    case 2: // EMPTY DATE
+                        $sql .= "gd.proximo_seguimiento = '' ";
+                        $title_ag = "Agendamiento: Vacío";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $sql .= " (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ";
+                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
+                        break;
+
+                    default:
+                        break;
+                }
+                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .=  " order by gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Responsable: {$responsable}, {$title_ag} ";
+                
+            }
+            // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 0 && $_GET['seguimiento_rgd2'] == 1 && $_GET['fecha_segumiento2'] == 1) {
+                $search_type = 29;
+                $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
+                $sql .= ' and gd.desiste = 0 and ';
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria2']['seguimiento']) {
+                    case 1: // TODAY
+                        $sql .= "DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ";
+                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
+                        break;
+                    case 2: // EMPTY DATE
+                        $sql .= "gd.proximo_seguimiento = '' ";
+                        $title_ag = "Agendamiento: Vacío";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $sql .= " (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ";
+                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $request = $con->createCommand($sql);
+                $posts = $request->queryAll();
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por Responsable: {$responsable}, {$title_ag} ";
+                
+            }
+            //die('search type: '.$search_type);
+
             //$this->render('seguimiento');
         }
         //die('sql: '.$sql);
@@ -1223,11 +1667,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('F2', 'Email')
                 ->setCellValue('G2', 'Responsable')
                 ->setCellValue('H2', 'Concesionario')
-                ->setCellValue('I2', 'Modelo Vehículo')
-                ->setCellValue('J2', 'Proximo Seguimiento')
-                ->setCellValue('K2', 'Fecha Registro')
-                ->setCellValue('L2', 'Categorización')
-                ->setCellValue('M2', 'Fuente');
+                ->setCellValue('I2', 'Modelo')
+                ->setCellValue('J2', 'Test Drive Si')
+                ->setCellValue('K2', 'Test Drive No')
+                ->setCellValue('L2', 'Proximo Seguimiento')
+                ->setCellValue('M2', 'Fecha Registro')
+                ->setCellValue('N2', 'Categorización')
+                ->setCellValue('O2', 'Fuente');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1245,15 +1691,26 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if ($row['ruc'] != '') {
                 $identificacion = $row['ruc'];
             }
-            $modeloVehiculo = '';
+            $modeloVehiculo = ' ';
+            $td_si = '';
+            $td_no = '';
             $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$row['id_info']}"));
             if ($countvec > 0) {
-                $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$row['id_info']}", 'limit' => '1', 'offset' => '0', 'order' => 'id desc'));
+                $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$row['id_info']}", 'order' => 'id desc'));
                 foreach ($vec as $val) {
-                    $modeloVehiculo = $this->getVersion($val['version']);
+                    $modeloVehiculo .= $this->getModel($val['modelo']) . '-';
+                }
+                $tdv = GestionTestDrive::model()->findAll(array('condition' => "id_informacion = {$row['id_info']}", 'order' => 'id_vehiculo desc'));
+                foreach ($tdv as $vc) {
+                    if($vc['test_drive'] == 1){$td_si .= 'Si-';}else{$td_no = 'No';}
                 }
             }
-
+            $modeloVehiculo = substr($modeloVehiculo, 0, -1);
+            $td_si = substr($td_si, 0, -1);
+            $test_drive = '';
+            //die ('id info: '.$row['id_info'].', id vec: '.$row['id']);
+            
+            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $this->getPasoSeguimiento($row['paso']))
                     ->setCellValue('B' . $i, $row['id_info'])
@@ -1264,10 +1721,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('G' . $i, $this->getResponsableNombres($row['resp']))
                     ->setCellValue('H' . $i, $this->getNameConcesionarioById($row['dealer_id']))
                     ->setCellValue('I' . $i, $modeloVehiculo)
-                    ->setCellValue('J' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('K' . $i, $row['fecha'])
-                    ->setCellValue('L' . $i, $row['categorizacion'])
-                    ->setCellValue('M' . $i, $row['fuente']);
+                    ->setCellValue('J' . $i, $td_si)
+                    ->setCellValue('K' . $i, $td_no)
+                    ->setCellValue('L' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('M' . $i, $row['fecha'])
+                    ->setCellValue('N' . $i, $row['categorizacion'])
+                    ->setCellValue('O' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1460,6 +1919,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         $con = Yii::app()->db;
         $search_type = 0;
+
+        //die('search type combined: '.$search_type);
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
         if (!empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
                 $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
@@ -1538,7 +1999,56 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 !empty($_GET['GestionDiaria']['seguimiento'])) {
             $search_type = 19;
         }
-
+        // END OF SEARCH ONLY
+        // BUSQUEDAS COMBINADAS-----------------------------------------------------------------
+        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+        $fechaActual = date("Y/m/d");
+        $fechaPk2 = 0;
+        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+            $fechaPk2 = 1;
+        }
+        //echo '<br />fechaPk: '.$fechaPk.', fechaPk2: '.$fechaPk2;
+        // STATUS - CATEGORIZACION
+        if ($_GET['busqueda_general'] == 0 && $_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 20;
+        }
+        // STATUS - CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 21;
+        }
+        // CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 22;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 1) {
+            $search_type = 23;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 0) {
+            $search_type = 24;
+        }
+        // CATEGORIZACION - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 0 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 25;
+        }
+        // STATUS - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 26;
+        }
+        // CATEGORIZACION - RESPONSABLE - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 27;
+        }
+        // RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 28;
+        }
+        // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 1) {
+            $search_type = 29;
+        }
+        //$search_type = $this->getSqlCombined($fechaPk);
         //die('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
@@ -2271,10 +2781,474 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $data['pages'] = $pages;
                 return $data;
                 break;
+            case 20: // SEARCH BY CATEGORIZACION AND STATUS
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 21: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+                //die($sql);
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+
+            case 22: // SEARCH BY CATEGORIZACION AND RESPONSABLE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+
+                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']}
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong> y Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 23: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 24: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO WITH RANGE DATE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 25: // SEARCH BY CATEGORIZACION AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 26: // SEARCH BY STATUS AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 27: // SEARCH BY CATEGORIZACION, RESPONSABLE AND REGISTER DATE
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 28: // SEARCH BY RESPONSABLE AND SEGUIMIENTO
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 29: // SEARCH BY RESPONSABLE, SEGUIMIENTO AND DATE RANGE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->order = "gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
 
             default:
                 break;
         }
+    }
+
+    /**
+     * Sql constructor by combined inputs from RGD Intranet
+     * @param type $fechaPk
+     */
+    public function getSqlCombined($fechaPk) {
+        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+        $fechaActual = date("Y/m/d");
+        $fechaPk2 = 0;
+        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+            $fechaPk2 = 1;
+        }
+        //echo '<br />fechaPk: '.$fechaPk.', fechaPk2: '.$fechaPk2;
+        // STATUS - CATEGORIZACION
+        if ($_GET['busqueda_general'] == 0 && $_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 20;
+        }
+        // STATUS - CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 21;
+        }
+        // CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 22;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 1) {
+            $search_type = 23;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 0) {
+            $search_type = 24;
+        }
+        // CATEGORIZACION - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 0 && $fechaPk == 0 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 25;
+        }
+        // STATUS - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $fechaPk == 0 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 26;
+        }
+        // CATEGORIZACION - RESPONSABLE - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 0 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 27;
+        }
+        // RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 1) {
+            $search_type = 28;
+        }
+        // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 0) {
+            $search_type = 29;
+        }
+        return $search_type;
     }
 
     public function actionSeguimiento() {

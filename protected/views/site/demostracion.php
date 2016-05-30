@@ -348,6 +348,41 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                     </div>
                 </div><!--  END OF HIGHLIGHT -->
                 <br />
+                <div class="highlight">
+                    <div class="row">
+                        <h1 class="tl_seccion_green2">Paso 10 + 1</h1>
+                    </div>
+                    <div class="form">
+                        <?php
+                        $pss = new GestionPasoOnce;
+                        $form = $this->beginWidget('CActiveForm', array(
+                            'action' => Yii::app()->createUrl('gestionPasoOnce/create'),
+                            'id'=>'gestion-paso-once-form',
+                            'enableAjaxValidation' => false,
+                        ));
+                        ?>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $form->labelEx($pss,'tipo'); ?>
+                                <?php echo $form->dropDownList($pss,'tipo', array('' => '--Seleccione--', '1' => 'Si', '0' => 'No'), array('class' => 'form-control')); ?>
+                                <?php echo $form->error($pss,'tipo'); ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $form->labelEx($pss,'observacion'); ?>
+                                <?php echo $form->textField($pss,'observacion',array('class'=>'form-control')); ?>
+                                <?php echo $form->error($pss,'observacion'); ?>
+                            </div>
+                        </div>
+                        <div class="row buttons">
+                            <input type="hidden" name="GestionPasoOnce[paso]" id="GestionPasoOnce_paso" value="6">
+                            <input type="hidden" name="GestionPasoOnce[id_informacion]" id="GestionPasoOnce_id_informacion" value="<?php echo $id_informacion; ?>">
+                            <div class="col-md-2">
+                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
+                            </div>
+                        </div>
+                        <?php $this->endWidget(); ?>
+                    </div><!-- END FORM  -->
+                </div>
                 <br />
                 <?= $this->renderPartial('//layouts/rgd/links');?>
             </div>

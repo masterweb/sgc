@@ -516,6 +516,7 @@
                 <?php $this->endWidget(); ?>
             </div><!-- END FORM  -->
             </div>
+            
             <?= $this->renderPartial('//layouts/rgd/links'); ?>
             <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
