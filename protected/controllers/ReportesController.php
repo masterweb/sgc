@@ -1473,65 +1473,65 @@ class ReportesController extends Controller {
 
         // BUSQUEDA POR VENTAS 
         $vh_mes_anterior = $this->SQLconstructor(
-            'COUNT(*) ', 
-            'gestion_diaria gd ', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+            'COUNT(DISTINCT gf.id_vehiculo) ', 
+            'gestion_factura gf ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
             $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
             $group_ext
         );
         
-        $vh_mes_anterior = $vh_mes_anterior[0]['COUNT(*)'];
+        $vh_mes_anterior = $vh_mes_anterior[0]['COUNT(DISTINCT gf.id_vehiculo)'];
         $retorno[] = $vh_mes_anterior;
         
         $vh_mes_actual = $this->SQLconstructor(
-            'COUNT(*) ', 
-            'gestion_diaria gd ', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+            'COUNT(DISTINCT gf.id_vehiculo) ', 
+            'gestion_factura gf ', 
+            'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
             $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
             $group_ext
         );
-        $vh_mes_actual = $vh_mes_actual[0]['COUNT(*)'];
+        $vh_mes_actual = $vh_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
         $retorno[] = $vh_mes_actual;        
 
         
             $vhckd1 = $this->SQLconstructor(
-                'COUNT(*) ', 
-                'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext, 
+                'COUNT(DISTINCT gf.id_vehiculo) ', 
+                'gestion_factura gf ', 
+                'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion  INNER JOIN  gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext, 
                 $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
-            $vhckd1 = $vhckd1[0]['COUNT(*)'];
+            $vhckd1 = $vhckd1[0]['COUNT(DISTINCT gf.id_vehiculo)'];
             $retorno[] = $vhckd1;
 
             $vhcbu1 = $this->SQLconstructor(
-                'COUNT(*) ', 
-                'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+                'COUNT(DISTINCT gf.id_vehiculo) ', 
+                'gestion_factura gf ', 
+                'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
                 $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
                 $group_ext
             );
-            $vhcbu1 = ($vhcbu1[0]['COUNT(*)'] - $vhckd1);
+            $vhcbu1 = ($vhcbu1[0]['COUNT(DISTINCT gf.id_vehiculo)'] - $vhckd1);
             $retorno[] = $vhcbu1;
 
             $vhckd2 = $this->SQLconstructor(
-                'COUNT(*) ', 
-                'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext, 
+                'COUNT(DISTINCT gf.id_vehiculo) ', 
+                'gestion_factura gf ', 
+                'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext, 
                 $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
-            $vhckd2 = $vhckd2[0]['COUNT(*)'];
+            $vhckd2 = $vhckd2[0]['COUNT(DISTINCT gf.id_vehiculo)'];
             $retorno[] = $vhckd2;
 
             $vhcbu2 = $this->SQLconstructor(
-                'COUNT(*) ', 
-                'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+                'COUNT(DISTINCT gf.id_vehiculo) ', 
+                'gestion_factura gf ', 
+                'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
                 $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
                 $group_ext
             );
-            $vhcbu2 = ($vhcbu2[0]['COUNT(*)'] - $vhckd2);
+            $vhcbu2 = ($vhcbu2[0]['COUNT(DISTINCT gf.id_vehiculo)'] - $vhckd2);
             $retorno[] = $vhcbu2;
         
         return $retorno;
