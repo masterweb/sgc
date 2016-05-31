@@ -1546,6 +1546,28 @@ class Controller extends CController {
         $version = GestionConsulta::model()->find($criteria);
         return $version->id;
     }
+    
+    public function getIdSolicitudCredito($id_informacion,$id_vehiculo) {
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}",
+        ));
+        $version = GestionSolicitudCredito::model()->find($criteria);
+        return $version->id;
+    }
+    
+    /**
+     * Search in the table gestion_solicitud_credito by id_informacion and id_vehiculo
+     * @param int $id_informacion the ID of client id_informacion
+     * @param int $id_vehiculo the ID of vehicle's client
+     * @return int number of matches
+     */
+    public function getNumSolicitudCredito($id_informacion,$id_vehiculo) {
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}",
+        ));
+        $c = GestionSolicitudCredito::model()->count($criteria);
+        return $c;
+    }
 
     public function getAnswer($tipo, $id) {
         $preg = FALSE;

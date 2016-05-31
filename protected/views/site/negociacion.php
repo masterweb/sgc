@@ -100,6 +100,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                             <th><span>Negociación</span></th>
                                             <th><span>Status</span></th>
                                             <th><span>Observaciones</span></th>
+                                            <th><span>Solicitud</span></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,6 +167,14 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                     }
                                                     ?>
                                                 </td>
+                                                <?php $countsc = $this->getNumSolicitudCredito($c['id_informacion'], $c['id']);?>
+                                                <td>
+                                                <?php if($countsc > 0): ?>    
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/update', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs">Solicitud</a>
+                                                </td>
+                                                <?php else: ?>
+                                                    <a href="" class="btn btn-danger btn-xs" disabled="true">Solicitud</a>
+                                                <?php endif; ?>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

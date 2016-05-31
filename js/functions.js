@@ -39,15 +39,15 @@ $(document).ready(function () {
     });
     $('#GestionFinanciamiento_tiempo_seguro_contado').change(function () {
         var valorFin = $('#GestionFinanciamiento_tiempo_seguro_contado').val();
-        calcFinanciamientoContado();
+        calcFinanciamientoContado(0);
     });
     $('#GestionFinanciamiento_tiempo_seguro_contado2').change(function () {
         var valorFin = $('#GestionFinanciamiento_tiempo_seguro_contado2').val();
-        calcFinanciamientoContado2();
+        calcFinanciamientoContado2(0);
     });
     $('#GestionFinanciamiento_tiempo_seguro_contado3').change(function () {
         var valorFin = $('#GestionFinanciamiento_tiempo_seguro_contado3').val();
-        calcFinanciamientoContado3();
+        calcFinanciamientoContado3(0);
     });
 //    $('#gestion-agendamiento-form').validate({
 //        rules: {
@@ -558,6 +558,27 @@ $(document).ready(function () {
                 $('.agendamiento').hide();
                 removeReglas();
                 break;
+        }
+    });
+    $('#gestion-paso-once-form').validate({
+        rules: {
+            'GestionPasoOnce[tipo]': {
+                required: true
+            },
+            'GestionPasoOnce[observacion]': {
+                required: true
+            }
+        },
+        messages: {
+            'GestionPasoOnce[tipo]': {
+                required: 'Selecione una opción'
+            },
+            'GestionPasoOnce[observacion]': {
+                required: 'Ingrese una observación'
+            }
+        },
+        submitHandler: function (form) {
+            form.submit();
         }
     });
     $('#gestion-agendamiento-form').validate({

@@ -9,7 +9,12 @@
 /* @var $this GestionSolicitudCreditoController */
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
-//echo 'id vehiculo: '.$id_vehiculo;
+$countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
+if($countsc > 0){
+    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
+}else{
+    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
+}
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
 $id_responsable = $this->getResponsableId($id_informacion);
@@ -39,6 +44,32 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 </style>
 <script type="text/javascript">
     $(document).ready(function () {
+        var estadocv  = $("#GestionSolicitudCredito_estado_civil").val();
+        switch (estadocv) {
+            case 'Soltero':
+            case 'Viudo':
+            case 'Divorciado':
+            case 'Casado con separación de bienes':
+                $('.conyugue').hide();
+            break;
+            case 'Casado sin separación de bienes':
+            case 'Casado':
+            case 'Union Libre':
+                $('.conyugue').show();
+            break;
+        }
+        var tipo_propiedad  = $("#GestionSolicitudCredito_habita").val();
+        switch (tipo_propiedad) {
+            case 'Propia':
+                $('#cont-avaluo').show();
+                break;
+            case 'Rentada':
+                $('#cont-arriendo').show();
+                break;
+            case 'Vive con Familiares':
+                break;
+                
+        }
         $('#GestionSolicitudCredito_select_cotizacion').change(function(){
            var value = $(this).attr('value');
            var tipo = value.split("-");
@@ -157,10 +188,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         var entradaformat = format2(entrada, '$');
         $('#GestionSolicitudCredito_entrada').val(entradaformat);
 
+        var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual').val());
+        sueldo_mensual = format2(sueldo_mensual, '$');
+        $('#GestionSolicitudCredito_sueldo_mensual').val(sueldo_mensual);
+        
         var cuotamensual = parseInt($('#GestionSolicitudCredito_cuota_mensual').val());
         var cuotamensualformat = format2(cuotamensual, '$');
         $('#GestionSolicitudCredito_cuota_mensual').val(cuotamensualformat);
+        
+        var avaluo_prop = parseInt($('#GestionSolicitudCredito_avaluo_propiedad').val());
+        avaluo_prop = format2(avaluo_prop, '$');
+        $('#GestionSolicitudCredito_avaluo_propiedad').val(avaluo_prop);
 
+        $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {
+            getvalortotal();
+        });    
         $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {
             getvalortotal();
         });
@@ -284,6 +326,531 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
         });
     });
+    function createsc(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                if(conyugue_trabaja == ''){
+                    $('#GestionSolicitudCredito_conyugue_trabaja_error').show();
+                    $('#GestionSolicitudCredito_conyugue_trabaja').focus().addClass('error');
+                    error++;
+                }
+                $.ajax({
+                    url: '<?php echo $url; ?>',
+                    beforeSend: function (xhr) {
+                        $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                    },
+                    datatype: "json",
+                    type: 'POST',
+                    data: dataform,
+                    success: function (data) {
+                        //var returnedData = JSON.parse(data);
+                        //alert(returnedData.result);
+                        $('#bg_negro').hide();
+                        //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
+                    }
+                });
+            }
+        });
+    }
+    function createsc2(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                console.log('ENTER SUBMIT CREATE2');
+                var error = 0;
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                error = validate_estado_civil(estado_civil, error, conyugue_trabaja, 2);
+                
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                if (cedulaConyugue != '' && error == 0) {
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                $('#bg_negro').hide();
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            $('#bg_negro').hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function createsc3(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true},
+                'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
+                'GestionSolicitudCredito[barrio]': {required: true},
+                'GestionSolicitudCredito[calle]': {required: true},
+                'GestionSolicitudCredito[telefono_residencia]': {required: true},
+                'GestionSolicitudCredito[sueldo_mensual]': {required: true},
+                'GestionSolicitudCredito[celular]': {required: true},
+                'GestionSolicitudCredito[habita]': {required: true},
+                'GestionSolicitudCredito[numero]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var error = 0;
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                validate_estado_civil(estado_civil, error, conyugue_trabaja,3);
+                
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
+                if(tipo_propiedad == 'Propia'){
+                    var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
+                    if(avaluo_propiedad < 9999){
+                        $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
+                        $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
+                        return false;
+                    }
+                }
+                
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                
+                var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                if(sueldo_soltero < 300){
+                    $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                    $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                    error++;
+                    return false;
+                }
+                if(conyugue_trabaja == 1){
+                    var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+                    if(sueldo_casado < 300){
+                        $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
+                        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                        errot++;
+                        return false;
+                    }
+                }
+                
+                if (cedulaConyugue != '' && error == 0) {
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                $('#bg_negro').hide();
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            $('#bg_negro').hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function createsc4(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true},
+                'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
+                'GestionSolicitudCredito[barrio]': {required: true},
+                'GestionSolicitudCredito[calle]': {required: true},
+                'GestionSolicitudCredito[telefono_residencia]': {required: true},
+                'GestionSolicitudCredito[sueldo_mensual]': {required: true},
+                'GestionSolicitudCredito[celular]': {required: true},
+                'GestionSolicitudCredito[habita]': {required: true},
+                'GestionSolicitudCredito[numero]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var error = 0;
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                validate_estado_civil(estado_civil, error, conyugue_trabaja,3);
+                
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
+                if(tipo_propiedad == 'Propia'){
+                    var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
+                    if(avaluo_propiedad < 9999){
+                        $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
+                        $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
+                        return false;
+                    }
+                }
+                
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                
+                var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                if(sueldo_soltero < 300){
+                    $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                    $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                    error++;
+                    return false;
+                }
+                if(conyugue_trabaja == 1){
+                    var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+                    if(sueldo_casado < 300){
+                        $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
+                        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                        errot++;
+                        return false;
+                    }
+                }
+                
+                if (cedulaConyugue != '' && error == 0) {
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                $('#bg_negro').hide();
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            $('#bg_negro').hide();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function validate_estado_civil(estado_civil, error, conyugue_trabaja,tipo){
+        switch (estado_civil) {
+            case 'Soltero':
+            case 'Viudo':
+            case 'Divorciado':
+            case 'Casado con separación de bienes':
+                var cadena = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                    var letra = cadena.charAt(1);
+                    if(letra == '0'){
+                       error++; 
+                       $('#telefonos_trabajo_error').show();
+                       $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
+                    }
+                var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                if(sueldo_soltero < 300){
+                    $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                    $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                    error++;
+                    return false;
+                }
+                //validateCasado();
+                break;
+            case 'Casado sin separación de bienes':
+            case 'Casado':
+            case 'Union Libre':
+                //validateSoltero();
+                if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
+                    $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
+                    $('#GestionSolicitudCredito_apellido_paterno_conyugue').focus().addClass('error');
+                    error++;
+                }
+                if ($('#GestionSolicitudCredito_nombres_conyugue').val() == '') {
+                    $('#GestionSolicitudCredito_nombres_conyugue_error').show();
+                    $('#GestionSolicitudCredito_nombres_conyugue').focus().addClass('error');
+                    error++;
+                }
+                if ($('#GestionSolicitudCredito_cedula_conyugue').val() == '') {
+                    $('#GestionSolicitudCredito_cedula_conyugue_error').show();
+                    $('#GestionSolicitudCredito_cedula_conyugue').focus().addClass('error');
+                    error++;
+                }
+                if ($('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val() == '') {
+                    $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').show();
+                    $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').focus().addClass('error');
+                    error++;
+                }
+                if(conyugue_trabaja == ''){
+                    $('#GestionSolicitudCredito_conyugue_trabaja_error').show();
+                    $('#GestionSolicitudCredito_conyugue_trabaja').focus().addClass('error');
+                    error++;
+                }
+                if(conyugue_trabaja == 1){
+                    if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_cargo_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_cargo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
+                        $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
+                        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
+                        error++;
+                    }
+
+                }
+                break;
+        }
+        return error;
+    }
     function validateCasado() {
         console.log('enter val casa');
         $("#GestionSolicitudCredito_apellido_paterno_conyugue").rules("add", "required");
@@ -581,12 +1148,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     }
 
     function getvalortotal() {
+        var avaluo = $('#GestionSolicitudCredito_avaluo_propiedad').val(); 
         var valorcomercial1 = $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").val();
         var valorcomercial2 = $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").val();
         var vehiculovalor2 = $("[name='GestionSolicitudCredito[vehiculo_valor2]']").val();
         var valorinversion = $("[name='GestionSolicitudCredito[valor_inversion]']").val();
         var valoriotrosactivos1 = $("[name='GestionSolicitudCredito[valor_otros_activos1]']").val();
         var valoriotrosactivos2 = $("[name='GestionSolicitudCredito[valor_otros_activos2]']").val();
+        avaluo = formatnumber(avaluo);
         valorcomercial1 = formatnumber(valorcomercial1);
         valorcomercial2 = formatnumber(valorcomercial2);
         vehiculovalor2 = formatnumber(vehiculovalor2);
@@ -595,7 +1164,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         valoriotrosactivos2 = formatnumber(valoriotrosactivos2);
         var valuetotal = $("[name='GestionSolicitudCredito[total_activos]']").val();
         valueft = formatnumber(valuetotal);
-        total = valorcomercial1 + valorcomercial2 + vehiculovalor2 + valorinversion + valoriotrosactivos1 + valoriotrosactivos2;
+        total = avaluo + valorcomercial1 + valorcomercial2 + vehiculovalor2 + valorinversion + valoriotrosactivos1 + valoriotrosactivos2;
         total = format2(total, '$');
 
         $("[name='GestionSolicitudCredito[total_activos]']").val(total);
@@ -1180,14 +1749,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </div>
                                 <div class="col-md-3 conyugue_trabaja" style="display:none;">
                                     <label for="">Cónyugue Trabaja</label>
-                                    <select name="GestionSolicitudCredito[conyugue_trabaja]" id="GestionSolicitudCredito_conyugue_trabaja" class="form-control">
-                                        <option value="">--Seleccione--</option>
-                                        <option value="1">Si</option>
-                                        <option value="0">No</option>
-                                    </select>
+                                    <?php echo $form->dropDownList($model, 'trabaja_conyugue', array('' => '--Seleccione--', '1' => 'Si' , '0' => "No"), array('class' => 'form-control', 'id' => 'GestionSolicitudCredito_conyugue_trabaja')); ?>
+                                    
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_conyugue_trabaja_error" style="display: none;">Seleccione una opción.</label>
                                 </div>
+                                
                             </div>
+                    
                         <?php } ?>
                         <div class="row">
                             <h1 class="tl_seccion_rf">Empleo/Actividad Actual del Solicitante</h1>
@@ -1223,21 +1791,24 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-2">
                                 <label for="GestionSolicitudCredito_meses_trabajo" class="required">Meses de Trabajo <span class="required">*</span></label>
-                                <select class="form-control" name="GestionSolicitudCredito[meses_trabajo]" id="GestionSolicitudCredito_meses_trabajo">
-                                    <option value="" selected="selected">--Seleccione--</option>
-                                    <option value="1">1 mes</option>
-                                    <option value="2">2 meses</option>
-                                    <option value="3">3 meses</option>
-                                    <option value="4">4 meses</option>
-                                    <option value="5">5 meses</option>
-                                    <option value="6">6 meses</option>
-                                    <option value="7">7 meses</option>
-                                    <option value="8">8 meses</option>
-                                    <option value="9">9 meses</option>
-                                    <option value="10">10 meses</option>
-                                    <option value="11">11 meses</option>
-                                    <option value="12">12 meses</option>
-                                </select>
+                                <?php
+                                echo $form->dropDownList($model, 'meses_trabajo', array(
+                                    '' => '--Seleccione--',
+                                    '1' => '1 mes',
+                                    '2' => '2 meses',
+                                    '3' => '3 meses',
+                                    '4' => '4 meses',
+                                    '5' => '5 meses',
+                                    '6' => '6 meses',
+                                    '7' => '7 meses',
+                                    '8' => '8 meses',
+                                    '9' => '9 meses',
+                                    '10' => '10 meses',
+                                    '11' => '11 meses',
+                                    '12' => '12 meses',
+                                        ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo'));
+                                ?>
+                                
                             </div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'cargo'); ?>
@@ -1277,6 +1848,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->labelEx($model, 'actividad_empresa'); ?>
                                 <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'actividad_empresa'); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="offset6 col-md-3">
+                                <button class="btn btn-danger btn-xs" onclick="createsc()">Grabar</button>
                             </div>
                         </div>
                         <div class="conyugue">
@@ -1621,21 +2197,24 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </div>
                                 <div class="col-md-2">
                                     <label for="GestionSolicitudCredito_meses_trabajo" class="required">Meses de Trabajo</label>
-                                    <select class="form-control" name="GestionSolicitudCredito[meses_trabajo_conyugue]" id="GestionSolicitudCredito_meses_trabajo_conyugue">
-                                        <option value="" selected="selected">--Seleccione--</option>
-                                        <option value="1">1 mes</option>
-                                        <option value="2">2 meses</option>
-                                        <option value="3">3 meses</option>
-                                        <option value="4">4 meses</option>
-                                        <option value="5">5 meses</option>
-                                        <option value="6">6 meses</option>
-                                        <option value="7">7 meses</option>
-                                        <option value="8">8 meses</option>
-                                        <option value="9">9 meses</option>
-                                        <option value="10">10 meses</option>
-                                        <option value="11">11 meses</option>
-                                        <option value="12">12 meses</option>
-                                    </select>
+                                    <?php
+                                    echo $form->dropDownList($model, 'meses_trabajo_conyugue', array(
+                                        '' => '--Seleccione--',
+                                        '1' => '1 mes',
+                                        '2' => '2 meses',
+                                        '3' => '3 meses',
+                                        '4' => '4 meses',
+                                        '5' => '5 meses',
+                                        '6' => '6 meses',
+                                        '7' => '7 meses',
+                                        '8' => '8 meses',
+                                        '9' => '9 meses',
+                                        '10' => '10 meses',
+                                        '11' => '11 meses',
+                                        '12' => '12 meses',
+                                            ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo_conyugue'));
+                                    ?>
+                                    
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_meses_trabajo_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
                                 <div class="col-md-2">
@@ -1666,7 +2245,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </div>
 
                             </div>
+                            <div class="row">
+                                <div class="offset6 col-md-3">
+                                    <button class="btn btn-danger btn-xs" onclick="createsc2()">Grabar</button>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div class="row">
                             <h1 class="tl_seccion_rf">Domicilio Actual</h1>
                         </div>
@@ -1695,8 +2280,6 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'avaluo_propiedad'); ?>
                                 <label for="" generated="true" class="error" id="GestionSolicitudCredito_avaluo_propiedad_error" style="display: none;">Ingrese un valor correcto</label>
                             </div>
-
-
                         </div>
                         <div class="row">
                             <div class="col-md-3">
@@ -1803,6 +2386,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <?php echo $form->labelEx($model, 'otros_ingresos'); ?>
                             <?php echo $form->textField($model, 'otros_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'otros_ingresos'); ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset6 col-md-3">
+                            <button class="btn btn-danger btn-xs" onclick="createsc3()">Grabar</button>
                         </div>
                     </div>
                     <div class="row">
@@ -1926,6 +2514,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <?php echo $form->labelEx($model, 'telefono_referencia2'); ?>
                             <?php echo $form->textField($model, 'telefono_referencia2', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'telefono_referencia2'); ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="offset6 col-md-3">
+                            <button class="btn btn-danger btn-xs" onclick="createsc4()">Grabar</button>
                         </div>
                     </div>
                     <div class="row">
@@ -2124,7 +2717,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     <div class="row">
                         <div class="col-md-4">
                             <label for="">Total</label>
-                            <input type="text" name="GestionSolicitudCredito[total_activos]" class="form-control"/>
+                            <?php echo $form->textField($model, 'total_activos', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                            
                         </div>
                     </div>
                     <div class="row buttons">
@@ -2149,7 +2743,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="continue" style="display: none;">Continuar</a>
+                            <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="continue">Agendar Seguimiento</a>
                         </div>
                     </div>
                     <?php $this->endWidget(); ?>

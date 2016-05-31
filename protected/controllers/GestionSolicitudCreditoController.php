@@ -101,8 +101,11 @@ class GestionSolicitudCreditoController extends Controller {
             $model->attributes = $_POST['GestionSolicitudCredito'];
             $model->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
             $model->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
+            $model->estado_civil = $_POST['GestionSolicitudCredito']['estado_civil'];
+            $model->year = $_POST['GestionSolicitudCredito']['year'];
             $model->status = 0;
             $model->fecha = date("Y-m-d H:i:s");
+            $model->trabaja_conyugue = $_POST['GestionSolicitudCredito']['trabaja_conyugue'];
             if (isset($_POST['GestionSolicitudCredito']['ruc']) && !empty($_POST['GestionSolicitudCredito']['ruc']))
                 $model->ruc = $_POST['GestionSolicitudCredito']['ruc'];
             if (isset($_POST['GestionSolicitudCredito']['pasaporte']) && !empty($_POST['GestionSolicitudCredito']['pasaporte']))
@@ -139,6 +142,7 @@ class GestionSolicitudCreditoController extends Controller {
             $model->cuota_mensual = $cuotamensual;
             $model->meses_trabajo = $_POST['GestionSolicitudCredito']['meses_trabajo'];
             $model->meses_trabajo_conyugue = $_POST['GestionSolicitudCredito']['meses_trabajo_conyugue'];
+            $model->numero = $_POST['GestionSolicitudCredito']['numero'];
 
             if (isset($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']) && !empty($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue'])) {
                 $sueldo_conyugue = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']);
@@ -202,7 +206,9 @@ class GestionSolicitudCreditoController extends Controller {
             if ($model->validate()) {
                 
             } else {
+                echo '<pre>';
                 print_r($model->getErrors());
+                echo '</pre>';
             }
             if ($model->save()) {
                 require_once 'email/mail_func.php';
@@ -281,20 +287,191 @@ class GestionSolicitudCreditoController extends Controller {
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id_informacion = NULL, $id_vehiculo = NULL) {
+        if (isset($_POST['GestionSolicitudCredito'])) {
+            $id = $this->getIdSolicitudCredito($_POST['GestionSolicitudCredito']['id_informacion'],$_POST['GestionSolicitudCredito']['id_vehiculo']);
+        }else{
+            $id = $this->getIdSolicitudCredito($id_informacion,$id_vehiculo);
+        }
+        
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionSolicitudCredito'])) {
+            
+            //            echo '<pre>';
+//            print_r($_POST);
+//            echo '</pre>';
+//            die();
+            //die('enter post');
+            $nombre_cliente = $this->getNombresInfo($_POST['GestionSolicitudCredito']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionSolicitudCredito']['id_informacion']);
+            $id_asesor = Yii::app()->user->getId();
+            $dealer_id = $this->getConcesionarioDealerId($id_asesor);
+            $result = FALSE;
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->attributes = $_POST['GestionSolicitudCredito'];
-            if ($model->save())
+            $model->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
+            $model->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
+            $model->estado_civil = $_POST['GestionSolicitudCredito']['estado_civil'];
+            $model->year = $_POST['GestionSolicitudCredito']['year'];
+            $model->status = 0;
+            $model->fecha = date("Y-m-d H:i:s");
+            $model->trabaja_conyugue = $_POST['GestionSolicitudCredito']['trabaja_conyugue'];
+            if (isset($_POST['GestionSolicitudCredito']['ruc']) && !empty($_POST['GestionSolicitudCredito']['ruc']))
+                $model->ruc = $_POST['GestionSolicitudCredito']['ruc'];
+            if (isset($_POST['GestionSolicitudCredito']['pasaporte']) && !empty($_POST['GestionSolicitudCredito']['pasaporte']))
+                $model->pasaporte = $_POST['GestionSolicitudCredito']['pasaporte'];
+
+            $valor = str_replace(',', "", $_POST['GestionSolicitudCredito']['valor']);
+            $valor = str_replace('.', ",", $valor);
+            $valor = (int) str_replace('$', "", $valor);
+
+            $monto_financiar = str_replace(',', "", $_POST['GestionSolicitudCredito']['monto_financiar']);
+            $monto_financiar = str_replace('.', ",", $monto_financiar);
+            $monto_financiar = (int) str_replace('$', "", $monto_financiar);
+
+            $entrada = str_replace(',', "", $_POST['GestionSolicitudCredito']['entrada']);
+            $entrada = str_replace('.', ",", $entrada);
+            $entrada = (int) str_replace('$', "", $entrada);
+
+            $cuotamensual = str_replace(',', "", $_POST['GestionSolicitudCredito']['cuota_mensual']);
+            $cuotamensual = str_replace('.', ",", $cuotamensual);
+            $cuotamensual = (int) str_replace('$', "", $cuotamensual);
+
+            $sueldo = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual']);
+            $sueldo = str_replace('.', ",", $sueldo);
+            $sueldo = (int) str_replace('$', "", $sueldo);
+
+            $sueldo = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual']);
+            $sueldo = str_replace('.', ",", $sueldo);
+            $sueldo = (int) str_replace('$', "", $sueldo);
+
+            $model->valor = $valor;
+            $model->monto_financiar = $monto_financiar;
+            $model->entrada = $entrada;
+            $model->sueldo_mensual = $sueldo;
+            $model->cuota_mensual = $cuotamensual;
+            $model->meses_trabajo = $_POST['GestionSolicitudCredito']['meses_trabajo'];
+            $model->meses_trabajo_conyugue = $_POST['GestionSolicitudCredito']['meses_trabajo_conyugue'];
+            $model->numero = $_POST['GestionSolicitudCredito']['numero'];
+
+            if (isset($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']) && !empty($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue'])) {
+                $sueldo_conyugue = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']);
+                $sueldo_conyugue = str_replace('.', ",", $sueldo_conyugue);
+                $sueldo_conyugue = (int) str_replace('$', "", $sueldo_conyugue);
+                $model->sueldo_mensual_conyugue = $sueldo_conyugue;
+            }
+
+            if (isset($_POST['GestionSolicitudCredito']['otros_ingresos']) && !empty($_POST['GestionSolicitudCredito']['otros_ingresos'])) {
+                $otros_ingresos = str_replace(',', "", $_POST['GestionSolicitudCredito']['otros_ingresos']);
+                $otros_ingresos = str_replace('.', ",", $otros_ingresos);
+                $otros_ingresos = (int) str_replace('$', "", $otros_ingresos);
+                $model->otros_ingresos = $otros_ingresos;
+            }
+
+
+
+            $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
+            switch ($tipo_vivienda) {
+                case 'Propia':
+                    $vav = str_replace(',', "", $_POST['GestionSolicitudCredito']['avaluo_propiedad']);
+                    $vav = str_replace('.', ",", $vav);
+                    $vav = (int) str_replace('$', "", $vav);
+                    $model->avaluo_propiedad = $vav;
+                    break;
+                case 'Rentada':
+                    $vav = str_replace(',', "", $_POST['GestionSolicitudCredito']['valor_arriendo']);
+                    $vav = str_replace('.', ",", $vav);
+                    $vav = (int) str_replace('$', "", $vav);
+                    $model->valor_arriendo = $vav;
+
+                    break;
+                case 'Vive con Familiares':
+
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (isset($_POST['GestionSolicitudCredito']['otros_activos1']) && !empty($_POST['GestionSolicitudCredito']['otros_activos1'])) {
+                $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos1'];
+            }
+            if (isset($_POST['GestionSolicitudCredito']['otros_activos2']) && !empty($_POST['GestionSolicitudCredito']['otros_activos2'])) {
+                $model->otros_activos2 = $_POST['GestionSolicitudCredito']['otros_activos2'];
+            }
+            if (isset($_POST['activos']['0']) && !empty($_POST['activos']['0'])) {
+                $model->tipo_activo1 = $_POST['activos']['0'];
+            }
+            if (isset($_POST['activos']['1']) && !empty($_POST['activos']['1'])) {
+                $model->tipo_activo2 = $_POST['activos']['1'];
+            }
+
+            $hoja_entrega = new GestionHojaEntregaSolicitud;
+            $hoja_entrega->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
+            $hoja_entrega->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
+            $hoja_entrega->status = 'pendiente';
+            $hoja_entrega->save();
+            //die('before save');
+            if ($model->validate()) {
+                
+            } else {
+                echo '<pre>';
+                print_r($model->getErrors());
+                echo '</pre>';
+            }
+            if ($model->save()) {
+                require_once 'email/mail_func.php';
+                //---- SEND EMAIL ASESOR DE CREDITO
+                $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito ';
+                
+
+                $general = '<body style="margin: 10px;">
+                                <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
+                                    <div align="">
+                                    <img src="images/header_mail.jpg">
+                                    <p></p>
+                                    <p style="margin: 2px 0;">Estimado/a Asesor de Crédito</p><br />
+                                    <p style="margin: 2px 0;">Se ha realizado una solicitud de crédito:</p>
+
+                                    <br>
+                                        <table width="600" cellpadding="">';
+                
+                    $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
+                            . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
+                                <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
+                                <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionSolicitudCredito']['id_vehiculo']) . '</td></tr>
+                                <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
+                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
+                
+                $general .= ' </table>
+                                <br/>
+                                <p style="margin: 2px 0;"><a href="https://www.kia.com.ec/intranet/usuario/index.php/site/cotizacion?id_informacion=' . $_POST['GestionSolicitudCredito']['id_informacion'] . '&amp;id_vehiculo=' . $_POST['GestionSolicitudCredito']['id_vehiculo'] . '">Ver Solicitud de Crédito</a></p>
+                                <p></p>
+                                <p style="margin: 2px 0;">Saludos cordiales,</p>
+                                <p style="margin: 2px 0;">SGC</p>
+                                <p style="margin: 2px 0;">Kia Motors Ecuador</p>
+                                <img src="images/footer.png">
+                              </div>
+                              </div>
+                            </body>';
+                //die('table: '.$general);
+                $codigohtml = $general;
+                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers .= 'Content-type: text/html' . "\r\n";
+                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                //die('email asesor: '.$emailAsesorCredito);
+                sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                //die('enter save');
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
-        $this->render('update', array(
-            'model' => $model,
+        $this->render('create', array(
+            'model' => $model, 'id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo
         ));
     }
 

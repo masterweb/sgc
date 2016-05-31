@@ -32,6 +32,7 @@
  * @property string $tipo_relacion_laboral
  * @property string $email
  * @property string $actividad_empresa
+ * @property int $trabaja_conyugue
  * @property string $apellido_paterno_conyugue
  * @property string $apellido_materno_conyugue
  * @property string $nombres_conyugue
@@ -131,13 +132,12 @@ class GestionSolicitudCredito extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('modelo, valor, monto_financiar, numero, habita,entrada, plazo, taza, cuota_mensual,'
+            array('modelo, valor, monto_financiar, entrada, plazo, taza, cuota_mensual,'
                 . ' apellido_paterno, empresa_trabajo, telefonos_trabajo, tiempo_trabajo, cargo,'
                 . ' direccion_empresa, tipo_relacion_laboral, email, actividad_empresa, year,'
-                . ' sueldo_mensual, referencia_personal1, parentesco1,'
-                . 'telefono_referencia1,estado_civil,fecha_nacimiento,barrio,'
+                . ' sueldo_mensual,estado_civil,fecha_nacimiento,'
                 . 'calle,telefono_residencia, celular', 'required'),
-            array('concesionario, vendedor, valor, monto_financiar, entrada, year, plazo, tiempo_trabajo, tiempo_trabajo_conyugue, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio', 'numerical', 'integerOnly' => true),
+            array('concesionario, vendedor, valor, monto_financiar, entrada, year, plazo, tiempo_trabajo, tiempo_trabajo_conyugue, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio, trabaja_conyugue', 'numerical', 'integerOnly' => true),
             array('taza, sueldo_mensual, sueldo_mensual_conyugue', 'length', 'max' => 20),
             array('cuota_mensual', 'length', 'max' => 25),
             array('apellido_paterno, apellido_materno, nacionalidad, cargo, email, telefono_trabajo_conyugue, cargo_conyugue, vive, valor_arriendo, telefono_residencia, banco1, cuenta_ahorros1, banco2, cuenta_ahorros2, parentesco1, parentesco2, otros_ingresos, cuenta_corriente1, cuenta_corriente2, direccion_valor_comercial1, direccion_valor_comercial2, vehiculo_marca1, vehiculo_modelo1, vehiculo_year1, vehiculo_valor1, vehiculo_marca2, vehiculo_modelo2, vehiculo_year2, vehiculo_valor2, tipo_inversion, valor_otros_activos1, valor_otros_activos2, total_activos, tipo_activo1, tipo_activo2', 'length', 'max' => 50),
@@ -200,6 +200,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'tipo_relacion_laboral' => 'Tipo Relación Laboral',
             'email' => 'Email',
             'actividad_empresa' => 'Actividad Empresa',
+            'trabaja_conyugue' => 'Conyugue Trabaja',
             'apellido_paterno_conyugue' => 'Apellido Paterno Cónyugue',
             'apellido_materno_conyugue' => 'Apellido Materno Cónyugue',
             'nombres_conyugue' => 'Nombres Cónyugue',
