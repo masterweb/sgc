@@ -1475,8 +1475,8 @@ class ReportesController extends Controller {
         $vh_mes_anterior = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_diaria gd ', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
             $group_ext
         );
         
@@ -1486,8 +1486,8 @@ class ReportesController extends Controller {
         $vh_mes_actual = $this->SQLconstructor(
             'COUNT(*) ', 
             'gestion_diaria gd ', 
-            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
+            'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
             $group_ext
         );
         $vh_mes_actual = $vh_mes_actual[0]['COUNT(*)'];
@@ -1497,8 +1497,8 @@ class ReportesController extends Controller {
             $vhckd1 = $this->SQLconstructor(
                 'COUNT(*) ', 
                 'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext, 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
             $vhckd1 = $vhckd1[0]['COUNT(*)'];
@@ -1507,8 +1507,8 @@ class ReportesController extends Controller {
             $vhcbu1 = $this->SQLconstructor(
                 'COUNT(*) ', 
                 'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext.$INERmodelos, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
+                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
                 $group_ext
             );
             $vhcbu1 = ($vhcbu1[0]['COUNT(*)'] - $vhckd1);
@@ -1517,8 +1517,8 @@ class ReportesController extends Controller {
             $vhckd2 = $this->SQLconstructor(
                 'COUNT(*) ', 
                 'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion  '.$join_ext, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext, 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
             $vhckd2 = $vhckd2[0]['COUNT(*)'];
@@ -1527,8 +1527,8 @@ class ReportesController extends Controller {
             $vhcbu2 = $this->SQLconstructor(
                 'COUNT(*) ', 
                 'gestion_diaria gd ', 
-                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion '.$join_ext.$INERmodelos, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gd.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
+                'INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion INNER JOIN gestion_factura gf ON gf.id_informacion = gi.id '.$join_ext.$INERmodelos, 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
                 $group_ext
             );
             $vhcbu2 = ($vhcbu2[0]['COUNT(*)'] - $vhckd2);
