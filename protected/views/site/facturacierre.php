@@ -22,6 +22,16 @@
             }
 
         });
+        $('#form-id').validate({
+            rules: {
+                'Factura[observaciones]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                $('#bg_negro').show(); // #bg_negro must be defined somewhere
+                form.submit();
+            }
+        });
     });
 </script>
 <div class="container">
@@ -99,7 +109,7 @@
                                     <div class="alert alert-warning" role="alert">
                                         <strong>FACTURA NO REGISTRADA</strong>
                                     </div>
-                            <br />
+                                    <br />
                                     <a href="<?php echo Yii::app()->createUrl('site/facturaNoRegistered', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
                                     <?php
                                     break;
@@ -114,7 +124,7 @@
                                     </table>
                                     <?php
                                     $form = $this->beginWidget('CActiveForm', array(
-                                        'id' => 'form-id',
+                                        'id' => 'form-id-ct',
                                         'method' => 'post',
                                         'action' => Yii::app()->createUrl('site/facturaCorrecta', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)), //<- your form action here
                                     ));

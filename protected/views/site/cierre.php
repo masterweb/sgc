@@ -98,7 +98,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                         $test = $this->getFactura($c['id_informacion'], $c['id']);
                                         ?>
                                         <?php if($test > 0): ?>
-                                            <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Cierre</a>
+                                            <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf" disabled="true">Cierre</a>
                                         <?php else: ?>    
                                            
                                             <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Cierre</a>
