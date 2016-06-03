@@ -64,13 +64,13 @@
                     return false;
                 }
 
-                var firma = $('#Usuarios_firma').val();
+                /*var firma = $('#Usuarios_firma').val();
                 if (firma == '') { // debe firma
                     alert('Debe ingresar y seleccionar una firma');
                     return false;
-                } else { //  cliente no desea hacer el test drive
+                } else { //  cliente no desea hacer el test drive*/
                     form.submit();
-                }
+                //}
             }
         });
         $('.fancybox').fancybox();
