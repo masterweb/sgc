@@ -12,8 +12,10 @@
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
+    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }else{
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
+    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
@@ -380,7 +382,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     success: function (data) {
                         //var returnedData = JSON.parse(data);
                         //alert(returnedData.result);
-                        $('#bg_negro').hide();
+                        //$('#bg_negro').hide();
+                        $(location).attr('href', '<?php echo $url_load; ?>');
                         //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
                     }
                 });
@@ -462,7 +465,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             success: function (data) {
                                 //var returnedData = JSON.parse(data);
                                 //alert(returnedData.result);
-                                $('#bg_negro').hide();
+                                //$('#bg_negro').hide();
+                                $(location).attr('href', '<?php echo $url_load; ?>');
                             }
                         });
                     } else {
@@ -481,7 +485,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         success: function (data) {
                             //var returnedData = JSON.parse(data);
                             //alert(returnedData.result);
-                            $('#bg_negro').hide();
+                            //$('#bg_negro').hide();
+                            $(location).attr('href', '<?php echo $url_load; ?>');
                         }
                     });
                 }
@@ -597,7 +602,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             success: function (data) {
                                 //var returnedData = JSON.parse(data);
                                 //alert(returnedData.result);
-                                $('#bg_negro').hide();
+                                //$('#bg_negro').hide();
+                                $(location).attr('href', '<?php echo $url_load; ?>');
                             }
                         });
                     } else {
@@ -616,7 +622,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         success: function (data) {
                             //var returnedData = JSON.parse(data);
                             //alert(returnedData.result);
-                            $('#bg_negro').hide();
+                            //$('#bg_negro').hide();
+                            $(location).attr('href', '<?php echo $url_load; ?>');
                         }
                     });
                 }
@@ -732,7 +739,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             success: function (data) {
                                 //var returnedData = JSON.parse(data);
                                 //alert(returnedData.result);
-                                $('#bg_negro').hide();
+                                //$('#bg_negro').hide();
+                                $(location).attr('href', '<?php echo $url_load; ?>');
                             }
                         });
                     } else {
@@ -751,7 +759,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         success: function (data) {
                             //var returnedData = JSON.parse(data);
                             //alert(returnedData.result);
-                            $('#bg_negro').hide();
+                            //$('#bg_negro').hide();
+                            $(location).attr('href', '<?php echo $url_load; ?>');
                         }
                     });
                 }
