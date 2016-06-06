@@ -4,9 +4,12 @@
 //echo '</pre>';
 //echo 'num proforma: '.$id_hoja;
 $id_vehiculo = $_GET['id_vehiculo'];
+$id_informacion = $_GET['id_informacion'];
 $id_asesor = Yii::app()->user->getId();
 $emailAsesor = $this->getAsesorEmail($responsable_id);
 $concesionarioid = $this->getConcesionarioDealerId($responsable_id);
+$fecha = GestionProforma::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}")); 
+$fecha_proforma = explode(' ', $fecha->fecha);
 //die('concesionario id: '.$concesionarioid);
 
 $telefono = $this->getAsesorTelefono($responsable_id);
@@ -58,7 +61,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
     </div>
     <div class="row">
         <div class="col-xs-4"><strong>CLIENTE: </strong><?php echo $value['nombres']; ?> <?php echo $value['apellidos']; ?></div>
-        <div class="col-xs-3"><strong>FECHA: </strong><?php echo date("d") . "/" . date("m") . "/" . date("Y"); ?></div>
+        <div class="col-xs-3"><strong>FECHA: </strong><?php echo $fecha_proforma[0]; ?></div>
     </div>
     <div class="row">
         <div class="col-xs-12"><strong>DIRECCIÓN: </strong><?php echo $value['direccion']; ?></div>
