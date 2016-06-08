@@ -64,7 +64,9 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 
                 switch ($cargo_id) {
                     case 70: // JEFE SUCURSAL
-                        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
+                        $array_dealers = $this->getResponsablesVariosConc();
+                        $dealerList = implode(', ', $array_dealers);
+                        $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealerList}) ";
                         break;
                     case 72: // JEFE BDC EXONERADOS
                         $array_dealers = $this->getDealerGrupoConc($grupo_id);
@@ -82,6 +84,10 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                         break;
                 }
 //        $cre->condition = " cargo_id =71 AND dealers_id = {$dealer_id} ";
+//                echo '<pre>';
+//                print_r($cre);
+//                echo '</pre>';
+//                die();
                 $cre->order = " nombres ASC";
                 $usu = CHtml::listData(Usuarios::model()->findAll($cre), "id", "fullname");
                 ?>

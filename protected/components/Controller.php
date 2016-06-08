@@ -382,13 +382,13 @@ class Controller extends CController {
             }
         }
     }
-    
+
     public function getNombresJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
         // buscar en tabla usuarios el jefe de almacen con el dealer id
         $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
 
         if (count($us) > 0) {
-            return $us->nombres.' '.$us->apellido;
+            return $us->nombres . ' ' . $us->apellido;
         } else {
             $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
             INNER JOIN usuarios u ON u.id = gr.usuario_id 
@@ -398,7 +398,7 @@ class Controller extends CController {
             $request = $con->createCommand($sql)->query();
             //die('count request: '.count($request));
             foreach ($request as $value) {
-                return $value['correo'].' '.$value['apellido'];
+                return $value['nombres'] . ' ' . $value['apellido'];
             }
         }
     }
@@ -460,7 +460,7 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    
+
     public function getComentarioRGD($id_comentario) {
         //echo 'id: '.$id_comentario;
         $responsableid = GestionReasignamiento::model()->find(array('condition' => "id = {$id_comentario}"));
@@ -470,7 +470,7 @@ class Controller extends CController {
             return '';
         }
     }
-    
+
     public function getComentarioAsignamiento($id) {
         $reas = GestionReasignamiento::model()->find(array('condition' => "id = {$id}"));
         if (!is_null($reas) && !empty($reas)) {
@@ -943,12 +943,12 @@ class Controller extends CController {
         $test = GestionTestDrive::model()->count($criteria);
         return $test;
     }
-    
+
     public function getTestDriveYesNot($id_informacion, $id_vehiculo, $inline) {
         //echo 'id informacion: '.$id_informacion.', id vehiculo: '.$id_vehiculo;
         $data = '';
         $test = GestionDemostracion::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND preg1 = 'No'"));
-        
+
         foreach ($test as $value) {
             $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-tomate btn-xs btn-rf" target="_blank">No</a>';
             switch ($value['preg1_observaciones']) {
@@ -971,16 +971,16 @@ class Controller extends CController {
                 default:
                     break;
             }
-            $data .= '<a class="btn btn-default btn-xs btn-rf">'.$obs.'</a><br /><br />';
+            $data .= '<a class="btn btn-default btn-xs btn-rf">' . $obs . '</a><br /><br />';
         }
-        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1")); 
+        $test = GestionTestDrive::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1"));
         $in = 1;
         foreach ($test as $value) {
             //echo $value['img'];
-            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">'.$value['observacion'].'</a><a class="fancybox btn btn-success btn-xs" href="#'.$in.'">Licencia</a>'
-                    . '<a href="'. Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)).'" class="btn btn-warning btn-xs" target="_blank" style="margin-left:2px;">PDF Prueba Manejo</a></div><br /><br />'
-                    . '<div id="'.$in.'" style="width:auto;display: none;"><img src="'. Yii::app()->request->baseUrl.'/images/uploads/'. $value['img'].'"/></div>';
-        $in++;            
+            $data .= '<div class="btn-group" role="group" aria-label="..."><a class="btn btn-warning btn-xs btn-rf" target="_blank">Si</a><a class="btn btn-default btn-xs btn-rf">' . $value['observacion'] . '</a><a class="fancybox btn btn-success btn-xs" href="#' . $in . '">Licencia</a>'
+                    . '<a href="' . Yii::app()->createUrl('site/pdf', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)) . '" class="btn btn-warning btn-xs" target="_blank" style="margin-left:2px;">PDF Prueba Manejo</a></div><br /><br />'
+                    . '<div id="' . $in . '" style="width:auto;display: none;"><img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $value['img'] . '"/></div>';
+            $in++;
         }
         return $data;
     }
@@ -1050,7 +1050,7 @@ class Controller extends CController {
             return $dealer->dealers_id;
         }
     }
-    
+
     public function getDealerIdAC($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
@@ -1128,18 +1128,48 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
+    /**
+     * 
+     * @return array arraydealers con las ids de los concesionarios
+     */
+    public function getResponsablesVariosConc() {
+        $id_responsable = Yii::app()->user->getId();
+        $array_dealers = array();
+        $dealers = Grupoconcesionariousuario::model()->findAll(array('condition' => "usuario_id={$id_responsable}"));
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['concesionario_id'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
 
     public function getDealerGrupoConcUsuario($id_responsable) {
+        
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
             'condition' => "usuario_id={$id_responsable}"
         ));
         $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
         $counter = 0;
-        foreach ($dealers as $value) {
-            //echo 'asdasd'.$value['concesionario_id'];
-            $array_dealers[$counter] = $value['concesionario_id'];
-            $counter++;
+        if (count($dealers) > 0) {
+            foreach ($dealers as $value) {
+                //echo 'asdasd'.$value['concesionario_id'];
+                $array_dealers[$counter] = $value['concesionario_id'];
+                $counter++;
+            }
+        }else{
+            // sacar grupo id del asesor segun id responsable
+            $grupo = Usuarios::model()->find(array('condition' => "id =  {$id_responsable}"));
+            //die('id grupo: '.$grupo->grupo_id);
+            // armar array con los concecionarios del grupo
+            $deal = GrConcesionarios::model()->findAll(array('condition' => "id_grupo = {$grupo->grupo_id} AND provincia <> 0"));
+            foreach ($deal as $value) {
+                //echo 'asdasd'.$value['concesionario_id'];
+                $array_dealers[$counter] = $value['dealer_id'];
+                $counter++;
+            }
         }
         return $array_dealers;
     }
@@ -1278,6 +1308,14 @@ class Controller extends CController {
         return $dealer->responsable;
     }
 
+    public function getResponsableIdByIdInformacion($id_informacion) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id_informacion}"
+        ));
+        $dealer = GestionInformacion::model()->find($criteria);
+        return $dealer->responsable;
+    }
+
     public function getResponsableNombres($id) {
         //die($id);
         $criteria = new CDbCriteria(array(
@@ -1333,7 +1371,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->paso;
     }
-    
+
     public function getPasoGestionDiaria($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id}"
@@ -1341,7 +1379,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->paso;
     }
-    
+
     public function getMedioContacto($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id}"
@@ -1349,6 +1387,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->medio_contacto;
     }
+
     public function getDesiste($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id}"
@@ -1356,6 +1395,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->desiste;
     }
+
     public function getSeguimiento($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id}"
@@ -1363,7 +1403,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->proximo_seguimiento;
     }
-    
+
     public function getCategorizacionSGC($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id}"
@@ -1371,7 +1411,7 @@ class Controller extends CController {
         $ps = GestionConsulta::model()->find($criteria);
         return $ps->preg7;
     }
-    
+
     public function getFuenteSGC($id) {
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
@@ -1379,7 +1419,7 @@ class Controller extends CController {
         $ps = GestionNuevaCotizacion::model()->find($criteria);
         return $ps->fuente;
     }
-    
+
     public function getStatusSGC($id_informacion) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id_informacion}"
@@ -1546,22 +1586,22 @@ class Controller extends CController {
         $version = GestionConsulta::model()->find($criteria);
         return $version->id;
     }
-    
-    public function getIdSolicitudCredito($id_informacion,$id_vehiculo) {
+
+    public function getIdSolicitudCredito($id_informacion, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
             "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}",
         ));
         $version = GestionSolicitudCredito::model()->find($criteria);
         return $version->id;
     }
-    
+
     /**
      * Search in the table gestion_solicitud_credito by id_informacion and id_vehiculo
      * @param int $id_informacion the ID of client id_informacion
      * @param int $id_vehiculo the ID of vehicle's client
      * @return int number of matches
      */
-    public function getNumSolicitudCredito($id_informacion,$id_vehiculo) {
+    public function getNumSolicitudCredito($id_informacion, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
             "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}",
         ));
@@ -1899,7 +1939,7 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    
+
     public function getObsevacionesTestYes($id_informacion) {
         //die('id info: '.$id_informacion);
         $criteria = new CDbCriteria(array(
@@ -2557,6 +2597,7 @@ class Controller extends CController {
             return 'NA';
         }
     }
+
     public function getNombreClienteRGD($id_informacion) {
         $gestion = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
         if ($gestion) {
@@ -2591,12 +2632,12 @@ class Controller extends CController {
         }
         echo $data;
     }
-    
+
     public function getStatusGestionDiaria($id_informacion) {
         //echo 'id: '.$id;
         $array_status = array();
         $st = GestionDiaria::model()->findAll(array("condition" => "id_informacion = {$id_informacion}"));
-        
+
         if (!is_null($st) && !empty($st)) {
             foreach ($st as $value) {
                 $array_status['prospeccion'] = $value['prospeccion'];
@@ -2607,44 +2648,44 @@ class Controller extends CController {
             return 'NA';
         }
     }
+
     /**
      * Function gets the last Paso 10 + 1
      * @param type $id_informacion
      * return $string with last register
      */
-    
     public function getPasoDiez($id_informacion) {
-       $paso = GestionPasoOnce::model()->find(array("condition" => "id_informacion = {$id_informacion}","limit" => "1",'order' => "id DESC"));
-       if (!is_null($paso) && !empty($paso)) {
-           if($paso->tipo == 1){
-               return 'SI';
-           }else{
-               return 'NO';
-           }
+        $paso = GestionPasoOnce::model()->find(array("condition" => "id_informacion = {$id_informacion}", "limit" => "1", 'order' => "id DESC"));
+        if (!is_null($paso) && !empty($paso)) {
+            if ($paso->tipo == 1) {
+                return 'SI';
+            } else {
+                return 'NO';
+            }
         } else {
             return 'NO';
         }
     }
-    
-    public function getListaTD($id_informacion){
+
+    public function getListaTD($id_informacion) {
         $tdsi = 0;
         $tdno = 0;
         $datatd = '';
         $modelos = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc'));
         foreach ($modelos as $m) {
             $tds = GestionTestDrive::model()->findAll(array('condition' => "id_vehiculo = {$m['id']}", 'order' => 'test_drive desc'));
-            $datatd .= $this->getModel($m['modelo']).' - ';
+            $datatd .= $this->getModel($m['modelo']) . ' - ';
             foreach ($tds as $t) {
-                if($t['test_drive'] == 1){
+                if ($t['test_drive'] == 1) {
                     //echo 'enter td1';
                     $tdsi++;
-                    if($tdsi == 1){
+                    if ($tdsi == 1) {
                         $datatd .= '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>';
                     }
                 }
-                if($t['test_drive'] == 0){
+                if ($t['test_drive'] == 0) {
                     $tdno++;
-                    if($tdsi == 0){
+                    if ($tdsi == 0) {
                         $datatd .= '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
                     }
                 }
@@ -2653,8 +2694,42 @@ class Controller extends CController {
             $tdno = 0;
             $datatd .= '<br />';
         }
-        
+
         return $datatd;
+    }
+
+    /**
+     * Construye select con el nombre del modelo y version de los vehiculos del cliente
+     * @param int $id_informacion int id del cliente registrado
+     * @return string Datos con el select construido con modelos y versiones
+     */
+    public function getModelosVehiculos($id_informacion) {
+        $data = '';
+        $vehiculos = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$id_informacion}"));
+        foreach ($vehiculos as $vc) {
+            $data .= '<option value="' . $vc['id'] . '">' . $this->getModel($vc['modelo']) . '-' . $this->getVersion($vc['version']) . '</option>';
+        }
+
+        return $data;
+    }
+
+    /**
+     * Retorna el nombre de Jefe de Agencia segun la id del asesor de ventas
+     * @param int $id_responsable
+     * @return string data con el select con nombres y apellidos del Jefe de Sucursal
+     */
+    public function getJefeAgencia($id_responsable) {
+        $data = '';
+        $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        $cre = new CDbCriteria();
+        $cre->condition = " cargo_id = 70 AND dealers_id = {$dealer_id} ";
+        $cre->order = " nombres ASC";
+        $asesores = Usuarios::model()->findAll($cre);
+        $data = '';
+        foreach ($asesores as $value) {
+            $data .= '<option value="' . $value['id'] . '">' . $value['nombres'] . ' ' . $value['apellido'] . '</option>';
+        }
+        return $data;
     }
 
 }
