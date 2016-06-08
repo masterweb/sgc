@@ -1850,7 +1850,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             }
         }
         if ($cargo_id == 70) { // jefe de almacen
-            $criteria->condition = "gi.dealer_id = {$dealer_id}";
+            $array_dealers = $this->getResponsablesVariosConc();
+            $dealerList = implode(', ', $array_dealers);
+            $criteria->condition = "gi.dealer_id IN ({$dealerList})";
             $sql_cargos .= "WHERE gi.dealer_id = {$dealer_id} AND ";
         }
         if ($cargo_id == 71) { // asesor de ventas
@@ -3302,10 +3304,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             //die('enter jefe');
+            $array_dealers = $this->getResponsablesVariosConc();
+            $dealerList = implode(', ', $array_dealers);
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10'";
-            $criteria->addCondition("gi.dealer_id = {$this->getConcesionarioDealerId($id_responsable)}");
+            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
             $criteria->addCondition("u.cargo_id IN (70,71)");
             $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
             $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
