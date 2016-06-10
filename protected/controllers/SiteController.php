@@ -2605,23 +2605,25 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 Yii::app()->user->setFlash('error', "Error al conectarse a la pirámide");
             }
 
-
             $params = explode('<ttvh01>', $response['lcxml']);
+            
             $count = count($params);
             // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
-            if (preg_match_all('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
+            if (preg_match('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
                 $count_vh = count($coincidencias_vh[0]);
                 $coin1_vh = TRUE;
             } else {
                 //echo "NO HAY COINCIDENCIA";
             }
 
-            if (preg_match_all('/<\/ttvh01>/', $response['lcxml'], $coincidencias2_vh, PREG_OFFSET_CAPTURE)) {
+            if (preg_match('/<\/ttvh01>/', $response['lcxml'], $coincidencias2_vh, PREG_OFFSET_CAPTURE)) {
                 $count2_vh = count($coincidencias2_vh[0]);
                 $coin2_vh = TRUE;
             } else {
                 //echo "NO HAY COINCIDENCIA";
             }
+            //die('countvh: '.$count_vh);
+            //die('coin1_vh: '.$coin1_vh.', coin2_vh: '.$coin2_vh);
             $datos_search = array(
                 'chasis' => 'No. Chasis', 'codigo_modelo' => 'Código Modelo', 'numero_motor' => 'Número Modelo',
                 'nombre_propietario' => 'Nombre del Propietario', 'color_vehiculo' => 'Color Vehículo',

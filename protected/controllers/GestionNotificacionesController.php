@@ -189,7 +189,14 @@ class GestionNotificacionesController extends Controller {
             $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacionDiaria($id_informacion);
         } 
-        
+        if ($tipo == 5) {
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id = {$id}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->execute();
+            //die('request: '.$request);
+            $paso = '12';
+        } 
         
 
         switch ($paso) {
@@ -230,6 +237,10 @@ class GestionNotificacionesController extends Controller {
             case '11':
                 //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
                 $this->redirect(array('site/negociacion/' . $id_informacion));
+                break;
+            case '12':
+                //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
+                $this->redirect(array('gestionComentarios/create/', 'id_informacion' => $id_informacion));
                 break;
             default:
                 break;

@@ -221,9 +221,24 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
         $datac .= '</ul>';
         $datac .= '<input type="hidden" id="actualAbierto" value="10">';
     }
+    
+    // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS==================================================
+    $sqlComentarios = "SELECT * FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD'";
+    $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
+    foreach ($notComentarios as $nc) {
+        $dc .= '<ul id="lAbierto">';
+        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5));
+
+        $dc .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                . '<a href="' . $url . '">Comentario de '.Controller::getResponsableNombres($nc['id_asesor_envia']).'</a>'
+                . '</li>';
+
+        $dc .= '</ul>';
+        $dc .= '<input type="hidden" id="actualAbierto" value="10">';
+    }
 
 
-    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat;
+    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios);
     ?>
     <div class="cont_tl_notificaciones" onclick="verN(<?php echo $num_noficicaciones; ?>)">
         <?php
@@ -248,6 +263,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 <?php if ($cargo_id == 70): ?>
                     <li role="presentation"><a href="#cierre" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Cierre</a></li>
                 <?php endif; ?>
+                    <li role="presentation"><a href="#comentarios" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Comentarios</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="seguimiento" aria-labelledby="abierto-tab">
@@ -312,6 +328,11 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 <div role="tabpanel" class="tab-pane fade" id="cierre" aria-labelledby="abierto-tab">
                     <?php
                     echo $datac;
+                    ?>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="comentarios" aria-labelledby="abierto-tab">
+                    <?php
+                    echo $dc;
                     ?>
                 </div>
             </div>

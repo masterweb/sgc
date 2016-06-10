@@ -1,29 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "gestion_notificaciones".
+ * This is the model class for table "gestion_comentarios".
  *
- * The followings are the available columns in table 'gestion_notificaciones':
+ * The followings are the available columns in table 'gestion_comentarios':
  * @property string $id
  * @property integer $id_informacion
  * @property integer $id_vehiculo
- * @property integer $id_dealer
- * @property integer $id_asesor
- * @property integer $tipo
- * @property string $paso
- * @property string $descripcion
- * @property string $leido
- * @property string $categorizacion
+ * @property integer $id_responsable_recibido
+ * @property integer $id_responsable_enviado
+ * @property string $titulo
+ * @property string $comentario
  * @property string $fecha
- * @property integer $id_agendamiento
- * @property integer $id_asesor_envia
+ * @property string $img
+ * @property string $leido
  */
-class GestionNotificaciones extends CActiveRecord {
+class GestionComentarios extends CActiveRecord {
 
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return GestionNotificaciones the static model class
+     * @return GestionComentarios the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
@@ -33,7 +30,7 @@ class GestionNotificaciones extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'gestion_notificaciones';
+        return 'gestion_comentarios';
     }
 
     /**
@@ -43,12 +40,12 @@ class GestionNotificaciones extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id_informacion, id_vehiculo, id_dealer, id_asesor,tipo, id_agendamiento', 'numerical', 'integerOnly' => true),
-            array('paso, leido', 'length', 'max' => 20),
-            array('descripcion, fecha, categorizacion', 'safe'),
+            array('id_informacion, id_responsable_recibido, id_responsable_recibido, id_responsable_enviado, comentario, titulo, fecha', 'required'),
+            array('id_informacion, id_responsable_recibido, id_responsable_enviado', 'numerical', 'integerOnly' => true),
+            array('img, titulo', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, id_informacion, id_vehiculo, id_dealer, id_asesor,tipo, paso, descripcion, leido, fecha', 'safe', 'on' => 'search'),
+            array('id, id_informacion, id_responsable_recibido, id_responsable_enviado, comentario, fecha, img, leido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -70,16 +67,13 @@ class GestionNotificaciones extends CActiveRecord {
             'id' => 'ID',
             'id_informacion' => 'Id Informacion',
             'id_vehiculo' => 'Id Vehiculo',
-            'id_dealer' => 'Id Dealer',
-            'id_asesor' => 'Id Asesor',
-            'tipo' => 'Tipo',
-            'paso' => 'Paso',
-            'descripcion' => 'Descripcion',
-            'leido' => 'Leido',
-            'categorizacion' => 'Categorizacion',
+            'id_responsable_recibido' => 'Id Responsable Recibido',
+            'id_responsable_enviado' => 'Id Responsable Enviado',
+            'titulo' => 'Título',
+            'comentario' => 'Comentario',
             'fecha' => 'Fecha',
-            'id_agendamiento' => 'Id Agendamiento',
-            'id_asesor_envia' => 'Id Asesor Envia',
+            'img' => 'Img',
+            'leido' => 'Leido',
         );
     }
 
@@ -95,13 +89,11 @@ class GestionNotificaciones extends CActiveRecord {
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('id_informacion', $this->id_informacion);
-        $criteria->compare('id_vehiculo', $this->id_vehiculo);
-        $criteria->compare('id_dealer', $this->id_dealer);
-        $criteria->compare('tipo', $this->tipo);
-        $criteria->compare('paso', $this->paso, true);
-        $criteria->compare('descripcion', $this->descripcion, true);
-        $criteria->compare('leido', $this->leido, true);
+        $criteria->compare('id_responsable_recibido', $this->id_responsable_recibido);
+        $criteria->compare('id_responsable_enviado', $this->id_responsable_enviado);
+        $criteria->compare('comentario', $this->comentario, true);
         $criteria->compare('fecha', $this->fecha, true);
+        $criteria->compare('img', $this->img, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

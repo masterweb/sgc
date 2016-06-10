@@ -463,7 +463,7 @@ footer{
 .cont_notificaciones {
     position: fixed;
     bottom: 25px !important;
-    max-width: 250px;
+    max-width: 269px;
     margin: auto;
     border: #C21930 solid 1px;
     border-bottom: none;
@@ -917,3 +917,4 @@ ul.versiones li input{
     margin-top: 2px;
 }
 .titdesiste{font-weight: bold;}
+
