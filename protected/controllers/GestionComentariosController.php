@@ -87,6 +87,7 @@ class GestionComentariosController extends Controller {
                     $not->descripcion = 'Se ha creado un nuevo comentario';
                     $not->fecha = date("Y-m-d H:i:s");
                     $not->id_asesor_envia = $_POST['GestionComentarios']['id_responsable_enviado'];
+                    $not->id_agendamiento = $model->id;
                     $not->save();
 
                     $asunto = 'Kia Motors Ecuador - Comentario enviado por Jefe de Sucursal; ' . $this->getResponsable($_POST['GestionComentarios']['id_responsable_enviado']) . '.';
@@ -130,6 +131,7 @@ class GestionComentariosController extends Controller {
                     $not->descripcion = 'Se ha creado un nuevo comentario';
                     $not->fecha = date("Y-m-d H:i:s");
                     $not->id_asesor_envia = $_POST['GestionComentarios']['id_responsable_enviado'];
+                    $not->id_agendamiento = $model->id;
                     $not->save();
                     $nombre_jefe_sucursal = $this->getNombresJefeConcesion(70, $grupo_id, $dealer_id);
                     $email = $this->getEmailJefeConcesion(70, $grupo_id, $dealer_id); //email jefe de sucursal

@@ -227,7 +227,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
     $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
     foreach ($notComentarios as $nc) {
         $dc .= '<ul id="lAbierto">';
-        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5));
+        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5,'id_agendamiento' => $nc['id_agendamiento']));
 
         $dc .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
                 . '<a href="' . $url . '">Comentario de '.Controller::getResponsableNombres($nc['id_asesor_envia']).'</a>'
