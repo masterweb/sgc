@@ -2307,7 +2307,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -2367,7 +2367,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -2427,7 +2427,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -2486,7 +2486,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         var precioEntrada = valorEntrada1.replace(',', '');
@@ -2574,7 +2574,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         
@@ -2661,7 +2661,7 @@ if ($fi == 2) {
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         var precioEntrada = valorEntrada1.replace(',', '');

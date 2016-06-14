@@ -158,7 +158,7 @@ class GestionNotificacionesController extends Controller {
         }
     }
 
-    public function actionVernotificacion($id = NULL, $id_informacion = NULL, $cargo_id = NULL, $tipo = NULL) {
+    public function actionVernotificacion($id = NULL, $id_informacion = NULL, $cargo_id = NULL, $tipo = NULL, $id_agendamiento = NULL) {
         //echo 'id: '.$id.' ,caso id: '.$caso_id;
         //die();
         if ($tipo == 1) {
@@ -189,12 +189,13 @@ class GestionNotificacionesController extends Controller {
             $request = $con->createCommand($sql)->query();
             $paso = $this->getPasoNotificacionDiaria($id_informacion);
         } 
-        if ($tipo == 5) {
+        if ($tipo == 5) { // comentarios
             $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id = {$id}";
             //die('sql: '.$sql);
             $con = Yii::app()->db;
             $request = $con->createCommand($sql)->execute();
             //die('request: '.$request);
+            
             $paso = '12';
         } 
         
@@ -240,7 +241,7 @@ class GestionNotificacionesController extends Controller {
                 break;
             case '12':
                 //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
-                $this->redirect(array('gestionComentarios/create/', 'id_informacion' => $id_informacion));
+                $this->redirect(array('gestionComentarios/create/', 'id_informacion' => $id_informacion, 'id' => $id_agendamiento, 'validate' => 'true'));
                 break;
             default:
                 break;

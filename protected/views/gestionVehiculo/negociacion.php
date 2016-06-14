@@ -1691,7 +1691,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
     var seguroCampesino = primaNeta * 0.00500;
     var derechosEmision = primaNeta * porcentajeDerechos;
     var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-    var iva = subtotal * 0.12;
+    var iva = subtotal * 0.14;
     var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
     //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -1751,7 +1751,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -1807,7 +1807,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
 
@@ -1866,7 +1866,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         var precioEntrada = valorEntrada1.replace(',', '');
@@ -1953,7 +1953,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         
@@ -2040,7 +2040,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         var seguroCampesino = primaNeta * 0.00500;
         var derechosEmision = primaNeta * porcentajeDerechos;
         var subtotal = primaNeta + superBancos + seguroCampesino + derechosEmision;
-        var iva = subtotal * 0.12;
+        var iva = subtotal * 0.14;
         var primaTotal = primaNeta + superBancos + seguroCampesino + derechosEmision + iva;
         //console.log('----PRIMA TOTAL----: ' + primaTotal);
         var precioEntrada = valorEntrada1.replace(',', '');
@@ -3284,7 +3284,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                             <div class="row">
                                 <div id="generatepdf" style="display: none;">
                                     <div class="col-md-2" id="contpdf">
-                                        <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/proforma/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-warning" target="_blank" id="btngenerate">Proforma</a>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/proforma/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-warning" target="_blank" id="btngenerate">Ver Proforma</a>
                                     </div>
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-warning" onclick="modProforma();" id="btnmodprof" style="display: none;">Modificar Pdf</button>

@@ -99,13 +99,13 @@ if (isset($search)) {
                 $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
                 INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.concesionario IN ({$dealerList})";
+                WHERE gi.concesionario IN ({$dealerList}) group by gc.id_vehiculo order by gc.fecha DESC ";
             }else{
                 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
                 $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
                 INNER JOIN gestion_informacion gi ON gi.id = gc.id_informacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
-                WHERE gi.concesionario = {$concesionarioid}";
+                WHERE gi.concesionario = {$concesionarioid} group by gc.id_vehiculo order by gc.fecha DESC ";
             }
             
 //            $dealer_id = $this->getDealerId($id_asesor);
