@@ -16,6 +16,8 @@ $countp = GestionPresentacion::model()->count(array('condition' => "id_informaci
 $criteria6 = new CDbCriteria(array('condition' => "id_informacion={$id}"));
 $sl = GestionSolicitudCredito::model()->count($criteria6);
 //echo 'countp: '.$countp;
+$ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"));
+//echo 'ex: '.$ex->fuente_contacto;
 ?>
 <script>
     $(document).ready(function () {
@@ -184,14 +186,14 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
                     </div>
                 </div>
                 <?php
-                if ($countp > 0):
+                if ($countp > 0 || $ex->fuente_contacto == 'exhibicion'):
                     ?>
                     <div class="row">
                         <div class="col-md-3">
                             <a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
                         <div class="col-md-offset-5 col-md-4">
-                            <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/CatalogoComparativoKIA-MAYO.pdf" class="btn btn-default" target="_blank">Manual Comparativo</a>
+                            <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Manual-Comparativo-Kia_Junio.pdf" class="btn btn-default" target="_blank">Manual Comparativo</a>
                         </div>
                     </div>
                 <?php endif; ?>
