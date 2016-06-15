@@ -2731,5 +2731,10 @@ class Controller extends CController {
         }
         return $data;
     }
+    
+    public function getFuenteContacto($id_informacion) {
+        $ft = GestionDiaria::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
+        return $ft->fuente_contacto;
+    }
 
 }

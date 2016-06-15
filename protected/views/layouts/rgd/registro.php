@@ -68,7 +68,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
     <div class="row exh-cont" style="display: none;">
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Lugar</label>
-            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text">
+            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="CEMEXPO">
         </div>
     </div>
     <div class="row otro-cont" style="display: none;">

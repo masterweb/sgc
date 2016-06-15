@@ -777,6 +777,8 @@ $count = count($users);
                                 $categorizacion = $this->getCategorizacionSGC($c['id']);
                                 $fuente = $this->getFuenteSGC($c['id_cotizacion']);
                                 $status = $this->getStatusSGC($c['id']);
+                                $fuente_contacto = $this->getFuenteContacto($c['id']);
+                                //echo 'fuente de contacto: '.$fuente_contacto;
                                 $data_btn_semaforo = "";
                                 if (!empty($proximo_seguimiento)) {
                                     $fecha_array = explode(' ', $proximo_seguimiento);
@@ -1008,9 +1010,11 @@ $count = count($users);
                                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
                                             <?php } ?>
                                         <?php } else { ?>
-                                            <?php if ($cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?> 
+                                            <?php if ($cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?> 
                                                 <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
-                                            <?php } ?>
+                                            <?php }else{ ?>
+                                                <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                                            <?php  } ?>
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
