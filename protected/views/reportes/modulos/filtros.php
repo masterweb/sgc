@@ -2,6 +2,7 @@
     <?php
         $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
         $usuariosGeneral = array(71, 70);
+        $usuariosjsucursal = array(70);
         $usuariosUsados = array(77, 76);
         $usuariosExonerados = array(75, 72);
         $usuariosBDC = array(73, 72);
@@ -54,7 +55,7 @@
                 <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="bdc"/>
             <?php endif; ?>
     <?php endif; ?>
-    <?php if (in_array($varView['cargo_id'], $usuariosGenentes)): ?>
+    <?php if (in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosjsucursal)): ?>
         <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionGrupo" value="<?=$varView['grupo_id']?>"/>      
     <?php endif; ?>
 
@@ -137,7 +138,7 @@
     <?php endif; ?>
 
     <!-- FILTRO CONCESIONARIOS -->
-    <?php if ($varView['cargo_id'] == 69 || $varView['AEKIA'] == true): ?>
+    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
         <div class="col-md-6">
             <label for="">Concesionarios</label>
             <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" >

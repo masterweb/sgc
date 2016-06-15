@@ -7,8 +7,7 @@ $(function () {
         tipo_b = $(this).val();
         if(cargo_id != '69'){
             vaciar();  
-        }
-        
+        }    
         checkFiltro($(this)); 
     });
 
@@ -95,6 +94,11 @@ $(function () {
             loaddealers($('#GestionInformacionProvincias'), 'p');
         }
     }
+
+    $('#TAconcesionarios').change(function () {
+        loadmodelosTA($(this));
+        filtros_notification();
+    });
 
     function loadEstadoBDC(){
         tipo_busqueda_por = $('.tipo_busqueda_por:checked').val();
@@ -290,10 +294,7 @@ $(function () {
             });
         }        
     }
-    $('#TAconcesionarios').change(function () {
-        loadmodelosTA($(this));
-        filtros_notification();
-    });
+    
     function loadmodelosTA(e){
         var fecha1 = $('#fecha-range1').attr('value');
         var fecha2 = $('#fecha-range2').attr('value');
@@ -315,41 +316,41 @@ $(function () {
         });
     }
     function loadconcesionariosTA(e){          
-            if(e.attr('value') != ''){
-                loading('activar');
-                var where = '';
-                var value = e.attr('value');
-                var fecha1 = $('#fecha-range1').attr('value');
-                var fecha2 = $('#fecha-range2').attr('value');
-                if(e.attr('id') == 'TAprovincia'){
-                    where = "provincia = '" + value + "' AND ";
-                    model_info = ['provincia', value];
-                }else{
-                    where = "grupo = '"+ value + "' AND ";
-                    model_info = ['grupo', value];
+        if(e.attr('value') != ''){
+            loading('activar');
+            var where = '';
+            var value = e.attr('value');
+            var fecha1 = $('#fecha-range1').attr('value');
+            var fecha2 = $('#fecha-range2').attr('value');
+            if(e.attr('id') == 'TAprovincia'){
+                where = "provincia = '" + value + "' AND ";
+                model_info = ['provincia', value];
+            }else{
+                where = "grupo = '"+ value + "' AND ";
+                model_info = ['grupo', value];
+            }
+            $.ajax({
+                url: url_footer_var_asesoresTA,
+                beforeSend: function (xhr) {
+                },
+                type: 'POST', 
+                data: {
+                    where: where, 
+                    fecha1: fecha1, 
+                    fecha2: fecha2,
+                    TAresp_activo: TAresp_activo,
+                    model_info: model_info
+                },
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $('#TAconcesionarios').html(data[0]); 
+                    $('.filtros_modelos_ta').html(data[1]); 
+                    loading('desactivar');                 
                 }
-                $.ajax({
-                    url: url_footer_var_asesoresTA,
-                    beforeSend: function (xhr) {
-                    },
-                    type: 'POST', 
-                    data: {
-                        where: where, 
-                        fecha1: fecha1, 
-                        fecha2: fecha2,
-                        TAresp_activo: TAresp_activo,
-                        model_info: model_info
-                    },
-                    dataType: 'json',
-                    cache: false,
-                    success: function (data) {
-                        $('#TAconcesionarios').html(data[0]); 
-                        $('.filtros_modelos_ta').html(data[1]); 
-                        loading('desactivar');                 
-                    }
-                });
-            }        
-        }
+            });
+        }        
+    }
 
     if(activar_dealer == 'si'){  
         //TRAFICO ACUMULADO 
@@ -397,7 +398,8 @@ $(function () {
         
     }
 
-    checkFiltro($('.tipo_busqueda_por:checked'));   
+    checkFiltro($('.tipo_busqueda_por:checked')); 
+
     function checkFiltro(e){
         if(e.attr('value') == 'grupos'){
             $('.cont_grup').show();
@@ -414,7 +416,7 @@ $(function () {
             $('#trafico_todo').show();
             $('#traficoexonerados').hide();
             $('.tipoExonerados').hide();
-            if(cargo_id != '69'){
+            if(cargo_id != '69' ){
                 loadgp($('#GestionInformacionGrupo'), url_footer_var_grupo, 'g');
                 loadgp($('#GestionInformacionProvincias'), url_footer_var_provincia, 'p');
             }else{
