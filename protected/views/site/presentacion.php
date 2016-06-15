@@ -181,7 +181,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                             </tbody>
                         </table>
                     </div>
-                            </div>
+                    </div>
                     <hr>
                     </div>
                 </div>
