@@ -39,7 +39,7 @@
 	?>
 	nombre_usuario = '<?= $nombre_print; ?>' + ' | <span class="cargo_rep">' + '<?= $cargo_print; ?>' + '</span>';
 	nombre_concecionario = '<?= $varView["consecionario_usuario"]; ?>';
-	active_group = '<?= $varView["grupo"] ?>';
+	active_group = '<?= $varView["grupo_id"] ?>';
 	active_prov = '<?= $varView["provincias"] ?>';
 	activar_dealer = '<?= $activar_dealer?>';
 

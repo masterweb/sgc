@@ -115,7 +115,8 @@ class ReportesController extends Controller {
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> '.$this->getNombreGrupo($varView['grupo_id']);
                 break;
             case 70: // jefe de sucursal TERMINADO------>
-                $id_persona = "gi.dealer_id = ".$varView['dealer_id'];            
+                $id_persona = "gi.dealer_id = ".$varView['dealer_id']; 
+                $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);  
                 break;                
             case 71: // asesor de ventas TERMINADO------>
                 $id_persona = "gi.responsable = ".$varView['id_responsable'];
@@ -893,7 +894,28 @@ class ReportesController extends Controller {
         }
     }
 
+    public function GetUserDealers() {
+        $user_id = (int) Yii::app()->user->getState('id');
+        $con = Yii::app()->db;
+
+        $sql = "SELECT * FROM grupoconcesionariousuario WHERE usuario_id = ".$user_id." ORDER BY concesionario_id ASC";
+        $request = $con->createCommand($sql);
+        $request = $request->queryAll();
+
+        foreach ($request as $id_concesionario) {
+            $concesionario .= $id_concesionario['concesionario_id'].', ';
+        }
+        $concesionario = rtrim($concesionario, ", ");
+        
+        if(!empty($concesionario)){
+            $concesionario = " dealer_id IN (".$concesionario.") ";
+        }
+
+        return $concesionario;
+    }
+
      public function actionAjaxGetDealers() {
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
@@ -915,11 +937,11 @@ class ReportesController extends Controller {
         }else if($tipo_b == 'usados'){
             $extra_where = " marca_usado IS NOT NULL AND ";
         }elseif($tipo_b == 'general'){
-            $extra_where = " tipo_ex IS NULL AND marca_usado IS NULL AND bdc = 0 AND ";
+            $extra_where = " tipo_ex IS NULL AND marca_usado IS NULL AND bdc = 0 AND ";   
         }
 
         $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."') ORDER BY dealer_id ASC";
-        echo $sql;
+        //echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
         foreach ($request as $id_concesionario) {
@@ -932,12 +954,19 @@ class ReportesController extends Controller {
         }
         //echo $concesionario;
 
+        $join = '';
         if($tipo == 'p'){
             $where = "provincia = {$grupo_id} AND ";
         }else{
-            $where = "id_grupo = {$grupo_id} AND ";
+            if($cargo_id == 70){
+                $join = ' LEFT JOIN grupoconcesionariousuario as gc ON gc.concesionario_id = dealer_id ';
+                $where = " ";
+                $concesionario = $this->GetUserDealers();;
+            }else{
+                $where = "id_grupo = {$grupo_id} AND ";
+            }
         }
-        $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE ".$where.$concesionario." ORDER BY nombre ASC";
+        $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios ".$join." WHERE ".$where.$concesionario." ORDER BY nombre ASC";
         echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
@@ -1301,8 +1330,8 @@ class ReportesController extends Controller {
         $trafico_mes_anterior = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
-            $join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') ", 
+            $join_ext.$INERmodelos.' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND fuente_contacto = 'showroom' ", 
             $group_ext
         );
         $trafico_mes_anterior = $trafico_mes_anterior[0]['COUNT(*)'];
@@ -1311,8 +1340,8 @@ class ReportesController extends Controller {
         $trafico_mes_actual = $this->SQLconstructor(
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
-            $join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') ", 
+            $join_ext.$INERmodelos.' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND fuente_contacto = 'showroom' ", 
             $group_ext
         );
         $trafico_mes_actual = $trafico_mes_actual[0]['COUNT(*)'];
@@ -1322,8 +1351,8 @@ class ReportesController extends Controller {
             $traficockd1 = $this->SQLconstructor(
                 'COUNT(*) '.$select_ext, 
                 'gestion_informacion gi', 
-                $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND fuente_contacto = 'showroom' ", 
                 $group_ext
             );
             $traficockd1 = $traficockd1[0]['COUNT(*)'];
@@ -1334,8 +1363,8 @@ class ReportesController extends Controller {
             $traficockd2 = $this->SQLconstructor(
                 'COUNT(*) '.$select_ext, 
                 'gestion_informacion gi', 
-                $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ', 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')  AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')  AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND fuente_contacto = 'showroom' ", 
                 $group_ext
             );
             $traficockd2 = $traficockd2[0]['COUNT(*)'];
