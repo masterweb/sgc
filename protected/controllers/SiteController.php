@@ -1522,23 +1522,31 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //die('ced: '.$ced);
         if ($ced > 0) {
             $result = TRUE;
-            $data = '<div class="row"><h1 class="tl_seccion">Cliente existente</h1></div>'
-                    . '<div class="row"><div class="col-md-12">'
-                    . '<div class="table-responsive">'
-                    . '<table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Status</span></th>
-                        <th><span>Nombres</span></th>
-                        <th><span>Apellidos</span></th>
-                        <th><span>Cédula</span></th>
-                        <th><span>Concesionario</span></th>
-                        <th><span>Fecha Registro</span></th>
-                        <th><span>Modelo</span></th>
-                        <!--<th><span>Edición</span></th>-->
-                    </tr>
-                </thead>
-                <tbody>';
+            $data .= '<div class="panel-group">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" href="#cliente">Cliente existente</a>
+                        </h4>
+                      </div>
+                      <div id="cliente" class="panel-collapse collapse in">';
+            $data .= '<div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                            <table class="tables tablesorter" id="keywords">
+                                <thead>
+                                    <tr>
+                                        <th><span>Status</span></th>
+                                        <th><span>Nombres</span></th>
+                                        <th><span>Apellidos</span></th>
+                                        <th><span>Cédula</span></th>
+                                        <th><span>Concesionario</span></th>
+                                        <th><span>Fecha Registro</span></th>
+                                        <th><span>Modelo</span></th>
+                                        <th><span>Edición</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
 
 
             foreach ($cd as $value) {
@@ -1585,10 +1593,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $data .= '</td>'
                         . '<td>' . $showboton . '</td></tr>';
             }
-            $data .= '</table></div></div></div>';
+            
 
             // LLAMADA A FUNCION DE CREATEC 
             $data_createc = $this->Createc($id, 0, 'cedula');
+            $data .= '</table></div></div></div></div></div></div></div></div>';
         }
         if ($ced == 0) {
             $model->cedula = $id;
@@ -1886,7 +1895,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         );
         if ($coin1 && $coin2) {// si las dos busquedas son true en etiqueta de apertura y cierre
             if ($count == $count2) {// si las dos busquedas devuelven el mismo numero de coincidencias
-                $dataCreatec = '<div class="row"><h1 class="tl_seccion">Info Postventa</h1></div>'
+                $dataCreatec = '<div class="panel-group">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" href="#postventa">Info Postventa</a>
+                            </h4>
+                          </div>
+                          <div id="postventa" class="panel-collapse collapse">'
                         . '<div class="row"><div class="col-md-12">'
                         . '<div class="table-responsive">
                         <table class="tables tablesorter" id="keywords">
@@ -1926,7 +1942,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     }
                     $dataCreatec .= '</tr>';
                 }
-                $dataCreatec .= '</table></div></div></div>';
+                $dataCreatec .= '</table></div></div></div></div></div></div>';
                 $dataCrTga35 = TRUE;
                 $result = TRUE;
             }
@@ -1955,9 +1971,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         if ($coin1_36 && $coin2_36) {// si las dos busquedas son true en etiqueta de apertura y cierre
             if ($count_36 == $count2_36) {// si las dos busquedas devuelven el mismo numero de coincidencias
                 //die('enter data createc 36');
-                $dataCreatec_36 = '<div class="row"><h1 class="tl_seccion">Info Repuestos</h1></div>'
-                        . '<div class="row"><div class="col-md-12">'
-                        . '<div class="table-responsive">
+                $dataCreatec_36 = '<div class="panel-group">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" href="#repuestos">Info Repuestos</a>
+                            </h4>
+                          </div>
+                          <div id="repuestos" class="panel-collapse collapse">
+                        <div class="row"><div class="col-md-12">
+                        <div class="table-responsive">
                         <table class="tables tablesorter" id="keywords">
                 <thead>
                     <tr>
@@ -1987,7 +2010,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     }
                     $dataCreatec_36 .= '</tr>';
                 }
-                $dataCreatec_36 .= '</table></div></div></div>';
+                $dataCreatec_36 .= '</table></div></div></div></div></div></div>';
                 //die('data cr 36: '.$dataCreatec_36);
                 $dataCrTga36 = TRUE;
                 $result = TRUE;
@@ -2024,7 +2047,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         if ($coin1_vh && $coin2_vh) {// si las dos busquedas son true en etiqueta de apertura y cierre
             if ($count_vh == $count2_vh) {// si las dos busquedas devuelven el mismo numero de coincidencias
                 //die('enter vec');
-                $dataCreatec_vh = '<div class="row"><h1 class="tl_seccion">Info Venta Vehículos</h1></div>'
+                $dataCreatec_vh = '<div class="panel-group">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <h4 class="panel-title">
+                              <a data-toggle="collapse" href="#infoventarepuestos">Info Venta Vehículos</a>
+                            </h4>
+                          </div>
+                          <div id="infoventarepuestos" class="panel-collapse collapse">'
                         . '<div class="row"><div class="col-md-12">'
                         . '<div class="table-responsive">
                         <table class="tables tablesorter" id="keywords">
@@ -2076,7 +2106,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     }
                     $dataCreatec_vh .= '</tr>';
                 }
-                $dataCreatec_vh .= '</table></div></div></div>';
+                $dataCreatec_vh .= '</table></div></div></div></div></div></div>';
 //                echo '<pre>';
 //                print_r($data_save);
 //                echo '</pre>';

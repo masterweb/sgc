@@ -577,17 +577,13 @@ $count = count($users);
             </div>
         </div>
     </div>
-    <div class="cont-existente">
-
-    </div>
-    <div class="cont-createc-vh01"></div>
+    <br />
+    <div class="cont-existente"></div>
+    <div class="cont-createc-vh01"></div>    
+    <div class="cont-createc"></div>
+    <div class="cont-createc-tg36"></div>
+    <br />
     <div class="cont-createc-but"></div>
-    <div class="cont-createc">
-
-    </div>
-    <div class="cont-createc-tg36">
-
-    </div>
 
 
 <?php if (isset($title)): ?>
