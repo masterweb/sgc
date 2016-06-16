@@ -682,19 +682,19 @@ class GestionSolicitudCreditoController extends Controller {
             ));
             $pr = GestionStatusSolicitud::model()->count($cr);
             //die('num pr: '.$pr);
-            if ($pr > 0) { // SI EXISTE UN STATUS DE SOLICITUD DE SOLICITUD DE PROFORMA
-                $con = Yii::app()->db;
-                $sql = "UPDATE gestion_status_solicitud SET "
-                        . "status = {$_POST['GestionStatus']['status']}, "
-                        . "observaciones = '{$_POST['GestionStatus']['observaciones']}' "
-                        . "WHERE id_informacion = {$_POST['GestionStatus']['id_informacion']} AND id_vehiculo = {$_POST['GestionStatus']['id_vehiculo']}";
-                $request = $con->createCommand($sql)->query();
-                if ($_POST['GestionStatus']['status'] == 2) {
-                    $con = Yii::app()->db;
-                    $sql = "UPDATE gestion_solicitud_credito SET status = 1 WHERE id = {$_POST['GestionStatus']['id_status']}";
-                    $request = $con->createCommand($sql)->query();
-                }
-            } else {// CASO CONTRARIO CREA UNA NUEVO STATUS
+//            if ($pr > 0) { // SI EXISTE UN STATUS DE SOLICITUD DE SOLICITUD DE PROFORMA
+//                $con = Yii::app()->db;
+//                $sql = "UPDATE gestion_status_solicitud SET "
+//                        . "status = {$_POST['GestionStatus']['status']}, "
+//                        . "observaciones = '{$_POST['GestionStatus']['observaciones']}' "
+//                        . "WHERE id_informacion = {$_POST['GestionStatus']['id_informacion']} AND id_vehiculo = {$_POST['GestionStatus']['id_vehiculo']}";
+//                $request = $con->createCommand($sql)->query();
+//                if ($_POST['GestionStatus']['status'] == 2) {
+//                    $con = Yii::app()->db;
+//                    $sql = "UPDATE gestion_solicitud_credito SET status = 1 WHERE id = {$_POST['GestionStatus']['id_status']}";
+//                    $request = $con->createCommand($sql)->query();
+//                }
+//            } else {// CASO CONTRARIO CREA UNA NUEVO STATUS
                 $model->attributes = $_POST['GestionStatus'];
                 $model->id_informacion = $_POST['GestionStatus']['id_informacion'];
                 $model->id_vehiculo = $_POST['GestionStatus']['id_vehiculo'];
@@ -702,7 +702,7 @@ class GestionSolicitudCreditoController extends Controller {
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $model->fecha = date("Y-m-d H:i:s");
                 $model->save();
-            }
+//            }
 
 //            if ($_POST['GestionStatus']['status'] == 2) {
 //                $con = Yii::app()->db;

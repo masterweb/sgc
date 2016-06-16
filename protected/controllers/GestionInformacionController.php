@@ -2066,10 +2066,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 1: // BUSQUEDA GENERAL POR NOMBRES, APELLIDOS, CEDULA, ID
                 $count = 0;
                 $select = $sql;
-                /* BUSQUEDA POR NOMBRES O APELLIDOS */
+                /* BUSQUEDA POR NOMBRES O APELLIDOS, CEDULA, RUC, PASAPORTE, ID */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 //$criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
                 //$criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
@@ -2089,7 +2091,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('before render nombre:'.$count);
                 if ($count > 0) {
                     //die('fef');
-                    $title = "Busqueda por nombres o apellidos: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                    $title = "Busqueda general por apellidos, nombres, cedula, ruc, pasaporte o id: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
                     $data['pages'] = $pages;
@@ -2103,7 +2105,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR CEDULA, RUC O PASAPORTE */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')");
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'AND');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                 $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
                         . " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
@@ -2134,7 +2136,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR ID */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'");
+                $criteria->addCondition("gi.id = {$_GET['GestionDiaria']['general']}",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
                         . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
