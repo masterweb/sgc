@@ -730,7 +730,7 @@ class GestionInformacionController extends Controller {
 
             $con = Yii::app()->db;
             $getParams = array();
-
+            
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $fechaActual = date("Y/m/d");
             $params = explode('-', $_GET['GestionDiaria2']['fecha']);
@@ -1447,20 +1447,20 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .= " gd.paso = 9";
                         break;
                     case 'Desiste':
-                        $sql .= " and gd.desiste = 1";
+                        $sql .= " and gd.desiste = 1 and ";
                         break;
                     case 'Entrega':
                         $sql .= "  and gd.entrega = 1 and ";
                         $sql .= " gd.paso = 9 ";
                         break;
                     case 'PrimeraVisita':
-                        $sql .= "  and gd.paso = '1-2' ";
+                        $sql .= "  and gd.paso = '1-2' and ";
                         break;
                     case 'Seguimiento':
-                        $sql .="  and gd.seguimiento = 1 ";
+                        $sql .="  and gd.seguimiento = 1 and ";
                         break;
                     case 'SeguimientoEntrega':
-                        $sql .="  and gd.seguimiento_entrega = 1 ";
+                        $sql .="  and gd.seguimiento_entrega = 1 and ";
                         break;
                     case 'Vendido':
                         $sql .="  and gd.seguimiento = 1 AND ";
