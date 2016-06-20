@@ -41,6 +41,28 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 </style>
 <script type="text/javascript">
     $(function () {
+        $('#GestionFactura_cierre').change(function(){
+            if (confirm('Está seguro de anular o reactivar la factura')) { 
+                var value = $(this).attr('value');
+                var id_factura = $('#Gestion_id_factura').val();
+                var id_info = $('#Gestion_id_informacion').val();
+                var id_vehiculo = $('#Gestion_id_vehiculo').val();
+                $.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("gestionDiaria/setCierre"); ?>',
+                    datatype: "json",
+                    type: 'POST',
+                    data: {tipo_cierre: value, id : id_factura, id_informacion: id_info, id_vehiculo: id_vehiculo},
+                    success: function (data) {
+                        $('#bg_negro').show();
+                        if(data.result == true){
+                           $('#bg_negro').hide();
+                           //alert('Datos Grabados');
+                           location.reload();
+                        }
+                    }
+                });
+            }
+        });
         $('.fancybox').fancybox();
         $("#GestionDiaria_proximo_seguimiento").datepicker({
             changeMonth: true,
@@ -860,27 +882,32 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <?php
                             //echo 'id informacion: '.$c1['id_informacion'].', id vehiculo: '.$c1['id_vehiculo'];
                             $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
+                            $solicitud = FALSE;
                             switch ($status) {
                                 case 'na':
                                     echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
                                     break;
                                 case '1':
                                     echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c['id_informacion'],$c['id_vehiculo']);
+                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
                                     echo $comentario;
+                                    $solicitud = TRUE;
                                     break;
                                 case '2':
                                     echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+                                    $solicitud = TRUE;
                                     break;
                                 case '4':
                                     echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c['id_informacion'],$c['id_vehiculo']);
+                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+                                    $solicitud = TRUE;
                                     echo $comentario;
 
                                     break;
                                 case '3':
                                     echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c['id_informacion'],$c['id_vehiculo']);
+                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+                                    $solicitud = TRUE;
                                     echo $comentario;
 
                                     break;
@@ -889,8 +916,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     break;
                             }
                             ?>
-                            <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/cotizacion/', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
-
+                            <?php if($solicitud == TRUE): ?>
+                            <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
+                            <?php endif; ?>
                         </div>
                         <?php endif; ?>
 
@@ -924,7 +952,18 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
                             <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
                             <?php if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
-                            <div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura</a></div>
+                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura</a></div>
+                            <?php $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}")); ?>
+<!--                            <div class="col-md-3">
+                                <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
+                                    <option value="">--Seleccione--</option>
+                                    <option value="1">Anular Factura</option>
+                                    <option value="0">Revertir Factura</option>
+                                </select>
+                                <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
+                                <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
+                                <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
+                            </div>-->
                             <?php } ?>
                         </div> 
                     <?php } ?>

@@ -534,19 +534,19 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <?php if ($value['vehiculo_marca2']): ?>
             <div class="col-xs-2">
                 <label for=""><em class="tit-lab">Vehículo: Marca: </em></label>
-                <p><?php echo $value['vehiculo_marca1']; ?>
+                <p><?php echo $value['vehiculo_marca2']; ?>
             </div>
             <div class="col-xs-2">
                 <label for=""><em class="tit-lab">Modelo: </em></label>
-                <p><?php echo $value['vehiculo_modelo1']; ?>
+                <p><?php echo $value['vehiculo_modelo2']; ?>
             </div>
             <div class="col-xs-2">
                 <label for=""><em class="tit-lab">Año: </em></label>
-                <p><?php echo $value['vehiculo_year1']; ?>
+                <p><?php echo $value['vehiculo_year2']; ?>
             </div>
             <div class="col-xs-2">
                 <label for=""><em class="tit-lab">Valor Comercial: </em></label>
-                <p><?php echo $value['vehiculo_valor1']; ?>
+                <p><?php echo $value['vehiculo_valor2']; ?>
             </div>
         <?php endif; ?>
     </div>

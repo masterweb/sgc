@@ -1776,7 +1776,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'empresa_trabajo'); ?></div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'telefonos_trabajo'); ?>
-                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $val['telefono_oficina'])); ?>
+                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                 <label class="error" id="telefonos_trabajo_error" style="display: none;">Ingrese un número vállido.</label>
                                 <?php echo $form->error($model, 'telefonos_trabajo'); ?></div>
                             <div class="col-md-2">
@@ -2666,19 +2666,23 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     <div class="row">
                         <div class="col-md-3">
                             <label for="">Vehículo: Marca</label>
-                            <input type="text" name="GestionSolicitudCredito[vehiculo_marca2]" class="form-control"/>
+                            <?php echo $form->textField($model, 'vehiculo_marca2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                            <!--<input type="text" name="GestionSolicitudCredito[vehiculo_marca2]" class="form-control"/>-->
                         </div>
                         <div class="col-md-3">
                             <label for="">Modelo</label>
-                            <input type="text" name="GestionSolicitudCredito[vehiculo_modelo2]" class="form-control"/>
+                            <?php echo $form->textField($model, 'vehiculo_modelo2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                            <!--<input type="text" name="GestionSolicitudCredito[vehiculo_modelo2]" class="form-control"/>-->
                         </div>
                         <div class="col-md-3">
                             <label for="">Año</label>
-                            <input type="text" name="GestionSolicitudCredito[vehiculo_year2]" class="form-control"/>
+                            <?php echo $form->textField($model, 'vehiculo_year2', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                            <!--<input type="text" name="GestionSolicitudCredito[vehiculo_year2]" class="form-control"/>-->
                         </div>
                         <div class="col-md-3">
                             <label for="">Valor Comercial</label>
-                            <input type="text" id="GestionSolicitudCreditovehiculo_valor2" maxlength="14" name="GestionSolicitudCredito[vehiculo_valor2]" class="form-control" onkeypress="return validateNumbers(event)"/>
+                            <?php echo $form->textField($model, 'vehiculo_valor2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                            <!--<input type="text" id="GestionSolicitudCreditovehiculo_valor2" maxlength="14" name="GestionSolicitudCredito[vehiculo_valor2]" class="form-control" onkeypress="return validateNumbers(event)"/>-->
                         </div>
                     </div>
                     <div class="row">
