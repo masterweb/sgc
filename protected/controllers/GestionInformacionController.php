@@ -358,6 +358,10 @@ class GestionInformacionController extends Controller {
                 if ($_POST['tipo'] == 'trafico') {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
+                // SI EL CLIENTE ES DE EXHIBICION SALTAMOS EL PASO DE CONSULTA Y SE VA A GESTIONVEHICULO CREATE
+                if($_POST['GestionInformacion']['fuente'] == 'exhibicion'){
+                    $this->redirect(array('gestionVehiculo/create', 'id' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
+                }
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
                 $this->redirect(array('site/consulta', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
             }
@@ -726,7 +730,7 @@ class GestionInformacionController extends Controller {
 
             $con = Yii::app()->db;
             $getParams = array();
-
+            
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $fechaActual = date("Y/m/d");
             $params = explode('-', $_GET['GestionDiaria2']['fecha']);
@@ -1443,20 +1447,20 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .= " gd.paso = 9";
                         break;
                     case 'Desiste':
-                        $sql .= " and gd.desiste = 1";
+                        $sql .= " and gd.desiste = 1 and ";
                         break;
                     case 'Entrega':
                         $sql .= "  and gd.entrega = 1 and ";
                         $sql .= " gd.paso = 9 ";
                         break;
                     case 'PrimeraVisita':
-                        $sql .= "  and gd.paso = '1-2' ";
+                        $sql .= "  and gd.paso = '1-2' and ";
                         break;
                     case 'Seguimiento':
-                        $sql .="  and gd.seguimiento = 1 ";
+                        $sql .="  and gd.seguimiento = 1 and ";
                         break;
                     case 'SeguimientoEntrega':
-                        $sql .="  and gd.seguimiento_entrega = 1 ";
+                        $sql .="  and gd.seguimiento_entrega = 1 and ";
                         break;
                     case 'Vendido':
                         $sql .="  and gd.seguimiento = 1 AND ";
@@ -2062,10 +2066,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 1: // BUSQUEDA GENERAL POR NOMBRES, APELLIDOS, CEDULA, ID
                 $count = 0;
                 $select = $sql;
-                /* BUSQUEDA POR NOMBRES O APELLIDOS */
+                /* BUSQUEDA POR NOMBRES O APELLIDOS, CEDULA, RUC, PASAPORTE, ID */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 //$criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
                 //$criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
@@ -2085,7 +2091,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('before render nombre:'.$count);
                 if ($count > 0) {
                     //die('fef');
-                    $title = "Busqueda por nombres o apellidos: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                    $title = "Busqueda general por apellidos, nombres, cedula, ruc, pasaporte o id: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                     $data['title'] = $title;
                     $data['users'] = $users;
                     $data['pages'] = $pages;
@@ -2099,7 +2105,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR CEDULA, RUC O PASAPORTE */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')");
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'AND');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                 $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
                         . " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
@@ -2130,7 +2136,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR ID */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'");
+                $criteria->addCondition("gi.id = {$_GET['GestionDiaria']['general']}",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
                         . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";

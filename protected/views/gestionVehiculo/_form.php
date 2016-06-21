@@ -125,20 +125,24 @@ if (isset($id)) {
                     type: 'POST',
                     data: dataform,
                     success: function (data) {
-                        $('#bg_negro').hide();
+                        
                         //alert('Datos grabados');
                         //$('.vehicle-cont').hide;                        
                         $('.vehicle-cont .cont-vc').hide();
                         $('.vehicle-cont .form-content').hide();                        
-                        
-                        $.ajax({
-                            url: '<?php echo Yii::app()->createAbsoluteUrl("site/getVec"); ?>',
-                            type: 'post', dataType: 'json', data: {id:<?php echo $id; ?>},
-                            success: function (data) {
-                                $('.display-vec').html(data.options);
-                                $('#cont-agregar').show();
-                            }
-                        });
+                        if(n == 1){
+                            location.reload();
+                        }else{
+                            $('#bg_negro').hide();
+                            $.ajax({
+                                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getVec"); ?>',
+                                type: 'post', dataType: 'json', data: {id:<?php echo $id; ?>},
+                                success: function (data) {
+                                    $('.display-vec').html(data.options);
+                                    $('#cont-agregar').show();
+                                }
+                            });
+                        }
                     }
                 });
 

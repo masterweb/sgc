@@ -38,6 +38,13 @@
         });
     });
 </script>
+<style type="text/css">
+    .panel-default > .panel-heading {
+    background-color: #aa1f2c;
+    border-color: #dddddd;
+    color: white;
+}
+</style>
 <div class="container">
     <div class="row">
         <h1 class="tl_seccion">Status Solicitudes de Crédito</h1>
@@ -270,6 +277,7 @@
     </div>
     <br />
     <div class="row">
+        <div class="col-md-12">
         <div class="highlight">
             <div class="form">
                 <form action="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $_GET['id'], 'id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" method="post" id="form-status">
@@ -290,7 +298,7 @@
                             <label for="">Observaciones</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <textarea name="GestionStatus[observaciones]" id="" cols="30" rows="10"></textarea>
+                                    <textarea name="GestionStatus[observaciones]" id="" cols="15" rows="5"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -308,5 +316,59 @@
                 </form>
             </div>
         </div>
+            </div>
     </div>
+    <br />
+    <?php $cseg = GestionStatusSolicitud::model()->count(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"));?>
+  <?php if($cseg > 0){ ?>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Historial de Solicitud de Crédito
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+
+          <table class="table table-striped">
+              <thead>
+                  <tr>
+                      <th>Estado</th>
+                      <th>Fecha</th>
+                      <th>Observaciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+          <?php 
+          $his = GestionStatusSolicitud::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+          foreach ($his as $value) { ?>
+                  <tr><td><?php  switch ($value['status']) {
+                    case 1:
+                        echo 'En Análisis';
+                        break;
+                    case 2:
+                        echo 'Aprobado';
+                        break;
+                    case 3:
+                        echo 'Negado';
+                        break;
+                    case 4:
+                        echo 'Condicionado';
+                        break;
+
+                    default:
+                        break;
+                } ?></td>
+                  <td><?php echo $value['fecha']; ?></td>
+                  <td><?php echo $value['observaciones']; ?></td>
+              </tr>
+          <?php } ?>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <?php } ?>
 </div>

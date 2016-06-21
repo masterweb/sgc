@@ -46,6 +46,16 @@ $id_version = $this->getIdVersion($id_vehiculo);
             //$('.cont-financ').hide();
 <?php endif; ?>
     //$('#btn-acc').prop('disabled',true);
+    var precio_vehiculo1 = formatnumber($('#GestionFinanciamiento_precio').val());
+    precio_vehiculo1 = precio_vehiculo1 * 0.20;
+    $('#GestionFinanciamiento_entrada').val(format2(precio_vehiculo1,'$'));calcFinanciamiento();
+    var precio_vehiculo2 = formatnumber($('#GestionFinanciamiento_precio2').val());
+    precio_vehiculo2 = precio_vehiculo1 * 0.20;
+    $('#GestionFinanciamiento_entrada2').val(format2(precio_vehiculo1,'$'));
+    var precio_vehiculo3 = formatnumber($('#GestionFinanciamiento_precio3').val());
+    precio_vehiculo3 = precio_vehiculo1 * 0.20;
+    $('#GestionFinanciamiento_entrada3').val(format2(precio_vehiculo1,'$'));
+    
     $('#GestionFinanciamiento_entrada').keyup(function () {
         calcFinanciamiento();
     });
@@ -54,6 +64,33 @@ $id_version = $this->getIdVersion($id_vehiculo);
     });
     $('#GestionFinanciamiento_entrada3').keyup(function () {
         calcFinanciamiento3();
+    });
+    $('#GestionFinanciamiento_porcentaje_entrada').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+        }
+    });
+    $('#GestionFinanciamiento_porcentaje_entrada2').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+        }
+    });
+    $('#GestionFinanciamiento_porcentaje_entrada3').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+        }
     });
 //    $('#GestionFinanciamiento_seguro').keyup(function () {
 //        calcSeguro();
@@ -1510,7 +1547,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 var valorEntrada1 = $('#GestionFinanciamiento_entrada').val();
                 var precioAccesorios = $('#precio_accesorios').val();
 
-                var entrada = precioAccesorios / 4;
+                var entrada = precioAccesorios / 5;
                 if (valorEntrada1 < entrada) {
                     $('.error-entrada').show();
                     return false;
@@ -1960,7 +1997,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
         precioEntrada = formatnumber(valorEntrada1);
         //var precioAccesorios = $('#precio_accesorios').val();
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
         if (precioEntrada < entrada) {
             $('.error-entrada').show();$('#GestionFinanciamiento_entrada').focus();
             return false;
@@ -2805,7 +2842,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
                                                 <input type="text" maxlength="11" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control" autocomplete="off"/>
-                                                <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
+                                                <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 20% del Precio Total</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="">Porcentaje de Entrada</label>
+                                                <input type="text" name="GestionFinanciamiento[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -2908,7 +2951,13 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
                                                 <input type="text" name="GestionFinanciamiento2[entrada]" id="GestionFinanciamiento_entrada2" class="form-control" onkeypress="return validateNumbers(event)" autocomplete="off"/>
-                                                <label class="error error-entrada2" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
+                                                <label class="error error-entrada2" style="display: none;">Ingrese un valor de entrada igual o superior al 20% del Precio Total</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="">Porcentaje de Entrada</label>
+                                                <input type="text" name="GestionFinanciamiento2[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada2"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -3015,6 +3064,12 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                <label for="">Porcentaje de Entrada</label>
+                                                <input type="text" name="GestionFinanciamiento3[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada3"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
                                                 <label for="">Tiempo de seguro</label>
                                                 <select name="GestionFinanciamiento3[tiempo_seguro]" id="GestionFinanciamiento_tiempo_seguro3" class="form-control">
                                                     <option value="5">5 años</option>
@@ -3044,7 +3099,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                             <div class="col-md-12">
                                                 <label for="">Valor Financiamiento</label>
                                                 <input type="text" name="GestionFinanciamiento3[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento3" class="form-control" onkeypress="return validateNumbers(event)" />
-                                                <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
+                                                <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 20% del Precio Total</label>
                                             </div>
                                         </div>
                                         <div class="row">

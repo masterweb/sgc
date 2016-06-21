@@ -20,6 +20,8 @@ $testAll = $this->getTestDriveOnly($id_informacion);
 //echo 'id informacion: '.$id_informacion;
 //print_r($vec);
 //die();
+$ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id_informacion}"));
+//echo $ex->fuente_contacto;
 ?>
 <script type="text/javascript">
     $(function () {
@@ -192,7 +194,7 @@ $testAll = $this->getTestDriveOnly($id_informacion);
                 <br />
                 <?php                
                 //echo $continuar_status.' = '.count($vec);
-                if ($continuar_status == count($vec)):
+                if ($continuar_status == count($vec) || $ex->fuente_contacto == 'exhibicion'):
                     ?>
                     <div class="row">
                         <div class="col-md-3">
