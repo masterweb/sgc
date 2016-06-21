@@ -88,7 +88,7 @@ class ReportesController extends Controller {
             case 60: // GERENTE VENTAS
             case 61: // JEFE DE RED VENTAS
             case 62: // SUBGERENTE DE FLOTAS VENTAS
-                $id_persona = 'gi.responsable '; 
+                $id_persona = 'gi.responsable '.' AND gi.bdc = 0 '; 
                 $varView['lista_grupo'] = Grupo::model()->findAll();                
                 $varView['lista_provincias'] = Provincias::model()->findAll();
                 $varView['lista_conce'] = 'null';
@@ -109,17 +109,17 @@ class ReportesController extends Controller {
                 $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
-                $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
+                $id_persona = 'u.grupo_id = '.$varView['grupo_id'].' AND gi.bdc = 0 ';               
                 $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> '.$this->getNombreGrupo($varView['grupo_id']);
                 break;
             case 70: // jefe de sucursal TERMINADO------>
-                $id_persona = "gi.dealer_id = ".$varView['dealer_id']; 
+                $id_persona = "gi.dealer_id = ".$varView['dealer_id'].' AND gi.bdc = 0 '; 
                 $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);  
                 break;                
             case 71: // asesor de ventas TERMINADO------>
-                $id_persona = "gi.responsable = ".$varView['id_responsable'];
+                $id_persona = "gi.responsable = ".$varView['id_responsable'].' AND gi.bdc = 0 ';
                 break; 
             case 72: //jefe BDC y exonerados TERMINADO------> PROBAR
                 $id_persona = "gi.dealer_id = ".$varView['dealer_id'].' AND (gi.bdc = 1 OR gi.tipo_form_web = "exonerados") ';
