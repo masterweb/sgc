@@ -1505,7 +1505,7 @@ class ReportesController extends Controller {
             'COUNT(DISTINCT gf.id_vehiculo) ', 
             'gestion_factura gf ', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
             $group_ext
         );
         
@@ -1516,7 +1516,7 @@ class ReportesController extends Controller {
             'COUNT(DISTINCT gf.id_vehiculo) ', 
             'gestion_factura gf ', 
             'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')", 
             $group_ext
         );
         $vh_mes_actual = $vh_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
@@ -1527,7 +1527,7 @@ class ReportesController extends Controller {
                 'COUNT(DISTINCT gf.id_vehiculo) ', 
                 'gestion_factura gf ', 
                 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion  INNER JOIN  gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
             $vhckd1 = $vhckd1[0]['COUNT(DISTINCT gf.id_vehiculo)'];
@@ -1537,7 +1537,7 @@ class ReportesController extends Controller {
                 'COUNT(DISTINCT gf.id_vehiculo) ', 
                 'gestion_factura gf ', 
                 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext.$INERmodelos, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."')", 
                 $group_ext
             );
             $vhcbu1 = ($vhcbu1[0]['COUNT(DISTINCT gf.id_vehiculo)'] - $vhckd1);
@@ -1547,7 +1547,7 @@ class ReportesController extends Controller {
                 'COUNT(DISTINCT gf.id_vehiculo) ', 
                 'gestion_factura gf ', 
                 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id '.$join_ext, 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender."))", 
                 $group_ext
             );
             $vhckd2 = $vhckd2[0]['COUNT(DISTINCT gf.id_vehiculo)'];
