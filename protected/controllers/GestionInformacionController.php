@@ -1451,7 +1451,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                     case 'Entrega':
                         $sql .= "  and gd.entrega = 1 and ";
-                        $sql .= " gd.paso = 9 ";
+                        $sql .= " gd.paso = 9 and ";
                         break;
                     case 'PrimeraVisita':
                         $sql .= "  and gd.paso = '1-2' and ";
@@ -2084,6 +2084,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
 
                 //$request = $con->createCommand($sql);
                 //$users = $request->queryAll();
@@ -2136,7 +2140,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 /* BUSQUEDA POR ID */
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                $criteria->addCondition("gi.id = {$_GET['GestionDiaria']['general']}",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
                         . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
