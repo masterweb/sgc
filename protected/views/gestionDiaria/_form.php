@@ -49,13 +49,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 var id_vehiculo = $('#Gestion_id_vehiculo').val();
                 $.ajax({
                     url: '<?php echo Yii::app()->createAbsoluteUrl("gestionDiaria/setCierre"); ?>',
-                    datatype: "json",
+                    dataType: "json",
                     type: 'POST',
                     data: {tipo_cierre: value, id : id_factura, id_informacion: id_info, id_vehiculo: id_vehiculo},
                     success: function (data) {
+                        console.log(data.result);
                         $('#bg_negro').show();
                         if(data.result == true){
-                           $('#bg_negro').hide();
                            //alert('Datos Grabados');
                            location.reload();
                         }
@@ -952,9 +952,20 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
                             <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
                             <?php if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
-                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura</a></div>
-                            <?php $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}")); ?>
-<!--                            <div class="col-md-3">
+                            
+                            <?php 
+                            $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}"));
+                            ?>
+                            <?php if($anulacion->status == 'ACTIVO'){ ?>
+                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a></div>    
+                            <?php } ?>
+                            <?php if($anulacion->status == 'INACTIVO'){ ?>
+                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a></div>    
+                            <?php } ?>
+                            <?php 
+                            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+                            if($cargo_id == 70): // anulacion de factura ?>
+                            <div class="col-md-3">
                                 <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
                                     <option value="">--Seleccione--</option>
                                     <option value="1">Anular Factura</option>
@@ -963,7 +974,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
                                 <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
                                 <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
-                            </div>-->
+                            </div>
+                            <?php endif; // fin de anulacion de factura ?>
                             <?php } ?>
                         </div> 
                     <?php } ?>

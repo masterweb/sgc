@@ -1412,12 +1412,12 @@ class Controller extends CController {
         return $ps->preg7;
     }
 
-    public function getFuenteSGC($id) {
+    public function getFuenteSGC($id_informacion) {
         $criteria = new CDbCriteria(array(
-            'condition' => "id={$id}"
+            'condition' => "id_informacion = {$id_informacion}"
         ));
-        $ps = GestionNuevaCotizacion::model()->find($criteria);
-        return $ps->fuente;
+        $ps = GestionDiaria::model()->find($criteria);
+        return $ps->fuente_contacto;
     }
 
     public function getStatusSGC($id_informacion) {

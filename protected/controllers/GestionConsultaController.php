@@ -401,8 +401,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionConsulta'])) {
-
-            //die();
+//            echo '<pre>';
+//            print_r($_POST);
+//            echo '</pre>';
+//            die();
             $currencys = array("$", ".");
             $id_info = $_POST['GestionInformacion']['id_informacion'];
             //die('id info: '.$id_info);
@@ -699,7 +701,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $tipo2 = '';
                 $fuente2 = '';
             }
-
+            // EN FUENTE PROSPECCION AL INGRESAR DATOS A CONSULTA
+            // CAMBIAR FUENTE A showroom o trafico EN gestion_diaria
+            // SEGUN ID INFORMACION
+            if($_POST['GestionInformacion']['fuente'] == 'prospeccion'){
+                $con = Yii::app()->db;
+                $sql = "UPDATE gestion_diaria SET fuente_contacto = 'showroom', fuente_contacto_historial = 'prospeccion' WHERE id_informacion = {$_POST['GestionInformacion']['id_informacion']}";
+                $request = $con->createCommand($sql)->execute();
+            }
 
             $this->redirect(array('gestionVehiculo/create/' . $id_info . '?tipo=' . $tipo2 . '&fuente=' . $fuente2));
 

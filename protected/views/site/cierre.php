@@ -5,6 +5,8 @@
 <?php
 $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+//echo 'grupo id: '.$grupo_id;
 if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
@@ -97,12 +99,17 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                                         <?php 
                                         $test = $this->getFactura($c['id_informacion'], $c['id']);
                                         ?>
-                                        <?php if($test > 0): ?>
-                                            <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf" disabled="true">Cierre</a>
-                                        <?php else: ?>    
-                                           
+                                        <?php if($test > 0){ ?>
+                                            <?php if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6){ // IOKARS, AUTHESA, MERQUIAUTO ?>
+                                                <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf">Cierre</a>
+                                            <?php } ?>
+                                            <?php if($grupo_id != 4 && $grupo_id != 8 && $grupo_id != 6){ ?>
+                                                <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs btn-rf" disabled="true">Cierre</a>
+                                            <?php } ?> 
+                                        <?php } 
+                                        if ($test == 0){ ?> 
                                             <a href="<?php echo Yii::app()->createUrl('site/factura', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-rf">Cierre</a>
-                                        <?php endif; ?>
+                                        <?php } ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

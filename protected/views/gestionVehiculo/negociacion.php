@@ -136,9 +136,9 @@ $id_version = $this->getIdVersion($id_vehiculo);
     $('#otro_accesorios_nombre1').keyup(function () {$('.error-nombre1').hide();getvalortotal(3);});
     $('#otro_accesorios_nombre2').keyup(function () {$('.error-nombre2').hide();getvalortotal(3);});
     $('#otro_accesorios_nombre3').keyup(function () {$('.error-nombre3').hide();getvalortotal(3);});
-    $('#btngenerate').click(function(){
+    /*$('#btngenerate').click(function(){
         $('#btngenerate').hide();
-    });
+    });*/
     var finanprecio = parseInt($('#GestionFinanciamiento_precio').val());
     var finanprecioformat = format2(finanprecio, '$');
     $('#GestionFinanciamiento_precio').val(finanprecioformat);
@@ -188,6 +188,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                     $('#cont-edit1').show();$('#cont-edit2').show();$('#cont-edit3').show();
                 break;    
             }
+            $('#btngenerate').hide();
             $('#contpdf').hide();
             $('#btnsendprof').show();$('#btnagendamiento').show();
             $('#btnmodprof').show();
@@ -1572,6 +1573,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                         $('#bg_negro').hide();
                         $('#finalizar').hide();
                         $('#generatepdf').show();
+                        $('#btnsendprof').show();
                         $('#GestionFinanciamiento_flag').val(1);
                         console.log('ARRAY ACCESORIOS1 LUEGO DE GRABAR: '+acc1);
                         console.log('ARRAY ACCESORIOS2 LUEGO DE GRABAR: '+acc2);

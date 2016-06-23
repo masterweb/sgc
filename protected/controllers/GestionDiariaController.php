@@ -30,7 +30,8 @@ class GestionDiariaController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'calendar', 'createAjax', 'ical', 'search', 'usados', 'agendamiento'),
+                'actions' => array('create', 'update', 'calendar', 'createAjax', 'ical',
+                    'search', 'usados', 'agendamiento', 'setCierre'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -595,6 +596,46 @@ class GestionDiariaController extends Controller {
     public function actionSeguimiento() {
 
         $this->render('seguimiento', array('model' => $model, 'users' => $posts, 'getParams' => $getParams, 'title_busqueda' => $title_busqueda));
+    }
+
+    public function actionSetCierre() {
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        $tipo_cierre = isset($_POST["tipo_cierre"]) ? $_POST["tipo_cierre"] : "";
+        $id_informacion = isset($_POST["id_informacion"]) ? $_POST["id_informacion"] : "";
+        $id_vehiculo = isset($_POST["id_vehiculo"]) ? $_POST["id_vehiculo"] : "";
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $fecha = date("Y-m-d H:i:s");
+        $con = Yii::app()->db;
+        $result = FALSE;
+        $resultgf = FALSE;
+        $resultgd = FALSE;
+        // ACTUALIZAR TABLA gestion_factura a ACTIVO o INACTIVO
+        switch ($tipo_cierre) {
+            case '1': // anular factura
+                $sql = "UPDATE gestion_factura SET status = 'INACTIVO' where id = {$id}";
+                $request = $con->createCommand($sql)->execute();
+                $resultgf = $request;
+                $sqlGd = "UPDATE gestion_diaria SET cierre = 0 WHERE id_informacion = {$id_informacion}";
+                $request2 = $con->createCommand($sqlGd)->execute();
+                $resultgd = $request2;
+                break;
+            case '0': // activar factura
+                $sql = "UPDATE gestion_factura SET status = 'ACTIVO' where id = {$id}";
+                $request = $con->createCommand($sql)->execute();
+                $resultgf = $request;
+                $sqlGd = "UPDATE gestion_diaria SET cierre = 1 WHERE id_informacion = {$id_informacion}";
+                $request2 = $con->createCommand($sqlGd)->execute();
+                $resultgd = $request2;
+                break;
+
+            default:
+                break;
+        }
+        if ($resultgd == TRUE && $resultgf == TRUE) {
+            $result = TRUE;
+        }
+        $arr = array('result' => $result);
+        echo json_encode($arr);
     }
 
 }
