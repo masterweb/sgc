@@ -74,7 +74,7 @@ class ConstructorSQL{
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext.$INERmodelos.' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND fuente_contacto = 'showroom' ", 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd.fuente_contacto = 'trafico' ) ", 
             $group_ext
         );
         $trafico_mes_anterior = $trafico_mes_anterior[0]['COUNT(*)'];
@@ -84,7 +84,7 @@ class ConstructorSQL{
             'COUNT(*) '.$select_ext, 
             'gestion_informacion gi', 
             $join_ext.$INERmodelos.' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
-            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND fuente_contacto = 'showroom' ", 
+            $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."') AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd.fuente_contacto = 'trafico' ) ", 
             $group_ext
         );
         $trafico_mes_actual = $trafico_mes_actual[0]['COUNT(*)'];
@@ -95,7 +95,7 @@ class ConstructorSQL{
                 'COUNT(*) '.$select_ext, 
                 'gestion_informacion gi', 
                 $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND fuente_contacto = 'showroom' ", 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_anterior."' AND '".$fecha_anterior."') AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd.fuente_contacto = 'trafico' ) ", 
                 $group_ext
             );
             $traficockd1 = $traficockd1[0]['COUNT(*)'];
@@ -107,7 +107,7 @@ class ConstructorSQL{
                 'COUNT(*) '.$select_ext, 
                 'gestion_informacion gi', 
                 $join_ext.' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', 
-                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')  AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND fuente_contacto = 'showroom' ", 
+                $id_persona.$consultaBDC.$modelos.$versiones.$consulta_gp." AND (DATE(gi.fecha) BETWEEN '".$fecha_inicial_actual."' AND '".$fecha_actual."')  AND ((gv.modelo IN (".$CKDsRender.")) OR gi.modelo IN (".$CKDsRender.")) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd.fuente_contacto = 'trafico' ) ", 
                 $group_ext
             );
             $traficockd2 = $traficockd2[0]['COUNT(*)'];

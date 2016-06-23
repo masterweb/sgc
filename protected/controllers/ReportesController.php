@@ -1,4 +1,5 @@
 <?php
+require_once( dirname(__FILE__) . '/../components/Reportes/GlobalFunctions.php');
 require_once( dirname(__FILE__) . '/../components/Reportes/ConstructorSQL.php');
 require_once( dirname(__FILE__) . '/../components/Reportes/Modelos.php');
 require_once( dirname(__FILE__) . '/../components/Reportes/AjaxCalls.php');
@@ -8,6 +9,8 @@ require_once( dirname(__FILE__) . '/../components/Reportes/TraficoUsados.php');
 class ReportesController extends Controller {
 
 	public function actionInicio($id_informacion = null, $id_vehiculo = null) {
+        $GF = new GlobalFunctions;
+
 		date_default_timezone_set('America/Guayaquil'); 
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
@@ -115,12 +118,12 @@ class ReportesController extends Controller {
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = '.$varView['grupo_id'];               
                 $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
-                $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);
+                $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> '.$this->getNombreGrupo($varView['grupo_id']);
                 break;
             case 70: // jefe de sucursal TERMINADO------>
                 $id_persona = "gi.dealer_id = ".$varView['dealer_id']; 
-                $varView['lista_conce'] = $this->getConcecionario($varView['grupo_id']);  
+                $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);  
                 break;                
             case 71: // asesor de ventas TERMINADO------>
                 $id_persona = "gi.responsable = ".$varView['id_responsable'];
@@ -454,53 +457,53 @@ class ReportesController extends Controller {
         //$varView['mod'] = $mod;      
 
         //set diferencias
-        $varView['var_tr'] = $this->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'var');
-        $varView['dif_tr'] = $this->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'dif');
+        $varView['var_tr'] = $GF->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'var');
+        $varView['dif_tr'] = $GF->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'dif');
 
-        $varView['var_pr'] = $this->DIFconstructor($varView['proforma_mes_actual'], $varView['proforma_mes_anterior'], 'var');
-        $varView['dif_pr'] = $this->DIFconstructor($varView['proforma_mes_actual'], $varView['proforma_mes_anterior'], 'dif');
+        $varView['var_pr'] = $GF->DIFconstructor($varView['proforma_mes_actual'], $varView['proforma_mes_anterior'], 'var');
+        $varView['dif_pr'] = $GF->DIFconstructor($varView['proforma_mes_actual'], $varView['proforma_mes_anterior'], 'dif');
 
-        $varView['var_td'] = $this->DIFconstructor($varView['td_mes_actual'], $varView['td_mes_anterior'], 'var');
-        $varView['dif_td'] = $this->DIFconstructor($varView['td_mes_actual'], $varView['td_mes_anterior'], 'dif');
+        $varView['var_td'] = $GF->DIFconstructor($varView['td_mes_actual'], $varView['td_mes_anterior'], 'var');
+        $varView['dif_td'] = $GF->DIFconstructor($varView['td_mes_actual'], $varView['td_mes_anterior'], 'dif');
 
-        $varView['var_ve'] = $this->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'var');
-        $varView['dif_ve'] = $this->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'dif');
+        $varView['var_ve'] = $GF->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'var');
+        $varView['dif_ve'] = $GF->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'dif');
 
         $varView['titulo'] = $tit_init. $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior.$tit_ext;
 
         //set Tasas
         //tasa proformas
-        $varView['tasa_proforma_actual'] = $this->tasa($varView['trafico_mes_actual'], $varView['proforma_mes_actual']);
-        $varView['tasa_proforma_anterior'] = $this->tasa($varView['trafico_mes_anterior'], $varView['proforma_mes_anterior']);
-        $varView['tasa_dif_proforma'] = $this->tasa_dif($varView['tasa_proforma_actual'], $varView['tasa_proforma_anterior']);
+        $varView['tasa_proforma_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['proforma_mes_actual']);
+        $varView['tasa_proforma_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['proforma_mes_anterior']);
+        $varView['tasa_dif_proforma'] = $GF->tasa_dif($varView['tasa_proforma_actual'], $varView['tasa_proforma_anterior']);
 
         //tasa test drive
-        $varView['tasa_testdrive_actual'] = $this->tasa($varView['trafico_mes_actual'], $varView['td_mes_actual']);
-        $varView['tasa_testdrive_anterior'] = $this->tasa($varView['trafico_mes_anterior'], $varView['td_mes_anterior']);
-        $varView['tasa_dif_testdrive'] = $this->tasa_dif($varView['tasa_testdrive_actual'], $varView['tasa_testdrive_anterior']);
+        $varView['tasa_testdrive_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['td_mes_actual']);
+        $varView['tasa_testdrive_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['td_mes_anterior']);
+        $varView['tasa_dif_testdrive'] = $GF->tasa_dif($varView['tasa_testdrive_actual'], $varView['tasa_testdrive_anterior']);
 
          //tasa cierre
-        $varView['tasa_cierre_actual'] = $this->tasa($varView['trafico_mes_actual'], $varView['vh_mes_actual']);
-        $varView['tasa_cierre_anterior'] = $this->tasa($varView['trafico_mes_anterior'], $varView['vh_mes_anterior']);
-        $varView['tasa_dif_cierre'] = $this->tasa_dif($varView['tasa_cierre_actual'], $varView['tasa_cierre_anterior']);
+        $varView['tasa_cierre_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['vh_mes_actual']);
+        $varView['tasa_cierre_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['vh_mes_anterior']);
+        $varView['tasa_dif_cierre'] = $GF->tasa_dif($varView['tasa_cierre_actual'], $varView['tasa_cierre_anterior']);
 
         //tasa proformas ckd y cbu
-        $varView['tasa_proforma_ckd_m1'] = $this->tasa($varView['traficockd2'], $varView['proformackd2']);
-        $varView['tasa_proforma_cbu_m1'] = $this->tasa($varView['traficocbu2'], $varView['proformacbu2']);
-        $varView['tasa_proforma_ckd_m2'] = $this->tasa($varView['traficockd1'], $varView['proformackd1']);
-        $varView['tasa_proforma_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['proformacbu1']);
+        $varView['tasa_proforma_ckd_m1'] = $GF->tasa($varView['traficockd2'], $varView['proformackd2']);
+        $varView['tasa_proforma_cbu_m1'] = $GF->tasa($varView['traficocbu2'], $varView['proformacbu2']);
+        $varView['tasa_proforma_ckd_m2'] = $GF->tasa($varView['traficockd1'], $varView['proformackd1']);
+        $varView['tasa_proforma_cbu_m2'] = $GF->tasa($varView['traficocbu1'], $varView['proformacbu1']);
 
         //tasa testdrive ckd y cbu
-        $varView['tasa_testdrive_ckd_m1'] = $this->tasa($varView['traficockd2'], $varView['tdckd2']);
-        $varView['tasa_testdrive_cbu_m1'] = $this->tasa($varView['traficocbu2'], $varView['tdcbu2']); 
-        $varView['tasa_testdrive_ckd_m2'] = $this->tasa($varView['traficockd1'], $varView['tdckd1']);
-        $varView['tasa_testdrive_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['tdcbu1']); 
+        $varView['tasa_testdrive_ckd_m1'] = $GF->tasa($varView['traficockd2'], $varView['tdckd2']);
+        $varView['tasa_testdrive_cbu_m1'] = $GF->tasa($varView['traficocbu2'], $varView['tdcbu2']); 
+        $varView['tasa_testdrive_ckd_m2'] = $GF->tasa($varView['traficockd1'], $varView['tdckd1']);
+        $varView['tasa_testdrive_cbu_m2'] = $GF->tasa($varView['traficocbu1'], $varView['tdcbu1']); 
 
         //tasa cierre ckd y cbu
-        $varView['tasa_cierre_ckd_m1'] = $this->tasa($varView['traficockd2'], $varView['vhckd2']);
-        $varView['tasa_cierre_cbu_m1'] = $this->tasa($varView['traficocbu2'], $varView['vhcbu2']);
-        $varView['tasa_cierre_ckd_m2'] = $this->tasa($varView['traficockd1'], $varView['vhckd1']);
-        $varView['tasa_cierre_cbu_m2'] = $this->tasa($varView['traficocbu1'], $varView['vhcbu1']); 
+        $varView['tasa_cierre_ckd_m1'] = $GF->tasa($varView['traficockd2'], $varView['vhckd2']);
+        $varView['tasa_cierre_cbu_m1'] = $GF->tasa($varView['traficocbu2'], $varView['vhcbu2']);
+        $varView['tasa_cierre_ckd_m2'] = $GF->tasa($varView['traficockd1'], $varView['vhckd1']);
+        $varView['tasa_cierre_cbu_m2'] = $GF->tasa($varView['traficocbu1'], $varView['vhcbu1']); 
 
         //set diferencias ckd y cbu
         $varView['tasa_td_dif_ckd'] = rtrim($varView['tasa_testdrive_ckd_m1'], "%") - rtrim($varView['tasa_testdrive_ckd_m2'], "%");
@@ -554,69 +557,6 @@ class ReportesController extends Controller {
     }
 
     /*FIN AJAX CALLS*/
-
-    function getConcecionario($grupo_id){
-        $info = new GestionInformacion;
-        $con = Yii::app()->db;
-        $sql = "SELECT * FROM gr_concesionarios WHERE id_grupo = ".$grupo_id." ORDER BY nombre ASC";                
-        $requestr1 = $con->createCommand($sql);                
-        return $requestr1->queryAll();
-    }
-
-    function tasa($var1, $var2){
-        $resp = 0;
-        if($var1 > 0){
-            $resp = ($var2 / $var1) * 100;
-            $resp = round($resp, 2);
-            return $resp . ' %';
-        }else{
-            return '0 %';
-        }
-    }
-
-    function tasa_dif($var1, $var2){
-        $dfpr = $var1 - $var2;
-        if($dfpr >= 0){
-            return $dfpr.' %';
-        }else{
-            return '<span class="dif">-'.abs($dfpr).' %</span>';
-        }
-    }
-    
-    function DIFconstructor($var1, $var2, $tipo){
-        $dif = $var1 - $var2;
-
-        if($dif < 0){
-            $divisor = $var1;
-        }else{
-            $divisor = $var2; 
-        }
-        $unidad = '';        
-        if($tipo == 'var'){
-            $unidad = '%';
-            if($var1 == 0){
-                $dif = -$var2;
-            }else if($var2 == 0){
-                $dif = $var1;
-            }else{
-               $dif = ($var2 * 100) / $var1; 
-               $dif = 100 - round($dif, 2);
-            }
-        }
-
-        if($var1 == 0 && $var2 == 0){$dif = 0;}
-
-        $resp = '<span';
-        if ($dif >= 0) {
-            $resp .= '>' . $dif.$unidad;
-        } else {
-            $resp .= ' class="dif">-' . abs($dif) . $unidad;
-        }
-        $resp .= '</span>';
-
-
-        return $resp;
-    }
 
     //TRAFICO ACUMULADO
     public function actionAjaxGetConsecionariosTA() {
