@@ -17094,3 +17094,25 @@ Stack trace:
 #5 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
 #6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CWebApplication->run()
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/AjaxGetDealers
+2016/06/23 17:46:31 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd' at line 2. La sentencia SQL ejecutada fue: SELECT COUNT(*)  from gestion_informacion gi  LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        WHERE gi.dealer_id = 10 AND gi.bdc = 0  AND (DATE(gi.fecha) BETWEEN '2016-06-01' AND '2016-06-23')  AND ((gv.modelo IN (21, 24)) OR gi.modelo IN (21, 24)) AND AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd.fuente_contacto = 'trafico' )  .
+2016/06/23 17:46:31 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'exhibicion'  OR gd' at line 2' in C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\components\Reportes\ConstructorSQL.php(11): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\components\Reportes\ConstructorSQL.php(112): ConstructorSQL->SQLconstructor('COUNT(*) ', 'gestion_informa...', ' LEFT JOIN gest...', 'gi.dealer_id = ...', NULL)
+#3 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\components\Reportes\ConstructorSQL.php(47): ConstructorSQL->renderBusqueda(70, '485', NULL, NULL, 'gi.dealer_id = ...', NULL, '2016-05-01', '2016-05-23', '2016-06-01', '2016-06-23', 2000, NULL, '', '', '', '', NULL)
+#4 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\protected\controllers\ReportesController.php(426): ConstructorSQL->buscar(70, '485', NULL, NULL, 'gi.dealer_id = ...', NULL, '2016-05-01', '2016-05-23', '2016-06-01', '2016-06-23', 2000, NULL, '', '', '', '', NULL)
+#5 [internal function]: ReportesController->actionInicio(NULL, NULL)
+#6 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(ReportesController), Array)
+#7 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(ReportesController), Object(ReflectionMethod), Array)
+#8 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(282): CController->run('inicio')
+#12 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/inicio')
+#13 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\kia.com.ec\intranet.kia.com.ec\web\usuario\index.php(15): CApplication->run()
+#15 {main}
+REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
+---
