@@ -55,7 +55,7 @@
     ?>
 
 
-    <?php echo $form->errorSummary($model); ?>
+    <?php //echo $form->errorSummary($model); ?>
     <div class="form-group">
         <div class="col-sm-6">
             <?php echo $form->labelEx($model, 'dealerId'); ?>

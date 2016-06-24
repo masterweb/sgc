@@ -629,7 +629,7 @@ hr{
 }
 .errorMessage{
     position: relative;
-    top: -22px;
+    top: 0px;
     color: #AB1F2C;
     font-size: 13px;
     font-style: italic;
