@@ -2074,11 +2074,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 //$criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
                 //$criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->group = "gi.id";
                 $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%') "
-                        . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
+                        . "GROUP BY gi.id ";
                 //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -2110,9 +2110,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->group = "gi.id";
                 $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
-                        . " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
+                        . " GROUP BY gi.id ";
                 //die('cedula ruc; '.$sql);
                 // Count total records
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -2141,9 +2141,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->group = "gi.id";
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
-                        . "GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
+                        . "GROUP BY gi.id ";
                 //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
