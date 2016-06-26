@@ -1023,7 +1023,7 @@ $count = count($users);
                                     <?php } ?>
                                     <?php //} ?>
                                     <?php if ($c['bdc'] == 1 && ( $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $c['paso'], 'id_gt' => $c['id'], 'fuente' => $c['fuente'])); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                     <?php } ?> 
                                         <em></em>
                                         <a href="<?php echo Yii::app()->createUrl('gestionComentarios/create', array('id_informacion' => $c['id'])); ?>" class="btn btn-danger btn-xs">Comentarios</a>

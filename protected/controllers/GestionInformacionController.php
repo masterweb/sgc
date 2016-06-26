@@ -2075,6 +2075,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //$criteria->addCondition("gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%'",'OR');
                 //$criteria->addCondition("gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= "(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' "
                         . "OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%') "
@@ -2111,6 +2112,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= $sql_cargos;
                 $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'AND');
                 $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " (gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%') "
                         . " GROUP BY gi.id ";
                 //die('cedula ruc; '.$sql);
@@ -2142,6 +2144,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= $sql_cargos;
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " gi.id = '{$_GET['GestionDiaria']['general']}' "
                         . "GROUP BY gi.id ";
                 //die($sql);
@@ -3276,7 +3279,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $dt_hoy = date('Y-m-d'); // Fecha actual
-        $dt_unasemana_antes = date('Y-m-d', strtotime('-4 day')); // Fecha resta 1 semanas
+        $dt_unasemana_antes = date('Y-m-d', strtotime('-1 day')); // Fecha resta 1 semanas
         $dt_unmes_antes = date('Y-m-d', strtotime('-4 week')); // Fecha resta 1 mes
         //die('responsable id: '.$id_responsable);
         if ($cargo_id != 46)
@@ -3322,8 +3325,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
             $criteria->addCondition("u.cargo_id IN (70,71)");
             $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
-            $criteria->order = "gd.id DESC";
+            $criteria->group = 'gi.id';
+            $criteria->order = "gi.id DESC";
 
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
@@ -3342,8 +3345,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->addCondition("u.grupo_id = {$grupo_id}");
             $criteria->addCondition("u.cargo_id = 71");
             $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
-            $criteria->order = "gd.id DESC";
+            $criteria->group = 'gi.id';
+            $criteria->order = "gi.id DESC";
 
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
@@ -3362,7 +3365,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->addCondition("u.cargo_id = 71");
             $criteria->addCondition("gd.desiste = 0", 'AND');
             //$criteria->addCondition("DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'");
-            $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+            $criteria->group = "gi.id";
             $criteria->order = "gi.id DESC";
             $sql .= " LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable
@@ -3378,8 +3381,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
             $criteria->addCondition("u.cargo_id IN(70,71)");
-            $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+            $criteria->addCondition("DATE(gi.fecha) = '{$dt_hoy}'");
+            $criteria->group = "gi.id";
             $criteria->order = "gi.id DESC";
 
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
