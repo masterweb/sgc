@@ -761,7 +761,7 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 AND u.cargo_id IN (70,71)
-                ORDER BY gd.id DESC";
+                ORDER BY gi.id DESC";
                     //die('sql sucursal'. $sql);
                 }
                 if ($cargo_id == 71) {
@@ -774,8 +774,8 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0 
-                GROUP BY gi.cedula, gi.ruc, gi.pasaporte    
-                ORDER BY gd.id DESC";
+                GROUP BY gi.id    
+                ORDER BY gi.id DESC";
                     //die('sql: '. $sql);
                 }
 
@@ -812,8 +812,8 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 INNER JOIN usuarios u ON u.id = gi.responsable 
                 WHERE gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 AND u.cargo_id IN (70,71) 
-                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
-                ORDER BY gd.id DESC";
+                GROUP BY gi.id
+                ORDER BY gi.id DESC";
                     //die('sql sucursal'. $sql);
                 }
                 if ($cargo_id == 71) { // asesor de ventas
@@ -825,8 +825,8 @@ class GestionInformacionController extends Controller {
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0 
-                    GROUP BY gi.cedula, gi.ruc, gi.pasaporte
-                ORDER BY gd.id DESC";
+                GROUP BY gi.id
+                ORDER BY gi.id DESC";
                     //die('sql: '. $sql);
                 }
 
@@ -865,7 +865,7 @@ class GestionInformacionController extends Controller {
                 $sql .= "gi.nombres LIKE '%{$_GET['GestionDiaria2']['general']}%' "
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria2']['general']}%' "
                         . "OR gi.cedula LIKE '%{$_GET['GestionDiaria2']['general']}%'";
-                $sql .= " OR gi.id = '{$_GET['GestionDiaria2']['general']}') GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= " OR gi.id = '{$_GET['GestionDiaria2']['general']}') GROUP BY gi.id";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -896,7 +896,7 @@ INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 WHERE gi.responsable = {$id_responsable} AND
-                gn.fuente = '{$_GET['GestionDiaria']['fuente']}' AND gi.dealer_id = {$dealer_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                gn.fuente = '{$_GET['GestionDiaria']['fuente']}' AND gi.dealer_id = {$dealer_id} GROUP BY gi.id";
                 //die('sql: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -925,7 +925,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 } else {
                     $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
                 }
-                $sql .= "gn.fuente = '{$_GET['GestionDiaria2']['fuente']}' AND gi.dealer_id = {$dealer_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= "gn.fuente = '{$_GET['GestionDiaria2']['fuente']}' AND gi.dealer_id = {$dealer_id} GROUP BY gi.id";
                 //die('sql: '.$sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -950,7 +950,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
                 }
 
-                $sql .= "gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= "gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' GROUP BY gi.id";
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
 
@@ -975,7 +975,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$id_responsable} AND ";
                 }
 
-                $sql .= "gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= "gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' GROUP BY gi.id";
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 $tituloReporte = "Reporte por Categorización : " . $_GET['GestionDiaria2']['categorizacion'];
@@ -1003,22 +1003,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 switch ($_GET['GestionDiaria2']['status']) {
                     case 'Cierre':
-                        $sql .= " gd.cierre = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.cierre = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
                     case 'Desiste':
-                        $sql .= " gd.desiste = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.desiste = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
                     case 'Entrega':
-                        $sql .= " gd.entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.entrega = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
                     case 'PrimeraVisita':
-                        $sql .= " gd.paso = '1-2' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.paso = '1-2' GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
                     case 'Seguimiento':
-                        $sql .= " gd.seguimiento = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.seguimiento = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
                     case 'SeguimientoEntrega':
-                        $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
+                        $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
 
                     default:
@@ -1058,7 +1058,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
                 };
 
-                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.id";
                 //die($sql);
 
                 $request = $con->createCommand($sql);
@@ -1090,8 +1090,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria2']['responsable']} AND ";
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
-                ORDER BY gd.id DESC";
+                $sql .= " gd.desiste = 0 GROUP BY gi.id
+                ORDER BY gi.id DESC";
                 //die($sql);
 
                 $request = $con->createCommand($sql);
@@ -1126,8 +1126,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria2']['responsable']} AND ";
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
-                $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
-                ORDER BY gd.id DESC";
+                $sql .= " gd.desiste = 0 GROUP BY gi.id
+                ORDER BY gi.id DESC";
                 //die($sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1269,8 +1269,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                 }
                 $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
-                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .= " order by gd.id DESC";
+                $sql .= " group by gi.id";
+                $sql .= " order by gi.id DESC";
                 //$posts = GestionInformacion::model()->findAll($criteria);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1311,8 +1311,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 $sql .= " and gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
-                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .= " order by gd.id DESC";
+                $sql .= " group by gi.id";
+                $sql .= " order by gi.id DESC";
                 //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 //$posts = GestionInformacion::model()->findAll($criteria);
@@ -1327,7 +1327,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " and gi.responsable = {$_GET['GestionDiaria2']['responsable']} and ";
                 $sql .= " gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' and ";
                 $sql .= ' gd.desiste = 0';
-                $sql .= " group by gi.cedula, gi.ruc, gi.pasaporte";
+                $sql .= " group by gi.id";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 
                 //$posts = GestionInformacion::model()->findAll($criteria);
@@ -1364,8 +1364,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.id";
+                $sql .=  " order by gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1403,8 +1403,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.cid";
+                $sql .=  " order by gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1424,8 +1424,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= " and gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}' ";
                 $sql .= ' and gd.desiste = 0';
 
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.id";
+                $sql .=  " order by gi.id DESC";
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
 
@@ -1471,8 +1471,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                 }
                 $sql .= "(DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')";
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.id";
+                $sql .=  " order by gi.id DESC";
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
 
@@ -1493,8 +1493,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= ' and gd.desiste = 0';
                 $fecha_actual = (string) date("Y/m/d");
 
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.id";
+                $sql .=  " order by gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1530,8 +1530,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $sql .=  " group by gi.cedula, gi.ruc, gi.pasaporte";
-                $sql .=  " order by gd.id DESC";
+                $sql .=  " group by gi.id";
+                $sql .=  " order by gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1567,8 +1567,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
@@ -1672,8 +1672,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('G2', 'Responsable')
                 ->setCellValue('H2', 'Concesionario')
                 ->setCellValue('I2', 'Modelo')
-                ->setCellValue('J2', 'Test Drive Si')
-                ->setCellValue('K2', 'Test Drive No')
+                ->setCellValue('J2', 'Versiones')
+                ->setCellValue('K2', 'Test Drive')
                 ->setCellValue('L2', 'Proximo Seguimiento')
                 ->setCellValue('M2', 'Fecha Registro')
                 ->setCellValue('N2', 'Categorización')
@@ -1696,6 +1696,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $identificacion = $row['ruc'];
             }
             $modeloVehiculo = ' ';
+            $versionVehiculo = '';
             $td_si = '';
             $td_no = '';
             $countvec = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$row['id_info']}"));
@@ -1703,6 +1704,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$row['id_info']}", 'order' => 'id desc'));
                 foreach ($vec as $val) {
                     $modeloVehiculo .= $this->getModel($val['modelo']) . '-';
+                    $versionVehiculo .= $this->getVersion($val['version']). '/';
                 }
                 $tdv = GestionTestDrive::model()->findAll(array('condition' => "id_informacion = {$row['id_info']}", 'order' => 'id_vehiculo desc'));
                 foreach ($tdv as $vc) {
@@ -1710,7 +1712,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
             }
             $modeloVehiculo = substr($modeloVehiculo, 0, -1);
-            $td_si = substr($td_si, 0, -1);
+            $versionVehiculo = substr($versionVehiculo, 0, -1);
+            //$td_si = substr($td_si, 0, -1);
+            $td_si = $this->getListaTDExcel($row['id_info']);
             $test_drive = '';
             //die ('id info: '.$row['id_info'].', id vec: '.$row['id']);
             
@@ -1725,8 +1729,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('G' . $i, $this->getResponsableNombres($row['resp']))
                     ->setCellValue('H' . $i, $this->getNameConcesionarioById($row['dealer_id']))
                     ->setCellValue('I' . $i, $modeloVehiculo)
-                    ->setCellValue('J' . $i, $td_si)
-                    ->setCellValue('K' . $i, $td_no)
+                    ->setCellValue('J' . $i, $versionVehiculo)
+                    ->setCellValue('K' . $i, $td_si)
                     ->setCellValue('L' . $i, $row['proximo_seguimiento'])
                     ->setCellValue('M' . $i, $row['fecha'])
                     ->setCellValue('N' . $i, $row['categorizacion'])
@@ -1758,6 +1762,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $objPHPExcel->getActiveSheet()->getColumnDimension("H")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("I")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("J")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("K")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("L")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("M")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("N")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
@@ -2178,7 +2187,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'");
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                $criteria->group = "gi.id";
                 $sql .= "gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -2200,48 +2209,48 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     case 'Cierre':
                         $criteria->addCondition("gd.cierre = 1");
                         $criteria->addCondition("gd.paso = 9", 'AND');
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.cierre = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Desiste':
                         $criteria->addCondition("gd.desiste = 1");
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.desiste = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Entrega':
                         $criteria->addCondition("gd.entrega = 1");
                         $criteria->addCondition("gd.paso = 9", 'AND');
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'PrimeraVisita':
                         $criteria->addCondition("gd.paso = '1-2'");
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         //$sql .= " gd.primera_visita = 1 AND gd.seguimiento = 0 AND gd.cierre = 0 ORDER BY gd.id DESC";
                         $sql .= " gd.paso = '1-2' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Seguimiento':
                         $criteria->addCondition("gd.seguimiento = 1");
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.seguimiento = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'SeguimientoEntrega':
                         $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     case 'Vendido':
                         $criteria->addCondition("gd.seguimiento = 1", 'AND');
                         $criteria->addCondition("gd.paso = 10", 'AND');
                         $criteria->addCondition("gd.status = 1", 'AND');
-                        $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                        $criteria->order = "gd.id DESC";
+                        $criteria->group = "gi.id";
+                        $criteria->order = "gi.id DESC";
                         $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                         break;
                     default:
@@ -2268,8 +2277,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
-                $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';
-                $criteria->order = "gi.fecha DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " gi.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);
                 /* echo '<pre>';
@@ -2323,14 +2332,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                     $criteria->join .= "INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70)";
-                    $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                    $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                     $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
                             . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 } else {
                     $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
-                    $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+                    $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                     $sql .= "WHERE gi.responsable = '{$_GET['GestionDiaria']['responsable']}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -2402,8 +2411,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                   } */
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 $criteria->addCondition('gd.desiste = 0', 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
                 //die($sql);
@@ -2434,8 +2443,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']}
                 $criteria->addCondition('gd.desiste = 0', 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
                 //die($sql);
@@ -2491,8 +2500,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $title = "Busqueda por Concesionario Total: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
                 }
                 $sql .= " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -2518,8 +2527,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
                 if ($cargo_id == 70) {
                     $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
-                    $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                    $criteria->order = "gd.id DESC";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
                     gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -2535,8 +2544,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 if ($cargo_id = 71) {
                     $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
-                    $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                    $criteria->order = "gd.id DESC";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
                     gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -2552,8 +2561,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
                     $criteria->join .= ' gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
-                    $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                    $criteria->order = "gd.id DESC";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
                     //die('nnwer');
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -2685,8 +2694,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id ";
                     $title = "Busqueda por Total País";
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -2712,8 +2721,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
                 $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
                 $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 
                 $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -2783,6 +2792,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
+                $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 
                 //die('fecha actual: '.$fecha_actual);
@@ -2827,8 +2837,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                 }
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
@@ -2873,8 +2883,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
 
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -2898,8 +2908,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']}
                 $criteria->addCondition('gd.desiste = 0', 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -2944,8 +2954,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -2989,8 +2999,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -3014,8 +3024,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
                 $criteria->addCondition('gd.desiste = 0', 'AND');
 
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
@@ -3064,8 +3074,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         break;
                 }
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -3094,8 +3104,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $fecha_actual = (string) date("Y/m/d");
 
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -3139,8 +3149,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -3184,8 +3194,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-                $criteria->order = "gd.id DESC";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -3308,8 +3318,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-            $criteria->order = "gd.id DESC";
+            $criteria->group = "gi.id";
+            $criteria->order = "gi.id DESC";
             $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
                 GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
                 ORDER BY gd.id DESC";

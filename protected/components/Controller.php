@@ -2697,6 +2697,36 @@ class Controller extends CController {
 
         return $datatd;
     }
+    
+    public function getListaTDExcel($id_informacion) {
+        $tdsi = 0;
+        $tdno = 0;
+        $datatd = '';
+        $modelos = GestionVehiculo::model()->findAll(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc'));
+        foreach ($modelos as $m) {
+            $tds = GestionTestDrive::model()->findAll(array('condition' => "id_vehiculo = {$m['id']}", 'order' => 'test_drive desc'));
+            //$datatd .= $this->getModel($m['modelo']) . ' - ';
+            foreach ($tds as $t) {
+                if ($t['test_drive'] == 1) {
+                    //echo 'enter td1';
+                    $tdsi++;
+                    if ($tdsi == 1) {
+                        $datatd .= 'Si ';
+                    }
+                }
+                if ($t['test_drive'] == 0) {
+                    $tdno++;
+                    if ($tdsi == 0) {
+                        $datatd .= 'No ';
+                    }
+                }
+            }
+            $tdsi = 0;
+            $tdno = 0;
+        }
+
+        return $datatd;
+    }
 
     /**
      * Construye select con el nombre del modelo y version de los vehiculos del cliente
