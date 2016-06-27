@@ -1634,6 +1634,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $dealer_id = $this->getDealerId($id_responsable);
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
+        $model->ruc = $id;
+        $model->fuente = $fuente;
+        $model->identificacion = 'ruc';
+        $model->save();
+        $id_nueva_cotizacion = $model->id;
 
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
@@ -1647,23 +1652,31 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         if ($ced > 0) {
             //die('enter ruc');
             $result = TRUE;
-            $data = '<div class="row"><h1 class="tl_seccion">Cliente existente</h1></div>'
-                    . '<div class="row"><div class="col-md-12">'
-                    . '<div class="table-responsive">'
-                    . '<table class="tables tablesorter" id="keywords">
-                <thead>
-                    <tr>
-                        <th><span>Status</span></th>
-                        <th><span>Nombres</span></th>
-                        <th><span>Apellidos</span></th>
-                        <th><span>Ruc</span></th>
-                        <th><span>Concesionario</span></th>
-                        <th><span>Fecha Registro</span></th>
-                        <th><span>Modelo</span></th>
-                        <th><span>Edición</span></th>
-                    </tr>
-                </thead>
-                <tbody>';
+            $data .= '<div class="panel-group">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                          <a data-toggle="collapse" href="#cliente">Cliente existente</a>
+                        </h4>
+                      </div>
+                      <div id="cliente" class="panel-collapse collapse in">';
+            $data .= '<div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                            <table class="tables tablesorter" id="keywords">
+                                <thead>
+                                    <tr>
+                                        <th><span>Status</span></th>
+                                        <th><span>Nombres</span></th>
+                                        <th><span>Apellidos</span></th>
+                                        <th><span>Cédula</span></th>
+                                        <th><span>Concesionario</span></th>
+                                        <th><span>Fecha Registro</span></th>
+                                        <th><span>Modelo</span></th>
+                                        <th><span>Edición</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
             foreach ($cd as $value) {
                 $criteria = new CDbCriteria(array(
                     'condition' => "id_informacion = {$value['id']}"

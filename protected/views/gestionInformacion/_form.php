@@ -423,11 +423,11 @@ $tipo = $_GET['tipo'];
                         //$('#telefono').val('');
                         return false;
                     }
-                    if (num_casa.indexOf("0") != 0) {
+                    /*if (num_casa.indexOf("0") != 0) {
                         $('#GestionInformacion_telefono_casa').after('<label for="casa2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
                         //$('#telefono').val('');
                         return false;
-                    }
+                    }*/
                     form.submit();
                 }
             });
@@ -452,16 +452,16 @@ $tipo = $_GET['tipo'];
                 //$('#telefono').val('');
                 return false;
             }
-            if (num_tel.indexOf("0") != 0) {
+            /*if (num_tel.indexOf("0") != 0) {
                 $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
                 //$('#telefono').val('');
                 return false;
-            }
-            if (num_casa.indexOf("0") != 0) {
+            }*/
+            /*if (num_casa.indexOf("0") != 0) {
                 $('#GestionInformacion_telefono_casa').after('<label for="casa2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
                 //$('#telefono').val('');
                 return false;
-            }
+            }*/
             switch (observaciones) {
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
@@ -471,7 +471,7 @@ $tipo = $_GET['tipo'];
                     $('.cont-ag').hide();
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
-                        rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+                        rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                             'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
@@ -486,7 +486,7 @@ $tipo = $_GET['tipo'];
                     $('.cont-ag').hide();
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
-                        rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+                        rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                             'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
@@ -501,7 +501,7 @@ $tipo = $_GET['tipo'];
                     $('.cont-ag').show();
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
-                        rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+                        rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                             'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
@@ -564,7 +564,7 @@ $tipo = $_GET['tipo'];
                     $('.cont-ag').hide();
                     $('.cont-nocont').show();
                     $('#gestion-informacion-form').validate({
-                        rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+                        rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                             'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'}},
@@ -605,7 +605,7 @@ $tipo = $_GET['tipo'];
                     break;
                 case '15':
                     $('#gestion-informacion-form').validate({
-                        rules: {'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
+                        rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
                             'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true}},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},

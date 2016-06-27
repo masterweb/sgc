@@ -249,7 +249,7 @@ $count = count($users);
                                     $('.cont-createc-vh01').html(data.datavh01);
                                 }
                                 if (data.result != false){
-                                    var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Nueva Cotización</a>';
+                                    var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom&iden=cedula" class="btn btn-danger">Nueva Cotización</a>';
                                     $('.cont-createc-but').html(dt);
                                 }
                                 else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
@@ -284,7 +284,7 @@ $count = count($users);
                                         $('.cont-createc-vh01').html(data.datavh01);
                                     }
                                     if (data.result != false){
-                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom" class="btn btn-danger">Continuar</a>';
+                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom&iden=ruc" class="btn btn-danger">Nueva Cotización</a>';
                                         $('.cont-createc-but').html(dt);
                                     }
                                     else if (data.result == false && data.flagttga35 == false && data.flagttga36 == false && data.flagvh01 == false){
