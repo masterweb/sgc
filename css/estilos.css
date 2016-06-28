@@ -536,6 +536,10 @@ footer{
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#b3ffffff', endColorstr = '#1cffffff', GradientType = 0); /* IE6-9 */
     background: linear-gradient(top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.11) 100%); /* W3C */
 }
+#cierre {
+    max-height: 200px;
+    overflow-y: scroll;
+}
 
 .list-accesorios li{font-size: 12px;display: block;}
 .cont-form-manejo hr{border-top: 1px solid #cccccc;}
