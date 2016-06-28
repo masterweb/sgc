@@ -48,7 +48,7 @@ class SiteController extends Controller {
         }
     }
 
-    public function traercotizaciones() {
+    /*public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
         $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
@@ -103,7 +103,7 @@ class SiteController extends Controller {
                 $contactual++;
             }
         }
-    }
+    }*/
 
     public function actionDashboard() {
         if (Yii::app()->user->id > 0) {

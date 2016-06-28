@@ -26,7 +26,7 @@ class Controller extends CController {
 
     public function traercotizaciones() {
         date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE id_atencion IN (1,5) and fecha_form >="2016-05-15" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
+        $sql = 'SELECT * FROM atencion_detalle WHERE id_atencion IN (1,5) and fecha_form >="2016-06-01" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
         $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
         $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
         $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
