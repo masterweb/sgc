@@ -73,7 +73,7 @@ $rol = Yii::app()->user->getState('roles');
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('pvboletinpostventa/admin'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/posventa/boletines.png" width="46" height="56"></div>
-                                <div class="txt_menu">Boletines Posventa</div></a>
+                                <div class="txt_menu">Boletines Postventa</div></a>
                         </div>
                     </li>
                 <?php } ?>
