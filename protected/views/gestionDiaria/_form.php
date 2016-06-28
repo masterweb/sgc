@@ -1188,7 +1188,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <thead> <tr><th>Presentación</th> <th>Observación</th><th>Responsable</th> </tr> </thead>
                             <tbody>
                             <?php
-                            $ps = GestionPasoOnce::model()->findAll(array('condition' => "id_informacion = {$_GET['id']}","limit" => "1"));
+                            $ps = GestionPasoOnce::model()->findAll(array('condition' => "id_informacion = {$_GET['id']}","order" => "fecha DESC"));
                             foreach ($ps as $vp) {
                                 ?>
                                 <tr><td><?php if($vp['tipo'] == 0){echo 'NO';}else{echo 'SI';} ?></td><td><?php echo $vp['observacion']; ?></td><td><?php echo $this->getResponsable($vp['responsable']); ?></td></tr>
