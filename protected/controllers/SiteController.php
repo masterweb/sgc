@@ -48,62 +48,62 @@ class SiteController extends Controller {
         }
     }
 
-    /*public function traercotizaciones() {
-        date_default_timezone_set("America/Bogota");
-        $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
-        $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
-        $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
-        $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
+    /* public function traercotizaciones() {
+      date_default_timezone_set("America/Bogota");
+      $sql = 'SELECT * FROM atencion_detalle WHERE fecha_form >="2016-02-09" and encuestado = 0 and id_modelos is not null order by id_atencion_detalle desc';
+      $datosC = Yii::app()->db2->createCommand($sql)->queryAll();
+      $cargo_id = Cargo::model()->find(array('condition' => 'codigo = "' . Constantes::CDG . '"'));
+      $usuarios = Usuarios::model()->findAll(array('condition' => 'estado = "ACTIVO" and cargo_id =' . $cargo_id->id));
 
-        if (!empty($datosC)) {
-            $maximo = number_format(count($datosC) / count($usuarios), 0);
-            $actual = 0;
-            $contactual = 0;
-            $posicion = 0;
-            $usuario_list = array();
-            foreach ($usuarios as $u) {
-                $usuario_list[$actual++] = $u->id;
-            }
+      if (!empty($datosC)) {
+      $maximo = number_format(count($datosC) / count($usuarios), 0);
+      $actual = 0;
+      $contactual = 0;
+      $posicion = 0;
+      $usuario_list = array();
+      foreach ($usuarios as $u) {
+      $usuario_list[$actual++] = $u->id;
+      }
 
 
-            foreach ($datosC as $d) {
+      foreach ($datosC as $d) {
 
-                if ($contactual == $maximo) {
-                    $contactual = 0;
-                    $posicion++;
-                }
-                if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
+      if ($contactual == $maximo) {
+      $contactual = 0;
+      $posicion++;
+      }
+      if ($posicion <= count($usuarios) && !empty($usuario_list[$posicion])) {
 
-                    $cotizacion = new Cotizacionesnodeseadas();
+      $cotizacion = new Cotizacionesnodeseadas();
 
-                    $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
+      $cotizacion->atencion_detalle_id = (int) $d['id_atencion_detalle'];
 
-                    $cotizacion->usuario_id = $usuario_list[$posicion];
-                    $cotizacion->fecha = $d['fecha_form'];
-                    $cotizacion->realizado = '0';
-                    $cotizacion->nombre = $d['nombre'];
-                    $cotizacion->apellido = $d['apellido'];
-                    $cotizacion->cedula = $d['cedula'];
-                    $cotizacion->direccion = $d['direccion'];
-                    $cotizacion->telefono = $d['telefono'];
-                    $cotizacion->celular = $d['celular'];
-                    $cotizacion->email = $d['email'];
-                    $cotizacion->modelo_id = $d['id_modelos'];
-                    $cotizacion->version_id = $d['id_version'];
-                    $cotizacion->ciudadconcesionario_id = $d['cityid'];
-                    $cotizacion->concesionario_id = $d['dealerid'];
-                    if ($cotizacion->save()) {
-                        //echo $usuario_list[$posicion];
-                        Yii::app()->db2
-                                ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
-                                ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
-                                ->execute();
-                    }
-                }
-                $contactual++;
-            }
-        }
-    }*/
+      $cotizacion->usuario_id = $usuario_list[$posicion];
+      $cotizacion->fecha = $d['fecha_form'];
+      $cotizacion->realizado = '0';
+      $cotizacion->nombre = $d['nombre'];
+      $cotizacion->apellido = $d['apellido'];
+      $cotizacion->cedula = $d['cedula'];
+      $cotizacion->direccion = $d['direccion'];
+      $cotizacion->telefono = $d['telefono'];
+      $cotizacion->celular = $d['celular'];
+      $cotizacion->email = $d['email'];
+      $cotizacion->modelo_id = $d['id_modelos'];
+      $cotizacion->version_id = $d['id_version'];
+      $cotizacion->ciudadconcesionario_id = $d['cityid'];
+      $cotizacion->concesionario_id = $d['dealerid'];
+      if ($cotizacion->save()) {
+      //echo $usuario_list[$posicion];
+      Yii::app()->db2
+      ->createCommand("UPDATE atencion_detalle SET encuestado=1,fechaencuesta='" . date("Y-m-d h:i:s") . "' WHERE id_atencion_detalle=:RListID")
+      ->bindValues(array(':RListID' => $d['id_atencion_detalle']))
+      ->execute();
+      }
+      }
+      $contactual++;
+      }
+      }
+      } */
 
     public function actionDashboard() {
         if (Yii::app()->user->id > 0) {
@@ -158,6 +158,15 @@ class SiteController extends Controller {
      * Displays the login page
      */
     public function actionLogin() {
+        //VALIDAR ESPACIOS EN NICKSNAMES
+        $usuarioss = Usuarios::model()->findAll(array('condition' => "estado=:match  ", 'params' => array(':match' => "ACTIVO")));
+        if (!empty($usuarioss)) {
+            foreach ($usuarioss as $u) {
+                if ($u->usuario == "admin ")
+                    $u->usuario = str_replace(" ", "", $u->usuario);
+                $u->update();
+            }
+        }
         //$this->layout = '//layouts/call-login';
         if (Yii::app()->user->id > 0 && !empty(Yii::app()->user->id)) {
             $this->redirect(array('site/dashboard'));
@@ -1593,7 +1602,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $data .= '</td>'
                         . '<td>' . $showboton . '</td></tr>';
             }
-            
+
 
             // LLAMADA A FUNCION DE CREATEC 
             $data_createc = $this->Createc($id, 0, 'cedula');
@@ -2534,9 +2543,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
         // ACTUALIZAR EN GESTION DIARIA EL STATUS DE CIERRE A 1
         $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 9 WHERE id_informacion = {$id_informacion}";
+
+        // ACTUALIZAR EN GESTION CONSULTA LA CATEGORIZACION A NULA
+        $sql3 = "UPDATE gestion_consulta SET preg7 = 'NC' WHERE id_informacion = {$id_informacion}";
         //die('sql: '.$sql);
         $request = $con->createCommand($sql)->query();
         $request2 = $con->createCommand($sql2)->query();
+        $request3 = $con->createCommand($sql3)->query();
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion='{$id_informacion}'"
         ));
@@ -2577,8 +2590,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
         // ACTUALIZAR EN GESTION DIARIA EL STATUS DE CIERRE A 1
         $sql2 = "UPDATE gestion_diaria SET cierre = 1, paso = 9 WHERE id_informacion = {$id_informacion}";
         //die('sql: '.$sql);
+        // ACTUALIZAR EN GESTION CONSULTA LA CATEGORIZACION A NULA
+        $sql3 = "UPDATE gestion_consulta SET preg7 = 'NC' WHERE id_informacion = {$id_informacion}";
+
         $request = $con->createCommand($sql)->query();
         $request2 = $con->createCommand($sql2)->query();
+        $request3 = $con->createCommand($sql3)->query();
+
         $factura = new GestionFactura;
         $factura->id_informacion = $_POST['id_informacion'];
         $factura->id_vehiculo = $_POST['id_vehiculo'];
@@ -2649,7 +2667,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             }
 
             $params = explode('<ttvh01>', $response['lcxml']);
-            
+
             $count = count($params);
             // -------------BUSQUEDA TABLA VH01 VEHICULOS ---------------------
             if (preg_match('/<ttvh01>/', $response['lcxml'], $coincidencias_vh, PREG_OFFSET_CAPTURE)) {
@@ -2792,14 +2810,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 ){ // IOKARS, AUTHESA, MERQUIAUTO
+        if ($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6) { // IOKARS, AUTHESA, MERQUIAUTO
             //echo 'enter no createc';
             $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
-        }else{
+        } else {
             //echo 'enter cr';
             $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
         }
-        
     }
 
     public function actionEntrega($id_informacion = NULL) {

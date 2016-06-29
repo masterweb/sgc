@@ -951,7 +951,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <h4 class="text-danger">Cierre</h4>
                             <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
                             <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
-                            <?php if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
+                            <?php //if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
                             
                             <?php 
                             $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}"));
@@ -976,7 +976,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
                             </div>
                             <?php endif; // fin de anulacion de factura ?>
-                            <?php } ?>
+                            <?php //} ?>
                         </div> 
                     <?php } ?>
                     
