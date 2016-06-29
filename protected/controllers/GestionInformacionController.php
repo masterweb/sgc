@@ -1967,6 +1967,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 !empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
             $search_type = 12;
         }
+        
+        // BUSQUEDA POR CONCESIONARIO GERENTE COMERCIAL
+        if ($fechaPk == 1 && empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['status']) &&
+                empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['seguimiento']) && 
+                !empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 12;
+        }
         // BUSQUEDA POR RESPONSABLE
         if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
                 empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo']) &&
@@ -2188,6 +2195,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $sql .= $sql_cargos;
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'");
                 $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
                 $sql .= "gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;

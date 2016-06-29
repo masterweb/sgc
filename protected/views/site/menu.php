@@ -216,7 +216,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                     <?php } ?>
                     <?php } ?>
-                    <?php if($cargo_id == 69 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ // JEFE USADOS ?>
+                    <?php if($cargo_id == 6999 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ // JEFE USADOS ?>
                         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
                         <li class="wrapper">
                             <div class="forma">
@@ -236,7 +236,7 @@ $rol = Yii::app()->user->getState('roles');
                         </li>
                         <?php } ?>
                     <?php } ?>
-                    <?php if($cargo_id == 69){ // JEFE COMERCIAL ?>    
+                    <?php if($cargo_id == 6999){ // JEFE COMERCIAL ?>    
                         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                         <li class="wrapper">
                             <div class="forma">
@@ -268,12 +268,12 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>    
                         
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
-                    <li class="wrapper">
+<!--                    <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD BDC</div></a>
                         </div>
-                    </li>
+                    </li>-->
                     <?php } ?>
                 <?php } // end tipo ventas ?> 
                 
