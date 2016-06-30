@@ -164,7 +164,7 @@
     <?php 
     if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76 || $varView['cargo_id'] == 72): ?>
         <?php         
-        if (in_array($varView['cargo_id'], $usuariosBajos)):?>
+        if (in_array($varView['cargo_id'], $usuariosBajos) && !in_array($varView['cargo_id'], $usuariosGenentes)):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
         <?php endif; ?>
             <div class="col-md-6">

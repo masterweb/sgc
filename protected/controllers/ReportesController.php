@@ -148,7 +148,7 @@ class ReportesController extends Controller {
          // procesamos las variables de busqueda del filtro
         $varView['js_responsable'] = 'null';
         $consultaBDC = '';
-        if($_GET['GI']){            
+        if($_GET['GI']){ 
             if($_GET['GI']['fecha1'] != ''){
                 //echo('fecha1');
                 $gi_fecha1 = explode(" - ", $_GET['GI']['fecha1']);
