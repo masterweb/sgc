@@ -38,6 +38,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 <style>
     .answers .col-md-8{margin-left: 18px;}.text-danger{font-weight: bold;font-size: 14px;}
     .tl_seccion_rf{margin-left: 0px !important;}
+    #cierre{overflow: hidden !important;}
+    select{height: 22px !important;}
+    .tl_seccion_rf{width: 100% !important;}
 </style>
 <script type="text/javascript">
     $(function () {
@@ -161,7 +164,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <div role="tabpanel" class="tab-pane" id="home">
         </div>
         <div role="tabpanel" class="tab-pane active" id="profile">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <div class="highlight"><!-- HIGHLIGHT -->
                     <div class="row">
                         <h1 class="tl_seccion_rf">Datos del Cliente</h1>
@@ -541,7 +544,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 </div><!-- END OF HIGHLIGHT-->
             </div>
             <?php if ($this->getAnswer(1, $id) > 0){?>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                         <h3 class="tl_seccion_rf" id="prospeccion">
                             <span><img src="/intranet/usuario/images/prospeccion_on.png" alt=""></span> - Paso 1/2 - Prospección/Cita
                         </h3>
@@ -608,7 +611,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 ?>
                 <?php } // end if ?>
             <?php if ($this->getAnswer(2, $id) > 0){ ?>
-                <div class="col-md-9">
+                <div class="col-md-10">
                     <h3 class="tl_seccion_rf" id="consulta"><span><img src="/intranet/ventas/images/consulta_on.png" alt=""></span> - Paso 4 - Consulta</h3>
                 </div>
                 <!--  =========================          PASO 3-4   =========================    -->
@@ -773,7 +776,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
             <?php } //End - Paso 4 - Consulta ?>
                 
                 <?php if ($this->getAnswer(3, $id) > 0){ ?> 
-                    <div class="col-md-9" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
+                    <div class="col-md-10" id="presentacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/presentacion_on.png" alt=""></span> - Paso 5 - Presentación</h3></div>
                     <div class="col-md-8">
                         
                         <?php //$modelos = $this->getModelosPr($id); 
@@ -815,7 +818,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                 } //End - Paso 5 - Presentación
                 ?>
             <?php if ($this->getAnswer(4, $id) > 0){ ?>
-                    <div class="col-md-9" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
+                    <div class="col-md-10" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}",
                         //'group' => 'preg1'
@@ -855,7 +858,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         
                 <?php } // End - Paso 6 - Demostración ?>
                 <?php if ($this->getAnswer(5, $id) > 0) { ?>
-                    <div class="col-md-9" id="negociacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/negociacion_on.png" alt=""></span> - Paso 7 - Negociación</h3></div>
+                    <div class="col-md-10" id="negociacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/negociacion_on.png" alt=""></span> - Paso 7 - Negociación</h3></div>
                     <?php
                     $criteria9 = new CDbCriteria(array(
                         'condition' => "id_informacion={$_GET['id']}"
@@ -944,28 +947,63 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     </div>
                 <?php } // end if paso 7 negogociacion  ?>
                 <?php if ($this->getAnswer(6, $id) > 0){ ?>
-                    <div class="col-md-9" id="cierre"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/cierre_on.png" alt=""></span> - Paso 8 - Cierre</h3></div>
+                    <div class="col-md-10" id="cierre"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/cierre_on.png" alt=""></span> - Paso 8 - Cierre</h3></div>
                     <?php $cr = GestionFactura::model()->findAll(array('condition' => "id_informacion=:match",'params' => array(':match' => $id))); ?>
                     <?php foreach ($cr as $vc) { ?>
-                         <div class="col-md-8">
-                            <h4 class="text-danger">Cierre</h4>
+                         <div class="col-md-10">
+                             <table class="table table-striped">
+                                 <thead> <tr><th>Fecha Cierre</th> <th>Observaciones</th><th>Versión</th> <th>Estado</th><th>Anulación</th></tr> </thead>
+                                 <tbody>
+                                     <?php 
+                            $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}"));
+                            ?>
+                                     <tr>
+                                         <td><?php echo $vc['fecha']; ?></td>
+                                         <td><?php echo $vc['observaciones']; ?></td>
+                                         <td><?php echo $this->getVersionFin($vc['id_vehiculo']); ?></td>
+                                         <td><?php if($anulacion->status == 'ACTIVO'){ ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a>    
+                                            <?php } ?>
+                                            <?php if($anulacion->status == 'INACTIVO'){ ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a>  
+                                            <?php } ?>
+                                         </td>
+                                         <td>
+                                             <?php 
+                                            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+                                            if($cargo_id == 70 || $cargo_id == 61): // anulacion de factura ?>
+                                            
+                                                <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
+                                                    <option value="">--Seleccione--</option>
+                                                    <option value="1">Anular Factura</option>
+                                                    <option value="0">Revertir Factura</option>
+                                                </select>
+                                                <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
+                                                <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
+                                                <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
+                                            <?php endif; // fin de anulacion de factura ?>
+                                         </td>
+                                     </tr>
+                                 </tbody>
+                             </table>
+<!--                            <h4 class="text-danger">Cierre</h4>
                             <div class="col-md-3"><p><strong>Fecha de cierre: </strong><?php echo $vc['fecha']; ?></p></div>
-                            <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>
+                            <div class="col-md-4"><p><strong>Observaciones: </strong><?php echo $vc['observaciones']; ?></p></div>-->
                             <?php //if($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6 || $grupo_id == 9){ ?>
                             
                             <?php 
                             $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}"));
                             ?>
                             <?php if($anulacion->status == 'ACTIVO'){ ?>
-                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a></div>    
+                            <!--<div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a></div>-->    
                             <?php } ?>
                             <?php if($anulacion->status == 'INACTIVO'){ ?>
-                            <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a></div>    
+                            <!--<div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a></div>-->    
                             <?php } ?>
                             <?php 
                             $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             if($cargo_id == 70): // anulacion de factura ?>
-                            <div class="col-md-3">
+<!--                            <div class="col-md-3">
                                 <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
                                     <option value="">--Seleccione--</option>
                                     <option value="1">Anular Factura</option>
@@ -974,7 +1012,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
                                 <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
                                 <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
-                            </div>
+                            </div>-->
                             <?php endif; // fin de anulacion de factura ?>
                             <?php //} ?>
                         </div> 
@@ -982,7 +1020,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     
                 <?php } // End - Paso 8 - Cierre  ?>
                 <?php if ($this->getAnswer(7, $id) > 0){ ?>
-                    <div class="col-md-9" id="entrega">
+                    <div class="col-md-10" id="entrega">
                         <h3 class="tl_seccion_rf" id="entrega">
                             <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 9 - Entrega</h3>
                     </div>
@@ -994,22 +1032,19 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $id_vehiculo = $art5->id_vehiculo;
                     $id_gestion_paso_entrega = $this->getIdPasoEntrega($_GET['id'], $id_vehiculo);
                     ?>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                     <table class="table table-striped">
-                        <thead> <tr><th>Paso</th> <th>Fecha</th> <th>Detalle</th> </tr> </thead>
+                        <thead> <tr><th>Paso</th> <th>Fecha</th> <th>Observaciones</th> </tr> </thead>
                         <tbody>
                             <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 1)) { ?>
                                 <tr>
                                     <td>
-                                        <h3 class="panel-title">Envío de factura del vehículo y de los accesorios</h3>
+                                        Envío de factura del vehículo y de los accesorios
                                     </td>
                                     <td>
-
-                                        <label for="">Fecha: </label>
                                         <?php echo $data['fecha']; ?>
                                     </td>
                                     <td>
-                                        <label for="">Observaciones: </label>
                                         <?php echo $data['observaciones']; ?>
                                     </td>
                                 </tr>    
@@ -1017,15 +1052,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 2)) { ?>
                             <tr>
                                 <td>
-                                    <h3 class="panel-title">Emisión de los contratos</h3>
+                                    Emisión de los contratos
                                 </td>
                                 <td>
-
-                                    <label for="">Fecha: </label>
                                     <?php echo $data['fecha']; ?>
                                 </td>
                                 <td>
-                                    <label for="">Observaciones: </label>
                                     <?php echo $data['observaciones']; ?>
                                 </td>
                             </tr>
@@ -1033,15 +1065,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 3)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Agendar firma de contratos por parte del cliente</h3>
+                                Agendar firma de contratos por parte del cliente
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Observaciones: </label>
                                 <?php echo $data['observaciones']; ?>
                             </td>
                         </tr>    
@@ -1049,15 +1078,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 4)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Alistamiento de la unidad en PDI y accesorización</h3>
+                                Alistamiento de la unidad en PDI y accesorización>
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Observaciones: </label>
                                 <?php echo $data['observaciones']; ?>
                             </td>
                         </tr>    
@@ -1065,15 +1091,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 5)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Pago de la matrícula e impuestos</h3>
+                                Pago de la matrícula e impuestos
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Observaciones: </label>
                                 <?php echo $data['observaciones']; ?>
                             </td>
                         </tr>    
@@ -1081,15 +1104,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 6)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Recepción de contratos legalizados</h3>
+                                Recepción de contratos legalizados
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Observaciones: </label>
                                 <?php echo $data['observaciones']; ?>
                             </td>
                         </tr>    
@@ -1097,15 +1117,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 7)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Recepción de matrícula  y placas</h3>
+                                Recepción de matrícula  y placas
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Placa: </label>
                                 <?php echo $data['placa']; ?>
                             </td>
                         </tr>    
@@ -1113,15 +1130,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 8)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Vehículo Revisado</h3>
+                               Vehículo Revisado
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Responsable: </label>
                                 <?php echo $data['responsable']; ?>
                             </td>
                         </tr>    
@@ -1129,15 +1143,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 9)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Entrega al Vehículo</h3>
+                                Entrega al Vehículo
                             </td>
                             <td>
-
-                                <label for="">Fecha: </label>
                                 <?php echo $data['fecha']; ?>
                             </td>
                             <td>
-                                <label for="">Observaciones: </label>
                                 <?php echo $data['observaciones']; ?>
                             </td>
                         </tr>    
@@ -1145,7 +1156,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php if ($data = $this->getFechaObsEntrega($id_gestion_paso_entrega, 10)) { ?>
                         <tr>
                             <td>
-                                <h3 class="panel-title">Foto de entrega</h3>
+                                Foto de entrega
                             </td>
                             <td>
                                 <a class="fancybox btn btn-success btn-xs"  href="#inline2">Foto de Entrega</a>
@@ -1168,7 +1179,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         
                 <?php } ?>
                 <?php if ($this->getAnswer(8, $id) > 0){ ?>
-                    <div class="col-md-9" id="entrega">
+                    <div class="col-md-10" id="entrega">
                         <h3 class="tl_seccion_rf" id="entrega">
                             <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 10 - Seguimiento</h3>
                     </div>
@@ -1177,11 +1188,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('site/cartabienvenida/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Carta de Bienvenida</a></div>
                     </div>
                 <?php } ?>  
-                    <div class="col-md-9" id="entrega">
+                    <div class="col-md-10" id="entrega">
                         <h3 class="tl_seccion_rf" id="entrega">
                             <span><img src="/intranet/ventas/images/entrega_on.png" alt=""></span> - Paso 10 + 1</h3>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <?php $p10 = GestionPasoOnce::model()->count(array('condition' => "id_informacion = {$_GET['id']}")); ?>
                         <?php if($p10 > 0){ ?>
                         <table class="table table-striped">
