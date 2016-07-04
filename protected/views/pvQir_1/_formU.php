@@ -2,10 +2,49 @@
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" type="text/css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.min.js"></script>
 <?php
-/* @var $this PvQirController */
-/* @var $model Qir */
-/* @var $form CActiveForm */
+
+function cleanString($in,$offset=null) 
+{ 
+    $out = trim($in); 
+    if (!empty($out)) 
+    { 
+        $entity_start = strpos($out,'&',$offset); 
+        if ($entity_start === false) 
+        { 
+            // ideal 
+            return $out;    
+        } 
+        else 
+        { 
+            $entity_end = strpos($out,';',$entity_start); 
+            if ($entity_end === false) 
+            { 
+                 return $out; 
+            } 
+            // zu lang um eine entity zu sein 
+            else if ($entity_end > $entity_start+7) 
+            { 
+                 // und weiter gehts 
+                 $out = cleanString($out,$entity_start+1); 
+            } 
+            // gottcha! 
+            else 
+            { 
+                 $clean = substr($out,0,$entity_start); 
+                 $subst = substr($out,$entity_start+1,1); 
+                 // &scaron; => "s" / &#353; => "_" 
+                 $clean .= ($subst != "#") ? $subst : "_"; 
+                 $clean .= substr($out,$entity_end+1); 
+                 // und weiter gehts 
+                 $out = cleanString($clean,$entity_start+1); 
+            } 
+        } 
+    } 
+    return $out; 
+}
+
 ?>
+
 <script>
     $(function() {
         $("#qir-form").validate({
@@ -41,9 +80,9 @@
         // controller action is handling ajax validation correctly.
         // There is a call to performAjaxValidation() commented in generated controller code.
         // See class documentation of CActiveForm for details on this.
-        'enableAjaxValidation' => false,
+        'enableAjaxValidation' => TRUE,
         'clientOptions' => array(
-            'validateOnSubmit' => false,
+            'validateOnSubmit' => true,
             'validateOnChange' => false,
             'validateOnType' => false
         ),
@@ -74,7 +113,7 @@
 
         <div class="col-sm-6">
             <?php echo $form->labelEx($model, 'fecha_registro'); ?>
-            <?php echo $form->textField($model, 'fecha_registro', array('class' => 'form-control datepicker','value'=>date('Y-m-d'))); ?>
+            <?php echo $form->textField($model, 'fecha_registro', array('class' => 'form-control datepicker')); ?>
             <?php echo $form->error($model, 'fecha_registro'); ?>
         </div>
 
@@ -200,61 +239,43 @@
             <?php echo $form->error($model, 'titular'); ?>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <?php echo $form->labelEx($model, 'descripcion'); ?>
             <br>
+            <span style="font-size: 11px;">1. Introducción<br>2. Análisis Síntoma<br>3. Investigación<br>4. Acciones correctivas<br>5. Comentarios/Recomendaciones</span>
             <?php
-            echo $form->textArea($model, 'descripcion', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'descripcion'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'analisis'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'analisis', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-			echo $form->error($model, 'analisis'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'investigacion'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'investigacion', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'investigacion'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'acciones'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'acciones', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'acciones'); ?>
-        </div>
-		<div class="col-sm-12">
-            <?php echo $form->labelEx($model, 'comentarios'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'comentarios', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'comentarios'); ?>
+            echo $form->textArea($model, 'descripcion', array(
+                'rows' => 10,
+                'cols' => 50,
+                'class' => 'form-control',
+				'value'=>html_entity_decode(str_replace(array("<br/>","<br />","<br>"),array(" "),$model->descripcion), ENT_QUOTES, "UTF-8"),
+				//'value'=>str_replace("<br>"," ",$model->descripcion),
+                /*'value' => '1. Descripción.
+
+2. Análisis Síntoma
+
+3. Investigación
+
+4. Acciones correctivas
+
+5. Comentarios / Recomendaciones'*/));
+            ?>
+            <?php echo $form->error($model, 'descripcion'); ?>
         </div>
 		 <div class="col-sm-12">
             <?php echo $form->labelEx($modelA, 'Adjuntos'); ?>
             <?php echo CHtml::activeFileField($modelA, 'nombre', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control file')); ?>
             <?php echo $form->error($modelA, 'nombre'); ?>
         </div>
-		<?php $user = Usuarios::model()->find(array( 'condition' => "id=:match", 'params' => array(':match' =>(int)Yii::app()->user->id)));
-			if(!empty($user)){
-				$name = $user->nombres;
-				$emails =$user->correo;	
-			}
-		?>
         <div class="col-sm-6">
             <?php echo $form->labelEx($model, 'ingresado'); ?>
-            <?php echo $form->textField($model, 'ingresado', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control','value'=>$name)); ?>
+            <?php echo $form->textField($model, 'ingresado', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control')); ?>
             <?php echo $form->error($model, 'ingresado'); ?>
         </div>
 
         <div class="col-sm-6">
             <?php echo $form->labelEx($model, 'email'); ?>
-            <?php echo $form->textField($model, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control','value'=>$emails)); ?>
+            <?php echo $form->textField($model, 'email', array('size' => 60, 'maxlength' => 255, 'class' => 'form-control')); ?>
             <?php echo $form->error($model, 'email'); ?>
         </div>
 
@@ -300,7 +321,7 @@
             <?php echo $form->labelEx($model, 'localizacion'); ?>
             <?php
             $opcion = array(
-                'Centro' => 'Centro',
+                'Centor' => 'Centor',
                 'Frontal lado izquierdo' => 'Frontal lado izquierdo',
                 'Frontal lado derecho' => 'Frontal lado derecho',
                 'Posterior lado izquierdo' => 'Posterior lado izquierdo',
@@ -317,7 +338,7 @@
             $opcion = array(
                 'Acelerado' => 'Acelerado',
                 'Manejando suavemente' => 'Manejando suavemente',
-                'Al Arrancar' => 'Al Arrancar',
+                'Arrancado' => 'Arrancado',
                 'Al Frenar' => 'Al Frenar',
                 'Al Acelerar' => 'Al Acelerar',
                 'Al Desacelerar' => 'Al Desacelerar',
@@ -347,7 +368,42 @@
             <?php echo $form->error($model, 'etc'); ?>
         </div>
 
-        
+        <div class="col-sm-6">
+            <?php echo $form->labelEx($model, 'vin_adicional'); ?>
+            <?php echo $form->textField($model, 'vin_adicional', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'vin_adicional'); ?>
+        </div>
+
+        <div class="col-sm-6">
+            <?php echo $form->labelEx($model, 'num_motor_adi'); ?>
+            <?php echo $form->textField($model, 'num_motor_adi', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'num_motor_adi'); ?>
+        </div>
+
+        <div class="col-sm-6">
+            <?php echo $form->labelEx($model, 'kilometraje_adic'); ?>
+            <?php echo $form->textField($model, 'kilometraje_adic', array('size' => 60, 'maxlength' => 200, 'class' => 'form-control')); ?>
+            <?php echo $form->error($model, 'kilometraje_adic'); ?>
+        </div>
+
+        <div class="col-sm-6">
+            <?php echo $form->labelEx($model, 'estado'); ?>
+            <?php
+            $estados = array(
+                'Pendiente' => 'Pendiente',
+                'En Estudio' => 'En Estudio',
+                'Mas Informacion Requerida' => 'Más Información Requerida',
+                'Mejorado' => 'Mejorado',
+                'Cerrado' => 'Cerrado',
+				'Anulado' => 'Anulado',
+            );
+            echo $form->dropDownList($model, 'estado', $estados, array('class' => 'form-control span3', 'prompt' => ''));
+            ?>
+            <?php echo $form->error($model, 'estado'); ?>
+        </div>
+
+      
+
         <div class="row buttons col-sm-12">
             <?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar', array('class' => 'btn btn-danger')); ?>
         </div>

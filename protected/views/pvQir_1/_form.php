@@ -55,7 +55,7 @@
     ?>
 
 
-    <?php echo $form->errorSummary($model); ?>
+    <?php //echo $form->errorSummary($model); ?>
     <div class="form-group">
         <div class="col-sm-6">
             <?php echo $form->labelEx($model, 'dealerId'); ?>
@@ -200,40 +200,27 @@
             <?php echo $form->error($model, 'titular'); ?>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <?php echo $form->labelEx($model, 'descripcion'); ?>
             <br>
+            <span style="font-size: 11px;">1. Introducción<br>2. Análisis Síntoma<br>3. Investigación<br>4. Acciones correctivas<br>5. Comentarios/Recomendaciones</span>
             <?php
-            echo $form->textArea($model, 'descripcion', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'descripcion'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'analisis'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'analisis', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-			echo $form->error($model, 'analisis'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'investigacion'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'investigacion', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'investigacion'); ?>
-        </div>
-		<div class="col-sm-6">
-            <?php echo $form->labelEx($model, 'acciones'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'acciones', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'acciones'); ?>
-        </div>
-		<div class="col-sm-12">
-            <?php echo $form->labelEx($model, 'comentarios'); ?>
-            <br>
-            <?php
-            echo $form->textArea($model, 'comentarios', array('rows' => 10,'cols' => 50,'class' => 'form-control',));
-            echo $form->error($model, 'comentarios'); ?>
+            echo $form->textArea($model, 'descripcion', array(
+                'rows' => 10,
+                'cols' => 50,
+                'class' => 'form-control',
+				'value'=>str_replace("<br>"," ",$model->descripcion),
+                /*'value' => '1. Descripción.
+
+2. Análisis Síntoma
+
+3. Investigación
+
+4. Acciones correctivas
+
+5. Comentarios / Recomendaciones'*/));
+            ?>
+            <?php echo $form->error($model, 'descripcion'); ?>
         </div>
 		 <div class="col-sm-12">
             <?php echo $form->labelEx($modelA, 'Adjuntos'); ?>
