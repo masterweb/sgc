@@ -119,7 +119,10 @@ class Qir extends CActiveRecord
 			'fecha_reparacion' => 'Fecha Reparaci&oacute;n',
 			'titular' => 'Titular',
 			'descripcion' => 'Descripci&oacute;n',
-			'ingresado' => 'Ingresado',
+			'analisis' => 'An&aacute;lisis',
+			'investigacion' => 'Investigaci&oacute;n',
+			'acciones' => 'Acciones',
+			'comentarios' => 'Comentarios',
 			'email' => 'Email',
 			'circunstancia' => 'Circunstancia',
 			'periodo_tiempo' => 'Periodo Tiempo',
@@ -174,6 +177,10 @@ class Qir extends CActiveRecord
 		$criteria->compare('fecha_reparacion',$this->fecha_reparacion,true);
 		$criteria->compare('titular',$this->titular,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
+		$criteria->compare('analisis',$this->analisis,true);
+		$criteria->compare('investigacion',$this->investigacion,true);
+		$criteria->compare('acciones',$this->acciones,true);
+		$criteria->compare('comentarios',$this->comentarios,true);
 		$criteria->compare('ingresado',$this->ingresado,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('circunstancia',$this->circunstancia,true);
