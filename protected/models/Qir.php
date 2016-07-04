@@ -64,7 +64,7 @@ class Qir extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('dealerId, num_reporte, fecha_registro, modeloPostVentaId, num_vehiculos_afectados, prioridad, parte_defectuosa, vin, num_motor, transmision, num_parte_casual, detalle_parte_casual, codigo_naturaleza, codigo_casual, fecha_garantia, fecha_fabricacion, kilometraje, titular, descripcion, ingresado, email, circunstancia, periodo_tiempo, rango_velocidad, localizacion, fase_manejo, condicion_camino', 'required','message'=>'El campo {attribute} no puede estar vacio'),
+			array('dealerId, num_reporte, fecha_registro, modeloPostVentaId, num_vehiculos_afectados, prioridad, parte_defectuosa, vin, num_motor, transmision, num_parte_casual, detalle_parte_casual, codigo_naturaleza, codigo_casual, fecha_garantia, fecha_fabricacion, kilometraje, titular, descripcion,analisis,investigacion,acciones,comentarios, ingresado, email, circunstancia, periodo_tiempo, rango_velocidad, localizacion, fase_manejo, condicion_camino', 'required','message'=>'El campo {attribute} no puede estar vacio'),
 			array('dealerId, modeloPostVentaId, num_vehiculos_afectados', 'numerical', 'integerOnly'=>true),
 			array('num_reporte, prioridad, parte_defectuosa, vin, num_motor, transmision, num_parte_casual, detalle_parte_casual, codigo_naturaleza, codigo_casual, kilometraje, vin_adicional, num_motor_adi, estado', 'length', 'max'=>100),
 			array('titular, ingresado, email, circunstancia, periodo_tiempo, rango_velocidad, localizacion, fase_manejo, condicion_camino, etc', 'length', 'max'=>255),
@@ -72,7 +72,7 @@ class Qir extends CActiveRecord
 			array('fecha_reparacion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, dealerId, num_reporte, fecha_registro, modeloPostVentaId, num_vehiculos_afectados, prioridad, parte_defectuosa, vin, num_motor, transmision, num_parte_casual, detalle_parte_casual, codigo_naturaleza, codigo_casual, fecha_garantia, fecha_fabricacion, kilometraje, fecha_reparacion, titular, descripcion, ingresado, email, circunstancia, periodo_tiempo, rango_velocidad, localizacion, fase_manejo, condicion_camino, etc, vin_adicional, num_motor_adi, kilometraje_adic, estado', 'safe', 'on'=>'search'),
+			array('id, dealerId, num_reporte, fecha_registro, modeloPostVentaId, num_vehiculos_afectados, prioridad, parte_defectuosa, vin, num_motor, transmision, num_parte_casual, detalle_parte_casual, codigo_naturaleza, codigo_casual, fecha_garantia, fecha_fabricacion, kilometraje, fecha_reparacion, titular, descripcion,analisis,investigacion,acciones,comentarios, ingresado, email, circunstancia, periodo_tiempo, rango_velocidad, localizacion, fase_manejo, condicion_camino, etc, vin_adicional, num_motor_adi, kilometraje_adic, estado', 'safe', 'on'=>'search'),
 		);  
 	}
 
@@ -122,7 +122,7 @@ class Qir extends CActiveRecord
 			'analisis' => 'An&aacute;lisis',
 			'investigacion' => 'Investigaci&oacute;n',
 			'acciones' => 'Acciones',
-			'comentarios' => 'Comentarios',
+			'comentarios' => 'Comentarios', 
 			'email' => 'Email',
 			'circunstancia' => 'Circunstancia',
 			'periodo_tiempo' => 'Periodo Tiempo',
