@@ -515,7 +515,7 @@ if (isset($id)) {
 
                 <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
                 <div class="col-md-2">
-<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
+<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger', 'id'=>'btn_grabar', 'onclick'=> "deshabilitarBoton('GestionAgendamiento_observaciones','GestionAgendamiento_agendamiento','btn_grabar','gestion-agendamiento-form2')")); ?>
                 </div>
                 <div class="col-md-3">
                     <div id="calendar-content" style="display: none;">
@@ -583,12 +583,14 @@ if (isset($id)) {
                 <input type="hidden" name="GestionPasoOnce[paso]" id="GestionPasoOnce_paso" value="4">
                 <input type="hidden" name="GestionPasoOnce[id_informacion]" id="GestionPasoOnce_id_informacion" value="<?php echo $id_informacion; ?>">
                 <div class="col-md-2">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
+                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Grabar', array('class' => 'btn btn-danger', 'id'=>'btn_grabar2', 'onclick'=>"deshabilitarBoton('GestionPasoOnce_tipo','GestionPasoOnce_observacion','btn_grabar2','gestion-paso-once-form')")); ?>
                 </div>
             </div>
             <?php $this->endWidget(); ?>
         </div><!-- END FORM  -->
     </div>
     <br>
+    
 <?= $this->renderPartial('//layouts/rgd/links'); ?>
 </div>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>

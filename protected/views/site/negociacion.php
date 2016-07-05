@@ -321,7 +321,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                             <input type="hidden" name="GestionAgendamiento[nombre_concesionario]" id="GestionAgendamiento_nombre_concesionario" value="<?php echo $nombreConcesionario; ?>">
                             <input type="hidden" name="GestionAgendamiento[direccion_concesionario]" id="GestionAgendamiento_direccion_concesionario" value="<?php echo $direccion_concesionario; ?>">
                             <div class="col-md-2">
-<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
+<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger', 'id'=>'btn_grabar', 'onclick'=> "deshabilitarBoton('GestionInformacion_check','btn_grabar','gestion-agendamiento-form')")); ?>
                             </div>
                             <div class="col-md-3">
                                 <div id="calendar-content" style="display: none;">
@@ -390,7 +390,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                             <input type="hidden" name="GestionPasoOnce[paso]" id="GestionPasoOnce_paso" value="7">
                             <input type="hidden" name="GestionPasoOnce[id_informacion]" id="GestionPasoOnce_id_informacion" value="<?php echo $id; ?>">
                             <div class="col-md-2">
-                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Grabar', array('class' => 'btn btn-danger')); ?>
+                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Grabar', array('class' => 'btn btn-danger', 'id'=>'btn_grabar2', 'onclick'=>"deshabilitarBoton2('GestionPasoOnce_tipo','GestionPasoOnce_observacion','btn_grabar2','gestion-paso-once-form')")); ?>
                             </div>
                         </div>
                         <?php $this->endWidget(); ?>
@@ -401,3 +401,4 @@ $gf = GestionFinanciamiento::model()->count($crit5);
         </div>
     </div>
 </div>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>

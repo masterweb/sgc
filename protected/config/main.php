@@ -96,7 +96,8 @@ return array(
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'k143c89?4Fg&2',
-            //'password' => '',
+            /*'username' => 'kia1234',
+            'password' => 'kia1234',*/
             'charset' => 'utf8',
         ),
          'db2' => array(
@@ -105,7 +106,8 @@ return array(
           'emulatePrepare' => true,
           'username' => 'root',
           'password' => 'k143c89?4Fg&2',
-          //'password' => '',
+          /*'username' => 'kia1234',
+          'password' => 'kia1234',*/
           'charset' => 'utf8',
           ), 
         'image' => array(

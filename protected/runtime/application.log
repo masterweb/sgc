@@ -17116,3 +17116,1832 @@ Stack trace:
 #15 {main}
 REQUEST_URI=/kia.com.ec/intranet.kia.com.ec/web/usuario/index.php/Reportes/inicio
 ---
+2016/07/04 13:01:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 13:01:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 13:01:16 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 . La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios  WHERE id_grupo =  AND  dealer_id IN (2, 5, 6, 7, 10, 12, 14, 16, 20, 38, 59, 60, 62, 63, 65, 68, 70, 72, 73, 74, 76, 77, 78, 79, 80, 81)  ORDER BY nombre ASC.
+2016/07/04 13:01:16 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 ' in C:\AppServ\www\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\AppServ\www\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\AppServ\www\kia\protected\components\Reportes\AjaxCalls.php(338): CDbCommand->queryAll()
+#2 C:\AppServ\www\kia\protected\controllers\ReportesController.php(542): AjaxCalls->AjaxGetDealers()
+#3 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#4 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\AppServ\www\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 C:\AppServ\www\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#8 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#9 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#11 {main}
+REQUEST_URI=/kia/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 13:01:31 [error] [php] Division by zero (C:\AppServ\www\kia\protected\controllers\GestionInformacionController.php:5965)
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#3 C:\AppServ\www\yii\framework\web\filters\CFilterChain.php(133): GestionInformacionController->runAction()
+#4 C:\AppServ\www\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#5 C:\AppServ\www\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#6 C:\AppServ\www\yii\framework\web\filters\CInlineFilter.php(58): GestionInformacionController->filterAccessControl()
+#7 C:\AppServ\www\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 C:\AppServ\www\yii\framework\web\CController.php(291): CFilterChain->run()
+#9 C:\AppServ\www\yii\framework\web\CController.php(265): GestionInformacionController->runActionWithFilters()
+#10 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): GestionInformacionController->run()
+#11 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\AppServ\www\kia\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia/index.php/gestioninformacion/Reportes
+2016/07/04 13:01:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestioninformacion/Reportes
+---
+2016/07/04 13:01:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestioninformacion/Reportes
+---
+2016/07/04 13:01:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 13:01:37 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 . La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios  WHERE id_grupo =  AND  dealer_id IN (2, 5, 6, 7, 10, 12, 14, 16, 20, 38, 59, 60, 62, 63, 65, 68, 70, 72, 73, 74, 76, 77, 78, 79, 80, 81)  ORDER BY nombre ASC.
+2016/07/04 13:01:37 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 ' in C:\AppServ\www\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\AppServ\www\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\AppServ\www\kia\protected\components\Reportes\AjaxCalls.php(338): CDbCommand->queryAll()
+#2 C:\AppServ\www\kia\protected\controllers\ReportesController.php(542): AjaxCalls->AjaxGetDealers()
+#3 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#4 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\AppServ\www\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 C:\AppServ\www\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#8 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#9 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#11 {main}
+REQUEST_URI=/kia/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 13:01:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/07/04 13:01:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 13:01:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 13:02:05 [error] [php] Division by zero (C:\AppServ\www\kia\protected\controllers\GestionInformacionController.php:5965)
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#3 C:\AppServ\www\yii\framework\web\filters\CFilterChain.php(133): GestionInformacionController->runAction()
+#4 C:\AppServ\www\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#5 C:\AppServ\www\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#6 C:\AppServ\www\yii\framework\web\filters\CInlineFilter.php(58): GestionInformacionController->filterAccessControl()
+#7 C:\AppServ\www\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 C:\AppServ\www\yii\framework\web\CController.php(291): CFilterChain->run()
+#9 C:\AppServ\www\yii\framework\web\CController.php(265): GestionInformacionController->runActionWithFilters()
+#10 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): GestionInformacionController->run()
+#11 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\AppServ\www\kia\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia/index.php/gestionInformacion/reportes
+2016/07/04 13:02:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/reportes
+---
+2016/07/04 14:41:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento?GestionDiaria%5Bgeneral%5D=&GestionDiaria%5Bcategorizacion%5D=&GestionDiaria%5Bstatus%5D=PrimeraVisita&GestionDiaria%5Bfecha%5D=2016%2F07%2F04+-+2016%2F07%2F04&GestionDiaria%5Bseguimiento%5D=&GestionDiaria%5Brango_fecha%5D=2016%2F07%2F04+-+2016%2F07%2F04&busqueda_general=0&categorizacion=0&status=1&responsable=0&fecha=0&search_type=0&seguimiento_rgd=0&fecha_seguimiento=0
+---
+2016/07/04 14:44:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:44:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/07/04 14:44:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 14:45:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:45:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/uusuarios/contactos
+---
+2016/07/04 14:45:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:45:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:45:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/07/04 14:46:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 14:46:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/07/04 14:46:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:46:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 14:46:06 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42000]: Syntax error or access violation: 1064 . La sentencia SQL ejecutada fue: SELECT distinct nombre, dealer_id FROM gr_concesionarios  WHERE id_grupo =  AND  dealer_id IN (2, 5, 6, 7, 10, 12, 14, 16, 20, 38, 59, 60, 62, 63, 65, 68, 70, 72, 73, 74, 76, 77, 78, 79, 80, 81)  ORDER BY nombre ASC.
+2016/07/04 14:46:06 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42000]: Syntax error or access violation: 1064 ' in C:\AppServ\www\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\AppServ\www\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\AppServ\www\kia\protected\components\Reportes\AjaxCalls.php(338): CDbCommand->queryAll()
+#2 C:\AppServ\www\kia\protected\controllers\ReportesController.php(542): AjaxCalls->AjaxGetDealers()
+#3 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(49): ReportesController->actionAjaxGetDealers()
+#4 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\AppServ\www\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 C:\AppServ\www\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): CController->run('AjaxGetDealers')
+#8 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('Reportes/AjaxGe...')
+#9 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#10 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#11 {main}
+REQUEST_URI=/kia/index.php/Reportes/AjaxGetDealers
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio
+---
+2016/07/04 14:48:08 [error] [php] in_array() expects parameter 2 to be array, null given (C:\AppServ\www\kia\protected\components\Reportes\Modelos.php:97)
+Stack trace:
+#0 unknown(0): ReportesController->actionInicio()
+#1 C:\AppServ\www\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#2 C:\AppServ\www\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#3 C:\AppServ\www\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#4 C:\AppServ\www\yii\framework\web\CController.php(286): ReportesController->runAction()
+#5 C:\AppServ\www\yii\framework\web\CController.php(265): ReportesController->runActionWithFilters()
+#6 C:\AppServ\www\yii\framework\web\CWebApplication.php(282): ReportesController->run()
+#7 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#8 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#9 C:\AppServ\www\kia\index.php(15): CWebApplication->run()
+REQUEST_URI=/kia/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-06-01+-+2016-06-01&GI%5Bfecha2%5D=2016-06-01+-+2016-07-04&GI%5Btipo%5D=general&version%5B%5D=57&version%5B%5D=131
+2016/07/04 14:48:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/Reportes/inicio?GI%5Bfecha1%5D=2016-06-01+-+2016-06-01&GI%5Bfecha2%5D=2016-06-01+-+2016-07-04&GI%5Btipo%5D=general&version%5B%5D=57&version%5B%5D=131
+---
+2016/07/04 14:49:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/dashboard
+---
+2016/07/04 14:49:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/menu/opcion/c81e728d9d4c2f636f067f89cc14862c/tipo/ventas
+---
+2016/07/04 15:22:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 15:45:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/04 15:48:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 15:48:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/04 15:48:39 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/04 15:48:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/04 15:48:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/cierre/15038
+---
+2016/07/04 15:50:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/04 16:15:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:16:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:26:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 16:27:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:29:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:29:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:31:48 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:31:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 16:36:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/04 16:36:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:36:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:38:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:39:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:39:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:41:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:41:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:52:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:52:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:53:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:55:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:56:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:56:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:57:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:57:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:58:39 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:58:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 16:59:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:00:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:01:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/04 17:01:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:09:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/04 17:09:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:10:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:10:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:11:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:11:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:12:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:12:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:13:59 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:14:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:16:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:18:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:19:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:23:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:24:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:25:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:25:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:26:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:30:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:32:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:33:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:33:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:33:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:34:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:34:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:37:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:37:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:37:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:38:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:38:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:42:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:43:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:43:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:44:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:46:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:48:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:50:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:51:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:51:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:52:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:53:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:54:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/04 17:55:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:05:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:08:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:12:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:14:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:16:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:16:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:17:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:18:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:18:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:19:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 09:19:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:19:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:22:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:25:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:30:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:30:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:31:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:31:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:31:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:32:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:35:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:35:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:35:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:35:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:35:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:35:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:35:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 09:36:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:36:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:36:38 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:36:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:40:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:41:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:42:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:42:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:44:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 09:45:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 09:46:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 09:46:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 09:48:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:49:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:49:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:51:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:51:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 09:52:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/update/15038?tipo=gestion
+---
+2016/07/05 09:52:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/cierre/15038
+---
+2016/07/05 09:54:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 10:02:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:02:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:02:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:04:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 10:04:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:07:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 10:07:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:08:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 10:08:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/05 10:08:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 10:08:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:09:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:09:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:09:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/05 10:10:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:10:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 10:13:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/presentacion/15038
+---
+2016/07/05 10:13:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:13:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:14:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/05 10:14:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:16:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:17:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:28:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:28:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionInformacion/seguimiento
+---
+2016/07/05 10:28:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:29:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:29:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:29:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:31:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:32:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/gestionVehiculo/create/15038
+---
+2016/07/05 10:32:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:33:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:33:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:33:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:34:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:34:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/demostracion/15038
+---
+2016/07/05 10:35:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
+2016/07/05 10:36:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg"' in C:\AppServ\www\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\AppServ\www\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('upload/perfiles...')
+#1 C:\AppServ\www\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\AppServ\www\kia\index.php(15): CApplication->run()
+#3 {main}
+REQUEST_URI=/kia/upload/perfiles/thumb/7f7618d18e681590e25a464432071ddf.jpg
+HTTP_REFERER=http://localhost/kia/index.php/site/negociacion/15038
+---
