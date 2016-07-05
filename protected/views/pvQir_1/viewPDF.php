@@ -39,17 +39,12 @@
                         'kilometraje',
                         'fecha_reparacion',
                         'titular',
-                       /* array(
+                        array(
                             'name' => 'descripcion',
                             'label' => 'Descripcion',
                             'value' => $model->descripcion,
                             'type' => 'raw',
-                        ),*/
-						'descripcion',
-						'analisis',
-						'investigacion',
-						'acciones',
-						'comentarios',
+                        ),
                         'ingresado',
                         'email',
                         'circunstancia',

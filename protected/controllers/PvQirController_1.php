@@ -121,7 +121,7 @@ class PvQirController extends Controller {
 						$HTML.=' <img src="images/footer_mail.jpg"/>';
 						$codigohtml = $HTML;
                         
-                        $cc = array('jorge.rodriguez@ariadna.com.ec', 'fjacome@kia.com.ec', 'creyes@kia.com.ec', 'fcastillo@kia.com.ec');
+                        $cc = array('jorge.rodriguez@ariadna.com.ec','jael@walkerbrand.com', 'rlopez@aekia.com.ec', 'fjacome@aekia.com.ec', 'nreyes@aekia.com.ec', 'svillota@aekia.com.ec', 'fcastillo@aekia.com.ec', 'rcasanova@aekia.com.ec', 'golivo@aekia.com.ec', 'ssalvador@aekia.com.ec');
                         //$ccToFrom = array('ssalvador@aekia.com.ec','golivo@aekia.com.ec','rlopez@aekia.com.ec');
                         //$this->sendMail($HTML, $subject, 'marcelo.rodriguez@ariadna.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
                         //$this->sendMail($HTML, $subject, 'fjacome@aekia.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
@@ -144,7 +144,7 @@ class PvQirController extends Controller {
             }
         }
 
-        //Yii::app()->clientScript->registerScript('Mask', '$("#Qir_descripcion").attr("value","1. Descripción.\n\n2. Análisis Síntoma\n\n3. Investigación\n\n4. Acciones correctivas\n\n5. Comentarios / Recomendaciones\n\n")');
+        Yii::app()->clientScript->registerScript('Mask', '$("#Qir_descripcion").attr("value","1. Descripción.\n\n2. Análisis Síntoma\n\n3. Investigación\n\n4. Acciones correctivas\n\n5. Comentarios / Recomendaciones\n\n")');
 
         $this->render('create', array(
             'model' => $model,
