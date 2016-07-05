@@ -455,10 +455,12 @@ footer{
     border-style: none solid solid;
     border-width: medium 1px 1px;
     margin: auto;
-    max-width: 250px;
+    max-width: 300px;
     position: absolute;
     left: 0px;
     z-index: 9;
+
+    
 }
 .cont_notificaciones {
     position: fixed;
@@ -477,7 +479,15 @@ footer{
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#fbfbfb', endColorstr = '#f0f0f0', GradientType = 0); /* IE6-9 */
     background: linear-gradient(top, rgba(251, 251, 251, 1) 0%, rgba(248, 248, 248, 1) 11%, rgba(240, 240, 240, 1) 100%); /* W3C */
     bottom: 0;
+
 }
+
+#seguimiento{
+    display: block;
+    overflow-y: auto;
+    height: 230px;
+}
+
 .cont_tl_notificaciones {
     background-color: #aa1f2c;
     border-radius: 8px 8px 0 0;
@@ -487,6 +497,7 @@ footer{
     padding: 2px 12px;
     width: 150px;
     cursor: pointer;
+
 }
 .no_notificaciones {
     background-color: #fff;
@@ -503,6 +514,10 @@ footer{
 .tl_notificaciones {
     font-size: 12px;
     padding-top: 3px;
+
+}
+#myTab{
+    width: 300px;
 }
 #lNotificaciones ul{
     list-style: circle;
