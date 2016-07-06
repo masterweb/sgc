@@ -238,7 +238,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-4">
             <em class="tit-lab" for="">Empresa Trabajo: </em>
-            <?php echo $value['nombres']; ?>
+            <?php echo $value['empresa_trabajo']; ?>
         </div>
         <div class="col-xs-4">
             <em class="tit-lab" for="">Teléfonos Trabajo: </em>

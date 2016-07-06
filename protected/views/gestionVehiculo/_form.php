@@ -756,4 +756,5 @@ if (isset($id)) {
     <br>
     <?= $this->renderPartial('//layouts/rgd/links');?>
 </div>
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>

@@ -401,4 +401,5 @@ $gf = GestionFinanciamiento::model()->count($crit5);
         </div>
     </div>
 </div>
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>

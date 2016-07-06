@@ -268,12 +268,12 @@ $rol = Yii::app()->user->getState('roles');
                     <?php } ?>    
                         
                     <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
-<!--                    <li class="wrapper">
+                    <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
                                 <div class="txt_menu">RGD BDC</div></a>
                         </div>
-                    </li>-->
+                    </li>
                     <?php } ?>
                 <?php } // end tipo ventas ?> 
                 

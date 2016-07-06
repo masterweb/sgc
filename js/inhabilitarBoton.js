@@ -18,4 +18,4 @@ function deshabilitarBoton2(var1,var2,var3,var4){
         document.getElementById(var3).disabled = true;
         document.forms[var4].submit();
     }
-}    
+}

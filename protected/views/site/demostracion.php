@@ -391,4 +391,5 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id_inf
             </div>
         </div>
     </div>
+    
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>
