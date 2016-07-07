@@ -899,7 +899,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 cer++;
             }
         }
-        if (count > 4 || cer > 0){
+        //console.log('count: '+count);
+        if (count > 7 || cer > 0){
             return false;
         }else{
             return true;
