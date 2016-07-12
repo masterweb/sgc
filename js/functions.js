@@ -1,4 +1,306 @@
 $(document).ready(function () {
+    $('.tipo-venta').hide();
+    $('.tipo-form-drop').hide();
+    /*inicio script de 1800----------------------*/
+    $('#Casos_tema').change(function () {
+        var value = $(this).attr('value');
+        if (value != 3) {
+            $('.content-concec').hide();
+            var dataModelo = '<option value="" selected="selected">--Escoja un Modelo--</option>\n\
+                                  <option value="84">Picanto R</option>\n\
+                                <option value="85">Rio R</option>\n\
+                                <option value="24">Cerato Forte</option>\n\
+                                <option value="90">Cerato R</option>\n\
+                                <option value="89">Óptima Híbrido</option>\n\
+                                <option value="88">Quoris</option>\n\
+                                <option value="20">Carens R</option>\n\
+                                <option value="11">Grand Carnival</option>\n\
+                                <option value="21">Sportage Active</option>\n\
+                                <option value="83">Sportage R</option>\n\
+                                <option value="10">Sorento</option>\n\
+                                <option value="25">K 2700 Cabina Simple</option>\n\
+                                <option value="87">K 2700 Cabina Doble</option>\n\
+                                <option value="86">K 3000</option>'
+            var dataVersion = '<option value="" selected="selected">Escoja una versión</option>';
+            $('#Casos_modelo').html(dataModelo);
+            $('#Casos_version').html(dataVersion);
+        }
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/submenu/getsubmenus',
+            dataType: "json",
+            beforeSend: function (xhr) {
+                $('#info').show();  // #info must be defined somehwere
+            },
+            data: {
+                id: value
+            },
+            type: 'post',
+            success: function (data) {
+                //alert(data.options)
+                $('#Casos_subtema').html(data.options);
+                $('#info').hide();
+            }
+        });
+    });
+    $('#Casos_provincia').change(function () {
+        var value = $(this).attr('value');
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/dealercities/getcities',
+            dataType: "json",
+            beforeSend: function (xhr) {
+                $('#info5').show();  // #info must be defined somehwere
+            },
+            data: {
+                id: value
+            },
+            type: 'post',
+            success: function (data) {
+                //alert(data.options)
+                $('#Casos_ciudad').html(data.options);
+                $('#info5').hide();
+            }
+        });
+    });
+    $('#Casos_identificacion').change(function () {
+        var value = $(this).attr('value');
+        switch (value) {
+            case 'ci':
+                $('.cedula-cont').show();
+                $('.ruc-cont').hide();
+                $('#Casos_ruc').val('');
+                $('.pasaporte-cont').hide();
+                $('#Casos_pasaporte').val('');
+                break;
+            case 'ruc':
+                $('.cedula-cont').hide();
+                $('#Casos_cedula').val('');
+                $('.ruc-cont').show();
+                $('.pasaporte-cont').hide();
+                $('#Casos_pasaporte').val('');
+                break;
+            case 'pasaporte':
+                $('.cedula-cont').hide();
+                $('#Casos_cedula').val('');
+                $('.ruc-cont').hide();
+                $('#Casos_ruc').val('');
+                $('.pasaporte-cont').show();
+                break;
+            default:
+        }
+    });
+    $('#Casos_subtema').change(function () {
+        var value = $(this).attr('value');
+        var tipoForm = '<option value="">--Tipo de caso--</option><option value="informativo">Informativo</option><option value="caso">Creación de Caso</option>';
+        var tipoVenta = '<option value="">--Tipo Venta--</option><option value="venta">Venta</option><option value="postventa">Post Venta</option>';
+        //alert(value);
+        if (value == 2 || value == 3 || value == 6 || value == 18) {
+            //alert('valor ic');
+            $('.tipo-form-drop').show();
+            $('.tipo-venta').show();
+        } else {
+            //$('#Casos_tipo_form').html(tipoForm);
+            $('#Casos_tipo_venta').html(tipoVenta);
+            //$('.tipo-venta').hide();
+            $('.tipo-form-drop').hide();
+        }
+
+    });
+    $('#Casos_ciudad').change(function () {
+        var value = $(this).attr('value');
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/dealers/getdealers',
+            dataType: "json",
+            beforeSend: function (xhr) {
+                $('#info6').show();  // #info must be defined somehwere
+            },
+            data: {
+                id: value
+            },
+            type: 'post',
+            success: function (data) {
+                //alert(data.options)
+                $('#Casos_concesionario').html(data.options);
+                $('#info6').hide();
+            }
+        });
+    });
+    $('#Casos_tipo_form').change(function () {
+        var value = $(this).attr('value');
+        if (value == 'caso') {
+            $('.tipo-venta').show();
+        } else {
+            $('.tipo-venta').hide();
+        }
+    });
+    $('#edit-btn').click(function () {
+        //alert('click');
+        $('#save-btn').show();
+        $('#edit-btn').hide();// cancel button
+        //$('#Casos_tema').attr("disabled",false);$('#Casos_subtema').attr("disabled",false);$('#Casos_provincia_domicilio').attr("disabled",false);
+        //$('#Casos_ciudad_domicilio').attr("disabled",false);$('#Casos_tipo_venta').attr('disabled',false);
+        //$('#Casos_provincia').attr("disabled",false);
+        $(".highlight .form-control").removeAttr("readonly");
+        //$("#Casos_tema").prop("disabled", false);
+        //$("#Casos_subtema").prop("disabled", false);
+        $(".highlight .form-control").css('background-color', 'white');
+    });
+    $('#save-btn').click(function () {
+        //console.log('enter cancel button');
+        var tema = $('#tema').val();
+        var subtema = $('#subtema').val();
+        var provinciaDom = $('#provinciadomicilio').val();
+        var ciudadDom = $('#ciudaddomicilio').val();
+        var provinciaConc = $('#provinciaconc').val();
+        var ciudadConc = $('#ciudadconc').val();
+        var concesionario = $('#conc').val();
+        $('#Casos_nombres').val($('#nombre').val());
+        $('#Casos_apellidos').val($('#apellido').val());
+        $('#Casos_cedula').val($('#cedula').val());
+        $('#Casos_provincia_domicilio select').val($('#provinciadomicilio').val());
+        $('#Casos_email').val($('#email').val());
+        $('#Casos_telefono').val($('#telefono').val());
+        $('#Casos_celular').val($('#celular').val());
+        $('#Casos_comentario').val($('#comentario').val());
+        $('#Casos_responsable').val($('#responsable').val());
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getTemas',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: tema
+            },
+            success: function (data) {
+                $('#Casos_tema').html(data.options);
+            }
+        });
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getSubTemas',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: tema,
+                sid: subtema
+            },
+            success: function (data) {
+                $('#Casos_subtema').html(data.options);
+            }
+        });
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getProvinciasDom',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: provinciaDom
+            },
+            success: function (data) {
+                $('#Casos_provincia_domicilio').html(data.options);
+            }
+        });
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getCiudadDom',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: provinciaDom,
+                ciudad: ciudadDom
+            },
+            success: function (data) {
+                $('#Casos_ciudad_domicilio').html(data.options);
+            }
+        });
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getProvinciaConc',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: provinciaConc
+            },
+            success: function (data) {
+                $('#Casos_provincia').html(data.options);
+            }
+        });
+
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getCiudadConc',
+            dataType: "json",
+            type: 'post',
+            data: {
+                id: provinciaConc,
+                ciudad: ciudadConc
+            },
+            success: function (data) {
+                $('#Casos_ciudad').html(data.options);
+            }
+        });
+        //console.log('concesionario: '+concesionario);
+        if (concesionario != 0) {
+            $.ajax({
+                url: 'https://www.kia.com.ec/intranet/usuario/index.php/site/getConc',
+                dataType: "json",
+                type: 'post',
+                data: {
+                    id: provinciaConc,
+                    ciudad: ciudadConc,
+                    conc: concesionario
+                },
+                success: function (data) {
+                    $('#Casos_concesionario').html(data.options);
+                }
+            });
+        } else {
+            $('#Casos_concesionario').html('');
+        }
+        $('#save-btn').hide();
+        $('#edit-btn').show();
+        $(".highlight .form-control").attr('readonly', true);
+        //$("#Casos_tema").prop("disabled", true);
+        //$("#Casos_subtema").prop("disabled", true);
+        $(".highlight .form-control").css('background-color', '#E4E4E4');
+    });
+    $('#Casos_provincia_domicilio').change(function () {
+        var value = $(this).attr('value');
+        //console.log(value)
+        var data = '';
+        $.ajax({
+            url: 'https://www.kia.com.ec/intranet/usuario/index.php/TblCiudades/getciudades',
+            dataType: "json",
+            type: 'post',
+            beforeSend: function (xhr) {
+                $('#info4').show();  // #info must be defined somehwere
+            },
+            data: {
+                id: value
+            },
+            success: function (data) {
+                //alert(data.options)
+                $('#Casos_ciudad_domicilio').html(data.options);
+                $('#info4').hide();
+            }
+        });
+        //alert(value)
+        $('#Contactenos_ciudad').html(data);
+
+    });
+    $('#Casos_tipo_form').change(function () {
+        var value = $(this).attr('value');
+        if (value == 'caso') {
+            var email = $('#Casos_email').val();
+            var nombre = $('#Casos_nombres').val();
+            var apellido = $('#Casos_apellidos').val();
+            console.log(email);
+            $('#email-data').html(email);
+            $('#name-data').html(nombre + ' ' + apellido);
+            $('.scr-caso').show();
+            $('.scr-info').hide();
+        } else {
+            var nombre = $('#Casos_nombres').val();
+            var apellido = $('#Casos_apellidos').val();
+            $('#name-data-info').html(nombre + ' ' + apellido);
+            $('.scr-info').show();
+            $('.scr-caso').hide();
+        }
+    });
+    /*Fin script de 1800-----------------------------------------------------*/
     $('#cont-otro').show();
     $('#GestionFinanciamiento_tiempo_seguro').change(function () {
         var valorFin = $('#GestionFinanciamiento_entrada').val();
@@ -607,7 +909,7 @@ $(document).ready(function () {
                     fechaSeguimiento = fechaSeguimiento.replace('/', '-');
                     var fechaArray = fechaSeguimiento.split(' ');
 
-                    console.log('fecha seguimiento: '+fechaArray[0]);
+                    console.log('fecha seguimiento: ' + fechaArray[0]);
                     var categorizacion = $('#GestionAgendamiento_categorizacion').val();
                     var dias = 0;
                     switch (categorizacion) {
@@ -633,7 +935,7 @@ $(document).ready(function () {
                     }
                     console.log(dias);
                     var fechaActual = new Date().toJSON().slice(0, 10);
-                    console.log('Fecha Actual: '+fechaActual);
+                    console.log('Fecha Actual: ' + fechaActual);
                     var diferencia = restaFechas(fechaActual, fechaArray[0]);
                     if (diferencia <= dias) {
                         if (proximoSeguimiento != '') {
@@ -650,7 +952,7 @@ $(document).ready(function () {
                                 var endTime = parseInt(startTime) + 100;
                                 //console.log('start time:'+fechaStart+startTime);
                                 //console.log('fecha end:'+fechaStart+endTime);
-                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: '+nombre_cliente+'&desc=Cita con el cliente paso consulta: '+nombre_cliente+'&location='+nombre_concesionario+' - '+direccion_concesionario+'&to_name=' + cliente + '&conc='+nombre_concesionario;
+                                var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Agendamiento Cita Cliente: ' + nombre_cliente + '&desc=Cita con el cliente paso consulta: ' + nombre_cliente + '&location=' + nombre_concesionario + ' - ' + direccion_concesionario + '&to_name=' + cliente + '&conc=' + nombre_concesionario;
                                 //var href = '/intranet/ventas/index.php/gestionDiaria/calendar?date='+fechaDate+'&startTime='+startTime+'&endTime='+endTime+'&subject=Cita con Cliente&desc=Cita con el cliente prospección';
                                 $('#event-download').attr('href', href);
                                 $('#calendar-content').show();

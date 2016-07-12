@@ -128,12 +128,12 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                     </li>
                 <?php } ?>
                 <?php if ($r->descripcion == '1800' && $cargo_id != 73) { ?>
-                    <!--                    <li class="wrapper">
-                                            <div class="forma">
-                                                <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(5) . '/tipo/1800'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/dashboard/1800l.png" width="46" height="56"></div>
-                                                    <div class="txt_menu">1800</div></a>
-                                            </div>
-                                        </li>-->
+                    <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(5) . '/tipo/1800'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/dashboard/1800l.png" width="46" height="56"></div>
+                                <div class="txt_menu">1800</div></a>
+                        </div>
+                    </li>
                 <?php } ?>
 
                 <?php

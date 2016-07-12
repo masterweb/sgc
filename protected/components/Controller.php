@@ -460,6 +460,24 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    /**
+     * Funcion que devuelve nombre de responsable asesor de 1800
+     * @param type $id
+     * @return string nombre del asesor 1800
+     */
+    public function getResponsable1800($id) {
+        $responsableid = Users::model()->findByPk($id);
+        /* echo '<pre>';
+          print_r($dealers);
+          echo '</pre>'; */
+        //echo $dealers->responsable;
+        //die();
+        if (!is_null($responsableid) && !empty($responsableid)) {
+            return $responsableid->first_name . ' ' . $responsableid->last_name;
+        } else {
+            return 'NA';
+        }
+    }
 
     public function getComentarioRGD($id_comentario) {
         //echo 'id: '.$id_comentario;

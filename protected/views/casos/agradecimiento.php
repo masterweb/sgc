@@ -17,9 +17,9 @@
             </div>
             </form>            <p class="border-bt">También puedes ir a:</p>
             <ul>
-                <li><a href="/intranet/callcenter/index.php/casos/seguimiento" class="seguimiento-btn">Seguimiento de Casos</a></li>
-                <li><a href="/intranet/callcenter/index.php/casos/reportes" class="reportes-btn">Reportes</a></li>
-                <li><a href="/intranet/callcenter/index.php/site/menu" class="back-btn">Inicio</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('casos/seguimiento/'); ?>" class="seguimiento-btn">Seguimiento de Casos</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('casos/resportes/'); ?>" class="reportes-btn">Reportes</a></li>
+                <li><a href="<?php echo Yii::app()->createUrl('site/menu/'); ?>" class="back-btn">Inicio</a></li>
             </ul>
         </div>
     </div>
