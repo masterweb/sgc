@@ -423,6 +423,7 @@ $tipo = $_GET['tipo'];
                         //$('#telefono').val('');
                         return false;
                     }
+                    $('#bg_negro').show();
                     /*if (num_casa.indexOf("0") != 0) {
                         $('#GestionInformacion_telefono_casa').after('<label for="casa2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
                         //$('#telefono').val('');
@@ -477,6 +478,7 @@ $tipo = $_GET['tipo'];
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}},
                         submitHandler: function (form) {
+                            $('#bg_negro').show();
                             form.submit();
                         }
                     });
@@ -492,6 +494,7 @@ $tipo = $_GET['tipo'];
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'}},
                         submitHandler: function (form) {
+                            $('#bg_negro').show();
                             form.submit();
                         }
                     });
@@ -546,11 +549,13 @@ $tipo = $_GET['tipo'];
                                         $('#GestionInformacion_check').val(2)
                                     });
                                     if ($('#GestionInformacion_calendar').val() == 1) {
+                                        $('#bg_negro').show();
                                         form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
                                     }
                                 } else {
+                                    $('#bg_negro').show();
                                     form.submit();
                                 }
                             } else {
@@ -591,12 +596,12 @@ $tipo = $_GET['tipo'];
                                         $('.calendar-content').hide();
                                         $('#GestionInformacion_check').val(2)
                                     });
-                                    if ($('#GestionInformacion_calendar').val() == 1) {
+                                    if ($('#GestionInformacion_calendar').val() == 1) {$('#bg_negro').show();
                                         form.submit();
                                     } else {
                                         alert('Debes descargar agendamiento y luego dar click en Continuar');
                                     }
-                                } else {
+                                } else {$('#bg_negro').show();
                                     form.submit();
                                 }
                             }
@@ -610,7 +615,7 @@ $tipo = $_GET['tipo'];
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
                             'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'}},
-                        submitHandler: function (form) {
+                        submitHandler: function (form) {$('#bg_negro').show();
                             form.submit();
                         }
                     });

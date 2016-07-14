@@ -43,7 +43,7 @@
         var id = id;
         //$('#myModal').modal();
         $.ajax({
-            url:'https://www.kia.com.ec/intranet/callcenter/index.php/historial/getobservaciones',
+            url:'https://www.kia.com.ec/intranet/usuario/index.php/historial/getobservaciones',
             dataType: "json",
             data:{
                 id:id
@@ -104,15 +104,16 @@ $this->menu = array(
             </div>
         <?php else: ?>
             <div class="col-md-8">
-                <h1 class="tl_seccion">Actualización de Casos</h1>
+                <h1 class="tl_seccion">Actualización de Casos - <?php echo $model->id; ?> / Tipo: <?php echo ($model->origen == 0 ? '1800' : 'web') ?></h1>
                 <div class="form">
                     <?php
                     $form = $this->beginWidget('CActiveForm', array(
                         'id' => 'casos-form',
-                        'enableAjaxValidation' => true,
+                        //'enableAjaxValidation' => true,
                         'htmlOptions' => array('class' => 'form-horizontal readonly-form')
                             ));
                     ?>
+                    <?php //echo $form->errorSummary($model); ?>
                     <?php
                     $criteria = new CDbCriteria(array(
                                 'order' => 'name'
@@ -156,10 +157,24 @@ $this->menu = array(
                             <div class="col-sm-4">
                                 <?php echo $form->textField($model, 'apellidos', array('size' => 60, 'maxlength' => 150, 'class' => 'form-control', 'readonly' => true)); ?>
                             </div>
-                            <label for="" class="col-md-2 control-label">Cédula:</label>
-                            <div class="col-sm-4">
-                                <?php echo $form->textField($model, 'cedula', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'readonly' => true)); ?>
-                            </div>
+                            <?php if (!empty($model->cedula)): ?>
+                                <label for="" class="col-md-2 control-label">Cédula:</label>
+                                <div class="col-sm-4">
+                                    <?php echo $form->textField($model, 'cedula', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'readonly' => true)); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($model->ruc)): ?>
+                                <label for="" class="col-md-2 control-label">RUC:</label>
+                                <div class="col-sm-4">
+                                    <?php echo $form->textField($model, 'ruc', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control', 'readonly' => true)); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (!empty($model->pasaporte)): ?>
+                                <label for="" class="col-md-2 control-label">Pasaporte:</label>
+                                <div class="col-sm-4">
+                                    <?php echo $form->textField($model, 'pasaporte', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control', 'readonly' => true)); ?>
+                                </div>
+                            <?php endif; ?>  
                         </div>
                         <div class="row">
                             <label for="" class="col-md-2 control-label">Provincia Domicilio:</label>
@@ -219,10 +234,10 @@ $this->menu = array(
                                 <div class="col-sm-4">
                                     <?php
                                     $criteria = new CDbCriteria(array(
-                                                'condition' => "id={$model->concesionario}",
+                                                'condition' => "id={$model->concesionario}", // id de la ciudad del concesionario
                                                 'order' => 'name'
                                             ));
-                                    $concesionarios = CHtml::listData(Dealers::model()->findAll($criteria), "cityid", "name");
+                                    $concesionarios = CHtml::listData(Dealers::model()->findAll($criteria), "id", "name");
                                     ?>
                                     <?php echo $form->dropDownList($model, 'concesionario', $concesionarios, array('class' => 'form-control', 'readonly' => true)); ?>
                                     <?php echo $form->error($model, 'concesionario'); ?>
@@ -231,7 +246,6 @@ $this->menu = array(
                             <?php if ($model->tipo_form === 'caso'): ?>
                                 <label for="" class="col-md-2 control-label">Tipo Venta:</label>
                                 <div class="col-sm-4">
-
                                     <?php
                                     echo $form->dropDownList($model, 'tipo_venta', array('venta' => 'Venta',
                                         'postventa' => 'Post Venta'), array('class' => 'form-control', 'readonly' => true, 'venta' => 'selected'));
@@ -274,8 +288,7 @@ $this->menu = array(
                                 <?php echo $form->textArea($model, 'comentario', array('rows' => 6, 'cols' => 50, 'class' => 'form-control', 'readonly' => true)); ?>
                                 <?php echo $form->error($model, 'comentario'); ?>
                             </div>
-                            <input type="hidden" name="Casos[concesionario]" id="Casos_concesionario" value="<?php echo $model->concesionario; ?>">
-    <!--                        <input type="hidden" name="Casos[cedula]" id="Casos_cedula" value="<?php echo $model->cedula; ?>">-->
+                            <!--                        <input type="hidden" name="Casos[cedula]" id="Casos_cedula" value="<?php echo $model->cedula; ?>">-->
                             <input type="hidden" name="Casos[id]" id="Casos_id" value="<?php echo $model->id; ?>">
                             <input type="hidden" name="Casos[tipo_form]" id="Casos_tipo_form" value="<?php echo $model->tipo_form; ?>">
                             <input type="hidden" name="tema" id="tema" value="<?php echo $model->tema; ?>">
@@ -285,12 +298,16 @@ $this->menu = array(
                             <input type="hidden" name="cedula" id="cedula" value="<?php echo $model->cedula; ?>">
                             <input type="hidden" name="provinciadomicilio" id="provinciadomicilio" value="<?php echo $model->provincia_domicilio; ?>">
                             <input type="hidden" name="ciudaddomicilio" id="ciudaddomicilio" value="<?php echo $model->ciudad_domicilio; ?>">
+                            <input type="hidden" name="provinciaconc" id="provinciaconc" value="<?php echo $model->provincia; ?>">
+                            <input type="hidden" name="ciudadconc" id="ciudadconc" value="<?php echo $model->ciudad; ?>">
+                            <input type="hidden" name="conc" id="conc" value="<?php echo $model->concesionario; ?>">
                             <input type="hidden" name="tipoventa" id="tipoventa" value="<?php echo $model->tipo_venta; ?>">
                             <input type="hidden" name="telefono" id="telefono" value="<?php echo $model->telefono; ?>">
                             <input type="hidden" name="celular" id="celular" value="<?php echo $model->celular; ?>">
                             <input type="hidden" name="email" id="email" value="<?php echo $model->email; ?>">
                             <input type="hidden" name="responsable" id="responsable" value="<?php echo $model->responsable; ?>">
                             <input type="hidden" name="comentario" id="comentario" value="<?php echo $model->comentario; ?>">
+                            <input type="hidden" name="identificacion" id="identificacion" value="<?php echo $model->identificacion; ?>">
                         </div>
                     </div>
                     <?php if ($model->tipo_form != 'informativo') { ?>
@@ -358,43 +375,48 @@ $this->menu = array(
                             ));
                     $historial = Historial::model()->findAll($criteria);
                     ?>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Tema</th>
-                                    <th>Subtema</th>
-                                    <th>Responsable</th>
-                                    <th>Estado</th>
-                                    <th>Observaciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach ($historial as $c):
-                                    $fecha = '';
-                                    $nuevafecha = '';
-                                    $fecha = date($c['fecha']);
-                                    $nuevafecha = strtotime('-5 hour', strtotime($fecha));
-                                    $nuevafecha = date('Y-m-d H:i:s', $nuevafecha);
-                                    ?>
-                                    <tr>
-                                        <td><?php echo $c['fecha']; ?> </td>
-                                        <td><?php echo $this->getTema($c['tema']); ?> </td>
-                                        <td><?php echo $this->getSubtema($c['subtema']); ?> </td>
-                                        <td><?php echo $this->getResponsable($c['id_responsable']); ?> </td>
-                                        <td><?php echo $c['estado']; ?> </td>
-                                        <td><a class="" id="" onclick="obs(<?php echo $c['id']; ?>)" style="cursor: pointer;"><?php echo substr($c['observaciones'], 0, 11) . "..."; ?></a></td>
-                                    </tr>
-                                    <?php
-                                endforeach;
-                                ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Tema</th>
+                                            <th>Subtema</th>
+                                            <th>Responsable</th>
+                                            <th>Estado</th>
+                                            <th>Observaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($historial as $c):
+                                            $fecha = '';
+                                            $nuevafecha = '';
+                                            $fecha = date($c['fecha']);
+                                            $nuevafecha = strtotime('-5 hour', strtotime($fecha));
+                                            $nuevafecha = date('Y-m-d H:i:s', $nuevafecha);
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $c['fecha']; ?> </td>
+                                                <td><?php echo $this->getTema($c['tema']); ?> </td>
+                                                <td><?php echo $this->getSubtema($c['subtema']); ?> </td>
+                                                <td><?php echo $this->getResponsable($c['id_responsable']); ?> </td>
+                                                <td><?php echo $c['estado']; ?> </td>
+                                                <td><a class="" id="" onclick="obs(<?php echo $c['id']; ?>)" style="cursor: pointer;"><?php echo substr($c['observaciones'], 0, 11) . "..."; ?></a></td>
+                                            </tr>
+                                            <?php
+                                        endforeach;
+                                        ?>
 
-                            </tbody>
-                        </table>
+                                    </tbody>
+                                </table>
 
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         <?php endif; ?>
