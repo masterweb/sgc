@@ -321,6 +321,7 @@ if (isset($id)) {
                                                 "84" => "Picanto R",
                                                 "85" => "Rio R",
                                                 //"91" => "Rio Taxi",
+                                                "94" => "Cerato Koup",
                                                 "24" => "Cerato Forte",
                                                 "90" => "Cerato R",
                                                 "89" => "Óptima R",
@@ -375,6 +376,7 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
+                                            <option value="94">Cerato Koup</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="90">Cerato R</option>
                                             <option value="89">Óptima R</option>
@@ -500,6 +502,7 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
+                                            <option value="94">Cerato Koup</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="90">Cerato R</option>
                                             <option value="89">Óptima R</option>
