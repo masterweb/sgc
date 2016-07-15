@@ -105,7 +105,6 @@ class PvQirController extends Controller {
                                 }
                             }
                         }
-
                         $asunto = "Nuevo QIR, ingrese al portal de Servicios KIA para darle seguimiento";
 						 $HTML =
                             '<body style="margin: 10px;">
