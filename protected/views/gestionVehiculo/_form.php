@@ -321,15 +321,17 @@ if (isset($id)) {
                                                 "84" => "Picanto R",
                                                 "85" => "Rio R",
                                                 //"91" => "Rio Taxi",
-                                                //"94" => "Cerato Koup",
                                                 "24" => "Cerato Forte",
+                                                "94" => "Cerato Koup",
                                                 "90" => "Cerato R",
                                                 "89" => "Óptima R",
                                                 "88" => "Quoris",
                                                 "20" => "Carens R",
                                                 "11" => "Grand Carnival",
+                                                "80" => "Soul",
                                                 "93" => "Soul EV",
                                                 "21" => "Sportage Active",
+                                                "95" => "Sportage GT",
                                                 "83" => "Sportage R",
                                                 //"10" => "Sorento",
                                                 //"25" => "K 2700 Cabina Simple",
@@ -376,15 +378,17 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
-<!--                                            <option value="94">Cerato Koup</option>-->
                                             <option value="24">Cerato Forte</option>
+                                            <option value="94">Cerato Koup</option>
                                             <option value="90">Cerato R</option>
                                             <option value="89">Óptima R</option>
                                             <option value="88">Quoris</option>
                                             <option value="20">Carens R</option>
                                             <option value="11">Grand Carnival</option>
+                                            <option value="80">Soul</option>
                                             <option value="93">Soul EV</option>
                                             <option value="21">Sportage Active</option>
+                                            <option value="94">Sportage GT</option>
                                             <option value="83">Sportage R</option>
                                             <option value="86">K 3000</option>
                                         </select>
@@ -502,15 +506,17 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
-<!--                                            <option value="94">Cerato Koup</option>-->
                                             <option value="24">Cerato Forte</option>
+                                            <option value="94">Cerato Koup</option>
                                             <option value="90">Cerato R</option>
                                             <option value="89">Óptima R</option>
                                             <option value="88">Quoris</option>
                                             <option value="20">Carens R</option>
                                             <option value="11">Grand Carnival</option>
+                                            <option value="80">Soul</option>
                                             <option value="93">Soul EV</option>
                                             <option value="21">Sportage Active</option>
+                                            <option value="94">Sportage GT</option>
                                             <option value="83">Sportage R</option>
                                             <option value="86">K 3000</option>
                                         </select>
