@@ -114,6 +114,9 @@ $this->breadcrumbs = array(
                         </div>
 
                     </div>
+                    <div class="col-md-12">
+                        <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/TERMINOS-Y-CONDICIONES-DEL-SITIO-WEB.pdf" class="linkLogin" style="margin-top:18px;display:block;" target="_blank">Términos y Condiciones</a>
+                    </div>
                     <?php $this->endWidget(); ?>    
                 </div>
             </div>
