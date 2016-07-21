@@ -63,9 +63,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
     }
 </script>    
 <style>
-    .form-search{
-        padding: 0;
-    }
+    .form-search{padding: 0;}
 </style>
 <div class="cont_notificaciones">
     <?php
