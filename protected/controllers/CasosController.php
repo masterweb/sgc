@@ -1036,13 +1036,13 @@ class CasosController extends Controller {
 //-------------- busqueda por defecto 
             if (empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['estado'])) {
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria;
                     //$criteria->condition = "tipo_form='{$tipo_form}'";
                     $criteria->order = 'id desc';
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario}";
+                    $criteria->condition = "responsable={$id_responsable}";
                     $criteria->order = 'id desc';
                 endif;
 
@@ -1061,14 +1061,14 @@ class CasosController extends Controller {
 //-------------- busqueda por temas
             if (!empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['estado'])) {
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria;
                     $criteria->condition = "tema = {$_GET['Casos']['tema']}";
                     $criteria->order = 'id desc';
 
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_GET['Casos']['tema']}";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_GET['Casos']['tema']}";
                     $criteria->order = 'id desc';
                 endif;
 
@@ -1089,14 +1089,14 @@ class CasosController extends Controller {
 //-------------- busqueda por tema y subtema
             if (!empty($_GET['Casos']['tema']) && !empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['estado'])) {
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} ",
                                 "order" => 'id desc'
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} ";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} ";
                     $criteria->order = 'id desc';
                 endif;
                 //$searchCasos = Casos::model()->findAll($criteria);
@@ -1118,25 +1118,25 @@ class CasosController extends Controller {
             if (!empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['estado'])) {
                 //die('enter fecha');
                 if ($_GET['Casos']['tipo_fecha'] === 'igual') {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "fecha LIKE '{$_GET['Casos']['fecha']}%' ",
                                     "order" => 'id desc'
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and fecha = '{$_GET['Casos']['fecha']}' ";
+                        $criteria->condition = "responsable={$id_responsable} and fecha = '{$_GET['Casos']['fecha']}' ";
                         $criteria->order = 'id desc';
                     endif;
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' ",
                                     "order" => 'id desc'
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' ";
+                        $criteria->condition = "responsable={$id_responsable} and date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' ";
                         $criteria->order = 'id desc';
                     endif;
                 }
@@ -1177,14 +1177,14 @@ class CasosController extends Controller {
                     endif;
                 }
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => $condition,
                                 "order" => 'id desc'
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and estado = '{$_GET['Casos']['estado']}' ";
+                    $criteria->condition = "responsable={$id_responsable} and estado = '{$_GET['Casos']['estado']}' ";
                     $criteria->order = 'id desc';
                 endif;
                 $pages = new CPagination(Casos::model()->count($criteria));
@@ -1209,14 +1209,14 @@ class CasosController extends Controller {
 //                        ));
 
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ",
                                 "order" => 'id desc'
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ";
                     $criteria->order = 'id desc';
                 endif;
                 $pages = new CPagination(Casos::model()->count($criteria));
@@ -1259,25 +1259,25 @@ class CasosController extends Controller {
                 //die('condition: '.$condition);
 
                 if ($_GET['Casos']['tipo_fecha'] === 'igual') {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%'  AND (" . $condition . ")",
                                     "order" => 'id desc'
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%'  AND (" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%'  AND (" . $condition . ")";
                         $criteria->order = 'id desc';
                     endif;
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}') AND (" . $condition . ")",
                                     "order" => 'id desc'
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} AND tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}') AND (" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} AND tema = {$_GET['Casos']['tema']} AND subtema = {$_GET['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}') AND (" . $condition . ")";
                         $criteria->order = 'id desc';
                     endif;
                 }
@@ -1325,7 +1325,7 @@ class CasosController extends Controller {
 
 
                 if ($_GET['Casos']['tipo_fecha'] === 'igual') {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     //"condition" => "fecha LIKE '{$_GET['Casos']['fecha']}%' AND estado = '{$_GET['Casos']['estado']}' ",
                                     "condition" => "fecha LIKE '{$_GET['Casos']['fecha']}%' AND " . $condition,
@@ -1333,18 +1333,18 @@ class CasosController extends Controller {
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and fecha LIKE '{$_GET['Casos']['fecha']}%' AND " . $condition;
+                        $criteria->condition = "responsable={$id_responsable} and fecha LIKE '{$_GET['Casos']['fecha']}%' AND " . $condition;
                         $criteria->order = 'id desc';
                     endif;
                 } else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "(date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}') AND (" . $condition . ")",
                                     "order" => 'id desc'
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and (date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}')  AND (" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and (date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}')  AND (" . $condition . ")";
                         $criteria->order = 'id desc';
                     endif;
                 }
@@ -1384,14 +1384,14 @@ class CasosController extends Controller {
                     endif;
                 }
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = '{$_GET['Casos']['tema']}' AND subtema = '{$_GET['Casos']['subtema']}' AND ({$condition})",
                                 "order" => 'id desc'
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = '{$_GET['Casos']['tema']}' AND subtema = '{$_GET['Casos']['subtema']}' AND ({$condition})";
+                    $criteria->condition = "responsable={$id_responsable} and tema = '{$_GET['Casos']['tema']}' AND subtema = '{$_GET['Casos']['subtema']}' AND ({$condition})";
                     $criteria->order = 'id desc';
                 endif;
                 //die('sql: '.$criteria->condition);
@@ -1413,7 +1413,7 @@ class CasosController extends Controller {
                 //die('enter tema y fecha');
                 if ($_GET['Casos']['tipo_fecha'] === 'igual') {
                     //die('enter igual');
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema={$_GET['Casos']['tema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ",
                                     "order" => 'id desc'
@@ -1423,17 +1423,17 @@ class CasosController extends Controller {
                       echo '</pre>'; */
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} AND tema={$_GET['Casos']['tema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ";
+                        $criteria->condition = "responsable={$id_responsable} AND tema={$_GET['Casos']['tema']} AND fecha LIKE '{$_GET['Casos']['fecha']}%' ";
                         $criteria->order = 'id desc';
                     endif;
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema={$_GET['Casos']['tema']} AND date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' "
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema={$_GET['Casos']['tema']} AND date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' ";
+                        $criteria->condition = "responsable={$id_responsable} and tema={$_GET['Casos']['tema']} AND date(fecha) BETWEEN '{$_GET['Casos']['fecha']}' AND '{$_GET['Casos']['fecha2']}' ";
                         $criteria->order = 'id';
                     endif;
                 }
@@ -1469,16 +1469,18 @@ class CasosController extends Controller {
 //        die();
         $concesionario = Yii::app()->user->getState('dealer_id');
         $rol = Yii::app()->user->getState('roles');
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $id_responsable = Yii::app()->user->getId();
         if (isset($_POST['Casos'])) {
 
             // busqueda por defecto---------------------------------------------------
             if (empty($_POST['Casos']['tema']) && empty($_POST['Casos']['subtema']) && empty($_POST['Casos']['fecha']) && empty($_POST['Casos']['estado'])) {
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria;
-                    $criteria->order = 'id';
+                    $criteria->order = 'id DESC';
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario}";
+                    $criteria->condition = "responsable={$id_responsable}";
                     $criteria->order = 'id';
                 endif;
                 $casos = Casos::model()->findAll($criteria);
@@ -1487,13 +1489,13 @@ class CasosController extends Controller {
             }
             // busqueda por temas---------------------------------------------------
             if (!empty($_POST['Casos']['tema']) && empty($_POST['Casos']['subtema']) && empty($_POST['Casos']['fecha']) && empty($_POST['Casos']['estado'])) {
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = {$_POST['Casos']['tema']}"
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_POST['Casos']['tema']}";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_POST['Casos']['tema']}";
                     $criteria->order = 'id';
                 endif;
 
@@ -1504,13 +1506,13 @@ class CasosController extends Controller {
             }
             //busqueda por tema y subtema---------------------------------------------------
             if (!empty($_POST['Casos']['tema']) && !empty($_POST['Casos']['subtema']) && empty($_POST['Casos']['fecha']) && empty($_POST['Casos']['estado0'])) {
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']}"
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']}";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']}";
                     $criteria->order = 'id';
                 endif;
 
@@ -1523,25 +1525,25 @@ class CasosController extends Controller {
             if (!empty($_POST['Casos']['fecha']) && empty($_POST['Casos']['tema']) && empty($_POST['Casos']['subtema']) && empty($_POST['Casos']['estado'])) {
                 //die('enter fevha');
                 if (!empty($_POST['Casos']['fecha']) && !empty($_POST['Casos']['fecha2'])) {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'";
+                        $criteria->condition = "responsable={$id_responsable} and date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'";
                         $criteria->order = 'id';
                     endif;
                     //$tituloReporte = "Reporte de Casos por Fecha: Desde " . $_POST['Casos']['fecha']. ", Hasta ".$_POST['Casos']['fecha2'];
                     //$name_file = "Reporte de Casos por Fecha Desde " . $_POST['Casos']['fecha']. ", Hasta ".$_POST['Casos']['fecha2'] . ".xls";
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "fecha LIKE '{$_POST['Casos']['fecha']}%'"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and fecha LIKE '{$_POST['Casos']['fecha']}%'";
+                        $criteria->condition = "responsable={$id_responsable} and fecha LIKE '{$_POST['Casos']['fecha']}%'";
                         $criteria->order = 'id';
                     endif;
                     //$tituloReporte = "Reporte de Casos por Fecha: " . $_POST['Casos']['fecha'];
@@ -1572,13 +1574,13 @@ class CasosController extends Controller {
                     $title_busqueda .= " {$_POST['Casos']['estado1']} , {$_POST['Casos']['estado2']}";
                 }
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "{$condition}"
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and {$condition}";
+                    $criteria->condition = "responsable={$id_responsable} and {$condition}";
                     $criteria->order = 'id';
                 endif;
 
@@ -1592,13 +1594,13 @@ class CasosController extends Controller {
             // busqueda por tema subtema y fecha---------------------------------------------------
             if (!empty($_POST['Casos']['tema']) && !empty($_POST['Casos']['subtema']) && !empty($_POST['Casos']['fecha'])) {
                 //die('enter tema subtema fecha');
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%'"
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%'";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%'";
                     $criteria->order = 'id';
                 endif;
                 // Grab the records
@@ -1621,23 +1623,23 @@ class CasosController extends Controller {
                     $title_busqueda .= " / {$_POST['Casos']['estado1']} , {$_POST['Casos']['estado2']}";
                 }
                 if (!empty($_POST['Casos']['fecha']) && !empty($_POST['Casos']['fecha2'])) {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}') AND " . "(" . $condition . ")"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}') AND " . "(" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND (date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}') AND " . "(" . $condition . ")";
                         $criteria->order = 'id';
                     endif;
                 } else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . "(" . $condition . ")"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . "(" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and tema = {$_POST['Casos']['tema']} AND subtema = {$_POST['Casos']['subtema']} AND fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . "(" . $condition . ")";
                         $criteria->order = 'id';
                     endif;
                 }
@@ -1664,25 +1666,25 @@ class CasosController extends Controller {
                 }
                 //die('condition: '.$condition);
                 if (!empty($_POST['Casos']['fecha']) && !empty($_POST['Casos']['fecha2'])) {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "(date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}') AND " . "(" . $condition . ")"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}' AND " . "(" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}' AND " . "(" . $condition . ")";
                         $criteria->order = 'id';
                     endif;
                     //$tituloReporte = "Reporte de Casos por Fecha: Desde " . $_POST['Casos']['fecha']. ", Hasta ".$_POST['Casos']['fecha2'];
                     //$name_file = "Reporte de Casos por Fecha Desde " . $_POST['Casos']['fecha']. ", Hasta ".$_POST['Casos']['fecha2'] . ".xls";
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . $condition
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . "(" . $condition . ")";
+                        $criteria->condition = "responsable={$id_responsable} and fecha LIKE '{$_POST['Casos']['fecha']}%' AND " . "(" . $condition . ")";
                         $criteria->order = 'id';
                     endif;
                     //$tituloReporte = "Reporte de Casos por Fecha: " . $_POST['Casos']['fecha'];
@@ -1715,13 +1717,13 @@ class CasosController extends Controller {
                     $title_busqueda .= " {$_POST['Casos']['estado1']} , {$_POST['Casos']['estado2']}";
                 }
 
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $criteria = new CDbCriteria(array(
                                 "condition" => "tema = '{$_POST['Casos']['tema']}' AND subtema = '{$_POST['Casos']['subtema']}' AND ({$condition})"
                             ));
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = '{$_POST['Casos']['tema']}' AND subtema = '{$_POST['Casos']['subtema']}' AND ({$condition})";
+                    $criteria->condition = "responsable={$id_responsable} and tema = '{$_POST['Casos']['tema']}' AND subtema = '{$_POST['Casos']['subtema']}' AND ({$condition})";
                     $criteria->order = 'id';
                 endif;
                 // Grab the records
@@ -1733,25 +1735,25 @@ class CasosController extends Controller {
             // busqueda por tema y fecha--------------------------------------------------------------------
             if (!empty($_POST['Casos']['tema']) && empty($_POST['Casos']['subtema']) && !empty($_POST['Casos']['fecha']) && empty($_POST['Casos']['estado'])) {
                 if (!empty($_POST['Casos']['fecha']) && !empty($_POST['Casos']['fecha2'])) {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema= {$_POST['Casos']['tema']} AND date(fecha) BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'"
                                 ));
 
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema= {$_POST['Casos']['tema']} AND fecha BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'";
+                        $criteria->condition = "responsable={$id_responsable} and tema= {$_POST['Casos']['tema']} AND fecha BETWEEN '{$_POST['Casos']['fecha']}' AND '{$_POST['Casos']['fecha2']}'";
                         $criteria->order = 'id';
                     endif;
                     $tituloReporte = "Reporte de Casos por Tema: " . $this->getTema($_POST['Casos']['tema']) . " ,Fecha entre: " . $_POST['Casos']['fecha'] . " y " . $_POST['Casos']['fecha2'];
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $criteria = new CDbCriteria(array(
                                     "condition" => "tema= {$_POST['Casos']['tema']} AND fecha like '{$_POST['Casos']['fecha']}%'"
                                 ));
                     else:
                         $criteria = new CDbCriteria;
-                        $criteria->condition = "concesionario={$concesionario} and tema= {$_POST['Casos']['tema']} AND fecha = '{$_POST['Casos']['fecha']}'";
+                        $criteria->condition = "responsable={$id_responsable} and tema= {$_POST['Casos']['tema']} AND fecha = '{$_POST['Casos']['fecha']}'";
                         $criteria->order = 'id';
                     endif;
                     $tituloReporte = "Reporte de Casos por Tema: " . $this->getTema($_POST['Casos']['tema']) . ", Fecha: " . $_POST['Casos']['fecha'];
@@ -2054,12 +2056,12 @@ class CasosController extends Controller {
             /* ---------GRAFICA POR TEMAS---------- */
             if (!empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['estado'])) {
                 //die('enter temas');
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $sql = "SELECT tema, subtema, count(subtema) AS sub FROM casos WHERE tema = {$_GET['Casos']['tema']} GROUP BY subtema HAVING COUNT(*) >= 1";
                 //die('sql: '.$sql);
                 else:
                     $criteria = new CDbCriteria;
-                    $criteria->condition = "concesionario={$concesionario} and tema = {$_GET['Casos']['tema']}";
+                    $criteria->condition = "responsable={$id_responsable} and tema = {$_GET['Casos']['tema']}";
                     $criteria->order = 'id';
                 endif;
                 $arrayDatos = array();
@@ -2076,7 +2078,7 @@ class CasosController extends Controller {
             /* ---------GRAFICA POR ESTADO---------- */
             if (!empty($_GET['Casos']['estado']) && empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['fecha'])) {
                 //die('enter estado');
-                if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                     $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE estado = '{$_GET['Casos']['estado']}' GROUP BY tema HAVING COUNT(*) >= 1";
                 else:
                     $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE estado = '{$_GET['Casos']['estado']}'  
@@ -2094,7 +2096,7 @@ class CasosController extends Controller {
             if (!empty($_GET['Casos']['fecha']) && empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['estado'])) {
                 //die('enter fechas');
                 if ($_GET['Casos']['tipo_fecha'] === 'between') {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha BETWEEN '{$_GET['Casos']['fecha']}' 
                            AND '{$_GET['Casos']['fecha2']}' GROUP BY tema HAVING COUNT(*) >= 1";
                     else:
@@ -2102,7 +2104,7 @@ class CasosController extends Controller {
                            AND '{$_GET['Casos']['fecha2']}' AND concesionario = {$concesionario} GROUP BY tema HAVING COUNT(*) >= 1";
                     endif;
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha = '{$_GET['Casos']['fecha']}' GROUP BY tema HAVING COUNT(*) >= 1";
                     else:
                         $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha = '{$_GET['Casos']['fecha']}' AND concesionario = {$concesionario} GROUP BY tema HAVING COUNT(*) >= 1";
@@ -2123,7 +2125,7 @@ class CasosController extends Controller {
             if (!empty($_GET['Casos']['fecha']) && !empty($_GET['Casos']['tema']) && empty($_GET['Casos']['subtema']) && empty($_GET['Casos']['estado'])) {
                 //die('enter temas y fecha');
                 if ($_GET['Casos']['tipo_fecha'] === 'between') {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         //$sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha BETWEEN '{$_GET['Casos']['fecha']}' 
                         //   AND '{$_GET['Casos']['fecha2']}' AND tema = '{$_GET['Casos']['tema']}' GROUP BY tema HAVING COUNT(*) >= 1 ";
                         $sql = "SELECT tema, subtema, count(subtema) AS sub FROM casos 
@@ -2140,7 +2142,7 @@ class CasosController extends Controller {
                             GROUP BY subtema HAVING COUNT(*) >= 1";
                     endif;
                 }else {
-                    if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+                    if ($cargo_id === 83 || $cargo_id === 83 || $rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
                         $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha = '{$_GET['Casos']['fecha']}' GROUP BY tema HAVING COUNT(*) >= 1 AND tema = '{$_GET['Casos']['tema']}'";
                     else:
                         $sql = "SELECT tema, count(tema) AS tem FROM casos WHERE fecha = '{$_GET['Casos']['fecha']}' AND concesionario = {$concesionario} GROUP BY tema HAVING COUNT(*) >= 1";

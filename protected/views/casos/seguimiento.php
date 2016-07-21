@@ -18,6 +18,7 @@ $case = ''; // para busqueda por defecto
 //echo 'rol: '.Yii::app()->user->getState('roles').'<br>';
 $rol = Yii::app()->user->getState('roles');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$id_responsable = Yii::app()->user->getId();
 ?>
 <script type="text/javascript">
     var abrir=0;
@@ -242,7 +243,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         </div>
         <!-- FIN DE FORMULARIO DE BUSQUEDA -->
         <div class="col-md-4">
-            <?php if ((Yii::app()->user->getState('roles') === 'super') || (Yii::app()->user->getState('first_name') === 'Supervisor') || (Yii::app()->user->getState('roles') === 'admin')): ?>
+            <?php if (($cargo_id === 83) || (Yii::app()->user->getState('first_name') === 'Supervisor') || (Yii::app()->user->getState('roles') === 'admin')): ?>
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'casos-excel',
@@ -416,10 +417,11 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <?php $this->widget('CLinkPager', array('pages' => $pages, 'maxButtonCount' => 5)); ?>
         </div>
-        <div class="col-md-8 links-tabs">
+        <br /><br />
+        <div class="col-md-12 links-tabs">
             <div class="col-md-3">
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
@@ -442,8 +444,8 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 <?php $this->endWidget(); ?>
             </div>
             <div class="col-md-2"><p>También puedes ir a:</p></div>
-            <?php if ($rol === 'admin' || $rol === 'super'): ?><div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('casos/create'); ?>" class="creacion-btn">Registro de Llamadas</a></div><?php endif; ?>
-            <?php if ($rol === 'admin' || $rol === 'super'): ?><div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('casos/reportes'); ?>" class="reportes-btn">Reportes</a></div><?php endif; ?>
+            <?php if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super'): ?><div class="col-md-3"><a href="<?php echo Yii::app()->createUrl('casos/create'); ?>" class="creacion-btn">Registro de Llamadas</a></div><?php endif; ?>
+            <?php if ($cargo_id === 83 || $rol === 'admin' || $rol === 'super'): ?><div class="col-md-2"><a href="<?php echo Yii::app()->createUrl('casos/reportes'); ?>" class="reportes-btn">Reportes</a></div><?php endif; ?>
             <div class="col-md-1"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
 
         </div>
