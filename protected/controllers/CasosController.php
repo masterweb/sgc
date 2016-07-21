@@ -91,6 +91,19 @@ class CasosController extends Controller {
 //            print_r($_POST);
 //            echo '</pre>';
 //            die();
+            if ($_POST['Casos']['identificacion'] == 'ci') {
+                $model->identificacion = $_POST['Casos']['identificacion'];
+                $model->setscenario('ci');
+            } else if ($_POST['Casos']['identificacion'] == 'ruc') {
+                $model->identificacion = $_POST['Casos']['identificacion'];
+                $model->setscenario('ruc');
+            } else if ($_POST['Casos']['identificacion'] == 'pasaporte') {
+                $model->provincia_domicilio = $_POST['Casos']['provincia_domicilio'];
+                $model->ciudad_domicilio = $_POST['Casos']['ciudad_domicilio'];
+                $model->identificacion = $_POST['Casos']['identificacion'];
+                $model->pasaporte = $_POST['Casos']['pasaporte'];
+            }
+
             if (isset($_POST['Casos']['estado'])) {
                 $model->estado = $_POST['Casos']['estado'];
             }
@@ -116,9 +129,9 @@ class CasosController extends Controller {
                     $model->email = 'supervisoroperaciones2@centerphone.com.ec';
                 if (empty($_POST['Casos']['celular']))
                     $model->celular = '0999999999';
-                if (empty($_POST['Casos']['direccion']))
+                if (empty($_POST['Casos']['direccion']))//direccion domicilio
                     $model->direccion = 'NA';
-                if (empty($_POST['Casos']['sector']))
+                if (empty($_POST['Casos']['sector']))//sector domicilio
                     $model->sector = 'NA';
                 if (empty($_POST['Casos']['comentario']))
                     $model->comentario = 'NA';
@@ -132,9 +145,9 @@ class CasosController extends Controller {
                     $model->email = 'supervisoroperaciones2@centerphone.com.ec';
                 if (empty($_POST['Casos']['telefono']))
                     $model->telefono = '022415222';
-                if (empty($_POST['Casos']['direccion']))
+                if (empty($_POST['Casos']['direccion']))//direccion domicilio
                     $model->direccion = 'NA';
-                if (empty($_POST['Casos']['sector']))
+                if (empty($_POST['Casos']['sector']))//sector domicilio
                     $model->sector = 'NA';
                 if (empty($_POST['Casos']['comentario']))
                     $model->comentario = 'NA';
@@ -145,7 +158,7 @@ class CasosController extends Controller {
             if ($model->save()) {
 
                 // CREAR NOTIFICACION 
-                $modelN = new Notificaciones;
+                /*$modelN = new Notificaciones;
                 $modelN->user_id = Yii::app()->user->getId();
                 $modelN->caso_id = $model->id;
                 if ($tipoFormularioPV == 'informativo') {
@@ -157,7 +170,7 @@ class CasosController extends Controller {
                 }
 
                 $modelN->fecha = date("Y-m-d H:i:s");
-                $modelN->save();
+                $modelN->save();*/
 
                 $fecha_atencion = date("Y-m-d");
 
@@ -276,9 +289,16 @@ class CasosController extends Controller {
                                         <td colspan="2"><strong>ID:</strong> ' . $model->id . '</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>
-                                        <td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>
-                                    </tr>
+                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>';
+                    if (!empty($_POST['Casos']['cedula']))
+                        $general .= '<td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>';
+                    if (!empty($_POST['Casos']['ruc']))
+                        $general .= '<td><strong>RUC:</strong> ' . $_POST['Casos']['ruc'] . '</td>';
+                    if (!empty($_POST['Casos']['pasaporte']))
+                        $general .= '<td><strong>Pasaporte:</strong> ' . $_POST['Casos']['pasaporte'] . '</td>';
+
+
+                    $general .= '</tr>
                                     <tr>
                                         <td><strong>Provincia:</strong> ' . $this->getProvincia($_POST['Casos']['provincia']) . '</td>
                                         <td><strong>Ciudad:</strong> ' . $this->getCiudad($_POST['Casos']['ciudad']) . '</td>
@@ -379,9 +399,15 @@ class CasosController extends Controller {
                     <tr><td><b>Dir. Concesionario:</b></td><td>' . $this->getDireccion($_POST['Casos']['concesionario']) . '</td></tr>
                     <tr><td>&nbsp;</td></tr>				
                     <tr><td><b>Nombres:</b></td><td>' . $_POST['Casos']['nombres'] . '</td></tr>
-                    <tr><td><b>Apellidos:</b></td><td>' . $_POST['Casos']['apellidos'] . '</td></tr>
-                    <tr><td><b>C&eacute;dula:</b></td><td>' . $_POST['Casos']['cedula'] . '</td></tr>
-                    <tr><td><b>Direcci&oacute;n:</b></td><td>' . $_POST['Casos']['direccion'] . '</td></tr>
+                    <tr><td><b>Apellidos:</b></td><td>' . $_POST['Casos']['apellidos'] . '</td></tr>';
+                        if (!empty($_POST['Casos']['cedula']))
+                            $general .= '<tr><td><b>C&eacute;dula:</b></td><td>' . $_POST['Casos']['cedula'] . '</td></tr>';
+                        if (!empty($_POST['Casos']['ruc']))
+                            $general .= '<tr><td><b>RUC:</b></td><td>' . $_POST['Casos']['ruc'] . '</td></tr>';
+                        if (!empty($_POST['Casos']['pasaporte']))
+                            $general .= '<tr><td><b>Pasaporte:</b></td><td>' . $_POST['Casos']['pasaporte'] . '</td></tr>';
+
+                        $general .= '<tr><td><b>Direcci&oacute;n:</b></td><td>' . $_POST['Casos']['direccion'] . '</td></tr>
                     <tr><td><b>Tel&eacute;fono:</b></td><td>' . $_POST['Casos']['telefono'] . '</td></tr>
                     <tr><td><b>Celular:</b></td><td>' . $_POST['Casos']['celular'] . '</td></tr>
                     <tr><td><b>Veh&iacute;culo de Inter&eacute;s</b>:</td><td>' . $arrayModelos[$_POST['Casos']['modelo']] . '</td></tr>
@@ -446,11 +472,11 @@ class CasosController extends Controller {
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $asunto = 'Formulario enviado desde Call Center';
                     $tipo = 'caso';
-                    if (!empty($_POST['Casos']['email'])):
-                        sendEmailCliente('info@kia.com.ec', "Call Center", $_POST['Casos']['email'], html_entity_decode($asunto), $codigohtml, $tipo);
-                    else:
+                    //if (!empty($_POST['Casos']['email'])):
+                        //sendEmailCliente('info@kia.com.ec', "Call Center", $_POST['Casos']['email'], html_entity_decode($asunto), $codigohtml, $tipo);
+                    //else:
                         sendEmailCliente('info@kia.com.ec', "Call Center", 'supervisoroperaciones2@centerphone.com.ec', html_entity_decode($asunto), $codigohtml, $tipo);
-                    endif;
+                    //endif;
 
                 endif; // FIN DE ENVIO PARA CASOS
                 //die('Antes de setflash');
@@ -481,13 +507,19 @@ class CasosController extends Controller {
 //            print_r($_POST);
 //            echo '</pre>';
 //            die();
+            if ($_POST['identificacion'] == 'ruc')
+                $model->setscenario('ruc');
+            if ($_POST['identificacion'] == 'pasaporte')
+                $model->setscenario('pasaporte');
             $model->attributes = $_POST['Casos'];
             $model->estado = $_POST['Casos']['estado'];
             if (($_POST['Casos']['estado'] === 'Cerrado') && !empty($_POST['Casos']['observaciones']) && isset($_POST['closed_case'])) {
                 //die('enter closed case');
                 $model->estado = 'Proceso';
             }
-            $model->concesionario = $_POST['Casos']['concesionario'];
+            if(isset($_POST['Casos']['concesionario']))
+                $model->concesionario = $_POST['Casos']['concesionario'];
+            //die('model concesionario: '.$model->concesionario);
             if ($_POST['Casos']['tipo_form'] == 'caso') {
                 $model->tipo_venta = $_POST['Casos']['tipo_venta'];
             }
@@ -523,47 +555,6 @@ class CasosController extends Controller {
             }
             $tipoFormularioPV = '';
             $subtema = $_POST['Casos']['subtema'];
-
-
-//            switch ($subtema) {
-//                case 1:
-//                case 7:
-//                case 8:
-//                case 10:
-//                case 11:
-//                case 12:
-//                case 13:
-//                case 15:
-//                case 16:
-//                case 17:
-//                case 19:
-//                case 28:// asistencia kia  
-//                    $tipoFormularioPV = 'informativo';
-//                    break;
-//                case 4:
-//                case 5:
-//                case 9:
-//                case 14:
-//                case 20:
-//                case 22:// asistencia kia
-//                case 23:// asistencia kia
-//                case 25:// asistencia kia
-//                case 27:// asistencia kia
-//                case 21:// asistencia kia   
-//                case 24:// asistencia kia
-//                case 26:// asistencia kia     
-//                    $tipoFormularioPV = 'caso';
-//                    break;
-//                case 2:
-//                case 3:
-//                case 6:
-//                case 18:
-//                    $tipoFormularioPV = $_POST['Casos']['tipo_form'];
-//                    break;
-//
-//                default:
-//                    break;
-//            }
             $model->tipo_form = 'caso';
 
             //$model->observaciones = $_POST['Casos']['observaciones'];
@@ -654,9 +645,15 @@ class CasosController extends Controller {
                                         <td colspan="2"><strong>Tipo Formulario</strong> ' . $model->tipo_venta . '</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>
-                                        <td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>
-                                    </tr>
+                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>';
+                    if (!empty($_POST['Casos']['cedula']))
+                        $general .= '<td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>';
+                    if (!empty($_POST['Casos']['ruc']))
+                        $general .= '<td><strong>RUC:</strong> ' . $_POST['Casos']['ruc'] . '</td>';
+                    if (!empty($_POST['Casos']['pasaporte']))
+                        $general .= '<td><strong>Pasaporte:</strong> ' . $_POST['Casos']['pasaporte'] . '</td>';
+
+                    $general .= '</tr>
                                     <tr>
                                         <td><strong>Provincia:</strong> ' . $this->getProvincia($_POST['Casos']['provincia']) . '</td>';
                     if (isset($_POST['Casos']['ciudad'])) {
@@ -696,8 +693,8 @@ class CasosController extends Controller {
                     sendEmailFunctionConc('info@kia.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
                 } elseif ($_POST['Casos']['estado'] === 'Proceso') {
                     // CONECCION A LA BASE DE DATOS DE KIA ADMINKIA
-                    DEFINE('DB_USER', 'jrodriguez');
-                    DEFINE('DB_PASSWORD', '@admin.1');
+                    DEFINE('DB_USER', 'root');
+                    DEFINE('DB_PASSWORD', 'k143c89?4Fg&2');
                     DEFINE('DB_HOST', 'localhost');
                     DEFINE('DB_NAME', 'adminkia_b4s3k1');
                     $connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
@@ -705,7 +702,7 @@ class CasosController extends Controller {
                     mysql_select_db(DB_NAME)
                             or die('Could not select database');
 
-                    if ($_POST['Casos']['subtema'] == 9) {
+                    if (($_POST['Casos']['subtema'] == 9) && isset($_POST['Casos']['concesionario'])) {
                         // EMAILS DE LOS CONCESIONARIOS DE ACUERDO A SU ID
                         $sqlEmail = "SELECT para_email, cc_email, cco_email FROM dealers_email 
                         WHERE dealersid = {$_POST['Casos']['concesionario']} 
@@ -744,9 +741,15 @@ class CasosController extends Controller {
                                         <td colspan="2"><strong>Tipo Formulario</strong> ' . $model->tipo_venta . '</td>
                                     </tr>  
                                     <tr>
-                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>
-                                        <td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>
-                                    </tr>
+                                        <td><strong>Nombre:</strong> ' . $_POST['Casos']['nombres'] . ' ' . $_POST['Casos']['apellidos'] . '</td>';
+                                    if (!empty($_POST['Casos']['cedula']))
+                                        $general .= '<td><strong>Cédula:</strong> ' . $_POST['Casos']['cedula'] . '</td>';
+                                    if (!empty($_POST['Casos']['ruc']))
+                                        $general .= '<td><strong>RUC:</strong> ' . $_POST['Casos']['ruc'] . '</td>';
+                                    if (!empty($_POST['Casos']['pasaporte']))
+                                        $general .= '<td><strong>Pasaporte:</strong> ' . $_POST['Casos']['pasaporte'] . '</td>';
+
+                                    $general .= '</tr>
                                     <tr>
                                         <td><strong>Provincia:</strong> ' . $this->getProvincia($_POST['Casos']['provincia']) . '</td>
                                         <td><strong>Ciudad:</strong> ' . $this->getCiudad($_POST['Casos']['ciudad']) . '</td>
@@ -798,13 +801,13 @@ class CasosController extends Controller {
 
 
                     // ENVIAR NOTIFICACION DE CASO ACTUALIZADO
-                    $modelN = new Notificaciones;
+                    /*$modelN = new Notificaciones;
                     $modelN->user_id = Yii::app()->user->getId();
                     $modelN->caso_id = $model->id;
                     $modelN->tipo_form = $_POST['Casos']['tipo_form'];
                     $modelN->descripcion = "El usuario " . $this->getResponsable(Yii::app()->user->getId()) . "  ha comentado el caso con la ID: " . $model->id;
                     $modelN->fecha = date("Y-m-d H:i:s");
-                    $modelN->save();
+                    $modelN->save();*/
                 }
 
                 // GUARDAR EN HISTORIAL
@@ -815,7 +818,7 @@ class CasosController extends Controller {
                 $model2->tema = $_POST['Casos']['tema'];
                 $model2->subtema = $_POST['Casos']['subtema'];
                 $model2->id_responsable = Yii::app()->user->getId();
-                $model2->estado = $_POST['Casos']['estado'];
+                $model2->estado = $model->estado;
                 $model2->observaciones = $_POST['Casos']['observaciones'];
                 $model2->save();
                 //die('enter save');
@@ -932,16 +935,18 @@ class CasosController extends Controller {
         //$this->layout = '//layouts/call_1';
         // Note: Posts is a Posts model just pulling data from a posts database table.
         // Setup Criteria
-
-        $concesionario = Yii::app()->user->getState('dealer_id');
-        $rol = Yii::app()->user->getState('roles');
-        if ($rol === 'admin' || $rol === 'super' || $rol === 'adminvpv'):
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $id_responsable = Yii::app()->user->getId();
+        $concesionario = $this->getDealerId($id_responsable);
+        //die('concesionario: '.$concesionario);
+        //$concesionario = Yii::app()->user->getState('dealer_id');
+        if ($cargo_id === 83):
             $criteria = new CDbCriteria;
             //$criteria->condition = "tipo_form='caso'";
             $criteria->order = 'id desc';
         else:
             $criteria = new CDbCriteria;
-            $criteria->condition = "concesionario={$concesionario}";
+            $criteria->condition = "responsable={$id_responsable}";
             $criteria->order = 'id desc';
         endif;
 
@@ -1850,24 +1855,25 @@ class CasosController extends Controller {
                 ->setCellValue('C2', 'Subtema')
                 ->setCellValue('D2', 'Nombres')
                 ->setCellValue('E2', 'Apellidos')
-                ->setCellValue('F2', 'Cedula')
-                ->setCellValue('G2', 'Provincia')
-                ->setCellValue('H2', 'Ciudad')
-                ->setCellValue('I2', 'Concesionario')
-                ->setCellValue('J2', 'Dirección')
-                ->setCellValue('K2', 'Provincia Domicilio')
-                ->setCellValue('L2', 'Ciudad Domicilio')
-                ->setCellValue('M2', 'Sector')
-                ->setCellValue('N2', 'Teléfono')
-                ->setCellValue('O2', 'Celular')
-                ->setCellValue('P2', 'Email')
-                ->setCellValue('Q2', 'Comentarios')
-                ->setCellValue('R2', 'Estado')
-                ->setCellValue('S2', 'Tipo Formulario')
-                ->setCellValue('T2', 'Tipo Venta')
-                ->setCellValue('U2', 'Responsable')
-                ->setCellValue('V2', 'Fecha')
-                ->setCellValue('W2', 'Tipo');
+                ->setCellValue('F2', 'Tipo de Identificación')
+                ->setCellValue('G2', 'No. de Identificación')
+                ->setCellValue('H2', 'Provincia')
+                ->setCellValue('I2', 'Ciudad')
+                ->setCellValue('J2', 'Concesionario')
+                ->setCellValue('K2', 'Dirección')
+                ->setCellValue('L2', 'Provincia Domicilio')
+                ->setCellValue('M2', 'Ciudad Domicilio')
+                ->setCellValue('N2', 'Sector')
+                ->setCellValue('O2', 'Teléfono')
+                ->setCellValue('P2', 'Celular')
+                ->setCellValue('Q2', 'Email')
+                ->setCellValue('R2', 'Comentarios')
+                ->setCellValue('S2', 'Estado')
+                ->setCellValue('T2', 'Tipo Formulario')
+                ->setCellValue('U2', 'Tipo Venta')
+                ->setCellValue('V2', 'Responsable')
+                ->setCellValue('W2', 'Fecha')
+                ->setCellValue('X2', 'Tipo');
 
         $i = 3;
         /* echo '<pre>';
@@ -1875,34 +1881,49 @@ class CasosController extends Controller {
           echo '</pre>';
           die(); */
         foreach ($casos as $row) {
+            $ident;$tipoIden;
+            switch ($row['identificacion']) {
+                case 'ci':
+                    $ident = $row['cedula'];$tipoIden = 'Cédula';
+                    break;
+                case 'ruc':
+                    $ident = $row['ruc'];$tipoIden = 'Ruc';
+                    break;
+                case 'pasaporte':
+                    break;
+                    $ident = $row['pasaporte'];$tipoIden = 'Pasaporte';
+                default:
+                    break;
+            }
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $row['id'])
                     ->setCellValue('B' . $i, $this->getTema($row['tema']))
                     ->setCellValue('C' . $i, $this->getSubtema($row['subtema']))
                     ->setCellValue('D' . $i, $row['nombres'])
                     ->setCellValue('E' . $i, $row['apellidos'])
-                    ->setCellValue('F' . $i, $row['cedula'])
-                    ->setCellValue('G' . $i, $this->getProvincia($row['provincia']))
-                    ->setCellValue('H' . $i, $this->getCiudad($row['ciudad']))
-                    ->setCellValue('I' . $i, $this->getConcesionario($row['concesionario']))
-                    ->setCellValue('J' . $i, $row['direccion'])
-                    ->setCellValue('K' . $i, $row['origen'] == 0 ? $this->getProvinciaDom($row['provincia_domicilio']) : $this->getProvincia($row['provincia_domicilio']))
-                    ->setCellValue('L' . $i, $row['origen'] == 0 ? $this->getCiudadDom($row['ciudad_domicilio']) : $this->getCiudad($row['ciudad_domicilio']))
-                    ->setCellValue('M' . $i, $row['sector'])
-                    ->setCellValue('N' . $i, $row['telefono'])
-                    ->setCellValue('O' . $i, $row['celular'])
-                    ->setCellValue('P' . $i, $row['email'])
-                    ->setCellValue('Q' . $i, $row['comentario'])
-                    ->setCellValue('R' . $i, $row['estado'])
-                    ->setCellValue('S' . $i, $row['tipo_form'])
-                    ->setCellValue('T' . $i, $row['tipo_venta'])
-                    ->setCellValue('U' . $i, $this->getResponsable($row['responsable']))
-                    ->setCellValue('V' . $i, $row['fecha'])
-                    ->setCellValue('W' . $i, ($row['origen'] == 0) ? '1800' : 'web');
+                    ->setCellValue('F' . $i, $tipoIden)
+                    ->setCellValue('G' . $i, $ident)
+                    ->setCellValue('H' . $i, $this->getProvincia($row['provincia']))
+                    ->setCellValue('I' . $i, $this->getCiudad($row['ciudad']))
+                    ->setCellValue('J' . $i, $this->getConcesionario($row['concesionario']))
+                    ->setCellValue('K' . $i, $row['direccion'])
+                    ->setCellValue('L' . $i, $row['origen'] == 0 ? $this->getProvinciaDom($row['provincia_domicilio']) : $this->getProvincia($row['provincia_domicilio']))
+                    ->setCellValue('M' . $i, $row['origen'] == 0 ? $this->getCiudadDom($row['ciudad_domicilio']) : $this->getCiudad($row['ciudad_domicilio']))
+                    ->setCellValue('N' . $i, $row['sector'])
+                    ->setCellValue('O' . $i, $row['telefono'])
+                    ->setCellValue('P' . $i, $row['celular'])
+                    ->setCellValue('Q' . $i, $row['email'])
+                    ->setCellValue('R' . $i, $row['comentario'])
+                    ->setCellValue('S' . $i, $row['estado'])
+                    ->setCellValue('T' . $i, $row['tipo_form'])
+                    ->setCellValue('U' . $i, $row['tipo_venta'])
+                    ->setCellValue('V' . $i, $this->getResponsable($row['responsable']))
+                    ->setCellValue('W' . $i, $row['fecha'])
+                    ->setCellValue('X' . $i, ($row['origen'] == 0) ? '1800' : 'web');
 
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $row['cedula'], PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['celular'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit('G' . $i, $ident, PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit('P' . $i, $row['celular'], PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $row['comentario'], PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->getStyle('M' . $i)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
             $i++;
@@ -1939,13 +1960,14 @@ class CasosController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension("T")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("U")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("V")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("W")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($estiloTituloReporte);
-        $objPHPExcel->getActiveSheet()->getStyle('A2:V2')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:X2')->applyFromArray($estiloTituloColumnas);
 
         // Inmovilizar paneles
         $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
