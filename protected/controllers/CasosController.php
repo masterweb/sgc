@@ -1023,6 +1023,8 @@ class CasosController extends Controller {
 //        print_r($_GET);
 //        echo '</pre>';
 //        die();
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $id_responsable = Yii::app()->user->getId();
         $concesionario = Yii::app()->user->getState('dealer_id');
         $rol = Yii::app()->user->getState('roles');
 
