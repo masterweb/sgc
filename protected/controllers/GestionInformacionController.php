@@ -2421,6 +2421,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $sql .= "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND ";
                 }
+                if ($cargo_id == 61 && $get_array == 'seg') { // gerente comercial
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $sql .= "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']} AND ";
+                }
+                
                 /* else {
                   $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
                   } */
@@ -2430,6 +2436,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->order = "gi.id DESC";
                 $sql .= " gd.desiste = 0 GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
                 //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
