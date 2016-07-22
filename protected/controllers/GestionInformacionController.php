@@ -706,7 +706,7 @@ class GestionInformacionController extends Controller {
 
         if (count($_GET) == 1) {
             //die('enter default');
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -752,7 +752,7 @@ class GestionInformacionController extends Controller {
                 if ($cargo_id == 70) {
                     //die('enter jefe');
                     // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -766,7 +766,7 @@ class GestionInformacionController extends Controller {
                 }
                 if ($cargo_id == 71) {
                     // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -803,7 +803,7 @@ class GestionInformacionController extends Controller {
                 //echo('enter busqueda general jefe almacen');
                 $title_busqueda = 'Búsqueda General: ';
                 if ($cargo_id == 70) { // jefe de almacen
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -817,7 +817,7 @@ class GestionInformacionController extends Controller {
                     //die('sql sucursal'. $sql);
                 }
                 if ($cargo_id == 71) { // asesor de ventas
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -851,7 +851,7 @@ class GestionInformacionController extends Controller {
                 //echo('enter general');
 
                 /* BUSQUEDA POR NOMBRES, APELLIDOS, CEDULA, ID */
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -889,7 +889,7 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) && $cargo_id == 69) {
                 //echo('enter fuente');    
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
 gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
 FROM gestion_diaria gd 
 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -914,7 +914,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
                 //echo('enter fuente asesor');    
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                 gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
                 FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -938,7 +938,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             /* -----------------BUSQUEDA POR CATEGORIZACION------------------ */
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
                 //echo('enter categorizacion');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
@@ -963,7 +963,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && $cargo_id == 69 && empty($_GET['GestionDiaria2']['responsable']) && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
                 //echo('enter cat');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
@@ -990,7 +990,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
                 //echo('enter to status');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1046,7 +1046,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
                 //die('after params');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -1077,7 +1077,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['concesionario']) &&
                     empty($_GET['GestionDiaria2']['provincia'])) {
                 //echo('enter responsable');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -1112,7 +1112,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['tipo_fecha']) &&
                     empty($_GET['GestionDiaria2']['fuente'])) {
                 //echo ('enter responsable jefe almacen');
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -1149,7 +1149,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
             $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -1663,21 +1663,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', $tituloReporte) // Titulo del reporte
-                ->setCellValue('A2', 'Status')
-                ->setCellValue('B2', 'ID')
-                ->setCellValue('C2', 'Nombres')
-                ->setCellValue('D2', 'Apellidos')
-                ->setCellValue('E2', 'Identificación')
-                ->setCellValue('F2', 'Email')
-                ->setCellValue('G2', 'Responsable')
-                ->setCellValue('H2', 'Concesionario')
-                ->setCellValue('I2', 'Modelo')
-                ->setCellValue('J2', 'Versiones')
-                ->setCellValue('K2', 'Test Drive')
-                ->setCellValue('L2', 'Proximo Seguimiento')
-                ->setCellValue('M2', 'Fecha Registro')
-                ->setCellValue('N2', 'Categorización')
-                ->setCellValue('O2', 'Fuente');
+                ->setCellValue('B2', 'Status')
+                ->setCellValue('C2', 'ID')
+                ->setCellValue('D2', 'Nombres')
+                ->setCellValue('E2', 'Apellidos')
+                ->setCellValue('F2', 'Identificación')
+                ->setCellValue('G2', 'Email')
+                ->setCellValue('H2', 'Celular')
+                ->setCellValue('I2', 'Direccion')
+                ->setCellValue('J2', 'Responsable')
+                ->setCellValue('K2', 'Concesionario')
+                ->setCellValue('L2', 'Modelo')
+                ->setCellValue('M2', 'Versiones')
+                ->setCellValue('N2', 'Test Drive')
+                ->setCellValue('O2', 'Proximo Seguimiento')
+                ->setCellValue('P2', 'Categorización')
+                ->setCellValue('Q2', 'Fuente');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1726,15 +1727,17 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('D' . $i, ($row['apellidos']))
                     ->setCellValue('E' . $i, $identificacion)
                     ->setCellValue('F' . $i, $row['email'])
-                    ->setCellValue('G' . $i, $this->getResponsableNombres($row['resp']))
-                    ->setCellValue('H' . $i, $this->getNameConcesionarioById($row['dealer_id']))
-                    ->setCellValue('I' . $i, $modeloVehiculo)
-                    ->setCellValue('J' . $i, $versionVehiculo)
-                    ->setCellValue('K' . $i, $td_si)
-                    ->setCellValue('L' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('M' . $i, $row['fecha'])
-                    ->setCellValue('N' . $i, $row['categorizacion'])
-                    ->setCellValue('O' . $i, $row['fuente']);
+                    ->setCellValue('G' . $i, $row['celular'])
+                    ->setCellValue('H' . $i, $row['direccion'])
+                    ->setCellValue('I' . $i, $this->getResponsableNombres($row['resp']))
+                    ->setCellValue('J' . $i, $this->getNameConcesionarioById($row['dealer_id']))
+                    ->setCellValue('K' . $i, $modeloVehiculo)
+                    ->setCellValue('L' . $i, $versionVehiculo)
+                    ->setCellValue('M' . $i, $td_si)
+                    ->setCellValue('N' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('O' . $i, $row['fecha'])
+                    ->setCellValue('P' . $i, $row['categorizacion'])
+                    ->setCellValue('Q' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1767,6 +1770,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $objPHPExcel->getActiveSheet()->getColumnDimension("M")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("N")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("P")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("Q")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
@@ -1823,7 +1828,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
 
-        $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+        $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,gi.reasignado,gi.responsable_cesado,gi.id_comentario,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -2070,6 +2075,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 1) {
             $search_type = 29;
         }
+        
+        // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
         //die('search type: ' . $search_type);
         switch ($search_type) {
@@ -2307,7 +2314,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 return $data;
                 break;
             case 5: // BUSQUEDA POR FUENTE
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.tipo_form_web,gi.fecha, gi.bdc,
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
                 gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,gd.*, gc.preg7 as categorizacion, gn.fuente 
                 FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
@@ -2537,7 +2544,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
                     gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -2554,7 +2561,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
                     gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
@@ -2572,7 +2579,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                     //die('nnwer');
-                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
                     FROM gestion_diaria gd 
                     INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                     INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
@@ -2602,7 +2609,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
                 $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
 
-                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+                $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
                 gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
                 gd.*, gc.preg7 as categorizacion, gn.fuente 
                 FROM gestion_diaria gd 
@@ -3314,7 +3321,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
 
 
-        $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+        $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha as fecharegistro, gi.bdc, 
             gi.dealer_id, gi.reasignado,gi.responsable_cesado,gi.id_comentario, gi.id_cotizacion, 
             gd.*, gc.preg7 as categorizacion, gn.fuente 
@@ -3468,7 +3475,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -3511,7 +3518,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
             //die($sql);
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id,
             gd.*, gc.preg7 as categorizacion, gn.fuente 
             FROM gestion_diaria gd 
@@ -3945,7 +3952,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $dealer_id = $this->getDealerId($id_responsable);
             //die($dealer_id);
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -3964,7 +3971,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $dealerList = implode(', ', $array_dealers);
             //die('count: '.count($array_dealers));
             //die($dealer_id);
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -3983,7 +3990,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
 
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -3995,7 +4002,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 72) { // JEFE DE BDC
             $array_dealers = $this->getDealerGrupoConc($grupo_id);
             $dealerList = implode(', ', $array_dealers);
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -4006,7 +4013,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ORDER BY gd.id DESC";
         }
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -4018,7 +4025,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
         if ($cargo_id == 69) { //GERENTE COMERCIAL
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.tipo_ex,
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
@@ -4028,7 +4035,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 WHERE gi.tipo_form_web = 'exonerados' AND u.grupo_id = {$grupo_id} GROUP BY gi.cedula, gi.ruc, gi.pasaporte
                 ORDER BY gd.id DESC";
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
-            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, 
+            $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.tipo_ex,
             gd.*, gn.fuente 
             FROM gestion_diaria gd 
