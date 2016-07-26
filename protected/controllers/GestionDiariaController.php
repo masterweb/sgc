@@ -609,23 +609,44 @@ class GestionDiariaController extends Controller {
         $result = FALSE;
         $resultgf = FALSE;
         $resultgd = FALSE;
+        $factura = GestionFactura::model()->findByPk((int) $id);
+        $gestion = GestionDiaria::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
         // ACTUALIZAR TABLA gestion_factura a ACTIVO o INACTIVO
         switch ($tipo_cierre) {
-            case '1': // anular factura
-                $sql = "UPDATE gestion_factura SET status = 'INACTIVO' where id = {$id}";
+            case 1: // anular factura
+                //die('enter case 1');
+                $factura->status = 'INACTIVO';
+                if($factura->update()){
+                    $resultgf = TRUE;
+                }
+                $gestion->cierre = 0;
+                if($gestion->update()){
+                    $resultgd = TRUE;
+                }
+                /*$sql = "UPDATE gestion_factura SET status = 'INACTIVO' where id = {$id}";
                 $request = $con->createCommand($sql)->execute();
                 $resultgf = $request;
                 $sqlGd = "UPDATE gestion_diaria SET cierre = 0 WHERE id_informacion = {$id_informacion}";
                 $request2 = $con->createCommand($sqlGd)->execute();
-                $resultgd = $request2;
+                $resultgd = $request2;*/
+                //die('resultgf: '.$resultgf.', resultgd: '.$resultgd);
                 break;
-            case '0': // activar factura
-                $sql = "UPDATE gestion_factura SET status = 'ACTIVO' where id = {$id}";
+            case 0: // activar factura
+                //die('enter case 0');
+                $factura->status = 'ACTIVO';
+                if($factura->update()){
+                    $resultgf = TRUE;
+                }
+                $gestion->cierre = 1;
+                if($gestion->update()){
+                    $resultgd = TRUE;
+                }
+                /*$sql = "UPDATE gestion_factura SET status = 'ACTIVO' where id = {$id}";
                 $request = $con->createCommand($sql)->execute();
                 $resultgf = $request;
                 $sqlGd = "UPDATE gestion_diaria SET cierre = 1 WHERE id_informacion = {$id_informacion}";
                 $request2 = $con->createCommand($sqlGd)->execute();
-                $resultgd = $request2;
+                $resultgd = $request2;*/
                 break;
 
             default:

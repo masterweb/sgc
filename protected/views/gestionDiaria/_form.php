@@ -139,6 +139,24 @@ $area_id = (int) Yii::app()->user->getState('area_id');
             }
         });
     });
+    function setcierre(tipo, id_info, id_vehiculo, id_factura){
+        if (confirm('Está seguro de cambiar el estado de la factura')) {
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionDiaria/setCierre"); ?>',
+                dataType: "json",
+                type: 'POST',
+                data: {tipo_cierre: tipo, id : id_factura, id_informacion: id_info, id_vehiculo: id_vehiculo},
+                success: function (data) {
+                    console.log(data.result);
+                    $('#bg_negro').show();
+                    if(data.result == true){
+                       //alert('Datos Grabados');
+                       location.reload();
+                    }
+                }
+            });
+        }
+    }
 </script>
 <div role="tabpanel">
     <!-- Nav tabs -->
@@ -961,23 +979,26 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                          <td><?php echo $vc['fecha']; ?></td>
                                          <td><?php echo $vc['observaciones']; ?></td>
                                          <td><?php echo $this->getVersionFin($vc['id_vehiculo']); ?></td>
-                                         <td><?php if($anulacion->status == 'ACTIVO'){ ?>
-                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a>    
-                                            <?php } ?>
+                                         <td>
+                                             <?php if($anulacion->status == 'ACTIVO'){ ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank">Factura Activa</a>
+                                            
+                                            <?php  } ?>
                                             <?php if($anulacion->status == 'INACTIVO'){ ?>
-                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a>  
-                                            <?php } ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionCierre/pdf/', array('id_informacion' => $vc['id_informacion'], 'id_vehiculo' => $vc['id_vehiculo'])); ?>" class="btn btn-success btn-xs" target="_blank" disabled="true">Factura Anulada</a>
+                                            
+                                            <?php  } ?>
                                          </td>
                                          <td>
                                              <?php 
                                             $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                                             if($cargo_id == 70 || $cargo_id == 61): // anulacion de factura ?>
-                                            
-                                                <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
-                                                    <option value="">--Seleccione--</option>
-                                                    <option value="1">Anular Factura</option>
-                                                    <option value="0">Revertir Factura</option>
-                                                </select>
+                                                <?php if($anulacion->status == 'ACTIVO'){ ?>
+                                                <a class="btn btn-danger btn-xs" onclick="setcierre(1,<?php echo $vc['id_informacion']; ?>,<?php echo $vc['id_vehiculo']; ?>,<?php echo $vc['id']; ?>);">Anular</a>
+                                                <?php } ?>
+                                                <?php if($anulacion->status == 'INACTIVO'){ ?>
+                                                <a class="btn btn-warning btn-xs" onclick="setcierre(0,<?php echo $vc['id_informacion']; ?>,<?php echo $vc['id_vehiculo']; ?>,<?php echo $vc['id']; ?>);">Aprobar</a>
+                                                <?php } ?>
                                                 <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
                                                 <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
                                                 <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
