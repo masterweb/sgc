@@ -105,6 +105,7 @@ class PvQirController extends Controller {
                                 }
                             }
                         }
+
                         $asunto = "Nuevo QIR, ingrese al portal de Servicios KIA para darle seguimiento";
 						 $HTML =
                             '<body style="margin: 10px;">
@@ -116,6 +117,7 @@ class PvQirController extends Controller {
                         $HTML.= "<tr><td style='width:150px'>Modelo</td><td>" . utf8_encode($model->modeloPostVenta->descripcion) . "</td></tr>";
                         $HTML.= "<tr><td style='width:150px'>Fecha Registro</td><td>" . $model->fecha_registro . "</td></tr>";
                         $HTML.= "<tr><td style='width:150px'>Descripci&oacute;n</td><td>" . (($model->descripcion)) . "</td></tr>";
+                        $HTML.= "<tr><td style='width:150px'>Dealer</td><td>" . (($model->dealer->name)) . "</td></tr>";
                         $HTML.= "</table>";
 						$HTML.=' <img src="images/footer_mail.jpg"/>';
 						$codigohtml = $HTML;
