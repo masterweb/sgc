@@ -33,7 +33,11 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
             }
             if($cargo_id == 71 || $cargo_id == 70){ // asesor ventas
-                $tipo_array =  array('' => '--Seleccione--','prospeccion' => 'Prospección','showroom' => 'Tráfico','exhibicion' => 'Exhibición');
+                $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    'showroom' => 'Tráfico',
+                    //'exhibicion' => 'Exhibición'
+                    );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
