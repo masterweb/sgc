@@ -5,8 +5,12 @@
 //die('id: '.$id);
 ?>
 <?php
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+// SI CARGO ID ES 72, JEFE BDC
 $id_responsable = Yii::app()->user->getId();
 //echo 'responsable id: '.$id_responsable;
+if($cargo_id != 72){
 $dealer_id = $this->getDealerId($id_responsable);
 //echo '<br>dealer id: '.$dealer_id.'<br />';
 //die();
@@ -14,6 +18,7 @@ $city_id = $this->getCityId($dealer_id);
 //die('city id: '.$city_id);
 $provincia_id = $this->getProvinciaId($city_id);
 //echo 'provincia id: ' . $provincia_id;
+}
 $cedula = $this->getCedulaCotizacion($id);
 $ced = $this->getCedula($id);
 $nombres = '';
@@ -540,7 +545,7 @@ $tipo = $_GET['tipo'];
                                     var endTime = parseInt(startTime) + 100;
                                     //console.log('start time:'+fechaStart+startTime);
                                     //console.log('fecha end:'+fechaStart+endTime);
-                                    var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente ' + cliente + ' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
+                                    var href = '/intranet/usuario_TEST/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente ' + cliente + ' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
                                     $('#event-download').attr('href', href);
                                     $('.calendar-content').show();
                                     $("#event-download").click(function () {
@@ -974,6 +979,7 @@ $tipo = $_GET['tipo'];
                 if (isset($_GET['tipo']) && ($_GET['tipo'] == 'prospeccion') &&
                         (isset($_GET['tipo_fuente']) != 'usado')) { 
                     ?>
+                    <?php if($cargo_id != 72){ // SI NO ES JEFE DE BDC ?>
                     <div style="display: none;">
                         <div class="row">
                             <div class="col-md-3">
@@ -983,10 +989,18 @@ $tipo = $_GET['tipo'];
                                     'condition' => "estado='s'",
                                     'order' => 'nombre'
                                 ));
+//                                if($cargo_id == 72){
+//                                    $list_provincias = $this->getProvinciasGrupo($grupo_id);
+//                                    $listItems = implode(',', $list_provincias);
+//                                    $criteria = new CDbCriteria(array(
+//                                        'condition' => "estado='s' AND id_provincia IN({$listItems})",
+//                                        'order' => 'nombre'
+//                                    ));
+//                                }
                                 $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
                                 ?>
                                 <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
-                                <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
+                                <?php echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
                             </div>
                             <div class="col-md-3">
@@ -1008,12 +1022,13 @@ $tipo = $_GET['tipo'];
                                 $criteria3 = new CDbCriteria(array('condition' => "cityid={$city_id}", 'order' => 'name'));
                                 $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
                                 ?>
-                                <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control'));  ?>
+                                <?php echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control'));  ?>
                                 <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
                                 <?php echo $form->error($model, 'concesionario'); ?>
                             </div>
                         </div>
                     </div>
+                    <?php } ?>
                     <div class="highlight"><!-- Seguimiento -->
                         <div class="row">
                             <h1 class="tl_seccion_rf">Seguimiento</h1>
@@ -1278,7 +1293,7 @@ $tipo = $_GET['tipo'];
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <?php
                             if ($_GET['tipo'] == 'prospeccion') {
-                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/precios_24.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-15-07-2016-2.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
                             }
                             ?>
 
