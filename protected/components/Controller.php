@@ -460,6 +460,7 @@ class Controller extends CController {
             return 'NA';
         }
     }
+
     /**
      * Funcion que devuelve nombre de responsable asesor de 1800
      * @param type $id
@@ -1146,6 +1147,7 @@ class Controller extends CController {
         }
         return $array_dealers;
     }
+
     /**
      * 
      * @return array arraydealers con las ids de los concesionarios
@@ -1164,7 +1166,7 @@ class Controller extends CController {
     }
 
     public function getDealerGrupoConcUsuario($id_responsable) {
-        
+
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
             'condition' => "usuario_id={$id_responsable}"
@@ -1177,7 +1179,7 @@ class Controller extends CController {
                 $array_dealers[$counter] = $value['concesionario_id'];
                 $counter++;
             }
-        }else{
+        } else {
             // sacar grupo id del asesor segun id responsable
             $grupo = Usuarios::model()->find(array('condition' => "id =  {$id_responsable}"));
             //die('id grupo: '.$grupo->grupo_id);
@@ -2715,7 +2717,7 @@ class Controller extends CController {
 
         return $datatd;
     }
-    
+
     public function getListaTDExcel($id_informacion) {
         $tdsi = 0;
         $tdno = 0;
@@ -2779,10 +2781,51 @@ class Controller extends CController {
         }
         return $data;
     }
-    
+
     public function getFuenteContacto($id_informacion) {
         $ft = GestionDiaria::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
         return $ft->fuente_contacto;
+    }
+
+    /**
+     * Funcion que retorna las provincias a las que pertenece un grupo de concesionarios
+     * @param int $grupo_id
+     * @return array de ids de provincias
+     */
+    public function getProvinciasGrupo($grupo_id) {
+        $array_dealers = array();
+
+        $dealers = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = {$grupo_id}"));
+        $counter = 0;
+        foreach ($dealers as $value) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_dealers[$counter] = $value['provincia'];
+            $counter++;
+        }
+        return $array_dealers;
+    }
+
+    public function getFechaGestionDiaria($id) {
+        //die($id);
+        $fgd = GestionDiaria::model()->find(array('condition' => "id = {$id}"));
+        return $fgd->fecha;
+    }
+
+    public function getModeloVehiculoByGdId($id) {
+        $fgd = GestionDiaria::model()->find(array('condition' => "id = {$id}"));
+        $id_informacion = $fgd->id_informacion;
+        $vec = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id_informacion}"));
+        if (!is_null($vec) && !empty($vec)) {
+            $id_modelo = $vec->modelo;
+            $modelo = Modelos::model()->find(array('condition' => "id_modelos = {$id_modelo}"));
+            if (!is_null($modelo) && !empty($modelo)) {
+                return $modelo->nombre_modelo;
+            } else {
+                return "No Modelo";
+            }
+        } else {
+            return 'Modelo no Disponible';
+        }
     }
 
 }

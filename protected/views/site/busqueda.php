@@ -6,6 +6,7 @@
 </script>    
 <?php 
 $rol = Yii::app()->user->getState('roles');
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
 ?>
 <div class="container">
     <?php
@@ -44,7 +45,6 @@ $rol = Yii::app()->user->getState('roles');
         <p>Clave de búsqueda: <b><?php echo $txt; ?></b></p>
     </div>
     <div class="row">
-        
         <?php if (!empty($ids)): ?>
             <h3>Ids</h3>
             <div class="table-responsive">
@@ -62,11 +62,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -85,11 +85,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;
@@ -115,11 +115,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
                             <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -138,11 +138,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>-->
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;
@@ -169,11 +169,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -192,11 +192,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>-->
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;
@@ -222,11 +222,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -245,11 +245,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>-->
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;
@@ -275,11 +275,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -298,11 +298,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>-->
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;
@@ -328,11 +328,11 @@ $rol = Yii::app()->user->getState('roles');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <th><span>Ver</span></th>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<th><span>Ver</span></th>-->
+                            <?php //endif; ?>
                         </tr>
                     </thead>
                     <?php
@@ -351,11 +351,11 @@ $rol = Yii::app()->user->getState('roles');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php //if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
-                            <?php endif; ?>
+                            <?php //elseif (Yii::app()->user->getState('roles') === 'asesor'): ?>
+                                <!--<td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>-->
+                            <?php //endif; ?>
                         </tr>
                         <?php
                     endforeach;

@@ -246,7 +246,7 @@ $rol = Yii::app()->user->getState('roles');
                         </li>
                         <?php } ?>
                     <?php } ?>
-                    <?php if($cargo_id == 72){ // Jefe Bdc Y Exonerados ?>    
+                    <?php if($cargo_id == 7200){ // Jefe Bdc Y Exonerados ?>    
                         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                         <li class="wrapper">
                             <div class="forma">

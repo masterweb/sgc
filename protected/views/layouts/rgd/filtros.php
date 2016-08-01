@@ -198,6 +198,8 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 <input type="hidden" name="search_type" id="search_type" value="0" />
                 <input type="hidden" name="seguimiento_rgd" id="seguimiento_rgd" value="0" />
                 <input type="hidden" name="fecha_seguimiento" id="fecha_seguimiento" value="0" />
+                <input type="hidden" name="grupo" id="grupo" value="0" />
+                <input type="hidden" name="concesionario" id="concesionario" value="0" />
             </div>
         </div>
         <?php $this->endWidget(); ?>

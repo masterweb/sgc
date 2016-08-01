@@ -121,11 +121,14 @@ class GestionInformacionController extends Controller {
             endif;
 
             if ($_POST['tipo'] == 'prospeccion'):
-                $model->provincia_conc = $_POST['GestionInformacion']['provincia_conc'];
-                $model->ciudad_conc = $_POST['GestionInformacion']['ciudad_conc'];
-                $model->concesionario = $_POST['GestionInformacion']['concesionario'];
+                $model->provincia_conc = $_POST['Casos']['provincia'];
+                $model->ciudad_conc = $_POST['Casos']['ciudad'];
+                $model->concesionario = $_POST['Casos']['concesionario'];
                 $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
                 $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
+//                echo '<pre>';
+//                print_r($_POST);
+//                echo '</pre>';die();
             endif;
             if ($cargo_id == 73)
                 $model->bdc = 1;
@@ -311,7 +314,7 @@ class GestionInformacionController extends Controller {
                     $historial->fecha = date("Y-m-d H:i:s");
                     $historial->save();
 
-                    if ($cargo_id == 73)
+                    if ($cargo_id == 73 || $cargo_id == 72)
                         $this->redirect(array('gestionInformacion/seguimientobdc'));
                     else
                         $this->redirect(array('gestionInformacion/seguimiento'));
@@ -2027,7 +2030,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $search_type = 19;
         }
         // END OF SEARCH ONLY
-        // BUSQUEDAS COMBINADAS-----------------------------------------------------------------
+        // START BUSQUEDAS COMBINADAS-----------------------------------------------------------------
         $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
         $fechaActual = date("Y/m/d");
         $fechaPk2 = 0;
@@ -2074,6 +2077,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
         if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 1) {
             $search_type = 29;
+        }
+        // BUSQUEDAS PARA GERENTE GENERAL O USUARIO AEKIA
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 33;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE - STATUS
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 34;
         }
         
         // END COMBINADAS-----------------------------------------------------------------
@@ -3239,6 +3254,77 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $data['pages'] = $pages;
                 return $data;
 
+                break;
+            case 33: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO Y RESPONSABLE
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 34: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS Y RESPONSABLE
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
                 break;
 
             default:

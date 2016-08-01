@@ -63,7 +63,22 @@ $count = count($users);
                     break;    
             }
         });
-    
+        $('#GestionDiaria_grupo').change(function(){
+            var value = $(this).attr('value');
+            if ($(this).val() != ''){
+                $('#grupo').val(1);
+            } else{
+                $('#grupo').val(0);
+            }
+        });
+        $('#GestionDiaria_concesionario').change(function(){
+            var value = $(this).attr('value');
+            if ($(this).val() != ''){
+                $('#concesionario').val(1);
+            } else{
+                $('#concesionario').val(0);
+            }
+        });
 
         $('#GestionDiaria_general').keyup(function(){
             if ($(this).val() != ''){

@@ -50,17 +50,18 @@ $rol = Yii::app()->user->getState('roles');
     </div>
     <?php
     if (!empty($model)) {
-		
-		$gd = GestionDiaria::model()->find(array('condition'=>'id = '.$model->gestiondiaria_id));
-		// 
-		$i = GestionInformacion::model()->find(array('condition'=>'id = 2229'));
-		//print_r($i);
-		$de = Dealers::model()->find(array('condition'=>'id ='.$gd->gestioninformacion->dealer_id));
+        //die('id: '.$gd->gestioninformacion->dealer_id);
+
+        $gd = GestionDiaria::model()->find(array('condition' => 'id = ' . $model->gestiondiaria_id));
+        // 
+        $i = GestionInformacion::model()->find(array('condition' => "id = $gd->id_informacion"));
+        //print_r($i);
+        $de = Dealers::model()->find(array('condition' => 'id =' . $gd->gestioninformacion->dealer_id));
         ?>
         <div class="col-md-12">
             <p class="intro_encuestas">
-				Buenos días/tardes/noches.... me comunica por favor con el Sr./a <b><?php echo $model->apellido ?></b>, mucho gusto Sr/a <b><?php echo $model->apellido ?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>, el motivo de mi llamada es realizar una pequeña encuesta por la visita que tuvo usted en nuestros concesionario <b><?php echo $de->name;?></b>.
-			</p>
+                Buenos días/tardes/noches.... me comunica por favor con el Sr./a <b><?php echo $model->apellido ?></b>, mucho gusto Sr/a <b><?php echo $model->apellido ?></b>., le saludo de KIA MOTORS, mi nombre es <b><?php echo Yii::app()->user->getState('first_name'); ?></b>, el motivo de mi llamada es realizar una pequeña encuesta por la visita que tuvo usted en nuestros concesionario <b><?php echo $de->name; ?></b>.
+            </p>
             <div class=" row contenido_no_compradores">
                 <div class="col-md-12">
                     <h3>Encuesta a completar</h3>
@@ -78,21 +79,21 @@ $rol = Yii::app()->user->getState('roles');
                         <ul class="opciones_no_compradores">
                             <li>
                                 <div class="radio"><input  type="radio" name="datos[motivo]" onclick="nover('subpreguntas_a');
-                                                                            ver('div_experiencia', 'subpreguntas_a')" id="motivo_asesor" value="Atencion del asesor">Atención Seguimiento / Asesor</label></div>
+                                            ver('div_experiencia', 'subpreguntas_a')" id="motivo_asesor" value="Atencion del asesor">Atención Seguimiento / Asesor</label></div>
                                 <div id="div_experiencia" class="subpreguntas_a" style="display:none">
                                     <p class="pregunta_no_compradorespregunta_no_compradores">¿Tuvo una mala experiencia con nuestro asesor?</p>
                                     <textarea name="datos[respuesta_experiencia]" id="txt_experiencia" class="form-control sb" placeholder="Ingrese la experiencia aquí"></textarea>
                                 </div>
                             </li>
                             <li><div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                    verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_precio" value="Precio">Precio</label></div></li>
+                                        verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_precio" value="Precio">Precio</label></div></li>
                             <li><div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                    verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_credito" value="Credito Rechazado">Credito Rechazado</label></div></li>
+                                        verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_credito" value="Credito Rechazado">Credito Rechazado</label></div></li>
                             <li><div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                    verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_dinero" value="Falta de Dinero">Falta de Dinero</label></div></li>
+                                        verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_dinero" value="Falta de Dinero">Falta de Dinero</label></div></li>
                             <li>
                                 <div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                            ver('div_caracteristicas', 'subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_caracteristicas" value="Características del vehículo o color no disponible">Características del vehículo o color no disponible</label></div>
+                                            ver('div_caracteristicas', 'subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_caracteristicas" value="Características del vehículo o color no disponible">Características del vehículo o color no disponible</label></div>
                                 <div id="div_caracteristicas" class="subpreguntas_a" style="display:none">
                                     <p class="pregunta_no_compradorespregunta_no_compradores">¿Qué características no fue de su agrado?</p>
                                     <textarea name="datos[respuesta_caracteristicas]" id="txt_caracteristicas" class="form-control sb" placeholder="Ingrese las características aquí"></textarea>
@@ -100,10 +101,10 @@ $rol = Yii::app()->user->getState('roles');
                             </li>
                             <li><div class="radio"><input onclick="nover('subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_desicion" value="Aun no toma la decision">Aún no toma la decisión </label></div></li>
                             <li><div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                    verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_modelo" value="Modelo no disponible">Modelo no disponible</label></div></li>
+                                        verpregunta('div_compro')" type="radio" name="datos[motivo]" id="motivo_modelo" value="Modelo no disponible">Modelo no disponible</label></div></li>
                             <li>
                                 <div class="radio"><input onclick="nover('subpreguntas_a');
-                                                                            ver('div_otro', 'subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_otros" value="Otros">Otros</label></div>
+                                            ver('div_otro', 'subpreguntas_a')" type="radio" name="datos[motivo]" id="motivo_otros" value="Otros">Otros</label></div>
                                 <div id="div_otro" class="subpreguntas_a" style="display:none">
                                     <p class="pregunta_no_compradorespregunta_no_compradores">¿Cual fue el motivo?</p>
                                     <textarea name="datos[otro]" id="txt_otro" class="form-control sb" placeholder="Ingrese el motivo aquí"></textarea>  

@@ -14,7 +14,7 @@ $this->menu = array(
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
-	$('.search-form').toggle();
+	$('.search-form').toggle(); 
 	return false;
 });
 $('.search-form form').submit(function(){
@@ -191,9 +191,11 @@ if (isset($search)) {
             </div>
         </div>
     </div>
-    <div class="row">
-        <?php if (isset($title)){ ?> <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2><?php } ?>     
-    </div>
+    <?php if (isset($title)): ?>
+        <div class="row">
+            <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     
+        </div>
+    <?php endif; ?>
     <div class="row">
         <h1 class="tl_seccion">RGD</h1>
     </div>

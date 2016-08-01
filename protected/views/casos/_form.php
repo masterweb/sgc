@@ -3,6 +3,9 @@
 /* @var $this CasosController */
 /* @var $model Casos */
 /* @var $form CActiveForm */
+$identificacion = '';
+if (isset($model->identificacion))
+    $identificacion = $model->identificacion;
 ?>
 <style>
     textarea{
@@ -87,11 +90,12 @@
                     }
                 }
                 if(error == 0){
+                    $('#bg_negro').show();
                     form.submit();
                 }
                 
             }
-        })
+        });
     });
 </script>
 <div class="form">
@@ -138,17 +142,31 @@
         </label>
     </div>
     <div class="form-group">
-        <?php echo $form->labelEx($model, 'cedula', array('class' => 'col-sm-2 control-label')); ?>
-        <div class="col-sm-4">
-            <?php //echo $form->textField($model, 'cedula', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
-            <?php
-            $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-                'name' => 'Casos[cedula]',
-                'value' => $model->cedula,
-                'sourceUrl' => array('casos/getcedula'), //path of the controller
-                'options' => array(
-                    'minLength' => '1', // min chars to start search
-                    'select' => 'js:function(event, ui) { 
+        <div>
+            <label class="col-sm-2 control-label required" for="Casos_identificacion">Identificación</label>
+            <div class="col-sm-4">
+<!--                <select name="Casos[identificacion]" id="Casos_identificacion" class="form-control">
+                    <option value="ci" selected>Cédula</option>
+                    <option value="ruc">RUC</option>
+                    <option value="pasaporte">Pasaporte</option>
+                </select>-->
+                <?php echo $form->dropDownList($model, 'identificacion', array('ci' => 'Cédula', 'ruc' => 'RUC', 'pasaporte' => 'Pasaporte'), array('selected' => 'ci','class' => 'form-control')); ?>
+                <?php echo $form->error($model, 'identificacion'); ?>
+            </div>
+        </div>
+        <?php if ($identificacion == 'ci'): ?>
+            <div class="cedula-cont">
+                <?php echo $form->labelEx($model, 'cedula', array('class' => 'col-sm-2 control-label')); ?>
+                <div class="col-sm-4">
+                    <?php //echo $form->textField($model, 'cedula', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                    <?php
+                    $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                        'name' => 'Casos[cedula]',
+                        'value' => $model->cedula,
+                        'sourceUrl' => array('casos/getcedula'), //path of the controller
+                        'options' => array(
+                            'minLength' => '1', // min chars to start search
+                            'select' => 'js:function(event, ui) { 
                             jQuery("#Casos_nombres").val(ui.item.nombres);
                             jQuery("#Casos_apellidos").val(ui.item.apellidos);
                             jQuery("#Casos_email").val(ui.item.email);
@@ -157,17 +175,126 @@
                             jQuery("#Casos_direccion").val(ui.item.direccion);
                             jQuery("#Casos_sector").val(ui.item.sector);
                             }', // when the value selected
-                    'showAnim' => 'fold'
-                ),
-                'htmlOptions' => array(
-                    'id' => 'Casos_cedula',
-                    'rel' => 'val',
-                    'class' => 'form-control'
-                ),
-            ));
-            ?>
-            <?php echo $form->error($model, 'cedula'); ?>
-        </div>
+                            'showAnim' => 'fold'
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'Casos_cedula',
+                            'rel' => 'val',
+                            'class' => 'form-control'
+                        ),
+                    ));
+                    ?>
+                    <?php echo $form->error($model, 'cedula'); ?>
+                </div>
+            </div>
+            <div class="ruc-cont" style="display: none;">
+                <label class="col-sm-2 control-label required" for="Casos_ruc">RUC <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <?php echo $form->textField($model, 'ruc', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control')); ?>
+                    <!--<input id="Casos_ruc" rel="val" class="form-control" type="text" name="Casos[ruc]" autocomplete="off" maxlength="13">-->
+                    <?php echo $form->error($model, 'ruc'); ?>
+                </div>
+            </div>
+            <div class="pasaporte-cont" style="display: none;">
+                <label class="col-sm-2 control-label required" for="Casos_pasaporte">Pasaporte <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input id="Casos_pasaporte" rel="val" class="form-control" type="text" name="Casos[pasaporte]" autocomplete="off">
+                </div>
+            </div>
+        <?php elseif ($identificacion == 'ruc'): ?>
+            <div class="cedula-cont" style="display: none;">
+                <?php echo $form->labelEx($model, 'cedula', array('class' => 'col-sm-2 control-label')); ?>
+                <div class="col-sm-4">
+                    <?php //echo $form->textField($model, 'cedula', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                    <?php
+                    $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                        'name' => 'Casos[cedula]',
+                        'value' => $model->cedula,
+                        'sourceUrl' => array('casos/getcedula'), //path of the controller
+                        'options' => array(
+                            'minLength' => '1', // min chars to start search
+                            'select' => 'js:function(event, ui) { 
+                            jQuery("#Casos_nombres").val(ui.item.nombres);
+                            jQuery("#Casos_apellidos").val(ui.item.apellidos);
+                            jQuery("#Casos_email").val(ui.item.email);
+                            jQuery("#Casos_telefono").val(ui.item.telefono);
+                            jQuery("#Casos_celular").val(ui.item.celular);
+                            jQuery("#Casos_direccion").val(ui.item.direccion);
+                            jQuery("#Casos_sector").val(ui.item.sector);
+                            }', // when the value selected
+                            'showAnim' => 'fold'
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'Casos_cedula',
+                            'rel' => 'val',
+                            'class' => 'form-control'
+                        ),
+                    ));
+                    ?>
+                    <?php echo $form->error($model, 'cedula'); ?>
+                </div>
+            </div>
+            <div class="ruc-cont">
+                <label class="col-sm-2 control-label required" for="Casos_ruc">RUC <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <?php echo $form->textField($model, 'ruc', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control')); ?>
+                    <?php echo $form->error($model, 'ruc'); ?>
+                </div>
+            </div>
+            <div class="pasaporte-cont" style="display: none;">
+                <label class="col-sm-2 control-label required" for="Casos_pasaporte">Pasaporte <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input id="Casos_pasaporte" rel="val" class="form-control" type="text" name="Casos[pasaporte]" autocomplete="off">
+                </div>
+            </div>
+        <?php else: ?>
+            <div class="cedula-cont" style="display: none;">
+                <?php echo $form->labelEx($model, 'cedula', array('class' => 'col-sm-2 control-label')); ?>
+                <div class="col-sm-4">
+                    <?php //echo $form->textField($model, 'cedula', array('size' => 10, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                    <?php
+                    $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                        'name' => 'Casos[cedula]',
+                        'value' => $model->cedula,
+                        'sourceUrl' => array('casos/getcedula'), //path of the controller
+                        'options' => array(
+                            'minLength' => '1', // min chars to start search
+                            'select' => 'js:function(event, ui) { 
+                            jQuery("#Casos_nombres").val(ui.item.nombres);
+                            jQuery("#Casos_apellidos").val(ui.item.apellidos);
+                            jQuery("#Casos_email").val(ui.item.email);
+                            jQuery("#Casos_telefono").val(ui.item.telefono);
+                            jQuery("#Casos_celular").val(ui.item.celular);
+                            jQuery("#Casos_direccion").val(ui.item.direccion);
+                            jQuery("#Casos_sector").val(ui.item.sector);
+                            }', // when the value selected
+                            'showAnim' => 'fold'
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'Casos_cedula',
+                            'rel' => 'val',
+                            'class' => 'form-control'
+                        ),
+                    ));
+                    ?>
+                    <?php echo $form->error($model, 'cedula'); ?>
+                </div>
+            </div>
+            <div class="ruc-cont" style="display: none;">
+                <label class="col-sm-2 control-label required" for="Casos_ruc">RUC <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <?php echo $form->textField($model, 'ruc', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control')); ?>
+                    <?php echo $form->error($model, 'ruc'); ?>
+                </div>
+            </div>
+            <div class="pasaporte-cont">
+                <label class="col-sm-2 control-label required" for="Casos_pasaporte">Pasaporte <span class="required">*</span></label>
+                <div class="col-sm-4">
+                    <input id="Casos_pasaporte" rel="val" class="form-control" type="text" name="Casos[pasaporte]" autocomplete="off">
+                </div>
+            </div>
+        <?php endif; ?>
+
     </div>
     <div class="row">
         <label for="" class="script">Su correo electrónico</label>

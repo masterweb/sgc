@@ -119,20 +119,20 @@ class PvQirController extends Controller {
                         $HTML.= "<tr><td style='width:150px'>Descripci&oacute;n</td><td>" . (($model->descripcion)) . "</td></tr>";
                         $HTML.= "<tr><td style='width:150px'>Dealer</td><td>" . (($model->dealer->name)) . "</td></tr>";
                         $HTML.= "</table>";
-						$HTML.=' <img src="images/footer_mail.jpg"/>';
-						$codigohtml = $HTML;
+                        $HTML.=' <img src="images/footer_mail.jpg"/>';
+                        $codigohtml = $HTML;
                         
                         $cc = array('jorge.rodriguez@ariadna.com.ec', 'fjacome@kia.com.ec', 'creyes@kia.com.ec', 'fcastillo@kia.com.ec');
                         //$ccToFrom = array('ssalvador@aekia.com.ec','golivo@aekia.com.ec','rlopez@aekia.com.ec');
                         //$this->sendMail($HTML, $subject, 'marcelo.rodriguez@ariadna.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
                         //$this->sendMail($HTML, $subject, 'fjacome@aekia.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
-						$tipo = 'informativo';
-						$headers = 'From: info@kia.com.ec' . "\r\n"; 
-						$headers .= 'Content-type: text/html' . "\r\n";
-						$email = "";
-						if(sendEmailFunction('info@kia.com.ec', (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
-							$transaction->commit();
-						}
+                        $tipo = 'informativo';
+                        $headers = 'From: info@kia.com.ec' . "\r\n"; 
+                        $headers .= 'Content-type: text/html' . "\r\n";
+                        $email = "";
+                        if(sendEmailFunction('info@kia.com.ec', (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
+                                $transaction->commit();
+                        }
                         $this->redirect(array('admin'));
                     }
                 /*} else {

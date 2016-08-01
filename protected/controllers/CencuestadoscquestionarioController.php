@@ -145,7 +145,7 @@ class CencuestadoscquestionarioController extends Controller {
         );
     }
 
-        public function actionSeleccionar($id) {
+	public function actionSeleccionar($id) {
         $questionario = Cquestionario::model()->findByPk($id);
         $models = new UploadForm;
         //llamadas de clases EXCEL
@@ -267,12 +267,15 @@ class CencuestadoscquestionarioController extends Controller {
         switch ($questionario->cbasedatos_id) {
             case '1':
                 /* OBTENER LOS USUARIOS DE LA BASE DE DATOS TEST DRIVE, LAS TABLAS INVOLUCRADAS SON gestión_test_drive Y gestion_informacion */
-                $sql = 'SELECT DISTINCT gi.id,gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
-                        FROM gestion_informacion gi 
-                            inner join gestion_test_drive gt 
-                                on gi.id = gt.id_informacion
-                        WHERE gt.test_drive = 1 and gt.order=1
-                        ORDER BY gi.fecha DESC';
+                $sql = "SELECT gi.id, gi.cedula, gt.fecha, gi.nombres, gi.apellidos, gi.email, gi.cedula, gi.ruc, gi.pasaporte, 
+						gi.celular,gi.ciudad_conc, gi.telefono_casa, d.`name`, v.nombre_version FROM gestion_test_drive gt 
+						INNER JOIN gestion_informacion gi ON gt.id_informacion = gi.id 
+						INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+						INNER JOIN dealers d ON d.id = gi.dealer_id 
+						INNER JOIN versiones v ON v.id_versiones = gv.version 
+						WHERE gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 
+						GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                 $totalUsuariosExistentes = Yii::app()->db->createCommand($sql)->queryAll();
                 break;
             case '2':
@@ -294,13 +297,10 @@ class CencuestadoscquestionarioController extends Controller {
                 $totalUsuariosExistentes = Yii::app()->db->createCommand($sql)->queryAll();
                 break;
             default:
-                $sql = 'SELECT DISTINCT count(*) as total
+                $sql = 'SELECT DISTINCT e.id_atencion_detalle
                     FROM encuestas e 
                     inner join atencion_detalle a 
-                    on e.id_atencion_detalle = a.id_atencion_detalle 
-
-                    LIMIT 100;
-                    ';
+                    on e.id_atencion_detalle = e.id_atencion_detalle LIMIT 1000';
                 //echo $sql;
                 $totalUsuariosExistentes = Yii::app()->db2->createCommand($sql)->queryAll();
                 ;
@@ -312,7 +312,8 @@ class CencuestadoscquestionarioController extends Controller {
             $p = new CHtmlPurifier();
 
             //ELIMINAR SI HAY PERSONAS PARA ELIMINAR
-            if (Cencuestados::model()->findAll(array('condition' => 'cquestionario_id=' . $id))) {
+			$dd= Cencuestados::model()->findAll(array('condition' => 'cquestionario_id=' . $id));
+            if (!empty($dd)) {
                 Cencuestados::model()->deleteAll(array('condition' => 'cquestionario_id=' . $id));
             }
             //FIN DE ELIMINAR
@@ -325,50 +326,60 @@ class CencuestadoscquestionarioController extends Controller {
                 $hasta = $p->purify($_POST['Usuarios']['hasta']);
                 $where = '';
                 if (!empty($ciudad) && $ciudad > 0) {
-                    if (empty($where)) {
-                        $where .= "where gt.test_drive = 1 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
+                     if (empty($where)) {
+                        $where .= "WHERE gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
                     } else {
-                        $where .= " and gt.test_drive = 1 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
+                        $where .= " and gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
                     }
                 }
 
                 if (!empty($concesionario) && $concesionario > 0) {
-                    if (empty($where)) {
-                        $where .= "where gt.test_drive = 1 and gt.order=1 and gi.dealer_id =" . $concesionario;
+                   if (empty($where)) {
+                        $where .= "WHERE gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1  and gi.dealer_id =" . $concesionario;
                     } else {
-                        $where .= " and gt.test_drive = 1 and gt.order=1 and gi.dealer_id =" . $concesionario;
+                        $where .= " and gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.dealer_id =" . $concesionario;
                     }
                 }
 
                 if (!empty($desde) && !empty($hasta)) {
-                    if (empty($where)) {
-                        $where .= "where gt.test_drive = 1 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "' ";
-                    } else {
-                        $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
-                    }
+                   if (empty($where)) {
+						if($desde < '2016-07-27'){
+							$desde = '2016-07-27';
+						}
+						$where .= "WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
+					} else {
+						if($desde < '2016-07-27'){
+							$desde = '2016-07-27';
+						}
+						$where .= " and gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
+					}
                 }
                 if(empty($where)){
-                    $where = ' WHERE gt.test_drive = 1 and gt.order=1';
+                   $where = " WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1";
                 }
-                $sql = 'SELECT DISTiNCT gi.id,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
-                        FROM gestion_informacion gi 
-                            inner join gestion_test_drive gt 
-                                on gi.id = gt.id_informacion
-                        ' . $where . ' ORDER BY gi.fecha DESC';
-                echo $sql;
+               $sql = "SELECT gi.id, gi.cedula, gt.fecha, gi.nombres, gi.apellidos, gi.email, gi.cedula, gi.ruc, gi.pasaporte, 
+					gi.celular,gi.ciudad_conc, gi.telefono_casa, d.`name`, v.nombre_version FROM gestion_test_drive gt 
+					INNER JOIN gestion_informacion gi ON gt.id_informacion = gi.id 
+					INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+					INNER JOIN dealers d ON d.id = gi.dealer_id 
+					INNER JOIN versiones v ON v.id_versiones = gv.version 
+					".$where." 
+					GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+               // echo $sql;
                 //die();
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 $errorSave = 0;
-                echo $sql;
-                //die();
+				$errorES = '';
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        echo $key['nombres'];
-
-                        if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_oficina']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
+                        if (!empty($key['nombres']) && !empty($key['apellidos'])  && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
                             $model = new Cencuestados;
                             $model->nombre = $p->purify($key['nombres'] . ' ' . $key['apellidos']);
-                            $model->telefono = $p->purify($key['telefono_oficina']);
+                            $model->telefono = (!empty($key['telefono_casa']))?$p->purify($key['telefono_casa']):'0000000';
                             $model->celular = $p->purify($key['celular']);
                             $model->email = $p->purify($key['email']);
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
@@ -380,11 +391,26 @@ class CencuestadoscquestionarioController extends Controller {
                                 $errorSave++;
                             } else
                                 $errorSave = 0;
-                        }
+                        }else{
+							$errorES.= '<p style="margin:5px auto; border-bottom:1px solid #ccc;">Esta persona no puede ser alamacenada en la encuesta, ya no uno de los siguientes datos no se encuentra disponibles: <ul>';
+								$errorES.= '<li>Id de la base de datos: '.$key['id'].'</li>';
+								$errorES.= '<li>Nombres: '.$key['nombres'].'</li>';
+								$errorES.= '<li>Apellidos: '.$key['apellidos'].'</li>';
+								$errorES.= '<li>Telefono_oficina: '.$key['telefono_casa'].'</li>';
+								$errorES.= '<li>Celular: '.$key['celular'].'</li>';
+								$errorES.='<li>Ciudad_conc: '.$key['ciudad_conc'].'</li>';
+								$errorES.= '<li>Email: '.$key['email'].'</li></ul>';
+							$errorES.= '</p>';
+						}
                     }
                 }
                 if ($errorSave == 0) {
-                    Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+                   if(!empty($errorES)){
+						$divE = "<div style='margin:auto;width:650px;height:300px;overflow: scroll;font-size:11px;font-family:Arial'>".$errorES."</div><br>";
+						Yii::app()->user->setFlash('success', $divE.'<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}else{
+						Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}
                     $this->redirect(array('cencuestadoscquestionario/seleccionar/' . $id));
                     die();
                 } else {
@@ -423,24 +449,21 @@ class CencuestadoscquestionarioController extends Controller {
                     }
                 }
 
-                $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+                $sql = 'SELECT DISTINCT gi.id, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_nueva_cotizacion gt 
                             on gi.id_cotizacion = gt.id
                         ' . $where;
-                //echo $sql;
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 $errorSave = 0;
-                echo $sql;
-                //die();
+                $errorES = '';
+
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        echo $key['nombres'];
-
-                        if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_oficina']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
+						if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
                             $model = new Cencuestados;
                             $model->nombre = $p->purify($key['nombres'] . ' ' . $key['apellidos']);
-                            $model->telefono = $p->purify($key['telefono_oficina']);
+                            $model->telefono = (!empty($key['telefono_oficina']))?$p->purify($key['telefono_oficina']):'0000000';
                             $model->celular = $p->purify($key['celular']);
                             $model->email = $p->purify($key['email']);
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
@@ -449,13 +472,28 @@ class CencuestadoscquestionarioController extends Controller {
                             $model->cquestionario_id = $id;
                             if (!$model->save()) {
                                 $errorSave++;
-                            } else
-                                $errorSave = 0;
-                        }
+                            } 
+                        }else{
+							$errorES.= '<p style="margin:5px auto; border-bottom:1px solid #ccc;">Esta persona no puede ser alamacenada en la encuesta, ya no uno de los siguientes datos no se encuentra disponibles: <ul>';
+								$errorES.= '<li>Id de la base de datos: '.$key['id'].'</li>';
+								$errorES.= '<li>Nombres: '.$key['nombres'].'</li>';
+								$errorES.= '<li>Apellidos: '.$key['apellidos'].'</li>';
+								$errorES.= '<li>Telefono_oficina: '.$key['telefono_oficina'].'</li>';
+								$errorES.= '<li>Celular: '.$key['celular'].'</li>';
+								$errorES.='<li>Ciudad_conc: '.$key['ciudad_conc'].'</li>';
+								$errorES.= '<li>Email: '.$key['email'].'</li></ul>';
+							$errorES.= '</p>';
+						}
                     }
                 }
+
                 if ($errorSave == 0) {
-                    Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					if(!empty($errorES)){
+						$divE = "<div style='margin:auto;width:650px;height:300px;overflow: scroll;font-size:11px;font-family:Arial'>".$errorES."</div><br>";
+						Yii::app()->user->setFlash('success', $divE.'<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}else{
+						Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}
                     $this->redirect(array('cencuestadoscquestionario/seleccionar/' . $id));
                     die();
                 } else {
@@ -494,20 +532,17 @@ class CencuestadoscquestionarioController extends Controller {
                     }
                 }
 
-                $sql = 'SELECT DISTINCT a.nombre,a.telefono,a.celular,a.email,a.cityid
+                $sql = 'SELECT DISTINCT e.id_atencion_detalle,a.nombre,a.telefono,a.celular,a.email,a.cityid
                     FROM encuestas e 
                     inner join atencion_detalle a 
                     on e.id_atencion_detalle = e.id_atencion_detalle 
-                    ' . $where . ' LIMIT 10';
+                    ' . $where.' LIMIT 5000';
                 //echo $sql;
                 $persona = Yii::app()->db2->createCommand($sql)->queryAll();
                 $errorSave = 0;
-                echo $sql;
-                //die();
+				 $errorES = '';
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        echo $key['nombre'];
-
                         if (!empty($key['nombre']) && !empty($key['telefono']) && !empty($key['celular']) && !empty($key['cityid']) && !empty($key['email'])) {
                             $model = new Cencuestados;
                             $model->nombre = $p->purify($key['nombre']);
@@ -522,11 +557,25 @@ class CencuestadoscquestionarioController extends Controller {
                                 $errorSave++;
                             } else
                                 $errorSave = 0;
-                        }
+                        }else{
+							$errorES.= '<p style="margin:5px auto; border-bottom:1px solid #ccc;">Esta persona no puede ser alamacenada en la encuesta, ya no uno de los siguientes datos no se encuentra disponibles: <ul>';
+								$errorES.= '<li>Id de la base de datos: '.$key['e.id_atencion_detalle'].'</li>';
+								$errorES.= '<li>Nombres: '.$key['nombre'].'</li>';
+								$errorES.= '<li>Telefono_oficina: '.$key['telefono'].'</li>';
+								$errorES.= '<li>Celular: '.$key['celular'].'</li>';
+								$errorES.='<li>Ciudad_conc: '.$key['cityid'].'</li>';
+								$errorES.= '<li>Email: '.$key['email'].'</li></ul>';
+							$errorES.= '</p>';
+						}
                     }
                 }
                 if ($errorSave == 0) {
-                    Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+                   if(!empty($errorES)){
+						$divE = "<div style='margin:auto;width:650px;height:300px;overflow: scroll;font-size:11px;font-family:Arial'>".$errorES."</div><br>";
+						Yii::app()->user->setFlash('success', $divE.'<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}else{
+						Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}
                     $this->redirect(array('cencuestadoscquestionario/seleccionar/' . $id));
                     die();
                 } else {
@@ -567,25 +616,21 @@ class CencuestadoscquestionarioController extends Controller {
                     if(empty($where)){
                     $where = ' WHERE gt.test_drive = 0 and gt.order=1';
                 }
-                $sql = 'SELECT DISTiNCT gi.id,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
+                $sql = 'SELECT DISTiNCT gt.id_informacion,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
                         FROM gestion_informacion gi 
                             inner join gestion_test_drive gt 
                                 on gi.id = gt.id_informacion
                         ' . $where . ' ORDER BY gi.fecha DESC';
-                echo $sql;
-                //die();
+
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 $errorSave = 0;
-                echo $sql;
-                //die();
+				 $errorES = '';
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
-                        echo $key['nombres'];
-
-                        if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_oficina']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
+                        if (!empty($key['nombres']) && !empty($key['apellidos'])  && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
                             $model = new Cencuestados;
                             $model->nombre = $p->purify($key['nombres'] . ' ' . $key['apellidos']);
-                            $model->telefono = $p->purify($key['telefono_oficina']);
+                            $model->telefono = (!empty($key['telefono_oficina']))?$p->purify($key['telefono_oficina']):'0000000';
                             $model->celular = $p->purify($key['celular']);
                             $model->email = $p->purify($key['email']);
                             $city = Dealercities::model()->findByPk($key['ciudad_conc']);
@@ -597,11 +642,26 @@ class CencuestadoscquestionarioController extends Controller {
                                 $errorSave++;
                             } else
                                 $errorSave = 0;
-                        }
+                        }else{
+							$errorES.= '<p style="margin:5px auto; border-bottom:1px solid #ccc;">Esta persona no puede ser alamacenada en la encuesta, ya no uno de los siguientes datos no se encuentra disponibles: <ul>';
+								$errorES.= '<li>Id de la base de datos: '.$key['id'].'</li>';
+								$errorES.= '<li>Nombres: '.$key['nombres'].'</li>';
+								$errorES.= '<li>Apellidos: '.$key['apellidos'].'</li>';
+								$errorES.= '<li>Telefono_oficina: '.$key['telefono_oficina'].'</li>';
+								$errorES.= '<li>Celular: '.$key['celular'].'</li>';
+								$errorES.='<li>Ciudad_conc: '.$key['ciudad_conc'].'</li>';
+								$errorES.= '<li>Email: '.$key['email'].'</li></ul>';
+							$errorES.= '</p>';
+						}
                     }
                 }
                 if ($errorSave == 0) {
-                    Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+                   if(!empty($errorES)){
+						$divE = "<div style='margin:auto;width:650px;height:300px;overflow: scroll;font-size:11px;font-family:Arial'>".$errorES."</div><br>";
+						Yii::app()->user->setFlash('success', $divE.'<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}else{
+						Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
+					}
                     $this->redirect(array('cencuestadoscquestionario/seleccionar/' . $id));
                     die();
                 } else {
@@ -743,13 +803,16 @@ class CencuestadoscquestionarioController extends Controller {
             $encuestados = Cencuestados::model()->findAll(array('condition' => 'cquestionario_id=' . $encuesta->id));
             if ($encuesta->cbasedatos_id == 1) {
                 //obtener todas las personas existentes en la base de datos TEST DRIVE
-                $sql = 'SELECT DISTiNCT gi.id,gi.fecha, gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc 
-                        FROM gestion_informacion gi 
-                            inner join gestion_test_drive gt 
-                                on gi.id = gt.id_informacion
-                                 WHERE gt.test_drive = 1 and gt.order=1
-                        ORDER BY gi.fecha DESC
-                        ';
+                $sql = "SELECT gi.cedula, gt.fecha, gi.nombres, gi.apellidos, gi.email, gi.cedula, gi.ruc, gi.pasaporte, 
+						gi.celular,gi.ciudad_conc, gi.telefono_casa, d.`name`, v.nombre_version FROM gestion_test_drive gt 
+						INNER JOIN gestion_informacion gi ON gt.id_informacion = gi.id 
+						INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+						INNER JOIN dealers d ON d.id = gi.dealer_id 
+						INNER JOIN versiones v ON v.id_versiones = gv.version 
+						WHERE gt.test_drive = 1 
+						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 
+						GROUP BY gi.cedula, gi.ruc, gi.pasaporte
+												";
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();
                 if (!empty($persona)) {
                     foreach ($persona as $key) {
@@ -763,11 +826,11 @@ class CencuestadoscquestionarioController extends Controller {
                             foreach ($user as $u) {
                                 $uu = $u['usuarios_id'];
                             }
-                            if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_oficina']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
+                            if (!empty($key['nombres']) && !empty($key['apellidos']) && !empty($key['telefono_casa']) && !empty($key['celular']) && !empty($key['ciudad_conc']) && !empty($key['email'])) {
                                 $p = new CHtmlPurifier();
                                 $model = new Cencuestados;
                                 $model->nombre = $p->purify($key['nombres'] . ' ' . $key['apellidos']);
-                                $model->telefono = $p->purify($key['telefono_oficina']);
+                                $model->telefono = $p->purify($key['telefono_casa']);
                                 $model->celular = $p->purify($key['celular']);
                                 $model->email = $p->purify($key['email']);
                                 $city = Dealercities::model()->findByPk($key['ciudad_conc']);
@@ -1627,7 +1690,10 @@ class CencuestadoscquestionarioController extends Controller {
         }
         //$criteria->condition ='';
         $criteria->order = 'id desc';
-
+//        echo '<pre>';
+//        print_r($criteria);
+//        echo '</pre>';
+//        die();
 
 
 
