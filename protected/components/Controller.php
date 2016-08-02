@@ -2629,8 +2629,12 @@ class Controller extends CController {
 
     public function getResponsablesAgencia($id_responsable) {
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $cre = new CDbCriteria();
-        $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";
+        if($grupo_id == 4)// IOKARS
+            $cre->condition = " cargo_id IN (71,73) AND dealers_id = {$dealer_id} ";
+        else
+            $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";  
         $cre->order = " nombres ASC";
         $asesores = Usuarios::model()->findAll($cre);
         $data = '';
