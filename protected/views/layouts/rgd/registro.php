@@ -36,7 +36,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
-                    //'exhibicion' => 'Exhibición'
+                    'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <option value="Usado">Usado</option>
@@ -72,7 +72,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
     <div class="row exh-cont" style="display: none;">
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Lugar</label>
-            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="CEMEXPO">
+            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="FERIA DE GUAYAQUIL">
         </div>
     </div>
     <div class="row otro-cont" style="display: none;">
