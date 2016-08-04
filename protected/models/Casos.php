@@ -10,7 +10,10 @@
  * @property string $sub
  * @property string $nombres
  * @property string $apellidos
+ * @property string $identificacion
  * @property string $cedula
+ * @property string $ruc
+ * @property string $pasaporte
  * @property string $provincia
  * @property string $ciudad
  * @property string $concesionario
@@ -19,7 +22,7 @@
  * @property string $telefono
  * @property string $celular
  * @property string $email
- * @property string $comentario 
+ * @property string $comentario
  * @property string $estado
  * @property string $observaciones
  * @property string $modelo
@@ -38,9 +41,9 @@ class Casos extends CActiveRecord {
      * @param string $className active record class name.
      * @return Casos the static model class
      */
-    
     public $sub = 0;
     public $tem = 0;
+
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
@@ -102,7 +105,10 @@ class Casos extends CActiveRecord {
             'sub' => 'Sub',
             'nombres' => 'Nombres',
             'apellidos' => 'Apellidos',
+            'identificacion' => 'Identificació0',
             'cedula' => 'Cedula',
+            'ruc' => 'RUC',
+            'pasaporte' => 'Pasaporte',
             'provincia' => 'Provincia',
             'ciudad' => 'Ciudad',
             'concesionario' => 'Concesionario',
@@ -140,7 +146,10 @@ class Casos extends CActiveRecord {
         $criteria->compare('subtema', $this->subtema, true);
         $criteria->compare('nombres', $this->nombres, true);
         $criteria->compare('apellidos', $this->apellidos, true);
+        $criteria->compare('identificacion', $this->identificacion, true);
         $criteria->compare('cedula', $this->cedula, true);
+        $criteria->compare('ruc', $this->ruc, true);
+        $criteria->compare('pasaporte', $this->pasaporte, true);
         $criteria->compare('provincia', $this->provincia, true);
         $criteria->compare('ciudad', $this->ciudad, true);
         $criteria->compare('concesionario', $this->concesionario, true);
@@ -159,7 +168,7 @@ class Casos extends CActiveRecord {
                     'criteria' => $criteria,
                 ));
     }
-    
+
     public function validateCel() {
         $pos = strpos($this->celular, "0");
         $pos9 = strpos($this->celular, "9");
@@ -177,7 +186,7 @@ class Casos extends CActiveRecord {
             $this->addError('telefono', 'Ingrese el código provincial');
         }
     }
-    
+
     /* Funcion para validar el numero de la cedula */
 
     public function validateDocument() {
@@ -313,6 +322,159 @@ class Casos extends CActiveRecord {
             return 0;
         }
         return 1;
+    }
+
+    public function validateRuc() {
+        $strRUC = $this->ruc;
+        if (strlen($strRUC) != 13) {
+            $this->addError('ruc', 'El número ingresado no tiene 13 dígitos');
+            return FALSE;
+        }
+
+        $suma = 0;
+        $strOriginal = $strRUC;
+        $intProvincia = substr($strRUC, 0, 2);
+        $intTercero = $strRUC[2];
+        if (!settype($strRUC, "float")) {
+            $this->addError('ruc', 'Ingrese correctamente el RUC');
+            return FALSE;
+        }
+
+        if ((int) $intProvincia < 1 || (int) $intProvincia > 23) {
+            $this->addError('ruc', 'Ingrese correctamente el RUC');
+            return FALSE;
+        }
+
+        if ((int) $intTercero != 6 && (int) $intTercero != 9) {
+            if (substr($strRUC, 10, 3) == '001')
+                return $this->validarCI(substr($strRUC, 0, 10));
+            $this->addError('ruc', 'Ingrese correctamente el RUC');
+            return FALSE;
+        }
+        if ((int) $intTercero == 6) {
+            $intUltimo = $strOriginal[8];
+            for ($indice = 0; $indice < 9; $indice++) {
+                //echo $strOriginal[$indice],'</br>';
+                switch ($indice) {
+                    case 0:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 3;
+                        break;
+                    case 1:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 2;
+                        break;
+                    case 2:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 7;
+                        break;
+                    case 3:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 6;
+                        break;
+                    case 4:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 5;
+                        break;
+                    case 5:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 4;
+                        break;
+                    case 6:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 3;
+                        break;
+                    case 7:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 2;
+                        break;
+                    case 8:
+                        $arrProducto[$indice] = 0;
+                        break;
+                }
+            }
+        } else {
+            $intUltimo = $strOriginal[9];
+            for ($indice = 0; $indice < 9; $indice++) {
+                //echo $strOriginal[$indice],'</br>';
+                switch ($indice) {
+                    case 0:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 4;
+                        break;
+                    case 1:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 3;
+                        break;
+                    case 2:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 2;
+                        break;
+                    case 3:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 7;
+                        break;
+                    case 4:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 6;
+                        break;
+                    case 5:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 5;
+                        break;
+                    case 6:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 4;
+                        break;
+                    case 7:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 3;
+                        break;
+                    case 8:
+                        $arrProducto[$indice] = $strOriginal[$indice] * 2;
+                        break;
+                }
+            }
+        }
+        foreach ($arrProducto as $indice => $producto)
+            $suma += $producto;
+        $residuo = $suma % 11;
+        $intVerificador = $residuo == 0 ? 0 : 11 - $residuo;
+        //echo "$intVerificador == $intUltimo";
+        //return ($intVerificador == $intUltimo ? TRUE : FALSE);
+        if ($intVerificador == $intUltimo) {
+            return TRUE;
+        } else {
+            $this->addError('ruc', 'Ingrese correctamente el RUC');
+            return FALSE;
+        }
+    }
+
+    public function validarCI($strCedula) {
+        $suma = 0;
+        $strOriginal = $strCedula;
+        $intProvincia = substr($strCedula, 0, 2);
+        $intTercero = $strCedula[2];
+        $intUltimo = $strCedula[9];
+        if (!settype($strCedula, "float"))
+            return FALSE;
+        if ((int) $intProvincia < 1 || (int) $intProvincia > 23)
+            return FALSE;
+        if ((int) $intTercero == 7)
+            return FALSE;
+        for ($indice = 0; $indice < 9; $indice++) {
+            //echo $strOriginal[$indice],'</br>';
+            switch ($indice) {
+                case 0:
+                case 2:
+                case 4:
+                case 6:
+                case 8:
+                    $arrProducto[$indice] = $strOriginal[$indice] * 2;
+                    if ($arrProducto[$indice] >= 10)
+                        $arrProducto[$indice] -= 9;
+                    //echo $arrProducto[$indice],'</br>';
+                    break;
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                    $arrProducto[$indice] = $strOriginal[$indice] * 1;
+                    if ($arrProducto[$indice] >= 10)
+                        $arrProducto[$indice] -= 9;
+                    //echo $arrProducto[$indice],'</br>';
+                    break;
+            }
+        }
+        foreach ($arrProducto as $indice => $producto)
+            $suma += $producto;
+        $residuo = $suma % 10;
+        $intVerificador = $residuo == 0 ? 0 : 10 - $residuo;
+        return ($intVerificador == $intUltimo ? TRUE : FALSE);
     }
 
 }
