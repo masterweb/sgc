@@ -45,7 +45,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 <option value="Flota">Flota</option>';
             }
             if($cargo_id == 73 || $cargo_id == 72){ // asesor bdc y jefe bdc
-                $tipo_array =  array('prospeccion' => 'Prospección');
+                $tipo_array =  array('prospeccion' => 'Prospección','exhibicion' => 'Exhibición');
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
             }
             echo $form->dropDownList($model, 'fuente', $tipo_array, array('class' => 'form-control'));
