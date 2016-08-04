@@ -19,7 +19,7 @@
  * @property string $telefono
  * @property string $celular
  * @property string $email
- * @property string $comentario
+ * @property string $comentario 
  * @property string $estado
  * @property string $observaciones
  * @property string $modelo
@@ -59,14 +59,18 @@ class Casos extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('tema, subtema, nombres, apellidos, cedula, direccion, sector, telefono, celular, email, comentario, ciudad_domicilio, provincia_domicilio', 'required'),
+            array('tema, subtema, nombres, apellidos, cedula, direccion, sector, telefono, celular, email, comentario, ciudad_domicilio, provincia_domicilio', 'required', 'on' => 'ci'),
+            array('tema, subtema, nombres, apellidos, direccion, sector, telefono, ruc, email, comentario, ciudad_domicilio, provincia_domicilio', 'required', 'on' => 'ruc'),
+            array('tema, subtema, nombres, apellidos, pasaporte, direccion, sector, telefono, email, comentario, ciudad_domicilio, provincia_domicilio', 'required', 'on' => 'pasaporte'),
             array('tema, subtema, nombres, apellidos, cedula, direccion, sector, telefono, celular, email, observaciones', 'required', 'on' => 'update'),
             array('tema, subtema, nombres, direccion', 'length', 'max' => 150),
             array('apellidos, provincia, ciudad', 'length', 'max' => 100),
             array('nombres, apellidos', 'match', 'pattern' => '/^[a-zA-Z áéíóúÁÉÍÓÚÑñ\s]+$/', 'message' => "{attribute} debe contener sólo letras"),
-            array('cedula', 'length', 'max' => 10),
+            array('cedula', 'length', 'max' => 10, 'on' => 'ci'),
+            array('ruc', 'length', 'min' => 13, 'on' => 'ruc'),
             array('cedula, telefono, celular', 'numerical', 'integerOnly' => true),
-            array('cedula', 'validateDocument'),
+            array('cedula', 'validateDocument', 'on' => 'ci'),
+            array('cedula', 'validateRuc', 'on' => 'ruc'),
             array('celular', 'validateCel'),
             array('telefono', 'validateTel'),
             array('email', 'email'),
