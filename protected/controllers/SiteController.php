@@ -261,7 +261,7 @@ class SiteController extends Controller {
             $txt = $_GET['buscar'];
 
             //----BUSQUEDA POR ID
-            $sql = "SELECT * FROM casos WHERE id = '{$txt}'";
+            $sql = "SELECT * FROM casos WHERE id = '{$txt}' ORDER BY id DESC";
             $ids = Casos::model()->findAllBySQL($sql);
             //echo '<pre>'.print_r($nombres).'</pre>';
             if (!is_null($ids) && !empty($ids)) {
@@ -271,7 +271,7 @@ class SiteController extends Controller {
             }
 
             //----BUSQUEDA POR NOMBRES O APELLIDOS
-            $sql = "SELECT * FROM casos WHERE nombres LIKE '%{$txt}%' OR apellidos LIKE '%{$txt}%'";
+            $sql = "SELECT * FROM casos WHERE nombres LIKE '%{$txt}%' OR apellidos LIKE '%{$txt}%' ORDER BY id DESC";
             //die('sql: '.$sql);
             $nombres = Casos::model()->findAllBySQL($sql);
             //echo '<pre>'.print_r($nombres).'</pre>';
@@ -280,6 +280,7 @@ class SiteController extends Controller {
             } else {
                 $nombres = '';
             }
+            
 
             //----BUSQUEDA POR TEMA
             $sql = "SELECT id FROM menu WHERE name LIKE '%{$txt}%'";
@@ -339,14 +340,14 @@ class SiteController extends Controller {
             }
 
             //----BUSQUEDA POR CEDULA
-            $sql = "SELECT * FROM casos WHERE cedula LIKE '%{$txt}%'";
+            $sql = "SELECT * FROM casos WHERE cedula LIKE '%{$txt}%' ORDER BY id DESC";
             $cedula = Casos::model()->findAllBySQL($sql);
             if (!is_null($cedula) && !empty($cedula)) {
                 //echo 'valor enconstrado en cedula: ' . $txt . '<br>';
             } else {
                 $cedula = '';
             }
-
+            //echo 'afw3fwef'.count($nombres);
             $this->render('busqueda', array('nombres' => $nombres, 'temas' => $temas, 'subtemas' => $subtemas, 'provincias' => $provincias, 'ciudades' => $ciudades, 'cedula' => $cedula, 'txt' => $txt, 'ids' => $ids));
         }
     }

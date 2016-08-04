@@ -243,7 +243,7 @@ $id_responsable = Yii::app()->user->getId();
         </div>
         <!-- FIN DE FORMULARIO DE BUSQUEDA -->
         <div class="col-md-4">
-            <?php if (($cargo_id === 83) || (Yii::app()->user->getState('first_name') === 'Supervisor') || (Yii::app()->user->getState('roles') === 'admin')): ?>
+            <?php //if (($cargo_id === 83) || (Yii::app()->user->getState('first_name') === 'Supervisor') || (Yii::app()->user->getState('roles') === 'admin')): ?>
                 <?php
                 $form = $this->beginWidget('CActiveForm', array(
                     'id' => 'casos-excel',
@@ -302,7 +302,7 @@ $id_responsable = Yii::app()->user->getId();
                        ?>">
                 <input class="btn btn-primary" type="submit" name="yt0" value="Guardar en Excel" style="float: right;">
                 <?php $this->endWidget(); ?>
-            <?php endif; ?>   
+            <?php //endif; ?>   
         </div>
     </div>
     <div class="row">
@@ -401,10 +401,8 @@ $id_responsable = Yii::app()->user->getId();
                             </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if ($cargo_id == 82) : ?>
+                            <?php if ($cargo_id == 83) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
-                            <?php elseif ($cargo_id == 83): ?>
-                                <td><a href="<?php echo Yii::app()->createUrl('casos/view', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a></td>
                             <?php endif; ?>
 
                         </tr>
