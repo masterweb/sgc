@@ -37,15 +37,8 @@ $id_version = $this->getIdVersion($id_vehiculo);
     var tipo_financiamiento = <?php echo $tipo; ?>;
     $(document).ready(function () {
 <?php if ($tipo == 1): // credito            ?>
-            //$('.cont-contado').hide();
-            $('#GestionFinanciamiento_tipo_financiamiento').val(1);
-            //$('.cont-financ').show();
-<?php else: ?>
-            //$('.cont-contado').show();
-            $('#GestionFinanciamiento_tipo_financiamiento').val(0);
-            //$('.cont-financ').hide();
-<?php endif; ?>
-    //$('#btn-acc').prop('disabled',true);
+    //$('.cont-contado').hide();
+    $('#GestionFinanciamiento_tipo_financiamiento').val(1);
     var precio_vehiculo1 = formatnumber($('#GestionFinanciamiento_precio').val());
     precio_vehiculo1 = precio_vehiculo1 * 0.20;
     $('#GestionFinanciamiento_entrada').val(format2(precio_vehiculo1,'$'));calcFinanciamiento();
@@ -55,6 +48,14 @@ $id_version = $this->getIdVersion($id_vehiculo);
     var precio_vehiculo3 = formatnumber($('#GestionFinanciamiento_precio3').val());
     precio_vehiculo3 = precio_vehiculo1 * 0.20;
     $('#GestionFinanciamiento_entrada3').val(format2(precio_vehiculo1,'$'));
+            //$('.cont-financ').show();
+<?php else: ?>
+            //$('.cont-contado').show();
+            $('#GestionFinanciamiento_tipo_financiamiento').val(0);
+            //$('.cont-financ').hide();
+<?php endif; ?>
+    //$('#btn-acc').prop('disabled',true);
+    
     
     $('#GestionFinanciamiento_entrada').keyup(function () {
         calcFinanciamiento();
@@ -598,6 +599,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
             
     }
     function formatnumber(precioanterior) {
+        console.log('format: '.precioanterior);
         if (precioanterior == '') {
             return 0;
         } else {
