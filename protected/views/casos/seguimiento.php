@@ -401,7 +401,7 @@ $id_responsable = Yii::app()->user->getId();
                             </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if ($cargo_id == 83) : ?>
+                            <?php if ($cargo_id == 83 || $cargo_id == 82) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
                             <?php endif; ?>
 
