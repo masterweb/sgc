@@ -244,13 +244,11 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     </tr>
                                     <tr>
                                         <td><strong>Fuente de Contacto:</strong>
-                                            <?php if($value['id_cotizacion'] == ''){
-                                                echo 'WEB' ;
-                                                
-                                            }else if($this->getFuente($value['id_cotizacion']) == 'showroom'){
+                                            <?php
+                                            if($value['fuente_contacto'] == 'showroom'){
                                                 echo 'Tráfico';
                                             }else{
-                                                echo ucfirst($this->getFuente($value['id_cotizacion']));
+                                                echo ucfirst($value['fuente_contacto']);
                                             }
                                             ?>
                                             
