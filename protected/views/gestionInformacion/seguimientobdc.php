@@ -138,7 +138,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     $('#bg_negro').hide();
                                     if (data.result == true) {
                                         $('.cont-existente').html(data.data);
-                                    } else {
+                                    } 
+                                    if (data.result != false){
+                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom&iden=ruc" class="btn btn-danger">Nueva Cotización</a>';
+                                        $('.cont-createc-but').html(dt);
+                                    }
+                                    else {
                                         form.submit();
                                     }
                                 }
@@ -297,7 +302,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <?php if($cargo_id != 69 && $cargo_id != 72){ ?>
+        <?php if($cargo_id != 69 && $cargo_id != 7200){ ?>
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
         <?php } ?>
         <div class="col-md-8">
@@ -306,9 +311,9 @@ $area_id = (int) Yii::app()->user->getState('area_id');
             </div>
         </div>
     </div>
-    <div class="cont-existente">
-
-    </div>
+    <div class="cont-existente"></div>
+    <br />
+    <div class="cont-createc-but"></div>
     <!--    <div class="row">
             <h1 class="tl_seccion">RGB FORMULARIOS WEB</h1>
         </div>
