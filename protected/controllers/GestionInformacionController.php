@@ -1666,8 +1666,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', $tituloReporte) // Titulo del reporte
-                ->setCellValue('B2', 'Status')
-                ->setCellValue('C2', 'ID')
+                ->setCellValue('A2', 'Status')
+                ->setCellValue('B2', 'ID')
+                ->setCellValue('C2', 'Fecha de Registro')
                 ->setCellValue('D2', 'Nombres')
                 ->setCellValue('E2', 'Apellidos')
                 ->setCellValue('F2', 'Identificación')
@@ -1726,21 +1727,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $this->getPasoSeguimiento($row['paso']))
                     ->setCellValue('B' . $i, $row['id_info'])
-                    ->setCellValue('C' . $i, ($row['nombres']))
-                    ->setCellValue('D' . $i, ($row['apellidos']))
-                    ->setCellValue('E' . $i, $identificacion)
-                    ->setCellValue('F' . $i, $row['email'])
-                    ->setCellValue('G' . $i, $row['celular'])
-                    ->setCellValue('H' . $i, $row['direccion'])
-                    ->setCellValue('I' . $i, $this->getResponsableNombres($row['resp']))
-                    ->setCellValue('J' . $i, $this->getNameConcesionarioById($row['dealer_id']))
-                    ->setCellValue('K' . $i, $modeloVehiculo)
-                    ->setCellValue('L' . $i, $versionVehiculo)
-                    ->setCellValue('M' . $i, $td_si)
-                    ->setCellValue('N' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('O' . $i, $row['fecha'])
-                    ->setCellValue('P' . $i, $row['categorizacion'])
-                    ->setCellValue('Q' . $i, $row['fuente']);
+                    ->setCellValue('C' . $i, ($row['fecha']))
+                    ->setCellValue('D' . $i, ($row['nombres']))
+                    ->setCellValue('E' . $i, ($row['apellidos']))
+                    ->setCellValue('F' . $i, $identificacion)
+                    ->setCellValue('G' . $i, $row['email'])
+                    ->setCellValue('H' . $i, $row['celular'])
+                    ->setCellValue('I' . $i, $row['direccion'])
+                    ->setCellValue('J' . $i, $this->getResponsableNombres($row['resp']))
+                    ->setCellValue('K' . $i, $this->getNameConcesionarioById($row['dealer_id']))
+                    ->setCellValue('L' . $i, $modeloVehiculo)
+                    ->setCellValue('M' . $i, $versionVehiculo)
+                    ->setCellValue('N' . $i, $td_si)
+                    ->setCellValue('O' . $i, $row['proximo_seguimiento'])
+                    ->setCellValue('P' . $i, $row['fecha'])
+                    ->setCellValue('R' . $i, $row['categorizacion'])
+                    ->setCellValue('S' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -2089,6 +2091,18 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
                 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 34;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE - STATUS -FECHA DE REGISTRO
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 35;
+        }
+        
+        // GRUPO - CONCESIONARIO - STATUS
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 36;
         }
         
         // END COMBINADAS-----------------------------------------------------------------
@@ -3321,6 +3335,109 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 35: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS, RESPONSABLE AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 36: // SEARCH BY GRUPO , CONCESIONARIO AND STATUS
+                // SEARCH BY ONE MONTH BESIDE
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
+                $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, {$title_ag} ";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
