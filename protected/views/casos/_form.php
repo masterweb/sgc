@@ -48,7 +48,7 @@ if (isset($model->identificacion))
         $('#Casos_modelo').change(function() {
             var value = $(this).attr('value');
             $.ajax({
-                url:'https://www.kia.com.ec/intranet/callcenter/index.php/versiones/getversiones',
+                url:'https://www.kia.com.ec/intranet/usuario/index.php/versiones/getversiones',
                 dataType: "json",
                 data:{
                     id:value
