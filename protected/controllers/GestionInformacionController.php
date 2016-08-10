@@ -1740,9 +1740,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('M' . $i, $versionVehiculo)
                     ->setCellValue('N' . $i, $td_si)
                     ->setCellValue('O' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('P' . $i, $row['fecha'])
-                    ->setCellValue('R' . $i, $row['categorizacion'])
-                    ->setCellValue('S' . $i, $row['fuente']);
+                    ->setCellValue('P' . $i, $row['categorizacion'])
+                    ->setCellValue('Q' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
