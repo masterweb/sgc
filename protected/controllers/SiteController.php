@@ -756,39 +756,54 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $hasta = $p->purify($_POST['hasta']);
             $where = '';
             if (!empty($ciudad) && $ciudad > 0) {
-                if (empty($where)) {
-                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.ciudad_conc =" . $ciudad;
-                } else {
-                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.ciudad_conc =" . $ciudad;
-                }
-            }
+				if (empty($where)) {
+					$where .= "WHERE gt.test_drive = 1 
+					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
+				} else {
+					$where .= " and gt.test_drive = 1 
+					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
+				}
+			}
 
             if (!empty($concesionario) && $concesionario > 0) {
                 if (empty($where)) {
-                    $where .= "where gt.test_drive = 1 and gt.order=1 and gi.dealer_id =" . $concesionario;
-                } else {
-                    $where .= " and gt.test_drive = 1 and gt.order=1  and gi.dealer_id =" . $concesionario;
-                }
+					$where .= "WHERE gt.test_drive = 1 
+					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1  and gi.dealer_id =" . $concesionario;
+				} else {
+					$where .= " and gt.test_drive = 1 
+					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.dealer_id =" . $concesionario;
+				}
             }
 
             if (!empty($desde) && !empty($hasta)) {
                 if (empty($where)) {
-                    $where .= "where gt.test_drive = 1 and gt.order=1 and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+					if($desde < '2016-08-01'){
+						$desde = '2016-08-01';
+					}
+                    $where .= "WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
                 } else {
-                    $where .= " and gt.test_drive = 1 and gt.order=1  and gt.fecha >='" . $desde . "' and gt.fecha <='" . $hasta . "'";
+					if($desde < '2016-08-01'){
+						$desde = '2016-08-01';
+					}
+                    $where .= " and gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
                 }
             }
             if (empty($where)) {
-                $where = ' WHERE gt.test_drive = 1 and gt.order=1';
+                $where = " WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1";
             }
-            $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
-                    FROM gestion_informacion gi 
-                        inner join gestion_test_drive gt 
-                            on gi.id = gt.id_informacion
-                    ' . $where . ' ORDER BY gi.fecha DESC';
-            //echo $sql;
+            $sql = "SELECT gi.id, gi.cedula, gt.fecha, gi.nombres, gi.apellidos, gi.email, gi.cedula, gi.ruc, gi.pasaporte, 
+					gi.celular,gi.ciudad_conc, gi.telefono_casa, d.`name`, v.nombre_version FROM gestion_test_drive gt 
+					INNER JOIN gestion_informacion gi ON gt.id_informacion = gi.id 
+					INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+					INNER JOIN dealers d ON d.id = gi.dealer_id 
+					INNER JOIN versiones v ON v.id_versiones = gv.version 
+					".$where." 
+					GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
+            
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
-            echo count($persona);
+            print_r(count($persona));
+			die();
+			//echo count($persona);
         }
         if ($opcion == 4) {
 
@@ -823,14 +838,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             if (empty($where)) {
                 $where = ' WHERE gt.test_drive = 0 and gt.order=1';
             }
-            $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+            // $sql = 'SELECT DISTiNCT count(gi.id)gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+			$sql = 'SELECT DISTiNCT gt.id_informacion,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
                     ' . $where . ' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
-            echo count($persona);
+			print_r(count($persona));
+			die();
+		   //echo count($persona);
         }
         if ($opcion == 2) {
 
@@ -863,14 +881,19 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
             }
 
-            $sql = 'SELECT DISTiNCT gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+            $sql = 'SELECT DISTINCT count(gi.id) as tt
                     FROM gestion_informacion gi 
                         inner join gestion_nueva_cotizacion gt 
                             on gi.id_cotizacion = gt.id
                     ' . $where;
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
-            echo count($persona);
+			/*foreach ($persona as $key) {
+				echo '<br>'.$key['id'];
+			}*/
+			print_r($persona[0]['tt']);
+			die();
+            //echo count($persona);
         }
         if ($opcion == 3) {
 
@@ -903,14 +926,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 }
             }
 
-            $sql = 'SELECT DISTINCT count(*) as total
+            $sql = 'SELECT DISTINCT count(e.id_atencion_detalle as total)
                     FROM encuestas e 
                     inner join atencion_detalle a 
-                    on e.id_atencion_detalle = e.id_atencion_detalle 
-                    ' . $where . ' LIMIT 100';
-            // echo $sql;
+                    on e.id_atencion_detalle = e.id_atencion_detalle ' . $where.' limit 1000';
             $persona = Yii::app()->db2->createCommand($sql)->queryAll();
-            echo ($persona[0]['total']);
+            print_r (($persona[0]['total']));
         }
     }
 
