@@ -2693,7 +2693,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 'numero_id_propietario' => 'Identificación', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
-                'forma_pago_retail' => 'Forma de Pago'
+                'forma_pago_retail' => 'Forma de Pago','fecha_aprobacion' => 'Fecha Aprobacion'
             );
 
             //die('numero coincidencias: '.$count_vh);
@@ -2716,6 +2716,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     $longitud_cadena = $posfinal - $pos;
                     // cadena a imprimir, con posicion inicial y longitud
                     $strtgavh = substr($str_vh, $pos, $longitud_cadena);
+                    //echo 'value :'.htmlentities($strtgavh).'</br>'; 
+                    //echo 'key :'.$key.'</br>';
                     if ($key == 'numero_id_propietario') {
                         //die('enter numero id');
                         if ($identificacion == $identificacionsgc) {
@@ -2726,10 +2728,19 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                             $result = 'noequal'; //identificacion no igual
                         }
                     }
-
+                    if ($key == 'chasis') {
+                        //die('enter numero chasis');
+                        //die('identificacion chasis: '.$_POST['Factura']['chasis']);
+                        $cha = explode('>', $strtgavh);
+                        if ($cha[1] == $_POST['Factura']['chasis']) {
+                            //die('iguales');
+                            $result = 'equal'; //identificacion igual
+                        } 
+                    }
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
                     $data_save[$value] = "{$strtgavh}";
                 }
+                //die();
                 //echo '<pre>';
                 //print_r($data_save);
                 //echo '</pre>';
@@ -2741,6 +2752,10 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $year_createc = explode('-', $data_save['Fecha de Venta']);
                 $fact = (string) trim($year_actual[0]);
                 $fcreatec = substr($year_createc[0], 14, 4);
+                if($_POST['Factura']['tipo'] == 'chasis'){
+                    $year_createc = explode('-', $data_save['Fecha Aprobacion']);
+                    $fcreatec = substr($year_createc[0], 18, 4);
+                }
                 //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                 //echo '<h2>' . $fcreatec . '</h2>';
                 if ($fcreatec !== $fact) {
@@ -2770,6 +2785,15 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                                 $result = 'noequal'; //identificacion no igual
                             }
                         }
+                        if ($key == 'chasis') {
+                            //die('enter numero chasis');
+                            //die('identificacion chasis: '.$_POST['Factura']['chasis']);
+                            $chaf = explode('>', $str);
+                            if ($chaf[1] == $_POST['Factura']['chasis']) {
+                                //die('iguales');
+                                $result = 'equal'; //identificacion igual
+                            } 
+                        }
 
                         $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $str . '</td></tr>';
                         $data_save[$value] = "{$str}";
@@ -2786,6 +2810,10 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     $year_createc = explode('-', $data_save['Fecha de Venta']);
                     $fact = (string) trim($year_actual[0]);
                     $fcreatec = substr($year_createc[0], 14, 4);
+                    if($_POST['Factura']['tipo'] == 'chasis'){
+                        $year_createc = explode('-', $data_save['Fecha Aprobacion']);
+                        $fcreatec = substr($year_createc[0], 18, 4);
+                    }
                     //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                     //echo '<h2>' . $fcreatec . '</h2>';
                     if ($fcreatec !== $fact) {
