@@ -36,7 +36,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
-                    'exhibicion' => 'Exhibición'
+                    //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <option value="Usado">Usado</option>
