@@ -1,5 +1,9 @@
 <div class="form">
     <?php
+    $filtro_exh = '';
+    if($tipo == 'exhibicion'){
+       $filtro_exh = 'exhibicion'; 
+    }
         $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
         $usuariosGeneral = array(71, 70);
         $usuariosjsucursal = array(70);
@@ -13,7 +17,7 @@
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'gestion-nueva-cotizacion-form',
             'method' => 'get',
-            'action' => Yii::app()->createUrl('Reportes/inicio'),
+            'action' => Yii::app()->createUrl('Reportes/inicio',array('tipo' => $tipo)),
             'enableAjaxValidation' => false,
             'htmlOptions' => array(
                 'class' => 'form-horizontal form-search',
@@ -200,7 +204,7 @@
     <?php endif; ?>
 
     <!--MODELOS-->
-<?php if (in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
+<?php if ((in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes)) && $filtro_exh == '' ): ?>
     <div id="traficoGeneral">
         <!-- FILTRO MODELOS -->
         <div class="row">
@@ -299,6 +303,7 @@
     <div class="row buttons">
         <div class="col-md-6">
             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
+            <input type="hidden" name="GI[tipo]" value="<?php echo $tipo;0 ?>" id="GI_tipo" />
         </div>
     </div>
     <?php $this->endWidget(); ?>

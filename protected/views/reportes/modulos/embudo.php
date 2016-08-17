@@ -12,11 +12,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td id="mi_a2">TRÁFICO</td>
-                        <td id="mi_b2"><?= $varView['trafico_mes_actual']; ?></td>
-                        <td id="mi_c2"><?= $varView['trafico_mes_anterior']; ?></td>
-                        <td id="mi_d2"><?= $varView['var_tr']?></td>
-                        <td id="mi_e2"><?= $varView['dif_tr']?></td>
+                    <?php if($tipo != 'exhibicion' ): ?>
+                    <tr>
+                        <td id="mi_a2">PROSPECCIÓN</td>
+                        <td id="mi_b2"><?= $varView['prospeccion_mes_actual']; ?></td>
+                        <td id="mi_c2"><?= $varView['prospeccion_mes_anterior']; ?></td>
+                        <td id="mi_d2"><?= $varView['var_prp']?></td>
+                        <td id="mi_e2"><?= $varView['dif_prp']?></td>
+                    </tr>
+                    <?php endif; ?>
+                    <tr><td id="mi_a3">TRÁFICO</td>
+                        <td id="mi_b3"><?= $varView['trafico_mes_actual']; ?></td>
+                        <td id="mi_c3"><?= $varView['trafico_mes_anterior']; ?></td>
+                        <td id="mi_d3><?= $varView['var_tr']?></td>
+                        <td id="mi_e3"><?= $varView['dif_tr']?></td>
                     </tr>
                     <tr><td id="mi_a4">PROFORMA</td>
                         <td id="mi_b4"><?= $varView['proforma_mes_actual']; ?></td>
@@ -24,11 +33,11 @@
                         <td id="mi_d4"><?= $varView['var_pr']?></td>
                         <td id="mi_e4"><?= $varView['dif_pr']?></td>
                     </tr>
-                    <tr><td id="mi_a3">TESTDRIVE</td>
-                        <td id="mi_b3" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
-                        <td id="mi_c3" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
-                        <td id="mi_d3"><?= $varView['var_td']?></td>
-                        <td id="mi_e3"><?= $varView['dif_td']?></td>
+                    <tr><td id="mi_a6">TESTDRIVE</td>
+                        <td id="mi_b6" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
+                        <td id="mi_c6" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
+                        <td id="mi_d6"><?= $varView['var_td']?></td>
+                        <td id="mi_e6"><?= $varView['dif_td']?></td>
                     </tr>                                        
                     <tr><td id="mi_a5">VENTAS</td>
                         <td id="mi_b5" style="background:#c6f4c6;"><?= $varView['vh_mes_actual']; ?></td>

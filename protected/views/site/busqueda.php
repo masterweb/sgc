@@ -64,7 +64,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <th><span>Responsable</span></th>
                             <th><span>Estado</span></th>
                             <th><span>Fecha</span></th>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php if($cargo_id == 83 || $cargo_id == 82 || Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <th><span>Edición</span></th>
                             <?php endif; ?>
                         </tr>
@@ -85,7 +85,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             <td><?php echo $this->getResponsable($c['responsable']); ?> </td>
                             <td><?php echo $c['estado']; ?> </td>
                             <td><?php echo $c['fecha']; ?> </td>
-                            <?php if(Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
+                            <?php if($cargo_id == 83 || $cargo_id == 82 || Yii::app()->user->getState('roles') === 'admin' || Yii::app()->user->getState('roles') === 'super' ||  Yii::app()->user->getState('roles') === 'adminvpv'  ) : ?>
                                 <td><a href="<?php echo Yii::app()->createUrl('casos/update', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a></td>
                             <?php endif; ?>
                         </tr>
