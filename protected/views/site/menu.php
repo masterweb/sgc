@@ -216,7 +216,7 @@ $rol = Yii::app()->user->getState('roles');
                     </li>
                     <?php } ?>
                     <?php } ?>
-                    <?php if($cargo_id == 6900 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ // JEFE USADOS ?>
+                    <?php if($cargo_id == 69 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 1400){ // JEFE USADOS ?>
                         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoUsados') { ?>
                         <li class="wrapper">
                             <div class="forma">
@@ -256,7 +256,7 @@ $rol = Yii::app()->user->getState('roles');
                         </li>
                         <?php } ?>
                     <?php } ?>
-                    <?php if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){ ?>   
+                    <?php if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 1400){ ?>   
                         <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientoexonerados' && $opcion == md5(($a->accesoSistema->modulo_id))) { ?>
                         <li class="wrapper">
                             <div class="forma">
