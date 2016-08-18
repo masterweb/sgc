@@ -1743,7 +1743,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('P' . $i, $row['categorizacion'])
                     ->setCellValue('Q' . $i, $row['fuente']);
 
-            $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
+            $objPHPExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('P' . $i, $row['celular'], PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('N' . $i, $row['comentario'], PHPExcel_Cell_DataType::TYPE_STRING);
