@@ -1723,7 +1723,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $test_drive = '';
             //die ('id info: '.$row['id_info'].', id vec: '.$row['id']);
             
-            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $this->getPasoSeguimiento($row['paso']))
                     ->setCellValue('B' . $i, $row['id_info'])
