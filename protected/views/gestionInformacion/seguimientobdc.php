@@ -140,7 +140,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         $('.cont-existente').html(data.data);
                                     } 
                                     if (data.result != false){
-                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom&iden=ruc" class="btn btn-danger">Nueva Cotización</a>';
+                                        var dt = '<a href="https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/create/' + data.id_nueva_cotizacion + '?tipo=gestion&fuente=showroom&iden=cedula" class="btn btn-danger">Nueva Cotización</a>';
                                         $('.cont-createc-but').html(dt);
                                     }
                                     else {
@@ -296,7 +296,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
         }
     }
 </style>
-
+<?php //$this->widget('application.components.Notificaciones'); ?>
 <div class="container">
     <div class="row">
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
@@ -467,6 +467,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         case '1-2':
                                             //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
                                             $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'gestion')); 
+                                            if ($c['fuente'] == 'prospeccion')
+                                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
                                             break;
                                         case '3':
                                             $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -498,7 +500,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     <?php
                                     if ($c['medio_contacto'] == 'web' && $c['tipo_form_web'] == ''):
                                         ?>
-                                        <button type="button" class="btn btn-xs btn-warning">www</button>
+                                        <button type="button" class="btn btn-xs btn-warning">web</button>
                                     <?php endif; ?>
                                     <?php
                                     if ($c['medio_contacto'] == 'caduco'):
