@@ -2807,7 +2807,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                 //echo '<h2>' . $fcreatec . '</h2>';
                 // SI FECHA DE CREATEC NO ES IGUAL AL YEAR ACTUAL AND YEAR ANTERIOR
-                if ($fcreatec !== $fact && $fcreatec != $factmenos) {
+                if ($fcreatec != $fact && $fcreatec != $factmenos) {
                     $result = 'nofind'; // Year doesn't match 
                 }
                 //die('result 1: ' . $result);
@@ -2867,7 +2867,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                     //echo '<h2>' . $fcreatec . '</h2>';
                     // SI FECHA DE CREATEC NO ES IGUAL AL YEAR ACTUAL AND YEAR ANTERIOR
-                    if ($fcreatec !== $fact && $fcreatec != $factmenos) {
+                    if ($fcreatec != $fact && $fcreatec != $factmenos) {
                         $result = 'nofind'; // Year doesn't match 
                     }
                     //die('result 2: ' . $result);
