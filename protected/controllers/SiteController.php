@@ -448,6 +448,32 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $html .="</select>";
             echo $html;
         } else {
+            echo 0; 
+            die();
+        }
+    }
+    
+    public function actionTraerconsesionarioext() {
+        date_default_timezone_set("America/Bogota");
+        $p = new CHtmlPurifier();
+        $valor = $p->purify($_POST["rs"]);
+        //die('valor:'.$valor);
+        if($valor == 86 || $valor == 85){
+            $concesionarios = GrGrupo::model()->findAll(array('condition' => 'id IN(2,3)','order' => 'nombre_grupo ASC'));
+        }else{
+            $concesionarios = GrGrupo::model()->findAll(array('order' => 'nombre_grupo ASC'));
+        }
+        
+        $html = "";
+        if (!empty($concesionarios)) {
+            //$html .='<select class="form-control valid" name="Usuarios[grupo_id]" id="Usuarios_grupo_id" onchange="buscarConcesionario(this.value)">';
+            $html .="<option>Seleccione >></option>";
+            foreach ($concesionarios as $c) {
+                $html .="<option value='" . $c->id . "'>" . $c->nombre_grupo . "</option>";
+            }
+            $html .="</select>";
+            echo $html;
+        } else {
             echo 0;
             die();
         }
@@ -480,8 +506,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match", 'params' => array(':match' => (int) $valor)));
         $html = "";
         if (!empty($concesionarios)) {
-            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control">';
-            $html .="<option>Seleccione >></option>";
+            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" onchange="getConc(this.value);">';
+            $html .="<option value=''>Seleccione >></option>";
             foreach ($concesionarios as $c) {
                 $html .="<option value='" . $c->id . "'>" . $c->descripcion . "</option>";
             }
@@ -743,7 +769,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
         }
     }
-
     public function actionConsultarUsuarioEncuesta() {
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
@@ -2771,7 +2796,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $fecha_actual = strftime("%Y-%m-%d", $dt);
                 $year_actual = explode('-', $fecha_actual);
                 $year_createc = explode('-', $data_save['Fecha de Venta']);
-                $fact = (string) trim($year_actual[0]);
+                $fact = (int) trim($year_actual[0]);
+                $factmenos = $fact - 1;
+                //die('fact: '.$factmenos);
                 $fcreatec = substr($year_createc[0], 14, 4);
                 if($_POST['Factura']['tipo'] == 'chasis'){
                     $year_createc = explode('-', $data_save['Fecha Aprobacion']);
@@ -2779,7 +2806,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 }
                 //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                 //echo '<h2>' . $fcreatec . '</h2>';
-                if ($fcreatec !== $fact) {
+                // SI FECHA DE CREATEC NO ES IGUAL AL YEAR ACTUAL AND YEAR ANTERIOR
+                if ($fcreatec !== $fact && $fcreatec != $factmenos) {
                     $result = 'nofind'; // Year doesn't match 
                 }
                 //die('result 1: ' . $result);
@@ -2829,7 +2857,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     $fecha_actual = strftime("%Y-%m-%d", $dt);
                     $year_actual = explode('-', $fecha_actual);
                     $year_createc = explode('-', $data_save['Fecha de Venta']);
-                    $fact = (string) trim($year_actual[0]);
+                    $fact = (int) trim($year_actual[0]);
+                    $factmenos = $fact - 1;
                     $fcreatec = substr($year_createc[0], 14, 4);
                     if($_POST['Factura']['tipo'] == 'chasis'){
                         $year_createc = explode('-', $data_save['Fecha Aprobacion']);
@@ -2837,7 +2866,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     }
                     //echo('fecha actual:' . $fact . ', fecha createc:' . $fcreatec).'<br />';
                     //echo '<h2>' . $fcreatec . '</h2>';
-                    if ($fcreatec !== $fact) {
+                    // SI FECHA DE CREATEC NO ES IGUAL AL YEAR ACTUAL AND YEAR ANTERIOR
+                    if ($fcreatec !== $fact && $fcreatec != $factmenos) {
                         $result = 'nofind'; // Year doesn't match 
                     }
                     //die('result 2: ' . $result);
