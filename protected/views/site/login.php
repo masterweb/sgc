@@ -14,11 +14,12 @@ $this->breadcrumbs = array(
             max-width: 1150px;
         }
     }
+    html{height: 100%;}
 
     #cometchat {
         display: none;
     }
-    header{display: none;}footer{display: none;}body{padding-bottom: 0px;background: none !important;}
+    header{display: none;}footer{display: none;}body{padding-bottom: 0px;background: none !important;height: 100%;}
     #login-username::-webkit-input-placeholder,
     #login-password::-webkit-input-placeholder
     {
