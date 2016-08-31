@@ -36,7 +36,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
-                    'exhibicion' => 'Exhibición'
+                    //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <option value="Usado">Usado</option>
@@ -46,7 +46,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             }
             if($cargo_id == 73 || $cargo_id == 72){ // asesor bdc y jefe bdc
                 $tipo_array =  array('prospeccion' => 'Prospección',
-                    'exhibicion' => 'Exhibición'
+                    //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
             }
