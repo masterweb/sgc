@@ -2890,13 +2890,13 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        if ($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6) { // IOKARS, AUTHESA, MERQUIAUTO
+        //if ($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6) { // IOKARS, AUTHESA, MERQUIAUTO
             //echo 'enter no createc';
             $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
-        } else {
+        //} else {
             //echo 'enter cr';
-            $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
-        }
+            //$this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        //}
     }
 
     public function actionEntrega($id_informacion = NULL) {
