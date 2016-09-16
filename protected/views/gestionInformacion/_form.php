@@ -6,11 +6,13 @@
 ?>
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 // SI CARGO ID ES 72, JEFE BDC
 $id_responsable = Yii::app()->user->getId();
 //echo 'responsable id: '.$id_responsable;
-if($cargo_id != 72){
+$city_id = 0;
+if($cargo_id != 72 && $cargo_adicional !=  85){
 $dealer_id = $this->getDealerId($id_responsable);
 //echo '<br>dealer id: '.$dealer_id.'<br />';
 //die();
@@ -917,7 +919,14 @@ $tipo = $_GET['tipo'];
                                 ));
                                 $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
                                 ?>
-                                <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php 
+                                if($city_id == 0){
+                                    $disabled = false;
+                                }else{
+                                    $disabled = true;
+                                }
+                                echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => $disabled)); 
+                                ?>
                                 <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
                             </div>
@@ -928,7 +937,7 @@ $tipo = $_GET['tipo'];
                                 $criteria2 = new CDbCriteria(array('condition' => "id={$city_id}", 'order' => 'name'));
                                 $ciudades = CHtml::listData(Dealercities::model()->findAll($criteria2), "id", "name");
                                 ?>
-                                <?php echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => $disabled)); ?>
                                 <?php echo $form->error($model, 'ciudad_conc'); ?>
                             </div>
                         </div>
@@ -941,7 +950,7 @@ $tipo = $_GET['tipo'];
                                 $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
                                 ?>
                                 <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control'));  ?>
-                                <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => $disabled)); ?>
                                 <?php echo $form->error($model, 'concesionario'); ?>
                             </div>
                         </div>
@@ -1293,7 +1302,7 @@ $tipo = $_GET['tipo'];
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <?php
                             if ($_GET['tipo'] == 'prospeccion') {
-                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-15-07-2016-2.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-13-09-2016.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
                             }
                             ?>
 

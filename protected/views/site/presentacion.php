@@ -142,7 +142,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                     <tr>
                                         <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                         <td><?php echo $this->getVersion($c['version']); ?> </td>
-                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-15-07-2016-2.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-13-09-2016.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
 
                                         <?php
                                         $criteria5 = new CDbCriteria(array('condition' => "id_vehiculo='{$c['id']}'"));
@@ -281,7 +281,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                             </div>
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--', 'Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--', 'Cita' => 'Cita','Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($agendamiento, 'observaciones'); ?>
                             </div>
                             <div class="col-md-4 agendamiento">
