@@ -85,6 +85,10 @@ class GestionCierreController extends Controller {
                 date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
                 $factura->fecha = date("Y-m-d H:i:s");
                 $factura->save();
+                $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+                if ($grupo_id == 2 || $grupo_id == 3 && (Yii::app()->user->getState('cargo_id') == 70 || Yii::app()->user->getState('cargo_id') == 85)) {
+                    $this->redirect(array('site/cierre', 'id' => $_POST['id_informacion']));
+                }
                 $this->redirect(array('site/factura', 'id_informacion' => $_POST['id_informacion'], 'id_vehiculo' => $_POST['id_vehiculo']));
             }
             //$this->redirect(array('view', 'id' => $model->id));
