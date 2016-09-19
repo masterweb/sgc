@@ -81,7 +81,7 @@ class GestionTestDriveController extends Controller {
             ));
             $td = GestionTestDrive::model()->count($criteria);
             //die('count td:'.$td);
-            if($td > 0){
+            if ($td > 0) {
                 $model->order = 2;
             }
             $model->attributes = $_POST['GestionTestDrive'];
@@ -125,9 +125,13 @@ class GestionTestDriveController extends Controller {
                         $image->save(Yii::getPathOfAlias('webroot') . '/images/uploads/' . $nameFinal);
                     }
                 }
-                $con = Yii::app()->db;
-                $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '6', status = 1 WHERE id_informacion = {$id_informacion}";
-                $request = $con->createCommand($sql)->query();
+                $paso = $this->getPasoInt($_POST['GestionTestDrive']['id_informacion']);
+                if ($paso < 6) {
+                    $con = Yii::app()->db;
+                    $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '6', status = 1 WHERE id_informacion = {$id_informacion}";
+                    $request = $con->createCommand($sql)->query();
+                }
+
 
                 $demostracion = new GestionDemostracion;
                 $demostracion->preg1 = $_POST['GestionTestDrive']['preg1'];
@@ -231,7 +235,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                 <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNombreConcesionario($concesionarioid) . '</td></tr> 
                                 <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionTestDrive']['id_vehiculo']) . '</td></tr>
                                 <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
-                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>'; 
+                               <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
                 }
                 $general .= ' </table>
                                 <br/>
@@ -296,10 +300,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $demostracion->id_informacion = $_POST['GestionTestDrive']['id_informacion'];
                 $demostracion->id_vehiculo = $_POST['GestionTestDrive']['id_vehiculo'];
                 $demostracion->save();
-                
-                $con = Yii::app()->db;
-                $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '6', status = 1 WHERE id_informacion = {$id_informacion}";
-                $request = $con->createCommand($sql)->query();
+                $paso = $this->getPasoInt($_POST['GestionTestDrive']['id_informacion']);
+                if ($paso < 6) {
+                    $con = Yii::app()->db;
+                    $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '6', status = 1 WHERE id_informacion = {$id_informacion}";
+                    $request = $con->createCommand($sql)->query();
+                }
             }
 
             if ($model->save())

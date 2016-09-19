@@ -384,16 +384,29 @@ class Controller extends CController {
     }
 
     public function getNombresJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
+        $cargo_id_agente = (int) Yii::app()->user->getState('cargo_id');
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         // buscar en tabla usuarios el jefe de almacen con el dealer id
         $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
 
         if (count($us) > 0) {
             return $us->nombres . ' ' . $us->apellido;
-        } else {
+        }
+        if(count($us) == 0){
+            $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}"));
+            return $us->nombres . ' ' . $us->apellido;
+        }
+        else {
             $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
             INNER JOIN usuarios u ON u.id = gr.usuario_id 
-            WHERE gr.concesionario_id = {$dealer_id}
-            AND u.cargo_id = 70 ";
+            WHERE gr.concesionario_id = {$dealer_id}";
+            if($cargo_id_agente == 71){
+                $sql .= " AND u.cargo_id = 70 ";
+            }
+            if($cargo_id_agente == 86){
+                $sql .= " AND u.cargo_id = 85 ";
+            }
+            die($sql);
             $con = Yii::app()->db;
             $request = $con->createCommand($sql)->query();
             //die('count request: '.count($request));
@@ -1390,6 +1403,22 @@ class Controller extends CController {
         ));
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->paso;
+    }
+    /**
+     * Funcion que retorna el paso donde esta el cliente
+     * @param type $id_informacion del cliente
+     * @return int paso 
+     */
+    public function getPasoInt($id_informacion) {
+        $ps = GestionDiaria::model()->find(array('condition' => "id_informacion = {$id_informacion}"));
+        $paso = 0;
+        $str = strlen($ps->paso);
+        if($str == 3){
+            $paso = 3;
+        }else{
+            $paso = (int) $ps->paso;
+        }
+        return $paso;
     }
 
     public function getPasoGestionDiaria($id) {
@@ -2626,15 +2655,22 @@ class Controller extends CController {
             return 'NA';
         }
     }
-
+    /****
+     * Funcion para devolver los responsables de agencia para reasignacion de clientes
+     */        
     public function getResponsablesAgencia($id_responsable) {
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+        if(empty($dealer_id)){
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealer_id = implode(', ', $array_dealers);
+        }
+        
         $cre = new CDbCriteria();
         if($grupo_id == 4)// IOKARS
-            $cre->condition = " cargo_id IN (71,73) AND dealers_id = {$dealer_id} ";
+            $cre->condition = " cargo_id IN (71,73) AND dealers_id IN ({$dealer_id}) ";
         else
-            $cre->condition = " cargo_id = 71 AND dealers_id = {$dealer_id} ";  
+            $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";  
         $cre->order = " nombres ASC";
         $asesores = Usuarios::model()->findAll($cre);
         $data = '';
@@ -2829,6 +2865,15 @@ class Controller extends CController {
             }
         } else {
             return 'Modelo no Disponible';
+        }
+    }
+    
+    public function getCita($id_informacion) {
+        $ga = GestionAgendamiento::model()->count(array('condition' => "id_informacion = {$id_informacion} AND observaciones = 'Cita'"));
+        if($ga > 0){
+            return TRUE;
+        }else{
+            return FALSE;
         }
     }
 
