@@ -1,11 +1,21 @@
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $id_asesor = Yii::app()->user->getId();
 $nombre_responsable = $this->getResponsableNombres($id_asesor);
 //$nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
 $dealer_id = $this->getDealerId($id_asesor);
-$nombre_jefe_sucursal = $this->getNombresJefeConcesion(70, $grupo_id, $dealer_id); //email administrador
+$id_jefe_sucursal = 0;
+if($cargo_id == 71){
+    $id_jefe_sucursal = 70;
+}
+if($cargo_id == 86){
+    $id_jefe_sucursal = 85;
+}
+
+if(!empty($dealer_id))
+    $nombre_jefe_sucursal = $this->getNombresJefeConcesion($id_jefe_sucursal, $grupo_id, $dealer_id); //email administrador
 $nombre_cliente = $this->getNombreClienteRGD($id_informacion);
 $responsable_id_vendedor = $this->getResponsableId($id_informacion);
 $nombre_vendedor = $this->getResponsableNombres($responsable_id_vendedor);
@@ -140,19 +150,19 @@ $nombre_vendedor = $this->getResponsableNombres($responsable_id_vendedor);
                         ?>
                         <div class="row highlight">
                             <div class="col-md-12">
-                                <?php if($cargo_id == 71): ?>
+                                <?php if($cargo_id == 71 || $cargo_id == 86): ?>
                                 <div class="alert-message alert-message-danger">
                                     <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Aviso</h4>
-                                    <p><?php echo $nombre_responsable; ?>, para ingresar la factura del Cliente: <?php echo $nombre_cliente; ?>, 
-                                        debe acercarse al Jefe de Sucursal <?php echo $nombre_jefe_sucursal; ?> para registrarla.</p>
+                                    <p><strong><?php echo $nombre_responsable; ?></strong>, para ingresar la factura del Cliente: <?php echo $nombre_cliente; ?>, 
+                                        debe acercarse al Jefe de Sucursal <strong><?php echo $nombre_jefe_sucursal; ?></strong> para registrarla.</p>
                                     <p>Una vez registrada la factura podrá continuar al paso de Entrega.</p>
                                 </div>
                                 <?php else: ?>
                                 <div class="alert-message alert-message-danger">
                                     <h4><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Aviso</h4>
-                                    <p><?php echo $nombre_responsable; ?>, debe ingresar la factura del Cliente: <?php echo $nombre_cliente; ?>, 
+                                    <p><strong><?php echo $nombre_responsable; ?></strong>, debe ingresar la factura del Cliente: <?php echo $nombre_cliente; ?>, 
                                         registrado en el SGC por el asesor/a: <?php echo $nombre_vendedor; ?>.</p>
-                                    <p>Una vez registrada la factura, <?php echo $nombre_vendedor; ?> podrá continuar al paso de Entrega.</p>
+                                    <p>Una vez registrada la factura, <strong><?php echo $nombre_vendedor; ?></strong> podrá continuar al paso de Entrega.</p>
                                 </div>
                                 <?php endif; ?>
                             </div>
@@ -165,7 +175,7 @@ $nombre_vendedor = $this->getResponsableNombres($responsable_id_vendedor);
                                             <div class="btn-group btn-group-xs" role="group" aria-label="Extra-small button group"> 
                                             <button type="button" class="btn btn-default">Factura Registrada</button> 
                                             <button type="button" class="btn btn-success">Si</button>'; 
-                                if($cargo_id == 70){echo '<a href="' . Yii::app()->createUrl('gestionCierre/update', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)) . '" class="btn btn-danger">Editar</a>'; }
+                                if($cargo_id == 70 || $cargo_id == 85){echo '<a href="' . Yii::app()->createUrl('gestionCierre/update', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)) . '" class="btn btn-danger">Editar</a>'; }
                                         echo '</div>
                                         
                                         <div class="row">
@@ -185,7 +195,7 @@ $nombre_vendedor = $this->getResponsableNombres($responsable_id_vendedor);
                                               </div>
                                         </div>
                                       </div>  ';
-                                if ($cargo_id == 70) {
+                                if ($cargo_id == 70 || $cargo_id == 85) {
                                     echo '<div class="row"><div class="col-md-2"><a href="' . Yii::app()->createUrl('gestionCierre/create', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)) . '" class="btn btn-danger" id="send" name="send">Ingresar Factura</a>'
                                     . '</div>';
                                 }

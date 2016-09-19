@@ -58,7 +58,7 @@
                         ?>
                         <div class="row">
                             <div class="col-md-4">
-                                <label for="factura">Ingreso</label>
+                                <label for="factura">Ingreso Factura Automática</label>
                                 <select name="Factura[tipo]" id="Factura_tipo" class="form-control">
                                     <option value="">--Seleccione--</option>
                                     <option value="cedula">Cédula</option>
@@ -93,7 +93,20 @@
                                 <input type="hidden" id="Factura_identificacion" name="Factura[identificacion]" value="<?php echo $this->getIdentificacionTipo($id_informacion); ?>"/>
                             </div>
                         </div>
-                        
+                        <?php if(Yii::app()->user->getState('cargo_id') == 70 || Yii::app()->user->getState('cargo_id') == 85): ?>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="factura">Ingreso Factura Manual</label>
+                                <?php 
+                                    $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+                                    if ($grupo_id == 2 || $grupo_id == 3 ) {
+                                         echo '<a href="'.Yii::app()->createUrl('site/facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion)).'" class="btn btn-danger">Factura Manual</a>';
+                                    }
+                                    ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                         
 
 
