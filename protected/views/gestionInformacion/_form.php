@@ -547,7 +547,7 @@ $tipo = $_GET['tipo'];
                                     var endTime = parseInt(startTime) + 100;
                                     //console.log('start time:'+fechaStart+startTime);
                                     //console.log('fecha end:'+fechaStart+endTime);
-                                    var href = '/intranet/usuario_TEST/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente ' + cliente + ' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
+                                    var href = '/intranet/usuario/index.php/gestionDiaria/ical?startTime=' + fechaStart + startTime + '&endTime=' + fechaStart + endTime + '&subject=Cita con Cliente ' + cliente + ' en Concesionario&desc=Cita con el cliente Mariana de Jesus&location=' + lugarconc + '&to_name=' + cliente + '&conc=si';
                                     $('#event-download').attr('href', href);
                                     $('.calendar-content').show();
                                     $("#event-download").click(function () {
