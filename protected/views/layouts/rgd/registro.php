@@ -1,6 +1,9 @@
 <?php 
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $area_id = (int) Yii::app()->user->getState('area_id'); 
 $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+//echo $cargo_adicional;
 ?>
 <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
 <div class="col-md-4">
@@ -32,7 +35,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
             }
-            if($cargo_id == 71 || $cargo_id == 70){ // asesor ventas
+            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'ventas' && $cargo_adicional == 0){ // asesor ventas
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
@@ -44,6 +47,38 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
                 <option value="Flota">Flota</option>';
             }
+            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'ventas' && ($cargo_adicional == 86 || $cargo_adicional == 85)){ // asesor ventas
+                $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    'showroom' => 'Tráfico',
+                    //'exhibicion' => 'Exhibición'
+                    );
+                $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+                <option value="Exonerado Conadis">Exonerado Conadis</option>
+                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
+                <option value="Flota">Flota</option>';
+            }
+            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'bdc' && $cargo_adicional == 0){ // asesor ventas externas
+                $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    'showroom' => 'Tráfico',
+                    //'exhibicion' => 'Exhibición'
+                    );
+                $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+                <option value="Exonerado Conadis">Exonerado Conadis</option>
+                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
+                <option value="Flota">Flota</option>';
+            }
+            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'bdc' && ($cargo_adicional == 86 || $cargo_adicional == 85)){ // asesor ventas externas
+                $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    //'showroom' => 'Tráfico',
+                    //'exhibicion' => 'Exhibición'
+                    );
+                $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
+            }
             if($cargo_id == 73 || $cargo_id == 72){ // asesor bdc y jefe bdc
                 $tipo_array =  array('prospeccion' => 'Prospección',
                     //'exhibicion' => 'Exhibición'
@@ -52,10 +87,22 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             }
             if($cargo_id == 85 || $cargo_id == 86){ // asesor ventas externas y jefe de ventas externas
                 $tipo_array =  array('prospeccion' => 'Prospección',
-                    //'exhibicion' => 'Exhibición'
+                    'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
             }
+            /*if($cargo_adicional == 86){
+                $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    'showroom' => 'Tráfico',
+                    //'exhibicion' => 'Exhibición'
+                    );
+                $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
+                <option value="Usado">Usado</option>
+                <option value="Exonerado Conadis">Exonerado Conadis</option>
+                <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
+                <option value="Flota">Flota</option>';
+            }*/
             echo $form->dropDownList($model, 'fuente', $tipo_array, array('class' => 'form-control'));
             ?>
             <?php echo $form->error($model, 'fuente'); ?>

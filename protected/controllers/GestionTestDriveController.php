@@ -79,17 +79,18 @@ class GestionTestDriveController extends Controller {
             $criteria = new CDbCriteria(array(
                 'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}"
             ));
-            $td = GestionTestDrive::model()->count($criteria);
-            //die('count td:'.$td);
-            if ($td > 0) {
-                $model->order = 2;
-            }
+
             $model->attributes = $_POST['GestionTestDrive'];
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
 
 
             if ($_POST['GestionTestDrive']['preg1'] == 'Si') { // If make a Test Drive uploads a image
+                $td = GestionTestDrive::model()->count(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND 'order' = 1"));
+                //die('count td:'.$td);
+                if ($td > 0) {
+                    $model->order = 2;
+                }
                 $model->test_drive = 1;
                 $model->setscenario('img');
                 $model->observacion = $_POST['GestionTestDrive']['observaciones_form'];
@@ -291,6 +292,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 //die('casos save');
             } else if ($_POST['GestionTestDrive']['preg1'] == 'No') { // If not make Test Drive
                 //$model->setscenario('observacion');
+                $td = GestionTestDrive::model()->count($criteria);
+                //die('count td:'.$td);
+                $model->order = 2;
                 $model->test_drive = 0;
                 $model->observacion = $_POST['GestionTestDrive']['observacion'];
                 $demostracion = new GestionDemostracion;

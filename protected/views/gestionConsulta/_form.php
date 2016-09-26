@@ -544,17 +544,13 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
 <?php
 $id_responsable = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //echo 'responsable id: '.$id_responsable;
-if($cargo_id != 46){
-$dealer_id = $this->getDealerId($id_responsable);
-
-//echo '<br>dealer id: '.$dealer_id;
-
-$city_id = $this->getCityId($dealer_id);
-$provincia_id = $this->getProvinciaId($city_id);
+if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
+    $dealer_id = $this->getDealerId($id_responsable);
+    $city_id = $this->getCityId($dealer_id);
+    $provincia_id = $this->getProvinciaId($city_id);
 }
-
-//echo '<br>Ciudad id: '.$city_id.', Provincia id: '.$provincia_id;
 ?>
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div role="tabpanel">

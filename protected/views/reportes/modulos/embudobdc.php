@@ -21,19 +21,19 @@
                         <td id="mi_e2"><?= $varView['dif_prp']?></td>
                     </tr>
                     <?php endif; ?>
-                    <tr><td id="mi_a3">TRÁFICO</td>
+                    <tr><td id="mi_a3">COTIZACIONES SOLICITADAS</td>
                         <td id="mi_b3"><?= $varView['trafico_mes_actual']; ?></td>
                         <td id="mi_c3"><?= $varView['trafico_mes_anterior']; ?></td>
                         <td id="mi_d3><?= $varView['var_tr']?></td>
                         <td id="mi_e3"><?= $varView['dif_tr']?></td>
                     </tr>
-                    <tr><td id="mi_a4">PROFORMA</td>
+                    <tr><td id="mi_a4">RESPUESTAS AUTOMÁTICAS</td>
                         <td id="mi_b4"><?= $varView['proforma_mes_actual']; ?></td>
                         <td id="mi_c4"><?= $varView['proforma_mes_anterior']; ?></td>
                         <td id="mi_d4"><?= $varView['var_pr']?></td>
                         <td id="mi_e4"><?= $varView['dif_pr']?></td>
                     </tr>
-                    <tr><td id="mi_a6">TESTDRIVE</td>
+                    <tr><td id="mi_a6">PROFORMAS ENVIADAS</td>
                         <td id="mi_b6" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
                         <td id="mi_c6" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
                         <td id="mi_d6"><?= $varView['var_td']?></td>

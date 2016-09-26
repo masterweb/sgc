@@ -1,6 +1,8 @@
 <?php
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //echo 'grupo id: '.$grupo_id;
+$id_responsable = Yii::app()->user->getId();
 ?>
 <?php if ($tipo_filtro == 'general'): ?>
     <?php
@@ -52,9 +54,12 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     <option value="Entrega">Entrega</option>
                     <option value="Vendido">Seguimiento-Paso 10</option>
                     <option value="Desiste">Desiste</option>
+                    <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 86): ?>
+                    <option value="Web">Web</option>
+                    <?php endif; ?>
                 </select>
             </div>
-            <?php if ($cargo_id == 70 || $cargo_id == 72): ?>
+            <?php if ($cargo_id == 70 || $cargo_id == 72 || $cargo_id == 85): ?>
                 <?php
                 // BUSQUEDA DE RESPONSABLE DE VENTAS CARGO ID 71 Y EL DEALER ID -> concesionarioid
                 $mod = new GestionDiaria;
@@ -65,8 +70,11 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                 switch ($cargo_id) {
                     case 70: // JEFE SUCURSAL
                         $array_dealers = $this->getResponsablesVariosConc();
+                        if(count($array_dealers) == 0){
+                            $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                        }
                         $dealerList = implode(', ', $array_dealers);
-                        $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealerList}) ";
+                        $cre->condition = " cargo_id IN (70,71) AND dealers_id IN ({$dealerList}) ";
                         break;
                     case 72: // JEFE BDC EXONERADOS
                         $array_dealers = $this->getDealerGrupoConc($grupo_id);
@@ -79,6 +87,11 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                         }
 
                         break;
+                    case 85: // JEFE VENTAS EXTERNAS
+                        $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                        $dealerList = implode(', ', $array_dealers);
+                        $cre->condition = " cargo_id = 86 AND dealers_id IN ({$dealerList}) ";
+                        break;    
 
                     default:
                         break;

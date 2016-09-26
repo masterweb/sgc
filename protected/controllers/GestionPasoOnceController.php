@@ -59,6 +59,7 @@ class GestionPasoOnceController extends Controller {
      */
     public function actionCreate() {
         $model = new GestionPasoOnce;
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -68,8 +69,14 @@ class GestionPasoOnceController extends Controller {
             $model->attributes = $_POST['GestionPasoOnce'];
             $model->responsable = Yii::app()->user->getId();
             $model->fecha = date("Y-m-d H:i:s");
-            if ($model->save())
-                $this->redirect(array('gestionInformacion/seguimiento'));
+            if ($model->save()){
+                if($cargo_id == 86){
+                    $this->redirect(array('gestionInformacion/seguimientobdc'));
+                }else{
+                    $this->redirect(array('gestionInformacion/seguimiento'));
+                }
+            }
+                
         }
 
         /* $this->render('create', array(

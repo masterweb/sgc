@@ -1,6 +1,8 @@
 <?php
 Yii::import("application.protected.components.Controller.php");
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+//echo 'cargo adicional: '.$cargo_adicional;
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $id_responsable = Yii::app()->user->getId();
 $dealer_id = Controller::getConcesionarioDealerId($id_responsable);
@@ -19,35 +21,75 @@ $dealerList = implode(', ', $array_dealers);
     $count = count($notificaciones);
     $fecha_actual = date("Y/m/d");
 
-    $abierto = "";
-    $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* FROM gestion_notificaciones gn 
-                    INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
-                    INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
-                    INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
-                    WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 ";
-    switch ($cargo_id) {
-        case 71: // asesor de ventas
-        case 70: // jefe de sucursal    
-            $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-            break;
-        //case 70: // jefe de sucursal
-        //    $abiertoSQL .= " AND gn.id_dealer = {$dealer_id} AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-        //    break;
-        default:
-            break;
+    // NOTIFICACIONES PARA ASESORES VENTAS Y ASESORES WEB============================================================================
+    if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86) {
+        $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
+                inner JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id 
+                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
+        $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
+        $dataWeb = '';
+        $dataWeb .= '<ul id="lAbierto">';
+        foreach ($notificacionesWeb as $wb) {
+            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 7));
+            $dataWeb .= '<li><a href="' . $url . '">Cliente '.$wb['nombres'].' '.$wb['apellidos'].' se ha registrado '.$wb['fecha'].'</a></li>';
+        }
+        $dataWeb .= '</ul>';
     }
-    $abiertoSQL .= ' GROUP BY gd.id_informacion';
+    
+    // NOTIFICACIONES DE CITAS PARA SOLICITUDES WEB===================================================================================
+    if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86) {
+        $citasWeb = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gn.id as id_not, gn.id_informacion, ga.agendamiento FROM gestion_informacion gi 
+                    INNER JOIN gestion_cita gc ON gc.id_informacion =  gi.id 
+                    INNER JOIN gestion_notificaciones gn ON gn.id_informacion = gi.id 
+                    INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+                    WHERE gi.responsable = {$responsable_id} AND gn.leido = 'UNREAD'";
+                    //die($citasWeb);
+        $notificacionesCitas = Yii::app()->db->createCommand($citasWeb)->query();
+        $dataCitas = '';
+        $dataCitas .= '<ul id="lAbierto">';
+        foreach ($notificacionesCitas as $ct) {
+            //$url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 8));
+            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $ct['id_not'], 'id_informacion' => $ct['id_informacion'], 'cid' => $cargo_id, 'tipo' => 8));
+            $dataCitas .= '<li><a href="' . $url . '">Cliente '.$ct['nombres'].' '.$ct['apellidos'].' - '.$ct['agendamiento'].'</a></li>';
+        }
+        $dataCitas .= '</ul>';            
+    }
 
-    //die('sql: '.$abiertoSQL);
-    $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
+    if ($cargo_id != 85) {
+
+        // NOTIFICACIONES DE AGENDAMIENTOS POR ASESORES COMERCIALES-------------------------------------------------------
+        $abierto = "";
+        $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
+        FROM gestion_notificaciones gn 
+        INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+        INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
+        INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
+        WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 ";
+        switch ($cargo_id) {
+            case 71: // asesor de ventas
+            case 70: // jefe de sucursal    
+                $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+                break;
+            case 85: // jefe de ventas externas
+                $abiertoSQL .= " AND gn.id_dealer IN ({$dealerList}) AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+                break;
+            default:
+                break;
+        }
+        $abiertoSQL .= ' GROUP BY gd.id_informacion';
+        $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
+    }
+
     $abierto2 = "";
     $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
                     INNER JOIN gestion_status_solicitud gs ON gs.id_informacion = gt.id_informacion 
                     INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
             . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
-            //die($abiertoSQL2);
+    //die($abiertoSQL2);
     $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
 
+    // NOTIFICACIONES DE CADUCIDAD PARA CATEGORIZACION---------------------------------------------------------------------------------------------------
     $abierto3 = "";
     $abiertoSQL3 = "SELECT gi.id, gi.nombres, gi.apellidos, gc.preg7, gc.fecha FROM gestion_informacion gi 
 INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
@@ -205,40 +247,65 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                 break;
         }
     }
+    if ($cargo_id != 85) {
+        $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
+                . "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion"
+                . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer IN ({$dealerList})";
+        $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
+        foreach ($notificacionesCierre as $nt) {
+            $datac .= '<ul id="lAbierto">';
+            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nt['id'], 'id_informacion' => $nt['id_informacion'], 'tipo' => 3));
 
-    $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
-            . "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion"
-            . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer = {$dealer_id}";
-    $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
-    foreach ($notificacionesCierre as $nt) {
-        $datac .= '<ul id="lAbierto">';
-        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nt['id'], 'id_informacion' => $nt['id_informacion'], 'tipo' => 3));
+            $datac .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                    . '<a href="' . $url . '">' . $nt["nombres"] . ' ' . $nt['apellidos'] . ' - Cierre de Venta</a>'
+                    . '</li>';
 
-        $datac .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                . '<a href="' . $url . '">' . $nt["nombres"] . ' ' . $nt['apellidos'] . ' - Cierre de Venta</a>'
-                . '</li>';
-
-        $datac .= '</ul>';
-        $datac .= '<input type="hidden" id="actualAbierto" value="10">';
+            $datac .= '</ul>';
+            $datac .= '<input type="hidden" id="actualAbierto" value="10">';
+        }
     }
-    
-    // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS==================================================
+
+    // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS------------------------------------------------------------------------------------
     $sqlComentarios = "SELECT * FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD'";
     $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
     foreach ($notComentarios as $nc) {
         $dc .= '<ul id="lAbierto">';
-        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5,'id_agendamiento' => $nc['id_agendamiento']));
+        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5, 'id_agendamiento' => $nc['id_agendamiento']));
 
         $dc .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                . '<a href="' . $url . '">Comentario de '.Controller::getResponsableNombres($nc['id_asesor_envia']).'</a>'
+                . '<a href="' . $url . '">Comentario de ' . Controller::getResponsableNombres($nc['id_asesor_envia']) . '</a>'
                 . '</li>';
 
         $dc .= '</ul>';
         $dc .= '<input type="hidden" id="actualAbierto" value="10">';
     }
 
+    // NOTIFICACIONES PARA JEFE DE VENTAS EXTERNAS----------------------------------------------------------------------------------------------------
+    $fecha_actual = date("Y/m/d");
+    $array_dealers = Controller::getDealerGrupoConc($grupo_id);
+    $dealerList = implode(', ', $array_dealers);
+    $sqlExt = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gd.proximo_seguimiento, gd.paso, gd.fuente_contacto FROM gestion_informacion gi "
+            . "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN usuarios u ON u.id = gi.responsable "
+            . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
+            . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD'";
+    //die('sql: '.$sqlExt );        
+    $notExt = Yii::app()->db->createCommand($sqlExt)->query();
+    $dataExt = '';
+    $dataExt .= '<ul id="lAbierto">';
+    $countExt = 0;
+    foreach ($notExt as $ext) {
+        $fecha_array = explode(' ', $ext['proximo_seguimiento']);
+        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $ext['id'], 'tipo' => 6));
+        if (strtotime($fecha_actual) > strtotime($fecha_array[0])) {
+            $dataExt .= '<li><a href="' . $url . '">' . $ext['nombres'] . ' ' . $ext['apellidos'] . ' - Cliente no Contactado (48 horas)</a></li>';
+            $countExt++;
+        }
+    }
+    $dataExt .= '</ul>';
 
-    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios);
+    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios) + $countExt;
+    if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86)
+        $num_noficicaciones = count($notificacionesWeb) + count($notificacionesCitas);
     ?>
     <div class="cont_tl_notificaciones" onclick="verN(<?php echo $num_noficicaciones; ?>)">
         <?php
@@ -255,84 +322,118 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
     <div id="lNotificaciones" style="display: none;">
         <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
             <ul id="myTab" class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#seguimiento" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Seguimiento</a></li>
-                <?php if ($cargo_id == 71): ?>
+                <?php if (($cargo_id == 71 || $cargo_id == 70) && $cargo_adicional == 0): // asesor de ventas y jefe de sucursal ?>
+                    <li role="presentation" class="active"><a href="#seguimiento" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Seguimiento</a></li>
                     <li role="presentation"><a href="#solicitudes" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Crédito</a></li>
                     <li role="presentation"><a href="#caducidad" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Caducidad</a></li>
                 <?php endif; ?>
-                <?php if ($cargo_id == 70): ?>
+                <?php if ($cargo_id == 70): // jefe de sucursal ?>
                     <li role="presentation"><a href="#cierre" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Cierre</a></li>
                 <?php endif; ?>
+                <?php if ($cargo_id == 85): // jefe de ventas externas?>
+                    <li role="presentation"><a href="#seguimientoe" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Seguimiento</a></li>
+                <?php endif; ?>
+                <?php if (($cargo_id == 71 || $cargo_id == 70) && $cargo_adicional == 0) : // asesor de ventas y jefe de sucursal ?>
                     <li role="presentation"><a href="#comentarios" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Comentarios</a></li>
+                <?php endif; ?>  
+                <?php if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86): ?>
+                    <li role="presentation"><a href="#web" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Web</a></li>
+                    <li role="presentation"><a href="#citas" id="abierto-tab" role="tab" data-toggle="tab" aria-controls="abierto" aria-expanded="true">Citas</a></li>
+                <?php endif; ?>    
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="seguimiento" aria-labelledby="abierto-tab">
-                    <?php
-                    echo '<ul id="lAbierto">';
-                    if (count($notificacionesAbiertas) > 0) {
-                        //die('enter');
-                        foreach ($notificacionesAbiertas as $value) {
-                            $criteria = new CDbCriteria(array(
-                                "condition" => "id = {$value['id_agendamiento']}",
-                            ));
-                            $modelo = GestionAgendamiento::model()->find($criteria);
-                            $seg = $modelo->agendamiento;
-                            //$id_gd = $this->getGestionDiariaId($value['id_informacion']);
-                            //$paso= $this->getGestionDiariaPaso($value['id_informacion']);
-                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id_not'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 1));
-                            //$url = Yii::app()->createUrl('gestionDiaria/create', array('id' => $value['id_informacion'], 'paso' => $paso, 'id_gt' => $id_gd));
+                <?php if (($cargo_id == 71 || $cargo_id == 70) && $cargo_adicional == 0): // jefe de ventas externas?>
+                    <div role="tabpanel" class="tab-pane fade active in" id="seguimiento" aria-labelledby="abierto-tab">
+                        <?php
+                        echo '<ul id="lAbierto">';
+                        if (count($notificacionesAbiertas) > 0) {
+                            //die('enter');
+                            foreach ($notificacionesAbiertas as $value) {
+                                $criteria = new CDbCriteria(array(
+                                    "condition" => "id = {$value['id_agendamiento']}",
+                                ));
+                                $modelo = GestionAgendamiento::model()->find($criteria);
+                                $seg = $modelo->agendamiento;
+                                //$id_gd = $this->getGestionDiariaId($value['id_informacion']);
+                                //$paso= $this->getGestionDiariaPaso($value['id_informacion']);
+                                $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id_not'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 1));
+                                //$url = Yii::app()->createUrl('gestionDiaria/create', array('id' => $value['id_informacion'], 'paso' => $paso, 'id_gt' => $id_gd));
 
-                            $abierto .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'
-                                    . '<a href="' . $url . '">' . $value["nombres"] . ' - ' . $value["apellidos"] . ' - ' . $seg . '</a>'
-                                    . '</li>';
+                                $abierto .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="' . utf8_decode(utf8_encode(utf8_decode(substr(ucfirst(strtolower($value["descripcion"])), 0, 380)))) . '">'
+                                        . '<a href="' . $url . '">' . $value["nombres"] . ' - ' . $value["apellidos"] . ' - ' . $seg . '</a>'
+                                        . '</li>';
+                            }
+                            echo $abierto;
+
+                            echo '</ul>';
+                            echo '<input type="hidden" id="actualAbierto" value="10">';
+                            //echo '<div id="vAbierto" class="mas" onclick=\'traerMas("Abierto")\'><span>VER M&Aacute;S</span></div>';
+                        } else {
+                            echo "No existen notificaciones para mostrar.";
                         }
-                        echo $abierto;
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($cargo_id !== 85): // jefe de ventas externas?>
+                    <div role="tabpanel" class="tab-pane fade" id="solicitudes" aria-labelledby="abierto-tab">
+                        <?php
+                        echo '<ul id="lAbierto">';
+                        if (count($notificacionesAbiertas2) > 0) {
+                            foreach ($notificacionesAbiertas2 as $value) {
+                                $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 2));
 
-                        echo '</ul>';
-                        echo '<input type="hidden" id="actualAbierto" value="10">';
-                        //echo '<div id="vAbierto" class="mas" onclick=\'traerMas("Abierto")\'><span>VER M&Aacute;S</span></div>';
-                    } else {
-                        echo "No existen notificaciones para mostrar.";
-                    }
-                    ?>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="solicitudes" aria-labelledby="abierto-tab">
-                    <?php
-                    echo '<ul id="lAbierto">';
-                    if (count($notificacionesAbiertas2) > 0) {
-                        foreach ($notificacionesAbiertas2 as $value) {
-                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $value['id'], 'id_informacion' => $value['id_informacion'], 'cid' => $cargo_id, 'tipo' => 2));
+                                $abierto2 .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                        . '<a href="' . $url . '">' . $value["nombres"] . ' ' . $value['apellidos'] . ' - ' . $value['descripcion'] . '</a>'
+                                        . '</li>';
+                            }
+                            echo $abierto2;
 
-                            $abierto2 .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                                    . '<a href="' . $url . '">' . $value["nombres"] . ' ' . $value['apellidos'] . ' - ' . $value['descripcion'] . '</a>'
-                                    . '</li>';
+                            echo '</ul>';
+                            echo '<input type="hidden" id="actualAbierto" value="10">';
+                            //echo '<div id="vAbierto" class="mas" onclick=\'traerMas("Abierto")\'><span>VER M&Aacute;S</span></div>';
+                        } else {
+                            echo "No existen notificaciones para mostrar.";
                         }
-                        echo $abierto2;
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($cargo_id !== 85): // jefe de ventas externas?>
+                    <div role="tabpanel" class="tab-pane fade" id="caducidad" aria-labelledby="abierto-tab">
+                        <?php
+                        if ($count_cat > 0) {
+                            echo $data;
+                        }
+                        ?>
 
-                        echo '</ul>';
-                        echo '<input type="hidden" id="actualAbierto" value="10">';
-                        //echo '<div id="vAbierto" class="mas" onclick=\'traerMas("Abierto")\'><span>VER M&Aacute;S</span></div>';
-                    } else {
-                        echo "No existen notificaciones para mostrar.";
-                    }
+                    </div>
+                <?php endif; ?>
+                <?php if ($cargo_id !== 85): // jefe de ventas externas?>
+                    <div role="tabpanel" class="tab-pane fade" id="cierre" aria-labelledby="abierto-tab">
+                        <?php
+                        echo $datac;
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <?php if ($cargo_id !== 85): // jefe de ventas externas?>
+                    <div role="tabpanel" class="tab-pane fade" id="comentarios" aria-labelledby="abierto-tab">
+                        <?php
+                        echo $dc;
+                        ?>
+                    </div>
+                <?php endif; ?>
+                <div role="tabpanel" class="tab-pane fade active in" id="seguimientoe" aria-labelledby="abierto-tab">
+                    <?php
+                    echo $dataExt;
                     ?>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="caducidad" aria-labelledby="abierto-tab">
+                <div role="tabpanel" class="tab-pane fade " id="web" aria-labelledby="abierto-tab">
                     <?php
-                    if ($count_cat > 0) {
-                        echo $data;
-                    }
-                    ?>
-
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="cierre" aria-labelledby="abierto-tab">
-                    <?php
-                    echo $datac;
+                    echo $dataWeb;
                     ?>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="comentarios" aria-labelledby="abierto-tab">
+                <div role="tabpanel" class="tab-pane fade " id="citas" aria-labelledby="abierto-tab">
                     <?php
-                    echo $dc;
+                    echo $dataCitas;
                     ?>
                 </div>
             </div>

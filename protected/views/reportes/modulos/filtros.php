@@ -13,6 +13,7 @@
         $usuariosGenentes = array(69);
         $usuariosJafeBDCyExonerados = array(72);
         $usuariosAekia = array(4, 45, 46, 48, 57, 58, 60, 61, 62);
+        $usuariosWeb = array(85,86);// VENTAS WEB Y JEFE DE VENTAS WEB
 
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'gestion-nueva-cotizacion-form',

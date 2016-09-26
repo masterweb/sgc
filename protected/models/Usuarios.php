@@ -15,6 +15,7 @@
  * @property string $fecharegistro
  * @property string $estado
  * @property integer $cargo_id
+ * @property integer $cargo_adicional
  * @property integer $dealers_id
  * @property integer $area_id
  * @property string $fechaactivacion
@@ -48,7 +49,7 @@ class Usuarios extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('nombres,apellido,cedula,fechaingreso, correo, usuario, password, fecharegistro, estado, cargo_id, fechanacimiento,celular', 'required'),
-            array('cargo_id, dealers_id,grupo_id,concesionario_id,provincia_id, area_id', 'numerical', 'integerOnly' => true),
+            array('cargo_id, cargo_adicional, dealers_id,grupo_id,concesionario_id,provincia_id, area_id', 'numerical', 'integerOnly' => true),
             array('nombres, password, firma', 'length', 'max' => 250),
             array('correo', 'length', 'max' => 150),
             array('apellido', 'length', 'max' => 150),
@@ -103,6 +104,7 @@ class Usuarios extends CActiveRecord {
             'fecharegistro' => 'Fecha de registro',
             'estado' => 'Estado',
             'cargo_id' => 'Cargo',
+            'cargo_adicional' => 'Cargo Adicional',
             'dealers_id' => 'Concesionarios',
             'fechaactivacion' => 'Fecha de activaci&oacute;n',
             'ultimavisita' => '&Uacute;ltima visita',

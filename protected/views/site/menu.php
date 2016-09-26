@@ -2,12 +2,18 @@
 $cargo = Yii::app()->user->getState('usuario');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $area_id = (int) Yii::app()->user->getState('area_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
+if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9 ){
+    $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+}
 //echo 'cargo id: '.$cargo_id;
 // vanessa17_ldu@hotmail.com, nutri_mas2@hotmail.com
 //echo 'CARGO:  '.(int) Yii::app()->user->getState('cargo_id');
 //echo 'AREA:  '.(int) Yii::app()->user->getState('area_id');
 
-$accesosUser = Permiso::model()->findAll(array('condition' => "cargoId=:match", 'params' => array(':match' => (int) Yii::app()->user->getState('cargo_id'))));
+$accesosUser = Permiso::model()->findAll(array('condition' => "cargoId=:match OR cargoId=:match2", 'params' => array(':match' => (int) Yii::app()->user->getState('cargo_id'),':match2' => $cargo_adicional)));
 //die('count '.count($accesosUser));
 ?>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/nuevosEstilos.css" type="text/css" />
@@ -155,7 +161,7 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Asesor de Ventas</div></a>
+                                        <div class="txt_menu">RGD </div></a>
                                 </div>
                             </li>
                         <?php } ?>
@@ -163,7 +169,7 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD SGC</div></a>
+                                        <div class="txt_menu">RGD </div></a>
                                 </div>
                             </li>
                         <?php } ?>
@@ -174,7 +180,7 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Nuevos</div></a>
+                                        <div class="txt_menu">RGD </div></a>
                                 </div>
                             </li>
                         <?php } ?>
@@ -182,7 +188,7 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD Jefe Sucursal</div></a>
+                                        <div class="txt_menu">RGD </div></a>
                                 </div>
                             </li>
                         <?php } ?>
@@ -192,7 +198,7 @@ $rol = Yii::app()->user->getState('roles');
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Jefe Sucursal</div></a>
+                                <div class="txt_menu">RGD </div></a>
                         </div>
                     </li>
                     <?php } ?>
@@ -267,11 +273,11 @@ $rol = Yii::app()->user->getState('roles');
                         <?php } ?>
                     <?php } ?>    
                         
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas') { ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas' && $tipo_grupo == 1) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD BDC</div></a>
+                                <div class="txt_menu">RGD</div></a>
                         </div>
                     </li>
                     <?php } ?>

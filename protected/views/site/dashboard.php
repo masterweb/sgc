@@ -1,5 +1,6 @@
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //$con = Yii::app()->db;
 //if ($cargo_id == 71644) {  // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
 //    //die('enter cargo ventas');
@@ -81,13 +82,21 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 <section class="dashb">
         <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;     ?>/images/img_14.jpg"></div>-->
     <ul class="menu dashboard">
+        <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86): ?>
+        <li class="wrapper">
+            <div class="forma">
+                <a href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
+                    <div class="txt_menu">Reportes Ventas Web</div></a>
+            </div>
+        </li>
+        <?php endif; ?>
         <?php 
-        $restricted_reportes = ['74', '76', '77'];
+        $restricted_reportes = ['74', '76', '77','86','85'];
         if(!in_array($cargo_id, $restricted_reportes)):?>
             <li class="wrapper">
                 <div class="forma">
                     <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
-                        <div class="txt_menu">Reportes</div></a>
+                        <div class="txt_menu">Reportes Ventas Nuevos</div></a>
                 </div>
             </li>
         <?php endif ?>

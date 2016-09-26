@@ -1329,6 +1329,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //$email = 'alkanware@gmail.com'; //email administrador
 
         $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+        if($send){
+            // GRABAR PROFORMA ENVIADA A BASE DE DATOS
+            $proforma = new GestionProformasEnviadas;
+            $proforma->id_informacion = $id_informacion;
+            $proforma->user_id = $id_asesor;
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $proforma->fecha = date("Y-m-d H:i:s"); 
+            $proforma->save();
+        }
 
 
         // SEND EMAIL TO CLIENT WITH PROFORM NUMBER

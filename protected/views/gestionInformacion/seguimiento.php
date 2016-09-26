@@ -14,6 +14,7 @@ $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_responsable);
 //$cargo_id = Yii::app()->user->getState('cargo_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $area_id = (int) Yii::app()->user->getState('area_id');
 //echo  'dealer id: '.$dealer_id;
 $count = count($users);
@@ -43,25 +44,6 @@ $count = count($users);
         $('[data-toggle="tooltip"]').tooltip();
         $('#checkMain').click(function(){
             $('.checkAll').attr('checked', ($(this).is(':checked')) ? true:false);
-        });
-        $('#GestionDiaria_seguimiento').change(function(){
-            var value = $(this).attr('value');
-            //alert(value);
-            switch(value){
-                case '':
-                    $('#rango_fecha').hide();
-                    $('#seguimiento_rgd').val(0);
-                    break;
-                case '1':
-                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
-                    break;
-                case '2':
-                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
-                    break;
-                case '3':
-                    $('#rango_fecha').show();$('#seguimiento_rgd').val(1);
-                    break;    
-            }
         });
         $('#GestionDiaria_grupo').change(function(){
             var value = $(this).attr('value');
@@ -583,7 +565,7 @@ $count = count($users);
     <div class="row">
 <?php if ($cargo_id != 69) { ?>
     <?=
-    $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));
+    $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion, 'tipo' => 'ventas'));
 }
 ?>
         <div class="col-md-8">
@@ -785,6 +767,7 @@ $count = count($users);
                                 $medio_contacto = $this->getMedioContacto($c['id']);
                                 $desiste = $this->getDesiste($c['id']);
                                 $proximo_seguimiento = $this->getSeguimiento($c['id']);
+                                $cita = $this->getCita($c['id']);
                                 $categorizacion = $this->getCategorizacionSGC($c['id']);
                                 $fuente = $this->getFuenteSGC($c['id']);
                                 $status = $this->getStatusSGC($c['id']);
@@ -814,6 +797,8 @@ $count = count($users);
                                         $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion'));
                                         if ($fuente == 'prospeccion')
                                             $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
+                                        if ($fuente == 'web')
+                                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                         break;
                                     case '3':
                                         $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -850,7 +835,7 @@ $count = count($users);
                                     <?php
                                     if ($medio_contacto == 'web' && $c['tipo_form_web'] == ''):
                                         ?>
-                                        <button type="button" class="btn btn-xs btn-warning">www</button>
+                                        <button type="button" class="btn btn-xs btn-warning">Web</button>
                                     <?php endif; ?>
                                     <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):
@@ -903,7 +888,7 @@ $count = count($users);
                                     }
                                     ?> 
                                 </td>
-                                <td><?php echo $proximo_seguimiento; ?></td>
+                                <td><?php echo $proximo_seguimiento; if($cita){echo ' (c)';}?></td>
                                 <td><?php echo $this->getResponsable($c['responsable']); ?></td>
                                 <td><?php
                                     echo $this->getNameConcesionarioById($c['dealer_id']);
@@ -1013,9 +998,9 @@ $count = count($users);
                                     ?> 
                                 </td>
                                 <td>
-                                    <?php //echo $fuente_contacto;  ?>
+                                    <?php //echo $fuente_contacto; echo $url; ?>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
-                                    <?php if (($status == 1 || $status == 4) && $desiste != 1) { ?>
+                                    <?php if (($status == 1 || $status == 4) && $desiste != 1) {  ?>
                                         <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
                                             <?php if ($area_id != 4 && $cargo_id != 69) { ?> 
                                                 <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
@@ -1027,7 +1012,7 @@ $count = count($users);
                                                 
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'prospeccion'){ ?> 
+                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' ){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 

@@ -2,6 +2,25 @@ $(document).ready(function () {
     $('.tipo-venta').hide();
     $('.tipo-form-drop').hide();
     /*inicio script de 1800----------------------*/
+    $('#GestionDiaria_seguimiento').change(function(){
+            var value = $(this).attr('value');
+            //alert(value);
+            switch(value){
+                case '':
+                    $('#rango_fecha').hide();
+                    $('#seguimiento_rgd').val(0);
+                    break;
+                case '1':
+                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
+                    break;
+                case '2':
+                    $('#rango_fecha').hide();$('#seguimiento_rgd').val(1);
+                    break;
+                case '3':
+                    $('#rango_fecha').show();$('#seguimiento_rgd').val(1);
+                    break;    
+            }
+        });
     $('#Casos_tema').change(function () {
         var value = $(this).attr('value');
         if (value != 3) {
@@ -830,6 +849,11 @@ $(document).ready(function () {
     $('#GestionAgendamiento_observaciones').change(function () {
         var value = $(this).attr('value');
         switch (value) {
+            case 'Cita':
+                //$('#cont-otro').hide();
+                $('.agendamiento').show();
+                addReglas();
+                break;
             case 'Seguimiento':
                 //$('#cont-otro').hide();
                 $('.agendamiento').show();
@@ -903,6 +927,7 @@ $(document).ready(function () {
                 case 'Seguimiento':
                 case 'Falta de tiempo':
                 case 'Llamada de emergencia':
+                case 'Cita':    
                     var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
                     //console.log(proximoSeguimiento);
                     var fechaSeguimiento = proximoSeguimiento.replace('/', '-');

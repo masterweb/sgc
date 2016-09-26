@@ -1,10 +1,13 @@
 <?php
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $url = Yii::app()->createUrl('gestionInformacion/seguimiento');
 switch ($cargo_id) {
     case 71: // asesor ventas
     case 70: // jefe sucursal
         $url = Yii::app()->createUrl('gestionInformacion/seguimiento');
+        if($cargo_adicional == 86)
+           $url = Yii::app()->createUrl('gestionInformacion/seguimiento'); 
         break;
     case 77: // asesor usados
         $url = Yii::app()->createUrl('gestionInformacion/seguimientousados');
@@ -16,6 +19,12 @@ switch ($cargo_id) {
         $url = Yii::app()->createUrl('gestionInformacion/seguimientobdc');
         break;
     case 71:
+        break;
+    case 86: // asesor ventas externas
+        $url = Yii::app()->createUrl('gestionInformacion/seguimientobdc');
+        break;
+    case 85: // jefe ventas externas
+        $url = Yii::app()->createUrl('gestionInformacion/seguimientobdc');
         break;
 
     default:

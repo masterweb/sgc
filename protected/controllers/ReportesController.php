@@ -8,9 +8,35 @@ require_once( dirname(__FILE__) . '/../components/Reportes/TraficoAcumulado.php'
 require_once( dirname(__FILE__) . '/../components/Reportes/TraficoUsados.php');
 
 class ReportesController extends Controller {
+    
+    /**
+     * Specifies the access control rules.
+     * This method is used by the 'accessControl' filter.
+     * @return array access control rules
+     */
+    public function accessRules() {
+        return array(
+            array('allow', // allow all users to perform 'index' and 'view' actions
+                'actions' => array('index', 'view'),
+                'users' => array('*'),
+            ),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('inicio','bdc','ajaxgetmodels','AjaxGetTipoBDC','AjaxGetExonerados',
+                    'AjaxGetAsesores','AjaxGetDealers','AjaxGetProvincias','AjaxGetGrupo','AjaxGetExcel',
+                    'AjaxGetConsecionariosTA','AjaxGetModelos2TA'),
+                'users' => array('@'),
+            ),
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
+            ),
+            array('deny', // deny all users
+                'users' => array('*'),
+            ),
+        );
+    }
 
     public function actionInicio($id_informacion = null, $id_vehiculo = null, $tipo = null) {
-        
         if(!is_null($tipo)){
             $tipo = $tipo;
         }
@@ -24,6 +50,7 @@ class ReportesController extends Controller {
 
         $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
+        $varView['cargo_adicional'] = (int) Yii::app()->user->getState('cargo_adicional');
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
         $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
@@ -94,6 +121,14 @@ class ReportesController extends Controller {
         $tit_init = 'Búsqueda entre ';
         $varView['AEKIA'] = false;
         $bdcfalse = ' AND gi.bdc = 0 ';
+        if($tipo == 'externas')
+            $bdcfalse = ' AND gi.bdc = 1 ';
+        // GRUPO ASIAUTO Y KMOTOR CON CARGO JEFE VENTAS WEB O CARGO ADICIONAL ASESOR VENTAS WEB. SUMA AL EMBUDO BDC = 1
+        if($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3 && ($varView['cargo_id'] == 85 || $varView['cargo_id'] == 86))
+            $bdcfalse = ' AND gi.bdc = 1 ';
+        // IOKARS, AUTHESA - ASESORES VENTAS Y ASESORES WEB. SUMA AL EMBUDO BDC = 0 Y BDC = 1
+        if($varView['grupo_id'] != 2 || $varView['grupo_id'] != 3 && ($varView['cargo_id'] == 71 || $varView['cargo_id'] == 86))
+            $bdcfalse = ' AND (gi.bdc = 1 OR gi.bdc = 0) ';
 
         //TIPOS DE USUARIO QUE VEN REPORTES
         //MODIFICAR LA SELECCION DE RESPONSABLES
@@ -135,7 +170,14 @@ class ReportesController extends Controller {
                 break;
             case 70: // jefe de sucursal TERMINADO------>
                 $id_persona = "gi.dealer_id = " . $varView['dealer_id'];
-                $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
+                $varView['lista_conce'] = $GF->getConcecionario((int) Yii::app()->user->getState('grupo_id'));
+                
+                if($varView['cargo_adicional'] == 85){ // CARGO ADICIONAL JEFE DE VENTAS EXTERNAS
+                    $array_dealers = $this->getDealerGrupoConc($varView['grupo_id']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
+                    $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id IN (70,71) ";
+                }
                 break;
             case 71: // asesor de ventas TERMINADO------>
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
@@ -154,6 +196,15 @@ class ReportesController extends Controller {
                 break;
             case 77: //asesor usados TERMINADO------> PROBAR
                 $id_persona = "gi.responsable = " . $varView['id_responsable'] . ' AND gi.tipo_form_web = "usado" ';
+                break;
+            case 86:// asesor de ventas externas------> TRABAJAR
+                $id_persona = "gi.responsable = " . $varView['id_responsable'];
+                break;
+            case 85:// jefe de ventas externas------> TRABAJAR
+                $array_dealers = $this->getDealerGrupoConc($varView['grupo_id']);
+                $dealerList = implode(', ', $array_dealers);
+                $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
+                $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id = 86 ";
                 break;
         }
 
@@ -280,7 +331,7 @@ class ReportesController extends Controller {
                     }
                 }
             }
-        } else {
+         } else {
             $varView['checked_g'] = true;
             $varView['checked_ge'] = true;
         }
@@ -326,6 +377,7 @@ class ReportesController extends Controller {
             $fechas[2] = $varView['fecha_inicial_actual'];
             $fechas[3] = $varView['fecha_actual'];
 
+            // TRAER TRAFICO ACUMULADO DE BASES DE DATOS ENVIADOS POR DAVID EN EXCEL
             $retorno = $traficoAcumulado->buscar($varView['TAconsulta'], $varView['TAmodelo'], $fechas);
 
             $contador = [];
@@ -339,6 +391,7 @@ class ReportesController extends Controller {
                 'RIO R 4P',
                 'PREGIO GRAND'
             );
+            // TRAFICO ACUMULADO MES ANTERIOR
             foreach ($retorno['mant'] as $tipo) {
                 if ($tipo['tipo'] == 'PROSPECCION') {
                     $contador['prospecion_mant'][] = $tipo['tipo'];
@@ -369,6 +422,7 @@ class ReportesController extends Controller {
                 }
             }
 
+            // TRAFICO ACUMULADO MES ACTUAL
             foreach ($retorno['mact'] as $tipo) {
                 if ($tipo['tipo'] == 'PROSPECCION') {
                     $contador['prospecion_mact'][] = $tipo['tipo'];
@@ -461,6 +515,12 @@ class ReportesController extends Controller {
             $varView['vhcbu1'] = $retorno[23];
             $varView['vhckd2'] = $retorno[24];
             $varView['vhcbu2'] = $retorno[25];
+            $varView['cotizaciones_enviadas_anterior'] = $retorno[26];
+            $varView['cotizaciones_enviadas_actual'] = $retorno[27];
+            $varView['respuestas_enviadas_anterior'] = $retorno[28];
+            $varView['respuestas_enviadas_actual'] = $retorno[29];
+            $varView['proformas_enviadas_anterior'] = $retorno[30];
+            $varView['proformas_enviadas_actual'] = $retorno[31];
         }
 
         $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
@@ -532,6 +592,47 @@ class ReportesController extends Controller {
     }
 
     /* AJAX CALLS */
+    
+    public function actionBdc($id_informacion = null, $id_vehiculo = null, $tipo = null){
+        // CARGA POR DEFECTO DE LAS BUSQUEDAS POR FECHAS DE INICIO
+        if(!is_null($tipo)){
+            $tipo = $tipo;
+        }
+        $GF = new GlobalFunctions;
+
+        date_default_timezone_set('America/Guayaquil');
+        $dt = time();
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+
+        $varView = array();
+        
+        // USUARIOS PREDETERMINADOS, CARGOS, RESPONSABLE        
+        $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
+        $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
+        $varView['id_responsable'] = Yii::app()->user->getId();
+        $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
+        $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
+        $varView['provincia_id'] = $varView['nombre_usuario']->provincia_id;
+        $varView['cargo_usuario'] = Cargo::model()->findByPk($varView['nombre_usuario']->cargo_id);
+        if ($varView['nombre_usuario']->dealers_id != '') {
+            $varView['consecionario_usuario'] = '<b>Concesionario:</b> ' . GrConcesionarios::model()->find('dealer_id=' . $varView['nombre_usuario']->dealers_id)['nombre'];
+        }
+        $varView['titulo'] = '';
+        $varView['concesionario'] = 2000;
+        $varView['tipos'] = null;
+
+        $varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
+        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
+        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
+        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
+        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-1 month', $dt));
+        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-1 month', $dt)) . '-01';
+        $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
+        $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));
+        
+                
+        $this->render('reportesbdc', array());
+    }
 
     public function actionAjaxGetModelos() {
         $getModelos = new AjaxCalls;

@@ -357,10 +357,10 @@ class SiteController extends Controller {
         $model = new Usuarios;
         $model->body = 'resetPasswordWithCaptcha';
         if (isset($_POST['Usuarios'])) {
-            /* echo '<pre>';
-              print_r($_POST);
-              echo '</pre>';
-              die(); */
+//             echo '<pre>';
+//              print_r($_POST);
+//              echo '</pre>';
+//              die();
             if (!isset($_POST["recaptcha_response_field"]) && empty($_POST["recaptcha_response_field"]))
                 Yii::app()->clientScript->registerScript('Alerta', 'alert("Debes ingresar el codigo de verificación")');
 
@@ -375,6 +375,11 @@ class SiteController extends Controller {
             $grupo_concesionarios = $_POST['Usuarios']['concesionario_id'];
             $model->concesionario_id = 0;
             $model->firma = $_POST['Usuarios']['firma'];
+            if($_POST['Usuarios']['adicional'] == 1){
+                $model->cargo_adicional = $_POST['Usuarios']['cargo_adicional'];
+                $grupo_concesionarios_adicional = $_POST['Usuarios']['concesionario_ida'];
+            }
+                
             if ($model->save()) {
                 /*
                   REGISTRAR TODOS LOS CONCESIONARIOS SELECCIONADOS EN LA TABLA DE GRUPOCONCESIONARIOUSUARIO
@@ -386,6 +391,18 @@ class SiteController extends Controller {
                             $gconcesionario->usuario_id = $model->id;
                             $gconcesionario->concesionario_id = $grupo_concesionarios[$i];
                             $gconcesionario->save();
+                        }
+                    }
+                }
+                // REGISTRAR LOS CONCESIONARIOS DEL USUARIO SI TIENE CARGO ADICIONAL
+                if (!empty($grupo_concesionarios_adicional) && ($_POST['Usuarios']['adicional'] == 1)) {
+                    for ($i = 0; $i <= count($grupo_concesionarios_adicional); $i++) {
+                        if (!empty($grupo_concesionarios_adicional[$i])) {
+                            $gconcesionario2 = new Grupoconcesionariousuario();
+                            $gconcesionario2->usuario_id = $model->id;
+                            $gconcesionario2->concesionario_id = $grupo_concesionarios_adicional[$i];
+                            $gconcesionario2->tipo_id = 2;
+                            $gconcesionario2->save();
                         }
                     }
                 }
@@ -439,16 +456,22 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //die('valor:'.$valor);
         $concesionarios = GrConcesionarios::model()->findAll(array('order' => 'nombre ASC', 'condition' => "id_grupo=:match", 'params' => array(':match' => (int) $valor)));
         $html = "";
+        $html2 = "";
         if (!empty($concesionarios)) {
             $html .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
+            $html2 .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_ida][]" id="Usuarios_concesionario_ida" class="form-control cccc">';
             //$html .="<option>Seleccione >></option>";
             foreach ($concesionarios as $c) {
                 $html .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
+                $html2 .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
             }
             $html .="</select>";
-            echo $html;
+            $html2 .="</select>";
+            $data = array('result' => true, 'options1' => $html, 'options2' => $html2);
+            echo json_encode($data);
         } else {
-            echo 0; 
+            $data = array('result' => false, 'options1' => $html, 'options2' => $html2);
+            echo json_encode($data);
             die();
         }
     }
@@ -458,11 +481,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
         //die('valor:'.$valor);
-        if($valor == 86 || $valor == 85){
-            $concesionarios = GrGrupo::model()->findAll(array('condition' => 'id IN(2,3)','order' => 'nombre_grupo ASC'));
-        }else{
+        //if($valor == 86 || $valor == 85){
+            //$concesionarios = GrGrupo::model()->findAll(array('condition' => 'id IN(2,3)','order' => 'nombre_grupo ASC'));
+        //}else{
             $concesionarios = GrGrupo::model()->findAll(array('order' => 'nombre_grupo ASC'));
-        }
+        //}
         
         $html = "";
         if (!empty($concesionarios)) {
@@ -503,18 +526,26 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
-        $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match", 'params' => array(':match' => (int) $valor)));
+        $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match AND estado = 'ACTIVO'", 'params' => array(':match' => (int) $valor)));
         $html = "";
+        $htmlad = "";
+        
         if (!empty($concesionarios)) {
             $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" onchange="getConc(this.value);">';
             $html .="<option value=''>Seleccione >></option>";
+            $htmlad .='<select required name="Usuarios[cargo_adicional]" id="Usuarios_cargo_id" class="form-control">';
+            $htmlad .="<option value=''>Seleccione >></option>";
             foreach ($concesionarios as $c) {
                 $html .="<option value='" . $c->id . "'>" . $c->descripcion . "</option>";
+                $htmlad .="<option value='" . $c->id . "'>" . $c->descripcion . "</option>";
             }
             $html .="</select>";
-            echo $html;
+            $htmlad .="</select>";
+            $options = array('result' => true,'options' => $html, 'optionsad' => $htmlad);
+            echo json_encode($options);
         } else {
-            echo 0;
+            $options = array('result' => false,'options' => $html, 'optionsad' => $htmlad);
+            echo json_encode($options);
             die();
         }
     }
@@ -2730,6 +2761,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             } else {
                 //echo "NO HAY COINCIDENCIA";
             }
+            // STRING DE LONGITUD DE ACUERDO A LAS COINCIDENCIAS DE INICIO $coincidencias_vh[0][1], Y FINAL $coincidencias2_vh[0][1]
+            $string_ttvh01 = substr($response['lcxml'], $coincidencias_vh[0][1], $coincidencias2_vh[0][1]);
+            //echo '<pre>'.htmlspecialchars($string_ttvh01).'</pre>';
             //die('countvh: '.$count_vh);
             //die('coin1_vh: '.$coin1_vh.', coin2_vh: '.$coin2_vh);
             $datos_search = array(
@@ -2751,7 +2785,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $fin = $coincidencias2_vh[0][$ght][1]; // valor mas actual del array $coincidencias2_vh
                 $ini += 8; // sumamos el numero de caracteres (8) de <ttga35>
                 $longitudchr = $fin - $ini; // longitud de la cadena a imprimir
-                $str_vh = substr($response['lcxml'], $ini, $longitudchr);
+                $str_vh = substr($string_ttvh01, $ini, $longitudchr);
 
                 foreach ($datos_search as $key => $value) {
                     // primero encontramos la posicion de la cadena a encontrar
@@ -2890,13 +2924,17 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
 
     public function actionFactura($id_vehiculo = NULL, $id_informacion = NULL) {
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        //if ($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6) { // IOKARS, AUTHESA, MERQUIAUTO
+        if ($grupo_id == 4 || $grupo_id == 8 || $grupo_id == 6) { // IOKARS, AUTHESA, MERQUIAUTO
             //echo 'enter no createc';
             $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
-        //} else {
+        } else {
             //echo 'enter cr';
-            //$this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
-        //}
+            $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
+        }
+    }
+    
+    public function actionFacturanc($id_vehiculo = NULL, $id_informacion = NULL) {        
+        $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
     }
 
     public function actionEntrega($id_informacion = NULL) {

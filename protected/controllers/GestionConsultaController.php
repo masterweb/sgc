@@ -709,6 +709,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $sql = "UPDATE gestion_diaria SET fuente_contacto = 'showroom', fuente_contacto_historial = 'prospeccion' WHERE id_informacion = {$_POST['GestionInformacion']['id_informacion']}";
                 $request = $con->createCommand($sql)->execute();
             }
+            //die($_POST['GestionInformacion']['fuente']);
+            // EN FUENTE WEB AL INGRESAR DATOS A CONSULTA
+            // CAMBIAR FUENTE A showroom o trafico EN gestion_diaria
+            // SEGUN ID INFORMACION
+//            if($_POST['GestionInformacion']['fuente'] == 'web'){
+//                $con = Yii::app()->db;
+//                $sql = "UPDATE gestion_diaria SET fuente_contacto = 'showroom', fuente_contacto_historial = 'web' WHERE id_informacion = {$_POST['GestionInformacion']['id_informacion']}";
+//                $request = $con->createCommand($sql)->execute();
+//            }
 
             $this->redirect(array('gestionVehiculo/create/' . $id_info . '?tipo=' . $tipo2 . '&fuente=' . $fuente2));
 

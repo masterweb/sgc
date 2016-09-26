@@ -100,6 +100,17 @@ class GestionAgendamientoController extends Controller {
                     $sql2 = "UPDATE gestion_consulta SET preg7 = 'Very Cold(mas de 6 meses)' WHERE id_informacion = {$_POST['GestionAgendamiento']['id_informacion']}";
                     $request2 = $con->createCommand($sql2)->query();
                     break;
+                case 'Cita':
+                // INGRESAR LA PRIMERA CITA COMO TRAFICO EN SOLICITUDES WEB
+                    $cita = new GestionCita;
+                    $cita->id_informacion = $_POST['GestionAgendamiento']['id_informacion'];
+                    $cita->fecha = date("Y-m-d H:i:s");
+                    $gc = GestionCita::model()->count(array('condition' => "id_informacion={$_POST['GestionAgendamiento']['id_informacion']}"));
+                    if($gc > 0){
+                        $cita->order = 2;
+                    }
+                    $cita->save();
+                    break;
 
                 default:
                     break;
@@ -214,10 +225,11 @@ class GestionAgendamientoController extends Controller {
                         $this->redirect(array('gestionInformacion/seguimientoexonerados'));
                         break;
                     case 73: // asesor bdc
-                    case 72: // jefe bdc   
+                    case 72: // jefe bdc 
+                    case 85: // asesor externas
+                    case 86: // jefe ventas externas    
                         $this->redirect(array('gestionInformacion/seguimientobdc'));
                         break;
-
                     default:
                         break;
                 }

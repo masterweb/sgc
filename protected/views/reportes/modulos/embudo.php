@@ -12,7 +12,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if($tipo != 'exhibicion' ): ?>
+                    <?php if($tipo != 'exhibicion' && $tipo != 'externas'): ?>
                     <tr>
                         <td id="mi_a2">PROSPECCIÓN</td>
                         <td id="mi_b2"><?= $varView['prospeccion_mes_actual']; ?></td>
@@ -21,10 +21,38 @@
                         <td id="mi_e2"><?= $varView['dif_prp']?></td>
                     </tr>
                     <?php endif; ?>
+                    
+                    <?php if($tipo == 'externas'): // SI TIPO DE VENTAS CON ASESORES DE VENTAS EXTERNAS?>
+                    <tr>
+                        <td id="mi_a2">SOLICITUDES WEB</td>
+                        <td id="mi_b2"><?= $varView['prospeccion_mes_actual']; ?></td>
+                        <td id="mi_c2"><?= $varView['prospeccion_mes_anterior']; ?></td>
+                        <td id="mi_d2"><?= $varView['var_prp']?></td>
+                        <td id="mi_e2"><?= $varView['dif_prp']?></td>
+                    </tr>
+                    <tr><td id="mi_a3">RESPUESTAS AUTOMÁTICAS</td>
+                        <td id="mi_b3"><?= $varView['respuestas_enviadas_actual']; ?></td>
+                        <td id="mi_c3"><?= $varView['respuestas_enviadas_anterior']; ?></td>
+                        <td id="mi_d3"><?= $varView['var_pr']?></td>
+                        <td id="mi_e3"><?= $varView['dif_pr']?></td>
+                    </tr>
+                    <tr><td id="mi_a4">CITAS</td>
+                        <td id="mi_b4"><?= $varView['trafico_mes_actual']; ?></td>
+                        <td id="mi_c4"><?= $varView['trafico_mes_anterior']; ?></td>
+                        <td id="mi_d4"><?= $varView['var_tr']?></td>
+                        <td id="mi_e4"><?= $varView['dif_tr']?></td>
+                    </tr>
+                    <tr><td id="mi_a5">PROFORMA</td>
+                        <td id="mi_b5"><?= $varView['proforma_mes_actual']; ?></td>
+                        <td id="mi_c5"><?= $varView['proforma_mes_anterior']; ?></td>
+                        <td id="mi_d5"><?= $varView['var_pr']?></td>
+                        <td id="mi_e5"><?= $varView['dif_pr']?></td>
+                    </tr>
+                    <?php else: ?>
                     <tr><td id="mi_a3">TRÁFICO</td>
                         <td id="mi_b3"><?= $varView['trafico_mes_actual']; ?></td>
                         <td id="mi_c3"><?= $varView['trafico_mes_anterior']; ?></td>
-                        <td id="mi_d3><?= $varView['var_tr']?></td>
+                        <td id="mi_d3"><?= $varView['var_tr']?></td>
                         <td id="mi_e3"><?= $varView['dif_tr']?></td>
                     </tr>
                     <tr><td id="mi_a4">PROFORMA</td>
@@ -32,7 +60,9 @@
                         <td id="mi_c4"><?= $varView['proforma_mes_anterior']; ?></td>
                         <td id="mi_d4"><?= $varView['var_pr']?></td>
                         <td id="mi_e4"><?= $varView['dif_pr']?></td>
-                    </tr>
+                    </tr>    
+                    <?php endif; ?>
+                    
                     <tr><td id="mi_a6">TESTDRIVE</td>
                         <td id="mi_b6" style="background:#c6f4c6;"><?= $varView['td_mes_actual']; ?></td>
                         <td id="mi_c6" style="background:#f9d3a5;"><?= $varView['td_mes_anterior']; ?></td>
@@ -76,7 +106,7 @@
 </div>
 
  <!--GRAFICOS-->
-<?= $this->renderPartial('//reportes/modulos/graficos', array( 'varView' => $varView));?>
+<?= $this->renderPartial('//reportes/modulos/graficos', array( 'varView' => $varView, 'tipo' => $tipo));?>
 <!--FIN GRAFICOS-->
 
 <?php if($varView['triger'] != 1): //se muestra si no existe consulta de modelos y versiones?>

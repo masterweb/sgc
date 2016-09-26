@@ -222,7 +222,7 @@ if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) 
                             </div>
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--','Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--','Cita' => 'Cita','Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($agendamiento, 'observaciones'); ?>
                             </div>
                             <div class="col-md-4 agendamiento">

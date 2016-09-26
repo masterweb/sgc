@@ -287,6 +287,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         </td>
                                     </tr>
                                     <?php endif; ?>
+                                    <?php 
+                                    if($value['fuente_contacto'] == 'web' && $value['id_vehiculo'] != 0 && $value['codigo_vehiculo'] != 0){
+                                        echo "<tr><td><strong>Modelo: </strong>".$this->getModel($value['id_vehiculo'])."</td></tr>"
+                                                . "<tr><td><strong>Versión: </strong>".$this->getVersion($value['codigo_vehiculo'])."</td></tr>";
+                                    }
+                                    ?>
                                 </table>                       
                             <?php endforeach; ?>
                         </div>

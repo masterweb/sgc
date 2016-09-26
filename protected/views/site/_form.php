@@ -22,6 +22,9 @@
         $('#Usuarios_usuario').keyup(function () {
             this.value = this.value.toLowerCase();
         });
+//        $('#Usuarios_cargo_id').change(function(){
+//           alert('change cargo id'); 
+//        });
         $('#usuarios-form').validate({
             rules: {
                 'area': {required: true}, 'Usuarios[cedula]': {required: true}, 'Usuarios[apellido]': {required: true}, 'Usuarios[nombres]': {required: true},
@@ -171,6 +174,10 @@
     #cometchat {
         display: none;
     }
+    #adicional{border: 1px solid #D5D1D2;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    padding: 10px;background: #ffffff;}
 </style>
 <div id="inline1" style="width:800px;display: none;height: 400px;">
 <!--    <div class="row">
@@ -278,6 +285,37 @@
         </div>
 
     </div>
+    <div class="form-group">
+        <label  class="col-sm-2 control-label" for="">Desea agregar un cargo adicional?</label>
+        <div class="col-sm-4">
+            <select id="cargo_adicional" class="form-control" name="Usuarios[adicional]">
+                <option value="">--Seleccione--</option>
+                <option value="1">Si</option>
+                <option value="0">No</option>
+            </select>
+        </div>
+    </div>
+    <fieldset id="adicional" style="display:none;">
+        <div class="form-group">
+            <?php echo $form->labelEx($model, 'cargo_adicional', array('class' => 'col-sm-2 control-label')); ?>
+            <div class="col-sm-10">
+                <?php //echo $form->dropDownList($model,'cargo_id', CHtml::listData(Cargo::model()->findAll(), 'id', 'descripcion'), array('empty'=>'Seleccione >>','class'=>'form-control'))  ?> 
+                <div id="ccargosa"><h6>Seleccione un cargo adicional</h6></div>
+                <?php echo $form->error($model, 'cargo_adicional'); ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?php //echo $form->labelEx($model, 'dealers_id', array('class' => 'col-sm-2 control-label')); ?>
+            <label class="col-sm-2 control-label" for="Usuarios_dealers_id">Concesionarios 
+                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/help.png" style="cursor:pointer;" onclick="mensaje('Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar.')">
+            </label>
+            <div class="col-sm-10">
+                <div id="concesionarioscboa"><h6>Seleccione un <b>Concesionario</b></h6></div>
+            </div>
+
+        </div>
+    </fieldset>
+    
     <div class="form-group" id="descripcionUbicaciones" style="display:none">
         <label class = "col-sm-2 control-label">Provincia</label>
         <div class="col-sm-4">
@@ -298,8 +336,6 @@
 
         </div>
     </div>
-
-
     <div class="form-group">
         <?php echo $form->labelEx($model, 'nombres', array('class' => 'col-sm-2 control-label')); ?>
         <div class="col-sm-4">
@@ -431,6 +467,20 @@
                         minDate: new Date(1950, 10 - 1, 25),
                         yearRange: '1950:2016'
                     });
+                    $('#cargo_adicional').change(function(){
+                       var value = $(this).attr('value');
+                       switch(value){
+                           case '1':
+                               $('#adicional').show();
+                               console.log('enter 1');
+                               break;
+                           case '0':
+                               $('#adicional').hide();
+                               console.log('enter 0');
+                               break;    
+                       }
+                       $('.adicional').show();
+                    });
                     $.datepicker.regional['es'] = {
                         closeText: 'Cerrar',
                         prevText: '<Ant',
@@ -504,16 +554,18 @@
                     $.ajax({
                         url: '<?php echo Yii::app()->createUrl("site/traerconsesionario") ?>',
                         type: 'POST',
+                        dataType: 'json',
                         async: true,
                         data: {
-                            rs: vl,
+                            rs: vl
                         },
-                        success: function (result) {
-                            if (result == 0) {
+                        success: function (data) {
+                            if (data.result == false) {
                                 alert("No se pudo realizar la consulta de concesionarios.");
 
                             } else {
-                                $("#concesionarioscbo").html(result);
+                                $("#concesionarioscbo").html(data.options1);
+                                $("#concesionarioscboa").html(data.options2);
                             }
                         }
                     });
@@ -524,16 +576,17 @@
                         url: '<?php echo Yii::app()->createUrl("site/traercargos") ?>',
                         type: 'POST',
                         async: true,
+                        dataType: 'json',
                         data: {
-                            rs: vl,
+                            rs: vl
                         },
-                        success: function (result) {
-                            if (result == 0) {
+                        success: function (data) {
+                            if (data.result == false) {
                                 alert("No se pudo realizar la consulta de cargos.");
                                 $("#ccargos").html("<p style='font-size:13px;font-weight:bold;padding-top:5px;'>Seleccione un &aacute;rea.</p>");
                             } else {
                                 //alert(result)
-                                $("#ccargos").html(result);
+                                $("#ccargos").html(data.options);$("#ccargosa").html(data.optionsad);
                             }
                         }
                     });
@@ -680,7 +733,6 @@
                 }
                 function verciudadcon(vl) {
                     $("#descripcionUbicaciones").hide();
-
                     if (vl > 0) {
                         $.ajax({
                             url: '<?php echo Yii::app()->createUrl("/site/traerciudadcon") ?>',
@@ -704,6 +756,26 @@
                     }
 
                 }
+                function getConc(value){
+                    $.ajax({
+                        url: '<?php echo Yii::app()->createUrl("/site/traerconsesionarioext") ?>',
+                        type: 'POST',
+                        async: false,
+                        data: {
+                            rs: value,
+                        },
+                        success: function (result) {
+                            if (result != 0) {
+                                $("#Usuarios_grupo_id").html(result);
+                                if ($('#Usuarios_grupo_id :selected').length > 1) {
+                                    $('#pppc').html('--');
+                                }
+                            } else {
+                                $("#Usuarios_grupo_id").html('Se produjo un error vuelva a cargar el sitio e intente nuevamente.');
+                            }
+                        }
+                    });
+                    }
                 function numeros(evt)
                 {
                     var code = (evt.which) ? evt.which : evt.keyCode;

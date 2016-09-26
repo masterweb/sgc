@@ -9,11 +9,34 @@ $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getDealerId($id_responsable);
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $area_id = (int) Yii::app()->user->getState('area_id');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
+if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9 ){
+    $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+}
 //echo 'REPONSABLE ID: '.$id_responsable;
 ?>
 <script>
     $(function () {
         //$('#toolinfo').tooltip();
+        $("#rango_fecha_seguimiento").daterangepicker(
+            {
+                locale: {
+                format: 'YYYY/MM/DD'
+                }
+            }
+        );
+        $('.range_inputs .applyBtn').click(function () {
+            alert('asdqwedwqe2ee');
+            if($('#GestionDiaria_seguimiento').val() == '3'){
+                console.log('apply');
+                $('#rango_fecha_seguimiento').css("color", "#555555");
+                $('#fecha_seguimiento').val(1);
+            }else{
+                $('#fecha-range').css("color", "#555555");
+                $('#fecha').val(1);
+            }
+        });
         $('#toolinfo').tooltipster({
             content: $('<p style="text-align:left;" class="tool">Prospección:  Ingreso de Base de Datos Externa o Nuevo Cliente Prospectado</p>'),
             position: 'right',
@@ -28,10 +51,10 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     }
                 }
         );
-        $('.range_inputs .applyBtn').click(function () {
+        /*$('.range_inputs .applyBtn').click(function () {
             console.log('apply');
             $('#fecha-range').css("color", "#555555");
-        });
+        });*/
         $('#GestionNuevaCotizacion_identificacion').change(function () {
             var value = $(this).attr('value');
             switch (value) {
@@ -290,20 +313,21 @@ $area_id = (int) Yii::app()->user->getState('area_id');
     #fecha-range{color: #DCD8D9;}
     #toolinfo{position: absolute;right: -20px;top: 24px;}
     .tool{font-size: 11px;margin: 1px 0;}
+    #rango_fecha_seguimiento{color: #DCD8D9;}
     @media (min-width: 992px){
         .container {
             max-width: 1170px;
         }
     }
 </style>
-<?php //$this->widget('application.components.Notificaciones'); ?>
+<?php $this->widget('application.components.Notificaciones'); ?>
 <div class="container">
     <div class="row">
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <?php if($cargo_id != 69 && $cargo_id != 7200){ ?>
-        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion));?>
+        <?php if($cargo_id != 69 && $cargo_id != 7200 && $cargo_id != 85){ ?>
+        <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion, 'tipo' => 'bdc'));?>
         <?php } ?>
         <div class="col-md-8">
             <div class="highlight">
@@ -314,69 +338,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
     <div class="cont-existente"></div>
     <br />
     <div class="cont-createc-but"></div>
-    <!--    <div class="row">
-            <h1 class="tl_seccion">RGB FORMULARIOS WEB</h1>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="tables tablesorter" id="keywords">
-    <?php
-    /* $sq = "SELECT gi.*, gn.fuente FROM gestion_informacion gi 
-      INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
-      INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
-      WHERE gn.fuente = 'web' AND gi.dealer_id = 5";
-      $con = Yii::app()->db;
-      $req = $con->createCommand($sq)->query(); */
-    ?>
-                        <thead>
-                            <tr>
-                                <th><span>Status</span></th>
-                                <th><span>ID</span></th>
-                                <th><span>Nombres</span></th>
-                                <th><span>Apellidos</span></th>
-                                <th><span>Cédula</span></th>
-                                <th><span>Próximo Seguimiento</span></th>
-                                <th><span>Responsable</span></th>
-                                <th><span>Email</span></th>
-                                <th><span>Categorización</span></th>
-                                <th><span>Fuente</span></th>
-                                <th><span>Edición</span></th>
-                            </tr>
-                        </thead>    
-                        <tbody>
-    <?php //foreach ($req as $r): ?>
-                                <tr>
-                                    <td>
-                                        <button type="button" class="btn btn-xs btn-primary">Prospección</button>
-                                        <button type="button" class="btn btn-xs btn-success">1</button>
-                                    </td>
-                                    <td><?php //echo $r['id'];  ?></td>
-                                    <td><?php //echo $r['nombres'];  ?></td>
-                                    <td><?php //echo $r['apellidos'];  ?></td>
-                                    <td><?php //echo $r['cedula'];  ?></td>
-                                    <td></td>
-                                    <td><?php //echo $this->getResponsable($r['responsable']);  ?></td>
-                                    <td><?php //echo $r['email'];  ?></td>
-                                    <td></td>
-                                    <td><?php //echo $r['fuente'];  ?></td>
-                                    <td><a href="<?php //echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $r['id'], 'tipo' => 'prospeccion'));  ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    </td>
-                                </tr>
-                                
-    <?php //endforeach; ?>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>-->
     <?php if(isset($title)): ?>
     <div class="row">
         <h2><div class="col-md-12"><div class="alert alert-info"><?php echo $title; ?></div></div></h2>     
     </div>
     <?php endif; ?>
     <div class="row">
-        <h1 class="tl_seccion">RGD BDC</h1>
+        <h1 class="tl_seccion">RGD Ventas Externas</h1>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -403,107 +371,90 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <tbody>
                         <?php foreach ($users as $c): ?>
                             <tr>
-                                <td>
+                                <td class="nowr">
                                     <?php
                                     //echo $this->getStatus($c['status']);
                                     $status = '';
                                     $paso = '';
                                     $url = '';
-                                    if ($c['prospeccion'] != 0) {
-                                        $status = 'Prospección';
-                                    }
-                                    if ($c['primera_visita'] != 0) {
-                                        $status = 'Primera Visita';
-                                    }
-                                    if ($c['seguimiento'] != 0) {
-                                        $status = 'Seguimiento';
-                                    }
-                                    if ($c['cierre'] != 0) {
-                                        $status = 'Cierre';
-                                    }
-                                    if ($c['entrega'] != 0) {
-                                        $status = 'Entrega';
-                                    }
-                                    if ($c['seguimiento_entrega'] != 0) {
-                                        $status = 'Seguimiento Entrega';
-                                    }
-                                    if ($c['desiste'] != 0) {
-                                        $status = 'Desiste';
-                                    }
-                                    $criteria = new CDbCriteria(array(
-                                        'condition' => "id_informacion='{$c['id_info']}'"
-                                    ));
-                                    $vec = GestionVehiculo::model()->findAll($criteria);
+                                    
+                                    $vec = GestionVehiculo::model()->findAll(array('condition' => "id_informacion='{$c['id']}'"));
                                     $count = count($vec);
-
-                                    $criteria = new CDbCriteria(array(
-                                        'condition' => "id_informacion='{$c['id_info']}'"
-                                    ));
-                                    $td = GestionTestDrive::model()->findAll($criteria);
+                                    $td = GestionTestDrive::model()->findAll(array('condition' => "id_informacion='{$c['id']}'"));
                                     $countt = count($td);
-                                    //echo 'count vec: '.$count.', count test drive: '.$countt;
-                                    if ($status == 'Prospección' && $count > 0) {
-                                        $paso = '1/2';
-                                        //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                    $paso = $this->getPasoGestionDiaria($c['id']);
+                                    $medio_contacto = $this->getMedioContacto($c['id']);
+                                    $desiste = $this->getDesiste($c['id']);
+                                    $proximo_seguimiento = $this->getSeguimiento($c['id']);
+                                    $cita = $this->getCita($c['id']);
+                                    $categorizacion = $this->getCategorizacionSGC($c['id']);
+                                    $fuente = $this->getFuenteSGC($c['id']);
+                                    $status = $this->getStatusSGC($c['id']);
+                                    $fuente_contacto = $this->getFuenteContacto($c['id']);
+                                    //echo 'fuente de contacto: '.$fuente_contacto;
+                                    $data_btn_semaforo = "";
+                                    if (!empty($proximo_seguimiento)) {
+                                        $fecha_array = explode(' ', $proximo_seguimiento);
+                                        //print_r($fecha_array);
+                                        //echo $fecha_array[0];
+                                        if (strtotime($fecha_actual) == strtotime($fecha_array[0])) {
+                                            $data_btn_semaforo = '<button type="button" class="btn btn-tomate btn-xs">S</button>';
+                                        }
+                                        if (strtotime($fecha_actual) > strtotime($fecha_array[0])) {
+                                            $data_btn_semaforo = '<button type="button" class="btn btn-danger btn-xs">S</button>';
+                                        }
+                                        if (strtotime($fecha_actual) < strtotime($fecha_array[0])) {
+                                            $data_btn_semaforo = '<button type="button" class="btn btn-success btn-xs">S</button>';
+                                        }
+                                    } else {
+                                        $data_btn_semaforo = '<button type="button" class="btn btn-danger btn-xs">S</button>';
                                     }
-                                    if ($count > 0) {
-                                        $paso = '3/4';
-                                        //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
-                                    }
-                                    if ($count == 0 && $countt == 0):
-                                        $paso = '3/4';
-                                    //$url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
-                                    endif;
-                                    if ($count > 0 && $countt > 0):
-                                        $paso = '5/6';
-                                    //$url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id_info']));
-                                    endif;
-                                    if (($count > 0 && $countt > 0) && ($count == $countt)):
-                                        $paso = '7';
-                                    //$url = Yii::app()->createUrl('site/financiamiento', array('id' => $c['id_info']));
-                                    endif;
-
-                                    switch ($c['paso']) {
+                                    switch ($paso) {
                                         case '1-2':
                                             //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion'));
-                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'gestion')); 
-                                            if ($c['fuente'] == 'prospeccion')
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'gestion')); 
+                                            if ($fuente == 'prospeccion')
                                                 $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
+                                            if ($fuente == 'web')
+                                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '3':
-                                            $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id_info'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('gestionConsulta/create', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                             break;
                                         case '4':
-                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id']));
                                             break;
                                         case '5':
-                                            $url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/presentacion', array('id' => $c['id']));
                                             break;
                                         case '6':
-                                            $url = Yii::app()->createUrl('site/demostracion', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/demostracion', array('id' => $c['id']));
                                             break;
                                         case '7':
-                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id']));
                                             break;
                                         case '8':
-                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/negociacion', array('id' => $c['id']));
                                             break;
                                         case '9':
-                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id_info']));
+                                            $url = Yii::app()->createUrl('site/cierre', array('id' => $c['id']));
+                                            break;
+                                        case '10':
+                                            $url = Yii::app()->createUrl('site/entrega', array('id_informacion' => $c['id']));
                                             break;
                                         default:
                                             break;
                                     }
                                     ?>
                                     <!--<button type="button" class="btn btn-xs btn-primary"><?php //echo $status;  ?></button>-->
-                                    <button type="button" class="btn btn-xs btn-success"><?php echo $c['paso']; ?></button>
+                                    <button type="button" class="btn btn-xs btn-success"><?php echo $paso; ?></button>
                                     <?php
-                                    if ($c['medio_contacto'] == 'web' && $c['tipo_form_web'] == ''):
+                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == ''):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">web</button>
                                     <?php endif; ?>
                                     <?php
-                                    if ($c['medio_contacto'] == 'caduco'):
+                                    if ($medio_contacto == 'caduco'):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">Caduco</button>
                                     <?php endif; ?>
@@ -513,25 +464,26 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
                                     <?php endif; ?>
                                     <?php
-                                    if ($c['id_cotizacion'] == ''):
-                                        ?>
-                                        <button type="button" class="btn btn-xs btn-warning">Web</button>
-                                    <?php endif; ?>
-                                    <?php
-                                    if ($c['medio_contacto'] == 'desistecc'):
-                                        ?>
-                                        <button type="button" class="btn btn-xs btn-warning">Desiste CC</button>
-                                    <?php endif; ?>
-                                    <?php
-                                    $credito = $this->getStatusSolicitudAll($c['id_info']);
+                                    $credito = $this->getStatusSolicitudAll($c['id']);
                                     if ($credito == true) {
                                         echo '<button type="button" class="btn btn-xs btn-success">C</button>';
                                     } else {
                                         echo '<button type="button" class="btn btn-xs btn-default">C</button>';
                                     }
+                                    if($desiste != 1 && $paso != 10){
+                                        echo '&nbsp' . $data_btn_semaforo;
+                                    }
+                                    ?>
+                                    <?php if ($c['reasignado'] == 1): ?>
+                                        <button type="button" class="btn btn-xs btn-credito-sgc" data-toggle="tooltip" title="<?php echo $this->getResponsable($c['responsable_cesado']) . ' - ' . $this->getComentarioAsignamiento($c['id_comentario']); ?>">R</button>
+                                        <?php endif; ?>
+                                        <?php
+                                        if ($desiste == 1) {
+                                            echo '<button type="button" class="btn btn-xs btn-credito-sgc">D</button>';
+                                        }
                                     ?>
                                 </td>
-                                <td><?php echo $c['id_info']; ?> </td>
+                                <td><?php echo $c['id']; ?> </td>
                                 <td><?php echo ucfirst($c['nombres']); ?> </td>
                                 <td><?php echo ucfirst($c['apellidos']); ?> </td>
                                 <td><?php 
@@ -547,15 +499,15 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 }
                                 ?> 
                                 </td>
-                                <td><?php echo $c['proximo_seguimiento']; ?></td>
-                                <td><?php echo $this->getResponsable($c['id_resp']); ?></td>
+                                <td><?php echo $proximo_seguimiento; if($cita){echo ' (c)';}?></td>
+                                <td><?php echo $this->getResponsable($c['responsable']); ?></td>
                                 <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
                                 <td><?php echo $c['email']; ?> </td>
-                                <td> <?php echo $c['categorizacion']; ?> </td>
+                                <td><?php echo $categorizacion; ?></td>
                                 <td> 
                                     <?php
                                     $dias;
-                                    switch ($c['categorizacion']) {
+                                    switch ($categorizacion) {
                                         case 'Hot A (hasta 7 dias)':
                                             $dias = 7;
                                             $fechas = explode(' ', $c['fecha']);
@@ -632,23 +584,43 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                     ?> 
                                 </td>
                                 <td>
-                                    <?php if($c['fuente'] == 'showroom'){ echo 'Tráfico'; }
-                                    else{ echo $c['fuente']; } ?>  
+                                    <?php 
+                                    if($fuente == 'showroom'){ echo 'Tráfico'; }
+                                    else if($fuente_contacto == 'showroom'){echo 'Tráfico';}
+                                    else{echo $fuente_contacto;}
+                                    ?>  
                                 </td>
                                 <td>
-                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id_info'], 'paso' => $c['paso'], 'id_gt' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-danger">Ver</a>
-                                    <?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14 && $cargo_id != 69){ ?>
-                                    <?php if ($c['status'] == 1): ?>
-                                        <?php if ($c['paso'] == '1-2') { ?>
-                                            <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                    <?php //echo $fuente_contacto;  
+                                    //echo $url;?>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
+                                    <?php if (($status == 1 || $status == 4) && $desiste != 1) { ?>
+                                        <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
+                                            <?php if ($area_id != 4 && $cargo_id != 69 ) { ?> 
+                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
+                                            <?php } ?>
                                         <?php } else { ?>
-                                            <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                                            <?php if ($cargo_id != 72 && $cargo_id != 69 &&  $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?> 
+                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                                            <?php } ?>
+                                                
                                         <?php } ?>
-                                    <?php endif; ?>
-                                    <?php if ($c['status'] == 3) { ?>
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id_info'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } ?>
-                                    <?php } ?>            
+                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' ){ ?> 
+                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
+                                    <?php } ?>
+                                    <?php if($fuente_contacto == 'exhibicion'){ ?> 
+                                    <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
+                                    <?php } ?>   
+                                    <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                    <?php } ?>
+                                    <?php //} ?>
+                                    <?php if ($c['bdc'] == 1 && ( $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)) { ?>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
+                                    <?php } ?> 
+                                        <em></em>
+                                        <a href="<?php echo Yii::app()->createUrl('gestionComentarios/create', array('id_informacion' => $c['id'])); ?>" class="btn btn-danger btn-xs">Comentarios</a>            
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -658,4 +630,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
             </div>
         </div>
     </div>
+    <br />
+    <br />
+    <?= $this->renderPartial('//layouts/rgd/links'); ?>
 </div>

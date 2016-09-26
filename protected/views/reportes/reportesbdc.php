@@ -5,10 +5,6 @@
 <div id="tabs_repo">
     <ul class="nav nav-tabs tabs_triger">
         <li role="presentation" class="tit_repo active" triger="tab1"><a href="#">Embudo</a></li>
-        <li role="presentation" class="tit_repo" triger="tab2"><a href="#">Encuestas</a></li>
-        <li role="presentation" class="tit_repo" triger="tab3"><a href="#">Score Card</a></li>
-        <li role="presentation" class="tit_repo" triger="tab4"><a href="#">Análisis de Ventas</a></li>
-        <li role="presentation" class="tit_repo" triger="tab5"><a href="#">Noticias Kia</a></li>
     </ul>
     <div class="tab_repo active" id="tab1">        
         <!-- EMBUDO -->
@@ -19,15 +15,9 @@
                     <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
                     <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
                     <?php if($tipo == 'exhibicion'){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>">Tráfico</a>
+                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/bdc'); ?>">Tráfico</a>
                     <?php } else { ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
-                    <?php } ?>
-                    <?php if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccion')); ?>">Prospección</a>
-                    <?php } ?>
-                    <?php if($tipo == 'prospeccion'){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
+                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/bdc',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
                     <?php } ?>
                     <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
@@ -39,7 +29,7 @@
                 </div>  
             </div>
             <br />
-            <?= $this->renderPartial('//reportes/modulos/embudo', array('varView' => $varView,'tipo' => $tipo));?>
+            <?= $this->renderPartial('//reportes/modulos/embudobdc', array('varView' => $varView,'tipo' => $tipo));?>
         </div>
         <!-- FIN EMBUDO -->
     </div>

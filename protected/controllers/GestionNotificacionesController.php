@@ -197,9 +197,28 @@ class GestionNotificacionesController extends Controller {
             //die('request: '.$request);
             
             $paso = '12';
-        } 
-        
-
+        }
+        if($tipo == 6){
+            $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = 13;// va al resumen
+        }
+        if($tipo == 7){
+            $sql = "UPDATE gestion_consulta SET leido = 'READ' WHERE id_informacion={$id_informacion}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->query();
+            $paso = 13;// va al resumen
+        }
+        if($tipo == 8){
+            $sql = "UPDATE gestion_notificaciones SET leido = 'READ' WHERE id = {$id}";
+            //die('sql: '.$sql);
+            $con = Yii::app()->db;
+            $request = $con->createCommand($sql)->execute();
+            $paso = '13';
+        }
         switch ($paso) {
             case '1-2':
                 $url = Yii::app()->createUrl('gestionInformacion/update/', array('id' => $id_informacion, 'tipo' => 'gestion'));
@@ -242,6 +261,12 @@ class GestionNotificacionesController extends Controller {
             case '12':
                 //$url = Yii::app()->createUrl('site/cierre', array('id' => $value['id_informacion']));
                 $this->redirect(array('gestionComentarios/create/', 'id_informacion' => $id_informacion, 'id' => $id_agendamiento, 'validate' => 'true'));
+                break;
+            case '13':
+                //Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente))
+                $pasogd = $this->getPasoNotificacionDiaria($id_informacion);
+                $fuente_contacto = $this->getFuenteContacto($id_informacion);
+                $this->redirect(array('gestionDiaria/create/', 'id' => $id_informacion, 'paso' => $pasogd, 'id_gt' => $id_informacion,'fuente' => $fuente_contacto ));
                 break;
             default:
                 break;
