@@ -9,9 +9,9 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 //echo 'grupo id: '.$grupo_id;
 if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
-$nombre_cliente = $this->getNombresInfo($id).' '.$this->getApellidosInfo($id);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+$nombreConcesionario = urlencode($this->getNameConcesionarioById($concesionarioid));
+$nombre_cliente = urlencode($this->getNombresInfo($id).' '.$this->getApellidosInfo($id));
+$direccion_concesionario = urlencode($this->getConcesionarioDireccionById($concesionarioid));
 }
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
 $android = FALSE;

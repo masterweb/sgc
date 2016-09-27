@@ -7,9 +7,9 @@ $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
-$nombre_cliente = $this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+$nombreConcesionario = urlencode($this->getNameConcesionarioById($concesionarioid));
+$nombre_cliente = urlencode($this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion));
+$direccion_concesionario = urlencode($this->getConcesionarioDireccionById($concesionarioid));
 }
 $ua = strtolower($_SERVER['HTTP_USER_AGENT']);  
 $android = FALSE;

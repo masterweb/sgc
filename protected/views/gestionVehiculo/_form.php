@@ -9,7 +9,7 @@ if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
 $nombre_cliente = $this->getNombresInfo($id).' '.$this->getApellidosInfo($id);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+$direccion_concesionario = urlencode($this->getConcesionarioDireccionById($concesionarioid));
 }
 //echo $nombre_cliente;
 $count = 0;

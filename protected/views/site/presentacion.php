@@ -7,9 +7,9 @@ $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
-$nombre_cliente = $this->getNombresInfo($id).' '.$this->getApellidosInfo($id);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+$nombreConcesionario = urlencode($this->getNameConcesionarioById($concesionarioid));
+$nombre_cliente = urlencode($this->getNombresInfo($id).' '.$this->getApellidosInfo($id));
+$direccion_concesionario = urlencode($this->getConcesionarioDireccionById($concesionarioid));
 }
 $countp = GestionPresentacion::model()->count(array('condition' => "id_informacion='{$id}'"));
 
