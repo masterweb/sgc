@@ -54,7 +54,7 @@ $id_responsable = Yii::app()->user->getId();
                     <option value="Entrega">Entrega</option>
                     <option value="Vendido">Seguimiento-Paso 10</option>
                     <option value="Desiste">Desiste</option>
-                    <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 86): ?>
+                    <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 86 || $area_id == 14 || $area_id == 13): ?>
                     <option value="Web">Web</option>
                     <?php endif; ?>
                 </select>
@@ -213,6 +213,11 @@ $id_responsable = Yii::app()->user->getId();
                 <input type="hidden" name="fecha_seguimiento" id="fecha_seguimiento" value="0" />
                 <input type="hidden" name="grupo" id="grupo" value="0" />
                 <input type="hidden" name="concesionario" id="concesionario" value="0" />
+                <?php
+                if(isset($tipo_seg)){
+                    echo '<input type="hidden" name="tipo_search" value="'.$tipo_seg.'" id = "tipo_search"/>';
+                }
+                ?>
             </div>
         </div>
         <?php $this->endWidget(); ?>
@@ -250,6 +255,7 @@ $id_responsable = Yii::app()->user->getId();
                     <input type="hidden" name="search_type2" id="search_type2" value="0" />
                     <input type="hidden" name="seguimiento_rgd2" id="seguimiento_rgd2" value="<?php echo isset($_GET["seguimiento_rgd"]) ? $_GET["seguimiento_rgd"] : "" ?>" />
                     <input type="hidden" name="fecha_seguimiento2" id="fecha_seguimiento2" value="<?php echo isset($_GET["fecha_seguimiento"]) ? $_GET["fecha_seguimiento"] : "" ?>" />
+                    
                 </div>
                 <?php $this->endWidget(); ?>
             <?php endif; ?>   
@@ -291,6 +297,7 @@ $id_responsable = Yii::app()->user->getId();
         <div class="row">
             <div class="col-md-6">
                 <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
+                
             </div>
         </div>
         <?php $this->endWidget(); ?>
