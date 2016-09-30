@@ -6,7 +6,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-        echo '<pre>'.$sql_cons.'</pre>';
+        //echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
