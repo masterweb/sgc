@@ -33,6 +33,7 @@ class UserIdentity extends CUserIdentity {
                 $this->_id = $modelUsuario->id;
                 $this->setState("first_name", $modelUsuario->apellido . ' ' . $modelUsuario->nombres);
                 $this->setState("cargo_id", $modelUsuario->cargo_id);
+                $this->setState("cargo_adicional", $modelUsuario->cargo_adicional);
                 $this->setState("grupo_id", $modelUsuario->grupo_id);
                 $this->setState("area_id", $modelUsuario->area_id);
                 $this->setState("concesionario_id", $modelUsuario->concesionario_id);
