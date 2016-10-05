@@ -169,7 +169,25 @@ $rol = Yii::app()->user->getState('roles');
                             <li class="wrapper">
                                 <div class="forma">
                                     <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                        <div class="txt_menu">RGD </div></a>
+                                        <div class="txt_menu">RGD Nuevos</div></a>
+                                </div>
+                            </li>
+                            <li class="wrapper">
+                                <div class="forma">
+                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc', array('tipo_seg' => 'web')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                        <div class="txt_menu">RGD Web</div></a>
+                                </div>
+                            </li>
+                            <li class="wrapper">
+                                <div class="forma">
+                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento', array('tipo_seg' => 'exhibicion')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                        <div class="txt_menu">RGD Exhibición</div></a>
+                                </div>
+                            </li>
+                            <li class="wrapper">
+                                <div class="forma">
+                                    <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc', array('tipo_seg' => 'prospeccion')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                        <div class="txt_menu">RGD Prospección</div></a>
                                 </div>
                             </li>
                         <?php } ?>

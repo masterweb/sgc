@@ -31,7 +31,7 @@ class GestionInformacionController extends Controller {
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('create', 'update', 'seguimiento', 'seguimientobdc', 'seguimientoexonerados', 'seguimientoexcel', 'getresponsable',
-                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos', 'setAsignamiento'),
+                    'calendar', 'createAjax', 'create2', 'seguimientoUsados', 'usados', 'exonerados', 'reportes', 'conadis', 'diplomaticos', 'setAsignamiento','admin'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1868,7 +1868,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         Yii::app()->end();
     }
 
-    private function searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array) {
+    private function searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array,$tipo_search) {
 //        echo '<pre>';
 //        print_r($_GET);
 //        echo '</pre>';
@@ -1902,17 +1902,22 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         if ($cargo_id == 69) { // gerente comercial
             //die('enter ge');
-            if ($get_array == 'bdc') {
+            if ($get_array == 'bdc' && $tipo_search == '') {
                 $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
                 $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                 $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73)";
+            }
+            if ($get_array == 'bdc' && $tipo_search == 'web') {
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(85,86,70,71) AND u.cargo_adicional IN(85,86)";
             }
             if ($get_array == 'exo') {
                 $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
                 $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                 $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
             }
-            if ($get_array == 'seg') {
+            if ($get_array == 'seg' && $tipo_search == '') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 $criteria->condition = "gr.id_grupo = {$grupo_id}";
             }
@@ -1974,30 +1979,25 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
 
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
-            switch ($get_array) {
-                case 'exo':
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-                    $criteria->condition = "u.cargo_id IN (75)";
-                    break;
-                case 'bdc':
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-                    $criteria->condition = "u.cargo_id IN (72,73)";
-                    break;
-                case 'seg':
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-                    $criteria->condition = "u.cargo_id IN (70,71)";
-                    break;
-                case 'web':
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-                    $criteria->condition = "u.cargo_id IN (86) OR u.cargo_adicional IN (86)";
-                    break;
-                default:
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    break;
+            if ($get_array == 'exo') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                $criteria->condition = "u.cargo_id IN (75)";
+            }
+            if ($get_array ==  'bdc' && $tipo_search == '') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                $criteria->condition = "u.cargo_id IN (72,73)";
+            }
+            if ($get_array ==  'bdc' && $tipo_search == 'web') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                $criteria->condition = "u.cargo_id IN(85,86,70,71) AND u.cargo_adicional IN(85,86)";
+            }
+            if ($get_array == 'seg' && $tipo_search == '') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                $criteria->condition = "u.cargo_id IN (70,71)";
             }
         }
 
@@ -2139,9 +2139,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 1) {
             $search_type = 29;
         }
-        // BUSQUEDAS PARA GERENTE GENERAL O USUARIO AEKIA
+        // BUSQUEDAS PARA GERENTE GENERAL O USUARIO AEKIA=========================================================================================================
         // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE
         if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 33;
+        }
+        
+        // GRUPO - RESPONSABLE
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
                 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 33;
         }
@@ -3188,10 +3194,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 
                 break;
             case 33: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO Y RESPONSABLE
+                
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
                 $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -3592,26 +3602,26 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $fechaPk = 1;
             }
             //die('55d: '.$_GET['GestionDiaria']['tipo']);
-            $get_array = 'seg';
+            $tipo_search = '';
             // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
             if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
                 switch ($_GET['tipo_search']) {
                     case 'web':
-                        $get_array = 'web';
+                        $tipo_search = 'web';
                         break;
                     case 'exhibicion':
-                        $get_array = 'exh';
+                        $tipo_search = 'exh';
                         break;
                     case 'prospeccion':
-                        $get_array = 'pro';
+                        $tipo_search = 'pro';
                         break;
                     default:
                         break;
                 }
             }
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array);
-            $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages']));
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array, $tipo_seg);
+            $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages'], 'tipo_seg' => $tipo_search));
             exit();
         }
 
@@ -4118,26 +4128,27 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $fechaPk = 1;
             }
             //die('55d: '.$_GET['GestionDiaria']['tipo']);
-            $get_array = 'bdc';
+            $tipo_search = '';
             // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
             if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
                 switch ($_GET['tipo_search']) {
                     case 'web':
-                        $get_array = 'web';
+                        $tipo_search = 'web';
                         break;
                     case 'exhibicion':
-                        $get_array = 'exh';
+                        $tipo_search = 'exh';
                         break;
                     case 'prospeccion':
-                        $get_array = 'pro';
+                        $tipo_search = 'pro';
                         break;
                     default:
                         break;
                 }
             }
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array);
-            $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model));
+
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'bdc',$tipo_search);
+            $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'tipo_seg' => $tipo_search));
             exit();
         }
 

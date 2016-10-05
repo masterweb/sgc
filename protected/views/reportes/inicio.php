@@ -1,6 +1,14 @@
 <?= $this->renderPartial('//reportes/modulos/header', array('title' => 'Reportes'));?>
 <?php 
-//echo 'tipo: '.$tipo;
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$tipo_grupo = 0; // GRUPO KMOTOR Y ASIAUTO
+if($grupo_id == 2 || $grupo_id == 3){
+    $tipo_grupo = 1;
+}
+//echo 'grupo id: '.$grupo_id;
+//echo 'tipo grupo: '.$tipo_grupo;
 ?>
 <div id="tabs_repo">
     <ul class="nav nav-tabs tabs_triger">
@@ -20,15 +28,17 @@
                     <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
                     <?php if($tipo == 'exhibicion'){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>">Tráfico</a>
-                    <?php } else { ?>
+                    <?php } if($tipo == '' && $tipo != 'externas') { ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
                     <?php } ?>
                     <?php if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccion')); ?>">Prospección</a>
                     <?php } ?>
-                    <?php if($tipo == 'prospeccion'){ ?>
+                    <?php if(($tipo != 'externas') && ($tipo_grupo == 1)){ 
+                    if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) ){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
-                    <?php } ?>
+                    <?php } 
+                    }?>
                     <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
                     </form>

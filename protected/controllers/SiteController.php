@@ -20,7 +20,7 @@ class SiteController extends Controller {
         );
     }
 
-    /*     * actionConsultarUsuarioEncuesta
+    /*     * actionConacsultarUsuarioEncuesta
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
@@ -280,7 +280,7 @@ class SiteController extends Controller {
             } else {
                 $nombres = '';
             }
-            
+
 
             //----BUSQUEDA POR TEMA
             $sql = "SELECT id FROM menu WHERE name LIKE '%{$txt}%'";
@@ -375,11 +375,11 @@ class SiteController extends Controller {
             $grupo_concesionarios = $_POST['Usuarios']['concesionario_id'];
             $model->concesionario_id = 0;
             $model->firma = $_POST['Usuarios']['firma'];
-            if($_POST['Usuarios']['adicional'] == 1){
+            if ($_POST['Usuarios']['adicional'] == 1) {
                 $model->cargo_adicional = $_POST['Usuarios']['cargo_adicional'];
                 $grupo_concesionarios_adicional = $_POST['Usuarios']['concesionario_ida'];
             }
-                
+
             if ($model->save()) {
                 /*
                   REGISTRAR TODOS LOS CONCESIONARIOS SELECCIONADOS EN LA TABLA DE GRUPOCONCESIONARIOUSUARIO
@@ -475,18 +475,18 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             die();
         }
     }
-    
+
     public function actionTraerconsesionarioext() {
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
         //die('valor:'.$valor);
         //if($valor == 86 || $valor == 85){
-            //$concesionarios = GrGrupo::model()->findAll(array('condition' => 'id IN(2,3)','order' => 'nombre_grupo ASC'));
+        //$concesionarios = GrGrupo::model()->findAll(array('condition' => 'id IN(2,3)','order' => 'nombre_grupo ASC'));
         //}else{
-            $concesionarios = GrGrupo::model()->findAll(array('order' => 'nombre_grupo ASC'));
+        $concesionarios = GrGrupo::model()->findAll(array('order' => 'nombre_grupo ASC'));
         //}
-        
+
         $html = "";
         if (!empty($concesionarios)) {
             //$html .='<select class="form-control valid" name="Usuarios[grupo_id]" id="Usuarios_grupo_id" onchange="buscarConcesionario(this.value)">';
@@ -529,7 +529,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match AND estado = 'ACTIVO'", 'params' => array(':match' => (int) $valor)));
         $html = "";
         $htmlad = "";
-        
+
         if (!empty($concesionarios)) {
             $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" onchange="getConc(this.value);">';
             $html .="<option value=''>Seleccione >></option>";
@@ -541,10 +541,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
             $html .="</select>";
             $htmlad .="</select>";
-            $options = array('result' => true,'options' => $html, 'optionsad' => $htmlad);
+            $options = array('result' => true, 'options' => $html, 'optionsad' => $htmlad);
             echo json_encode($options);
         } else {
-            $options = array('result' => false,'options' => $html, 'optionsad' => $htmlad);
+            $options = array('result' => false, 'options' => $html, 'optionsad' => $htmlad);
             echo json_encode($options);
             die();
         }
@@ -800,6 +800,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
         }
     }
+
     public function actionConsultarUsuarioEncuesta() {
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
@@ -812,36 +813,36 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $hasta = $p->purify($_POST['hasta']);
             $where = '';
             if (!empty($ciudad) && $ciudad > 0) {
-				if (empty($where)) {
-					$where .= "WHERE gt.test_drive = 1 
+                if (empty($where)) {
+                    $where .= "WHERE gt.test_drive = 1 
 					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
-				} else {
-					$where .= " and gt.test_drive = 1 
+                } else {
+                    $where .= " and gt.test_drive = 1 
 					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
-				}
-			}
+                }
+            }
 
             if (!empty($concesionario) && $concesionario > 0) {
                 if (empty($where)) {
-					$where .= "WHERE gt.test_drive = 1 
+                    $where .= "WHERE gt.test_drive = 1 
 					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1  and gi.dealer_id =" . $concesionario;
-				} else {
-					$where .= " and gt.test_drive = 1 
+                } else {
+                    $where .= " and gt.test_drive = 1 
 					AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.dealer_id =" . $concesionario;
-				}
+                }
             }
 
             if (!empty($desde) && !empty($hasta)) {
                 if (empty($where)) {
-					if($desde < '2016-08-01'){
-						$desde = '2016-08-01';
-					}
-                    $where .= "WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
+                    if ($desde < '2016-08-01') {
+                        $desde = '2016-08-01';
+                    }
+                    $where .= "WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '" . $desde . "' AND DATE(gt.fecha) <= '" . $hasta . "') AND gt.order = 1";
                 } else {
-					if($desde < '2016-08-01'){
-						$desde = '2016-08-01';
-					}
-                    $where .= " and gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
+                    if ($desde < '2016-08-01') {
+                        $desde = '2016-08-01';
+                    }
+                    $where .= " and gt.test_drive = 1 AND (DATE(gt.fecha) >= '" . $desde . "' AND DATE(gt.fecha) <= '" . $hasta . "') AND gt.order = 1";
                 }
             }
             if (empty($where)) {
@@ -853,13 +854,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 					INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
 					INNER JOIN dealers d ON d.id = gi.dealer_id 
 					INNER JOIN versiones v ON v.id_versiones = gv.version 
-					".$where." 
+					" . $where . " 
 					GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
-            
+
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
             print_r(count($persona));
-			die();
-			//echo count($persona);
+            die();
+            //echo count($persona);
         }
         if ($opcion == 4) {
 
@@ -895,16 +896,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $where = ' WHERE gt.test_drive = 0 and gt.order=1';
             }
             // $sql = 'SELECT DISTiNCT count(gi.id)gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
-			$sql = 'SELECT DISTiNCT gt.id_informacion,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
+            $sql = 'SELECT DISTiNCT gt.id_informacion,gi.fecha,gi.nombres, gi.apellidos, gi.email, gi.celular, gi.telefono_oficina, gi.ciudad_conc
                     FROM gestion_informacion gi 
                         inner join gestion_test_drive gt 
                             on gi.id = gt.id_informacion
                     ' . $where . ' ORDER BY gi.fecha DESC';
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
-			print_r(count($persona));
-			die();
-		   //echo count($persona);
+            print_r(count($persona));
+            die();
+            //echo count($persona);
         }
         if ($opcion == 2) {
 
@@ -944,11 +945,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     ' . $where;
             //echo $sql;
             $persona = Yii::app()->db->createCommand($sql)->queryAll();
-			/*foreach ($persona as $key) {
-				echo '<br>'.$key['id'];
-			}*/
-			print_r($persona[0]['tt']);
-			die();
+            /* foreach ($persona as $key) {
+              echo '<br>'.$key['id'];
+              } */
+            print_r($persona[0]['tt']);
+            die();
             //echo count($persona);
         }
         if ($opcion == 3) {
@@ -985,9 +986,9 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $sql = 'SELECT DISTINCT count(e.id_atencion_detalle as total)
                     FROM encuestas e 
                     inner join atencion_detalle a 
-                    on e.id_atencion_detalle = e.id_atencion_detalle ' . $where.' limit 1000';
+                    on e.id_atencion_detalle = e.id_atencion_detalle ' . $where . ' limit 1000';
             $persona = Yii::app()->db2->createCommand($sql)->queryAll();
-            print_r (($persona[0]['total']));
+            print_r(($persona[0]['total']));
         }
     }
 
@@ -2773,7 +2774,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 'numero_id_propietario' => 'Identificación', 'precio_venta' => 'Precio de Venta',
                 'calle_principal_propietario' => 'Calle Principal', 'numero_calle_propietario' => 'Número de Calle',
                 'telefono_propietario' => 'Teléfono del Propietario', 'grupo_concesionario' => 'Grupo Concesionario',
-                'forma_pago_retail' => 'Forma de Pago','fecha_aprobacion' => 'Fecha Aprobacion'
+                'forma_pago_retail' => 'Forma de Pago', 'fecha_aprobacion' => 'Fecha Aprobacion'
             );
 
             //die('numero coincidencias: '.$count_vh);
@@ -2815,7 +2816,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                         if ($cha[1] == $_POST['Factura']['chasis']) {
                             //die('iguales');
                             $result = 'equal'; //identificacion igual
-                        } 
+                        }
                     }
                     $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $strtgavh . '</td></tr>';
                     $data_save[$value] = "{$strtgavh}";
@@ -2834,7 +2835,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                 $factmenos = $fact - 1;
                 //die('fact: '.$factmenos);
                 $fcreatec = substr($year_createc[0], 14, 4);
-                if($_POST['Factura']['tipo'] == 'chasis'){
+                if ($_POST['Factura']['tipo'] == 'chasis') {
                     $year_createc = explode('-', $data_save['Fecha Aprobacion']);
                     $fcreatec = substr($year_createc[0], 18, 4);
                 }
@@ -2875,7 +2876,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                             if ($chaf[1] == $_POST['Factura']['chasis']) {
                                 //die('iguales');
                                 $result = 'equal'; //identificacion igual
-                            } 
+                            }
                         }
 
                         $data .= '<tr class="odd"><th>' . $value . '</th><td>' . $str . '</td></tr>';
@@ -2894,7 +2895,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
                     $fact = (int) trim($year_actual[0]);
                     $factmenos = $fact - 1;
                     $fcreatec = substr($year_createc[0], 14, 4);
-                    if($_POST['Factura']['tipo'] == 'chasis'){
+                    if ($_POST['Factura']['tipo'] == 'chasis') {
                         $year_createc = explode('-', $data_save['Fecha Aprobacion']);
                         $fcreatec = substr($year_createc[0], 18, 4);
                     }
@@ -2932,8 +2933,8 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo}";
             $this->render('factura', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
         }
     }
-    
-    public function actionFacturanc($id_vehiculo = NULL, $id_informacion = NULL) {        
+
+    public function actionFacturanc($id_vehiculo = NULL, $id_informacion = NULL) {
         $this->render('facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion));
     }
 
@@ -3290,14 +3291,22 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
     public function actionGetConcesionarios() {
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
-        $criteria = new CDbCriteria(array(
-            'condition' => "id_grupo={$id}",
-            'order' => 'nombre asc'
-        ));
-        $conc = Concesionarios::model()->findAll($criteria);
-        $data = '<option value="">--Seleccione concesionario--</option>';
-        foreach ($conc as $ciudad) {
-            $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
+        $tipo_seg = isset($_POST["tipo_seg"]) ? $_POST["tipo_seg"] : "";
+        if (empty($tipo_seg)) {
+            $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id}", 'order' => 'nombre asc'));
+            $data = '<option value="">--Seleccione concesionario--</option>';
+            foreach ($conc as $ciudad) {
+                $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
+            }
+        }else{
+            $conc = Usuarios::model()->findAll(array(
+                'condition' =>"grupo_id = {$id} AND (cargo_id IN (70,71,85,86) OR cargo_adicional IN (85,86))",
+                'order' => 'nombres ASC'        
+                ));
+            $data = '<option value="">--Seleccione responsable--</option>';
+            foreach ($conc as $us) {
+                $data .= '<option value="' . $us['id'] . '">' . $us['nombres'] . ' '.$us['apellido'].'</option>';
+            }    
         }
         echo $data;
     }

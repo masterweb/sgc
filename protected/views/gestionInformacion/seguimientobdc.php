@@ -19,6 +19,48 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 <script>
     $(function () {
         //$('#toolinfo').tooltip();
+        $('#GestionDiaria_grupo').change(function(){
+            var value = $(this).attr('value');
+            if ($(this).val() != ''){
+                $('#grupo').val(1);
+            } else{
+                $('#grupo').val(0);
+            }
+        });
+        $('#GestionDiaria_concesionario').change(function(){
+            var value = $(this).attr('value');
+            if ($(this).val() != ''){
+                $('#concesionario').val(1);
+            } else{
+                $('#concesionario').val(0);
+            }
+        });
+
+        $('#GestionDiaria_general').keyup(function(){
+            if ($(this).val() != ''){
+                $('#busqueda_general').val(1);
+            } else{
+                $('#busqueda_general').val(0);
+            }
+        });
+        $('#gestion_diaria_categorizacion').change(function(){
+            var value = $(this).attr('value');
+            if (value != '' ){
+                    $('#categorizacion').val(1);
+            } else{$('#categorizacion').val(0); }
+        });
+        $('#gestion_diaria_status').change(function(){
+            var value = $(this).attr('value');
+            if (value != ''){
+                $( '#status').val(1);
+            } else{$('#status').val(0); }
+        });
+        $('#GestionDiaria_responsable').change(function(){
+            var value = $(this).attr('value');
+            if (value != ''){
+                $('#responsable').val(1);
+            } else{ $('#responsable').val(0); }
+        });
         $("#rango_fecha_seguimiento").daterangepicker(
             {
                 locale: {
@@ -111,6 +153,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 
         $('#GestionDiaria_grupo').change(function () {
             var valuenc = $(this).attr('value');
+            var tipo_seg = $('#tipo_search').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
                 beforeSend: function (xhr) {
@@ -118,11 +161,16 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                 },
                 type: 'POST',
                 //dataType: 'json', 
-                data: {id: valuenc},
+                data: {id: valuenc, tipo_seg: tipo_seg},
                 success: function (data) {
                     //$('#info-3').hide();
                     //alert(data);
-                    $('#GestionDiaria_concesionario').html(data);
+                    if(tipo_seg == ''){
+                        $('#GestionDiaria_concesionario').html(data);
+                    }else{
+                        $('#GestionDiaria_responsable').html(data);
+                    }
+                    
 
                 }
             });
@@ -331,7 +379,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
         <?php } ?>
         <div class="col-md-8">
             <div class="highlight">
-                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientobdc', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc'));?>
+                <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimientobdc', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo' => 'bdc', 'tipo_seg' => $tipo_seg));?>
             </div>
         </div>
     </div>
@@ -346,24 +394,69 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
     <div class="row">
         <h1 class="tl_seccion">RGD Ventas Externas</h1>
     </div>
+    <div class="row paleta">
+        <h2 class="tl_seccion_gris">Descripción de Iconografía</h2>
+        <div class="body-paleta">
+            <div class="col-md-4 col-xs-6 paso">
+                <div class="row">
+                    <div class="col-md-12"><h4>Paso en el que te encuentras</h4></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">1-2</button><span>Prospección</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">7</button><span>Negociación</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">3</button><span>Recepción</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">8</button><span>Cierre</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">4</button><span>Consulta</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">9</button><span>Entrega</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">5</button><span>Presentación</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">10</button><span>Seguimiento</span></div>
+                    <div class="col-md-6 col-xs-6"><button type="button" class="btn btn-xs btn-paso">6</button><span>Demostración</span></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-6 estado">
+                <div class="row">
+                    <div class="col-md-12"><h4>Estado de Seguimiento</h4></div> 
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-success">S</button><span>Fecha de seguimiento futuro</span></div>
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-tomate">S</button><span>Fecha de seguimiento presente</span></div>
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-danger">S</button><span>Fecha de seguimiento pasado</span></div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xs-6 estado-credito">
+                <div class="row">
+                    <div class="col-md-12"><h4>Estado de Crédito</h4></div>
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-creditosn">C</button><span>Asesor de crédito no realizó movimientos</span></div>
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-credito">C</button><span>Asesor de crédito realizó movimientos (Revisa tu bandeja de entrada)</span></div>
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-6 desiste">
+                <div class="row">
+                    <div class="col-md-12 ft"><button type="button" class="btn btn-xs btn-credito">D</button><span class="titdesiste">Desiste</span></div>
+                    <div class="col-md-12"><span>El cliente desiste de la compra</span></div>
+                    <hr />
+                    <div class="col-md-12"><button type="button" class="btn btn-xs btn-credito">R</button><span class="titdesiste">Reasignado</span></div>
+                    <div class="col-md-12"><span>Cliente reasignado de otro asesor de ventas</span></div>
+                </div>  
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
 
-                <table class="table tablesorter" id="keywords">
+                <table class="table tablesorter table-striped" id="keywords">
                     <thead>
                         <tr>
                             <th><span>Status</span></th>
                             <th><span>ID</span></th>
+                            <th><span>Fecha de Registro</span></th>
                             <th><span>Nombres</span></th>
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
-                            <th><span>Seguimiento Caducado</span></th>
+                            <th><span>Próximo Seguimiento</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
-                            <th><span>Email</span></th>
+                            <th><span>Modelo-Test Drive</span></th>
                             <th><span>Categorización</span></th>
-                            <th><span>Expiración de Categorización</span></th>
+                            <th><span>Exp. de Categ.</span></th>
+                            <th><span>10(+1)</span></th>
                             <th><span>Fuente</span></th>
                             <th><span>Resumen</span></th>
                         </tr>
@@ -484,6 +577,11 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     ?>
                                 </td>
                                 <td><?php echo $c['id']; ?> </td>
+                                <td>
+                                    <?php
+                                    $pr = explode(' ', $c['fecha']);
+                                    echo $pr[0];
+                                    ?></td>
                                 <td><?php echo ucfirst($c['nombres']); ?> </td>
                                 <td><?php echo ucfirst($c['apellidos']); ?> </td>
                                 <td><?php 
@@ -502,7 +600,19 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                 <td><?php echo $proximo_seguimiento; if($cita){echo ' (c)';}?></td>
                                 <td><?php echo $this->getResponsable($c['responsable']); ?></td>
                                 <td><?php echo $this->getNameConcesionarioById($c['dealer_id']); ?></td>
-                                <td><?php echo $c['email']; ?> </td>
+                                <td class="nowr">
+                                    <?php
+                                    $tdsi = 0;
+                                    $tdno = 0;
+                                    $tdv = GestionTestDrive::model()->findAll(array('condition' => "id_informacion = {$c['id']}", 'order' => 'id_vehiculo desc'));
+                                    foreach ($tdv as $vc) {
+                                        //echo 'id_vehiculo: '.$vc['id_vehiculo'].'<br />';
+                                        if($vc['test_drive'] == 1){$tdsi++;}else{$tdno++;}
+                                        //else{echo '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span><br />';}
+                                    }                        
+                                    echo $datatd = $this->getListaTD($c['id']);
+                                    ?>
+                                </td>
                                 <td><?php echo $categorizacion; ?></td>
                                 <td> 
                                     <?php
@@ -583,6 +693,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     }
                                     ?> 
                                 </td>
+                                <td><?php echo $this->getPasoDiez($c['id']); ?></td>
                                 <td>
                                     <?php 
                                     if($fuente == 'showroom'){ echo 'Tráfico'; }
@@ -606,7 +717,10 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                                 
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' ){ ?> 
+                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $cargo_id != 85){ ?> 
+                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
+                                    <?php } ?>
+                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && $cargo_id == 85 && $paso == '7'){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
@@ -616,7 +730,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } ?>
                                     <?php //} ?>
-                                    <?php if ($c['bdc'] == 1 && ( $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)) { ?>
+                                    <?php if ($c['bdc'] == 100 && ( $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)) { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                     <?php } ?> 
                                         <em></em>

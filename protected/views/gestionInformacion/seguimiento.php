@@ -570,7 +570,7 @@ $count = count($users);
 ?>
         <div class="col-md-8">
             <div class="highlight">
-        <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general')); ?>
+        <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo_seg' => $tipo_seg)); ?>
             </div>
         </div>
     </div>

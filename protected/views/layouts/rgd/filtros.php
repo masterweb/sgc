@@ -153,20 +153,20 @@ $id_responsable = Yii::app()->user->getId();
             <hr />
             <h4>Búsqueda:</h4>
             <div class="row">
-
                 <div class="col-md-6">
                     <label for="">Grupo</label>
                     <select name="GestionDiaria[grupo]" id="GestionDiaria_grupo" class="form-control" <?php echo $cargo_id == 69 ? 'disabled="true"' : ''; ?> >
                         <?php echo $select[0]; ?>
                     </select>
                 </div>
-
+                <?php if(empty($tipo_seg)): ?>
                 <div class="col-md-6">
                     <label for="">Concesionario</label>
                     <select name="GestionDiaria[concesionario]" id="GestionDiaria_concesionario" class="form-control">
                         <?php echo $select[1]; ?>
                     </select>
                 </div>
+                <?php endif; ?>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -214,9 +214,9 @@ $id_responsable = Yii::app()->user->getId();
                 <input type="hidden" name="grupo" id="grupo" value="0" />
                 <input type="hidden" name="concesionario" id="concesionario" value="0" />
                 <?php
-                if(isset($tipo_seg)){
+                //if(isset($tipo_seg)){
                     echo '<input type="hidden" name="tipo_search" value="'.$tipo_seg.'" id = "tipo_search"/>';
-                }
+                //}
                 ?>
             </div>
         </div>

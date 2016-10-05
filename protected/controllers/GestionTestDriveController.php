@@ -77,7 +77,7 @@ class GestionTestDriveController extends Controller {
             //die();
             $id_vehiculo = $_POST['GestionTestDrive']['id_vehiculo'];
             $criteria = new CDbCriteria(array(
-                'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND `order` = 1"
+                'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND test_drive = 1"
             ));
             $td = GestionTestDrive::model()->count($criteria);
             //die('count td:'.$td);
