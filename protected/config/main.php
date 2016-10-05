@@ -98,6 +98,7 @@ return array(
             'password' => 'k143c89?4Fg&2',
 //            'username' => 'kia1234',
 //            'password' => 'kia1234',
+//            'password' => '',
             'charset' => 'utf8',
         ),
          'db2' => array(
@@ -108,6 +109,7 @@ return array(
           'password' => 'k143c89?4Fg&2',
 //          'username' => 'kia1234',
 //          'password' => 'kia1234',
+//          'password' => '',
           'charset' => 'utf8',
           ), 
         'image' => array(
