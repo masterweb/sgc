@@ -744,6 +744,11 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-9">
+            <?php $this->widget('CLinkPager', array('pages' => $pages, 'maxButtonCount' => 10)); ?>
+        </div>
+    </div>
     <br />
     <br />
     <?= $this->renderPartial('//layouts/rgd/links'); ?>

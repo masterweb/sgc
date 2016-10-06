@@ -2734,7 +2734,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
                 $sql .= " AND gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
-                //die($sql);
+                $criteria->addCondition("gd.fecha BETWEEN '{$params1}' AND '{$params2}'");
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
@@ -3573,10 +3578,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
             if($tipo_seg == 'exhibicion'){
-               $criteria->addCondition(" gd.fuente_contacto = 'exhibicion'"); 
+                $criteria->addCondition(" gd.fuente_contacto = 'exhibicion'"); 
             }
             $criteria->addCondition("u.cargo_id IN(70,71,85,86)");
-            $criteria->addCondition("DATE(gi.fecha) = '{$dt_hoy}'");
+            if($tipo_seg != 'exhibicion'){
+                $criteria->addCondition("DATE(gi.fecha) = '{$dt_unasemana_antes}'");
+            }
             $criteria->group = "gi.id";
             $criteria->order = "gi.id DESC";
         }
@@ -4151,8 +4158,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'tipo_seg' => $tipo_search));
             exit();
         }
+        // Count total records
+        $pages = new CPagination(GestionInformacion::model()->count($criteria));
+        // Set Page Limit
+        $pages->pageSize = 10;
+        // Apply page criteria to CDbCriteria
+        $pages->applyLimit($criteria);
+        $users = GestionInformacion::model()->findAll($criteria);
 
-        $this->render('seguimientobdc', array('users' => $users, 'model' => $model,'tipo_seg' => $tipo_seg));
+        $this->render('seguimientobdc', array('users' => $users, 'model' => $model, 'pages' => $pages,'tipo_seg' => $tipo_seg));
     }
 
     public function actionSeguimientoexonerados() {
