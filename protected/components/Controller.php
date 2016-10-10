@@ -231,10 +231,7 @@ class Controller extends CController {
         $dealer = Usuarios::model()->find($criteria);
         //die ('dealer: '.$dealer->concesionario_id);
         if ($dealer->concesionario_id == 0) {
-            $criteria2 = new CDbCriteria(array(
-                'condition' => "usuario_id={$id}"
-            ));
-            $usuario = Grupoconcesionariousuario::model()->find($criteria2);
+            $usuario = Grupoconcesionariousuario::model()->find(array('condition' => "usuario_id={$id}"));
             $id_conc = $usuario->concesionario_id;
             $criteria2 = new CDbCriteria(array(
                 'condition' => "id={$id_conc}"
@@ -242,9 +239,9 @@ class Controller extends CController {
             $deal = Dealers::model()->find($criteria2);
             return $deal->direccion;
         } else {
-            $id_conc = $dealer->consecionario->dealer->id;
+            //$id_conc = $dealer->consecionario->dealer->id;
             $criteria2 = new CDbCriteria(array(
-                'condition' => "id={$id_conc}"
+                'condition' => "id={$dealer->concesionario_id}"
             ));
             $deal = Dealers::model()->find($criteria2);
             return $deal->direccion;
