@@ -229,7 +229,7 @@ class Controller extends CController {
             'condition' => "id={$id}"
         ));
         $dealer = Usuarios::model()->find($criteria);
-        //return $dealer->concesionario_id;
+        //die ('dealer: '.$dealer->concesionario_id);
         if ($dealer->concesionario_id == 0) {
             $criteria2 = new CDbCriteria(array(
                 'condition' => "usuario_id={$id}"
@@ -1351,11 +1351,19 @@ class Controller extends CController {
 
     public function getResponsableNombres($id) {
         //die($id);
+        if($id == null){
+            return 'NA';
+        }
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
         $dealer = Usuarios::model()->find($criteria);
-        return ucfirst($dealer->nombres) . ' ' . ucfirst($dealer->apellido);
+        if($dealer != NULL){
+            return ucfirst($dealer->nombres) . ' ' . ucfirst($dealer->apellido);
+        }else{
+            return 'NA';
+        }
+        
     }
 
     public function getCityId($id) {

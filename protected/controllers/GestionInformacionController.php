@@ -1051,7 +1051,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     if(empty($dealer_id)){
                         $sql .= "WHERE gi.dealer_id IN ({$dealerList}) AND ";
                     }else{
-                        $sql .= "WHERE gi.dealer_id = {$dealer_id} AND (";
+                        $sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
                     }
                 } else {
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
@@ -1944,6 +1944,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
             $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
             $criteria->addCondition("gi.bdc = 1");
+            $criteria->addCondition("gd.desiste = 0");
             $criteria->addCondition("u.cargo_id IN (85,86)");
         }
         if ($cargo_id == 86) { // asesor de ventas externas
@@ -1992,7 +1993,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if ($get_array ==  'bdc' && $tipo_search == 'web') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-                $criteria->condition = "u.cargo_id IN(85,86,70,71) AND u.cargo_adicional IN(85,86)";
+                $criteria->condition = "u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86)";
             }
             if ($get_array == 'seg' && $tipo_search == '') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
@@ -2144,6 +2145,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
                 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 33;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 40;
         }
         
         // GRUPO - RESPONSABLE
@@ -2392,6 +2399,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 } else {
                     $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
+                    $criteria->addCondition("gd.desiste = 0");
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -3445,6 +3453,30 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 return $data;
 
                 break;
+            case 40: // SEARCH BY BUSQUEDA GENERAL, GRUPO AND CONCESIONARIO
+                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
             default:
                 break;
         }
@@ -3768,6 +3800,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable'; 
             $criteria->condition = " gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND gi.responsable = {$id_responsable}";
+            $criteria->addCondition("gd.desiste = 0");
             //$criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';   
             $criteria->order = "gi.id DESC";
             //die($sql);
@@ -3788,7 +3821,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $dealerList = implode(', ', $array_dealers);
             $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable'; 
             $criteria->condition = " gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND (u.cargo_id = 86 OR u.cargo_id = 70 OR u.cargo_adicional = 86 OR u.cargo_adicional = 85)";
-            //$criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';   
+            $criteria->addCondition("gd.desiste = 0");
+//$criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';   
             $criteria->order = "gi.id DESC";     
             //die($sql);
         }
