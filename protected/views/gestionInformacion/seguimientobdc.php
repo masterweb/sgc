@@ -547,11 +547,6 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                         <button type="button" class="btn btn-xs btn-warning">web</button>
                                     <?php endif; ?>
                                     <?php
-                                    if ($medio_contacto == 'caduco'):
-                                        ?>
-                                        <button type="button" class="btn btn-xs btn-warning">Caduco</button>
-                                    <?php endif; ?>
-                                    <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
@@ -708,26 +703,26 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     <?php if (($status == 1 || $status == 4) && $desiste != 1) { ?>
                                         <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
                                             <?php if ($area_id != 4 && $cargo_id != 69 ) { ?> 
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
+                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar1</a>   
                                             <?php } ?>
                                         <?php } else { ?>
                                             <?php if ($cargo_id != 72 && $cargo_id != 69 &&  $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?> 
-                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
+                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar2</a>
                                             <?php } ?>
                                                 
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $cargo_id != 85){ ?> 
-                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
+                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar5</a>            
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && $cargo_id == 85 && $paso == '7'){ ?> 
-                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && $cargo_id == 85 && $paso == '7'){ ?> 
+                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar6</a>            
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
-                                    <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
+                                    <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar3</a>           
                                     <?php } ?>   
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
+                                        <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar4</a>    
                                     <?php } ?>
                                     <?php //} ?>
                                     <?php if ($c['bdc'] == 100 && ( $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)) { ?>
