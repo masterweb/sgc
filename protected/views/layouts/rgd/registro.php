@@ -86,8 +86,9 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
             }
             if($cargo_id == 85 || $cargo_id == 86){ // asesor ventas externas y jefe de ventas externas
-                $tipo_array =  array('prospeccion' => 'Prospección',
-                    'exhibicion' => 'Exhibición'
+                $tipo_array =  array(
+                    'prospeccion' => 'Prospección',
+                    //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
             }
