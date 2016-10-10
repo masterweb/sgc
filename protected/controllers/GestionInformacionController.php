@@ -1537,7 +1537,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     default:
                         break;
                 }
-                $sql .= "(DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')";
+                $sql .= " AND (DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')";
                 $sql .=  " group by gi.id";
                 $sql .=  " order by gi.id DESC";
                 $request = $con->createCommand($sql);
