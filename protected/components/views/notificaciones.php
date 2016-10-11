@@ -26,7 +26,7 @@ $dealerList = implode(', ', $array_dealers);
         $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
                 inner JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
                 INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id 
-                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
+                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha";
         $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
         $dataWeb = '';
         $dataWeb .= '<ul id="lAbierto">';
@@ -421,11 +421,13 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
                         ?>
                     </div>
                 <?php endif; ?>
+                <?php if($cargo_id == 85): ?>
                 <div role="tabpanel" class="tab-pane fade active in" id="seguimientoe" aria-labelledby="abierto-tab">
                     <?php
                     echo $dataExt;
                     ?>
                 </div>
+                <?php endif; ?>
                 <div role="tabpanel" class="tab-pane fade " id="web" aria-labelledby="abierto-tab">
                     <?php
                     echo $dataWeb;

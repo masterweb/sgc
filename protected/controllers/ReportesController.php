@@ -126,7 +126,7 @@ class ReportesController extends Controller {
         // GRUPO ASIAUTO Y KMOTOR CON CARGO JEFE VENTAS WEB O CARGO ADICIONAL ASESOR VENTAS WEB. SUMA AL EMBUDO BDC = 1
         if(($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && ($varView['cargo_id'] == 85 || $varView['cargo_id'] == 86)){
             //die('enter gret');
-            $bdcfalse = ' AND gi.bdc = 0 ';
+            $bdcfalse = ' AND gi.bdc = 1 ';
         }
         // IOKARS, AUTHESA - ASESORES VENTAS Y ASESORES WEB. SUMA AL EMBUDO BDC = 0 Y BDC = 1
         if(($varView['grupo_id'] != 2 || $varView['grupo_id'] != 3) && ($varView['cargo_id'] == 71 || $varView['cargo_id'] == 86))
