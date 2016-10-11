@@ -353,30 +353,59 @@ class Controller extends CController {
     }
 
     public function getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
-//        $criteria = new CDbCriteria;
-//        $criteria->condition = "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}";
-//        $usuario = Usuarios::model()->find($criteria);
-//        if (!is_null($usuario) && !empty($usuario)) {
-//            return $usuario->correo;
-//        } else {
-//            return 'alkanware@gmail.com';
-//        }
-        // buscar en tabla usuarios el jefe de almacen con el dealer id
-        $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND dealers_id = {$dealer_id}"));
 
-        if (count($us) > 0) {
-            return $us->correo;
-        } else {
-            $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
+        $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
+        if ($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9) {
+            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+        }
+        
+        switch ($cargo_id) {
+            case '71': // ASESOR DE VENTAS
+                if ($tipo_grupo == 1) {
+                    $us = Usuarios::model()->find(array('condition' => "cargo_id = 70 AND dealers_id = {$dealer_id} AND status_asesor = 'ACTIVO'"));
+                    if (count($us) > 0) {
+                        return $us->correo;
+                    } else {
+                        $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
             INNER JOIN usuarios u ON u.id = gr.usuario_id 
             WHERE gr.concesionario_id = {$dealer_id}
-            AND u.cargo_id = 70 ";
-            $con = Yii::app()->db;
-            $request = $con->createCommand($sql)->query();
-            //die('count request: '.count($request));
-            foreach ($request as $value) {
-                return $value['correo'];
-            }
+            AND u.cargo_id = 70 AND status_asesor = 'ACTIVO'";
+
+                        $con = Yii::app()->db;
+                        $request = $con->createCommand($sql)->query();
+                        //die('count request: '.count($request));
+                        foreach ($request as $value) {
+                            return $value['correo'];
+                        }
+                    }
+                } 
+                if ($tipo_grupo == 0) {
+                    $us = Usuarios::model()->find(array('condition' => "(cargo_id = 70 OR cargo_adicional = 85) AND dealers_id = {$dealer_id} AND status_asesor = 'ACTIVO'"));
+                    if (count($us) > 0) {
+                        return $us->correo;
+                    } 
+                }
+
+
+                break;
+            case '86': // ASESOR WEB
+                if ($tipo_grupo == 1) {
+                    $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND cargo_id = 85 AND status_asesor = 'ACTIVO'";
+                } 
+                if ($tipo_grupo == 0) {
+                    $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND (cargo_id = 85 OR cargo_adicional = 85) AND status_asesor = 'ACTIVO'";
+                }
+                $con = Yii::app()->db;
+                $request = $con->createCommand($sql)->query();
+                //die('count request: '.count($request));
+                foreach ($request as $value) {
+                    return $value['correo'];
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -389,18 +418,17 @@ class Controller extends CController {
         if (count($us) > 0) {
             return $us->nombres . ' ' . $us->apellido;
         }
-        if(count($us) == 0){
+        if (count($us) == 0) {
             $us = Usuarios::model()->find(array('condition' => "cargo_id={$cargo_id} AND grupo_id = {$grupo_id}"));
             return $us->nombres . ' ' . $us->apellido;
-        }
-        else {
+        } else {
             $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
             INNER JOIN usuarios u ON u.id = gr.usuario_id 
             WHERE gr.concesionario_id = {$dealer_id}";
-            if($cargo_id_agente == 71){
+            if ($cargo_id_agente == 71) {
                 $sql .= " AND u.cargo_id = 70 ";
             }
-            if($cargo_id_agente == 86){
+            if ($cargo_id_agente == 86) {
                 $sql .= " AND u.cargo_id = 85 ";
             }
             die($sql);
@@ -1348,19 +1376,18 @@ class Controller extends CController {
 
     public function getResponsableNombres($id) {
         //die($id);
-        if($id == null){
+        if ($id == null) {
             return 'NA';
         }
         $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
         ));
         $dealer = Usuarios::model()->find($criteria);
-        if($dealer != NULL){
+        if ($dealer != NULL) {
             return ucfirst($dealer->nombres) . ' ' . ucfirst($dealer->apellido);
-        }else{
+        } else {
             return 'NA';
         }
-        
     }
 
     public function getCityId($id) {
@@ -1409,6 +1436,7 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->paso;
     }
+
     /**
      * Funcion que retorna el paso donde esta el cliente
      * @param type $id_informacion del cliente
@@ -1418,9 +1446,9 @@ class Controller extends CController {
         $ps = GestionDiaria::model()->find(array('condition' => "id_informacion = {$id_informacion}"));
         $paso = 0;
         $str = strlen($ps->paso);
-        if($str == 3){
+        if ($str == 3) {
             $paso = 3;
-        }else{
+        } else {
             $paso = (int) $ps->paso;
         }
         return $paso;
@@ -2660,22 +2688,24 @@ class Controller extends CController {
             return 'NA';
         }
     }
-    /****
+
+    /*     * **
      * Funcion para devolver los responsables de agencia para reasignacion de clientes
-     */        
+     */
+
     public function getResponsablesAgencia($id_responsable) {
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-        if(empty($dealer_id)){
+        if (empty($dealer_id)) {
             $array_dealers = $this->getDealerGrupoConc($grupo_id);
             $dealer_id = implode(', ', $array_dealers);
         }
-        
+
         $cre = new CDbCriteria();
-        if($grupo_id == 4)// IOKARS
+        if ($grupo_id == 4)// IOKARS
             $cre->condition = " cargo_id IN (71,73) AND dealers_id IN ({$dealer_id}) ";
         else
-            $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";  
+            $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";
         $cre->order = " nombres ASC";
         $asesores = Usuarios::model()->findAll($cre);
         $data = '';
@@ -2872,12 +2902,12 @@ class Controller extends CController {
             return 'Modelo no Disponible';
         }
     }
-    
+
     public function getCita($id_informacion) {
         $ga = GestionAgendamiento::model()->count(array('condition' => "id_informacion = {$id_informacion} AND observaciones = 'Cita'"));
-        if($ga > 0){
+        if ($ga > 0) {
             return TRUE;
-        }else{
+        } else {
             return FALSE;
         }
     }
