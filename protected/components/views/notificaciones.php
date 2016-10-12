@@ -26,7 +26,7 @@ $dealerList = implode(', ', $array_dealers);
         $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
                 inner JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
                 INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id 
-                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha";
+                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
         $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
         $dataWeb = '';
         $dataWeb .= '<ul id="lAbierto">';
@@ -280,14 +280,14 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
         $dc .= '<input type="hidden" id="actualAbierto" value="10">';
     }
 
-    // NOTIFICACIONES PARA JEFE DE VENTAS EXTERNAS----------------------------------------------------------------------------------------------------
+    // NOTIFICACIONES PARA JEFE DE VENTAS WEB----------------------------------------------------------------------------------------------------
     $fecha_actual = date("Y/m/d");
     $array_dealers = Controller::getDealerGrupoConc($grupo_id);
     $dealerList = implode(', ', $array_dealers);
     $sqlExt = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gd.proximo_seguimiento, gd.paso, gd.fuente_contacto FROM gestion_informacion gi "
             . "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN usuarios u ON u.id = gi.responsable "
             . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
-            . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD'";
+            . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
     //die('sql: '.$sqlExt );        
     $notExt = Yii::app()->db->createCommand($sqlExt)->query();
     $dataExt = '';
@@ -303,7 +303,7 @@ WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
     }
     $dataExt .= '</ul>';
 
-    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios) + $countExt;
+    $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios);
     if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86)
         $num_noficicaciones = count($notificacionesWeb) + count($notificacionesCitas);
     ?>
