@@ -202,7 +202,9 @@ class ReportesController extends Controller {
             case 86:// asesor de ventas externas------> TRABAJAR
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
                 break;
-            case 85:// jefe de ventas externas------> TRABAJAR
+            case 85:// jefe de ventas web------> TRABAJAR
+                $varView['lista_conce'] = $GF->getConcecionario((int) Yii::app()->user->getState('grupo_id'));
+                //print_r($varView['lista_conce']);
                 $array_dealers = $this->getDealerGrupoConc($varView['grupo_id']);
                 $dealerList = implode(', ', $array_dealers);
                 $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';

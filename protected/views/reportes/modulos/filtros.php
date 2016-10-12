@@ -6,7 +6,7 @@
     }
         $usuariosBajos = array(71, 77, 75, 73 , 70, 76, 72, 69);
         $usuariosGeneral = array(71, 70);
-        $usuariosjsucursal = array(70);
+        $usuariosjsucursal = array(70,85);
         $usuariosUsados = array(77, 76);
         $usuariosExonerados = array(75, 72);
         $usuariosBDC = array(73, 72);
@@ -61,7 +61,10 @@
             <?php endif; ?>
     <?php endif; ?>
     <?php if (in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosjsucursal)): ?>
-        <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionGrupo" value="<?=$varView['grupo_id']?>"/>      
+        <input type="hidden"  name="GI[tipo_t]" id="GestionInformacionGrupo" value="<?=$varView['grupo_id']?>"/>
+        <?php if((int) Yii::app()->user->getState('cargo_id') == 85){ ?>
+        <input type="hidden"  name="GI[tipo]" class="tipo_busqueda" value="web"/>
+        <?php } ?>
     <?php endif; ?>
 
     <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)): ?>
@@ -143,13 +146,22 @@
     <?php endif; ?>
 
     <!-- FILTRO CONCESIONARIOS -->
-    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true): ?>
+    <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 85): ?>
+    <?php 
+//                echo '<pre>';
+//                print_r($varView['lista_conce']);
+//                echo '</pre>';
+    ?>
         <div class="col-md-6">
             <label for="">Concesionarios</label>
             <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" >
                 <option value="">--Seleccione Concesionario--</option>
                 <?php
+//                echo '<pre>';
+//                print_r($varView['lista_conce']);
+//                echo '</pre>';
                 if($varView['lista_conce'] != 'null'){
+                    echo '<option value="">Conc</option>';
                     foreach ($varView['lista_conce'] as $value) {
                         if($value['nombre'] != 'TODOS'){
                             echo '<option value="' . $value['dealer_id'] . '"';
@@ -167,7 +179,7 @@
 
     <!-- FILTRO ASESORES -->
     <?php 
-    if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76 || $varView['cargo_id'] == 72): ?>
+    if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 76 || $varView['cargo_id'] == 72 || $varView['cargo_id'] == 85): ?>
         <?php         
         if (in_array($varView['cargo_id'], $usuariosBajos) && !in_array($varView['cargo_id'], $usuariosGenentes)):?>
             <input type="hidden"  name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" value="<?= $varView['dealer_id'] ?>"/>
@@ -305,6 +317,7 @@
         <div class="col-md-6">
             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
             <input type="hidden" name="GI[tipo]" value="<?php echo $tipo;0 ?>" id="GI_tipo" />
+            <input type="hidden" name="tipo_grupo" value="<?php echo $tipo_grupo;  ?>" id="tipo_grupo" />
         </div>
     </div>
     <?php $this->endWidget(); ?>

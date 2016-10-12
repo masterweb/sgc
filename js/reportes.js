@@ -1,6 +1,7 @@
 $(function () {
 
     tipo_b = $(".tipo_busqueda").val();
+    tipo_grupo = $('#tipo_grupo').val();
 
     //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
@@ -284,7 +285,8 @@ $(function () {
                     responsable: responsable, 
                     fecha1: fecha1, 
                     fecha2: fecha2,
-                    tipo_b: tipo_b
+                    tipo_b: tipo_b,
+                    tipo_grupo: tipo_grupo
                 },
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);

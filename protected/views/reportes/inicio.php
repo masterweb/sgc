@@ -4,10 +4,15 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $tipo_grupo = 0; // GRUPO KMOTOR Y ASIAUTO
+$area = 0;
 if($grupo_id == 2 || $grupo_id == 3){
     $tipo_grupo = 1;
 }
-//echo 'grupo id: '.$grupo_id;
+$area_id = (int) Yii::app()->user->getState('area_id');
+if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+    $area = 1;
+}
+//echo 'area id: '.$area;
 //echo 'tipo grupo: '.$tipo_grupo;
 ?>
 <div id="tabs_repo">
@@ -31,11 +36,11 @@ if($grupo_id == 2 || $grupo_id == 3){
                     <?php } if($tipo == '' && $tipo != 'externas') { ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
                     <?php } ?>
-                    <?php if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3){ ?>
+                    <?php if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3 || $area == 1){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccion')); ?>">Prospección</a>
                     <?php } ?>
-                    <?php if(($tipo != 'externas') && ($tipo_grupo == 1)){ 
-                    if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) ){ ?>
+                    <?php if(($tipo != 'externas') && ($tipo_grupo == 1)  || $area == 1){
+                    if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
                     <?php } 
                     }?>
@@ -44,7 +49,7 @@ if($grupo_id == 2 || $grupo_id == 3){
                     </form>
                     <div class="resultados_embudo bg-danger"></div>
                     <div class="highlight filtrosReportes">
-                        <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView,'tipo' => $tipo));?>
+                        <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView,'tipo' => $tipo,'tipo_grupo' => $tipo_grupo));?>
                     </div>        
                 </div>  
             </div>

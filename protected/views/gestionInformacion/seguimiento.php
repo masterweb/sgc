@@ -1012,7 +1012,7 @@ $count = count($users);
                                                 
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' ){ ?> 
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 

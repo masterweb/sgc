@@ -147,6 +147,7 @@ class AjaxCalls{
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
         $resposable = isset($_POST["responsable"]) ? $_POST["responsable"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
+        $tipo_grupo = isset($_POST["tipo_grupo"]) ? $_POST["tipo_grupo"] : "";
 
         //FECHAS RENDER
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
@@ -157,7 +158,7 @@ class AjaxCalls{
 
         //controlador de tipo de busqueda
         $extra_where = '';
-        if($tipo_b == 'bdc'){
+        if($tipo_b == 'web'){
             $extra_where = " bdc = 1 AND ";
             //echo $extra_where;
         }else if($tipo_b == 'exonerados'){
@@ -175,7 +176,8 @@ class AjaxCalls{
             $responsable = 'responsable';
         }
         $sql_asesores_act = "SELECT distinct ".$responsable." FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        //echo $sql_asesores_act;
+        //echo 'sql asesores actuales: '.$sql_asesores_act;
+        //die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
 
@@ -217,12 +219,16 @@ class AjaxCalls{
                 $active_cargo = '76, 77';
             }elseif($tipo_b == 'general'){
                 $active_cargo = '70, 71';
-            }else{
+            }elseif($tipo_b == 'web'){
+                $active_cargo = '85,86';
+            }
+            else{
                 $active_cargo = '70, 71, 72, 73, 75, 76, 77';
             }
 
             if( $cargo_id == 69 || 
-                $cargo_id == 70 || 
+                $cargo_id == 70 ||
+                $cargo_id == 85 || 
                 $cargo_id == 4 || 
                 $cargo_id == 45 ||
                 $cargo_id == 46 ||
@@ -234,8 +240,16 @@ class AjaxCalls{
                 $cargo_id == 62 ||
                 $cargo_id == 76||
                 $cargo_id == 72){
-                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
-                //echo $sql;
+                
+                
+                if($tipo_grupo == 1){
+                    $sql = "SELECT u.* FROM usuarios u INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id "
+                            . "WHERE gr.concesionario_id = {$dealer_id} AND u.cargo_id IN (".$active_cargo.") AND u.id IN (".$asesores_aa.") ORDER BY u.nombres ASC";
+                }
+                if($tipo_grupo == 0){
+                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
+                }
+                //echo $sql; die();
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
@@ -283,6 +297,7 @@ class AjaxCalls{
     public function AjaxGetDealers() {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
+        //die('grupo id: '.$grupo_id);
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
@@ -307,7 +322,7 @@ class AjaxCalls{
         }
 
         $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."') ORDER BY dealer_id ASC";
-        //echo $sql;
+        echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
         foreach ($request as $id_concesionario) {
@@ -333,7 +348,7 @@ class AjaxCalls{
             }
         }
         $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios ".$join." WHERE ".$where.$concesionario." ORDER BY nombre ASC";
-        //echo $sql;
+        //die ('sql 2:'.$sql);
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 

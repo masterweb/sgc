@@ -2,6 +2,17 @@
 $this->widget('application.components.Notificaciones');
 setlocale(LC_MONETARY, 'en_US');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+$cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$area_id = (int) Yii::app()->user->getState('area_id');
+$tipo_continuar = 0;
+if($cargo_id == 85 || $cargo_adicional == 0){
+    $tipo_continuar = 1;
+}
+if($cargo_id == 70 || $cargo_adicional == 85){
+    $tipo_continuar = 1;
+}
+
 ?>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
@@ -1256,7 +1267,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php } ?>
                     </div>
                     <?php
-                    if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){
+                    if(($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14) && ($tipo_continuar == 0)){
                     switch ($_GET['paso']) {
                         case '1-2':
                             $status = $this->getStatusGD($_GET['id_gt']);
