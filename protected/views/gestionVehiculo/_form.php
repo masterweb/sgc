@@ -480,7 +480,7 @@ if (isset($id)) {
                                                     }                                                    
                                                     ?> 
                                                 </td>
-                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Lista-de-Precios-Nov2015.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-06-10-2016.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                                             </tr>
                                             <?php
                                         endforeach;

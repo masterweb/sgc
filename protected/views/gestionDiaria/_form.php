@@ -1267,7 +1267,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php } ?>
                     </div>
                     <?php
-                    if(($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14) && ($tipo_continuar == 0)){
+                    if(($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14)){
                     switch ($_GET['paso']) {
                         case '1-2':
                             $status = $this->getStatusGD($_GET['id_gt']);
