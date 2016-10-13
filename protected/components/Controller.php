@@ -2903,9 +2903,9 @@ class Controller extends CController {
         }
     }
 
-    public function getCita($id_informacion) {
+    public function getCita($id_informacion, $cargo_id, $cargo_adicional) {
         $ga = GestionAgendamiento::model()->count(array('condition' => "id_informacion = {$id_informacion} AND observaciones = 'Cita'"));
-        if ($ga > 0) {
+        if ($ga > 0 && ($cargo_id == 86 || $cargo_adicional == 86) ) {
             return TRUE;
         } else {
             return FALSE;

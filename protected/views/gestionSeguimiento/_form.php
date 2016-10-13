@@ -3,11 +3,12 @@
 /* @var $model GestionSeguimiento */
 /* @var $form CActiveForm */
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimiento';
 if($cargo_id == 75){ // asesor exonerados
     $url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimientoexonerados';
 }
-if($cargo_id == 73){ // asesor bdc
+if($cargo_id == 86 || $cargo_adicional == 86){ // asesor bdc
     $url = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionInformacion/seguimientobdc';
 }
 ?>

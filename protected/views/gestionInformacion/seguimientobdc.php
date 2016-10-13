@@ -8,6 +8,7 @@ if (isset($model->identificacion))
 $id_responsable = Yii::app()->user->getId();
 $dealer_id = $this->getDealerId($id_responsable);
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $area_id = (int) Yii::app()->user->getState('area_id');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
@@ -479,7 +480,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     $medio_contacto = $this->getMedioContacto($c['id']);
                                     $desiste = $this->getDesiste($c['id']);
                                     $proximo_seguimiento = $this->getSeguimiento($c['id']);
-                                    $cita = $this->getCita($c['id']);
+                                    $cita = $this->getCita($c['id'],$cargo_id, $cargo_adicional);
                                     $categorizacion = $this->getCategorizacionSGC($c['id']);
                                     $fuente = $this->getFuenteSGC($c['id']);
                                     $status = $this->getStatusSGC($c['id']);
