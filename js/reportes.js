@@ -2,6 +2,7 @@ $(function () {
 
     tipo_b = $(".tipo_busqueda").val();
     tipo_grupo = $('#tipo_grupo').val();
+    //console.log('tipo grupo: '+tipo_b);
 
     //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
@@ -97,7 +98,7 @@ $(function () {
     }
 
     $('#TAconcesionarios').change(function () {
-        loadmodelosTA($(this));
+        //loadmodelosTA($(this));
         filtros_notification();
     });
 
@@ -312,7 +313,7 @@ $(function () {
                 model_info: model_info
             },
             success: function (data) {
-                $('.filtros_modelos_ta').html(data);  
+                //$('.filtros_modelos_ta').html(data);  
                 loading('desactivar');                
             }
         });

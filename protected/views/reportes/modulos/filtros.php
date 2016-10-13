@@ -1,3 +1,4 @@
+<?php //echo 'tipo: '.$tipo; ?>
 <div class="form">
     <?php
     $filtro_exh = '';
@@ -11,7 +12,7 @@
         $usuariosExonerados = array(75, 72);
         $usuariosBDC = array(73, 72);
         $usuariosGenentes = array(69);
-        $usuariosJafeBDCyExonerados = array(72);
+        $usuariosJafeBDCyExonerados = array(72,85);
         $usuariosAekia = array(4, 45, 46, 48, 57, 58, 60, 61, 62);
         $usuariosWeb = array(85,86);// VENTAS WEB Y JEFE DE VENTAS WEB
 
@@ -70,7 +71,7 @@
     <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)): ?>
         <div class="row text-center">
             <h4>Seleccione el tipo de busqueda</h4>
-            <?php if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)):?>
+            <?php if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados) && $tipo == ''):?>
                 <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
                 <?php if($varView['checked_ge'] == true){echo 'checked';} ?>
                 >General</label>
@@ -78,23 +79,23 @@
             <!--label class="radio-inline"><input type="radio" name="GI[tipo]" value="usados" class="tipo_busqueda"
             <?php if($varView['checked_us'] == true){echo 'checked';} ?>
             >Usados</label-->
-            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="bdc" class="tipo_busqueda"
-            <?php if($varView['checked_bdc'] == true || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)){echo 'checked';} ?>
-            >BDC</label>
+            <label class="radio-inline"><input type="radio" name="GI[tipo]" value="web" class="tipo_busqueda"
+            <?php if($tipo == 'externas'){echo 'checked';} ?>
+            >WEB</label>
             <label class="radio-inline"><input type="radio" name="GI[tipo]" value="exonerados" class="tipo_busqueda"
             <?php if($varView['checked_ex'] == true){echo 'checked';} ?>
             >Exonerados</label>
-            <?php if ($varView['AEKIA'] == true): ?>
-                <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
-                <?php if($varView['checked_ta'] == true){echo 'checked';} ?>
-                >Tráfico Histórico hasta el 2015</label>
-            <?php endif; ?>
+            <?php //if ($varView['AEKIA'] == true): ?>
+<!--                <label class="radio-inline"><input type="radio" name="GI[tipo]" value="traficoacumulado" class="tipo_busqueda"
+                <?php //if($varView['checked_ta'] == true){echo 'checked';} ?>
+                >Tráfico Histórico hasta el 2015</label>-->
+            <?php //endif; ?>
             <hr/>
         </div>
         <?php if ($varView['AEKIA'] == true): ?>
             <div id="trafico_todo">
                  
-                <div class="row text-center">
+                <div class="row text-center" style="display: none;">
                     <!--h4>Por</h4-->
                     <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda_por" 
                     <?php if($varView['checked_g'] == true){echo 'checked';} ?>
@@ -105,7 +106,7 @@
                     <hr/>
                 </div>
                 <!-- PROVINCIAS -->
-                <div class="col-md-6 cont_prov">
+<!--                <div class="col-md-6 cont_prov">
                     <label for="">Provincias</label>
                     <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
                         <option value="">--Seleccione Provincias--</option>
@@ -122,7 +123,7 @@
                         }
                         ?>
                     </select>
-                </div>
+                </div>-->
             
                 <!-- GRUPOS -->
                 <div class="col-md-6 cont_grup">
@@ -194,33 +195,33 @@
 
     <!--FILTRO BDC DESISTE O CADUCA-->
     <?php if (in_array($varView['cargo_id'], $usuariosBDC) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
-        <div class="col-md-6 estadoBDC">
+<!--        <div class="col-md-6 estadoBDC">
             <label for="">Estado BDC</label>
             <select name="GI[estadoBDC]" id="GestionInformacionTipoBDC" class="form-control" >
                 <option value="">--Seleccione un estado BDC--</option>
                 <option value="desiste">Desiste</option>
                 <option value="caducados">Caducados</option>
             </select>
-        </div>
+        </div>-->
     <?php endif; ?>
 
     <!--FILTRO Exonerados-->
     <?php if (in_array($varView['cargo_id'], $usuariosExonerados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes)):?>
-        <div class="col-md-6 tipoExonerados">
+<!--        <div class="col-md-6 tipoExonerados">
             <label for="">Tipo de exonerado</label>
             <select name="GI[tipoExo]" id="GestionInformacionTipoExo" class="form-control" >
                 <option value="">--Seleccione un tipo--</option>
                 <option value="Exonerado Conadis">Conadis</option>
                 <option value="Exonerado Diplomatico">Diplomáticos</option>
             </select>
-        </div>
+        </div>-->
     <?php endif; ?>
 
     <!--MODELOS-->
 <?php if ((in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes)) && $filtro_exh == '' ): ?>
-    <div id="traficoGeneral">
+    <!--<div id="traficoGeneral">
         <!-- FILTRO MODELOS -->
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-12">
                 <label for="">Modelos</label>
                 <div class="panel panel-default">
@@ -230,12 +231,13 @@
                 </div>
             </div>
         </div>
-    </div> <!-- #traficogeneral fin-->
+    </div>-->
+    <!-- #traficogeneral fin-->
 <?php endif; ?>
 <?php if (in_array($varView['cargo_id'], $usuariosUsados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
-    <div id="traficousados">        
+    <!--<div id="traficousados">        
         <!-- FILTRO MODELOS -->
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-12">
                 <label for="">Modelos Usados</label>
                 <div class="panel panel-default">
@@ -244,13 +246,13 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div> <!-- #traficousados fin-->
+        </div>-->
+    <!--</div> <!-- #traficousados fin-->
 <?php endif; ?>
 <?php if (in_array($varView['cargo_id'], $usuariosBDC) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
-    <div id="traficobdc">
+    <!--<div id="traficobdc">
         <!-- FILTRO MODELOS -->
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-12">
                 <label for="">Modelos BDC</label>
                 <div class="panel panel-default">
@@ -263,9 +265,9 @@
     </div> <!-- #traficoBDC fin-->
 <?php endif; ?>
 <?php if (in_array($varView['cargo_id'], $usuariosExonerados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>
-    <div id="traficoexonerados">
+    <!--<div id="traficoexonerados">
         <!-- FILTRO MODELOS -->
-        <div class="row">
+        <!--<div class="row">
             <div class="col-md-12">
                 <label for="">Modelos Exonerados</label>
                 <div class="panel panel-default">
@@ -286,9 +288,9 @@
 
 <?php if ($varView['AEKIA'] == true): ?>
 
-<div id="traficoacumulado"> <!-- #traficoacumulado fin-->
+<!--<div id="traficoacumulado">  #traficoacumulado fin
     <div class="row text-center">
-        <!--h4>Seleccione el tipo de busqueda de Tráfico Histórico</h4-->
+        h4>Seleccione el tipo de busqueda de Tráfico Histórico</h4
         <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_grupos" id="TA_grupos" class="tipo_busqueda_TA" 
         <?php if($varView['TAchecked_gp'] == 'g'){echo 'checked';} ?>>Por Grupos</label>
         <label class="radio-inline"><input type="radio" name="TA[tipo]" value="TA_provincias" id="TA_provincias" class="tipo_busqueda_TA"
@@ -309,7 +311,8 @@
     <div class="row">
         <?= $varView['traficoAcumulado']['ini_filtros']['modelo'] ?>
     </div>
-</div> <!-- #traficoacumulado fin-->
+</div> -->
+    <!-- #traficoacumulado fin-->
 
 <?php endif; ?>
     <!-- TRIGER -->

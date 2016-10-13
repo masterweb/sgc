@@ -216,6 +216,7 @@ class ReportesController extends Controller {
         $varView['js_responsable'] = 'null';
         $consultaBDC = '';
         if ($_GET['GI']) {
+            //die('enter GI');
             if ($_GET['GI']['fecha1'] != '') {
                 //echo('fecha1');
                 $gi_fecha1 = explode(" - ", $_GET['GI']['fecha1']);
