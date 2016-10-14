@@ -2709,6 +2709,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    if($tipo_search == ''){
+                        $criteria->addCondition("gi.bdc = 0");
+                        $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                    }
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
                     $title = "Busqueda por Total País";
                 }
                 if($cargo_id == 85){ // JEFE DE VENTAS WEB
