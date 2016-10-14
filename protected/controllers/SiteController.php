@@ -3300,7 +3300,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
         }else{
             $conc = Usuarios::model()->findAll(array(
-                'condition' =>"grupo_id = {$id} AND (cargo_id IN (70,71,85,86) OR cargo_adicional IN (85,86))",
+                'condition' =>"grupo_id = {$id} AND (cargo_id IN (85,86) OR cargo_adicional IN (85,86))",
                 'order' => 'nombres ASC'        
                 ));
             $data = '<option value="">--Seleccione responsable--</option>';
