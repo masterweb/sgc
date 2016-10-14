@@ -2232,10 +2232,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 break;
             case 1: // BUSQUEDA GENERAL POR NOMBRES, APELLIDOS, CEDULA, ID
                 $count = 0;
-                $select = $sql;
-                /* BUSQUEDA POR NOMBRES O APELLIDOS, CEDULA, RUC, PASAPORTE, ID */
-                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
-                $sql .= $sql_cargos;
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.id = '{$_GET['GestionDiaria']['general']}')", 'AND');
                 
                 $criteria->group = "gi.id";
@@ -2276,9 +2272,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2288,56 +2281,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 3: // BUSQUEDA POR STATUS
                 //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
                 $sql .= $sql_cargos;
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    case 'Web':
-                        $criteria->addCondition("gd.medio_contacto = 'web'", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        $criteria->group = "gi.id";
-                        $criteria->order = "gi.id DESC";
-                        break;
-                    default:
-                        break;
-                }
-                //die('sql: '.$sql);
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
 //                echo '<pre>';
 //                print_r($criteria);
 //                echo '</pre>';
@@ -2346,8 +2293,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2359,13 +2304,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
-                //die('after params');
-                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
-                $sql .= $sql_cargos;
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $sql .= " gi.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
                 //die($sql);
                 /* echo '<pre>';
                   print_r($criteria);
@@ -2375,9 +2316,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2387,14 +2325,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 5: // BUSQUEDA POR FUENTE
                 
                 $criteria->addCondition(" gn.fuente = '{$_GET['GestionDiaria']['fuente']}'", 'AND');
-                //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['fuente']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2409,8 +2343,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70)";
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
-                    $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable "
-                            . "WHERE gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70) GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                     $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
                 } else {
                     $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
@@ -2434,16 +2366,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //                print_r($criteria);
 //                echo '</pre>';
                 //die();
-                //$sql .= " gd.desiste = 0 ORDER BY gd.id DESC";
-                //die($sql);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
-
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -2492,10 +2418,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
                 }
                 
-                /* else {
-                  $sql .= "WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} AND ";
-                  } */
-                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
@@ -2508,9 +2430,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2528,15 +2447,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2552,7 +2467,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
                     $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
                     $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
-                    $sql .= " AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                     $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
                 }
                 if (!empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario'])) {
@@ -2571,16 +2485,13 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}", 'AND');
                     $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                    $sql .= " AND gi.responsable = {$_GET['GestionDiaria']['responsable']}";
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
                 }
                 if (!empty($_GET['GestionDiaria']['responsable']) && ($_GET['GestionDiaria']['responsable'] == 'all')) {
                     $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
                     $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
-                    $$sql .= " AND gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                     $title = "Busqueda por Concesionario Total: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
                 }
-                $sql .= " GROUP BY gi.cedula, gi.ruc, gi.pasaporte ORDER BY gd.id DESC";
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
@@ -2645,7 +2556,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //die('get array: '.$get_array);
                 if ($cargo_id == 46) { // super administrador
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                    $sql .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
                     $title = "Busqueda Total País";
                 }
                 if ($cargo_id == 69 && $get_array == '') { // gerente comercial
@@ -2747,9 +2657,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -2795,13 +2702,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
-                //die('after params');
-                //$sql .= " INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
-                $sql = $sql_ini;
-                $sql .= " INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
-                INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
-                LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
-                $sql .= " AND gd.fecha BETWEEN '{$params1}' AND '{$params2}' GROUP BY gi.cedula, gi.ruc, gi.pasaporte ";
+                
                 $criteria->addCondition("gd.fecha BETWEEN '{$params1}' AND '{$params2}'");
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
 //                echo '<pre>';
@@ -2812,9 +2713,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2858,35 +2756,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 return $data;
                 break;
             case 20: // SEARCH BY CATEGORIZACION AND STATUS
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
@@ -2903,48 +2774,16 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 break;
             case 21: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
-
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                //die($sql);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Responsable: <strong>{$responsable}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -2956,8 +2795,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             case 22: // SEARCH BY CATEGORIZACION AND RESPONSABLE
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
-
-                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']}
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
@@ -2970,9 +2807,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong> y Responsable: <strong>{$responsable}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3016,9 +2850,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3057,9 +2888,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3081,9 +2909,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3095,35 +2920,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
                 $params1 = trim($params[0]);
                 $params2 = trim($params[1]);
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
@@ -3135,9 +2933,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3166,9 +2961,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3211,9 +3003,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3256,9 +3045,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3296,35 +3082,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -3350,35 +3109,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
                 $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -3400,35 +3132,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
                 $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -3459,9 +3164,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3486,9 +3188,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable <strong>{$responsable}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
@@ -3549,35 +3248,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
                 $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
                 $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -3599,35 +3271,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params2 = trim($params[1]);
                 $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
-                switch ($_GET['GestionDiaria']['status']) {
-                    case 'Cierre':
-                        //$criteria->addCondition("gd.cierre = 1",'OR');
-                        $criteria->addCondition("gd.paso = 9 OR gd.cierre = 1");
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9", 'AND');
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
-                        $criteria->addCondition("gd.paso = 10", 'AND');
-                        $criteria->addCondition("gd.status = 1", 'AND');
-                        break;
-                    default:
-                        break;
-                }
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 
@@ -3637,7 +3282,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';
+//                echo '<pre>';s
 //                print_r($criteria);
 //                echo '</pre>';
                 $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
@@ -3840,7 +3485,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //$criteria->addCondition("DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'");
             $criteria->group = "gi.id";
             $criteria->order = "gi.id DESC";
-            //die('sql: '. $sql);
         }
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             //die('tipo: '.$tipo);
@@ -3860,8 +3504,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
 //        echo '<pre>';
 //        print_r($criteria);
 //        echo '</pre>';
-        
-        //die('asdas'.$sql);
+    
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
@@ -3902,10 +3545,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             exit();
         }
 
-        //$request = $con->createCommand($sql);
-        //$users = $request->queryAll();
-        //$count = count($users);
-        //die('count: '.$count);
         $tipo = '';
 
         // Count total records
@@ -7544,6 +7183,39 @@ GROUP BY gv.id_informacion";
         } else {
             echo '';
         }
+    }
+
+    private static function setStatusCriteria($status){
+        $condition = "";
+        switch ($status) {
+            case 'Cierre':
+                $condition = "gd.paso = 9 OR gd.cierre = 1";
+                break;
+            case 'Desiste':
+                $condition = "gd.desiste = 1";
+                break;
+            case 'Entrega':
+                $condition = "gd.entrega = 1 AND gd.paso = 9";
+                break;
+            case 'PrimeraVisita':
+                $condition = "gd.paso = '1-2'";
+                break;
+            case 'Seguimiento':
+                $condition = "gd.seguimiento = 1";
+                break;
+            case 'SeguimientoEntrega':
+                $condition = "gd.seguimiento_entrega = 1";
+                break;
+            case 'Vendido':
+                $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
+                break;
+            case 'Web':
+                $condition = "gd.medio_contacto = 'web AND gd.status = 1";
+                break;
+            default:
+                break;
+        }
+        return $condition;        
     }
 
 }
