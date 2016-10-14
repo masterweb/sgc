@@ -2186,9 +2186,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         
         //  FECHA REGISTRO - GRUPO - CONCESIONARIO
-        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] ==01 && $_GET['responsable'] == 0 
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 
                 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 38;
+        }
+        
+        //  FECHA REGISTRO - GRUPO - CONCESIONARIO AND STATUS
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 43;
         }
         
         //  FECHA REGISTRO - GRUPO - CONCESIONARIO - REPONSABLE
@@ -2216,7 +2222,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
-        //die('search type: ' . $search_type);
+        //sdie('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -3586,7 +3592,61 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $data['users'] = $users;
                 $data['pages'] = $pages;
                 return $data;
-                break;    
+                break; 
+            case 43: // SEARCH BY STATUS, FECHA DE REGISTRO, GRUPO AND CONCESIONARIO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                switch ($_GET['GestionDiaria']['status']) {
+                    case 'Cierre':
+                        //$criteria->addCondition("gd.cierre = 1",'OR');
+                        $criteria->addCondition("gd.paso = 9 OR gd.cierre = 1");
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9", 'AND');
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1", 'AND');
+                        $criteria->addCondition("gd.paso = 10", 'AND');
+                        $criteria->addCondition("gd.status = 1", 'AND');
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+                $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
             default:
                 break;
         }
