@@ -16,13 +16,13 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 //echo 'tipo grupo: '.$tipo_grupo;
 ?>
 <div id="tabs_repo">
-    <ul class="nav nav-tabs tabs_triger">
+<!--    <ul class="nav nav-tabs tabs_triger">
         <li role="presentation" class="tit_repo active" triger="tab1"><a href="#">Embudo</a></li>
         <li role="presentation" class="tit_repo" triger="tab2"><a href="#">Encuestas</a></li>
         <li role="presentation" class="tit_repo" triger="tab3"><a href="#">Score Card</a></li>
         <li role="presentation" class="tit_repo" triger="tab4"><a href="#">Análisis de Ventas</a></li>
         <li role="presentation" class="tit_repo" triger="tab5"><a href="#">Noticias Kia</a></li>
-    </ul>
+    </ul>-->
     <div class="tab_repo active" id="tab1">        
         <!-- EMBUDO -->
         <br /><br />
