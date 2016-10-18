@@ -2677,6 +2677,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 if ($tipo_search == 'web') {
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
                 }
                 else{
                     $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
