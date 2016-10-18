@@ -98,7 +98,7 @@ $(function () {
     }
 
     $('#TAconcesionarios').change(function () {
-        //loadmodelosTA($(this));
+        loadmodelosTA($(this));
         filtros_notification();
     });
 
@@ -313,7 +313,7 @@ $(function () {
                 model_info: model_info
             },
             success: function (data) {
-                //$('.filtros_modelos_ta').html(data);  
+                $('.filtros_modelos_ta').html(data);  
                 loading('desactivar');                
             }
         });

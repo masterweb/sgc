@@ -2,7 +2,7 @@
  
 class AjaxCalls{
 
-	public function AjaxGetModelos() {
+    public function AjaxGetModelos() {
         //FECHAS RENDER
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
         $fecha1 = explode(" - ", $fecha1);

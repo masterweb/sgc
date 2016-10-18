@@ -218,10 +218,10 @@
     <?php endif; ?>
 
     <!--MODELOS-->
-<?php if ((in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes)) && $filtro_exh == '' ): ?>
-    <!--<div id="traficoGeneral">
+<?php if ((in_array($varView['cargo_id'], $usuariosGeneral) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosGenentes ) || in_array($varView['cargo_id'], $usuariosWeb )) && $filtro_exh == '' ): ?>
+    <div id="traficoGeneral">
         <!-- FILTRO MODELOS -->
-        <!--<div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <label for="">Modelos</label>
                 <div class="panel panel-default">
@@ -231,7 +231,7 @@
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
     <!-- #traficogeneral fin-->
 <?php endif; ?>
 <?php if (in_array($varView['cargo_id'], $usuariosUsados) || in_array($varView['cargo_id'], $usuariosAekia) || in_array($varView['cargo_id'], $usuariosGenentes) ):?>

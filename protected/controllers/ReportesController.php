@@ -83,6 +83,10 @@ class ReportesController extends Controller {
             array_push($lista_datos, array('versiones' => $_GET['version']));
         }
 //        echo '<pre>';
+//        print_r($_GET);
+//        echo '</pre>';
+        
+//        echo '<pre>';
 //        print_r($lista_datos);
 //        echo '</pre>';
 //        die();
@@ -96,11 +100,11 @@ class ReportesController extends Controller {
                 if ($key == 'modelos') {
                     $campo_car = 'modelo';
                     $separ = ' AND (';
-                    $separ_fin = '';
+                    $separ_fin = ')';
                 } else {
                     $campo_car = 'version';
-                    $separ = ' OR';
-                    $separ_fin = ')';
+                    $separ = ' AND ';
+                    $separ_fin = '';
                 }
                 $id_carros_nv[$key] = implode(', ', $carros);
                 $SQLmodelos[$key] = $separ . " gv." . $campo_car . " IN (" . $id_carros_nv[$key] . ")" . $separ_fin . ' ';
@@ -217,6 +221,9 @@ class ReportesController extends Controller {
         $consultaBDC = '';
         if ($_GET['GI']) {
             //die('enter GI');
+//            echo '<pre>';
+//            print_r($_GET['GI']);
+//            echo '</pre>';
             if ($_GET['GI']['fecha1'] != '') {
                 //echo('fecha1');
                 $gi_fecha1 = explode(" - ", $_GET['GI']['fecha1']);
@@ -244,6 +251,10 @@ class ReportesController extends Controller {
                 $varView["js_dealer"] = $_GET['GI']['concesionario'];
                 if ($_GET['GI']['responsable'] == '') {
                     $id_persona = "gi.dealer_id = " . $varView['$concesionario'];
+                }
+                // ASESOR WEB PARA GRUPO ASIAUTO Y KMOTOR, SE SUMA EL CONCESIONARIO SELECCIONADO EN LA BUSQUEDA
+                if($varView['cargo_id'] == 85 && ($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3)){
+                   $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
                 }
             }
 

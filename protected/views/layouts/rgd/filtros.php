@@ -159,14 +159,14 @@ $id_responsable = Yii::app()->user->getId();
                         <?php echo $select[0]; ?>
                     </select>
                 </div>
-                <?php if(empty($tipo_seg)): ?>
+                <?php //if(empty($tipo_seg)): ?>
                 <div class="col-md-6">
                     <label for="">Concesionario</label>
                     <select name="GestionDiaria[concesionario]" id="GestionDiaria_concesionario" class="form-control">
                         <?php echo $select[1]; ?>
                     </select>
                 </div>
-                <?php endif; ?>
+                <?php //endif; ?>
             </div>
             <div class="row">
                 <div class="col-md-6">

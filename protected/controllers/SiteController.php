@@ -3292,13 +3292,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionGetConcesionarios() {
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $tipo_seg = isset($_POST["tipo_seg"]) ? $_POST["tipo_seg"] : "";
-        if (empty($tipo_seg)) {
+        //if (empty($tipo_seg)) {
+            $criteria = new CDbCriteria;
             $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id}", 'order' => 'nombre asc'));
             $data = '<option value="">--Seleccione concesionario--</option>';
             foreach ($conc as $ciudad) {
                 $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
             }
-        }else{
+        //}
+        /*else{
             $conc = Usuarios::model()->findAll(array(
                 'condition' =>"grupo_id = {$id} AND (cargo_id IN (85,86) OR cargo_adicional IN (85,86))",
                 'order' => 'nombres ASC'        
@@ -3307,7 +3309,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             foreach ($conc as $us) {
                 $data .= '<option value="' . $us['id'] . '">' . $us['nombres'] . ' '.$us['apellido'].'</option>';
             }    
-        }
+        }*/
         echo $data;
     }
 
@@ -3377,8 +3379,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 case 'seg':
                     $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
                     break;
-                case 'bdc':
-                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (73,72) ORDER BY nombres ASC";
+                case 'web':
+                    //$sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (85,86) ORDER BY nombres ASC";
+                    $sql = "SELECT u.* FROM usuarios u
+                        INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id
+                        WHERE cargo_id IN (85,86) AND gr.concesionario_id = {$dealer_id} ORDER BY nombres ASC";
                     break;
 
                 default:
@@ -3394,7 +3399,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
         $data = '<option value="">--Seleccione Asesor--</option>';
-        $data .= '<option value="all">Todos</option>';
+        //$data .= '<option value="all">Todos</option>';
         foreach ($requestr1 as $value) {
             $data .= '<option value="' . $value['id'] . '">';
             $data .= $this->getResponsableNombres($value['id']);

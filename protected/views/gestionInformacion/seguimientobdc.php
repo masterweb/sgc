@@ -135,6 +135,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 //        });
         $('#GestionDiaria_concesionario').change(function () {
             var value = $(this).attr('value');
+            var tipo_seg = $('#tipo_search').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
                 beforeSend: function (xhr) {
@@ -142,7 +143,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                 },
                 type: 'POST',
                 //dataType: 'json', 
-                data: {dealer_id: value,tipo:'bdc'},
+                data: {dealer_id: value,tipo:'web',tipo_seg: tipo_seg},
                 success: function (data) {
                     //$('#info-3').hide();
                     //alert(data);
@@ -166,11 +167,11 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                 success: function (data) {
                     //$('#info-3').hide();
                     //alert(data);
-                    if(tipo_seg == ''){
+                    //if(tipo_seg == ''){
                         $('#GestionDiaria_concesionario').html(data);
-                    }else{
-                        $('#GestionDiaria_responsable').html(data);
-                    }
+                    //}else{
+                    //    $('#GestionDiaria_responsable').html(data);
+                    //}
                     
 
                 }

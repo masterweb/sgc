@@ -2222,7 +2222,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
-        //sdie('search type: ' . $search_type);
+        //echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -2370,6 +2370,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
+                $title .= ". <strong> Total: </strong>".(GestionInformacion::model()->count($criteria));
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -2663,7 +2664,6 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 return $data;
                 break;
             case 17: // BUSQUEDA POR RESPONSABLE AEKIA
-                $sql = $sql_ini;
                 $criteria = new CDbCriteria;
                 $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
                     gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
@@ -2674,7 +2674,11 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
                 if ($_GET['GestionDiaria']['responsable'] == 'all') {
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
-                }else{
+                }
+                if ($tipo_search == 'web') {
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                }
+                else{
                     $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
                 }
                 if ($get_array == ''){
