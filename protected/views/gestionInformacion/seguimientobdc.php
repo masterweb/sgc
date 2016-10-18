@@ -70,7 +70,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             }
         );
         $('.range_inputs .applyBtn').click(function () {
-            alert('asdqwedwqe2ee');
+            //alert('asdqwedwqe2ee');
             if($('#GestionDiaria_seguimiento').val() == '3'){
                 console.log('apply');
                 $('#rango_fecha_seguimiento').css("color", "#555555");

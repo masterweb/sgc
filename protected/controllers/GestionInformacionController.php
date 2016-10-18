@@ -1994,7 +1994,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             }
             if ($get_array ==  'bdc' && $tipo_search == 'web') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                //$criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
                 $criteria->condition = "u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86)";
             }
             if ($get_array == 'seg' && $tipo_search == '') {
@@ -2416,6 +2416,15 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA
                     $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
                 }
                 
