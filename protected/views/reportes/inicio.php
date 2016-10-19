@@ -36,9 +36,9 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                     <?php } if($tipo == '' && $tipo != 'externas') { ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
                     <?php } ?>
-                    <?php if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3 || $area == 1){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccion')); ?>">Prospección</a>
-                    <?php } ?>
+                    <?php //if(Yii::app()->user->getState('grupo_id') == 2 || Yii::app()->user->getState('grupo_id') == 3 || $area == 1){ ?>
+                    <!--<a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccion')); ?>">Prospección</a>-->
+                    <?php //} ?>
                     <?php if(($tipo != 'externas') && ($tipo_grupo == 1)  || $area == 1){
                     if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){ ?>
                     <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
