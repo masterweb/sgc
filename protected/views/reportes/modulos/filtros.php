@@ -69,7 +69,7 @@
     <?php endif; ?>
 
     <?php if ($varView['AEKIA'] == true || in_array($varView['cargo_id'], $usuariosGenentes) || in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados)): ?>
-        <div class="row text-center">
+        <div class="row text-center" style="display: none;">
             <h4>Seleccione el tipo de busqueda</h4>
             <?php if(!in_array($varView['cargo_id'], $usuariosJafeBDCyExonerados) && $tipo == ''):?>
                 <label class="radio-inline"><input type="radio" name="GI[tipo]" value="general" class="tipo_busqueda"
