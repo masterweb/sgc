@@ -95,14 +95,14 @@
         <?php if ($varView['AEKIA'] == true): ?>
             <div id="trafico_todo">
                  
-                <div class="row text-center" style="display: none;">
+                <div class="row text-center">
                     <!--h4>Por</h4-->
                     <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda_por" 
                     <?php if($varView['checked_g'] == true){echo 'checked';} ?>
                     >Por Grupos</label>
-                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda_por"
-                    <?php if($varView['checked_p'] == true){echo 'checked';} ?>
-                    >Por Provincias</label>
+<!--                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda_por"
+                    <?php //if($varView['checked_p'] == true){echo 'checked';} ?>
+                    >Por Provincias</label>-->
                     <hr/>
                 </div>
                 <!-- PROVINCIAS -->
