@@ -647,9 +647,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $ges = $this->getGestion($id_informacion);
                 if ($ges == TRUE) {
                     $con = Yii::app()->db;
-                    $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '4', status = 1, proximo_seguimiento = '' WHERE id_informacion = {$id_informacion}";
+                    $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '4', status = 1  WHERE id_informacion = {$id_informacion}";
                     $request = $con->createCommand($sql)->query();
                 } else {
+                    die('enyer asdwwdwed');
                     $gestion = new GestionDiaria;
                     $gestion->id_informacion = $id_info;
                     $gestion->id_vehiculo = 0;
