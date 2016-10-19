@@ -796,7 +796,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $ag = GestionAgendamiento::model()->findAll($crit);
                     if ($agen > 0) {
                         ?>
-                    <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                    <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
                         <?php } foreach ($ag as $a) { ?>
                             <div class="row">
                                 <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
@@ -804,7 +804,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div class="col-md-4"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
                         <?php } ?>
-                    </div>
+                    
                 <?php } //endforeach ?> 
             <?php } //End - Paso 4 - Consulta ?>
                 
@@ -831,7 +831,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $ag5 = GestionAgendamiento::model()->findAll($crit5);
                     if ($agen5 > 0) {
                         ?>
-                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
                         <?php
 
                         foreach ($ag5 as $a) {
@@ -841,7 +841,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
                                 <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
-                        </div>
+                        
                     <?php }
                     } 
                     ?>
@@ -877,14 +877,14 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         $ag5 = GestionAgendamiento::model()->findAll($crit5);
                         if ($agen5 > 0) {
                             ?>
-                            <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                            <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
                             <?php foreach ($ag5 as $a) { ?>
                                 <div class="row">
                                     <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
                                     <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
                                     <div class="col-md-6"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                                 </div>
-                            </div>    
+                                
                         <?php }// end foreach
                         
                         } // endif ?>
@@ -966,7 +966,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $ag5 = GestionAgendamiento::model()->findAll($crit5);
                     if ($agen5 > 0) {
                         ?>
-                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4>
+                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
                             <?php
                         
                         foreach ($ag5 as $a) {
@@ -977,7 +977,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <div class="col-md-6"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
                             </div>
                 <?php } }?>
-                    </div>
+                    
                 <?php } // end if paso 7 negogociacion  ?>
                 <?php if ($this->getAnswer(6, $id) > 0){ ?>
                     <div class="col-md-10" id="cierre"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/cierre_on.png" alt=""></span> - Paso 8 - Cierre</h3></div>
