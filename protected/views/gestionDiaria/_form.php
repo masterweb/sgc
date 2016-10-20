@@ -777,10 +777,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <div class="col-md-8">
                         <h4 class="text-danger">Vehículos Recomendados</h4>
                         <?php
-                        $crit = new CDbCriteria(array(
-                            'condition' => "id_informacion={$id}"
-                        ));
-                        $vh = GestionVehiculo::model()->findAll($crit);
+                        $vh = GestionVehiculo::model()->findAll(array('condition' => "id_informacion={$id}"));
                         foreach ($vh as $val) {
                             ?>
                             <div class="row">
@@ -966,17 +963,34 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $ag5 = GestionAgendamiento::model()->findAll($crit5);
                     if ($agen5 > 0) {
                         ?>
-                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
+                        <div class="col-md-10"><h4 class="tl-agen">Agendamientos</h4></div>
+                        <div class="row">
+                            <div class="col-md-10">
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha Agendamiento</th>
+                                        <th>Motivo</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                             <?php
                         
                         foreach ($ag5 as $a) {
                             ?>
-                            <div class="row">
-                                <div class="col-md-6"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                <div class="col-md-6"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                <div class="col-md-6"><strong>Observaciones: </strong><?php echo $a['otro_observacion']; ?></div>
-                            </div>
-                <?php } }?>
+                            <tr>
+                                <td><?php echo $a['agendamiento']; ?></td>
+                                <td><?php echo $a['observaciones']; ?></td>
+                                <td><?php echo $a['otro_observacion']; ?></td>
+                            </tr>         
+                            
+                        <?php } ?>
+                                </tbody>
+                            </table>
+                            </div>        
+                        </div>    
+                <?php }?>
                     
                 <?php } // end if paso 7 negogociacion  ?>
                 <?php if ($this->getAnswer(6, $id) > 0){ ?>

@@ -636,8 +636,8 @@ class GestionInformacionController extends Controller {
                     }
                 } else if ($_POST['GestionInformacion']['tipo'] == 'gestion' || $_POST['GestionInformacion']['tipo'] == 'trafico') {
                     //die('enter gestion update');
-                    $this->redirect(array('site/consulta', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => $_POST['GestionInformacion']['tipo']));
-                    //$this->redirect(array('gestionConsulta/update', 'id' => $id));
+                    //$this->redirect(array('site/consulta', 'id_informacion' => $id, 'tipo' => 'gestion', 'fuente' => $_POST['GestionInformacion']['tipo']));
+                    $this->redirect(array('gestionVehiculo/create', 'id' => $id));
                 }
                 //die('gestion: '.$_POST['GestionProspeccionPr']['pregunta']);
 
