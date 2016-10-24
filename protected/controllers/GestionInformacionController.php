@@ -2579,6 +2579,19 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 }
                 if ($cargo_id == 70) { // jefe de almacen
                     $criteria->condition = "gi.dealer_id = {$dealer_id}";
+                    if($tipo_search == ''){
+                        $criteria->addCondition("gi.bdc = 0");
+                        $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                    }
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
                     $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
                 }
                 if ($cargo_id == 72) { // jefe bdc
