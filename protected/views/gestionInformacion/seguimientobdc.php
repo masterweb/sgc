@@ -1,6 +1,9 @@
 <?= $this->renderPartial('//layouts/rgd/head');?>
 
 <?php
+date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+$fecha_actual = date("Y/m/d");
+$fecha_actual = (string) $fecha_actual;
 $identificacion = '';
 if (isset($model->identificacion))
     $identificacion = $model->identificacion;
