@@ -485,7 +485,9 @@ footer{
 #seguimiento{
     display: block;
     overflow-y: auto;
-    height: 230px;
+}
+#lNotificaciones{
+    min-height: 250px;
 }
 
 .cont_tl_notificaciones {
