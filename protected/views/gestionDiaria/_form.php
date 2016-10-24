@@ -844,16 +844,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <?php 
                             $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                             if($cargo_id == 70): // anulacion de factura ?>
-<!--                            <div class="col-md-3">
-                                <select name="GestionDiaria[cierre]" id="GestionFactura_cierre" class="form-control">
-                                    <option value="">--Seleccione--</option>
-                                    <option value="1">Anular Factura</option>
-                                    <option value="0">Revertir Factura</option>
-                                </select>
-                                <input type="hidden" id="Gestion_id_informacion" value="<?php echo $vc['id_informacion']; ?>"/>
-                                <input type="hidden" id="Gestion_id_vehiculo" value="<?php echo $vc['id_vehiculo']; ?>"/>
-                                <input type="hidden" id="Gestion_id_factura" value="<?php echo $vc['id']; ?>"/>
-                            </div>-->
+
                             <?php endif; // fin de anulacion de factura ?>
                             <?php //} ?>
                         </div> 
@@ -1037,13 +1028,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php $p10 = GestionPasoOnce::model()->count(array('condition' => "id_informacion = {$_GET['id']}")); ?>
                         <?php if($p10 > 0){ ?>
                         <table class="table table-striped">
-                            <thead> <tr><th>Presentación</th> <th>Observación</th><th>Responsable</th> </tr> </thead>
+                            <thead> <tr><th>Presentación</th> <th>Observación</th><th>Responsable</th> <th>Fecha</th></tr> </thead>
                             <tbody>
                             <?php
                             $ps = GestionPasoOnce::model()->findAll(array('condition' => "id_informacion = {$_GET['id']}","order" => "fecha DESC"));
                             foreach ($ps as $vp) {
                                 ?>
-                                <tr><td><?php if($vp['tipo'] == 0){echo 'NO';}else{echo 'SI';} ?></td><td><?php echo $vp['observacion']; ?></td><td><?php echo $this->getResponsable($vp['responsable']); ?></td></tr>
+                                <tr><td><?php if($vp['tipo'] == 0){echo 'NO';}else{echo 'SI';} ?></td><td><?php echo $vp['observacion']; ?></td><td><?php echo $this->getResponsable($vp['responsable']); ?></td><td><?php echo $vp['fecha'] ?></td></tr>
                             <?php } ?>
                             </tbody>
                         </table>
