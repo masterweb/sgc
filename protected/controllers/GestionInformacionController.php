@@ -1106,19 +1106,21 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
-                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion ";
+                        INNER JOIN gestion_consulta gc ON gc.id_informacion = gd.id_informacion 
+                        LEFT JOIN usuarios u ON u.id = gi.responsable";
                 if ($cargo_id == 70) { // jefe de almacen
                     
                     if(empty($dealer_id)){
-                        $sql .= "WHERE gi.dealer_id IN ({$dealerList}) AND ";
+                        $sql .= " WHERE gi.dealer_id IN ({$dealerList}) AND ";
                     }else{
-                        $sql .= "WHERE gi.dealer_id = {$dealer_id} AND (";
+                        $sql .= " WHERE gi.dealer_id = {$dealer_id} AND (";
                     }
+                    $sql .= " u.cargo_id IN(70,71) AND ";
                 } else {
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
                 };
 
-                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}') GROUP BY gi.id";
+                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}') GROUP BY gi.id ORDER BY gi.fecha DESC";
                 //die($sql);
 
                 $request = $con->createCommand($sql);
