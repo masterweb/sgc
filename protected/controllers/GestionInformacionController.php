@@ -2195,6 +2195,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         }
         
         // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
+        //echo 'get: '.$_GET['tipo_search'];
         if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
             switch ($_GET['tipo_search']) {
                 case 'web':
@@ -2213,7 +2214,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
-        //echo('search type: ' . $search_type);
+        //die('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -7206,7 +7207,7 @@ GROUP BY gv.id_informacion";
                 $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
                 break;
             case 'Web':
-                $condition = "gd.medio_contacto = 'web AND gd.status = 1";
+                $condition = "gd.medio_contacto = 'web' AND gd.status = 1";
                 break;
             default:
                 break;
