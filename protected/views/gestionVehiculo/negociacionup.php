@@ -499,6 +499,33 @@ if ($fi == 2) {
     $('#GestionFinanciamiento_entrada3').keyup(function () {
         calcFinanciamiento3();
     });
+    $('#GestionFinanciamiento_porcentaje_entrada').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+        }
+    });
+    $('#GestionFinanciamiento_porcentaje_entrada2').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada2').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio2').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada2').val(format2(valor_entrada,'$'));calcFinanciamiento2();
+        }
+    });
+    $('#GestionFinanciamiento_porcentaje_entrada3').keyup(function (){
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada3').val();
+        if(porcentaje_entrada.length >= 2){
+            porcentaje_entrada = porcentaje_entrada / 100;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio3').val()) * porcentaje_entrada;
+            //alert(valor_entrada);
+            $('#GestionFinanciamiento_entrada3').val(format2(valor_entrada,'$'));calcFinanciamiento3();
+        }
+    });
 //    $('#GestionFinanciamiento_seguro').keyup(function () {
 //        calcSeguro();
 //    });
@@ -2518,6 +2545,7 @@ if ($fi == 2) {
                 type: 'POST',
                 data: {taza: 16.06, numpagos: 12, valorPrest: valorFinanciamientoAnt, plazo: plazo},
                 success: function (data) {
+                    console.log('cuota: '+data.cuota);
                     var cuotamensual = parseInt(data.cuota);
                     cuotamensual = format2(cuotamensual, '$');
                     $('#GestionFinanciamiento_cuota_mensual3').val(cuotamensual);
@@ -3864,12 +3892,13 @@ if ($fi == 2) {
                                                 <div class="col-md-12">
                                                     <label for="">Tiempo de seguro</label>
                                                     <select name="GestionFinanciamiento3[tiempo_seguro]" id="GestionFinanciamiento_tiempo_seguro3" class="form-control">
-                                                        <option value="5" <?php if($fin2 && $fin2->ts == 5){echo "selected";} ?>>5 años</option>
-                                                        <option value="4" <?php if($fin2 && $fin2->ts == 4){echo "selected";} ?>>4 años</option>
-                                                        <option value="3" <?php if($fin2 && $fin2->ts == 3){echo "selected";} ?>>3 años</option>
-                                                        <option value="2" <?php if($fin2 && $fin2->ts == 2){echo "selected";} ?>>2 años</option>
-                                                        <option value="1" <?php if($fin2 && $fin2->ts == 1){echo "selected";} ?>>1 año</option>
+                                                      
                                                         <option value="0" <?php if($fin2 && $fin2->ts == 0){echo "selected";} ?>>Ninguno</option>
+                                                        <option value="1" <?php if($fin2 && $fin2->ts == 1){echo "selected";} ?>>1 año</option>
+                                                        <option value="2" <?php if($fin2 && $fin2->ts == 2){echo "selected";} ?>>2 años</option>
+                                                        <option value="3" <?php if($fin2 && $fin2->ts == 3){echo "selected";} ?>>3 años</option>
+                                                        <option value="4" <?php if($fin2 && $fin2->ts == 4){echo "selected";} ?>>4 años</option>
+                                                        <option value="5" <?php if($fin2 && $fin2->ts == 5){echo "selected";} ?>>5 años</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -3878,11 +3907,11 @@ if ($fi == 2) {
                                                     <label for="">Plazo</label>
                                                     <!--<input type="text" name="GestionFinanciamiento1[plazo]" id="GestionFinanciamiento_plazo" class="form-control" value="60" disabled=""/>-->
                                                     <select name="GestionFinanciamiento3[plazo]" id="GestionFinanciamiento_plazo3" class="form-control">
-                                                        <option value="12" <?php if($fin2 && $fin2->plazos == 12){echo "selected";} ?>>12 meses</option>
-                                                        <option value="24" <?php if($fin2 && $fin2->plazos == 24){echo "selected";} ?>>24 meses</option>
-                                                        <option value="36" <?php if($fin2 && $fin2->plazos == 36){echo "selected";} ?>>36 meses</option>
-                                                        <option value="48" <?php if($fin2 && $fin2->plazos == 48){echo "selected";} ?>>48 meses</option>
                                                         <option value="60" <?php if($fin2 && $fin2->plazos == 60){echo "selected";} ?>>60 meses</option>
+                                                        <option value="48" <?php if($fin2 && $fin2->plazos == 48){echo "selected";} ?>>48 meses</option>
+                                                        <option value="36" <?php if($fin2 && $fin2->plazos == 36){echo "selected";} ?>>36 meses</option>
+                                                        <option value="24" <?php if($fin2 && $fin2->plazos == 24){echo "selected";} ?>>24 meses</option>
+                                                        <option value="12" <?php if($fin2 && $fin2->plazos == 12){echo "selected";} ?>>12 meses</option>
                                                     </select>
                                                 </div>
                                             </div>

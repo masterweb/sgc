@@ -76,21 +76,21 @@ $id_version = $this->getIdVersion($id_vehiculo);
         }
     });
     $('#GestionFinanciamiento_porcentaje_entrada2').keyup(function (){
-        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada2').val();
         if(porcentaje_entrada.length >= 2){
             porcentaje_entrada = porcentaje_entrada / 100;
-            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio2').val()) * porcentaje_entrada;
             //alert(valor_entrada);
-            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+            $('#GestionFinanciamiento_entrada2').val(format2(valor_entrada,'$'));calcFinanciamiento2();
         }
     });
     $('#GestionFinanciamiento_porcentaje_entrada3').keyup(function (){
-        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada').val();
+        var porcentaje_entrada = $('#GestionFinanciamiento_porcentaje_entrada3').val();
         if(porcentaje_entrada.length >= 2){
             porcentaje_entrada = porcentaje_entrada / 100;
-            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio').val()) * porcentaje_entrada;
+            var valor_entrada = formatnumber($('#GestionFinanciamiento_precio3').val()) * porcentaje_entrada;
             //alert(valor_entrada);
-            $('#GestionFinanciamiento_entrada').val(format2(valor_entrada,'$'));calcFinanciamiento();
+            $('#GestionFinanciamiento_entrada3').val(format2(valor_entrada,'$'));calcFinanciamiento3();
         }
     });
 //    $('#GestionFinanciamiento_seguro').keyup(function () {
