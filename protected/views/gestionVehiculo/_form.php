@@ -331,6 +331,7 @@ if (isset($id)) {
                                                 "80" => "Soul",
                                                 "93" => "Soul EV",
                                                 "21" => "Sportage Active",
+                                                "96" => "Sportage R CKD",
                                                 "95" => "Sportage GT",
                                                 "83" => "Sportage R",
                                                 //"10" => "Sorento",
@@ -390,6 +391,7 @@ if (isset($id)) {
                                             <option value="21">Sportage Active</option>
                                             <option value="95">Sportage GT</option>
                                             <option value="83">Sportage R</option>
+                                            <option value="96">Sportage R CKD</option>
                                             <option value="86">K 3000</option>
                                         </select>
                                     </div>
@@ -473,14 +475,21 @@ if (isset($id)) {
                                                     <?php
                                                     //print_r($modelos_user);
                                                     //echo 'm = '.$c['modelo'];
-                                                    if(in_array($c['modelo'], $modelos_user)){
+                                                    $status_consulta = $this->getStatusConsulta($c['id_informacion']);
+                                                    //echo $status_consulta;
+                                                    if(in_array($c['modelo'], $modelos_user) && $fuente != 'web'){
                                                         echo '<button class="btn btn-xs btn-success nocursor">Consulta</button> ';
-                                                    }else{
-                                                        echo '<a href="'.Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id_informacion, 'tipo' => $tipo, 'fuente' => $fuente)).'" class="btn btn-danger btn-xs">Consulta</a>';
-                                                    }                                                    
+                                                    }
+                                                    if(in_array($c['modelo'], $modelos_user) && $fuente == 'web' && $status_consulta == 7){
+                                                        echo '<button class="btn btn-xs btn-success nocursor">Consulta</button> ';
+                                                    }
+                                                    if(in_array($c['modelo'], $modelos_user) && $fuente == 'web' && $status_consulta != 7){
+                                                        echo '<a href="'.Yii::app()->createUrl('gestionConsulta/update/', array('id_informacion' => $id, 'tipo' => $tipo, 'fuente' => $fuente)).'" class="btn btn-danger btn-xs">Consulta</a>';
+                                                    }
+                                                                                                     
                                                     ?> 
                                                 </td>
-                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-18-10-2016b.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-28-10-2016c.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                                             </tr>
                                             <?php
                                         endforeach;
@@ -518,6 +527,7 @@ if (isset($id)) {
                                             <option value="21">Sportage Active</option>
                                             <option value="95">Sportage GT</option>
                                             <option value="83">Sportage R</option>
+                                            <option value="96">Sportage R CKD</option>
                                             <option value="86">K 3000</option>
                                         </select>
                                     </div>
