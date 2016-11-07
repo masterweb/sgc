@@ -689,6 +689,38 @@ class Controller extends CController {
         }
         return $str;
     }
+    
+    public function getStatusConsulta($id) {
+        $gestion = GestionConsulta::model()->find(array('condition' => "id_informacion = {$id}"));
+        $res = 0;
+        if($gestion){
+            if ($gestion->preg1_sec5 != '') { // si tiene vehiculo
+                $res++;
+            }
+            if ($gestion->preg3 != '') { // para que utilizara el vehiculo
+                $res++;
+            }
+            if ($gestion->preg3_sec1 != '') { // familiar o trabajo
+                $res++;
+            }
+            if ($gestion->preg4 != '') { // quien participa en la decision de compra
+                $res++;
+            }
+            if ($gestion->preg5 != '') { // cual es el presupuesto
+                $res++;
+            }
+            if ($gestion->preg6 != '') { // forma de pago
+                $res++;
+            }
+            if ($gestion->preg7 != '') { // tiempo estimado de compra
+                $res++;
+            }
+        }else{
+            $res = 0;
+        }
+        return $res;
+        
+    }
 
     public function getNombresInfo($id_informacion) {
         $criteria = new CDbCriteria(array(
@@ -1106,6 +1138,14 @@ class Controller extends CController {
         } else {
             return $dealer->dealers_id;
         }
+    }
+    
+    public function getDealerIdUnique($id) {
+        $criteria = new CDbCriteria(array(
+            'condition' => "id={$id}"
+        ));
+        $dealer = Usuarios::model()->find($criteria);
+        return $dealer->concesionario_id;
     }
 
     public function getDealerIdAC($id) {
