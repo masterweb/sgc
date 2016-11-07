@@ -1932,7 +1932,7 @@ if($fuente == 'web'){
         precioEntrada = precioEntrada.replace('$', '');
         precioEntrada = parseInt(precioEntrada);
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
         if (precioEntrada < entrada) {
             $('.error-entrada3').show();$('#GestionFinanciamiento_entrada3').focus();
             return false;
@@ -2106,7 +2106,8 @@ if($fuente == 'web'){
         precioEntrada = precioEntrada.replace('$', '');
         precioEntrada = parseInt(precioEntrada);
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
+        //console.log('Precioentrada: '+ precioEntrada+', entrada: '+entrada);
         if (precioEntrada < entrada) {
             $('.error-entrada2').show();$('#GestionFinanciamiento_entrada2').focus();
             return false;
@@ -3081,6 +3082,7 @@ if($fuente == 'web'){
                                             <div class="col-md-12">
                                                 <label for="">Valor de Entrada</label>
                                                 <input type="text" name="GestionFinanciamiento3[entrada]" id="GestionFinanciamiento_entrada3" class="form-control" onkeypress="return validateNumbers(event)" autocomplete="off"/>
+                                                <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 20% del Precio Total</label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -3120,7 +3122,7 @@ if($fuente == 'web'){
                                             <div class="col-md-12">
                                                 <label for="">Valor Financiamiento</label>
                                                 <input type="text" name="GestionFinanciamiento3[valor_financiamiento]" id="GestionFinanciamiento_valor_financiamiento3" class="form-control" onkeypress="return validateNumbers(event)" />
-                                                <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 20% del Precio Total</label>
+                                                
                                             </div>
                                         </div>
                                         <div class="row">

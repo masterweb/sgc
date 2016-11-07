@@ -2539,7 +2539,7 @@ if ($fi == 2) {
         precioEntrada = precioEntrada.replace('$', '');
         precioEntrada = parseInt(precioEntrada);
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
         if (precioEntrada < entrada) {
             $('.error-entrada3').show();$('#GestionFinanciamiento_entrada3').focus();
             return false;
@@ -2627,7 +2627,7 @@ if ($fi == 2) {
         precioEntrada = formatnumber(valorEntrada1);
         //var precioAccesorios = $('#precio_accesorios').val();
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
         if (precioEntrada < entrada) {
             $('.error-entrada').show();$('#GestionFinanciamiento_entrada').focus();
             return false;
@@ -2715,7 +2715,7 @@ if ($fi == 2) {
         precioEntrada = precioEntrada.replace('$', '');
         precioEntrada = parseInt(precioEntrada);
         var precioAccesorios = formatnumber($('#precio_normal').val());
-        var entrada = precioAccesorios / 4;
+        var entrada = precioAccesorios / 5;
         if (precioEntrada < entrada) {
             $('.error-entrada2').show();$('#GestionFinanciamiento_entrada2').focus();
             return false;
