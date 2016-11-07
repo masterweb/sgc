@@ -26,6 +26,11 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
 $tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo);
 //echo 'TIPO FINANCIAMIENTO: '.$tipo;
 $id_version = $this->getIdVersion($id_vehiculo);
+$fuente = $this->getFuenteContacto($id_informacion);
+$urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion);
+if($fuente == 'web'){
+    $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
+}
 //echo 'id version: '.$id_version;
 $fi = GestionFinanciamientoOp::model()->count(array('condition' => "id_financiamiento = {$model->id}"));
 //echo 'fin: '.$fi;
@@ -117,6 +122,7 @@ if ($fi == 2) {
     var stringDesc2 = '';
     var stringDesc3 = '';
     $(document).ready(function () {
+        $('.error-entrada3').hide();
        $('#GestionFinanciamiento_acc1').val('<?php echo $stringAccesorios; ?>'+'@'); 
 <?php if ($fi == 0): ?>   
         $( "#edit1" ).trigger( "click" );
@@ -2020,6 +2026,7 @@ if ($fi == 2) {
     function sendProforma() {
         var idInfo = $('#GestionFinanciamiento_id_informacion').val();
         var idVec = $('#GestionFinanciamiento_id_vehiculo').val();
+        var fuente = $('#fuente').val();
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/sendProforma"); ?>',
             beforeSend: function (xhr) {
@@ -2027,11 +2034,21 @@ if ($fi == 2) {
             },
             datatype: "json",
             type: 'POST',
-            data: {id_informacion: idInfo, id_vehiculo: idVec},
+            data: {id_informacion: idInfo, id_vehiculo: idVec, fuente: fuente},
             success: function (data) {
-                alert('Email enviado satisfactoriamente');
-                $('#bg_negro').hide();
+                if(fuente == 'web'){
+                    alert('Email enviado satisfactoriamente al cliente, el seguimiento se debera realizar en un plazo máximo de 48 horas');
+                }else{
+                    alert('Email enviado satisfactoriamente');
+                }
                 $('#btnsendprof').show();
+                if(fuente == 'web'){
+                    // redireccionar al RGD
+                    urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
+                    $(location).attr('href', urld);
+                }
+                $('#bg_negro').hide();
+                
             }
         });
     }
@@ -2470,6 +2487,7 @@ if ($fi == 2) {
         
     }
     function calcFinanciamiento3() {
+        console.log('enter calc finan3');
         var valorEntrada1 = $('#GestionFinanciamiento_entrada3').attr('value');
         var valorVehiculo = $('#GestionFinanciamiento_precio3').val();
         var plazo = $('#GestionFinanciamiento_plazo3').val();
@@ -3246,7 +3264,7 @@ if ($fi == 2) {
                 <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <?php endif; ?>
 
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
             <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>
@@ -3631,7 +3649,13 @@ if ($fi == 2) {
                                                 <div class="col-md-12">
                                                     <label for="">Valor de Entrada</label>
                                                     <input type="text" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control" value="<?php echo $model->cuota_inicial; ?>"/>
-                                                    <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
+                                                    <!--<label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>-->
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="">Porcentaje de Entrada</label>
+                                                    <input type="text" name="GestionFinanciamiento[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada"/>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -3754,6 +3778,12 @@ if ($fi == 2) {
                                                         <label class="error error-entrada2" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                                     </div>
                                                 </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label for="">Porcentaje de Entrada</label>
+                                                    <input type="text" name="GestionFinanciamiento2[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada2"/>
+                                                </div>
+                                            </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label for="">Tiempo de seguro</label>
@@ -3890,6 +3920,12 @@ if ($fi == 2) {
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12">
+                                                    <label for="">Porcentaje de Entrada</label>
+                                                    <input type="text" name="GestionFinanciamiento3[porcentaje]" class="form-control" maxlength="2" id="GestionFinanciamiento_porcentaje_entrada3"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
                                                     <label for="">Tiempo de seguro</label>
                                                     <select name="GestionFinanciamiento3[tiempo_seguro]" id="GestionFinanciamiento_tiempo_seguro3" class="form-control">
                                                       
@@ -3924,7 +3960,7 @@ if ($fi == 2) {
                                                             echo $fin2->saldo_financiar;
                                                         }
                                                         ?>"/>
-                                                    <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
+                                                    <!--<label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>-->
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -4208,6 +4244,7 @@ if ($fi == 2) {
                                     <input type="hidden" name="GestionFinanciamiento1[acco3]" id="GestionFinanciamiento_acco3" value="" />
                                     <input type="hidden" name="GestionFinanciamiento1[tipo_financiamiento]" id="GestionFinanciamiento_tipo_financiamiento" value="<?php echo $tipo; ?>" />
                                     <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Generar Proforma" onclick="send();" style="display: none;">
+                                    <input type="hidden" name="fuente" id="fuente" value="<?php echo $fuente; ?>" />
                                 </div>
 
                             </div>

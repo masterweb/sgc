@@ -18,6 +18,11 @@ $sl = GestionSolicitudCredito::model()->count($criteria6);
 //echo 'countp: '.$countp;
 $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"));
 //echo 'ex: '.$ex->fuente_contacto;
+$fuente = $this->getFuenteContacto($id);
+$urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id);
+if($fuente == 'web'){
+    $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id, 'tipo' => 'gestion', 'fuente' => 'web'));
+}
 ?>
 <script>
     $(document).ready(function () {
@@ -93,7 +98,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
             <?php else: ?>
                 <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <?php endif; ?>
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
             <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion_on.png" alt="" /></span> Presentación</a></li>
             <li role="presentation">
                 <?php if ($countp > 0) { ?>
@@ -142,7 +147,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                     <tr>
                                         <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                         <td><?php echo $this->getVersion($c['version']); ?> </td>
-                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-18-10-2016b.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-28-10-2016c.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
 
                                         <?php
                                         $criteria5 = new CDbCriteria(array('condition' => "id_vehiculo='{$c['id']}'"));
@@ -186,7 +191,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                     </div>
                 </div>
                 <?php
-                if ($countp > 0 || $ex->fuente_contacto == 'exhibicion'):
+                if ($countp > 0 || $ex->fuente_contacto == 'exhibicion' || $ex->fuente_contacto == 'web'):
                     ?>
                     <div class="row">
                         <div class="col-md-3">

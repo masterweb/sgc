@@ -17,6 +17,7 @@
  * @property string $pdf_ficha_tecnica
  * @property string $estado
  * @property integer $orden
+ * @property integer $active
  */
 class Modelos extends CActiveRecord {
 
@@ -44,7 +45,7 @@ class Modelos extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('code', 'required'),
-            array('id_tipo, id_categoria, orden', 'numerical', 'integerOnly' => true),
+            array('id_tipo, id_categoria, orden, active', 'numerical', 'integerOnly' => true),
             array('nombre_modelo', 'length', 'max' => 100),
             array('code, logo_home, fotocar_home, fotomain_modelo, logo_modelo_interior, pdf_ficha_tecnica', 'length', 'max' => 60),
             array('slogan', 'length', 'max' => 255),
@@ -83,6 +84,7 @@ class Modelos extends CActiveRecord {
             'pdf_ficha_tecnica' => 'Pdf Ficha Tecnica',
             'estado' => 'Estado',
             'orden' => 'Orden',
+            'active' => 'Active',
         );
     }
 

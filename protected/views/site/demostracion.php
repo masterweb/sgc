@@ -22,6 +22,11 @@ $testAll = $this->getTestDriveOnly($id_informacion);
 //die();
 $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id_informacion}"));
 //echo $ex->fuente_contacto;
+$fuente = $this->getFuenteContacto($id_informacion);
+$urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion);
+if($fuente == 'web'){
+    $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
+}
 ?>
 <script type="text/javascript">
 
@@ -80,7 +85,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id_inf
         <ul class="nav nav-tabs" role="tablist">            
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
             <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
             <li role="presentation" class="active"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion_on.png" alt="" /></span> Demostración</a></li>
             <li role="presentation">
@@ -195,7 +200,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id_inf
                 <br />
                 <?php                
                 //echo $continuar_status.' = '.count($vec);
-                if ($continuar_status == count($vec) || $ex->fuente_contacto == 'exhibicion'):
+                if ($continuar_status == count($vec) || $ex->fuente_contacto == 'exhibicion' || $ex->fuente_contacto == 'web'):
                     ?>
                     <div class="row">
                         <div class="col-md-3">

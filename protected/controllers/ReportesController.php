@@ -51,8 +51,10 @@ class ReportesController extends Controller {
         $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
         $varView['cargo_adicional'] = (int) Yii::app()->user->getState('cargo_adicional');
+        //$varView['cargo_adicional'] = 85;
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
+        //echo 'dealer id: '.$varView['dealer_id'];
         $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
         $varView['provincia_id'] = $varView['nombre_usuario']->provincia_id;
         $varView['cargo_usuario'] = Cargo::model()->findByPk($varView['nombre_usuario']->cargo_id);
@@ -179,10 +181,16 @@ class ReportesController extends Controller {
                 $varView['lista_conce'] = $GF->getConcecionario((int) Yii::app()->user->getState('grupo_id'));
                 
                 if($varView['cargo_adicional'] == 85){ // CARGO ADICIONAL JEFE DE VENTAS EXTERNAS
-                    $array_dealers = $this->getDealerGrupoConc($varView['grupo_id']);
-                    $dealerList = implode(', ', $array_dealers);
                     $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
-                    $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id IN (70,71) ";
+                    $did = $this->getDealerIdUnique($varView['id_responsable']);
+                    if($did != 0){
+                        $id_persona = "gi.dealer_id IN (" . $varView['dealer_id'] . ") AND u.cargo_id IN (70,71) ";
+                    }else{
+                        $array_dealers = $this->getDealerGrupoConcesionario($varView['id_responsable']);
+                        $dealerList = implode(', ', $array_dealers);
+                        $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id IN (70,71) ";
+                    }
+                    
                 }
                 break;
             case 71: // asesor de ventas TERMINADO------>
@@ -220,10 +228,6 @@ class ReportesController extends Controller {
         $varView['js_responsable'] = 'null';
         $consultaBDC = '';
         if ($_GET['GI']) {
-            //die('enter GI');
-//            echo '<pre>';
-//            print_r($_GET['GI']);
-//            echo '</pre>';
             if ($_GET['GI']['fecha1'] != '') {
                 //echo('fecha1');
                 $gi_fecha1 = explode(" - ", $_GET['GI']['fecha1']);
@@ -257,7 +261,7 @@ class ReportesController extends Controller {
                    $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
                 }
             }
-
+            //echo('get tipo t: '.$_GET['GI']['tipo_t'].', get grupo: '.$_GET['GI']['grupo']).'<br />';
             if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['grupo'] != '') {
                 $con = Yii::app()->db;
                 if ($_GET['GI']['tipo_t'] == 'provincias') {
@@ -266,6 +270,7 @@ class ReportesController extends Controller {
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
                     $cond_conce = 'provincia';
                     $id_busqueda = $varView['id_provincia'];
+              
                 } else {
                     $varView['checked_g'] = true;
                     $varView['checked_p'] = false;
@@ -283,6 +288,8 @@ class ReportesController extends Controller {
                 }
                 $conse_active = rtrim($conse_active, ", ");
                 $condicion_GP = ' AND (dealer_id IN (' . $conse_active . ')) ';
+                //echo $condicion_GP;
+                //die();
             }
 
             if ($_GET['GI']['tipo'] != '') {

@@ -650,7 +650,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     $sql = "UPDATE gestion_diaria SET primera_visita = 1, paso = '4', status = 1  WHERE id_informacion = {$id_informacion}";
                     $request = $con->createCommand($sql)->query();
                 } else {
-                    die('enyer asdwwdwed');
+                    //die('enyer asdwwdwed');
                     $gestion = new GestionDiaria;
                     $gestion->id_informacion = $id_info;
                     $gestion->id_vehiculo = 0;
@@ -678,7 +678,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $model->colores = $stringColores;
             }
             $model->save();
-            $vehiculo = new GestionVehiculo;
+            $vehcount = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$_POST['GestionInformacion']['id_informacion']}"));
+            //die('count vec: '.$vehcount);
+            if($vehcount > 0){
+                $vehiculo = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$_POST['GestionInformacion']['id_informacion']}"));
+            }else{
+                $vehiculo = new GestionVehiculo;
+            }  
             $vehiculo->attributes = $_POST['GestionVehiculo'];
             $vehiculo->fecha = date("Y-m-d H:i:s");
             $vehiculo->id_informacion = $_POST['GestionInformacion']['id_informacion'];

@@ -663,18 +663,18 @@ class GestionVehiculoController extends Controller {
                 $model->cuota_mensual = $cuota_mensual;
             }
             //if (isset($_POST['accesorios']) && !empty($_POST['accesorios'])) {
-                //die('enter accesorios');
+            //die('enter accesorios');
 //                $counter = $_POST['accesorios'];
 //                $accesorios = '';
 //                foreach ($counter as $key => $entry) {
 //                    $accesorios .= $entry . '@';
 //                }
-                $accesorios = $_POST['GestionFinanciamiento1']['acc1'];
-                $accesorios = substr($accesorios, 0, -1);
-                $con = Yii::app()->db;
-                $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
-                //die('sql: '.$sql);
-                $request = $con->createCommand($sql)->query();
+            $accesorios = $_POST['GestionFinanciamiento1']['acc1'];
+            $accesorios = substr($accesorios, 0, -1);
+            $con = Yii::app()->db;
+            $sql = "UPDATE gestion_vehiculo SET accesorios = '{$accesorios}' WHERE id = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+            //die('sql: '.$sql);
+            $request = $con->createCommand($sql)->query();
             //} 
 //            else {
 //                $con = Yii::app()->db;
@@ -881,7 +881,7 @@ class GestionVehiculoController extends Controller {
                         $seguro2 = str_replace('.', ",", $seguro2);
                         $seguro2 = (int) str_replace('$', "", $seguro2);
                     }
-                    
+
                     $cuota_mensual2 = str_replace(',', "", $_POST['GestionFinanciamiento2']['cuota_mensual']);
                     $cuota_mensual2 = str_replace('.', ",", $cuota_mensual2);
                     $cuota_mensual2 = (int) str_replace('$', "", $cuota_mensual2);
@@ -996,7 +996,7 @@ class GestionVehiculoController extends Controller {
                         $seguro3 = str_replace('.', ",", $seguro3);
                         $seguro3 = (int) str_replace('$', "", $seguro3);
                     }
-                    
+
                     $cuota_mensual3 = str_replace(',', "", $_POST['GestionFinanciamiento3']['cuota_mensual']);
                     $cuota_mensual3 = str_replace('.', ",", $cuota_mensual3);
                     $cuota_mensual3 = (int) str_replace('$', "", $cuota_mensual3);
@@ -1162,7 +1162,7 @@ WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} 
         # Renders image
         //$mPDF1->WriteHTML(CHtml::image(Yii::getPathOfAlias('webroot.css') . '/bg.gif' ));
         # Outputs ready PDF
-        $mPDF1->Output($nombreproforma .'-'.$nombre_cliente. '.pdf', 'I');
+        $mPDF1->Output($nombreproforma . '-' . $nombre_cliente . '.pdf', 'I');
     }
 
     /**
@@ -1241,6 +1241,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
     public function actionSendProforma() {
         $id_informacion = isset($_POST["id_informacion"]) ? $_POST["id_informacion"] : "";
         $id_vehiculo = isset($_POST["id_vehiculo"]) ? $_POST["id_vehiculo"] : "";
+        $fuente = isset($_POST["fuente"]) ? $_POST["fuente"] : "";
         require_once 'email/mail_func.php';
         $emailCliente = $this->getEmailCliente($id_informacion);
         $id_modelo = $this->getIdModelo($id_vehiculo);
@@ -1249,6 +1250,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $id_asesor = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_asesor);
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+        $con = Yii::app()->db;
 
         $estadoCredito = $this->getTipoVenta($id_informacion);
         // ENVIAR EMAIL AL CLIENTE CON AGRADECIMIENTO DE VISITA Y ADJUNTO EL CATALOGO Y PROFORMA
@@ -1327,21 +1329,32 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente registrado
         //$email = 'alkanware@gmail.com'; //email administrador
-
         $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
-        if($send){
+        if ($send) {
             // GRABAR PROFORMA ENVIADA A BASE DE DATOS
             $proforma = new GestionProformasEnviadas;
             $proforma->id_informacion = $id_informacion;
             $proforma->user_id = $id_asesor;
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-            $proforma->fecha = date("Y-m-d H:i:s"); 
+            $proforma->fecha = date("Y-m-d H:i:s");
             $proforma->save();
+
+            // SI EL CLIENTE ES WEB
+            if ($fuente == 'web') {
+                // agendar 48 horas de segumiento
+                $fecha_actual = strftime("%Y/%m/%d %X ", time());
+                $fecha_posterior = strtotime('+2 day', strtotime($fecha_actual));
+                $fecha_posterior = date('Y-m-d H:i:s', $fecha_posterior); // suma dos dias a la fecha de proximo seguimiento
+                
+                $sql2 = "UPDATE gestion_diaria SET proximo_seguimiento = '{$fecha_posterior}' WHERE id_informacion = {$id_informacion}";
+                //die('sql: '.$sql2);
+                $request = $con->createCommand($sql2)->query();
+            }
         }
 
 
         // SEND EMAIL TO CLIENT WITH PROFORM NUMBER
-        $con = Yii::app()->db;
+        
         $sql = "SELECT gi.*, gc.preg6 as formapago FROM gestion_informacion gi "
                 . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
                 . "WHERE gi.id = {$id_informacion} LIMIT 0,1";

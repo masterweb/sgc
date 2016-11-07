@@ -15,6 +15,11 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
 //echo 'id modelo: '.$id_modelo;
 $tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo); 
 $id_version = $this->getIdVersion($id_vehiculo);
+$fuente = $this->getFuenteContacto($id_informacion);
+$urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion);
+if($fuente == 'web'){
+    $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
+}
 ?>
 <style type="text/css">
     #sum-accesorios-val2{color:#AA1F2C};
@@ -1415,6 +1420,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
     function sendProforma() {
         var idInfo = $('#GestionFinanciamiento_id_informacion').val();
         var idVec = $('#GestionFinanciamiento_id_vehiculo').val();
+        var fuente = $('#fuente').val();
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/sendProforma"); ?>',
             beforeSend: function (xhr) {
@@ -1422,13 +1428,24 @@ $id_version = $this->getIdVersion($id_vehiculo);
             },
             datatype: "json",
             type: 'POST',
-            data: {id_informacion: idInfo, id_vehiculo: idVec},
+            data: {id_informacion: idInfo, id_vehiculo: idVec, fuente: fuente},
             success: function (data) {
-                alert('Email enviado satisfactoriamente');
-                $('#bg_negro').hide();
+                if(fuente == 'web'){
+                    alert('Email enviado satisfactoriamente al cliente, el seguimiento se debera realizar en un plazo máximo de 48 horas');
+                }else{
+                    alert('Email enviado satisfactoriamente');
+                }
+                
                 $('#btnsendprof').hide();//$('#btnagendamiento').hide();
+                if(fuente == 'web'){
+                    // redireccionar al RGD
+                    urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
+                    $(location).attr('href', urld);
+                }
+                $('#bg_negro').hide();
             }
         });
+        
     }
     function send() {
     //console.log('accesorios1: ' + acc1);
@@ -2459,7 +2476,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                 <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <?php endif; ?>
 
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id_informacion); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
             <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>
@@ -3337,6 +3354,7 @@ $id_version = $this->getIdVersion($id_vehiculo);
                                     <input type="hidden" name="GestionFinanciamiento1[acco3]" id="GestionFinanciamiento_acco3" value="" />
                                     <input type="hidden" name="GestionFinanciamiento1[tipo_financiamiento]" id="GestionFinanciamiento_tipo_financiamiento" value="<?php echo $tipo; ?>" />
                                     <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Generar Proforma" onclick="send();">
+                                    <input type="hidden" name="fuente" id="fuente" value="<?php echo $fuente; ?>" />
                                 </div>
 
                             </div>

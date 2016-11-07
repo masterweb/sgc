@@ -4,15 +4,16 @@
 /* @var $form CActiveForm */
 $tipo = $_GET['tipo'];
 $id = $_GET['id_informacion'];
+$fuente = $_GET["fuente"];
 ?>
 <?php
 $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
-if($cargo_id != 46){
-$concesionarioid = $this->getConcesionarioDealerId($id_asesor);
-$nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
-$nombre_cliente = $this->getNombresInfo($id_informacion).' '.$this->getApellidosInfo($id_informacion);
-$direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
+if ($cargo_id != 46) {
+    $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+    $nombreConcesionario = $this->getNameConcesionarioById($concesionarioid);
+    $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
+    $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid);
 }
 ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskMoney.js" type="text/javascript"></script>
@@ -198,23 +199,25 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
                 $('.cont-fv label').first().prepend('<span class="pos"></span>')
                 $('.cont-vec-new').show();
                 $('.cont-vec-new .pos').remove();
-                $('.cont-vec-new label').first().prepend( '<span class="pos"></span>' )
+                $('.cont-vec-new label').first().prepend('<span class="pos"></span>')
                 //$("#GestionConsulta_preg3 option[value=1]").attr('selected', 'selected');
                 //$("#GestionConsulta_preg3 option[value=0]").removeAttr('selected');$('#GestionConsulta_vec').removeClass('error');
             }
             numerar();
         });
 
-        function numerar(){
+        function numerar() {
             var totalLen = $('.pos').length;
             $("*[class*=pos]").each(
-                function(index) {
-                    $(this).empty();
-                    $(this).append((index + 1) + ".");
-                    if(index === totalLen - 1){index = 0;}
-                }
+                    function (index) {
+                        $(this).empty();
+                        $(this).append((index + 1) + ".");
+                        if (index === totalLen - 1) {
+                            index = 0;
+                        }
+                    }
             );
-            
+
         }
         /*$('#gestion-informacion-form').validate({
          submitHandler: function(form) { 
@@ -424,115 +427,126 @@ $direccion_concesionario = $this->getConcesionarioDireccionById($concesionarioid
         return true
     }
     function sendInfo() {
+        var fuente = '<?php echo $fuente; ?>';
         //console.log('enter send info');
-        var tipo = $('#GestionInformacion_tipo').val();
-        var vec = $('#GestionConsulta_vec').val();
-        if(vec == ''){
-            $('#tipovehiculo').show();$('#tipovehiculo').focus();
-            $('#GestionConsulta_vec').addClass('error');return false;
-        }
-        //alert('tipo: '+tipo);
-        if (tipo == 'gestion') {
-            console.log('enter gestion');
-            if (vec === '1') {// ya posee vehiculo
-                console.log('enter posee');
-                $('#gestion-consulta-form').validate({
-                    rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
-                        'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true},
-                        'GestionConsulta[preg2]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
-                        'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
-                    messages: {'GestionConsulta[preg1_sec1]': {required: 'Seleccione la marca'}, 'Cotizador[modelo]': {required: 'Seleccione el modelo'}, 'Cotizador[year]': {required: 'Seleccione el año'}, 'GestionConsulta[preg1_sec4]': {number: 'Ingrese sólo números'}, 'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
-                        'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
-                        'GestionConsulta[preg2]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
-                        'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
-                    submitHandler: function (form) {
-                        var pres = $('#GestionConsulta_preg5').val();
-                        pres = pres.replace('.', '');
-                        pres = pres.replace('$', '');
-                        pres = parseInt(pres);
-                        if (pres < 14990 || pres > 84990) {
-                            $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
-                            $('#consulta_preg5').show();
-                            return false;
-                        }
-                        $('#finalizar').prop('disabled',true);
-                        form.submit();
-                    }
-                });
-            } else if (vec === '0') { // primer vehiculo
-                console.log('primer vehiculo');
-                $('#gestion-consulta-form').validate({
-                    rules: {'GestionConsulta[preg5]': {required: true},
-                        'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
-                        'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
-                    messages: {'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
-                        'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
-                        'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
-                        'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
-                    submitHandler: function (form) {
-                        var pres = $('#GestionConsulta_preg5').val();
-                        pres = pres.replace('.', '');
-                        pres = pres.replace('$', '');
-                        pres = parseInt(pres);
-                        if (pres < 14990 || pres > 84990) {
-                            $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
-                            $('#consulta_preg5').show();
-                            return false;
-                        }
-                        $('#finalizar').prop('disabled',true);
-                        form.submit();
-                    }
-                });
+        if (fuente != 'web') {
+            var tipo = $('#GestionInformacion_tipo').val();
+            var vec = $('#GestionConsulta_vec').val();
+            if (vec == '') {
+                $('#tipovehiculo').show();
+                $('#tipovehiculo').focus();
+                $('#GestionConsulta_vec').addClass('error');
+                return false;
             }
-        } else {
-            if (vec === '1') {// ya posee vehiculo
-                //console.log('enter posee');
-                $('#gestion-consulta-form').validate({
-                    rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
-                        'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true},
-                        'GestionConsulta[preg2]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
-                        'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
-                    messages: {'GestionConsulta[preg1_sec1]': {required: 'Seleccione la marca'}, 'Cotizador[modelo]': {required: 'Seleccione el modelo'}, 'Cotizador[year]': {required: 'Seleccione el año'}, 'GestionConsulta[preg1_sec4]': {number: 'Ingrese sólo números'}, 'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
-                        'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
-                        'GestionConsulta[preg2]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
-                        'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
-                    submitHandler: function (form) {
-                        var pres = $('#GestionConsulta_preg5').val();
-                        pres = pres.replace('.', '');
-                        pres = pres.replace('$', '');
-                        pres = parseInt(pres);
-                        if (pres < 14990 || pres > 84990) {
-                            $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
-                            $('#consulta_preg5').show();
-                            return false;
+            //alert('tipo: '+tipo);
+            if (tipo == 'gestion') {
+                console.log('enter gestion');
+                if (vec === '1') {// ya posee vehiculo
+                    console.log('enter posee');
+                    $('#gestion-consulta-form').validate({
+                        rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
+                            'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true},
+                            'GestionConsulta[preg2]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
+                            'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
+                        messages: {'GestionConsulta[preg1_sec1]': {required: 'Seleccione la marca'}, 'Cotizador[modelo]': {required: 'Seleccione el modelo'}, 'Cotizador[year]': {required: 'Seleccione el año'}, 'GestionConsulta[preg1_sec4]': {number: 'Ingrese sólo números'}, 'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
+                            'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
+                            'GestionConsulta[preg2]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
+                            'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
+                        submitHandler: function (form) {
+                            var pres = $('#GestionConsulta_preg5').val();
+                            pres = pres.replace('.', '');
+                            pres = pres.replace('$', '');
+                            pres = parseInt(pres);
+                            if (pres < 14990 || pres > 84990) {
+                                $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
+                                $('#consulta_preg5').show();
+                                return false;
+                            }
+                            $('#finalizar').prop('disabled', true);
+                            form.submit();
                         }
-                        form.submit();
-                    }
-                });
-            } else if (vec === '0') { // primer vehiculo
-                console.log('primer vehiculo');
-                $('#gestion-consulta-form').validate({
-                    rules: {'GestionConsulta[preg5]': {required: true},
-                        'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
-                        'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
-                    messages: {'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
-                        'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
-                        'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
-                        'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
-                    submitHandler: function (form) {
-                        var pres = $('#GestionConsulta_preg5').val();
-                        pres = pres.replace('.', '');
-                        pres = pres.replace('$', '');
-                        pres = parseInt(pres);
-                        if (pres < 14990 || pres > 84990) {
-                            $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
-                            $('#consulta_preg5').show();
-                            return false;
+                    });
+                } else if (vec === '0') { // primer vehiculo
+                    console.log('primer vehiculo');
+                    $('#gestion-consulta-form').validate({
+                        rules: {'GestionConsulta[preg5]': {required: true},
+                            'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
+                            'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
+                        messages: {'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
+                            'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
+                            'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
+                            'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
+                        submitHandler: function (form) {
+                            var pres = $('#GestionConsulta_preg5').val();
+                            pres = pres.replace('.', '');
+                            pres = pres.replace('$', '');
+                            pres = parseInt(pres);
+                            if (pres < 14990 || pres > 84990) {
+                                $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
+                                $('#consulta_preg5').show();
+                                return false;
+                            }
+                            $('#finalizar').prop('disabled', true);
+                            form.submit();
                         }
-                        form.submit();
-                    }
-                });
+                    });
+                }
+            } else {
+                if (vec === '1') {// ya posee vehiculo
+                    //console.log('enter posee');
+                    $('#gestion-consulta-form').validate({
+                        rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
+                            'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true},
+                            'GestionConsulta[preg2]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
+                            'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
+                        messages: {'GestionConsulta[preg1_sec1]': {required: 'Seleccione la marca'}, 'Cotizador[modelo]': {required: 'Seleccione el modelo'}, 'Cotizador[year]': {required: 'Seleccione el año'}, 'GestionConsulta[preg1_sec4]': {number: 'Ingrese sólo números'}, 'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
+                            'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
+                            'GestionConsulta[preg2]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
+                            'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
+                        submitHandler: function (form) {
+                            var pres = $('#GestionConsulta_preg5').val();
+                            pres = pres.replace('.', '');
+                            pres = pres.replace('$', '');
+                            pres = parseInt(pres);
+                            if (pres < 14990 || pres > 84990) {
+                                $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
+                                $('#consulta_preg5').show();
+                                return false;
+                            }
+                            form.submit();
+                        }
+                    });
+                } else if (vec === '0') { // primer vehiculo
+                    console.log('primer vehiculo');
+                    $('#gestion-consulta-form').validate({
+                        rules: {'GestionConsulta[preg5]': {required: true},
+                            'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true}, 'GestionConsulta[preg3_sec1]': {required: true}, 'GestionConsulta[preg4]': {required: true},
+                            'GestionConsulta[preg6]': {required: true}, 'GestionConsulta[preg7]': {required: true}, 'necesidad[]': {required: true}},
+                        messages: {'GestionConsulta[preg5]': {required: 'Ingrese el presupuesto'},
+                            'GestionVehiculo[modelo]': {required: 'Seleccione modelo'}, 'GestionVehiculo[version]': {required: 'Seleccione versión'},
+                            'GestionConsulta[preg3_sec1]': {required: 'Seleccione una opción'}, 'GestionConsulta[preg4]': {required: 'Seleccione una opción'},
+                            'GestionConsulta[preg6]': {required: 'Seleccione una forma de pago'}, 'GestionConsulta[preg7]': {required: 'Seleccione una opción'}, 'necesidad[]': {required: 'Seleccione una opción'}},
+                        submitHandler: function (form) {
+                            var pres = $('#GestionConsulta_preg5').val();
+                            pres = pres.replace('.', '');
+                            pres = pres.replace('$', '');
+                            pres = parseInt(pres);
+                            if (pres < 14990 || pres > 84990) {
+                                $('#consulta_preg5').html('Ingrese un valor entre 14990 y 84990');
+                                $('#consulta_preg5').show();
+                                return false;
+                            }
+                            form.submit();
+                        }
+                    });
+                }
             }
+        }else{
+            $('#gestion-consulta-form').validate({
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
         }
     }
 </script>
@@ -546,7 +560,7 @@ $id_responsable = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //echo 'responsable id: '.$id_responsable;
-if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
+if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
     $dealer_id = $this->getDealerId($id_responsable);
     $city_id = $this->getCityId($dealer_id);
     $provincia_id = $this->getProvinciaId($city_id);
@@ -592,25 +606,25 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                 <div class="col-md-5">                                    
                                     <select name="GestionConsulta[modelo_intersado]" id="GestionConsulta_modelo_interesado" class="form-control">
                                         <option value="">--Escoja un Modelo</option>
-                                         <option value="Picanto R">Picanto R</option>
-                                         <option value="Rio R 4p">Rio R 4p</option>
-                                         <option value="Rio R 5p">Rio R 5p</option>
-                                         <option value="Rio R Taxi">Rio R Taxi</option>
-                                         <option value="Cerato Forte">Cerato Forte</option>
-                                         <option value="Cerato Forte Koup">Cerato Koup</option>
-                                         <option value="Cerato R">Cerato R</option>
-                                         <option value="Optima Híbrido">Optima Híbrido</option>
-                                         <option value="Quoris">Quoris</option>
-                                         <option value="Soul">Soul Gasolina</option>
-                                         <option value="Soul R">Soul R</option>
-                                         <option value="Sportage GT">Sportage GT</option>
-                                         <option value="Sportage Active">Sportage Active</option>
-                                         <option value="Sportage R">Sportage R</option>
-                                         <option value="Sorento">Sorento</option>
-                                         <option value="Carens R">Carens R</option>
-                                         <option value="Carnival R">Carnival R</option>
-                                         <option value="K2700">K2700</option>
-                                         <option value="K3000">K3000</option>                                        
+                                        <option value="Picanto R">Picanto R</option>
+                                        <option value="Rio R 4p">Rio R 4p</option>
+                                        <option value="Rio R 5p">Rio R 5p</option>
+                                        <option value="Rio R Taxi">Rio R Taxi</option>
+                                        <option value="Cerato Forte">Cerato Forte</option>
+                                        <option value="Cerato Forte Koup">Cerato Koup</option>
+                                        <option value="Cerato R">Cerato R</option>
+                                        <option value="Optima Híbrido">Optima Híbrido</option>
+                                        <option value="Quoris">Quoris</option>
+                                        <option value="Soul">Soul Gasolina</option>
+                                        <option value="Soul R">Soul R</option>
+                                        <option value="Sportage GT">Sportage GT</option>
+                                        <option value="Sportage Active">Sportage Active</option>
+                                        <option value="Sportage R">Sportage R</option>
+                                        <option value="Sorento">Sorento</option>
+                                        <option value="Carens R">Carens R</option>
+                                        <option value="Carnival R">Carnival R</option>
+                                        <option value="K2700">K2700</option>
+                                        <option value="K3000">K3000</option>                                        
                                     </select>
                                 </div>
                             </div>
@@ -752,7 +766,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                     </div>
                                     <div class="col-md-3">
                                         <label for="kilometraje">Kilometraje</label>
-                                        <?php echo $form->textField($consulta, 'preg1_sec4', array('class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+<?php echo $form->textField($consulta, 'preg1_sec4', array('class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                         <label for="kilometraje" generated="true" class="error" style="display: none;">Este campo es requerido</label>
                                     </div>
                                 </div>
@@ -767,7 +781,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             </div>
                             <div class="row cont-img" style="display: none;">
                                 <div class="col-md-3">
-                                    <?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));     ?>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new thumbnail" style="width: 179px; height: 100px;">
                                             <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ext_1.jpg" alt="...">
@@ -775,16 +789,16 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                         <div class="fileinput-preview fileinput-exists thumbnail" style="width: 179px; height: 100px;"></div>
                                         <div>
                                             <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imágen</span><span class="fileinput-exists">Cambiar</span>
-                                                <?php //echo $form->FileField($consulta, 'preg2_sec1', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($consulta, 'preg2_sec1', array('class' => 'form-control'));     ?>
                                                 <input class="form-control" name="GestionConsulta[img1]" id="GestionConsulta_img1" type="file">
                                             </span>
                                             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
                                         </div>
                                     </div>
-                                    <?php echo $form->error($model, 'img'); ?>
+<?php echo $form->error($model, 'img'); ?>
                                 </div>
                                 <div class="col-md-3">
-                                    <?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));     ?>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new thumbnail" style="width: 179px; height: 100px;">
                                             <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ext_2.jpg" alt="...">
@@ -797,10 +811,10 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
                                         </div>
                                     </div>
-                                    <?php echo $form->error($model, 'img'); ?>
+<?php echo $form->error($model, 'img'); ?>
                                 </div>
                                 <div class="col-md-3">
-                                    <?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));     ?>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new thumbnail" style="width: 179px; height: 100px;">
                                             <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ext_3.jpg" alt="...">
@@ -813,10 +827,10 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
                                         </div>
                                     </div>
-                                    <?php echo $form->error($model, 'img'); ?>
+<?php echo $form->error($model, 'img'); ?>
                                 </div>
                                 <div class="col-md-3">
-                                    <?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));     ?>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new thumbnail" style="width: 179px; height: 100px;">
                                             <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/int_1.jpg" alt="...">
@@ -829,10 +843,10 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                             <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
                                         </div>
                                     </div>
-                                    <?php echo $form->error($model, 'img'); ?>
+<?php echo $form->error($model, 'img'); ?>
                                 </div>
                                 <div class="col-md-3">
-                                    <?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));    ?>
+<?php //echo $form->FileField($model, 'img', array('class' => 'form-control'));     ?>
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
                                         <div class="fileinput-new thumbnail" style="width: 179px; height: 100px;">
                                             <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/int_2.jpg" alt="...">
@@ -849,7 +863,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                 </div>
                                 <div class="col-md-6">
                                     <label for="">Porque el cliente no autorizó a subir fotos del vehículo?</label>
-                                    <?php echo $form->textField($consulta, 'preg2_sec2', array('class' => 'form-control')); ?>
+<?php echo $form->textField($consulta, 'preg2_sec2', array('class' => 'form-control')); ?>
                                 </div>
                             </div>
                         </div>
@@ -857,12 +871,12 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             <label for=""><span class="pos"></span> ¿Para qué utilizará el nuevo vehículo?</label>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <?php echo $form->dropDownList($consulta, 'preg3', array(''=> '--Seleccione--','0' => 'Primer Vehículo del hogar', '1' => 'Segundo Vehículo del hogar', '2' => 'Renovación de vehículo'), array('class' => 'form-control', 'options' => array('5' => array('selected' => true)))); ?>
+                                    <?php echo $form->dropDownList($consulta, 'preg3', array('' => '--Seleccione--', '0' => 'Primer Vehículo del hogar', '1' => 'Segundo Vehículo del hogar', '2' => 'Renovación de vehículo'), array('class' => 'form-control', 'options' => array('5' => array('selected' => true)))); ?>
                                 </div>
                             </div>
                             <div class="row cont-utl">
                                 <div class="col-md-4">
-                                    <?php echo $form->dropDownList($consulta, 'preg3_sec1', array('' => '-Seleccione-', '0' => 'Familiar', '1' => 'Trabajo'), array('class' => 'form-control')); ?>
+<?php echo $form->dropDownList($consulta, 'preg3_sec1', array('' => '-Seleccione-', '0' => 'Familiar', '1' => 'Trabajo'), array('class' => 'form-control')); ?>
                                 </div>
                             </div>
                         </div>
@@ -870,7 +884,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             <label for=""><span class="pos"></span> ¿Quién más participa en la decisión de compra?</label>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <?php echo $form->dropDownList($consulta, 'preg4', array('' => '-Seleccione-', '0' => 'Esposa/o', '1' => 'Familiar', '2' => 'Departamento de compras', '3' => 'Ninguno'), array('class' => 'form-control')); ?>
+<?php echo $form->dropDownList($consulta, 'preg4', array('' => '-Seleccione-', '0' => 'Esposa/o', '1' => 'Familiar', '2' => 'Departamento de compras', '3' => 'Ninguno'), array('class' => 'form-control')); ?>
                                 </div>
                             </div>
                         </div>
@@ -878,7 +892,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             <label for=""><span class="pos"></span> ¿Cuánto es el presupuesto que tiene previsto para su nuevo vehículo?</label>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <?php echo $form->textField($consulta, 'preg5', array('size' => 10, 'maxlength' => 11, 'class' => 'form-control')); ?>
+<?php echo $form->textField($consulta, 'preg5', array('size' => 10, 'maxlength' => 11, 'class' => 'form-control')); ?>
                                     <label for="GestionConsulta_preg5" generated="true" class="error" id="consulta_preg5"></label>
                                 </div>
                             </div>
@@ -888,24 +902,24 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             <label for=""><span class="pos"></span> ¿Cuál sería su forma de pago para su nuevo vehículo?</label>
                             <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
                             <input name="GestionInformacion[id_informacion]" id="GestionConsulta_id_informacion" type="hidden" value="<?php echo $id_informacion; ?>">
-                            <?php $fin = $this->getFinanciamientoExo($id_informacion); ?>
-                            <?php if($fin == 'exonerados'){ ?>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <select class="form-control" name="GestionConsulta[preg6]" id="GestionConsulta_preg6">
-                                    <option value="0" selected="">Contado</option>
-                                </select>
+<?php $fin = $this->getFinanciamientoExo($id_informacion); ?>
+<?php if ($fin == 'exonerados') { ?>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <select class="form-control" name="GestionConsulta[preg6]" id="GestionConsulta_preg6">
+                                            <option value="0" selected="">Contado</option>
+                                        </select>
+                                    </div>
+
                                 </div>
-                                
-                            </div>
-                            <?php }else{ ?>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <?php echo $form->dropDownList($consulta, 'preg6', array('' => '-Seleccione-', '0' => 'Contado', '1' => 'Financiado'), array('class' => 'form-control')); ?>
+<?php } else { ?>
+                                <div class="row">
+                                    <div class="col-md-3">
+    <?php echo $form->dropDownList($consulta, 'preg6', array('' => '-Seleccione-', '0' => 'Contado', '1' => 'Financiado'), array('class' => 'form-control')); ?>
+                                    </div>
                                 </div>
-                            </div>
-                            <?php } ?>
-                            
+<?php } ?>
+
                         </div>
                         <div class="row">
                             <label for=""><span class="pos"></span> ¿En qué tiempo estima realizar su compra?</label>
@@ -1005,6 +1019,15 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                     <?php $vehiculo = new GestionVehiculo; ?>
                                     <?php echo $form->labelEx($vehiculo, 'modelo'); ?>
                                     <?php
+                                    $ve = GestionVehiculo::model()->count(array('condition' => "id_informacion = {$id}"));
+                                    $id_modelo = 0;
+                                    $id_version = 0;
+                                    if ($ve > 0) {
+                                        $vec = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id}"));
+                                        $id_modelo = $vec->modelo;
+                                        $id_version = $vec->version;
+                                        $nombre_version = $this->getVersion($id_version);
+                                    }
                                     echo $form->dropDownList($vehiculo, 'modelo', array(
                                         "" => "--Escoja un Modelo--",
                                         "84" => "Picanto R",
@@ -1022,26 +1045,34 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                         "21" => "Sportage Active",
                                         "95" => "Sportage GT",
                                         "83" => "Sportage R",
+                                        "96" => "Sportage R",
                                         //"10" => "Sorento",
                                         //"25" => "K 2700 Cabina Simple",
                                         //"87" => "K 2700 Cabina Doble",
-                                        "86" => "K 3000"), array('class' => 'form-control'));
+                                        "86" => "K 3000"), array('class' => 'form-control', 'options' => array($id_modelo => array('selected' => true))));
                                     ?>
                                     <?php echo $form->error($vehiculo, 'modelo'); ?>
                                 </div>
                                 <div class="col-md-6">
                                     <div id="info2" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                                     <?php echo $form->labelEx($vehiculo, 'version'); ?>
-                                    <?php echo $form->dropDownList($vehiculo, 'version', array('' => 'Escoja una versión'), array('class' => 'form-control')); ?>
-                                    <?php echo $form->error($vehiculo, 'version'); ?>
+                                    <?php
+                                    if ($ve > 0) {
+                                        echo $form->dropDownList($vehiculo, 'version', array(
+                                            $id_version => $nombre_version), array('class' => 'form-control'));
+                                    } else {
+                                        echo $form->dropDownList($vehiculo, 'version', array('' => 'Escoja una versión'), array('class' => 'form-control'));
+                                    }
+                                    ?>
+<?php echo $form->error($vehiculo, 'version'); ?>
                                 </div>
                             </div>
                             <div class="row" style="display: none;">
                                 <div class="col-md-6">
                                     <div id="info3" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                                     <?php echo $form->labelEx($vehiculo, 'precio'); ?>
-                                    <?php echo $form->textField($vehiculo, 'precio', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
-                                    <?php echo $form->error($vehiculo, 'precio'); ?>
+<?php echo $form->textField($vehiculo, 'precio', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control')); ?>
+<?php echo $form->error($vehiculo, 'precio'); ?>
                                 </div>
                             </div>
                             <br />
@@ -1050,7 +1081,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                             </div>
                             <div class="row">
                                 <div class="col-md-8 well well-sm">
-                                    
+
                                     <div class="col-md-6">
                                         <ul class="list-accesorios">                                          
                                             <li><u><input type="checkbox" value="negro" name="colores[]" id="color-3"/><span class="color" style="background: rgb(0, 0, 0);"></span>Negro</u></li>
@@ -1101,9 +1132,9 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                     echo '<input type="hidden" name="GestionInformacion[status]" id="GestionInformacion_status" value="primera_visita">';
                                 endif;
                                 ?>
-                                <input type="hidden" name="tipo" value="<?=$tipo?>">
-                                <input type="hidden" name="fuente" value="<?=$id?>">
-                                <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
+                                <input type="hidden" name="tipo" value="<?= $tipo ?>">
+                                <input type="hidden" name="fuente" value="<?= $_GET['fuente'] ?>">
+<?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                                 <input class="btn btn-primary" style="display: none;" onclick=";" type="submit" name="yt0"  id="continuar" value="Abandonar">
                             </div>
                             <div class="col-md-2">
@@ -1114,7 +1145,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
 
                         </div>
                     </div>
-                    <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
                 </div><!-- End Vehiculo recomendado -->
                 <!--                <br />
                                 <div class="highlight">
@@ -1135,7 +1166,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                     ),
                 ));
                 ?>
-                <?php //echo $form->errorSummary($agendamiento);   ?>
+                <?php //echo $form->errorSummary($agendamiento);    ?>
                                         <div class="row">
                                             <div class="col-md-4">
                 <?php echo $form->labelEx($agendamiento, 'categorizacion'); ?>
@@ -1151,7 +1182,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                     'Cold (hasta 6 meses)' => 'Warm(hasta 6 meses)',
                     'Very Cold(mas de 6 meses)' => 'Very Cold(mas de 6 meses)'), array('class' => 'form-control'));
                 ?>
-                <?php echo $form->error($agendamiento, 'categorizacion'); ?>
+<?php echo $form->error($agendamiento, 'categorizacion'); ?>
                                             </div>
                                             
                                         </div>
@@ -1164,7 +1195,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                 <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Cambiar' : 'Save', array('class' => 'btn btn-danger', 'onclick' => 'sendCat();')); ?>
                                             </div>
                                         </div>
-                <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
                                     </div> END FORM  
                                     
                                 </div>  END OF HIGHLIGHT 
@@ -1183,7 +1214,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                     'enableAjaxValidation' => false,
                 ));
                 ?>
-                <?php //echo $form->errorSummary($agendamiento);   ?>
+                <?php //echo $form->errorSummary($agendamiento);    ?>
                                         <div class="row">
                                             <div class="col-md-4" style="display: none;">
                 <?php echo $form->labelEx($agendamiento, 'categorizacion'); ?>
@@ -1202,13 +1233,13 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                             </div>
                                             <div class="col-md-4">
                 <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+<?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
                 <?php echo $form->error($agendamiento, 'observaciones'); ?>
                                             </div>
                                             <div class="col-md-4">
                 <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
-                <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
-                <?php echo $form->error($agendamiento, 'agendamiento'); ?>
+<?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+<?php echo $form->error($agendamiento, 'agendamiento'); ?>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -1231,7 +1262,7 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                                             <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
                                             <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id; ?>">
                                             <div class="col-md-2">
-                <?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
+<?php echo CHtml::submitButton($agendamiento->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
                                             </div>
                                             <div class="col-md-3">
                                                 <div id="calendar-content" style="display: none;">
@@ -1249,28 +1280,28 @@ if($cargo_id != 46 &&  $cargo_adicional != 0 && $cargo_id != 70){
                 $ag5 = GestionAgendamiento::model()->findAll($crit5);
                 if ($agen5 > 0) {
                     ?>
-                                                    <div class="col-md-8">
-                                                        <h4 class="text-danger">Historial</h4>
-                                                    </div>
-                                                    <div class="col-md-8">
+                                                        <div class="col-md-8">
+                                                            <h4 class="text-danger">Historial</h4>
+                                                        </div>
+                                                        <div class="col-md-8">
                     <?php
                 }
                 foreach ($ag5 as $a) {
                     ?>
-                                                            <div class="row">
-                                                            <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
-                                                            <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
-                                                            <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
-                                                            </div>
-                <?php } ?>
+                                                                <div class="row">
+                                                                <div class="col-md-4"><strong>Fecha Agendamiento: </strong><?php echo $a['agendamiento']; ?></div>
+                                                                <div class="col-md-4"><strong>Motivo: </strong><?php echo $a['observaciones']; ?></div>
+                                                                <div class="col-md-4"><strong>Categorización: </strong><?php echo $a['categorizacion']; ?></div>
+                                                                </div>
+<?php } ?>
                                         </div>
                                     </div>
                                 </div>  END OF HIGHLIGHT 
                                 <br />-->
             </div>
             <br />
-                <br />
-                <?= $this->renderPartial('//layouts/rgd/links');?>
+            <br />
+<?= $this->renderPartial('//layouts/rgd/links'); ?>
         </div>
     </div>
 </div>

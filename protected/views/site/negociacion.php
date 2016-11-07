@@ -16,6 +16,11 @@ $android = FALSE;
 if (stripos($ua, 'android') !== false) { // && stripos($ua,'mobile') !== false) {
     $android = TRUE;
 }
+$fuente = $this->getFuenteContacto($id);
+$urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id);
+if($fuente == 'web'){
+    $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id, 'tipo' => 'gestion', 'fuente' => 'web'));
+}
 ?>
 <?php
 // si la solicitud es al contado entonces el boton continuar var por defecto
@@ -67,7 +72,7 @@ $gf = GestionFinanciamiento::model()->count($crit5);
             <?php else: ?>
                 <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
             <?php endif; ?>
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
             <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
             <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>

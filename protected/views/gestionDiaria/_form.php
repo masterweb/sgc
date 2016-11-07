@@ -507,7 +507,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <?php
                             foreach ($de as $vde) {
                                 echo '<div class="col-md-6">'.$vde['fecha'].'</div>'
-                                . '<div class="col-md-6">'.$vde['observaciones'].'</div>';
+                                . '<div class="col-md-6">'.$vde['otro_observacion'].'</div>';
                             }
                             ?>
                           </div>
@@ -584,8 +584,6 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     </div>
                     <!--  ==========================          PASO 1-2   =========================    -->
                     <?= $this->renderPartial('//gestionDiaria/modulos/prospeccioncita', array('id' => $_GET['id']));?>
-                    
-                ?>
                 <?php } // end if ?>
             <?php if ($this->getAnswer(2, $id) > 0){ ?>
                 <div class="col-md-10">
@@ -1087,7 +1085,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
                             break;
                         case '4':
-                            $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id']));
+                            if($_GET['fuente'] == 'web'){
+                                $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'web')); 
+                            }else{
+                                $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id']));
+                            }
+                            
                             echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
                             break;
                         case '5':
