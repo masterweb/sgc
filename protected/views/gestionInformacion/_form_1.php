@@ -1114,13 +1114,14 @@ $id = $_GET['id'];
             </div><!-- form -->
         </div>
         <br />
-        <div class="row">
+<!--        <div class="row">
             <div class="col-md-8  col-xs-12 links-tabs">
                 <div class="col-md-2 col-xs-4"><p>También puedes ir a:</p></div>
                 <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('site/menu'); ?>" class="back-btn">Inicio</a></div>
                 <div class="col-md-2 col-xs-4"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento'); ?>" class="creacion-btn">RGD</a></div>                         <div class="col-md-3 col-xs-4"><a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>" class="directorio-btn">Directorio de Contactos</a></div>
             </div>
-        </div>
+        </div>-->
+<?= $this->renderPartial('//layouts/rgd/links');?>
         <div role="tabpanel" class="tab-pane" id="profile"></div>
         <div role="tabpanel" class="tab-pane" id="settings"></div>
         <div role="tabpanel" class="tab-pane" id="messages"></div>
