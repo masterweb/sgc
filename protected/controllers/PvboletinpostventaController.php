@@ -115,49 +115,49 @@ class PvboletinpostventaController extends Controller
     $string = trim($string);
 
     $string = str_replace(
-        array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
         $string
     );
 
     $string = str_replace(
-        array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
         $string
     );
 
     $string = str_replace(
-        array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
         $string
     );
 
     $string = str_replace(
-        array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
         $string
     );
 
     $string = str_replace(
-        array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
         $string
     );
 
     $string = str_replace(
-        array('ñ', 'Ñ', 'ç', 'Ç'),
+        array('ï¿½', 'ï¿½', 'ï¿½', 'ï¿½'),
         array('n', 'N', 'c', 'C',),
         $string
     );
 
-    //Esta parte se encarga de eliminar cualquier caracter extraño
+    //Esta parte se encarga de eliminar cualquier caracter extraï¿½o
     $string = str_replace(
-        array("\\", "¨", "º", "-", "~",
+        array("\\", "ï¿½", "ï¿½", "-", "~",
              "#", "@", "|", "!", "\"",
-             "·", "$", "%", "&", "/",
-             "(", ")", "?", "'", "¡",
-             "¿", "[", "^", "`", "]",
-             "+", "}", "{", "¨", "´",
+             "ï¿½", "$", "%", "&", "/",
+             "(", ")", "?", "'", "ï¿½",
+             "ï¿½", "[", "^", "`", "]",
+             "+", "}", "{", "ï¿½", "ï¿½",
              ">", "< ", ";", ",", ":",
              ".", " "),
         '',
@@ -192,8 +192,8 @@ class PvboletinpostventaController extends Controller
 				//$fileName = $extension[0].'.'.$extension[1];
 				$fileName = $nuevo_nombre.'.'.$extension[1];
 				$model->nombre = $fileName;
-				if($uploadedFile->size > 2048576){
-					Yii::app()->user->setFlash('error', "El archivo que usted ha enviado tiene un peso mayor a 2MB.");
+				if($uploadedFile->size > 20971520){
+					Yii::app()->user->setFlash('error', "El archivo que usted ha enviado tiene un peso mayor a 20MB.");
 					$this->redirect(array('pvboletinpostventa/adjuntar/'.$id));
 					die();
 				}else{
