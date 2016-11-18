@@ -386,17 +386,18 @@ endforeach;
             url: '<?php echo Yii::app()->createUrl("site/traercargos")?>',
             type:'POST',
             async:true,
+            dataType: 'json',
             data:{
                 rs : vl,
             },
-            success:function(result){
-                if(result == 0){
-                    alert("No se pudo realizar la consulta de cargos.");
-                    $("#ccargos").html("<p style='font-size:13px;font-weight:bold;padding-top:5px;'>Seleccione un &aacute;rea.</p>");
-                }else{
-                    //alert(result)
-                    $("#ccargos").html(result);
-                }
+            success:function(data){
+                if (data.result == false) {
+                                alert("No se pudo realizar la consulta de cargos.");
+                                $("#ccargos").html("<p style='font-size:13px;font-weight:bold;padding-top:5px;'>Seleccione un &aacute;rea.</p>");
+                            } else {
+                                //alert(result)
+                                $("#ccargos").html(data.options);
+                            }
             }
         });
     }
