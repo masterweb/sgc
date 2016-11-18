@@ -16,6 +16,8 @@ $id_modelo = $this->getIdModelo($id_vehiculo);
 $tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo); 
 $id_version = $this->getIdVersion($id_vehiculo);
 $fuente = $this->getFuenteContacto($id_informacion);
+$cargo = (int) Yii::app()->user->getState('cargo');
+$cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create/' . $id_informacion);
 if($fuente == 'web'){
     $urlConsulta = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $id_informacion, 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -1421,6 +1423,7 @@ if($fuente == 'web'){
         var idInfo = $('#GestionFinanciamiento_id_informacion').val();
         var idVec = $('#GestionFinanciamiento_id_vehiculo').val();
         var fuente = $('#fuente').val();
+        var grupo = '<?php echo (int) Yii::app()->user->getState('grupo_id'); ?>'; 
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/sendProforma"); ?>',
             beforeSend: function (xhr) {
@@ -1437,9 +1440,14 @@ if($fuente == 'web'){
                 }
                 
                 $('#btnsendprof').hide();//$('#btnagendamiento').hide();
-                if(fuente == 'web'){
+                if(fuente == 'web' &&(grupo == 2 || grupo == 3)){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
+                    $(location).attr('href', urld);
+                }
+                if(fuente == 'web' &&(grupo != 2 || grupo != 3)){
+                    // redireccionar al RGD
+                    urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimientobdc"); ?>';
                     $(location).attr('href', urld);
                 }
                 $('#bg_negro').hide();
@@ -3357,6 +3365,8 @@ if($fuente == 'web'){
                                     <input type="hidden" name="GestionFinanciamiento1[tipo_financiamiento]" id="GestionFinanciamiento_tipo_financiamiento" value="<?php echo $tipo; ?>" />
                                     <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Generar Proforma" onclick="send();">
                                     <input type="hidden" name="fuente" id="fuente" value="<?php echo $fuente; ?>" />
+                                    <input type="hidden" name="cargo_adicional" id="cargo_adicional" value="<?php echo $cargo_adicional; ?>" />
+                                    <input type="hidden" name="cargo" id="cargo" value="<?php echo $cargo; ?>" />
                                 </div>
 
                             </div>
