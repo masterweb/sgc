@@ -641,7 +641,7 @@ $id = $_GET['id'];
                                         echo '<span class="required">*</span>';
                                     }
                                     ?></label>
-                                <?php echo $form->textField($model, 'ruc', array('size' => 20, 'maxlength' => 10, 'class' => 'form-control'));   ?>
+                                <?php echo $form->textField($model, 'ruc', array('size' => 20, 'maxlength' => 13, 'class' => 'form-control'));   ?>
 <!--                                <input size="20" maxlength="13" class="form-control" name="GestionInformacion[ruc]" id="GestionInformacion_ruc" type="text" value="<?php
                                 if (isset($id)) {
                                     echo $this->getIdentificacionRuc($id);
