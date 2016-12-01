@@ -94,7 +94,7 @@ class ReportesController extends Controller {
 //        die();
 
         $SQLmodelos = '';
-        $INERmodelos = '';
+        $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         $INERmodelos_td = '';
         $varView['triger'] = 0;
         foreach ($lista_datos as $key => $value) {
@@ -110,7 +110,7 @@ class ReportesController extends Controller {
                 }
                 $id_carros_nv[$key] = implode(', ', $carros);
                 $SQLmodelos[$key] = $separ . " gv." . $campo_car . " IN (" . $id_carros_nv[$key] . ")" . $separ_fin . ' ';
-                $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                //$INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERmodelos_td = ' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
                 $varView['triger'] = 1;
             }
@@ -511,7 +511,7 @@ class ReportesController extends Controller {
             $retorno = $constructor->buscar(
                     $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $consultaBDC, $condicion_GP, $tipo
             );
-
+            //echo 'trafico mes anterior: '.$retorno[2];
             $varView['prospeccion_mes_anterior'] = $retorno[0];
             $varView['prospeccion_mes_actual'] = $retorno[1];
             $varView['trafico_mes_anterior'] = $retorno[2];
