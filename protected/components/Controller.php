@@ -2955,5 +2955,1901 @@ class Controller extends CController {
             return FALSE;
         }
     }
+    /**
+     * Funcion que retorna las fechas actuales en el reporte de trafico
+     * @param type $mes_actual
+     * @param type $dia_actual
+     * @return array $fechas fechas a ser mostradas
+     */
+    public function getNumeroMeses($mes_actual, $dia_inicial, $dia_actual) {
+        //echo 'dia_actual: ('.$dia_inicial.'-'.$dia_actual.')';
+        $fechas = array();
+        switch ($mes_actual) {
+            case 1:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 2:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 3:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 4:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 5:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 6:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 7:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 8:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'ago-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 9:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'ago-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'sep-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 10:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'ago-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'sep-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'oct-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 11:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'ago-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'sep-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'oct-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'nov-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+            case 12:
+                $fechas[] = 'ene-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'feb-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'mar-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'abr-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'may-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jun-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'jul-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'ago-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'sep-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'oct-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'nov-('.$dia_inicial.'-'.$dia_actual.')';
+                $fechas[] = 'dic-('.$dia_inicial.'-'.$dia_actual.')';
+                break;
+
+            default:
+                break;
+        }
+        return $fechas;
+    }
+    
+    /**
+     * Funcion que retorna las fechas actuales en el reporte de trafico
+     * @param type $mes_actual
+     * @param type $dia_actual
+     * @return array $fechas fechas a ser mostradas
+     */
+    public function getNumeroMesesDate($mes_actual, $dia_actual) {
+        $fechas = array();
+        switch ($mes_actual) {
+            case 1:
+                $fechas[] = '01';
+                break;
+            case 2:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                break;
+            case 3:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                break;
+            case 4:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                break;
+            case 5:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                break;
+            case 6:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                break;
+            case 7:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                break;
+            case 8:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                $fechas[] = '08';
+                break;
+            case 9:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                $fechas[] = '08';
+                $fechas[] = '09';
+                break;
+            case 10:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                $fechas[] = '08';
+                $fechas[] = '09';
+                $fechas[] = '10';
+                break;
+            case 11:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                $fechas[] = '08';
+                $fechas[] = '09';
+                $fechas[] = '10';
+                $fechas[] = '11';
+                break;
+            case 12:
+                $fechas[] = '01';
+                $fechas[] = '02';
+                $fechas[] = '03';
+                $fechas[] = '04';
+                $fechas[] = '05';
+                $fechas[] = '06';
+                $fechas[] = '07';
+                $fechas[] = '08';
+                $fechas[] = '09';
+                $fechas[] = '10';
+                $fechas[] = '11';
+                $fechas[] = '12';
+                break;
+
+            default:
+                break;
+        }
+        return $fechas;
+    }
+    
+    public function getModelosTrafico() {
+        $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO'", 'order' => "nombre_modelo ASC", 'order' => "orden"));
+        return $res;
+    }
+    
+    /**
+     * Returns count of vehicle's version in date range
+     * @param int $mes Mes actual
+     * @param string $versiones Lista de versiones del modelo de auto
+     * @param int $year Year en curso
+     * @param string $dia Dia actual
+     * @param boolean $flag Busqueda entre fechas o individual
+     * @param array $search Array con parametros de busqueda
+     * @return int $count Numero de coincidencias
+     */
+    public function getTraficoVersion($mes, $versiones, $year, $dia, $flag, $search) {
+        //echo 'search:'.'<br />';
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        //echo 'srf: '.$srf.'<br />';
+        
+        $criteria = new CDbCriteria;
+        //$criteria->select = "*";
+        $criteria->alias = 'gi';
+        $criteria->join = "LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+//        echo '<pre>';
+//        print_r($criteria);
+//        echo '</pre>';
+        $count = GestionInformacion::model()->count($criteria);
+        
+        //return $count.', versiones: '.$versiones;
+        return $count;
+    }
+    /**
+     * Devuelve el numero de proformas en un rango de fechas o fecha individual
+     * @param int $mes Mes actual
+     * @param string $versiones Lista de versiones del modelo de auto
+     * @param int $year Year en curso
+     * @param string $dia Dia actual
+     * @param boolean $flag Busqueda entre fechas 1 o individual 0
+     * @param array $search Array con parametros de busqueda
+     * @return int $count Numero de proformas generadas
+     */
+    public function getProformaVersion($mes, $versiones, $year, $dia, $flag, $search) {
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        //echo 'srf: '.$srf;
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        //$criteria->select = "*";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                
+        $count = GestionFinanciamiento::model()->count($criteria);
+        return $count;
+    }
+    
+    public function getTestDriveVersion($mes, $versiones, $year, $dia, $flag, $search) {
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        //$criteria->select = "*";
+        $criteria->alias = 'gt';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gt.test_drive = 1 AND gt.order = 1");
+        if($flag){
+            $criteria->addCondition("DATE(gt.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gt.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        //$criteria->addCondition("DATE(gt.fecha) ".$srf);
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        $count = GestionTestDrive::model()->count($criteria);
+        return $count;
+    }
+    /**
+     * Returns count of sales vehicle's version in date range
+     * @param int $mes
+     * @param atring $versiones
+     * @param int $year
+     * @param string $dia
+     * @return int
+     */
+    public function getVentasVersion($mes, $versiones, $year, $dia, $flag, $search) {
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gd.cierre = 1 AND gf.status = 'ACTIVO'");
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        //$criteria->addCondition("DATE(gf.fecha) ".$srf);
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        $count = GestionFactura::model()->count($criteria);
+        return $count;
+    }
+    
+    private function getBetweenfecha($mes, $year, $dia_inicial, $dia_final) {
+        //echo 'dia inicial: '.$dia_inicial.'<br />';
+        $srf = '';
+        switch ($mes) {
+            case 0:
+                $srf = "BETWEEN '".$year."-01-".$dia_inicial."' AND '".$year."-01-".$dia_final."'";
+                break;
+            case 1:
+                $srf = "BETWEEN '".$year."-02-".$dia_inicial."' AND '".$year."-02-".$dia_final."'";
+                break;
+            case 2:
+                $srf = "BETWEEN '".$year."-03-".$dia_inicial."' AND '".$year."-03-".$dia_final."'";
+                break;
+            case 3:
+                $srf = "BETWEEN '".$year."-04-".$dia_inicial."' AND '".$year."-01-".$dia_final."'";
+                break;
+            case 4:
+                $srf = "BETWEEN '".$year."-05-".$dia_inicial."' AND '".$year."-05-".$dia_final."'";
+                break;
+            case 5:
+                $srf = "BETWEEN '".$year."-06-".$dia_inicial."' AND '".$year."-06-".$dia_final."'";
+                break;
+            case 6:
+                $srf = "BETWEEN '".$year."-07-".$dia_inicial."' AND '".$year."-07-".$dia_final."'";
+                break;
+            case 7:
+                $srf = "BETWEEN '".$year."-08-".$dia_inicial."' AND '".$year."-08-".$dia_final."'";
+                break;
+            case 8:
+                $srf = "BETWEEN '".$year."-09-".$dia_inicial."' AND '".$year."-09-".$dia_final."'";
+                break;
+            case 9:
+                $srf = "BETWEEN '".$year."-10-".$dia_inicial."' AND '".$year."-10-".$dia_final."'";
+                break;
+            case 10:
+                $srf = "BETWEEN '".$year."-11-".$dia_inicial."' AND '".$year."-11-".$dia_final."'";
+                break;
+            case 11:
+                $srf = "BETWEEN '".$year."-12-".$dia_inicial."' AND '".$year."-12-".$dia_final."'";
+                break;
+            default:
+                break;
+        }
+        return $srf;
+    }
+    
+    public function getTasaTD($testdrive,$trafico) {
+        //echo 'testdrive: '.$testdrive.', trafico: '.$trafico.' ';
+        if($trafico != 0){
+            $td = ($testdrive / $trafico) * 100;
+            $td = round($td, 2);
+            return $td . ' %';
+        }else{
+            return '0 %';
+        }
+    }
+    
+    public function getTasaCierre($ventas,$trafico) {
+        if($trafico != 0){
+            $vt = ($ventas / $trafico) * 100;
+            $vt = round($vt, 2);
+            return $vt . ' %';
+        }else{
+            return '0 %';
+        }
+    }
+    public function searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array,$tipo_search) {
+//        echo '<pre>';
+//        print_r($_GET);
+//        echo '</pre>';
+//        echo 'fechapk: '.$fechaPk;
+//        die();
+        //echo 'cargo id: '.$cargo_id;
+        $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+        $dt_hoy = date('Y-m-d'); // Fecha actual
+        $dt_unasemana_antes = date('Y-m-d', strtotime('-1 week')); // Fecha resta 1 semanas
+        $dt_unmes_antes = date('Y-m-d', strtotime('-4 week')); // Fecha resta 1 mes
+
+        $title = '';
+        $data = array();
+        $area_id = (int) Yii::app()->user->getState('area_id');
+        //echo 'area id: '.$area_id;
+        if ($cargo_id != 46)
+            $dealer_id = $this->getDealerId($id_responsable);
+        $criteria = new CDbCriteria;
+        $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+            gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+        $criteria->alias = 'gi';
+        $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+        $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+        $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+        $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+
+        if ($cargo_id == 46) { // super administrador
+            $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+            $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
+        }
+        if ($cargo_id == 69) { // gerente comercial
+            //die('enter ge');
+            if ($get_array == 'bdc' && $tipo_search == '') {
+                $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73)";
+            }
+            if ($get_array == 'bdc' && $tipo_search == 'web') {
+                $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(85,86,70,71) AND u.cargo_adicional IN(85,86)";
+            }
+            if ($get_array == 'exo') {
+                $criteria->join .= "INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
+            }
+            if ($get_array == 'seg' && $tipo_search == '') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->condition = "gr.id_grupo = {$grupo_id}";
+            }
+        }
+        if ($cargo_id == 70) { // jefe de almacen
+            $array_dealers = $this->getResponsablesVariosConc();
+            if(count($array_dealers) == 0){
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+            }
+            $dealerList = implode(', ', $array_dealers);
+            $criteria->condition = "gi.dealer_id IN ({$dealerList})";
+            $criteria->addCondition("(u.cargo_id IN(71,70))");
+            $criteria->addCondition("gd.desiste = 0");
+        }
+        if ($cargo_id == 71) { // asesor de ventas
+            $criteria->condition = "gi.responsable = {$id_responsable}";
+            
+        }
+        if ($cargo_id == 85) { // jefe de ventas externas
+            $array_dealers = $this->getResponsablesVariosConc();
+            if(count($array_dealers) == 0){
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+            }
+            $dealerList = implode(', ', $array_dealers);
+            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+            $criteria->addCondition("gi.bdc = 1");
+            $criteria->addCondition("gd.desiste = 0");
+            $criteria->addCondition("u.cargo_id IN (85,86)");
+        }
+        if ($cargo_id == 86) { // asesor de ventas externas
+            $array_dealers = $this->getResponsablesVariosConc();
+            if(count($array_dealers) == 0){
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+            }
+            $dealerList = implode(', ', $array_dealers);
+            $criteria->condition = "gi.responsable = {$id_responsable}";
+            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+            $criteria->addCondition("gi.bdc = 1");
+        }
+        if ($cargo_id == 73) { // asesor bdc
+            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.bdc = 1";
+            
+        }
+        if ($cargo_id == 75) { // asesor exonerados
+            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.tipo_form_web = 'exonerados'";
+        }
+        if ($cargo_id == 72) { // JEFE BDC EXONERADOS
+            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+            $dealerList = implode(', ', $array_dealers);
+            if ($get_array == 'exo') {
+                $criteria->condition = "gi.tipo_form_web = 'exonerados'";
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                $criteria->addCondition("u.cargo_id = 75");
+            }
+            if ($get_array == 'bdc') {
+                $criteria->condition = "gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})";
+            }
+        }
+
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+            if ($get_array == 'exo') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                
+                $criteria->condition = "u.cargo_id IN (75)";
+            }
+            if ($get_array ==  'bdc' && $tipo_search == '') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->condition = "u.cargo_id IN (72,73)";
+            }
+            if ($get_array ==  'bdc' && $tipo_search == 'web') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->condition = "u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86)";
+            }
+            if ($get_array == 'seg' && $tipo_search == '') {
+                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->condition = "u.cargo_id IN (70,71)";
+            }
+        }
+
+        $con = Yii::app()->db;
+        $search_type = 0;
+
+        //die('search type combined: '.$search_type);
+        // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
+        if (!empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente'])) {
+            $search_type = 1;
+        }
+        // BUSQUEDA POR CATEGORIZACION
+        if (!empty($_GET['GestionDiaria']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general'])) {
+            $search_type = 2;
+        }
+        // BUSQUEDA POR STATUS
+        if (!empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['responsable']) &&
+                empty($_GET['GestionDiaria']['tipo_fecha'])) {
+            $search_type = 3;
+        }
+        // BUSQUEDA POR FECHA
+        if (empty($_GET['GestionDiaria']['status']) && $fechaPk == 0 &&
+                empty($_GET['GestionDiaria']['responsable']) &&
+                !empty($_GET['GestionDiaria']['fecha'])) {
+            $search_type = 4;
+        }
+        // BUSQUEDA POR FUENTE
+        if (!empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                empty($_GET['GestionDiaria']['status']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['tipo_fecha'])) {
+            $search_type = 5;
+        }
+        // BUSQUEDA POR CONCESIONARIO
+        if ($fechaPk == 1 && empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['status']) &&
+                !empty($_GET['GestionDiaria']['grupo']) &&
+                !empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 12;
+        }
+        
+        // BUSQUEDA POR CONCESIONARIO GERENTE COMERCIAL
+        if ($fechaPk == 1 && empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['status']) &&
+                empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['seguimiento']) && 
+                !empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 12;
+        }
+        // BUSQUEDA POR RESPONSABLE
+        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
+                empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo']) &&
+                !empty($_GET['GestionDiaria']['concesionario'])) {
+            $search_type = 13;
+        }
+        // BUSQUEDA POR RESPONSABLE JEFE SUCURSAL
+        if (!empty($_GET['GestionDiaria']['responsable']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
+                empty($_GET['GestionDiaria']['categorizacion']) && empty($_GET['GestionDiaria']['fuente']) && empty($_GET['GestionDiaria']['grupo'])) {
+            $search_type = 6;
+        }
+        // BUSQUEDA POR GRUPO
+        if ($fechaPk == 1 && empty($_GET['GestionDiaria']['general']) &&
+                //empty($_GET['GestionDiaria']['categorizacion']) &&
+                empty($_GET['GestionDiaria']['status']) &&
+                //empty($_GET['GestionDiaria']['tipo_fecha']) &&
+                empty($_GET['GestionDiaria']['fuente']) &&
+                !empty($_GET['GestionDiaria']['grupo']) &&
+                empty($_GET['GestionDiaria']['concesionario']) &&
+                empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 14;
+        }
+
+        // BUSQUEDA CAMPOS VACIOS ASESOR VENTAS
+        if (empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) && empty($_GET['GestionDiaria']['fuente']) &&
+                empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) &&
+                empty($_GET['GestionDiaria']['responsable'])) {
+            $search_type = 16;
+        }
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+            // POR RESPONSABLE
+            if (empty($_GET['GestionDiaria']['general']) && $fechaPk == 1 && empty($_GET['GestionDiaria']['status']) &&
+                    !empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario']) && !empty($_GET['GestionDiaria']['responsable'])) {
+                $search_type = 17;
+            }
+            if (empty($_GET['GestionDiaria']['general']) && $fechaPk == 0 && empty($_GET['GestionDiaria']['status']) && !empty($_GET['GestionDiaria']['fecha']) &&
+                    empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario']) && empty($_GET['GestionDiaria']['responsable'])) {
+                $search_type = 18;
+            }
+        }
+        // BUSQUEDA POR SEGUIMIENTO
+        if (empty($_GET['GestionDiaria']['general']) && empty($_GET['GestionDiaria']['categorizacion']) &&
+                empty($_GET['GestionDiaria']['status']) && $fechaPk = 1 &&
+                !empty($_GET['GestionDiaria']['seguimiento'])) {
+            $search_type = 19;
+        }
+        // END OF SEARCH ONLY
+        // START BUSQUEDAS COMBINADAS-----------------------------------------------------------------
+        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+        $fechaActual = date("Y/m/d");
+        $fechaPk2 = 0;
+        if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
+            $fechaPk2 = 1;
+        }
+        //echo '<br />fechaPk: '.$fechaPk.', fechaPk2: '.$fechaPk2;
+        // STATUS - CATEGORIZACION
+        if ($_GET['busqueda_general'] == 0 && $_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 20;
+        }
+        // STATUS - CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 21;
+        }
+        // CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 22;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 1) {
+            $search_type = 23;
+        }
+        // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 1 && $fechaPk2 == 0) {
+            $search_type = 24;
+        }
+        // CATEGORIZACION - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 0 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 25;
+        }
+        // STATUS - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 26;
+        }
+        // CATEGORIZACION - RESPONSABLE - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 27;
+        }
+        // RESPONSABLE - SEGUIMIENTO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 28;
+        }
+        // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 1) {
+            $search_type = 29;
+        }
+        // BUSQUEDAS PARA GERENTE GENERAL O USUARIO AEKIA=========================================================================================================
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 33;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 40;
+        }
+        
+        // GRUPO - RESPONSABLE
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 33;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE - STATUS
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 34;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE - STATUS -FECHA DE REGISTRO
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 35;
+        }
+        
+        // GRUPO - CONCESIONARIO - STATUS
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 36;
+        }
+        
+        // GRUPO - CONCESIONARIO - STATUS - RESPONSABLE
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 42;
+        }
+        
+        //  FECHA REGISTRO - GRUPO - CONCESIONARIO
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 38;
+        }
+        
+        //  FECHA REGISTRO - GRUPO - CONCESIONARIO AND STATUS
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 43;
+        }
+        
+        //  FECHA REGISTRO - GRUPO - CONCESIONARIO - REPONSABLE
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 39;
+        }
+        
+        // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
+        //echo 'get: '.$_GET['tipo_search'];
+        if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
+            switch ($_GET['tipo_search']) {
+                case 'web':
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    break;
+                case 'exhibicion':
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto_historial = 'exhibicion'");
+                    break;
+                case 'prospeccion':
+                    $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        // END COMBINADAS-----------------------------------------------------------------
+        //$search_type = $this->getSqlCombined($fechaPk);
+        //die('search type: ' . $search_type);
+        switch ($search_type) {
+            case 0:
+                $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
+                $data['title'] = $title;
+                $data['users'] = $users = array();
+                return $data;
+                break;
+            case 1: // BUSQUEDA GENERAL POR NOMBRES, APELLIDOS, CEDULA, ID
+                $count = 0;
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.id = '{$_GET['GestionDiaria']['general']}')", 'AND');
+                
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+
+                $count = count($users);
+                //die('before render nombre:'.$count);
+                if ($count > 0) {
+                    //die('fef');
+                    $title = "Busqueda general por apellidos, nombres, cedula, ruc, pasaporte o id: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                    $data['title'] = $title;
+                    $data['users'] = $users;
+                    $data['pages'] = $pages;
+                    return $data;
+                    //die('after data');-
+                }
+                if ($count == 0) { // no existen resultados para ninguna opcion
+                    $title = "No existen resultados para: <strong>{$_GET['GestionDiaria']['general']}</strong>";
+                    $data['title'] = $title;
+                    $data['users'] = $users = array();
+                    return $data;
+                }
+                break;
+            case 2: // BUSQUEDA POR CATEGORIZACION
+                $sql .= $sql_cargos;
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'");
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 3: // BUSQUEDA POR STATUS
+                $sql .= $sql_cargos;
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                //echo print_r($data['pages']);
+                return $data;
+                break;
+            case 4: // BUSQUEDA POR FECHA
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                //die($sql);
+                /*echo '<pre>';
+                print_r($criteria);
+                echo '</pre>';*/
+                //  die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 5: // BUSQUEDA POR FUENTE
+                
+                $criteria->addCondition(" gn.fuente = '{$_GET['GestionDiaria']['fuente']}'", 'AND');
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['fuente']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 6: // BUSQUEDA POR RESPONSABLE JEFE SUCURSAL
+                
+                if ($cargo_id == 69 && $_GET['GestionDiaria']['responsable'] == 'all') { // GERENTE COMERCIAL
+                    $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}  AND u.cargo_id IN (71,70)";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                    $title = "Busqueda Total Concesionario: <strong>{$nombre_concesionario}</strong>";
+                } else {
+                    $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
+                    $criteria->addCondition("gd.desiste = 0");
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                    $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                    $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                }
+
+                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
+                if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                    $criteria->addCondition('gd.desiste = 0', 'AND');
+                    $criteria->order = "gi.id DESC";
+                }
+                if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                    $criteria->addCondition('gi.bdc = 1', 'AND');
+                    $criteria->order = "gi.id DESC";
+                }
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+                //die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title .= ". <strong> Total: </strong>".(GestionInformacion::model()->count($criteria));
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 7:
+                break;
+            case 12: // BUSQUEDA POR CONCESIONARIO
+                
+                $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                if ($cargo_id == 69 && $get_array == 'seg') { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("u.cargo_id IN (71,70)", 'AND');
+                }
+                if ($cargo_id == 69 && $get_array == 'exo') { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("u.cargo_id IN (75)", 'AND');
+                }
+                if ($cargo_id == 69 && $get_array == 'bdc') { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("u.cargo_id IN (72,73)", 'AND');
+                }
+                if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                }
+                if ($cargo_id == 61 && $get_array == 'seg') { // gerente comercial
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                }
+                if ($cargo_id == 61 && $get_array == 'web') { // jefe de almacen
+                    $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("u.cargo_id IN (86)", 'AND');
+                }
+                if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'");
+                }
+                
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                //die($sql);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 13: // BUSQUEDA POR RESPONSABLE
+                
+                if ($cargo_id == 70) { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$dealer_id}";
+                } else {
+                    $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                }
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 14: // BUSQUEDA POR GRUPO SUPER ADMINISTRADOR
+                
+                //$criteria->join .= " usuarios u ON u.id = gi.responsable ";
+                $criteria->condition = "gd.desiste = 0";
+
+                if (!empty($_GET['GestionDiaria']['grupo']) && !empty($_GET['GestionDiaria']['concesionario'])) {
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
+                    $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                    $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
+                }
+                if (!empty($_GET['GestionDiaria']['grupo']) && empty($_GET['GestionDiaria']['concesionario'])) {
+                    $criteria->addCondition("u.grupo_id = {$_GET['GestionDiaria']['grupo']}", 'AND');
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
+                    $nombre_grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                    $title = "Busqueda por Grupo: <strong>{$nombre_grupo}</strong>";
+                }
+                if (!empty($_GET['GestionDiaria']['responsable']) && ($_GET['GestionDiaria']['responsable'] != 'all')) {
+                    $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}", 'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
+                    $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                    $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                }
+                if (!empty($_GET['GestionDiaria']['responsable']) && ($_GET['GestionDiaria']['responsable'] == 'all')) {
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                    $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
+                    $title = "Busqueda por Concesionario Total: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                //die($sql);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 15: // BUSQUEDA POR CAMPOS VACIOS
+                $criteria = new CDbCriteria;
+                $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+                $criteria->alias = 'gi';
+                $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+                $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+
+                if ($cargo_id == 70) {
+                    $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                }
+                if ($cargo_id = 71) {
+                    $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                }
+                if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
+                    $criteria->join .= ' gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 ";
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                }
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 16:
+                $criteria = new CDbCriteria;
+                $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+                $criteria->alias = 'gi';
+                $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+                $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                //die('get array: '.$get_array);
+                if ($cargo_id == 46) { // super administrador
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $title = "Busqueda Total País";
+                }
+                if ($cargo_id == 69 && $get_array == '') { // gerente comercial
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'bdc') { // gerente comercial
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (72,73)', 'AND');
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'exo') { // gerente comercial
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (75)', 'AND');
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'seg') { // gerente comercial
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (71)', 'AND');
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 70) { // jefe de almacen
+                    $criteria->condition = "gi.dealer_id = {$dealer_id}";
+                    if($tipo_search == ''){
+                        $criteria->addCondition("gi.bdc = 0");
+                        $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                    }
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
+                    $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
+                }
+                if ($cargo_id == 72) { // jefe bdc
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    if ($_GET['GestionDiaria']['tipo'] == 'exo') {
+                        $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable 
+                                 WHERE gi.tipo_form_web = 'exonerados' AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 75 ";
+                    }
+                    if ($_GET['GestionDiaria']['tipo'] == 'bdc') {
+                        $sql .= " INNER JOIN usuarios u ON u.id = gi.responsable 
+                                WHERE gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND u.cargo_id = 73 ";
+                    }
+
+                    $title = "Busqueda por Total BDC : <strong>{$dealer_id}</strong>";
+                }
+                if ($cargo_id == 71) { // asesor de ventas
+                    $criteria->condition = "gi.responsable = {$id_responsable}";
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                }
+                if ($cargo_id == 73) { // asesor bdc
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->condition = "gi.bdc = 1";
+                    $criteria->addCondition("gi.dealer_id IN ({$dealerList})", 'AND');
+                    $criteria->addCondition("gi.responsable = {$id_responsable}", 'AND');
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                }
+                if ($cargo_id == 75) { // asesor exonerados
+                    $array_dealers = $this->getDealerGrupoConc($grupo_id);
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->condition = "gi.tipo_form_web = 'exonerados'";
+                    $criteria->addCondition("gi.dealer_id IN ($dealerList)", 'AND');
+                    $criteria->addCondition("gi.responsable = {$id_responsable}", 'AND');
+                    $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
+                }
+                if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    if($tipo_search == ''){
+                        $criteria->addCondition("gi.bdc = 0");
+                        $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                    }
+                    if($tipo_search == 'web'){
+                        $criteria->addCondition("gd.fuente_contacto = 'web'");
+                    }
+                    if($tipo_search == 'pro'){
+                        $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
+                    }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
+                    $title = "Busqueda por Total País";
+                }
+                if($cargo_id == 85){ // JEFE DE VENTAS WEB
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (86)', 'AND');
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                //die($sql);
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 17: // BUSQUEDA POR RESPONSABLE AEKIA
+                $criteria = new CDbCriteria;
+                $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
+                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+                $criteria->alias = 'gi';
+                $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
+                $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
+                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+                if ($_GET['GestionDiaria']['responsable'] == 'all') {
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                }
+                if ($tipo_search == 'web') {
+                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                else{
+                    $criteria->condition = "gi.responsable = '{$_GET['GestionDiaria']['responsable']}'";
+                }
+                if ($get_array == ''){
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                if($_GET['GestionDiaria']['responsable'] != 'all'){
+                    $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                }
+                $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
+                //die($sql);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+
+            case 18: // BUSQUEDA POR FECHA
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                
+                $criteria->addCondition("gd.fecha BETWEEN '{$params1}' AND '{$params2}'");
+                $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 19: // SEARCH BY SEGUIMIENTO
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title = "Busqueda por Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title = "Busqueda por Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title = "Busqueda por Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+
+                //die('fecha actual: '.$fecha_actual);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 20: // SEARCH BY CATEGORIZACION AND STATUS
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 21: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+
+            case 22: // SEARCH BY CATEGORIZACION AND RESPONSABLE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong> y Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 23: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 24: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO WITH RANGE DATE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 25: // SEARCH BY CATEGORIZACION AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 26: // SEARCH BY STATUS AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 27: // SEARCH BY CATEGORIZACION, RESPONSABLE AND REGISTER DATE
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 28: // SEARCH BY RESPONSABLE AND SEGUIMIENTO
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 29: // SEARCH BY RESPONSABLE, SEGUIMIENTO AND DATE RANGE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 33: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO Y RESPONSABLE
+                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 34: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS Y RESPONSABLE
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 35: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS, RESPONSABLE AND FECHA DE REGISTRO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 36: // SEARCH BY GRUPO , CONCESIONARIO AND STATUS
+                // SEARCH BY ONE MONTH BESIDE
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
+                $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 38: // SEARCH BY FECHA DE REGISTRO, GRUPO AND CONCESIONARIO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 39: // SEARCH BY FECHA DE REGISTRO, GRUPO, CONCESIONARIO AND RESPONSABLE
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 40: // SEARCH BY BUSQUEDA GENERAL, GRUPO AND CONCESIONARIO
+                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 41: // SEARCH BY BUSQUEDA GENERAL AND GRUPO
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("u.grupo_id = {$_GET['GestionDiaria']['grupo']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Grupo: <strong>{$grupo}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 42: // SEARCH BY GRUPO , CONCESIONARIO, STATUS AND RESPONSABLE
+                // SEARCH BY ONE MONTH BESIDE
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break; 
+            case 43: // SEARCH BY STATUS, FECHA DE REGISTRO, GRUPO AND CONCESIONARIO
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                
+                $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+//                echo '<pre>';s
+//                print_r($criteria);
+//                echo '</pre>';
+                $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            default:
+                break;
+        }
+    }
 
 }
