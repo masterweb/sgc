@@ -33,8 +33,8 @@
                     <tr><td id="mi_a3">RESPUESTAS AUTOMÁTICAS</td>
                         <td id="mi_b3"><?= $varView['respuestas_enviadas_actual']; ?></td>
                         <td id="mi_c3"><?= $varView['respuestas_enviadas_anterior']; ?></td>
-                        <td id="mi_d3"><?= $varView['var_pr']?></td>
-                        <td id="mi_e3"><?= $varView['dif_pr']?></td>
+                        <td id="mi_d3"><?= $varView['var_raa']?></td>
+                        <td id="mi_e3"><?= $varView['dif_rac']?></td>
                     </tr>
                     <tr><td id="mi_a4">CITAS</td>
                         <td id="mi_b4"><?= $varView['trafico_mes_actual']; ?></td>
