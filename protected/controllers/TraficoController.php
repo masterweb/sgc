@@ -142,6 +142,23 @@ class TraficoController extends Controller {
                 $flag_search = 6;
                 exit();
             }
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1) {
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $this->render('inicio', array('vartrf' => $vartrf));
+                $flag_search = 3;
+                exit();
+            }
             
             //$posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'seg', '');
         }

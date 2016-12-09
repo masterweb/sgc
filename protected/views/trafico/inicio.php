@@ -71,22 +71,25 @@ $(document).ready(function() {
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getGrupos"); ?>',
             beforeSend: function (xhr) {
-                $('#info3').show();  // #info must be defined somehwere
+                $('#info5').show();  // #info must be defined somehwere
             },
             type: 'POST', dataType: 'json', data: {id: value},
             success: function (data) {
+                $('#info5').hide();
                 $('#trafico_grupo').html(data.data);
             }
         });
     });
     $('#trafico_grupo').change(function(){
         var value = $(this).attr('value');
+        var provincia = $('#trafico_provincia').val();
+        //console.log(provincia);
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
             beforeSend: function (xhr) {
                 $('#info3').show();  // #info must be defined somehwere
             },
-            type: 'POST', data: {id: value},
+            type: 'POST', data: {id: value,provincia: provincia},
             success: function (data) { $('#trafico_concesionario').html(data);}
         });
     });
@@ -318,6 +321,7 @@ $where = $vartrf['search']['where'];
                     </div>
                     <div class="col-md-6">
                         <label for="">Grupo</label>
+                        <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                         <select name="GestionDiaria[grupo]" id="trafico_grupo" class="form-control">
                             <option value="">--Seleccione Grupo--</option>
                             <option value="6">AUTHESA</option>
@@ -349,12 +353,12 @@ $where = $vartrf['search']['where'];
                     <div class="col-md-6">
                         <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
                         <button type="button" class="btn btn-warning" aria-label="Close" onclick="tabletoExcel('main_info_1', 'main_info_1');">Descargar Excel</button>
-                        <input type="hidden" name="fecha1" id="fecha1" value="<?php echo isset($_GET["fecha1"]) ? $_GET["fecha1"] : "0" ?>" />
-                        <input type="hidden" name="fecha2" id="fecha2" value="<?php echo isset($_GET["fecha2"]) ? $_GET["fecha2"] : "0" ?>" />
-                        <input type="hidden" name="provincia" id="provincia" value="<?php echo isset($_GET["provincia"]) ? $_GET["provincia"] : "0" ?>" />
-                        <input type="hidden" name="grupo" id="grupo" value="<?php echo isset($_GET["grupo"]) ? $_GET["grupo"] : "0" ?>" />
-                        <input type="hidden" name="concesionario" id="concesionario" value="<?php echo isset($_GET["concesionario"]) ? $_GET["concesionario"] : "0" ?>" />
-                        <input type="hidden" name="responsable" id="responsable" value="<?php echo isset($_GET["responsable"]) ? $_GET["responsable"] : "0" ?>" />
+                        <input type="hidden" name="fecha1" id="fecha1" value="0" />
+                        <input type="hidden" name="fecha2" id="fecha2" value="0" />
+                        <input type="hidden" name="provincia" id="provincia" value="0" />
+                        <input type="hidden" name="grupo" id="grupo" value="0" />
+                        <input type="hidden" name="concesionario" id="concesionario" value="0" />
+                        <input type="hidden" name="responsable" id="responsable" value="0" />
                     </div>
                 </div>
                 <?php $this->endWidget(); ?>

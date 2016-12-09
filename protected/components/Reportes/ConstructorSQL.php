@@ -6,7 +6,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-//        echo '<pre>'.$sql_cons.'</pre>';
+        echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -112,6 +112,7 @@ class ConstructorSQL {
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
                 " AND (DATE(gi.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExt, $group_ext
         );
+        //echo 'traf mes anterior: '.$trafico_mes_anterior[0]['COUNT(*)'];
         $trafico_mes_anterior = $trafico_mes_anterior[0]['COUNT(*)'];
         $retorno[] = $trafico_mes_anterior;
 

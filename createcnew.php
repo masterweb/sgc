@@ -9,10 +9,13 @@ $params = array(
     "xmlerror" => '',
 );
 //echo "<pre>".htmlentities(print_r($params,true))."</pre>";
-
+echo '<h3>NUMERO DE CHASIS O SERIE: 1791279743001</h3>';
 $client = new SoapClient(@$uriservicio, array('trace' => 1));
-$response = $client->pws01_01_cl('','KNABE511AGT206338');
-//$response = $client->pws01_01_cl('1702509751', '');
+//$response = $client->pws01_01_cl('','8LGJE552XHE027244');
+$response = $client->pws01_01_cl('1791279743001', '');//cliente jahaira rosado
+//$response = $client->pws01_01_cl('1716471816', '');// david
+//$response = $client->pws01_01_cl('1714400981', '');// verito 
+//$response = $client->pws01_01_cl('0401235494', '');// cliente 
 //$response = $client->pws01_01_cl('0992786906001', '');
 //$cliente= $response->RecuperarDatosIndividualResult->codigo;
 echo "<pre>" . htmlentities(print_r($response, true)) . "</pre>";

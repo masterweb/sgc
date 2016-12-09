@@ -94,8 +94,8 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=callcenter',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => 'k143c89?4Fg&2',
+            'username' => 'kia',
+            'password' => 'kia',
 //            'username' => 'kia1234',
 //            'password' => 'kia1234',
 //            'password' => '',

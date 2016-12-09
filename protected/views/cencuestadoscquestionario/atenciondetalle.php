@@ -18,6 +18,7 @@ $case = ''; // para busqueda por defecto
 //echo 'id call center: '.Yii::app()->user->getId().'<br>';
 //echo 'rol: '.Yii::app()->user->getState('roles').'<br>';
 $rol = Yii::app()->user->getState('roles');
+
 ?>
 <script type="text/javascript">
     var abrir=0;

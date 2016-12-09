@@ -274,7 +274,7 @@ class CencuestadoscquestionarioController extends Controller {
 						INNER JOIN dealers d ON d.id = gi.dealer_id 
 						INNER JOIN versiones v ON v.id_versiones = gv.version 
 						WHERE gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 
 						GROUP BY gi.cedula, gi.ruc, gi.pasaporte";
                 $totalUsuariosExistentes = Yii::app()->db->createCommand($sql)->queryAll();
                 break;
@@ -328,38 +328,38 @@ class CencuestadoscquestionarioController extends Controller {
                 if (!empty($ciudad) && $ciudad > 0) {
                      if (empty($where)) {
                         $where .= "WHERE gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
                     } else {
                         $where .= " and gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.ciudad_conc =" . $ciudad;
                     }
                 }
 
                 if (!empty($concesionario) && $concesionario > 0) {
                    if (empty($where)) {
                         $where .= "WHERE gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1  and gi.dealer_id =" . $concesionario;
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1  and gi.dealer_id =" . $concesionario;
                     } else {
                         $where .= " and gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 and gi.dealer_id =" . $concesionario;
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 and gi.dealer_id =" . $concesionario;
                     }
                 }
 
                 if (!empty($desde) && !empty($hasta)) {
                    if (empty($where)) {
-						if($desde < '2016-07-27'){
-							$desde = '2016-07-27';
+						if($desde < '2016-08-01'){
+							$desde = '2016-08-01';
 						}
 						$where .= "WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
 					} else {
-						if($desde < '2016-07-27'){
-							$desde = '2016-07-27';
+						if($desde < '2016-08-01'){
+							$desde = '2016-08-01';
 						}
 						$where .= " and gt.test_drive = 1 AND (DATE(gt.fecha) >= '".$desde."' AND DATE(gt.fecha) <= '".$hasta."') AND gt.order = 1";
 					}
                 }
                 if(empty($where)){
-                   $where = " WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1";
+                   $where = " WHERE gt.test_drive = 1 AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1";
                 }
                $sql = "SELECT gi.id, gi.cedula, gt.fecha, gi.nombres, gi.apellidos, gi.email, gi.cedula, gi.ruc, gi.pasaporte, 
 					gi.celular,gi.ciudad_conc, gi.telefono_casa, d.`name`, v.nombre_version FROM gestion_test_drive gt 
@@ -810,7 +810,7 @@ class CencuestadoscquestionarioController extends Controller {
 						INNER JOIN dealers d ON d.id = gi.dealer_id 
 						INNER JOIN versiones v ON v.id_versiones = gv.version 
 						WHERE gt.test_drive = 1 
-						AND (DATE(gt.fecha) >= '2016-07-27') AND gt.order = 1 
+						AND (DATE(gt.fecha) >= '2016-08-01') AND gt.order = 1 
 						GROUP BY gi.cedula, gi.ruc, gi.pasaporte
 												";
                 $persona = Yii::app()->db->createCommand($sql)->queryAll();

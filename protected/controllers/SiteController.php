@@ -3292,9 +3292,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionGetConcesionarios() {
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $tipo_seg = isset($_POST["tipo_seg"]) ? $_POST["tipo_seg"] : "";
+        $provincia = isset($_POST["provincia"]) ? $_POST["provincia"] : "";
         //if (empty($tipo_seg)) {
             $criteria = new CDbCriteria;
-            $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id}", 'order' => 'nombre asc'));
+            if(empty($provincia)){
+                $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id}", 'order' => 'nombre asc'));
+            }else{
+                $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id} AND provincia = {$provincia}", 'order' => 'nombre asc'));
+            }
+            
             $data = '<option value="">--Seleccione concesionario--</option>';
             foreach ($conc as $ciudad) {
                 $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';

@@ -89,7 +89,7 @@
             <div class="col-sm-10">
                 <?php //echo CHtml::dropDownList('modelos', 'modelos',CHtml::listData(Modelosposventa::model()->findAll(array("order"=>"ordenar ASC")),'id', 'descripcion'),array('empty'=>'-Todos-','multiple' => 'multiple')); ?>
                 <select id="modelos" name="modelos[]" multiple="multiple">
-                    <option value="">-Todos-</option>
+                    
                     <?php
                     foreach ($models as $item) {
                         $selected = "";
