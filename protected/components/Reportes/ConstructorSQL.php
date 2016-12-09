@@ -6,7 +6,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-        echo '<pre>'.$sql_cons.'</pre>';
+//        echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -63,8 +63,8 @@ class ConstructorSQL {
         $whereExh = "";
         $whereExt = "";
         if ($tipo == 'exhibicion') {
-            $fuente_contacto = "gd.fuente_contacto = 'exhibicion'";
-            $whereExh = " AND gd.fuente_contacto = 'exhibicion' ";
+            $fuente_contacto = "gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'";
+            $whereExh = " AND (gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia') ";
         }
         if ($tipo == 'externas') {
             $innerExternas = " INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id ";
