@@ -3193,7 +3193,7 @@ class Controller extends CController {
     }
     
     public function getModelosTrafico() {
-        $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO'", 'order' => "nombre_modelo ASC", 'order' => "orden"));
+        $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO' AND categoria = 1", 'order' => "nombre_modelo ASC", 'order' => "orden"));
         return $res;
     }
     
@@ -3844,9 +3844,9 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
-                /*echo '<pre>';
-                print_r($criteria);
-                echo '</pre>';*/
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
                 //  die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -4850,6 +4850,39 @@ class Controller extends CController {
             default:
                 break;
         }
+    }
+    
+    private static function setStatusCriteria($status){
+        $condition = "";
+        switch ($status) {
+            case 'Cierre':
+                $condition = "gd.paso = 9 OR gd.cierre = 1";
+                break;
+            case 'Desiste':
+                $condition = "gd.desiste = 1";
+                break;
+            case 'Entrega':
+                $condition = "gd.entrega = 1 AND gd.paso = 9";
+                break;
+            case 'PrimeraVisita':
+                $condition = "gd.paso = '1-2'";
+                break;
+            case 'Seguimiento':
+                $condition = "gd.seguimiento = 1";
+                break;
+            case 'SeguimientoEntrega':
+                $condition = "gd.seguimiento_entrega = 1";
+                break;
+            case 'Vendido':
+                $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
+                break;
+            case 'Web':
+                $condition = "gd.medio_contacto = 'web' AND gd.status = 1";
+                break;
+            default:
+                break;
+        }
+        return $condition;        
     }
 
 }
