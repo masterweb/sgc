@@ -97,18 +97,18 @@ class ConstructorSQL {
         $retorno = array();
 
         // BUSQUEDA POR TRAFICO - PROSPECCION
-        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . '' . ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id' . ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ", $group_ext);
         $prospeccion_mes_anterior = $prospeccion_mes_anterior[0]['COUNT(*)'];
         $retorno[] = $prospeccion_mes_anterior;
-        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . '' . ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id' . ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ", $group_ext);
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(*)'];
         $retorno[] = $prospeccion_mes_actual;
 
         //BUSQUEDA POR TRAFICO O CITAS WEB       
         $trafico_mes_anterior = $this->SQLconstructor(
-                'COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . 
+                'COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id'.
                 ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
                 " AND (DATE(gi.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExt, $group_ext
         );
@@ -117,7 +117,7 @@ class ConstructorSQL {
         $retorno[] = $trafico_mes_anterior;
 
         $trafico_mes_actual = $this->SQLconstructor(
-                'COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . 
+                'COUNT(*) ' . $select_ext, 'gestion_informacion gi', $join_ext . ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id'.
                 ' INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
                 " AND (DATE(gi.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExt, $group_ext
         );
