@@ -1739,7 +1739,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         );
         // Se combinan las celdas A1 hasta F1, para colocar ahí el titulo del reporte
         $objPHPExcel->setActiveSheetIndex(0)
-                ->mergeCells('A1:J1');
+                ->mergeCells('A1:N1');
         // Add some data
         $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('A1', $tituloReporte) // Titulo del reporte
@@ -1757,9 +1757,10 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('L2', 'Modelo')
                 ->setCellValue('M2', 'Versiones')
                 ->setCellValue('N2', 'Test Drive')
-                ->setCellValue('O2', 'Proximo Seguimiento')
-                ->setCellValue('P2', 'Categorización')
-                ->setCellValue('Q2', 'Fuente');
+                ->setCellValue('O2', 'Proximo Seguimiento 1')
+                ->setCellValue('P2', 'Proximo Seguimiento 2')
+                ->setCellValue('Q2', 'Categorización')
+                ->setCellValue('R2', 'Fuente');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1793,6 +1794,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     if($vc['test_drive'] == 1){$td_si .= 'Si-';}else{$td_no = 'No';}
                 }
             }
+            $proxseg = explode(' ',$row['proximo_seguimiento']);
             $modeloVehiculo = substr($modeloVehiculo, 0, -1);
             $versionVehiculo = substr($versionVehiculo, 0, -1);
             //$td_si = substr($td_si, 0, -1);
@@ -1816,8 +1818,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('M' . $i, $versionVehiculo)
                     ->setCellValue('N' . $i, $td_si)
                     ->setCellValue('O' . $i, $row['proximo_seguimiento'])
-                    ->setCellValue('P' . $i, $row['categorizacion'])
-                    ->setCellValue('Q' . $i, $row['fuente']);
+                    ->setCellValue('P' . $i, $proxseg[0])
+                    ->setCellValue('Q' . $i, $row['categorizacion'])
+                    ->setCellValue('R' . $i, $row['fuente']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1852,6 +1855,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $objPHPExcel->getActiveSheet()->getColumnDimension("O")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("P")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("Q")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("R")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
@@ -5756,37 +5760,6 @@ GROUP BY gv.id_informacion";
         }
     }
 
-    private static function setStatusCriteria($status){
-        $condition = "";
-        switch ($status) {
-            case 'Cierre':
-                $condition = "gd.paso = 9 OR gd.cierre = 1";
-                break;
-            case 'Desiste':
-                $condition = "gd.desiste = 1";
-                break;
-            case 'Entrega':
-                $condition = "gd.entrega = 1 AND gd.paso = 9";
-                break;
-            case 'PrimeraVisita':
-                $condition = "gd.paso = '1-2'";
-                break;
-            case 'Seguimiento':
-                $condition = "gd.seguimiento = 1";
-                break;
-            case 'SeguimientoEntrega':
-                $condition = "gd.seguimiento_entrega = 1";
-                break;
-            case 'Vendido':
-                $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
-                break;
-            case 'Web':
-                $condition = "gd.medio_contacto = 'web' AND gd.status = 1";
-                break;
-            default:
-                break;
-        }
-        return $condition;        
-    }
+    
 
 }
