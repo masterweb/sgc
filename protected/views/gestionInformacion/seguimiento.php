@@ -838,6 +838,11 @@ $count = count($users);
                                         <button type="button" class="btn btn-xs btn-warning">Web</button>
                                     <?php endif; ?>
                                     <?php
+                                    if ($medio_contacto == 'exhquk' && $c['tipo_form_web'] == ''):
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-warning">WebQ</button>
+                                    <?php endif; ?>
+                                    <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">VE</button>
@@ -1015,7 +1020,7 @@ $count = count($users);
                                     <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'exhibicion'){ ?> 
+                                    <?php if($fuente_contacto == 'exhibicion' || $fuente_contacto == 'exhibicion quierounkia'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?>   
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
