@@ -3483,7 +3483,7 @@ class Controller extends CController {
             $dealerList = implode(', ', $array_dealers);
             $criteria->condition = "gi.dealer_id IN ({$dealerList})";
             $criteria->addCondition("(u.cargo_id IN(71,70))");
-            $criteria->addCondition("gd.desiste = 0");
+            //$criteria->addCondition("gd.desiste = 0");
         }
         if ($cargo_id == 71) { // asesor de ventas
             $criteria->condition = "gi.responsable = {$id_responsable}";
