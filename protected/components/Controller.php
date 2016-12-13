@@ -3413,6 +3413,16 @@ class Controller extends CController {
             return '0 %';
         }
     }
+    
+    public function getPorcentaje($trafico_modelo, $trafico_total) {
+        //die('trafico modelo: '.$trafico_modelo.', trafico total: '.$trafico_total);
+        if($trafico_total != 0){
+            $vt = ($trafico_modelo / $trafico_total) * 100;
+            return $vt ;
+        }else{
+            return 0;
+        }
+    }
     public function searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array,$tipo_search) {
 //        echo '<pre>';
 //        print_r($_GET);
@@ -3759,7 +3769,7 @@ class Controller extends CController {
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
-        //die('search type: ' . $search_type);
+        //echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -4879,10 +4889,58 @@ class Controller extends CController {
             case 'Web':
                 $condition = "gd.medio_contacto = 'web' AND gd.status = 1";
                 break;
+            case 'qk':
+                $condition = "gd.medio_contacto = 'exhquk' AND gd.status = 1";
+                break;
             default:
                 break;
         }
         return $condition;        
+    }
+    
+    public function getNombreMesGraficas($mes_actual) {
+        $fmes = '';
+        switch ($mes_actual) {
+            case 0:
+                $fmes = 'ene';
+                break;
+            case 1:
+                $fmes = 'feb';
+                break;
+            case 2:
+                $fmes = 'mar';
+                break;
+            case 3:
+                $fmes = 'abr';
+                break;
+            case 4:
+                $fmes = 'may';
+                break;
+            case 5:
+                $fmes = 'jun';
+                break;
+            case 6:
+                $fmes = 'jul';
+                break;
+            case 7:
+                $fmes = 'ago';
+                break;
+            case 8:
+                $fmes = 'sep';
+                break;
+            case 9:
+                $fmes = 'oct';
+                break;
+            case 10:
+                $fmes = 'nov';
+                break;
+            case 11:
+                $fmes = 'dic';
+                break;
+            default:
+                break;
+        }
+        return $fmes;
     }
 
 }

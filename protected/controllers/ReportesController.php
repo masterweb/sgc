@@ -555,6 +555,9 @@ class ReportesController extends Controller {
         $varView['var_prp'] = $GF->DIFconstructor($varView['prospeccion_mes_actual'], $varView['prospeccion_mes_anterior'], 'var');
         $varView['dif_prp'] = $GF->DIFconstructor($varView['prospeccion_mes_actual'], $varView['prospeccion_mes_anterior'], 'dif');
         
+        $varView['var_raa'] = $GF->DIFconstructor($varView['respuestas_enviadas_actual'], $varView['respuestas_enviadas_anterior'], 'var');
+        $varView['dif_rac'] = $GF->DIFconstructor($varView['respuestas_enviadas_actual'], $varView['respuestas_enviadas_anterior'], 'dif');
+        
         $varView['var_tr'] = $GF->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'var');
         $varView['dif_tr'] = $GF->DIFconstructor($varView['trafico_mes_actual'], $varView['trafico_mes_anterior'], 'dif');
 
