@@ -94,7 +94,7 @@ class ReportesController extends Controller {
 //        die();
 
         $SQLmodelos = '';
-        $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        $INERmodelos = '';
         $INERmodelos_td = '';
         $varView['triger'] = 0;
         foreach ($lista_datos as $key => $value) {
@@ -110,7 +110,7 @@ class ReportesController extends Controller {
                 }
                 $id_carros_nv[$key] = implode(', ', $carros);
                 $SQLmodelos[$key] = $separ . " gv." . $campo_car . " IN (" . $id_carros_nv[$key] . ")" . $separ_fin . ' ';
-                //$INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERmodelos_td = ' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
                 $varView['triger'] = 1;
             }
@@ -169,6 +169,7 @@ class ReportesController extends Controller {
 
                 $traficoAcumulado = new traficoAcumulado;
                 $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
+                $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
