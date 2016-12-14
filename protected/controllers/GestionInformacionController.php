@@ -743,7 +743,7 @@ class GestionInformacionController extends Controller {
             //die('enter default');
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -791,7 +791,7 @@ class GestionInformacionController extends Controller {
                     // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -805,7 +805,7 @@ class GestionInformacionController extends Controller {
                     // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -843,7 +843,7 @@ class GestionInformacionController extends Controller {
                 if ($cargo_id == 70) { // jefe de almacen
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -857,7 +857,7 @@ class GestionInformacionController extends Controller {
                 if ($cargo_id == 71) { // asesor de ventas
                     $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -890,7 +890,7 @@ class GestionInformacionController extends Controller {
                 $search = 3;
                 /* BUSQUEDA POR NOMBRES, APELLIDOS, CEDULA, ID */
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -934,7 +934,7 @@ class GestionInformacionController extends Controller {
                 //echo('enter fuente');  
                 $search = 4;
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
 FROM gestion_diaria gd 
 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
@@ -960,7 +960,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 //echo('enter fuente asesor'); 
                 $search = 5;
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                 FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion 
@@ -989,7 +989,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
                 //echo('enter categorizacion');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -1020,7 +1020,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             if (!empty($_GET['GestionDiaria2']['categorizacion']) && $fechaPk == 1 && $cargo_id == 69 && empty($_GET['GestionDiaria2']['responsable']) && empty($_GET['GestionDiaria2']['tipo_fecha']) && empty($_GET['GestionDiaria2']['general'])) {
                 //echo('enter cat');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                     FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion
                 INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -1048,7 +1048,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     empty($_GET['GestionDiaria2']['tipo_fecha'])) {
                 //echo('enter to status');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -1111,7 +1111,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params2 = trim($params[1]);
                 //die('after params');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -1151,7 +1151,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $search = 10;
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc,
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -1191,7 +1191,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $search = 11;
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -1228,7 +1228,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp,gi.dealer_id, gi.tipo_form_web,gi.fecha, gi.bdc, 
-            gd.*, gc.preg7 as categorizacion, gn.fuente 
+            gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 INNER JOIN gestion_consulta gc ON gi.id = gc.id_informacion
@@ -1762,7 +1762,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('P2', 'Proximo Seguimiento 2')
                 ->setCellValue('Q2', 'Categorización')
                 ->setCellValue('R2', 'Fuente')
-                ->setCellValue('S2', 'Fuente Historial');
+                ->setCellValue('S2', 'Fuente Historial')
+                ->setCellValue('T2', 'Desiste');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1823,7 +1824,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('P' . $i, $proxseg[0])
                     ->setCellValue('Q' . $i, $row['categorizacion'])
                     ->setCellValue('R' . $i, $row['fuente'])
-                    ->setCellValue('S' . $i, $row['fuente_contacto_historial']);
+                    ->setCellValue('S' . $i, $row['fuente_contacto_historial'])
+                    ->setCellValue('T' . $i, $row['desiste']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1860,13 +1862,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $objPHPExcel->getActiveSheet()->getColumnDimension("Q")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("R")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("S")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("T")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($estiloTituloReporte);
-        $objPHPExcel->getActiveSheet()->getStyle('A2:S2')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:T2')->applyFromArray($estiloTituloColumnas);
 
         // Inmovilizar paneles
         $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
@@ -2686,7 +2689,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die($dealer_id);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -2705,7 +2708,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             //die($dealer_id);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion ";
@@ -2724,7 +2727,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 70) { // JEFE DE SUCURSAL
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -2736,7 +2739,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             $dealerList = implode(', ', $array_dealers);
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -2747,7 +2750,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         if ($cargo_id == 46) { // SUPER ADMINISTRADOR
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc,gi.tipo_ex, 
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -2759,7 +2762,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.tipo_ex,
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
@@ -2769,7 +2772,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         } if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable as id_resp,gi.tipo_form_web,gi.fecha, gi.bdc, gi.tipo_ex,
-            gd.*, gn.fuente 
+            gd.*, gd.fuente_contacto as fuente, gd.fuente_contacto_historial, gd.desiste 
             FROM gestion_diaria gd 
                 INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                 LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
