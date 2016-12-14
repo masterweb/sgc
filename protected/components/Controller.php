@@ -1872,6 +1872,15 @@ class Controller extends CController {
         $ent = GestionFinanciamiento::model()->find($criteria);
         return $ent->id_pdf;
     }
+    
+    public function getSolicitudCliente($id_informacion, $id_vehiculo) {
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_vehiculo = {$id_vehiculo} AND id_informacion = {$id_informacion}",
+            'order' => 'id DESC'
+        ));
+        $ent = GestionProforma::model()->find($criteria);
+        return $ent->id;
+    }
 
     public function getHojaEntregaCliente($id_informacion, $id_vehiculo) {
         //die('id informacion: '.$id_vehiculo);

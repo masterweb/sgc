@@ -3729,16 +3729,17 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionCotizacion($id_informacion, $id_vehiculo) {
+        //die('enter solicitud credito');
         $this->layout = '//layouts/call-print';
-        //die('enter prof');
         $con = Yii::app()->db;
-        $num_solicitud = $this->getLastSolicitudCotizacion();
-        //die('num solicitud:'.$num_solicitud);
-        $hoja_solicitud = new GestionSolicitud;
-        $hoja_solicitud->id_vehiculo = $id_vehiculo;
-        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-        $hoja_solicitud->fecha = date("Y-m-d H:i:s");
-        $hoja_solicitud->save();
+        
+        $num_solicitud = $this->getSolicitudCliente($id_informacion, $id_vehiculo);
+        //die('num proforma: '.$num_proforma);
+//        $hoja_solicitud = new GestionSolicitud;
+//        $hoja_solicitud->id_vehiculo = $id_vehiculo;
+//        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+//        $hoja_solicitud->fecha = date("Y-m-d H:i:s");
+//        $hoja_solicitud->save();
 
 
 
