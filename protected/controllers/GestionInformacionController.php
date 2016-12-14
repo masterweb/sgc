@@ -1111,7 +1111,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $params2 = trim($params[1]);
                 //die('after params');
                 $sql = "SELECT gi.id as id_info, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, gi.tipo_form_web,gi.fecha, gi.bdc,
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gn.fuente 
+                    gi.ruc,gi.pasaporte,gi.email, gi.responsable as resp, gi.dealer_id, gd.*, gc.preg7 as categorizacion, gd.fuente_contacto as fuente, gd.fuente_contacto_historial 
                     FROM gestion_diaria gd 
                         INNER JOIN gestion_informacion gi ON gi.id = gd.id_informacion 
                         INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
@@ -1124,12 +1124,12 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     }else{
                         $sql .= " WHERE gi.dealer_id = {$dealer_id} AND (";
                     }
-                    $sql .= " u.cargo_id IN(70,71) AND gd.desiste = 0 AND ";
+                    $sql .= " u.cargo_id IN(70,71) AND ";
                 } else {
                     $sql .= " WHERE gi.responsable = {$id_responsable} AND";
                 }
-
-                $sql .= " gd.fecha BETWEEN '{$params1}' AND '{$params2}') GROUP BY gi.id ORDER BY gi.fecha DESC";
+                $sql .= " (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')";
+                $sql .= " AND DATE(gd.fecha) BETWEEN '{$params1}' AND '{$params2}') GROUP BY gi.id ORDER BY gi.fecha DESC";
                 //die($sql);
 
                 $request = $con->createCommand($sql);
@@ -1319,6 +1319,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
             // STATUS - CATEGORIZACION
             if ($_GET['busqueda_general2'] == 0 && $_GET['categorizacion2'] == 1 && $_GET['status2'] == 1 && $_GET['responsable2'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
                 $search_type = 20;
+                $search = 20;
                 switch ($_GET['GestionDiaria2']['status']) {
                     case 'Cierre':
                         $sql .= " and gd.cierre = 1 and ";
@@ -1658,7 +1659,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 $tituloReporte = "Búsqueda por Responsable: {$responsable}, {$title_ag} ";
                 
             }
-            //die('search type: '.$search_type);
+            //die('search type: '.$search);
 
             //$this->render('seguimiento');
         }
@@ -1684,7 +1685,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 )
             ),
             'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
                 'rotation' => 0,
                 'wrap' => TRUE
@@ -1732,7 +1733,7 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 )
             ),
             'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
                 'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
                 'wrap' => TRUE
             )
@@ -1760,7 +1761,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                 ->setCellValue('O2', 'Proximo Seguimiento 1')
                 ->setCellValue('P2', 'Proximo Seguimiento 2')
                 ->setCellValue('Q2', 'Categorización')
-                ->setCellValue('R2', 'Fuente');
+                ->setCellValue('R2', 'Fuente')
+                ->setCellValue('S2', 'Fuente Historial');
         $i = 3;
         /* echo '<pre>';
           print_r($casos);
@@ -1820,7 +1822,8 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     ->setCellValue('O' . $i, $row['proximo_seguimiento'])
                     ->setCellValue('P' . $i, $proxseg[0])
                     ->setCellValue('Q' . $i, $row['categorizacion'])
-                    ->setCellValue('R' . $i, $row['fuente']);
+                    ->setCellValue('R' . $i, $row['fuente'])
+                    ->setCellValue('S' . $i, $row['fuente_contacto_historial']);
 
             $objPHPExcel->getActiveSheet()->setCellValueExplicit('F' . $i, $identificacion, PHPExcel_Cell_DataType::TYPE_STRING);
             //$objPHPExcel->getActiveSheet()->setCellValueExplicit('O' . $i, $row['telefono'], PHPExcel_Cell_DataType::TYPE_STRING);
@@ -1856,13 +1859,14 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
         $objPHPExcel->getActiveSheet()->getColumnDimension("P")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("Q")->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension("R")->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension("S")->setAutoSize(true);
         // rename worksheet
         $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($estiloTituloReporte);
-        $objPHPExcel->getActiveSheet()->getStyle('A2:X2')->applyFromArray($estiloTituloColumnas);
+        $objPHPExcel->getActiveSheet()->getStyle('A2:S2')->applyFromArray($estiloTituloColumnas);
 
         // Inmovilizar paneles
         $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
