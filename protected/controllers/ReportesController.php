@@ -96,6 +96,7 @@ class ReportesController extends Controller {
         $SQLmodelos = '';
         $INERmodelos = '';
         $INERmodelos_td = '';
+        $INERProspeccion = '';
         $varView['triger'] = 0;
         foreach ($lista_datos as $key => $value) {
             foreach ($value as $key => $carros) {
@@ -112,6 +113,7 @@ class ReportesController extends Controller {
                 $SQLmodelos[$key] = $separ . " gv." . $campo_car . " IN (" . $id_carros_nv[$key] . ")" . $separ_fin . ' ';
                 $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERmodelos_td = ' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
+                $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
                 $varView['triger'] = 1;
             }
         }
@@ -170,6 +172,7 @@ class ReportesController extends Controller {
                 $traficoAcumulado = new traficoAcumulado;
                 $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
                 $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
@@ -510,7 +513,7 @@ class ReportesController extends Controller {
 
             $constructor = new ConstructorSQL;
             $retorno = $constructor->buscar(
-                    $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $consultaBDC, $condicion_GP, $tipo
+                    $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
             );
             //echo 'trafico mes anterior: '.$retorno[2];
             $varView['prospeccion_mes_anterior'] = $retorno[0];
