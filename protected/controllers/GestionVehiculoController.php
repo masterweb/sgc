@@ -551,7 +551,7 @@ class GestionVehiculoController extends Controller {
 //              print_r($_POST);
 //              echo '</pre>';
 //              die(); 
-
+            
             $currencys = array("$");
             $currencys2 = array(".");
             $result = FALSE;
@@ -569,10 +569,18 @@ class GestionVehiculoController extends Controller {
             if ($td > 0) {
                 $model->order = 2;
             }
+            
+            // GENERAR ID DE PROFORMA
+            $proforma = new GestionProforma;
+            $proforma->id_vehiculo = $_POST['GestionFinanciamiento1']['id_vehiculo'];
+            $proforma->id_informacion = $_POST['GestionFinanciamiento1']['id_informacion'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $proforma->fecha = date("Y-m-d H:i:s");
+            $proforma->save();
 
             if ($tipoFinanciamiento == 0) {// financiamiento al contado
                 $model->attributes = $_POST['GestionFinanciamiento1'];
-                $model->id_pdf = $this->getLastProforma();
+                $model->id_pdf = $this->getLastProforma($_POST['GestionFinanciamiento1']['id_informacion'],$_POST['GestionFinanciamiento1']['id_vehiculo']);
 
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio_contado']);
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
@@ -615,7 +623,7 @@ class GestionVehiculoController extends Controller {
             } else {
                 $model = new GestionFinanciamiento;
                 $model->attributes = $_POST['GestionFinanciamiento1'];
-                $model->id_pdf = $this->getLastProforma();
+                $model->id_pdf = $this->getLastProforma($_POST['GestionFinanciamiento1']['id_informacion'],$_POST['GestionFinanciamiento1']['id_vehiculo']);
                 $precio_vehiculo = str_replace(',', "", $_POST['GestionFinanciamiento1']['precio']);
                 $precio_vehiculo = str_replace('.', ",", $precio_vehiculo);
                 $precio_vehiculo = (int) str_replace('$', "", $precio_vehiculo);
@@ -1128,25 +1136,14 @@ INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
 WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
 //die('sql:'.$sql);
         $request = $con->createCommand($sql)->queryAll();
-        $num_proforma = $this->getLastProforma();
+
+        $num_proforma = $this->getLastProforma($id_informacion, $id_vehiculo);
         // grabar numero de proforma en la base de datos segun idvehiculo
         $con = Yii::app()->db;
         $sql = "UPDATE gestion_vehiculo SET num_pdf = {$num_proforma} WHERE id_informacion = {$id_informacion} AND id = {$id_vehiculo}";
         $req = $con->createCommand($sql)->query();
 
-        //die('num proforma: '.$num_proforma);
-        //die('id vehiculo: ' . $id_vehiculo);
-        $proforma = new GestionProforma;
-        $proforma->id_vehiculo = $id_vehiculo;
-        $proforma->id_informacion = $id_informacion;
-        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-        $proforma->fecha = date("Y-m-d H:i:s");
-        /* if ($proforma->validate()) {
-          die('save success');
-          } else {
-          print_r($proforma->getErrors);
-          } */
-        $proforma->save();
+        
         # mPDF        
         # You can easily override default constructor's params
         $mPDF1 = Yii::app()->ePdf->mpdf('', 'A4');
@@ -1345,7 +1342,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $fecha_actual = strftime("%Y/%m/%d %X ", time());
                 $fecha_posterior = strtotime('+2 day', strtotime($fecha_actual));
                 $fecha_posterior = date('Y-m-d H:i:s', $fecha_posterior); // suma dos dias a la fecha de proximo seguimiento
-                
+
                 $sql2 = "UPDATE gestion_diaria SET proximo_seguimiento = '{$fecha_posterior}' WHERE id_informacion = {$id_informacion}";
                 //die('sql: '.$sql2);
                 $request = $con->createCommand($sql2)->query();
@@ -1354,7 +1351,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
 
         // SEND EMAIL TO CLIENT WITH PROFORM NUMBER
-        
+
         $sql = "SELECT gi.*, gc.preg6 as formapago FROM gestion_informacion gi "
                 . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
                 . "WHERE gi.id = {$id_informacion} LIMIT 0,1";

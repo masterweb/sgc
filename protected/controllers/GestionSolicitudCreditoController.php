@@ -93,12 +93,22 @@ class GestionSolicitudCreditoController extends Controller {
 //            echo '</pre>';
 //            die();
             //die('enter post');
+            // CREAR ID SOLICITUD DE CREDITO
+            $hoja_solicitud = new GestionSolicitud;
+            $hoja_solicitud->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
+            $hoja_solicitud->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $hoja_solicitud->fecha = date("Y-m-d H:i:s");
+            $hoja_solicitud->save();
+            $num_solicitud = $this->getLastSolicitudCotizacion($_POST['GestionSolicitudCredito']['id_informacion'], $_POST['GestionSolicitudCredito']['id_vehiculo']);
+
             $nombre_cliente = $this->getNombresInfo($_POST['GestionSolicitudCredito']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionSolicitudCredito']['id_informacion']);
             $id_asesor = Yii::app()->user->getId();
             $dealer_id = $this->getConcesionarioDealerId($id_asesor);
             $result = FALSE;
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->attributes = $_POST['GestionSolicitudCredito'];
+            $model->id_solicitud = $num_solicitud;
             $model->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
             $model->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
             $model->estado_civil = $_POST['GestionSolicitudCredito']['estado_civil'];
@@ -214,7 +224,7 @@ class GestionSolicitudCreditoController extends Controller {
                 require_once 'email/mail_func.php';
                 //---- SEND EMAIL ASESOR DE CREDITO
                 $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito ';
-                
+
 
                 $general = '<body style="margin: 10px;">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
@@ -226,14 +236,14 @@ class GestionSolicitudCreditoController extends Controller {
 
                                     <br>
                                         <table width="600" cellpadding="">';
-                
-                    $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
-                            . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
+
+                $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
+                        . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
                                 <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
                                 <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionSolicitudCredito']['id_vehiculo']) . '</td></tr>
                                 <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
-                
+
                 $general .= ' </table>
                                 <br/>
                                 <p style="margin: 2px 0;"><a href="https://www.kia.com.ec/intranet/usuario/index.php/site/cotizacion?id_informacion=' . $_POST['GestionSolicitudCredito']['id_informacion'] . '&amp;id_vehiculo=' . $_POST['GestionSolicitudCredito']['id_vehiculo'] . '">Ver Solicitud de Crédito</a></p>
@@ -289,18 +299,18 @@ class GestionSolicitudCreditoController extends Controller {
      */
     public function actionUpdate($id_informacion = NULL, $id_vehiculo = NULL) {
         if (isset($_POST['GestionSolicitudCredito'])) {
-            $id = $this->getIdSolicitudCredito($_POST['GestionSolicitudCredito']['id_informacion'],$_POST['GestionSolicitudCredito']['id_vehiculo']);
-        }else{
-            $id = $this->getIdSolicitudCredito($id_informacion,$id_vehiculo);
+            $id = $this->getIdSolicitudCredito($_POST['GestionSolicitudCredito']['id_informacion'], $_POST['GestionSolicitudCredito']['id_vehiculo']);
+        } else {
+            $id = $this->getIdSolicitudCredito($id_informacion, $id_vehiculo);
         }
-        
+
         $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionSolicitudCredito'])) {
-            
+
             //            echo '<pre>';
 //            print_r($_POST);
 //            echo '</pre>';
@@ -427,7 +437,7 @@ class GestionSolicitudCreditoController extends Controller {
                 require_once 'email/mail_func.php';
                 //---- SEND EMAIL ASESOR DE CREDITO
                 $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito ';
-                
+
 
                 $general = '<body style="margin: 10px;">
                                 <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 12px;">
@@ -439,14 +449,14 @@ class GestionSolicitudCreditoController extends Controller {
 
                                     <br>
                                         <table width="600" cellpadding="">';
-                
-                    $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
-                            . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
+
+                $general .= '<tr><td><strong>Cliente:</strong></td><td> ' . $nombre_cliente . '</td></tr> '
+                        . '<tr><td><strong>Asesor Comercial:</strong></td><td> ' . $this->getResponsable($id_asesor) . '</td></tr>
                                 <tr><td><strong>Concesionario:</strong></td><td>' . $this->getNameConcesionario($id_asesor) . '</td></tr> 
                                 <tr><td><strong>Modelo:</strong></td><td> ' . $this->getModeloTestDrive($_POST['GestionSolicitudCredito']['id_vehiculo']) . '</td></tr>
                                 <tr><td><strong>Fecha:</strong></td><td> ' . date("d") . "/" . date("m") . "/" . date("Y") . '</td></tr>
                                <tr><td><strong>Hora:</strong></td><td>' . date("H:i:s") . '</td></tr>';
-                
+
                 $general .= ' </table>
                                 <br/>
                                 <p style="margin: 2px 0;"><a href="https://www.kia.com.ec/intranet/usuario/index.php/site/cotizacion?id_informacion=' . $_POST['GestionSolicitudCredito']['id_informacion'] . '&amp;id_vehiculo=' . $_POST['GestionSolicitudCredito']['id_vehiculo'] . '">Ver Solicitud de Crédito</a></p>
@@ -573,7 +583,7 @@ class GestionSolicitudCreditoController extends Controller {
                 }
             }
             // SEARCH BY RESPONSABLE
-            
+
             if (empty($_GET['GestionSolicitudCredito']['general']) &&
                     empty($_GET['GestionSolicitudCredito']['status']) &&
                     !empty($_GET['GestionSolicitudCredito']['responsable'])) {
@@ -582,7 +592,7 @@ class GestionSolicitudCreditoController extends Controller {
                         INNER JOIN usuarios u ON u.id = gs.vendedor 
                         INNER JOIN gestion_informacion gi ON gi.id = gs.id_informacion
                         WHERE u.id = {$_GET['GestionSolicitudCredito']['responsable']}";
-                        //die($sql);
+                //die($sql);
                 $request = $con->createCommand($sql);
                 $posts = $request->queryAll();
                 //die('num posts: '.count($posts));
@@ -593,10 +603,10 @@ class GestionSolicitudCreditoController extends Controller {
                     exit();
                 } else {
                     $this->render('admin', array(
-                        'model' => $model,'title' => 'No existen resultados'
+                        'model' => $model, 'title' => 'No existen resultados'
                     ));
                     exit();
-                }        
+                }
             }
         }
 
@@ -635,14 +645,9 @@ class GestionSolicitudCreditoController extends Controller {
         $this->layout = '//layouts/call-print';
         //die('enter prof');
         $con = Yii::app()->db;
-        $num_solicitud = $this->getLastSolicitudCotizacion();
         //die('num solicitud:'.$num_solicitud);
-        $hoja_solicitud = new GestionSolicitud;
-        $hoja_solicitud->id_vehiculo = $id_vehiculo;
-        date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-        $hoja_solicitud->fecha = date("Y-m-d H:i:s");
-        $hoja_solicitud->save();
 
+        $num_solicitud = $this->getLastSolicitudCotizacion($id_informacion, $id_vehiculo);
 
         # mPDF
         $mPDF1 = Yii::app()->ePdf->mpdf();
@@ -681,29 +686,22 @@ class GestionSolicitudCreditoController extends Controller {
                 'condition' => "id_informacion='{$_POST['GestionStatus']['id_informacion']}' AND id_vehiculo='{$_POST['GestionStatus']['id_vehiculo']}'"
             ));
             $pr = GestionStatusSolicitud::model()->count($cr);
-            //die('num pr: '.$pr);
-//            if ($pr > 0) { // SI EXISTE UN STATUS DE SOLICITUD DE SOLICITUD DE PROFORMA
-//                $con = Yii::app()->db;
-//                $sql = "UPDATE gestion_status_solicitud SET "
-//                        . "status = {$_POST['GestionStatus']['status']}, "
-//                        . "observaciones = '{$_POST['GestionStatus']['observaciones']}' "
-//                        . "WHERE id_informacion = {$_POST['GestionStatus']['id_informacion']} AND id_vehiculo = {$_POST['GestionStatus']['id_vehiculo']}";
-//                $request = $con->createCommand($sql)->query();
-//                if ($_POST['GestionStatus']['status'] == 2) {
-//                    $con = Yii::app()->db;
-//                    $sql = "UPDATE gestion_solicitud_credito SET status = 1 WHERE id = {$_POST['GestionStatus']['id_status']}";
-//                    $request = $con->createCommand($sql)->query();
-//                }
-//            } else {// CASO CONTRARIO CREA UNA NUEVO STATUS
-                $model->attributes = $_POST['GestionStatus'];
-                $model->id_informacion = $_POST['GestionStatus']['id_informacion'];
-                $model->id_vehiculo = $_POST['GestionStatus']['id_vehiculo'];
-                $model->observaciones = $_POST['GestionStatus']['observaciones'];
-                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-                $model->fecha = date("Y-m-d H:i:s");
-                $model->save();
-//            }
+            
+            $model->attributes = $_POST['GestionStatus'];
+            $model->id_informacion = $_POST['GestionStatus']['id_informacion'];
+            $model->id_vehiculo = $_POST['GestionStatus']['id_vehiculo'];
+            $model->observaciones = $_POST['GestionStatus']['observaciones'];
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $model->fecha = date("Y-m-d H:i:s");
+            $model->save();
 
+            // UPDATE table gestion_solicitud_credito to new status
+            $model_solicitud = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion=:id_informacion AND id_vehiculo=:id_vehiculo", 'params' => array(':id_informacion' => $_POST['GestionStatus']['id_informacion'], ':id_vehiculo' => $_POST['GestionStatus']['id_vehiculo'])));
+            if (!empty($model_solicitud)) {
+                $model_solicitud->status = $_POST['GestionStatus']['status'];
+                $model_solicitud->update();
+            }
+//            }
 //            if ($_POST['GestionStatus']['status'] == 2) {
 //                $con = Yii::app()->db;
 //                $sql = "UPDATE gestion_solicitud_credito SET status = 2 WHERE id = {$_POST['GestionStatus']['id_status']}";

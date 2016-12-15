@@ -712,35 +712,36 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 case '1':
                                     echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
                                     $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
-                                    echo $comentario;
+                                    echo '<strong>Observación: </strong>'.$comentario;
                                     $solicitud = TRUE;
                                     break;
                                 case '2':
                                     echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
                                     $solicitud = TRUE;
                                     break;
-                                case '4':
+                                case '3':
                                     echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>&nbsp;&nbsp;';
                                     $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
                                     $solicitud = TRUE;
-                                    echo $comentario;
+                                    echo '<strong>Observación: </strong>'.$comentario;
 
                                     break;
-                                case '3':
-                                    echo '<a class="btn btn-danger btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
+                                case '4':
+                                    echo '<a class="btn btn-tomate btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
                                     $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
                                     $solicitud = TRUE;
-                                    echo $comentario;
+                                    echo '<strong>Observación: </strong>'.$comentario;
 
                                     break;
+                                
 
                                 default:
                                     break;
                             }
                             ?>
-                            <?php if($solicitud == TRUE): ?>
-                            <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
-                            <?php endif; ?>
+                            <?php //if($solicitud == TRUE): ?>
+                            <a href="<?php echo Yii::app()->createUrl('site/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
+                            <?php //endif; ?>
                         </div>
                         <?php endif; ?>
 

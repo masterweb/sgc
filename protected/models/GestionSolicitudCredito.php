@@ -106,6 +106,7 @@
  * @property string $total_activos
  * @property string $tipo_activo1
  * @property string $tipo_activo2
+ * @property integer $id_solicitud
  */
 class GestionSolicitudCredito extends CActiveRecord {
 
@@ -137,7 +138,7 @@ class GestionSolicitudCredito extends CActiveRecord {
                 . ' direccion_empresa, tipo_relacion_laboral, email, actividad_empresa, year,'
                 . ' sueldo_mensual,estado_civil,fecha_nacimiento,'
                 . 'calle,telefono_residencia, celular', 'required'),
-            array('concesionario, vendedor, valor, monto_financiar, entrada, year, plazo, tiempo_trabajo, tiempo_trabajo_conyugue, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio, trabaja_conyugue', 'numerical', 'integerOnly' => true),
+            array('concesionario, vendedor, valor, monto_financiar, entrada, year, plazo, tiempo_trabajo, tiempo_trabajo_conyugue, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio, trabaja_conyugue, id_solicitud', 'numerical', 'integerOnly' => true),
             array('taza, sueldo_mensual, sueldo_mensual_conyugue', 'length', 'max' => 20),
             array('cuota_mensual', 'length', 'max' => 25),
             array('apellido_paterno, apellido_materno, nacionalidad, cargo, email, telefono_trabajo_conyugue, cargo_conyugue, vive, valor_arriendo, telefono_residencia, banco1, cuenta_ahorros1, banco2, cuenta_ahorros2, parentesco1, parentesco2, otros_ingresos, cuenta_corriente1, cuenta_corriente2, direccion_valor_comercial1, direccion_valor_comercial2, vehiculo_marca1, vehiculo_modelo1, vehiculo_year1, vehiculo_valor1, vehiculo_marca2, vehiculo_modelo2, vehiculo_year2, vehiculo_valor2, tipo_inversion, valor_otros_activos1, valor_otros_activos2, total_activos, tipo_activo1, tipo_activo2', 'length', 'max' => 50),
@@ -270,6 +271,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'total_activos' => 'Total Activos',
             'tipo_activo1' => 'tipo_activo1',
             'tipo_activo2' => 'tipo_activo2',
+            'id_solicitud' => 'Id Solicitud',
         );
     }
 

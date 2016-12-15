@@ -1846,21 +1846,13 @@ class Controller extends CController {
         return $ent->id;
     }
 
-    public function getLastSolicitudCotizacion() {
-        $criteria = new CDbCriteria(array(
-            'limit' => 1,
-            'order' => 'id DESC'
-        ));
-        $ent = GestionProforma::model()->find($criteria);
+    public function getLastSolicitudCotizacion($id_informacion, $id_vehiculo) {
+        $ent = GestionSolicitud::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
         return $ent->id;
     }
 
-    public function getLastProforma() {
-        $criteria = new CDbCriteria(array(
-            'limit' => 1,
-            'order' => 'id DESC'
-        ));
-        $ent = GestionProforma::model()->find($criteria);
+    public function getLastProforma($id_informacion, $id_vehiculo) {
+        $ent = GestionProforma::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
         return $ent->id;
     }
 

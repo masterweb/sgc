@@ -3733,7 +3733,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $this->layout = '//layouts/call-print';
         $con = Yii::app()->db;
         
-        $num_solicitud = $this->getSolicitudCliente($id_informacion, $id_vehiculo);
+        $num_solicitud = $this->getLastSolicitudCotizacion($id_informacion, $id_vehiculo);
         //die('num proforma: '.$num_proforma);
 //        $hoja_solicitud = new GestionSolicitud;
 //        $hoja_solicitud->id_vehiculo = $id_vehiculo;
@@ -3783,6 +3783,25 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('carta de bienvenida.pdf', 'I');
     }
+    
+    /*public function actionSolicitud(){
+        $criteria = new CDbCriteria;
+        $criteria->select = "gs.status, gs.id_informacion, gs.id_vehiculo";
+        $criteria->join = "INNER JOIN gestion_solicitud_credito gc ON gc.id_informacion = gs.id_informacion";
+        $criteria->alias = 'gs';
+        $res = GestionStatusSolicitud::model()->findAll($criteria);
+        foreach ($res as $value) {
+            
+            $model = GestionSolicitudCredito::model()->find(array('condition' => "id_vehiculo = {$value['id_vehiculo']}"));
+            if(!empty($model)){
+                $model->status = $value['status'];
+                if($model->update()){
+                    echo 'update id_informacion: '.$value['status'].'<br />'; 
+                }
+            }
+        }
+        
+    }*/
 
     /* public function actionAlterTable() {
       $sql = "DELETE from gestion_informacion where id = 2673";
