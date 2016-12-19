@@ -1083,6 +1083,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                     case 'SeguimientoEntrega':
                         $sql .= " gd.seguimiento_entrega = 1 GROUP BY gi.id ORDER BY gi.id DESC";
                         break;
+                    case 'qk':
+                        $sql .= " gd.medio_contacto = 'exhquk' AND gd.status = 1";
+                        break;
 
                     default:
                         break;
@@ -1345,6 +1348,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .="  and gd.seguimiento = 1 AND ";
                         $sql .=" gd.paso = 10 and ";
                         $sql .=" gd.status = 1 and ";
+                    case 'qk':
+                        $sql .= " gd.medio_contacto = 'exhquk' AND gd.status = 1";
+                        break;    
                         break;
                     default:
                         break;
@@ -1386,6 +1392,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .="  and gd.seguimiento = 1 AND ";
                         $sql .=" gd.paso = 10 and ";
                         $sql .=" gd.status = 1 and ";
+                        break;
+                    case 'qk':
+                        $sql .= " gd.medio_contacto = 'exhquk' AND gd.status = 1";
                         break;
                     default:
                         break;
@@ -1547,6 +1556,9 @@ LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion
                         $sql .="  and gd.seguimiento = 1 AND ";
                         $sql .=" gd.paso = 10 and ";
                         $sql .=" gd.status = 1 and ";
+                        break;
+                    case 'qk':
+                        $sql .= " gd.medio_contacto = 'exhquk' AND gd.status = 1";
                         break;
                     default:
                         break;
