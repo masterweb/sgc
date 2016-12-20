@@ -39,13 +39,14 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
-                    'exhibicion' => 'Exhibición'
+                    'exhibicion' => 'Exhibición',
+                    'exhibicion quierounkia' => 'Yo Quiero un Kia'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
+                <!--<option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
-                <option value="Flota">Flota</option>';
+                <option value="Flota">Flota</option>-->';
             }
             if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'ventas' && ($cargo_adicional == 86 || $cargo_adicional == 85)){ // asesor ventas
                 $tipo_array =  array('' => '--Seleccione--',
@@ -54,10 +55,10 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
+                <!--<option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
-                <option value="Flota">Flota</option>';
+                <option value="Flota">Flota</option>-->';
             }
             if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'bdc' && $cargo_adicional == 0){ // asesor ventas externas
                 $tipo_array =  array('' => '--Seleccione--',
@@ -66,10 +67,10 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
-                <option value="Usado">Usado</option>
+                <!--<option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
-                <option value="Flota">Flota</option>';
+                <option value="Flota">Flota</option>-->';
             }
             if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'bdc' && ($cargo_adicional == 86 || $cargo_adicional == 85)){ // asesor ventas externas
                 $tipo_array =  array('' => '--Seleccione--',

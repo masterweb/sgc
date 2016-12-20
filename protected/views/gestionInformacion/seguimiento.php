@@ -199,6 +199,7 @@ $count = count($users);
         switch (fuente) {
             case 'showroom':
             case 'exhibicion':
+            case 'exhibicion quierounkia':    
                 console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
                 rules: {
@@ -793,12 +794,13 @@ $count = count($users);
 
 
                                 switch ($paso) {
+                                    
                                     case '1-2':
                                         $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion'));
                                         if ($fuente == 'prospeccion')
                                             $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion'));
                                         if ($fuente == 'web')
-                                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
+                                            $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
                                         break;
                                     case '3':
                                         $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $c['id'], 'tipo' => 'gestion', 'fuente' => 'web'));
@@ -1020,9 +1022,12 @@ $count = count($users);
                                     <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'exhibicion' || $fuente_contacto == 'exhibicion quierounkia'){ ?> 
+                                    <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
-                                    <?php } ?>   
+                                    <?php } ?>
+                                    <?php if($fuente_contacto == 'exhibicion quierounkia'){ ?> 
+                                    <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
+                                    <?php } ?> 
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
                                         <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>    
                                     <?php } ?>

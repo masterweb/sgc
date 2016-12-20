@@ -367,7 +367,10 @@ class GestionInformacionController extends Controller {
                     $gestion->id_informacion = $model->id;
                     $gestion->id_vehiculo = 0;
                     $gestion->observaciones = 'Primera visita';
-                    $gestion->medio_contacto = 'visita';
+                    if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkia')
+                        $gestion->medio_contacto = 'exhquk';
+                    else
+                        $gestion->medio_contacto = 'visita';
                     $gestion->fuente_contacto = $fuente;
                     $gestion->codigo_vehiculo = 0;
                     $gestion->primera_visita = 1;
