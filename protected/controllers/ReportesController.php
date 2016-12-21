@@ -171,7 +171,7 @@ class ReportesController extends Controller {
 
                 $traficoAcumulado = new traficoAcumulado;
                 $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
-                $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                //$INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
