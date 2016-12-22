@@ -94,7 +94,7 @@ class ReportesController extends Controller {
 //        die();
 
         $SQLmodelos = '';
-        $INERmodelos = '';
+        $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         $INERmodelos_td = '';
         $INERProspeccion = '';
         $varView['triger'] = 0;
@@ -111,7 +111,7 @@ class ReportesController extends Controller {
                 }
                 $id_carros_nv[$key] = implode(', ', $carros);
                 $SQLmodelos[$key] = $separ . " gv." . $campo_car . " IN (" . $id_carros_nv[$key] . ")" . $separ_fin . ' ';
-                $INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                //0$INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERmodelos_td = ' INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ';
                 $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
                 $varView['triger'] = 1;
