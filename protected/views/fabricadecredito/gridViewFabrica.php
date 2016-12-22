@@ -11,7 +11,7 @@
 	}
 
 </style>
-<h2 align="center">Fabrica de Credito</h2>
+<h2 align="center">Fábrica de Crédito</h2>
 
 <br>
 <!--FILTROS -->
