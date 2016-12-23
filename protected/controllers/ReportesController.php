@@ -138,7 +138,7 @@ class ReportesController extends Controller {
         }
         // IOKARS, AUTHESA - ASESORES VENTAS Y ASESORES WEB. SUMA AL EMBUDO BDC = 0 Y BDC = 1
         if(($varView['grupo_id'] != 2 || $varView['grupo_id'] != 3) && ($varView['cargo_id'] == 71 || $varView['cargo_id'] == 86))
-            $bdcfalse = ' AND (gi.bdc = 1 OR gi.bdc = 0) ';
+            $bdcfalse = '';
 
         //TIPOS DE USUARIO QUE VEN REPORTES
         //MODIFICAR LA SELECCION DE RESPONSABLES
@@ -249,7 +249,11 @@ class ReportesController extends Controller {
                 $varView['nombre_mes_anterior'] = $date->format('F - Y');
             }
             if ($_GET['GI']['responsable'] != '') {
-                //echo('responsable');
+                $cargo = $this->getCargo($_GET['GI']['responsable']);
+                // SI EL USUARIO TIENE DOBLE CARGO, ASESOR VENTAS Y ASESOR WEB
+                if($cargo == 71 || $cargo == 86){
+                    $bdcfalse = '';
+                }
                 $varView['id_responsable'] = $_GET['GI']['responsable'];
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
                 $varView['js_responsable'] = $varView['id_responsable'];
