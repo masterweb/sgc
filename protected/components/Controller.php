@@ -1468,6 +1468,15 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getCargo($id) {
+        $cargo = Usuarios::model()->find(array('condition' => "id = {$id}"));
+        if($cargo){
+            return $cargo->cargo_id; 
+        }else{
+            return 0;
+        }
+    }
 
     public function getPaso($id) {
         $criteria = new CDbCriteria(array(
@@ -2695,8 +2704,13 @@ class Controller extends CController {
     }
 
     public function getNameBanco($id) {
-        $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
-        return $banco->nombre;
+        if($id != null){
+            $banco = GestionBancos::model()->find(array('condition' => "id = {$id}"));
+            return $banco->nombre;
+        }else{
+            return '';
+        }
+        
     }
 
     public function getResponsableFirma($id_informacion) {
@@ -3193,8 +3207,13 @@ class Controller extends CController {
         return $fechas;
     }
     
-    public function getModelosTrafico() {
-        $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO' AND categoria = 1", 'order' => "nombre_modelo ASC", 'order' => "orden"));
+    public function getModelosTrafico($categoria) {
+        if($categoria == 5){
+            $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO' AND categoria IN (1,2,3,4)", 'order' => "nombre_modelo ASC", 'order' => "orden"));
+        }else{
+            $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO' AND categoria = {$categoria}", 'order' => "nombre_modelo ASC", 'order' => "orden"));
+        }
+        
         return $res;
     }
     
@@ -3204,7 +3223,7 @@ class Controller extends CController {
      * @param string $versiones Lista de versiones del modelo de auto
      * @param int $year Year en curso
      * @param string $dia Dia actual
-     * @param boolean $flag Busqueda entre fechas o individual
+     * @param boolean $flag Busqueda entre fechas 1 o individual 0
      * @param array $search Array con parametros de busqueda
      * @return int $count Numero de coincidencias
      */
@@ -3219,7 +3238,7 @@ class Controller extends CController {
         $criteria = new CDbCriteria;
         //$criteria->select = "*";
         $criteria->alias = 'gi';
-        $criteria->join = "LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
         $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
         if($search['grupo']){
             
@@ -3260,11 +3279,11 @@ class Controller extends CController {
         // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
         //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
         $criteria = new CDbCriteria;
-        //$criteria->select = "*";
+        $criteria->select = "COUNT(DISTINCT gf.id)";
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  ";
-        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id   ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id";
         if($search['grupo']){
             
         }
@@ -3329,8 +3348,9 @@ class Controller extends CController {
         $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gi.id ";
+        
         if($search['grupo']){
             
         }
@@ -3346,6 +3366,28 @@ class Controller extends CController {
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
         $count = GestionFactura::model()->count($criteria);
         return $count;
+    }
+    
+    public function getNameCategoria($categoria) {
+        switch ($categoria) {
+            case 1:
+                return 'Autos';
+                break;
+            case 2:
+                return 'SUV';
+                break;
+            case 3:
+                return 'MPV';
+                break;
+            case 4:
+                return 'Comerciales';
+                break;
+
+            default:
+                return 'Todos';
+                break;
+        }
+        
     }
     
     private function getBetweenfecha($mes, $year, $dia_inicial, $dia_final) {
@@ -3406,12 +3448,24 @@ class Controller extends CController {
     }
     
     public function getTasaCierre($ventas,$trafico) {
+        //echo 'ventas: '.$ventas.', '.$trafico.'<br />';
         if($trafico != 0){
             $vt = ($ventas / $trafico) * 100;
             $vt = round($vt, 2);
             return $vt . ' %';
         }else{
             return '0 %';
+        }
+    }
+    
+    public function getTasaCierreNormal($ventas,$trafico) {
+        //echo 'ventas: '.$ventas.', '.$trafico.'<br />';
+        if($trafico != 0){
+            $vt = ($ventas / $trafico) * 100;
+            $vt = round($vt, 2);
+            return $vt ;
+        }else{
+            return 0;
         }
     }
     
@@ -3788,9 +3842,9 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
+                echo '<pre>';
+                print_r($criteria);
+                echo '</pre>';
 //                die();
 
                 $count = count($users);
