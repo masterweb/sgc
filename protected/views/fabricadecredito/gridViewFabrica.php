@@ -141,6 +141,7 @@ $(function () {
                 <thead>
                     <tr>
                     	<th><span>ID</span></th>
+                        <th><span>ID Solicitud de Crédito</span></th>
                         <th><span>Nombre y Apellido</span></th>
                         <th><span>Cedula</span></th>
                         <th><span>Celular</span></th>
@@ -157,6 +158,10 @@ $(function () {
                 		<td>
                 			<?php echo $c['id'];?>
                 		</td>
+
+                        <td>
+                            <?php echo $c['id_solicitud'];?>
+                        </td>
 
                 		<td>
                 		<?php echo $c['nombres']." ".$c['apellidos'];?>

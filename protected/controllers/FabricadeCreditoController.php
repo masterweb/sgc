@@ -9,7 +9,7 @@ class FabricadeCreditoController extends Controller {
 
         $criteria = new CDbCriteria;
         $criteria->group = "t1.id";
-        $criteria->select = "DISTINCT t1.id,
+        $criteria->select = "DISTINCT t1.id,t2.id_solicitud,
 							t1.nombres,
 							t1.apellidos,
 						    t1.cedula,
@@ -24,8 +24,8 @@ class FabricadeCreditoController extends Controller {
         $criteria->alias = 't1';
         $criteria->join = " INNER JOIN gestion_solicitud_credito t2 ON t1.id=t2.id_informacion";
         $criteria->join .=" INNER JOIN dealers t3 ON t1.dealer_id=t3.id";
-        $criteria->join .=" INNER JOIN gestion_status_solicitud t4 ON t1.id=t4.id_informacion";
-        $criteria->condition = "t4.status=1";
+        //$criteria->join .=" INNER JOIN gestion_status_solicitud t4 ON t1.id=t4.id_informacion";
+        $criteria->condition = " t2.`status` = 0";
         $criteria->order = "t2.id_informacion desc";
         //$data=GestionInformacion::model()->findAll($criteria);
         //print_r("<pre>"); print_r($criteria);die();
@@ -69,12 +69,9 @@ class FabricadeCreditoController extends Controller {
 				dealers t3
 			ON
 				t1.dealer_id=t3.id
-			INNER JOIN
-				gestion_status_solicitud t4
-			ON
-				t1.id=t4.id_informacion
+			
 			WHERE 
-				t2.id_informacion=" . $id;
+				t2.id_informacion=" . $id ." GROUP BY t2.id_vehiculo";
 
         $datos = Yii::app()->db->createCommand($sql)->queryAll();
         /* print_r("<pre>");
@@ -99,11 +96,11 @@ class FabricadeCreditoController extends Controller {
         //FILTROS
         //solo fecha
         if ($fecha != "" and $status == 0 and $concesionario == 0) {
-            $where = "t4.status=1 AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "'";
+            $where = "t2.status=1 AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "'";
         }
         //fecha y estatus
         if ($fecha != "" and $status != 0 and $concesionario == 0) {
-            $where = "t4.status=" . $status . " AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "'";
+            $where = "t2.status=" . $status . " AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "'";
         }
         //fecha y grupo
         /* if($fecha!="" and $status==0 and $grupo!=0 and $concesionario==0){
@@ -119,10 +116,10 @@ class FabricadeCreditoController extends Controller {
           } */
         //fecha,status, grupo y concesionario
         if ($fecha != "" and $status != 0 and $concesionario != 0) {
-            $where = "t4.status=" . $status . " AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "' AND dealer_id=" . $concesionario;
+            $where = "t2.status=" . $status . " AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "' AND dealer_id=" . $concesionario;
         }
         if ($fecha != "" and $status == 0 and $concesionario != 0) {
-            $where = "t4.status=1 AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "' AND dealer_id=" . $concesionario;
+            $where = "t2.status=1 AND t2.fecha>='" . $fechaIni . "' AND t2.fecha<='" . $fechaFin . "' AND dealer_id=" . $concesionario;
         }
 
         //FIN FILTROS
@@ -143,7 +140,7 @@ class FabricadeCreditoController extends Controller {
         $criteria->alias = 't1';
         $criteria->join = " INNER JOIN gestion_solicitud_credito t2 ON t1.id=t2.id_informacion";
         //$criteria->join .=" INNER JOIN dealers t3 ON t1.dealer_id=t3.id";
-        $criteria->join .=" INNER JOIN gestion_status_solicitud t4 ON t1.id=t4.id_informacion";
+        //$criteria->join .=" INNER JOIN gestion_status_solicitud t4 ON t1.id=t4.id_informacion";
         $criteria->condition = $where;
         $criteria->order = "t2.id_informacion desc";
         //$data=GestionInformacion::model()->findAll($criteria);

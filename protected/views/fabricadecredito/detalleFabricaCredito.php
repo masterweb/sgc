@@ -56,8 +56,12 @@
             		<th colspan="2" class="titulo">DATOS PERSONALES</th>
             	</tr>
             	<tr>
-            		<th>Id Solicitud</th>
+            		<th>Id Cliente</th>
             		<td><?php echo $id=$key["id_informacion"];?></td>
+            	</tr>
+                <tr>
+            		<th>Id Solicitud</th>
+            		<td><?php echo $id=$key["id_solicitud"];?></td>
             	</tr>
             	<tr>
             		<th>Nombres</th>
@@ -103,10 +107,7 @@
             		<th>Estado Civil</th>
             		<td><?php echo $id=$key["estado_civil"];?></td>
             	</tr>
-            	<tr>
-            		<th>Número</th>
-            		<td><?php echo $id=$key["numero"];?></td>
-            	</tr>
+            	
             	<tr>
             		<th>Pasaporte</th>
             		<td><?php echo $id=$key["pasaporte"];?></td>
@@ -169,7 +170,7 @@
             	</tr>
             	<tr>
             		<th>Trabaja</th>
-            		<td><?php echo $id=$key["trabaja_conyugue"];?></td>
+            		<td><?php echo ($key["trabaja_conyugue"] == 1) ? 'Si' : 'No';?></td>
             	</tr>
             	<tr>
             		<th>Apellido Paterno</th>
@@ -212,7 +213,7 @@
             		<td><?php echo $id=$key["cargo_conyugue"];?></td>
             	</tr>
             	<tr>
-            		<th>Direccién de la empresa donde trabaja</th>
+            		<th>Dirección de la empresa donde trabaja</th>
             		<td><?php echo $id=$key["direccion_empresa_conyugue"];?></td>
             	</tr>
             	<tr>
@@ -231,9 +232,9 @@
             	<tr>
             		<th colspan="2" class="titulo">DATOS DEL DOMICILIO</th>
             	</tr>
-            	<tr>
-            		<th>Domicilio Actual</th>
-            		<td><?php echo $id=$key["domicilio_actual"];?></td>
+                <tr>
+            		<th>Número</th>
+            		<td><?php echo $id=$key["numero"];?></td>
             	</tr>
             	<tr>
             		<th>Habita</th>
@@ -242,10 +243,6 @@
             	<tr>
             		<th>Avalúo de la Propiedad</th>
             		<td><?php echo $id=$key["avaluo_propiedad"];?></td>
-            	</tr>
-            	<tr>
-            		<th>Vive</th>
-            		<td><?php echo $id=$key["vive"];?></td>
             	</tr>
             	<tr>
             		<th>Valor de Arriendo</th>
@@ -269,11 +266,11 @@
             	</tr>
             	<tr>
             		<th>Provincia de Domicilio</th>
-            		<td><?php echo $id=$key["provincia_domicilio"];?></td>
+            		<td><?php echo $this->getProvincia($key["provincia_domicilio"]);?></td>
             	</tr>
             	<tr>
             		<th>Ciudad de Domicilio</th>
-            		<td><?php echo $id=$key["ciudad_domicilio"];?></td>
+            		<td><?php echo $this->getCiudadDom($key["ciudad_domicilio"]);?></td>
             	</tr>           	
             	
             	<tr>
@@ -310,12 +307,12 @@
             	</tr>
             	<tr>
             		<th>Banco</th>
-            		<td><?php echo $id=$key["banco2"];?></td>
+            		<td><?php echo $this->getNameBanco($key["banco2"]);?></td>
             	</tr>            	
             	
             	<tr>
             		<th>Otro Banco</th>
-            		<td><?php echo $id=$key["banco1"];?></td>
+            		<td><?php echo $this->getNameBanco($key["banco1"]);?></td>
             	</tr>
             	<tr>
             		<th>Cuenta de Ahorros I</th>
@@ -484,23 +481,16 @@
             	</tr>
             	<tr>
             		<th>Dealer Id</th>
-            		<td><?php echo $id=$key["dealer_id"];?></td>
+            		<td><?php echo $key["dealer_id"];?></td>
             	</tr>
-            	<tr>
-            		<th>Id Gestión Solicitud</th>
-            		<td><?php echo $id=$key["id"];?></td>
-            	</tr>
-            	<tr>
-            		<th>Id Concesionario</th>
-            		<td><?php echo $id=$key["concesionario"];?></td>
-            	</tr>
+            	
             	<tr>
             		<th>Nombre Concesionario</th>
             		<td><?php echo $id=$key["NombreConcesionario"];?></td>
             	</tr>
             	<tr>
             		<th>Vendedor</th>
-            		<td><?php echo $id=$key["vendedor"];?></td>
+            		<td><?php echo $this->getResponsableNombres($key["vendedor"]);?></td>
             	</tr>
             	<tr>
             		<th>Fecha</th>
@@ -540,11 +530,11 @@
             	</tr>
             	<tr>
             		<th>Plazo</th>
-            		<td><?php echo $id=$key["plazo"];?></td>
+            		<td><?php echo $id=$key["plazo"].' meses';?></td>
             	</tr>
             	<tr>
             		<th>Tasa</th>
-            		<td><?php echo $id=$key["taza"];?></td>
+            		<td><?php echo $id=$key["taza"].' %';?></td>
             	</tr>
             	<tr>
             		<th>Cuota Mensual</th>
