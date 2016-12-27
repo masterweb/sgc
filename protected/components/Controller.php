@@ -3842,9 +3842,9 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-                echo '<pre>';
-                print_r($criteria);
-                echo '</pre>';
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
 //                die();
 
                 $count = count($users);
