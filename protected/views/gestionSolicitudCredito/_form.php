@@ -195,17 +195,26 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_entrada').val(entradaformat);
 
         var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual').val());
-        sueldo_mensual = format2(sueldo_mensual, '$');
-        $('#GestionSolicitudCredito_sueldo_mensual').val(sueldo_mensual);
+        if(!isNaN(sueldo_mensual)){
+            sueldo_mensual = format2(sueldo_mensual, '$');
+            $('#GestionSolicitudCredito_sueldo_mensual').val(sueldo_mensual);
+        }else{
+            $('#GestionSolicitudCredito_sueldo_mensual').val('$ 0.00');
+        }
+        
+        
         
         var cuotamensual = parseInt($('#GestionSolicitudCredito_cuota_mensual').val());
         var cuotamensualformat = format2(cuotamensual, '$');
         $('#GestionSolicitudCredito_cuota_mensual').val(cuotamensualformat);
         
         var avaluo_prop = parseInt($('#GestionSolicitudCredito_avaluo_propiedad').val());
-        avaluo_prop = format2(avaluo_prop, '$');
-        $('#GestionSolicitudCredito_avaluo_propiedad').val(avaluo_prop);
-
+        if(!isNaN(avaluo_prop)){
+            avaluo_prop = format2(avaluo_prop, '$');
+            $('#GestionSolicitudCredito_avaluo_propiedad').val(avaluo_prop);
+        }else{
+            $('#GestionSolicitudCredito_avaluo_propiedad').val('$ 0.00');
+        }
         $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {
             getvalortotal();
         });    
@@ -1162,7 +1171,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     }
 
     function getvalortotal() {
+    
         var avaluo = $('#GestionSolicitudCredito_avaluo_propiedad').val(); 
+        console.log('avaluo: '+avaluo);
         var valorcomercial1 = $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").val();
         var valorcomercial2 = $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").val();
         var vehiculovalor2 = $("[name='GestionSolicitudCredito[vehiculo_valor2]']").val();
