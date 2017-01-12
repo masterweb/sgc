@@ -198,7 +198,7 @@ if($fuente == 'web'){
                             <a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
                         <div class="col-md-offset-5 col-md-4">
-                            <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/NOVIEMBRE.pdf" class="btn btn-default" target="_blank">Manual Comparativo</a>
+                            <a href="<?php echo Yii::app()->request->baseUrl; ?>/images/ENERO.pdf" class="btn btn-default" target="_blank">Manual Comparativo</a>
                         </div>
                     </div>
                 <?php endif; ?>
