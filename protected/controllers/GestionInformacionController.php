@@ -838,18 +838,14 @@ class GestionInformacionController extends Controller {
                 $criteria->condition = "gi.bdc = 0 AND gi.dealer_id = {$dealer_id} AND gd.desiste = 0 AND u.cargo_id IN (70,71)";
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                    //die('sql sucursal'. $sql);
                 }
                 if ($cargo_id == 71) { // asesor de ventas
                     
                 $criteria->condition = "gi.responsable = {$id_responsable} AND gi.bdc = 0 AND gd.desiste = 0";
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                    //die('sql: '. $sql);
                 }
 
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
                 $tituloReporte = "Reporte General RGD Concesionario: " . $this->getNameConcesionario($id_responsable);
                 $name_file = "Reporte General RGD.xls";
@@ -861,14 +857,12 @@ class GestionInformacionController extends Controller {
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) &&
                     !empty($_GET['GestionDiaria2']['general'])) {
-                //echo('enter general');
                 $search = 3;
                 /* BUSQUEDA POR NOMBRES, APELLIDOS, CEDULA, ID */
                 
                 if ($cargo_id == 70) { // jefe de almacen
                     
                     if(empty($dealer_id)){
-                        $sql .= "WHERE gi.dealer_id IN ({$dealerList}) AND ";
                         $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                     }else{
                        $criteria->addCondition("gi.dealer_id = {$dealer_id}"); 
@@ -880,13 +874,7 @@ class GestionInformacionController extends Controller {
                         . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria2']['general']}%' "
                         . "OR gi.cedula LIKE '%{$_GET['GestionDiaria2']['general']}%' OR gi.id = '{$_GET['GestionDiaria2']['general']}'");
                 $criteria->group = "gi.id";        
-                $sql .= "gi.nombres LIKE '%{$_GET['GestionDiaria2']['general']}%' "
-                        . "OR gi.apellidos LIKE '%{$_GET['GestionDiaria2']['general']}%' "
-                        . "OR gi.cedula LIKE '%{$_GET['GestionDiaria2']['general']}%' ";
-                $sql .= " OR gi.id = '{$_GET['GestionDiaria2']['general']}') GROUP BY gi.id";
-                //die($sql);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
+                
                 $posts = GestionInformacion::model()->findAll($criteria);
 
                 $tituloReporte = "Reporte General RGD Concesionario: " . $this->getNameConcesionario($id_responsable);
@@ -907,14 +895,11 @@ class GestionInformacionController extends Controller {
                     $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
                     empty($_GET['GestionDiaria2']['tipo_fecha']) && $cargo_id == 69) {
-                //echo('enter fuente');  
                 $search = 4;
                 
                 //die('sql: '.$sql);
                 $criteria->condition = "gi.responsable = {$id_responsable} AND gn.fuente = '{$_GET['GestionDiaria']['fuente']}' AND gi.dealer_id = {$dealer_id}";
                 $criteria->group = "gi.id";
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
                 $tituloReporte = "Reporte General RGD Por Fuente: " . $_GET['GestionDiaria2']['fuente'];
                 $name_file = "Reporte General RGD por Fuente.xls";
@@ -943,9 +928,6 @@ class GestionInformacionController extends Controller {
                 }
                 $criteria->addCondition("gn.fuente = '{$_GET['GestionDiaria2']['fuente']}' AND gi.dealer_id = {$dealer_id}");
                 $criteria->group = "gi.id";
-                //die('sql: '.$sql);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
                 $title_busqueda = 'Búsqueda por Fuente: ';
                 $tituloReporte = "Reporte General RGD Por Fuente: " . $_GET['GestionDiaria2']['fuente'];
@@ -971,8 +953,6 @@ class GestionInformacionController extends Controller {
 
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria2']['categorizacion']}'");
                 $criteria->group = "gi.id";
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
 
                 $tituloReporte = "Reporte por Categorización : " . $_GET['GestionDiaria2']['categorizacion'];
@@ -1126,7 +1106,6 @@ class GestionInformacionController extends Controller {
                 $posts = GestionInformacion::model()->findAll($criteria);
                 $tituloReporte = "Reporte por Responsable : " . $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 $name_file = "Reporte RGD por Responsable.xls";
-                //die('before render seg');
             }
 
             /* -----------------BUSQUEDA POR RESPONSABLE PARA JEFE DE ALMACEN------------------ */
@@ -1142,12 +1121,10 @@ class GestionInformacionController extends Controller {
                 $search = 11;
                 
                 if ($cargo_id == 70) { // jefe de almacen
-                    //$sql .= "WHERE gi.dealer_id = {$dealer_id} AND ";
                     $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria2']['responsable']}");
                 } else {
                     $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria2']['responsable']}");
                 }
-                //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 $criteria->addCondition("gd.desiste = 0");
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
@@ -1268,6 +1245,7 @@ class GestionInformacionController extends Controller {
                         $criteria->addCondition("gd.seguimiento = 1 ");
                         $criteria->addCondition("gd.paso = 10");
                         $criteria->addCondition("gd.status = 1");
+                        break;
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
@@ -1312,6 +1290,7 @@ class GestionInformacionController extends Controller {
                         $criteria->addCondition("gd.seguimiento = 1 ");
                         $criteria->addCondition("gd.paso = 10");
                         $criteria->addCondition("gd.status = 1");
+                        break;
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
@@ -1331,52 +1310,7 @@ class GestionInformacionController extends Controller {
                 $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
                 
             }
-            // STATUS - RESPONSABLE
-            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 1 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
-                $search = 31;
-                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
-                switch ($_GET['GestionDiaria2']['status']) {
-                    case 'Cierre':
-                        $criteria->addCondition("gd.cierre = 1");
-                        $criteria->addCondition("gd.paso = 9");
-                        break;
-                    case 'Desiste':
-                        $criteria->addCondition("gd.desiste = 1");
-                        break;
-                    case 'Entrega':
-                        $criteria->addCondition("gd.entrega = 1");
-                        $criteria->addCondition("gd.paso = 9 ");
-                        break;
-                    case 'PrimeraVisita':
-                        $criteria->addCondition("gd.paso = '1-2'");
-                        break;
-                    case 'Seguimiento':
-                        $criteria->addCondition("gd.seguimiento = 1 ");
-                        break;
-                    case 'SeguimientoEntrega':
-                        $criteria->addCondition("gd.seguimiento_entrega = 1 ");
-                        break;
-                    case 'Vendido':
-                        $criteria->addCondition("gd.seguimiento = 1 ");
-                        $criteria->addCondition("gd.paso = 10");
-                        $criteria->addCondition("gd.status = 1");
-                    case 'qk':
-                        $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
-                        break; 
-                    default:
-                        break;
-                }
-                $criteria->group = "gi.id";
-                $criteria->order = "gi.id DESC";
-                //die($sql);
-                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
-                $posts = GestionInformacion::model()->findAll($criteria);
-                $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
-                
-            }
+            
             // CATEGORIZACION - RESPONSABLE
             if ($_GET['categorizacion2'] == 1 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
                 $search = 22;
@@ -1386,12 +1320,8 @@ class GestionInformacionController extends Controller {
                 $criteria->group = "gi.id";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
                 
-                //$posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
+                
                 $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']} y Responsable: {$responsable}";
             }
             // CATEGORIZACION - RESPONSABLE - SEGUIMIENTO
@@ -1424,11 +1354,7 @@ class GestionInformacionController extends Controller {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Responsable: {$responsable}, {$title_ag} ";
                 
             }
@@ -1464,11 +1390,7 @@ class GestionInformacionController extends Controller {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria2']['categorizacion']}, Responsable: {$responsable}, {$title_ag} ";
                 
             }
@@ -1522,6 +1444,7 @@ class GestionInformacionController extends Controller {
                         $criteria->addCondition("gd.seguimiento = 1 ");
                         $criteria->addCondition("gd.paso = 10");
                         $criteria->addCondition("gd.status = 1");
+                        break;
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
@@ -1534,8 +1457,6 @@ class GestionInformacionController extends Controller {
                 //$request = $con->createCommand($sql);
                 //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Fecha: {$_GET['GestionDiaria2']['fecha']}";
                 
             }
@@ -1554,38 +1475,12 @@ class GestionInformacionController extends Controller {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
                 $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Categorización: {$_GET['GestionDiaria']['categorizacion']}, Responsable: {$responsable} Fecha de Registro: {$_GET['GestionDiaria']['fecha']}";
                 
             }
             
-            // RESPONSABLE - FECHA DE REGISTRO
-            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 1 && $_GET['seguimiento_rgd2'] == 0 && $_GET['fecha_segumiento2'] == 0) {
-                $search = 30;
-                $params = explode('-', $_GET['GestionDiaria2']['fecha']);
-                $params1 = trim($params[0]);
-                $params2 = trim($params[1]);
-                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria2']['responsable']}");
-                $criteria->addCondition("(DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')");
-                $criteria->addCondition("gd.desiste = 0");
-                $fecha_actual = (string) date("Y/m/d");
-
-                $criteria->group = "gi.id";
-                $criteria->order = "gi.id DESC";
-                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
-                $posts = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
-                $tituloReporte = "Búsqueda por Responsable: {$responsable}, Fecha de Registro: {$_GET['GestionDiaria2']['fecha']}";
-                
-            }
+            
             // RESPONSABLE - SEGUIMIENTO
             if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 0 && $_GET['seguimiento_rgd2'] == 1 && $_GET['fecha_segumiento2'] == 0) {
                 $search = 28;
@@ -1623,45 +1518,6 @@ class GestionInformacionController extends Controller {
                 //$request = $con->createCommand($sql);
                 //$users = $request->queryAll();
                 $tituloReporte = "Búsqueda por Responsable: {$responsable}, {$title_ag} ";
-                
-            }
-            
-            // SEGUIMIENTO
-            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 0 && $_GET['fecha2'] == 0 && $_GET['seguimiento_rgd2'] == 1 && $_GET['fecha_segumiento2'] == 0) {
-                $search = 30;
-                
-                $criteria->addCondition("gd.desiste = 0");
-                $fecha_actual = (string) date("Y/m/d");
-                switch ($_GET['GestionDiaria2']['seguimiento']) {
-                    case 1: // TODAY
-                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ");
-                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
-                        break;
-                    case 2: // EMPTY DATE
-                        $criteria->addCondition("gd.proximo_seguimiento = '' ");
-                        $title_ag = "Agendamiento: Vacío";
-                        break;
-                    case 3: // RANGE DATE SEARCH
-                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
-                        $fecha1 = trim($params[0]);
-                        $fecha2 = trim($params[1]);
-                        $criteria->addCondition(" (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ");
-                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
-                        break;
-
-                    default:
-                        break;
-                }
-                $criteria->group = "gi.id";
-                $criteria->order = "gi.id DESC";
-                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-                //$request = $con->createCommand($sql);
-                //$posts = $request->queryAll();
-                $posts = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
-                $tituloReporte = "Búsqueda por {$title_ag} ";
-                
                 
             }
             // RESPONSABLE - SEGUIMIENTO - SEGUIMIENTO FECHA
@@ -1702,6 +1558,114 @@ class GestionInformacionController extends Controller {
                 $tituloReporte = "Búsqueda por Responsable: {$responsable}, {$title_ag} ";
                 
             }
+            // SEGUIMIENTO
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 0 && $_GET['fecha2'] == 0 && $_GET['seguimiento_rgd2'] == 1 && $_GET['fecha_segumiento2'] == 0) {
+                $search = 30;
+                
+                $criteria->addCondition("gd.desiste = 0");
+                $fecha_actual = (string) date("Y/m/d");
+                switch ($_GET['GestionDiaria2']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}' ");
+                        $title_ag = "Agendamiento para hoy: {$fecha_actual}";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = '' ");
+                        $title_ag = "Agendamiento: Vacío";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition(" (DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}') ");
+                        $title_ag = "Agendamiento para entre: {$fecha1} - {$fecha2} ";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                //$request = $con->createCommand($sql);
+                //$posts = $request->queryAll();
+                $posts = GestionInformacion::model()->findAll($criteria);
+                //$request = $con->createCommand($sql);
+                //$users = $request->queryAll();
+                $tituloReporte = "Búsqueda por {$title_ag} ";
+                
+                
+            }
+            // RESPONSABLE - FECHA DE REGISTRO
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 0 && $_GET['responsable2'] == 1 && $_GET['fecha2'] == 1 && $_GET['seguimiento_rgd2'] == 0 && $_GET['fecha_segumiento2'] == 0) {
+                $search = 31;
+                $params = explode('-', $_GET['GestionDiaria2']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria2']['responsable']}");
+                $criteria->addCondition("(DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}')");
+                $criteria->addCondition("gd.desiste = 0");
+                $fecha_actual = (string) date("Y/m/d");
+
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+                $posts = GestionInformacion::model()->findAll($criteria);
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $tituloReporte = "Búsqueda por Responsable: {$responsable}, Fecha de Registro: {$_GET['GestionDiaria2']['fecha']}";
+                
+            }
+            // STATUS - RESPONSABLE
+            if ($_GET['categorizacion2'] == 0 && $_GET['status2'] == 1 && $_GET['responsable2'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd2'] == 0 && $fechaPk2 == 1) {
+                $search = 32;
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria2']['responsable']}";
+                switch ($_GET['GestionDiaria2']['status']) {
+                    case 'Cierre':
+                        $criteria->addCondition("gd.cierre = 1");
+                        $criteria->addCondition("gd.paso = 9");
+                        break;
+                    case 'Desiste':
+                        $criteria->addCondition("gd.desiste = 1");
+                        break;
+                    case 'Entrega':
+                        $criteria->addCondition("gd.entrega = 1");
+                        $criteria->addCondition("gd.paso = 9 ");
+                        break;
+                    case 'PrimeraVisita':
+                        $criteria->addCondition("gd.paso = '1-2'");
+                        break;
+                    case 'Seguimiento':
+                        $criteria->addCondition("gd.seguimiento = 1 ");
+                        break;
+                    case 'SeguimientoEntrega':
+                        $criteria->addCondition("gd.seguimiento_entrega = 1 ");
+                        break;
+                    case 'Vendido':
+                        $criteria->addCondition("gd.seguimiento = 1 ");
+                        $criteria->addCondition("gd.paso = 10");
+                        $criteria->addCondition("gd.status = 1");
+                        break;
+                    case 'qk':
+                        $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
+                        break; 
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
+//                echo '<pre>';
+//               print_r($criteria);
+//               echo '</pre>';
+//               die();
+                $posts = GestionInformacion::model()->findAll($criteria);
+                $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
+                
+            }
+            
             //die('search type: '.$search);
 
             //$this->render('seguimiento');
