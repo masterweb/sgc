@@ -856,6 +856,26 @@ class Controller extends CController {
             return 'NA';
         }
     }
+    
+    public function getVersionesIds($cat) {
+        if($cat != 5){
+            $versiones = GestionModelos::model()->findAll(array('condition' => "categoria = {$cat}"));
+        }else{
+            $versiones = GestionModelos::model()->findAll();
+        }
+        
+        $id_versiones = '';
+        if ($versiones) {
+            foreach ($versiones as $value) {
+                $id_versiones .= $value['id_versiones'].',';
+                
+            }
+            $id_versiones = substr($id_versiones, 0, -1);
+            return $id_versiones;
+        } else {
+            return $id_versiones;
+        }
+    }
 
     public function getStatus($id) {
         $criteria = new CDbCriteria(array(
@@ -2916,6 +2936,13 @@ class Controller extends CController {
         $ft = GestionDiaria::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
         return $ft->fuente_contacto;
     }
+    
+    public function getFuenteContactoHistorial($id_informacion) {
+        $ft = GestionDiaria::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
+        return $ft->fuente_contacto_historial;
+    }
+    
+    
 
     /**
      * Funcion que retorna las provincias a las que pertenece un grupo de concesionarios
@@ -3295,7 +3322,9 @@ class Controller extends CController {
         }
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-                
+//        echo '<pre>';
+//        print_r($criteria);
+//        echo '</pre>';        
         $count = GestionFinanciamiento::model()->count($criteria);
         return $count;
     }
@@ -3305,14 +3334,13 @@ class Controller extends CController {
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
         else
            $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
-        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
-        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
         $criteria = new CDbCriteria;
         //$criteria->select = "*";
         $criteria->alias = 'gt';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        $criteria->join .= "LEFT JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ";
+        
         if($search['grupo']){
             
         }
@@ -3329,13 +3357,46 @@ class Controller extends CController {
         $count = GestionTestDrive::model()->count($criteria);
         return $count;
     }
+    
+    public function getTestDriveTotal($mes, $year, $dia, $flag, $search, $categoria) {
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        $criteria = new CDbCriteria;
+        //$criteria->select = "*";
+        $criteria->alias = 'gt';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ";
+        
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gt.test_drive = 1 AND gt.order = 1");
+        if($flag){
+            $criteria->addCondition("DATE(gt.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gt.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        //$criteria->addCondition("DATE(gt.fecha) ".$srf);
+        $versiones = $this->getVersionesIds($categoria);
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        
+        $count = GestionTestDrive::model()->count($criteria);
+        return $count;
+    }
     /**
      * Returns count of sales vehicle's version in date range
-     * @param int $mes
-     * @param atring $versiones
-     * @param int $year
-     * @param string $dia
-     * @return int
+     * @param int $mes Mes actual
+     * @param string $versiones Lista de versiones del modelo de auto
+     * @param int $year Year en curso
+     * @param string $dia Dia actual
+     * @param boolean $flag Busqueda entre fechas 1 o individual 0
+     * @param array $search Array con parametros de busqueda
+     * @return int $count Numero de coincidencias
      */
     public function getVentasVersion($mes, $versiones, $year, $dia, $flag, $search) {
         if($search['fecha'])
@@ -3348,8 +3409,9 @@ class Controller extends CController {
         $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gi.id ";
+        
         
         if($search['grupo']){
             
@@ -3364,6 +3426,56 @@ class Controller extends CController {
         //$criteria->addCondition("DATE(gf.fecha) ".$srf);
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+//        echo '<pre>';
+//        print_r($criteria);
+//        echo '</pre>'; 
+        $count = GestionFactura::model()->count($criteria);
+        return $count;
+    }
+    
+    /**
+     * Returns count of sales vehicle's version in date range
+     * @param int $mes Mes actual
+     * @param int $year Year en curso
+     * @param string $dia Dia actual
+     * @param boolean $flag Busqueda entre fechas 1 o individual 0
+     * @param array $search Array con parametros de busqueda
+     * @param int $categoria Categoria de grupo de autos
+     * @return int $count Numero de coincidencias
+     */
+    public function getVentasTotal($mes, $year, $dia, $flag, $search, $categoria) {
+        
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        
+        
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gd.cierre = 1 AND gf.status = 'ACTIVO'");
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        //$criteria->addCondition("DATE(gf.fecha) ".$srf);
+        $versiones = $this->getVersionesIds($categoria);
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+//        echo '<pre>';
+//        print_r($criteria);
+//        echo '</pre>'; 
         $count = GestionFactura::model()->count($criteria);
         return $count;
     }
@@ -3711,6 +3823,11 @@ class Controller extends CController {
         if ($_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
             $search_type = 21;
         }
+        
+        // STATUS - CATEGORIZACION - RESPONSABLE
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 45;
+        }
         // CATEGORIZACION - RESPONSABLE
         if ($_GET['categorizacion'] == 1 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
             $search_type = 22;
@@ -3802,6 +3919,11 @@ class Controller extends CController {
         if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
                 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 39;
+        }
+        
+        // RESPONSABLE - FECHA DE REGISTRO
+        if ($_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 44;
         }
         
         // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
@@ -4363,7 +4485,9 @@ class Controller extends CController {
                 }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
                 //die('fecha actual: '.$fecha_actual);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
@@ -4906,6 +5030,51 @@ class Controller extends CController {
 //                print_r($criteria);
 //                echo '</pre>';
                 $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 44: // SEARCH BY RESPONSABLE AND REGISTER DATE
+                $params = explode('-', $_GET['GestionDiaria']['fecha']);
+                $params1 = trim($params[0]);
+                $params2 = trim($params[1]);
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
+                break;
+            case 45: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
+                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>, Responsable: <strong>{$responsable}</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
