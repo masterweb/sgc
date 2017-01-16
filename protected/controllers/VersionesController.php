@@ -164,7 +164,7 @@ class VersionesController extends Controller {
         $criteria = new CDbCriteria(array(
                     'condition' => "id_modelos='{$idVersion}'"
                 ));
-        $versiones = Versiones::model()->findAll($criteria); 
+        $versiones = Versiones::model()->findAll(array('condition' => "id_modelos='{$idVersion}' AND `status` = 1")); 
         foreach ($versiones as $model) {
             $data .= '<option value="' . $model['id_versiones'] . '">' . $model['nombre_version'].'</option>';
         }
