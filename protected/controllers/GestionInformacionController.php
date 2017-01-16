@@ -1064,7 +1064,7 @@ class GestionInformacionController extends Controller {
                     $criteria->addCondition("gi.responsable = {$id_responsable}");
                 }
                 $criteria->addCondition(" (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')");
-                $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$params1}' AND '{$params2}')");
+                $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$params1}' AND '{$params2}'");
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
