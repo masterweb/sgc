@@ -130,7 +130,7 @@ class Modelos {
     function getVersiones($id, $versiones, $versiones_activas) {
         $con = Yii::app()->db;
 
-        $sqlModelos_nv = "SELECT id_versiones, id_modelos, nombre_version from versiones WHERE id_modelos = '{$id}'";
+        $sqlModelos_nv = "SELECT id_versiones, id_modelos, nombre_version from versiones WHERE id_modelos = '{$id}' AND `status` = 1";
         $requestModelos_nv = $con->createCommand($sqlModelos_nv);
         $versiones_car = $requestModelos_nv->queryAll();
 
