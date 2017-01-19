@@ -33,6 +33,7 @@
  * @property string $tipo_form_web
  * @property string $presupuesto
  * @property integer $modelo
+ * @property integer $id_solicitud
  * @property integer $version
  * @property string $marca_usado
  * @property string $modelo_usado
@@ -42,6 +43,7 @@
  * @property integer $senae
  * @property string $tipo_ex
  * @property integer $id_comentario
+ * @property string $medio
  * 
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
@@ -84,7 +86,7 @@ class GestionInformacion extends CActiveRecord {
             array('nombres, apellidos, email, celular', 'required','on' => 'prospeccion'),
             array('nombres, apellidos, cedula, celular', 'required','on' => 'trafico'),
             array('nombres, direccion', 'required','on' => 'createc'),
-            array('concesionario, modelo, version', 'numerical', 'integerOnly' => true),
+            array('concesionario, modelo, id_solicitud, version', 'numerical', 'integerOnly' => true),
             array('nombres, apellidos, email, ciudad', 'length', 'max' => 100),
             array('nombres, apellidos', 'match', 'pattern' => '/^[a-zA-Z áéíóúÁÉÍÓÚÑñ.\s]+$/', 'message' => "{attribute} debe contener sólo letras"),
             array('cedula', 'length', 'max' => 20),
@@ -109,7 +111,7 @@ class GestionInformacion extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'gestionVehiculos' => array(self::HAS_MANY, 'GestionVehiculo', 'id_informacion'),
+
         );
     }
 
@@ -152,6 +154,7 @@ class GestionInformacion extends CActiveRecord {
             'senae' => 'senae',
             'tipo_ex' => 'Tipo Ex',
             'id_comentario' => 'Id Comentario',
+            'medio' => 'Medio',
         );
     }
 

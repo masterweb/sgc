@@ -118,6 +118,7 @@ class GestionInformacionController extends Controller {
             $model->id_cotizacion = $_POST['GestionInformacion']['id_cotizacion'];
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
             $model->apellidos = ucfirst($_POST['GestionInformacion']['apellidos']);
+            $model->medio = $_POST['GestionInformacion']['medio'];
             if ($_POST['tipo'] == 'gestion'):
                 $model->provincia_conc = $_POST['GestionInformacion']['provincia_conc'];
                 $model->ciudad_conc = $_POST['GestionInformacion']['ciudad_conc'];
