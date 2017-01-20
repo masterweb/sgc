@@ -897,7 +897,7 @@ $tipo = $_GET['tipo'];
                     </div>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="">¿Por qué medio escucho sobre nuestros productos?</label>
+                            <label for="">¿En qué medio vio/escuchó la publicidad que le impulsó a visitarnos?</label>
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
                                 'television' => 'Televisión',
                                 'prensa' => 'Prensa',
