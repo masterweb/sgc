@@ -35,6 +35,20 @@ $(document).ready(function() {
             $('#responsable').val(0);
         }
     });
+    $('#trafico_categoria').change(function(){
+        if ($(this).val() != ''){
+            $('#categoria').val(1);
+        } else{
+            $('#categoria').val(0);
+        }
+    });
+    $('#trafico_year').change(function(){
+        if ($(this).val() != ''){
+            $('#year').val(1);
+        } else{
+            $('#year').val(0);
+        }
+    });
     $('#trafico_fecha1').change(function(){
         if ($(this).val() != ''){
             $('#fecha1').val(1);
@@ -68,15 +82,21 @@ $(document).ready(function() {
     
     $('#trafico_provincia').change(function(){
         var value = $(this).attr('value');
+        var cargo_id = <?php echo $vartrf['cargo_id']; ?>;
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getGrupos"); ?>',
             beforeSend: function (xhr) {
                 $('#info5').show();  // #info must be defined somehwere
             },
-            type: 'POST', dataType: 'json', data: {id: value},
+            type: 'POST', dataType: 'json', data: {id: value,area_id : <?php echo $vartrf['area_id']; ?>, grupo_id: <?php echo $vartrf['grupo_id']; ?>, cargo_id: cargo_id},
             success: function (data) {
                 $('#info5').hide();
-                $('#trafico_grupo').html(data.data);
+                // GERENTE COMERCIAL
+                if(cargo_id == 69){
+                    $('#trafico_concesionario').html(data.data);
+                }else{
+                    $('#trafico_grupo').html(data.data);
+                }
             }
         });
     });
@@ -252,10 +272,18 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
     $area = 1;
 }
+echo 'flag search: '.$vartrf['flag_search'];
 //echo '<pre>';
-//echo print_r($vartrf['search']['dia_anterior']);
+//echo print_r($vartrf);
 //echo '</pre>';
 $where = $vartrf['search']['where'];
+$vartrf['id_modelos'];
+$vartrf['venta_nacional_categoria'] = array();
+$vartrf['testdrive_nacional_categoria'] = array();
+//echo '<pre>';
+//echo print_r($vartrf['versiones']);
+//echo '</pre>';
+//die();
 ?>
 <div id="bg_black" style="display: none;">
     <div class="cssload-aim"></div>
@@ -265,6 +293,14 @@ $where = $vartrf['search']['where'];
 <div class="row">
     <h1 class="tl_seccion">Reporte de Tráfico</h1>
 </div>
+    <div class="row">
+        <div class="col-md-2">
+            <a href="<?php echo Yii::app()->createUrl('trafico/graficos', array())?>" class="btn btn-danger">Gráficos</a>
+            
+        </div>
+        <div class="col-md-12"><hr /></div>
+        
+    </div>
 <div class="row">
     <div class="col-md-8">
         <div class="highlight">
@@ -293,35 +329,25 @@ $where = $vartrf['search']['where'];
                     <div class="col-md-4">
                         <label for="">Año</label>
                         <select name="GestionDiaria[year]" id="trafico_year" class="form-control">
-                            <option value="2016" selected="">2016</option>
-                            <option value="2017">2017</option>
+                            <option value="2016">2016</option>
+                            <option value="2017" selected="">2017</option>
                         </select>
                     </div>
                 </div>
                 <div class="row">
+                    <?php if($vartrf['cargo_id'] == 69 || $vartrf['area_id'] == 4 || $vartrf['area_id'] == 12 || $vartrf['area_id'] == 13 || $vartrf['area_id'] == 14): ?>
                     <div class="col-md-6">
                         <label for="Trafico_provincia">Provincia</label>
                         <select name="GestionDiaria[provincia]" id="trafico_provincia" class="form-control">
-                            <option value="">--Seleccione provincia--</option>
-                            <option value="1">Azuay</option>
-                            <option value="5">Chimborazo</option>
-                            <option value="7">El Oro</option>
-                            <option value="8">Esmeraldas</option>
-                            <option value="10">Guayas</option>
-                            <option value="11">Imbabura</option>
-                            <option value="12">Loja</option>
-                            <option value="13">Los Ríos</option>
-                            <option value="14">Manabí</option>
-                            <option value="16">Napo</option>
-                            <option value="18">Pastaza</option>
-                            <option value="19">Pichincha</option>
-                            <option value="21">Tsachilas</option>
-                            <option value="23">Tungurahua</option>
+                            <?php echo $this->getProvincias($vartrf); ?>
                         </select>
                     </div>
+                    <?php endif; ?>
+                    <?php if($vartrf['area_id'] == 4 || $vartrf['area_id'] == 12 || $vartrf['area_id'] == 13 || $vartrf['area_id'] == 14): ?>
                     <div class="col-md-6">
                         <label for="">Grupo</label>
                         <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
+                        
                         <select name="GestionDiaria[grupo]" id="trafico_grupo" class="form-control">
                             <option value="">--Seleccione Grupo--</option>
                             <option value="6">AUTHESA</option>
@@ -333,34 +359,59 @@ $where = $vartrf['search']['where'];
                             <option value="4">IOKARS</option>
                         </select>
                     </div>
+                    <?php endif; ?>
                 </div>
                 <div class="row">
+                    <?php if($vartrf['cargo_id'] == 69 || $vartrf['cargo_id'] == 70 || $vartrf['area_id'] == 4 || $vartrf['area_id'] == 12 || $vartrf['area_id'] == 13 || $vartrf['area_id'] == 14): ?>
                     <div class="col-md-6">
                         <label for="">Concesionario</label>
                         <select name="GestionDiaria[concesionario]" id="trafico_concesionario" class="form-control">
-                            <option value="">--Seleccione concesionario--</option>
+                            <?php if($vartrf['cargo_id'] == 69){echo $this->getConcesionarios($vartrf);}?>
+                            <?php if($vartrf['cargo_id'] == 70){echo $this->getConcesionariosSelected($vartrf);} ?>
                         </select>
                     </div>
+                    <?php endif; ?>
+                    <?php if($vartrf['cargo_id'] == 70 || $vartrf['cargo_id'] == 69 || $vartrf['area_id'] == 4 || $vartrf['area_id'] == 12 || $vartrf['area_id'] == 13 || $vartrf['area_id'] == 14): ?>
                     <div class="col-md-6">
                         <label for="">Responsable</label>
                         <select name="GestionDiaria[responsable]" id="trafico_responsable" class="form-control">
+                            <?php if($vartrf['cargo_id'] == 70){echo $this->getResponsables($vartrf);} else { ?>
                             <option value="">--Seleccione responsable-</option>
+                            <?php }?>
                         </select>
                         
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="">Categoría</label>
+                        <select name="GestionDiaria[categoria]" id="trafico_categoria" class="form-control">
+                            <option value="">--Seleccione Categoria--</option>
+                            <option value="5">Todos</option>
+                            <option value="1">Autos</option>
+                            <option value="2">SUV</option>
+                            <option value="3">MPV</option>
+                            <option value="4">Comerciales</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
                         <button type="button" class="btn btn-warning" aria-label="Close" onclick="tabletoExcel('main_info_1', 'main_info_1');">Descargar Excel</button>
+                        <!--<button type="button" class="btn btn-warning" aria-label="Close" onclick="fnExcelReport();">Descargar Excel</button>-->
                         <input type="hidden" name="fecha1" id="fecha1" value="0" />
                         <input type="hidden" name="fecha2" id="fecha2" value="0" />
                         <input type="hidden" name="provincia" id="provincia" value="0" />
-                        <input type="hidden" name="grupo" id="grupo" value="0" />
-                        <input type="hidden" name="concesionario" id="concesionario" value="0" />
+                        <input type="hidden" name="grupo" id="grupo" value="<?php echo ($area == 0 && ($vartrf['cargo_id'] == 69)) ? 1 : 0;  ?>" />
+                        <input type="hidden" name="concesionario" id="concesionario" value="<?php echo ($vartrf['cargo_id'] == 70) ? 1 : 0 ?>" />
                         <input type="hidden" name="responsable" id="responsable" value="0" />
+                        <input type="hidden" name="categoria" id="categoria" value="0" />
+                        <input type="hidden" name="year" id="year" value="0" />
                     </div>
                 </div>
+                
                 <?php $this->endWidget(); ?>
             </div>
         </div>
@@ -377,7 +428,10 @@ $where = $vartrf['search']['where'];
                 </tr>
                 <?php
                 $clas_cer = 1;
+                $flag = 0;
                 foreach ($vartrf['modelos'] as $val) {
+                    //echo $flag.'<br />';
+                    //echo $vartrf['versiones'][$flag].'<br />';
                     $vartrf['trafico_suma'] = 0;
                     $vartrf['proforma_suma'] = 0;
                     $vartrf['testdrive_suma'] = 0;
@@ -386,6 +440,7 @@ $where = $vartrf['search']['where'];
                     $vartrf['proforma'] = array();
                     $vartrf['testdrive'] = array();
                     $vartrf['ventas'] = array();
+                    
                     ?>
                     <tr>
                         <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle"><span class="cir cir-<?php echo $val['id']; ?>"></span><?php echo '<strong>' . $val['nombre_modelo'] . '</strong>'; ?></td>
@@ -394,7 +449,7 @@ $where = $vartrf['search']['where'];
                         <td bgcolor="#D9534F" class="tr-f">Funnel</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td bgcolor="#D9534F" class="tr-f dde_' . $i . '_' . $val['id'] . '"  id="dde_' . $i . '_' . $val['id'] . '" onclick="detail(\'' . $val['id_versiones'] . '\',\'' . $vartrf['dia_inicial'] . '\',\'' . $vartrf['dia_actual'] . '\',\'' . $vartrf['year_actual'] . '\',\'' . $vartrf['fechas_date'][$i] . '\',' . $val['id'] . ',\'' . $val['nombre_modelo'] . '\',' . $i . ');" data-vec="0">' . $vartrf['fechas'][$i] . '</td>';
+                            echo '<td bgcolor="#D9534F" class="tr-f dde_' . $i . '_' . $val['id'] . '"  id="dde_' . $i . '_' . $val['id'] . '" onclick="detail(\'' . $vartrf['versiones'][$flag] . '\',\'' . $vartrf['dia_inicial'] . '\',\'' . $vartrf['dia_actual'] . '\',\'' . $vartrf['year_actual'] . '\',\'' . $vartrf['fechas_date'][$i] . '\',' . $val['id'] . ',\'' . $val['nombre_modelo'] . '\',' . $i . ','.$vartrf['categoria'].');" data-vec="0">' . $vartrf['fechas'][$i] . '</td>';
                         }
                         ?>
                         <td bgcolor="#D9534F" class="tr-f">Total</td>
@@ -403,7 +458,7 @@ $where = $vartrf['search']['where'];
                         <td>Tráfico</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            $vartrf['trafico'][] = $this->getTraficoVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search']);
+                            $vartrf['trafico'][] = $this->getTraficoVersion($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
                             $vartrf['trafico_suma'] += $vartrf['trafico'][$i];
                             $vartrf['trafico_suma_total'][$i] += $vartrf['trafico'][$i];
                             echo '<td>' . $vartrf['trafico'][$i] . '</td>';
@@ -415,7 +470,7 @@ $where = $vartrf['search']['where'];
                         <td>Proforma</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            $vartrf['proforma'][] = $this->getProformaVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search']);
+                            $vartrf['proforma'][] = $this->getProformaVersion($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
                             $vartrf['proforma_suma'] += $vartrf['proforma'][$i];
                             $vartrf['proforma_suma_total'][$i] += $vartrf['proforma'][$i];
                             echo '<td>' . $vartrf['proforma'][$i] . '</td>';
@@ -427,7 +482,7 @@ $where = $vartrf['search']['where'];
                         <td>Test Drive</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            $vartrf['testdrive'][] = $this->getTestDriveVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search']);
+                            $vartrf['testdrive'][] = $this->getTestDriveVersion($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
                             $vartrf['testdrive_suma'] += $vartrf['testdrive'][$i];
                             $vartrf['testdrive_suma_total'][$i] += $vartrf['testdrive'][$i];
                             echo '<td>' . $vartrf['testdrive'][$i] . '</td>';
@@ -439,7 +494,7 @@ $where = $vartrf['search']['where'];
                         <td>Ventas</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            $vartrf['ventas'][] = $this->getVentasVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search']);
+                            $vartrf['ventas'][] = $this->getVentasVersion($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
                             $vartrf['ventas_suma'] += $vartrf['ventas'][$i];
                             $vartrf['venta_suma_total'][$i] += $vartrf['ventas'][$i];
                             echo '<td>' . $vartrf['ventas'][$i] . '</td>';
@@ -474,21 +529,10 @@ $where = $vartrf['search']['where'];
                     
                     <?php
                     $clas_cer++;
+                    $flag++;
                 }
                 ?>
                     <?php 
-//                    echo '<pre>';
-//                    print_r($vartrf['trafico_suma_total']);
-//                    echo '</pre>';
-//                    echo '<pre>';
-//                    print_r($vartrf['proforma_suma_total']);
-//                    echo '</pre>';
-//                    echo '<pre>';
-//                    print_r($vartrf['testdrive_suma_total']);
-//                    echo '</pre>';
-//                    echo '<pre>';
-//                    print_r($vartrf['venta_suma_total']);
-//                    echo '</pre>';
                     ?>
                     <tr>
                         <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle-t">TOTAL</td>
@@ -536,8 +580,10 @@ $where = $vartrf['search']['where'];
                         <td>Ventas</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $vartrf['venta_suma_total'][$i] . '</td>';
-                            $vartrf['ventas_nacional'] += $vartrf['venta_suma_total'][$i];
+                            $vartrf['venta_nacional_categoria'][] = $this->getVentasTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'], $vartrf['categoria']);
+                            echo '<td>' . $vartrf['venta_nacional_categoria'][$i] . '</td>';
+                            $vartrf['ventas_nacional'] += $vartrf['venta_nacional_categoria'][$i];
+                            
                         }
                         ?>
                         <td><?php echo $vartrf['ventas_nacional']; ?></td>
@@ -555,7 +601,7 @@ $where = $vartrf['search']['where'];
                         <td>Tasa de Cierre</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $this->getTasaCierre($vartrf['venta_suma_total'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
+                            echo '<td>' . $this->getTasaCierre($vartrf['venta_nacional_categoria'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
                         }
                         ?>
                         <td><?php echo $this->getTasaCierre($vartrf['ventas_nacional'], $vartrf['trafico_nacional']); ?></td>
@@ -568,11 +614,12 @@ $where = $vartrf['search']['where'];
 </div>
 </div>
 <script type="text/javascript">
-    function detail(versiones, dia_inicial, dia_actual, year, mes, id, nombre_modelo, i) {
+    function detail(versiones, dia_inicial, dia_actual, year, mes, id, nombre_modelo, i, categoria) {
         var where = '<?php echo $where; ?>';
         //console.log('i: '+i);
         fr = 0;
-        var id_modelos = [1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17];
+        var id_modelos = [<?php echo implode(',',  $vartrf['id_modelos'] ); ?>];
+        //var id_modelos = [1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17];
         for (j=0; j < id_modelos.length; j++){
             //console.log('dde_' + i + '_' + id_modelos[j]);
             vecobj = document.getElementById('dde_' + i + '_' + id_modelos[j]);
@@ -598,7 +645,7 @@ $where = $vartrf['search']['where'];
                 type: 'POST',
                 dataType: 'json',
                 data: {versiones: versiones, dia_inicial: dia_inicial, dia_actual: dia_actual,year: year,
-                mes: mes, nombre_modelo: nombre_modelo, id: id, i:i,where : where},
+                mes: mes, nombre_modelo: nombre_modelo, id: id, i:i,where : where, categoria: categoria},
                 success: function (data) {
                     //console.log(data);
                     //$('.cer-' + id).append(data);
@@ -674,6 +721,47 @@ $where = $vartrf['search']['where'];
         window.location.href = uri + base64(format(template, ctx));
 
     }
+    function fnExcelReport()
+    {
+    var tab_text = '<table border="1px" style="font-size:13px" ">';
+    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><?xml version="1.0" encoding="UTF-8" standalone="yes"?><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    var textRange; 
+    var j = 0;
+    var tab = document.getElementById('main_info_1'); // id of table
+    var lines = tab.rows.length;
+
+    // the first headline of the table
+    if (lines > 0) {
+        tab_text = tab_text + '<tr bgcolor="#DFDFDF">' + tab.rows[0].innerHTML + '</tr>';
+    }
+
+    // table data lines, loop starting from 1
+    for (j = 1 ; j < lines; j++) {     
+        tab_text = tab_text + "<tr>" + tab.rows[j].innerHTML + "</tr>";
+    }
+
+    tab_text = tab_text + "</table>";
+    tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");             //remove if u want links in your table
+    tab_text = tab_text.replace(/<img[^>]*>/gi,"");                 // remove if u want images in your table
+    tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, "");    // reomves input params
+    // console.log(tab_text); // aktivate so see the result (press F12 in browser)
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE "); 
+
+     // if Internet Explorer
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write(tab_text);
+        txtArea1.document.close();
+        txtArea1.focus(); 
+        sa = txtArea1.document.execCommand("SaveAs", true, "DataTableExport.xlsx");
+    }  
+    else // other browser not tested on IE 11
+        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+
+    return (sa);
+}   
 </script>
 
 
