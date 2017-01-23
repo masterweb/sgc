@@ -896,14 +896,16 @@ $tipo = $_GET['tipo'];
 
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="">¿En qué medio vio/escuchó la publicidad que le impulsó a visitarnos?</label>
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
                                 'television' => 'Televisión',
-                                'prensa' => 'Prensa',
+                                'prensa_escrita' => 'Prensa escrita',
+                                'visita_directa' => 'Visita directa',
                                 'radio' => 'Radio',
-                                'referencia' => 'Referencia',
-                                'redessociales' => 'Redes Sociales'), 
+                                'referencia' => 'Referencia de un tercero',
+                                'internet' => 'Internet',
+                                'redessociales' => 'Redes sociales'), 
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
