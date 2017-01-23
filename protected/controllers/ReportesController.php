@@ -50,6 +50,7 @@ class ReportesController extends Controller {
 
         $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
+        $varView['area_id'] = (int) Yii::app()->user->getState('area_id');
         $varView['cargo_adicional'] = (int) Yii::app()->user->getState('cargo_adicional');
         //$varView['cargo_adicional'] = 85;
         $varView['id_responsable'] = Yii::app()->user->getId();
@@ -131,6 +132,8 @@ class ReportesController extends Controller {
         $bdcfalse = ' AND gi.bdc = 0 ';
         if($tipo == 'externas')
             $bdcfalse = ' AND gi.bdc = 1 ';
+        if($tipo == 'prospeccionweb')
+            $bdcfalse = ' AND gi.bdc = 1 ';
         // GRUPO ASIAUTO Y KMOTOR CON CARGO JEFE VENTAS WEB O CARGO ADICIONAL ASESOR VENTAS WEB. SUMA AL EMBUDO BDC = 1
         if(($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && ($varView['cargo_id'] == 85 || $varView['cargo_id'] == 86)){
             //die('enter gret');
@@ -173,10 +176,15 @@ class ReportesController extends Controller {
                 $varView['traficoAcumulado']['ini_filtros'] = $traficoAcumulado->ini_filtros($TAactivo, $TAmodelo);
                 //$INERmodelos = ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
+                if($tipo == 'prospeccionweb'){
+                    $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
+                    $id_persona = " u.cargo_id = 86 "; 
+                }
+                   
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
                 $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
-                $join_ext = 'INNER JOIN usuarios u ON u.id = gi.responsable ';
+                
                 $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> ' . $this->getNombreGrupo($varView['grupo_id']);
                 break;
@@ -194,7 +202,8 @@ class ReportesController extends Controller {
                         $dealerList = implode(', ', $array_dealers);
                         $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id IN (70,71) ";
                     }
-                    
+                    if($tipo == 'prospeccionweb')
+                        $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_adicional = 86 "; 
                 }
                 break;
             case 71: // asesor de ventas TERMINADO------>
@@ -218,13 +227,15 @@ class ReportesController extends Controller {
             case 86:// asesor de ventas externas------> TRABAJAR
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
                 break;
-            case 85:// jefe de ventas web------> TRABAJAR
+            case 85:// jefe de ventas web------> PROBAR
                 $varView['lista_conce'] = $GF->getConcecionario((int) Yii::app()->user->getState('grupo_id'));
                 //print_r($varView['lista_conce']);
                 $array_dealers = $this->getDealerGrupoConc($varView['grupo_id']);
                 $dealerList = implode(', ', $array_dealers);
                 $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id = 86 ";
+                if($tipo == 'prospeccionweb')
+                    $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
         }
 
