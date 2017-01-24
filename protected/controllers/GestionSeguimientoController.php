@@ -117,7 +117,7 @@ class GestionSeguimientoController extends Controller {
         if ($modelo == 86 || $modelo == 93) {
             $general .= ' garantía de 7 años o 120.000 Km, ';
         } else {
-            $general .=' garantía de 5 años o 100.000 Km, ';
+            $general .=' garantía de 7 años o 150.000 Km, ';
         }
         $general .= 'para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro <a href="https://www.kia.com.ec/concesionarios.html"> concesionario KIA a nivel nacional</a>. 
                                         </p><br />

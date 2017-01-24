@@ -3139,7 +3139,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 if ($modelo == 86) {
                     $general .= ' garantía de 7 años o 120.000 Km, ';
                 } else {
-                    $general .=' garantía de 5 años o 100.000 Km, ';
+                    $general .=' garantía de 7 años o 150.000 Km, ';
                 }
                 $general .= 'para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro <a href="https://www.kia.com.ec/concesionarios.html"> concesionario KIA a nivel nacional</a>. 
                                         </p><br />
@@ -3220,7 +3220,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             KIA MOTORS le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana. 
                             </p><br />
                             <p>
-                            Le recordamos que para mantener su vehículo cuenta con una garantía de 5 años o 100.000 Km. (EN CASO DE K3000 se debe poner garantía de 7 años o 120.000 Km) para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro concesionario KIA a nivel nacional. 
+                            Le recordamos que para mantener su vehículo cuenta con una garantía de 7 años o 150.000 Km. (EN CASO DE K3000 se debe poner garantía de 7 años o 120.000 Km) para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro concesionario KIA a nivel nacional. 
                             </p><br />
                             <p>
                             Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA, donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.
@@ -3293,6 +3293,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $tipo_seg = isset($_POST["tipo_seg"]) ? $_POST["tipo_seg"] : "";
         $provincia = isset($_POST["provincia"]) ? $_POST["provincia"] : "";
+        //die('id: '.$id);
         //if (empty($tipo_seg)) {
             $criteria = new CDbCriteria;
             if(empty($provincia)){
@@ -3300,7 +3301,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }else{
                 $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id} AND provincia = {$provincia}", 'order' => 'nombre asc'));
             }
-            
+            if($provincia == 1000){
+                $conc = Concesionarios::model()->findAll(array('condition' => "id_grupo={$id}", 'order' => 'nombre asc'));
+            }
+            if($id == 1000){
+                $conc = Concesionarios::model()->findAll(array('condition' => "provincia <> 0", 'order' => 'nombre asc'));
+            }
             $data = '<option value="">--Seleccione concesionario--</option>';
             foreach ($conc as $ciudad) {
                 $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
@@ -3811,4 +3817,73 @@ La organización no asume responsabilidad sobre información, opiniones o criter
       } */
 
     //
+//    public function actionSol(){
+//        $criteria = new CDbCriteria;
+//        $criteria->select = "gp.*, gc.id_solicitud ";
+//        $criteria->join = "INNER JOIN gestion_solicitud_credito gc ON gc.id_informacion = gp.id_informacion";
+//        $criteria->alias = 'gp';
+//        $criteria->condition = "gc.id_solicitud IS NULL";
+//        $criteria->group = "gp.id_vehiculo";
+//        $res = GestionProforma::model()->findAll($criteria);
+//        foreach ($res as $value) {
+//            $model = GestionSolicitudCredito::model()->find(array('condition' => "id_vehiculo = {$value['id_vehiculo']} AND id_informacion = {$value['id_informacion']}"));
+//            if(!empty($model)){
+//                $model->id_solicitud = $value['id'];
+//                if($model->update()){
+//                    echo 'update id_solicitud: '.$value['id'].'<br />'; 
+//                }
+//            }
+//        }
+//    }
+//    public function actionInsertqk() {
+//        $sql = 'SELECT ad.* from form_cotizacion ad
+//        WHERE ad.id_origen = 8 AND ad.dealerid = 68
+//        GROUP BY ad.cedula';
+//        $conc = Yii::app()->db2->createCommand($sql)->queryAll();
+//        $fecha = date("Y-m-d H:i:s");
+//        foreach ($conc as $value) {
+//            $sq = "INSERT INTO gestion_nueva_cotizacion (fuente,identificacion,cedula,fecha,lugar_exhibicion) "
+//                            . " VALUES('exhibicion','ci','{$value["cedula"]}','{$fecha}','Exhibición Quiero un Kia')";
+//                            
+//            $conc1 = Yii::app()->db->createCommand($sq)->execute();
+//            $lastIdCotizacion = Yii::app()->db->getLastInsertID();
+//            
+//
+//            $query = "INSERT INTO gestion_informacion "
+//                    . "(nombres, apellidos, cedula,email,celular,telefono_oficina, telefono_casa, "
+//                    . "provincia_conc,ciudad_conc,concesionario,responsable,dealer_id, "
+//                    . "fecha, direccion, provincia_domicilio, ciudad_domicilio, id_cotizacion, bdc) "
+//                    . "VALUES('{$value["nombre"]}', '{$value["apellido"]}', '{$value["cedula"]}','{$value["email"]}','{$value["celular"]}','{$value["telefono"]}','{$value["telefono"]}',"
+//                    . "{$value["cityid"]},{$value["cityid"]},{$value["dealerid"]},580,{$value["dealerid"]},"
+//                    . "'{$fecha}','{$value["direccion"]}',{$value["cityid"]},{$value["cityid"]},{$lastIdCotizacion},0)";
+//
+//
+//            $conc2 = Yii::app()->db->createCommand($query)->execute();
+//            $lastIdCasos = Yii::app()->db->getLastInsertID();
+//            echo('lastIdCasos: '.$lastIdCasos.'<br />');
+//
+//            $queryConsulta = "INSERT INTO gestion_consulta ("
+//                    . "preg7, id_informacion) "
+//                    . "VALUES('Hot C (hasta 30 dias)',{$lastIdCasos})";
+//            $conc3 = Yii::app()->db->createCommand($queryConsulta)->execute();
+//
+//            $fecha_actual = strftime("%Y/%m/%d %X ", time());
+//            $fecha_posterior = strtotime('+2 day', strtotime($fecha_actual));
+//            $fecha_posterior = date('Y-m-d H:i:s', $fecha_posterior); // suma dos dias a la fecha de proximo seguimiento
+//
+//            $queryGestion = "INSERT INTO gestion_diaria (id_informacion, id_vehiculo, observaciones,medio_contacto,"
+//                    . "fuente_contacto, codigo_vehiculo, prospeccion, status, paso,"
+//                    . "proximo_seguimiento, fecha) "
+//                    . "VALUES ({$lastIdCasos},{$value["id_modelos"]},'Prospeccion','exhquk',"
+//                    //. "'web',{$value["id_version},1,1,'1-2',"
+//                    . "'exhibicion quierounkia',{$value["id_version"]},1,1,'4',"
+//                    . "'{$fecha_posterior}','{$fecha}')";
+//            $conc4 = Yii::app()->db->createCommand($queryGestion)->execute();
+//
+//            // INSERTAR VEHICULO EN TABLA gestion_vehiculo del SGC
+//            $queryVehiculo = "INSERT INTO gestion_vehiculo (id_informacion, modelo, version, fecha) "
+//                    . " VALUES({$lastIdCasos},{$value["id_modelos"]},{$value["id_version"]},'{$fecha}')";
+//            $conc4 = Yii::app()->db->createCommand($queryVehiculo)->execute();
+//        }
+//    }
 }

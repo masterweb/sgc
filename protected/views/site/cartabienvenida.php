@@ -44,7 +44,7 @@ $fecha_m = $this->getFormatFecha($fecha_m);
                 <?php if ($modelo == 86 || $modelo == 93) { ?>
                     garantía de 7 años o 120.000 Km, ';
                 <?php } else { ?>
-                    garantía de 5 años o 100.000 Km, ';
+                    garantía de 7 años o 150.000 Km, ';
                 <?php } ?>
                 para mantener dicha garantía, usted debe realizar los mantenimientos en nuestro <a href="https://www.kia.com.ec/concesionarios.html"> concesionario KIA a nivel nacional</a>. 
             </p><br />
