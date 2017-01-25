@@ -199,7 +199,8 @@ $count = count($users);
         switch (fuente) {
             case 'showroom':
             case 'exhibicion':
-            case 'exhibicion quierounkia':    
+            case 'exhibicion quierounkia':
+            case 'exhibicion quierounkiatd':     
                 console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
                 rules: {
@@ -1025,7 +1026,7 @@ $count = count($users);
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'exhibicion quierounkia'){ ?> 
+                                    <?php if($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd'){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?> 
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>

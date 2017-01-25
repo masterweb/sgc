@@ -22,7 +22,7 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
             'autocomplete' => 'off'
         ),
     ));
-    ?>
+    ?>  
     <div class="row">
         <div class="col-md-12" style="position: relative;">
             <?php echo $form->labelEx($model, 'fuente'); ?>
@@ -40,7 +40,8 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
                     'exhibicion' => 'Exhibición',
-                    'exhibicion quierounkia' => 'Yo Quiero un Kia'
+                    'exhibicion quierounkia' => 'Yo Quiero un Kia',
+                    'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <!--<option value="Usado">Usado</option>
