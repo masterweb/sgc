@@ -370,6 +370,8 @@ class GestionInformacionController extends Controller {
                     $gestion->observaciones = 'Primera visita';
                     if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkia')
                         $gestion->medio_contacto = 'exhquk';
+                    if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd')
+                        $gestion->medio_contacto = 'exhquktd';
                     else
                         $gestion->medio_contacto = 'visita';
                     $gestion->fuente_contacto = $fuente;
@@ -2065,9 +2067,6 @@ class GestionInformacionController extends Controller {
             $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
             $criteria->group = 'gi.id';
             $criteria->order = "gi.id DESC";
-            
-
-            //die('sql sucursal'. $sql);
         }
 
         if ($cargo_id == 69) { // GERENTE COMERCIAL
@@ -2077,6 +2076,9 @@ class GestionInformacionController extends Controller {
             $criteria->addCondition("u.grupo_id = {$grupo_id}");
             $criteria->addCondition("u.cargo_id = 71");
             $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+            if($tipo_seg == 'exhibicion' || $tipo_seg == 'exh'){
+                $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
+            }
             $criteria->group = 'gi.id';
             $criteria->order = "gi.id DESC";
             //die('sql sucursal'. $sql);
@@ -2131,16 +2133,21 @@ class GestionInformacionController extends Controller {
             //die('55d: '.$_GET['GestionDiaria']['tipo']);
             $tipo_search = '';
             // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
+            //die('tipo search: '.$_GET['tipo_search']);
             if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
                 switch ($_GET['tipo_search']) {
                     case 'web':
                         $tipo_search = 'web';
+                        $get_array = 'web';
                         break;
                     case 'exhibicion':
+                    case 'exh':    
                         $tipo_search = 'exh';
+                        $get_array = 'exh';
                         break;
                     case 'prospeccion':
                         $tipo_search = 'pro';
+                        $get_array = 'pro';
                         break;
                     default:
                         break;
@@ -2652,12 +2659,19 @@ class GestionInformacionController extends Controller {
                 switch ($_GET['tipo_search']) {
                     case 'web':
                         $tipo_search = 'web';
+                        $get_array = 'web';
+                        break;
+                    case 'bdc':
+                        $tipo_search = 'bdc';
+                        $get_array = 'bdc';
                         break;
                     case 'exhibicion':
                         $tipo_search = 'exh';
+                        $get_array = 'exh';
                         break;
                     case 'prospeccion':
                         $tipo_search = 'pro';
+                        $get_array = 'pro';
                         break;
                     default:
                         break;
@@ -2665,7 +2679,7 @@ class GestionInformacionController extends Controller {
             }
 
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'bdc',$tipo_search);
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array,$tipo_search);
             $this->render('seguimientobdc', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages'], 'tipo_seg' => $tipo_search));
             exit();
         }
