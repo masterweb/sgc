@@ -3380,6 +3380,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             //die('enter gerente');
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (72,73) ORDER BY nombres ASC";
         }
+        if ($cargo_id == 69 && $tipo == 'web') { // GERENTE COMERCIAL
+            //die('enter gerente');
+           $sql = "SELECT u.* FROM usuarios u 
+                        INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id
+                        WHERE cargo_id IN (85,86) AND gr.concesionario_id = {$dealer_id} ORDER BY nombres ASC";
+        }
         if ($cargo_id == 70) { // JEFE SUCURSAL
             $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70) ORDER BY nombres ASC";
         }

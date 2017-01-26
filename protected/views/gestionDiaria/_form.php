@@ -789,12 +789,13 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php foreach ($cr as $vc) { ?>
                          <div class="col-md-10">
                              <table class="table table-striped">
-                                 <thead> <tr><th>Fecha Cierre</th> <th>Observaciones</th><th>Versión</th> <th>Estado</th><th>Anulación</th></tr> </thead>
+                                 <thead> <tr><th>ID</th><th>Fecha Cierre</th> <th>Observaciones</th><th>Versión</th> <th>Estado</th><th>Anulación</th></tr> </thead>
                                  <tbody>
                                      <?php 
                             $anulacion = GestionFactura::model()->find(array("condition" => "id_informacion = {$vc['id_informacion']} and id_vehiculo = {$vc['id_vehiculo']}"));
                             ?>
                                      <tr>
+                                         <td><?php echo $vc['id']; ?></td>
                                          <td><?php echo $vc['fecha']; ?></td>
                                          <td><?php echo $vc['observaciones']; ?></td>
                                          <td><?php echo $this->getVersionFin($vc['id_vehiculo']); ?></td>

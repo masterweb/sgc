@@ -72,6 +72,13 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                 }
             }
         );
+        $('#fecha-range').daterangepicker(
+            {
+                locale: {
+                    format: 'YYYY/MM/DD'
+                }
+            }
+        );
         $('.range_inputs .applyBtn').click(function () {
             //alert('asdqwedwqe2ee');
             if($('#GestionDiaria_seguimiento').val() == '3'){
@@ -90,13 +97,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             theme: 'tooltipster-default '
         });
         $("#keywords").tablesorter();
-        $('#fecha-range').daterangepicker(
-                {
-                    locale: {
-                        format: 'YYYY/MM/DD'
-                    }
-                }
-        );
+        
         /*$('.range_inputs .applyBtn').click(function () {
             console.log('apply');
             $('#fecha-range').css("color", "#555555");

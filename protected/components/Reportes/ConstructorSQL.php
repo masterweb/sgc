@@ -299,7 +299,7 @@ class ConstructorSQL {
             $area = 1;
         }
 
-        if ($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86 || $area == 1) {
+        if ($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86 || $area == 1 || $cargo_id == 69) {
             // GENERACI0N DE CONSULTAS PARA AGENTES DE VENTAS EXTERNAS=========================================================================================
             // COTIZACIONES SOLICITADAS DEL CLIENTE DE PROSPECCION Y DE WEB
             $cotizaciones_enviadas_anterior = $this->SQLconstructor('COUNT(*)', 'gestion_informacion gi', 'INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id' .

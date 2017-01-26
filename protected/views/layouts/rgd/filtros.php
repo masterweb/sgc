@@ -54,7 +54,10 @@ $id_responsable = Yii::app()->user->getId();
                     <option value="Entrega">Entrega</option>
                     <option value="Vendido">Seguimiento-Paso 10</option>
                     <option value="Desiste">Desiste</option>
+                    <?php if($cargo_id == 70 || $cargo_id == 69 || $cargo_id == 71){ ?>
                     <option value="qk">Campaña Quiero un Kia</option>
+                    <option value="qktd">Campaña Quiero un Kia TD</option>
+                    <?php } ?>
                     <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 86 || $cargo_adicional == 85): ?>
                     <option value="Web">Web</option>
                     

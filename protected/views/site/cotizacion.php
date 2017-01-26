@@ -365,7 +365,8 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <?php if($value['estado_civil'] == 'Casado' || $value['estado_civil'] == 'Casado sin separación de bienes'){ ?>
         <div class="col-xs-4">
             <em class="tit-lab" for="">Sueldo mensual Cónyugue</em>
-            <?php echo number_format($value['sueldo_mensual_conyugue']); ?>
+            <?php //echo number_format($value['sueldo_mensual_conyugue']); ?>
+            <?php echo empty($value['sueldo_mensual_conyugue']) ? 0 : number_format($value['sueldo_mensual_conyugue']); ?>
         </div>
         <?php } ?>
     </div>
