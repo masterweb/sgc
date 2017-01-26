@@ -2265,14 +2265,6 @@ class GestionInformacionController extends Controller {
         /*echo '<pre>';
         print_r($criteria);
         echo '</pre>';*/
-        
-        // SELECT DE USUARIOS MAS VERHICULOS SUBIDOS       
-        //$sql = "SELECT gi.*, gv.modelo, gv.version FROM gestion_informacion gi 
-        //        INNER JOIN gestion_vehiculo gv ON gi.id = gv.id_informacion 
-        //        GROUP BY gi.id";
-        //$sql = "SELECT * FROM gestion_informacion GROUP BY id";
-        //$request = $con->createCommand($sql);
-        //$users = $request->queryAll();
         $users = GestionInformacion::model()->findAll($criteria);
         $tipo = '';
 

@@ -4335,7 +4335,7 @@ class Controller extends CController {
             $search_type = 43;
         }
         
-        //  FECHA REGISTRO - GRUPO - CONCESIONARIO - REPONSABLE
+        //  FECHA REGISTRO - GRUPO - CONCESIONARIO - RESPONSABLE
         if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
                 && $_GET['fecha'] == 1 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 39;
@@ -4355,6 +4355,14 @@ class Controller extends CController {
         if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 0 
                 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
             $search_type = 47;
+        }
+        // STATUS - CONCESIONARIO - RESPONSABLE
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
+            $search_type = 48;
+        }
+        // SEGUIMIENTO - CONCESIONARIO
+        if ($_GET['busqueda_general'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 1 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 49;
         }
         
         // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
@@ -4742,6 +4750,12 @@ class Controller extends CController {
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (72,73)', 'AND');
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id == 69 && $get_array == 'web') { // gerente comercial
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (85,86)', 'AND');
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 69 && ($get_array == 'exh' || $get_array == 'exhibicion')) { // gerente comercial
@@ -5581,6 +5595,68 @@ class Controller extends CController {
                 $data['users'] = $users;
                 $data['pages'] = $pages;
                 return $data;
+                break;
+            case 48: // SEARCH BY CONCESIONARIO, STATUS AND RESPONSABLE 
+                // SEARCH BY ONE MONTH BESIDE
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}");
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
+                $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
+                $criteria->addCondition($condition);
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} Responsable: <strong>{$responsable}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+            case 49: // SEGUIMIENTO - CONCESIONARIO
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
+                $criteria->addCondition('gd.desiste = 0', 'AND');
+                $fecha_actual = (string) date("Y/m/d");
+                $concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
+                switch ($_GET['GestionDiaria']['seguimiento']) {
+                    case 1: // TODAY
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) = '{$fecha_actual}'", 'AND');
+                        $title_ag = "Agendamiento para hoy: <strong>{$fecha_actual}</strong>";
+                        break;
+                    case 2: // EMPTY DATE
+                        $criteria->addCondition("gd.proximo_seguimiento = ''", 'AND');
+                        $title_ag = "Agendamiento: <strong>Vacío</strong>";
+                        break;
+                    case 3: // RANGE DATE SEARCH
+                        $params = explode('-', $_GET['GestionDiaria']['rango_fecha']);
+                        $fecha1 = trim($params[0]);
+                        $fecha2 = trim($params[1]);
+                        $criteria->addCondition("DATE(gd.proximo_seguimiento) BETWEEN '{$fecha1}' AND '{$fecha2}'", 'AND');
+                        $title_ag = "Agendamiento para entre: <strong>{$fecha1} - {$fecha2} </strong>";
+                        break;
+
+                    default:
+                        break;
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $title = "Búsqueda por ".$title_ag.", Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+
                 break;
             default:
                 break;
