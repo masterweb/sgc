@@ -4040,6 +4040,7 @@ class Controller extends CController {
             if ($tipo_search == 'web') {
                 $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                 $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86) OR u.cargo_adicional IN(85,86))";
+                $criteria->addCondition("gd.fuente_contacto = 'web'");
             }
             if ($get_array == 'exo') {
                 $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
@@ -4048,6 +4049,7 @@ class Controller extends CController {
             if ($get_array == 'seg' && $tipo_search == '') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
             }
             if ($get_array == '' && $tipo_search == '') {
                 $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
@@ -4554,42 +4556,38 @@ class Controller extends CController {
                 //die('get array: '.$get_array);
                 $nombre_concesionario = $this->getConcesionario($_GET['GestionDiaria']['concesionario']);
                 if ($cargo_id == 69 && $get_array == 'seg') { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (71,70)", 'AND');
                 }
                 if ($cargo_id == 69 && $get_array == 'exo') { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (75)", 'AND');
                 }
                 if ($cargo_id == 69 && $get_array == 'bdc') { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->addCondition("u.cargo_id IN (72,73)", 'AND');
                 }
                 if ($cargo_id == 69 && $get_array == 'web') { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-                    $criteria->addCondition("u.cargo_id IN (85,86)", 'AND');
                 }
                 if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-                    //$criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                 }
                 if ($cargo_id == 61 && $get_array == 'seg') { // gerente comercial
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                 }
                 if ($cargo_id == 61 && $get_array == 'web') { // jefe de almacen
-                    $criteria->join .= " INNER JOIN usuarios u ON u.id = gi.responsable";
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-                    $criteria->addCondition("u.cargo_id IN (86)", 'AND');
                 }
                 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA
-                    $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
+                    $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}");
                     if($tipo_search == 'web'){
                         $criteria->addCondition("gd.fuente_contacto = 'web'");
                     }
@@ -4729,15 +4727,6 @@ class Controller extends CController {
                 return $data;
                 break;
             case 16:
-                $criteria = new CDbCriteria;
-                $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
-                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
-                $criteria->alias = 'gi';
-                $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
-                $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
-                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
                 //die('get array: '.$get_array);
                 if ($cargo_id == 46) { // super administrador
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
@@ -4746,6 +4735,7 @@ class Controller extends CController {
                 if ($cargo_id == 69 && $get_array == '') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 69 && $get_array == 'bdc') { // gerente comercial
@@ -4758,6 +4748,7 @@ class Controller extends CController {
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (85,86)', 'AND');
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 69 && ($get_array == 'exh' || $get_array == 'exhibicion')) { // gerente comercial
@@ -4777,6 +4768,7 @@ class Controller extends CController {
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (71)', 'AND');
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id == 70) { // jefe de almacen
@@ -4869,15 +4861,6 @@ class Controller extends CController {
                 return $data;
                 break;
             case 17: // BUSQUEDA POR RESPONSABLE AEKIA
-                $criteria = new CDbCriteria;
-                $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
-                    gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
-                    gi.reasignado,gi.responsable_cesado,gi.id_comentario";
-                $criteria->alias = 'gi';
-                $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
-                $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
-                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-                $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
                 if ($_GET['GestionDiaria']['responsable'] == 'all') {
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                 }
