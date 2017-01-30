@@ -10,6 +10,16 @@ require_once( dirname(__FILE__) . '/../components/Reportes/TraficoUsados.php');
 class ReportesController extends Controller {
     
     /**
+     * @return array action filters
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
+        );
+    }
+    
+    /**
      * Specifies the access control rules.
      * This method is used by the 'accessControl' filter.
      * @return array access control rules
@@ -23,7 +33,7 @@ class ReportesController extends Controller {
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('inicio','bdc','ajaxgetmodels','AjaxGetTipoBDC','AjaxGetExonerados',
                     'AjaxGetAsesores','AjaxGetDealers','AjaxGetProvincias','AjaxGetGrupo','AjaxGetExcel',
-                    'AjaxGetConsecionariosTA','AjaxGetModelos2TA'),
+                    'AjaxGetConsecionariosTA','AjaxGetModelos2TA','AjaxGetModelos'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -183,8 +193,8 @@ class ReportesController extends Controller {
                    
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
+                $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
                 $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
-                
                 $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
                 $varView['consecionario_usuario'] = '<b>Grupo:</b> ' . $this->getNombreGrupo($varView['grupo_id']);
                 break;
