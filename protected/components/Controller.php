@@ -4022,103 +4022,104 @@ class Controller extends CController {
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-
-        if ($cargo_id == 46) { // super administrador
-            $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-            $sql_cargos .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id WHERE ";
-        }
-        if ($cargo_id == 69) { // gerente comercial
-            //die('get array: '.$get_array.', tipo search: '.$tipo_search);
-            if ($get_array == 'bdc' && $tipo_search == '') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73)";
-            }
-            if ($get_array == 'bdc' && $tipo_search == 'web') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86))";
-            }
-            if ($tipo_search == 'web') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86) OR u.cargo_adicional IN(85,86))";
-                $criteria->addCondition("gd.fuente_contacto = 'web'");
-            }
-            if ($get_array == 'exo') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
-            }
-            if ($get_array == 'seg' && $tipo_search == '') {
+        
+        switch ($cargo_id) {
+            case 46: // SUPER ADMINISTRADOR
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
-                $criteria->condition = "gr.id_grupo = {$grupo_id}";
-                $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-            }
-            if ($get_array == '' && $tipo_search == '') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
-                $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-            }
-            if ($get_array == 'exh') {
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
-                $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
-                $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
-            }
-            
-        }
-        if ($cargo_id == 70) { // jefe de almacen
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->condition = "gi.dealer_id IN ({$dealerList})";
-            $criteria->addCondition("(u.cargo_id IN(71,70))");
-            //$criteria->addCondition("gd.desiste = 0");
-        }
-        if ($cargo_id == 71) { // asesor de ventas
-            $criteria->condition = "gi.responsable = {$id_responsable}";
-            
-        }
-        if ($cargo_id == 85) { // JEFE WEB - VENTAS EXTERNAS
-            //die('get array: '.$get_array.', tipo search: '.$tipo_search);
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-            $criteria->addCondition("gi.bdc = 1");
-            //$criteria->addCondition("gd.desiste = 0");
-            $criteria->addCondition("u.cargo_id IN (85,86)");
-            $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
-        }
-        if ($cargo_id == 86) { // asesor de ventas externas
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->condition = "gi.responsable = {$id_responsable}";
-            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-            $criteria->addCondition("gi.bdc = 1");
-        }
-        if ($cargo_id == 73) { // asesor bdc
-            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.bdc = 1";
-            
-        }
-        if ($cargo_id == 75) { // asesor exonerados
-            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.tipo_form_web = 'exonerados'";
-        }
-        if ($cargo_id == 72) { // JEFE BDC EXONERADOS
-            $array_dealers = $this->getDealerGrupoConc($grupo_id);
-            $dealerList = implode(', ', $array_dealers);
-            if ($get_array == 'exo') {
-                $criteria->condition = "gi.tipo_form_web = 'exonerados'";
+                break;
+            case 69: // GERENTE COMERCIAL
+                if ($get_array == 'bdc' && $tipo_search == '') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(72,73)";
+                }
+                if ($get_array == 'bdc' && $tipo_search == 'web') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86))";
+                }
+                if ($tipo_search == 'web') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86) OR u.cargo_adicional IN(85,86))";
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                if ($get_array == 'exo') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
+                }
+                if ($get_array == 'seg' && $tipo_search == '') {
+                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                }
+                if ($get_array == '' && $tipo_search == '') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                }
+                if ($get_array == 'exh') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
+                }
+                break;
+            case 70: // JEFE DE SUCURSAL
+                $array_dealers = $this->getResponsablesVariosConc();
+                if(count($array_dealers) == 0){
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                }
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->condition = "gi.dealer_id IN ({$dealerList})";
+                $criteria->addCondition("(u.cargo_id IN(71,70))");
+                break;
+            case 71: // ASESOR DE VENTAS
+                $criteria->condition = "gi.responsable = {$id_responsable}";
+                break;
+            case 85: // JEFE WEB - VENTAS EXTERNAS
+                $array_dealers = $this->getResponsablesVariosConc();
+                if(count($array_dealers) == 0){
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                }
+                $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-                $criteria->addCondition("u.cargo_id = 75");
-            }
-            if ($get_array == 'bdc') {
-                $criteria->condition = "gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})";
-            }
+                $criteria->addCondition("gi.bdc = 1");
+                //$criteria->addCondition("gd.desiste = 0");
+                $criteria->addCondition("u.cargo_id IN (85,86)");
+                $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
+                break;
+            case 86: // ASESOR WEB O VENTAS EXTERNAS
+                $array_dealers = $this->getResponsablesVariosConc();
+                if(count($array_dealers) == 0){
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                }
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                $criteria->addCondition("gi.bdc = 1");
+                //$criteria->addCondition("gd.desiste = 0");
+                $criteria->addCondition("u.cargo_id IN (85,86)");
+                $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
+                break;    
+            default:
+                break;
         }
+
+//        if ($cargo_id == 73) { // asesor bdc
+//            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.bdc = 1";
+//            
+//        }
+//        if ($cargo_id == 75) { // asesor exonerados
+//            $criteria->condition = "gi.responsable = {$id_responsable} AND gi.tipo_form_web = 'exonerados'";
+//        }
+//        if ($cargo_id == 72) { // JEFE BDC EXONERADOS
+//            $array_dealers = $this->getDealerGrupoConc($grupo_id);
+//            $dealerList = implode(', ', $array_dealers);
+//            if ($get_array == 'exo') {
+//                $criteria->condition = "gi.tipo_form_web = 'exonerados'";
+//                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+//                $criteria->addCondition("u.cargo_id = 75");
+//            }
+//            if ($get_array == 'bdc') {
+//                $criteria->condition = "gi.bdc = 1 AND gi.dealer_id IN ({$dealerList})";
+//            }
+//        }
 
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
             if ($get_array == 'exo') {
@@ -4140,7 +4141,6 @@ class Controller extends CController {
             }
         }
 
-        $con = Yii::app()->db;
         $search_type = 0;
 
         //die('search type combined: '.$search_type);
