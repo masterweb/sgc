@@ -2079,6 +2079,9 @@ class GestionInformacionController extends Controller {
             if($tipo_seg == 'exhibicion' || $tipo_seg == 'exh'){
                 $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
             }
+            if($tipo_seg == ''){
+                $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+            }
             $criteria->group = 'gi.id';
             $criteria->order = "gi.id DESC";
             //die('sql sucursal'. $sql);
