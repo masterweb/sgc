@@ -901,11 +901,12 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
                                 'television' => 'Televisión',
                                 'prensa_escrita' => 'Prensa escrita',
-                                'visita_directa' => 'Visita directa',
                                 'radio' => 'Radio',
-                                'referencia' => 'Referencia de un tercero',
+                                'referencia' => 'Le recomendaron',
+                                'pagina_web' => 'Página Web Kia',
                                 'internet' => 'Internet',
-                                'redessociales' => 'Redes sociales'), 
+                                'redessociales' => 'Redes sociales',
+                                'conoce_concesionario' => 'Conoce el Concesionario'), 
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
