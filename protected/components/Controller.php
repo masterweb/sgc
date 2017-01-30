@@ -4394,7 +4394,7 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'qktd'){
             $stat = 'Quiero un Kia TD';
         }
-        echo('search type: ' . $search_type);
+        //echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -4576,7 +4576,7 @@ class Controller extends CController {
                 if ($cargo_id == 69 && $get_array == '') { // jefe de almacen
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                    //$criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                 }
                 if ($cargo_id == 61 && $get_array == 'seg') { // gerente comercial
                     $criteria->condition = "gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}";
