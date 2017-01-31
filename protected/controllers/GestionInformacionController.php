@@ -368,12 +368,10 @@ class GestionInformacionController extends Controller {
                     $gestion->id_informacion = $model->id;
                     $gestion->id_vehiculo = 0;
                     $gestion->observaciones = 'Primera visita';
-                    if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkia')
-                        $gestion->medio_contacto = 'exhquk';
-                    if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd')
+                    $gestion->medio_contacto = 'visita';
+                    if($_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd'){
                         $gestion->medio_contacto = 'exhquktd';
-                    else
-                        $gestion->medio_contacto = 'visita';
+                    }
                     $gestion->fuente_contacto = $fuente;
                     $gestion->codigo_vehiculo = 0;
                     $gestion->primera_visita = 1;
@@ -382,7 +380,6 @@ class GestionInformacionController extends Controller {
                     $gestion->fecha = date("Y-m-d H:i:s");
                     $gestion->proximo_seguimiento = $fecha_posterior; // agendamiento automatico en 48 horas
                     $gestion->save();
-
                     $consulta = new GestionConsulta;
                     $consulta->id_informacion = $model->id;
                     $consulta->fecha = date("Y-m-d H:i:s");
@@ -2104,7 +2101,10 @@ class GestionInformacionController extends Controller {
             $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->condition = "gi.bdc = 0 AND gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
             if($tipo_seg == 'exhibicion'){
-                $criteria->addCondition(" gd.fuente_contacto = 'exhibicion'"); 
+                $criteria->addCondition(" gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'"); 
+            }
+            if($tipo_seg == ''){
+                $criteria->addCondition(" gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'"); 
             }
             $criteria->addCondition("u.cargo_id IN(70,71)");
             if($tipo_seg != 'exhibicion'){

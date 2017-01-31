@@ -97,7 +97,7 @@ $count = count($users);
             }
         });
         $('#GestionDiaria_concesionario').change(function () {
-            var value = $(this).attr('value');
+            var value = $('#GestionDiaria_concesionario option:selected').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
                 beforeSend: function (xhr) {
@@ -148,7 +148,8 @@ $count = count($users);
             }
         });
         $('#GestionNuevaCotizacion_identificacion').change(function () {
-            var value = $(this).attr('value');
+            var value = $('#GestionNuevaCotizacion_identificacion option:selected').val();
+            //alert(value);
             switch (value) {
                 case 'ci':
                     $('#cont-doc').show();
@@ -177,7 +178,7 @@ $count = count($users);
         });
 
         $('#GestionDiaria_grupo').change(function () {
-            var valuenc = $(this).attr('value');
+            var valuenc = $('#GestionDiaria_grupo option:selected').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
                 beforeSend: function (xhr) {
@@ -199,7 +200,7 @@ $count = count($users);
         switch (fuente) {
             case 'showroom':
             case 'exhibicion':
-            case 'exhibicion quierounkia':
+            case 'exhibicion quierounkiac':
             case 'exhibicion quierounkiatd':     
                 console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
@@ -844,6 +845,11 @@ $count = count($users);
                                     if ($medio_contacto == 'exhquk' && $c['tipo_form_web'] == ''):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">WebQ</button>
+                                    <?php endif; ?>
+                                    <?php
+                                    if ($medio_contacto == 'exhquktd' && $c['tipo_form_web'] == ''):
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-warning">WebQTD</button>
                                     <?php endif; ?>
                                     <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):

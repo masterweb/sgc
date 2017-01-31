@@ -103,7 +103,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             $('#fecha-range').css("color", "#555555");
         });*/
         $('#GestionNuevaCotizacion_identificacion').change(function () {
-            var value = $(this).attr('value');
+            var value = $('#GestionNuevaCotizacion_identificacion option:selected').val();
             switch (value) {
                 case 'ci':
                     $('#cont-doc').show();
@@ -138,7 +138,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 //                $('.exh-cont').hide();
 //        });
         $('#GestionDiaria_concesionario').change(function () {
-            var value = $(this).attr('value');
+            var value = $('#GestionDiaria_concesionario option:selected').val();
             var tipo_seg = $('#tipo_search').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesores"); ?>',
@@ -158,7 +158,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
         });
 
         $('#GestionDiaria_grupo').change(function () {
-            var valuenc = $(this).attr('value');
+            var valuenc = $('#GestionDiaria_grupo option:selected').val();
             var tipo_seg = $('#tipo_search').val();
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
@@ -550,7 +550,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     <?php
                                     if ($medio_contacto == 'web' && $c['tipo_form_web'] == ''):
                                         ?>
-                                        <button type="button" class="btn btn-xs btn-warning">web</button>
+                                        <button type="button" class="btn btn-xs btn-warning">Web</button>
                                     <?php endif; ?>
                                     <?php
                                     if ($c['tipo_form_web'] == 'exonerado'):

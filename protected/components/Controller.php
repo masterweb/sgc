@@ -4377,12 +4377,13 @@ class Controller extends CController {
                     break;
                 case 'exhibicion':
                 case 'exh':    
-                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
                     break;
                 case 'prospeccion':
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
                 default:
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     break;
             }
         }
@@ -5400,6 +5401,9 @@ class Controller extends CController {
                 if($tipo_search == 'web'){
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                 }
+                if($tipo_search == ''){
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -5778,20 +5782,24 @@ class Controller extends CController {
     }
     /**
      * 
-     * @param int $mes Mes actual del year
+     * @param int $mes Mes actual del año
      * @return array
      */
     public function getFechasActivas($mes) {
         $data = array();
         $data = '';
-        // SI MES ACTUAL ES ENERO O FEBRERO
+        // SI MES ACTUAL ES ENERO, FEBRERO O MARZO
         if($mes == 1){ // enero
-            $meses = [4,5,6,7,8,9,10,11,12,1];
-            $years = [2016,2016,2016,2016,2016,2016,2016,2016,2016,2017];
+            $meses = [5,6,7,8,9,10,11,12,1];
+            $years = [2016,2016,2016,2016,2016,2016,2016,2016,2017];
         }
         if($mes == 2){ // febrero
-            $meses = [4,5,6,7,8,9,10,11,12,1,2];
-            $years = [2016,2016,2016,2016,2016,2016,2016,2016,2016,2017,2017];
+            $meses = [5,6,7,8,9,10,11,12,1,2];
+            $years = [2016,2016,2016,2016,2016,2016,2016,2016,2017,2017];
+        }
+        if($mes == 3){ // marzo
+            $meses = [5,6,7,8,9,10,11,12,1,2,3];
+            $years = [2016,2016,2016,2016,2016,2016,2016,2016,2017,2017,2017];
         }
         $data['meses'] = $meses;
         $data['years'] = $years;
