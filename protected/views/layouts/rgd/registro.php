@@ -40,7 +40,6 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
                     'exhibicion' => 'Exhibición',
-                    'exhibicion quierounkia' => 'Yo Quiero un Kia',
                     'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
