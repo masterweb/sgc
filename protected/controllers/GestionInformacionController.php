@@ -1988,8 +1988,7 @@ class GestionInformacionController extends Controller {
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         //die($dealer_id);
-        $model = new GestionNuevaCotizacion;
-        $con = Yii::app()->db;
+        
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
@@ -1998,128 +1997,121 @@ class GestionInformacionController extends Controller {
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-
-        if ($cargo_id == 46) {// SUPER ADMINISTRADOR AEKIA
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->group = "gi.id";
-            $criteria->order = "gi.id DESC";
-            $sql .= " INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion 
-                GROUP BY gi.cedula, gi.ruc, gi.pasaporte 
-                ORDER BY gd.id DESC";
-            //die('sql sucursal'. $sql);
-        }
-        // JEFE DE SUCURSAL CON UN SOLO CARGO
-        if ($cargo_id == 70 && $cargo_adicional == 0) { 
-            //die('enter jefe');
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-            $criteria->addCondition("u.cargo_id IN (70,71)");
-            $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = 'gi.id';
-            $criteria->order = "gi.id DESC";
-            //die('sql sucursal'. $sql);
-        }
         
-        // JEFE DE SUCURSAL CON SEGUNDO CARGO JEFE DE VENTAS EXTERNAS
-        // CONCESIONARIOS INDEPENDIENTES
-        if ($cargo_id == 70 && $cargo_adicional == 85 && $tipo_grupo == 0) { 
-            //die('enter jefe');
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-            $criteria->addCondition("gi.bdc = 0 OR gi.bdc = 1");
-            $criteria->addCondition("u.cargo_id IN (70,71)");
-            $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = 'gi.id';
-            $criteria->order = "gi.id DESC";
-        }
-        
-        // ASESOR DE VENTAS Y ASESOR DE VENTAS EXTERNAS DOBLE CARGO
-        // CONCESIONARIOS INDEPENDIENTES
-        if ($cargo_id == 71 && $cargo_adicional == 86 && $tipo_grupo == 0) { 
-            //die('enter jefe');
-            $array_dealers = $this->getResponsablesVariosConc();
-            if(count($array_dealers) == 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-            }
-            $dealerList = implode(', ', $array_dealers);
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' ";
-            $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
-            $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
-            //$criteria->addCondition("gi.bdc = 0");
-            $criteria->addCondition("u.cargo_id IN (71)");
-            $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            $criteria->group = 'gi.id';
-            $criteria->order = "gi.id DESC";
+        switch ($cargo_id) {
+            case 46: // SUPER ADMINISTRADOR AEKIA
+                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                break;
+            case 70: // JEFE DE SUCURSAL
+                if($cargo_adicional == 0){ // CON UN SOLO CARGO
+                    $array_dealers = $this->getResponsablesVariosConc();
+                    if(count($array_dealers) == 0){
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    }
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
+                    $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                    $criteria->addCondition("u.cargo_id IN (70,71)");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->group = 'gi.id';
+                    $criteria->order = "gi.id DESC";
+                }
+                if ($cargo_adicional == 85 && $tipo_grupo == 0) { // JEFE DE SUCURSAL CON SEGUNDO CARGO JEFE DE VENTAS EXTERNAS - CONCESIONARIOS INDEPENDIENTES
+                    //die('enter jefe');
+                    $array_dealers = $this->getResponsablesVariosConc();
+                    if(count($array_dealers) == 0){
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    }
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
+                    $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                    $criteria->addCondition("gi.bdc = 0 OR gi.bdc = 1");
+                    $criteria->addCondition("u.cargo_id IN (70,71)");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->group = 'gi.id';
+                    $criteria->order = "gi.id DESC";
+                }
+                break;
+            case 71: // ASESOR DE VENTAS
+                // ASESOR DE VENTAS Y ASESOR DE VENTAS EXTERNAS DOBLE CARGO
+                if ($cargo_adicional == 86 && $tipo_grupo == 0) { 
+                    //die('enter jefe');
+                    $array_dealers = $this->getResponsablesVariosConc();
+                    if(count($array_dealers) == 0){
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    }
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' ";
+                    $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                    $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
+                    //$criteria->addCondition("gi.bdc = 0");
+                    $criteria->addCondition("u.cargo_id IN (71)");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->group = 'gi.id';
+                    $criteria->order = "gi.id DESC";
+                }
+                // ASESOR DE VENTAS UN SOLO CARGO
+                if ($cargo_adicional == 0) { 
+                    $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
+                    $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
+                    $criteria->addCondition("gi.bdc = 0");
+                    $criteria->addCondition("u.cargo_id = 71");
+                    $criteria->addCondition("gd.desiste = 0", 'AND');
+                    $criteria->group = "gi.id";
+                    $criteria->order = "gi.id DESC";
+                }
+                break;
+            case 69: // GERENTE COMERCIAL DE CONCESIONARIO
+                $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
+                $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
+                $criteria->addCondition("u.grupo_id = {$grupo_id}");
+                $criteria->addCondition("u.cargo_id = 71");
+                $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                if($tipo_seg == 'exhibicion' || $tipo_seg == 'exh'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
+                }
+                if($tipo_seg == ''){
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                }
+                $criteria->group = 'gi.id';
+                $criteria->order = "gi.id DESC";
+                break;
+
+            default:
+                break;
         }
 
-        if ($cargo_id == 69) { // GERENTE COMERCIAL
-            //die('enter jefe');
-            $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->addCondition("u.grupo_id = {$grupo_id}");
-            $criteria->addCondition("u.cargo_id = 71");
-            $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
-            if($tipo_seg == 'exhibicion' || $tipo_seg == 'exh'){
-                $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
-            }
-            if($tipo_seg == ''){
-                $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-            }
-            $criteria->group = 'gi.id';
-            $criteria->order = "gi.id DESC";
-            //die('sql sucursal'. $sql);
-        }
-        if ($cargo_id == 71 && $cargo_adicional == 0) { // asesor de ventas
-            //die('enter code 71');
-            // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA
-            $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
-            $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
-            $criteria->addCondition("gi.bdc = 0");
-            $criteria->addCondition("u.cargo_id = 71");
-            $criteria->addCondition("gd.desiste = 0", 'AND');
-            //$criteria->addCondition("DATE(gd.fecha) BETWEEN '2016-05-01' and '2016-05-10'");
-            $criteria->group = "gi.id";
-            $criteria->order = "gi.id DESC";
-        }
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
             //die('tipo: '.$tipo);
             $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
             $criteria->condition = "gi.bdc = 0 AND gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
-            if($tipo_seg == 'exhibicion'){
-                $criteria->addCondition(" gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'"); 
-            }
-            if($tipo_seg == ''){
-                $criteria->addCondition(" gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'"); 
-            }
-            $criteria->addCondition("u.cargo_id IN(70,71)");
-            if($tipo_seg != 'exhibicion'){
-                $criteria->addCondition("DATE(gi.fecha) = '{$dt_unasemana_antes}'");
+            switch ($tipo_seg) {
+                case 'exhibicion':
+                case 'exh':    
+                    $criteria->addCondition(" gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'"); 
+                    $criteria->addCondition("DATE(gi.fecha) = '{$dt_unasemana_antes}'");
+                    break;
+                case 'web':
+                    break;
+                default:
+                    $criteria->addCondition(" gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'"); 
+                    $criteria->addCondition("u.cargo_id IN(70,71)");
+                    break;
             }
             $criteria->group = "gi.id";
             $criteria->order = "gi.id DESC";
+            
         }
 //        echo '<pre>';
 //        print_r($criteria);
 //        echo '</pre>';
     
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_GET['GestionDiaria'])) {
 //            echo '<pre>';
 //            print_r($_GET);
@@ -2133,7 +2125,6 @@ class GestionInformacionController extends Controller {
             if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
                 $fechaPk = 1;
             }
-            //die('55d: '.$_GET['GestionDiaria']['tipo']);
             $tipo_search = '';
             // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
             //die('tipo search: '.$_GET['tipo_search']);
@@ -2145,8 +2136,8 @@ class GestionInformacionController extends Controller {
                         break;
                     case 'exhibicion':
                     case 'exh':    
-                        $tipo_search = 'exh';
-                        $get_array = 'exh';
+                        $tipo_search = 'exhibicion';
+                        $get_array = 'exhibicion';
                         break;
                     case 'prospeccion':
                         $tipo_search = 'pro';
@@ -2157,7 +2148,7 @@ class GestionInformacionController extends Controller {
                 }
             }
 
-            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array, $tipo_seg);
+            $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array, $tipo_search);
             $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages'], 'tipo_seg' => $tipo_search));
             exit();
         }
