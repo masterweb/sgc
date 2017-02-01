@@ -80,6 +80,9 @@ $id_responsable = Yii::app()->user->getId();
                         }
                         $dealerList = implode(', ', $array_dealers);
                         $cre->condition = " cargo_id IN (70,71) AND dealers_id IN ({$dealerList}) ";
+                        if($cargo_adicional == 85){
+                            $cre->condition = " cargo_id IN (70,71,86) AND dealers_id IN ({$dealerList}) ";
+                        }
                         break;
                     case 72: // JEFE BDC EXONERADOS
                         $array_dealers = $this->getDealerGrupoConc($grupo_id);
