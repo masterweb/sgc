@@ -24,7 +24,7 @@ class TraficoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario'),
+                'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario','prueba'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -35,6 +35,9 @@ class TraficoController extends Controller {
                 'users' => array('*'),
             ),
         );
+    }
+    public function actionPrueba() {
+        $this->render('prueba', array('vartrf' => $vartrf));
     }
 
     public function actionInicio() {
@@ -131,6 +134,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].' al '.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Categoría: Autos';
                 $vartrf['flag_search'] = 2;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -149,6 +153,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Categoría: Autos';
                 $vartrf['$flag_search'] = 3;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -170,6 +175,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'].' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: Autos';
                 $vartrf['flag_search'] = 4;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -192,6 +198,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: Autos';
                 $vartrf['flag_search'] = 5;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -237,6 +244,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$_GET['GestionDiaria']['concesionario'].')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getConcesionario($_GET['GestionDiaria']['concesionario']).', Categoría: Autos';
                 $vartrf['flag_search'] = 7;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -258,6 +266,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 8;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -279,6 +288,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 9;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -292,8 +302,8 @@ class TraficoController extends Controller {
                     $vartrf['mes_actual'] = 12;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                     $vartrf['search']['fecha'] = true;
-                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
-                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
@@ -326,6 +336,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -355,6 +366,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'].' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -385,6 +397,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -443,6 +456,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 switch ($vartrf['cargo_id']) {
                     case 69:
                         $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
@@ -495,6 +509,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -550,6 +565,7 @@ class TraficoController extends Controller {
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
                 }
                 $vartrf['search']['grupo'] = TRUE;
@@ -629,6 +645,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 20;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -647,6 +664,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -671,6 +689,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -710,6 +729,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['flag_search'] = 24;
                 $this->render('inicio', array('vartrf' => $vartrf));
@@ -834,8 +854,8 @@ class TraficoController extends Controller {
                     $vartrf['mes_actual'] = 12;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                     $vartrf['search']['fecha'] = true;
-                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
-                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
@@ -1313,7 +1333,7 @@ class TraficoController extends Controller {
         //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
-        $data = '<option value="">--Seleccione Asesor--</option>';
+        $data = '<option value="">--Seleccione Asesor--</option><option value="10000">Todos</option>';
         //$data .= '<option value="all">Todos</option>';
         foreach ($requestr1 as $value) {
             $data .= '<option value="' . $value['id'] . '">';
@@ -1355,7 +1375,11 @@ class TraficoController extends Controller {
         // SACAR MES ACTUAL
         $vartrf['year_actual'] = date("Y");
         $vartrf['mes_actual'] = date('n');
+        if($vartrf['mes_actual'] < 4){ // menor que marzo traer 12 meses anteriores con año 2016 y 2017
+            $vartrf['fechas_activas'] = $this->getFechasActivas($vartrf['mes_actual']);
+        }
         $vartrf['mes_anterior'] = strftime("%m", strtotime('-1 month', $dt));
+        $vartrf['mes_inicial'] = 0; // MES INICIAL MES DE ENERO PARA REPORTES DEL 2017
         //echo $vartrf['mes_actual'];
         $vartrf['dia_inicial'] = '01';
         $vartrf['dia_actual'] = date("d");
@@ -1400,6 +1424,8 @@ class TraficoController extends Controller {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
                     $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_anterior'] = 11;
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
@@ -1424,8 +1450,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS ========================================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1433,6 +1460,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].' al '.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Categoría: Autos';
                 $vartrf['flag_search'] = 2;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1441,8 +1469,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1451,6 +1480,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Categoría: Autos';
                 $vartrf['$flag_search'] = 3;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1459,8 +1489,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1472,6 +1503,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'].' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: Autos';
                 $vartrf['flag_search'] = 4;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1481,8 +1513,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 //die('fecha grupo');
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1494,6 +1527,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: Autos';
                 $vartrf['flag_search'] = 5;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1505,7 +1539,8 @@ class TraficoController extends Controller {
                 //die('fecha grupo');
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
@@ -1527,8 +1562,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR CONCESIONARIO
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1539,6 +1575,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$_GET['GestionDiaria']['concesionario'].')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getConcesionario($_GET['GestionDiaria']['concesionario']).', Categoría: Autos';
                 $vartrf['flag_search'] = 7;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1548,8 +1585,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 //echo 'enter responsable';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1560,6 +1598,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 8;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1568,8 +1607,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1581,6 +1621,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 9;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1591,11 +1632,12 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
-                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
-                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
@@ -1618,8 +1660,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA - CATEGORIA ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1628,6 +1671,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1644,8 +1688,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CATEGORIA ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1657,6 +1702,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.provincia_conc = '.$_GET['GestionDiaria']['provincia'].' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1674,8 +1720,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 //die('fecha grupo');
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1687,6 +1734,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN('.$dealerList.')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1704,7 +1752,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
+                    $vartrf['mes_anterior'] = 11;
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
@@ -1733,8 +1783,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
                 //echo 'enter responsable';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1745,6 +1796,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['concesionario'] = TRUE;
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 switch ($vartrf['cargo_id']) {
                     case 69:
                         $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
@@ -1784,8 +1836,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1797,6 +1850,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Provincia: '.  $this->getProvincia($_GET['GestionDiaria']['provincia']).', Grupo: '.  $this->getNombreGrupo($_GET['GestionDiaria']['grupo']).', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1815,8 +1869,9 @@ class TraficoController extends Controller {
                 //die('enter sin fecha');
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -1846,12 +1901,14 @@ class TraficoController extends Controller {
                 //echo 'enter responsable';
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
                 }
                 $vartrf['search']['grupo'] = TRUE;
@@ -1896,8 +1953,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -1921,8 +1979,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - CONCESIONARIO - RESPONSABLE ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1931,6 +1990,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: Autos';
                 $vartrf['flag_search'] = 20;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -1939,8 +1999,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1949,6 +2010,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['where'] = ' AND gi.responsable = '.$_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Responsable: '.  $this->getResponsableNombres($_GET['GestionDiaria']['responsable']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1964,8 +2026,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - CONCESIONARIO - CATEGORIA============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -1973,6 +2036,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -1987,8 +2051,9 @@ class TraficoController extends Controller {
             }
             //BUSQUEDA POR CONCESIONARIO Y AÑO
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0 && $_GET['year'] == 1) {
-                $vartrf['mes_actual'] = 12;
+                $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                 $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 $vartrf['search']['fecha'] = true;
                 $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                 $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2003,8 +2068,9 @@ class TraficoController extends Controller {
             // BUSQUEDA POR FECHAS - CONCESIONARIO ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -2012,6 +2078,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde '.$_GET['GestionDiaria']['fecha1'].'-'.$_GET['GestionDiaria']['fecha2'].'-'.$_GET['GestionDiaria']['year'].', Concesionario: '.  $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']).', Categoría: '.$this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['flag_search'] = 24;
                 $this->render('graficos', array('vartrf' => $vartrf));
@@ -2020,7 +2087,9 @@ class TraficoController extends Controller {
             //BUSQUEDA POR AÑO
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0 && $_GET['year'] == 1) {
                 $vartrf['mes_actual'] = 12;
+                $vartrf['mes_anterior'] = 11;
                 $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                 $vartrf['search']['fecha'] = true;
                 $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                 $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2035,8 +2104,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2058,8 +2128,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2086,8 +2157,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2110,8 +2182,9 @@ class TraficoController extends Controller {
                 //die('enter sin fecha');
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2133,11 +2206,12 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
-                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
-                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                     $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' .$_GET['GestionDiaria']['year'].',';
@@ -2158,8 +2232,9 @@ class TraficoController extends Controller {
             if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 $tit = ' defecto - Año: 2017, ';
                 if($_GET['year'] == 1){
-                    $vartrf['mes_actual'] = 12;
+                    $vartrf['mes_actual'] = 12;$vartrf['mes_anterior'] = 11;
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['mes_inicial'] = 4; // MES INICIAL MES DE MAYO PARA REPORTES DEL 2017
                     $vartrf['search']['fecha'] = true;
                     $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
                     $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
@@ -2180,5 +2255,4 @@ class TraficoController extends Controller {
         }
         $this->render('graficos', array('vartrf' => $vartrf));
     }
-
 }

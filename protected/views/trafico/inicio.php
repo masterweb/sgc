@@ -1,12 +1,22 @@
-<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jquery.dataTables.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/buttons.html5.min.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>
+<!--<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>-->
+
+<script type="text/javascript" language="javascript">
     
 $(document).ready(function() {
+    $('#trafico_nacional').DataTable( {
+        buttons: [
+            'excelHtml5'
+        ]
+    } );
     $('#trafico_provincia').change(function(){
         if ($(this).val() != ''){
             $('#provincia').val(1);
@@ -272,7 +282,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
     $area = 1;
 }
-echo 'flag search: '.$vartrf['flag_search'];
+//echo 'flag search: '.$vartrf['flag_search'];
 //echo '<pre>';
 //echo print_r($vartrf);
 //echo '</pre>';
@@ -281,9 +291,10 @@ $vartrf['id_modelos'];
 $vartrf['venta_nacional_categoria'] = array();
 $vartrf['testdrive_nacional_categoria'] = array();
 //echo '<pre>';
-//echo print_r($vartrf['versiones']);
+//echo print_r($vartrf['fechas_date']);
 //echo '</pre>';
 //die();
+//echo $vartrf['categoria'];
 ?>
 <div id="bg_black" style="display: none;">
     <div class="cssload-aim"></div>
@@ -319,11 +330,11 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 <h4>Búsqueda: (Seleccione solo uno de los filtros)</h4>
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="Trafico_fecha">Fecha 1</label>
+                        <label for="Trafico_fecha">Fecha inicio</label>
                         <input type="text" name="GestionDiaria[fecha1]" id="trafico_fecha1" class="form-control"/>
                     </div>
                     <div class="col-md-4">
-                        <label for="Trafico_fecha">Fecha 2</label>
+                        <label for="Trafico_fecha">Fecha fin</label>
                         <input type="text" name="GestionDiaria[fecha2]" id="trafico_fecha2" class="form-control" />
                     </div>
                     <div class="col-md-4">
@@ -350,6 +361,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         
                         <select name="GestionDiaria[grupo]" id="trafico_grupo" class="form-control">
                             <option value="">--Seleccione Grupo--</option>
+                            <option value="1000">TODOS</option>
                             <option value="6">AUTHESA</option>
                             <option value="2">GRUPO ASIAUTO</option>
                             <option value="5">GRUPO EMPROMOTOR</option>
@@ -399,7 +411,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 <div class="row">
                     <div class="col-md-6">
                         <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
-                        <button type="button" class="btn btn-warning" aria-label="Close" onclick="tabletoExcel('main_info_1', 'main_info_1');">Descargar Excel</button>
+                        <button type="button" class="btn btn-warning" aria-label="Close" onclick="tabletoExcel('trafico_nacional', 'trafico_nacional');">Descargar Excel</button>
                         <!--<button type="button" class="btn btn-warning" aria-label="Close" onclick="fnExcelReport();">Descargar Excel</button>-->
                         <input type="hidden" name="fecha1" id="fecha1" value="0" />
                         <input type="hidden" name="fecha2" id="fecha2" value="0" />
@@ -422,7 +434,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsives">
-            <table class="table table-bordered" id="main_info_1" name="main_info_1">
+            <table class="table table-bordered" id="trafico_nacional" name="main_info_1">
                 <tr>
                     <th colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" align="left" scope="col">TRÁFICO NACIONAL - <?php echo $vartrf['search']['titulo']; ?></th>
                 </tr>
@@ -443,12 +455,11 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     
                     ?>
                     <tr>
-                        <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle"><span class="cir cir-<?php echo $val['id']; ?>"></span><?php echo '<strong>' . $val['nombre_modelo'] . '</strong>'; ?></td>
+                        <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle" id="cid_<?php echo $val['id']; ?>"><span class="cir cir-<?php echo $val['id']; ?>"></span><?php echo '<strong>' . $val['nombre_modelo'] . '</strong>'; ?></td>
                     </tr>
                     <tr>
                         <td bgcolor="#D9534F" class="tr-f">Funnel</td>
-                        <?php
-                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                        <?php for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                             echo '<td bgcolor="#D9534F" class="tr-f dde_' . $i . '_' . $val['id'] . '"  id="dde_' . $i . '_' . $val['id'] . '" onclick="detail(\'' . $vartrf['versiones'][$flag] . '\',\'' . $vartrf['dia_inicial'] . '\',\'' . $vartrf['dia_actual'] . '\',\'' . $vartrf['year_actual'] . '\',\'' . $vartrf['fechas_date'][$i] . '\',' . $val['id'] . ',\'' . $val['nombre_modelo'] . '\',' . $i . ','.$vartrf['categoria'].');" data-vec="0">' . $vartrf['fechas'][$i] . '</td>';
                         }
                         ?>
@@ -549,9 +560,17 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     <tr>
                         <td>Tráfico</td>
                         <?php
-                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $vartrf['trafico_suma_total'][$i] . '</td>';
-                            $vartrf['trafico_nacional'] += $vartrf['trafico_suma_total'][$i];
+                        if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                $vartrf['trafico_nacional_total'][$i] = $this->getTraficoVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
+                                echo '<td>' . $vartrf['trafico_nacional_total'][$i] . '</td>';
+                                $vartrf['trafico_nacional'] += $vartrf['trafico_nacional_total'][$i];
+                            }
+                        }else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['trafico_suma_total'][$i] . '</td>';
+                                $vartrf['trafico_nacional'] += $vartrf['trafico_suma_total'][$i];
+                            }
                         }
                         ?>
                         <td><?php echo $vartrf['trafico_nacional']; ?></td>
@@ -559,32 +578,57 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     <tr class="odd">
                         <td>Proforma</td>
                         <?php
-                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $vartrf['proforma_suma_total'][$i] . '</td>';
-                            $vartrf['proforma_nacional'] += $vartrf['proforma_suma_total'][$i];
+                        if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                $vartrf['proforma_nacional_total'][$i] = $this->getProformaVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
+                                echo '<td>' . $vartrf['proforma_nacional_total'][$i] . '</td>';
+                                $vartrf['proforma_nacional'] += $vartrf['proforma_nacional_total'][$i];
+                            }
+                        }else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['proforma_suma_total'][$i] . '</td>';
+                                $vartrf['proforma_nacional'] += $vartrf['proforma_suma_total'][$i];
+                            }
                         }
+                        
                         ?>
                         <td><?php echo $vartrf['proforma_nacional']; ?></td>
                     </tr>
                     <tr>
                         <td>Test Drive</td>
                         <?php
-                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $vartrf['testdrive_suma_total'][$i] . '</td>';
-                            $vartrf['testdrive_nacional'] += $vartrf['testdrive_suma_total'][$i];
+                        if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                $vartrf['testdrive_nacional_total'][$i] = $this->getTestDriveVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']); 
+                                echo '<td>' . $vartrf['testdrive_nacional_total'][$i] . '</td>';
+                                $vartrf['testdrive_nacional'] += $vartrf['testdrive_nacional_total'][$i];
+                            }
+                        }else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['testdrive_suma_total'][$i] . '</td>';
+                                $vartrf['testdrive_nacional'] += $vartrf['testdrive_suma_total'][$i];
+                            }
                         }
+                        
                         ?>
                         <td><?php echo $vartrf['testdrive_nacional']; ?></td>
                     </tr>
                     <tr class="odd">
                         <td>Ventas</td>
                         <?php
-                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            $vartrf['venta_nacional_categoria'][] = $this->getVentasTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'], $vartrf['categoria']);
-                            echo '<td>' . $vartrf['venta_nacional_categoria'][$i] . '</td>';
-                            $vartrf['ventas_nacional'] += $vartrf['venta_nacional_categoria'][$i];
-                            
+                        if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                $vartrf['venta_nacional_total'][$i] = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
+                                echo '<td>' . $vartrf['venta_nacional_total'][$i] . '</td>';
+                                $vartrf['ventas_nacional'] += $vartrf['venta_nacional_total'][$i];
+                            }
+                        }else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['venta_suma_total'][$i] . '</td>';
+                                $vartrf['ventas_nacional'] += $vartrf['venta_suma_total'][$i];
+                            }
                         }
+                        
                         ?>
                         <td><?php echo $vartrf['ventas_nacional']; ?></td>
                     </tr>
@@ -592,16 +636,16 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <td>Tasa de Test Drive</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $this->getTasaTD($vartrf['testdrive_suma_total'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
+                            echo '<td>' . $this->getTasaTD($vartrf['testdrive_nacional_total'][$i], $vartrf['trafico_nacional_total'][$i]) . '</td>';
                         }
                         ?>
-                        <td><?php echo $this->getTasaTD($vartrf['testdrive_suma'], $vartrf['trafico_suma']); ?></td>
+                        <td><?php echo $this->getTasaTD($vartrf['testdrive_nacional'], $vartrf['trafico_nacional']); ?></td>
                     </tr>
                     <tr class="odd">
                         <td>Tasa de Cierre</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $this->getTasaCierre($vartrf['venta_nacional_categoria'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
+                            echo '<td>' . $this->getTasaCierre($vartrf['venta_nacional_total'][$i], $vartrf['trafico_nacional_total'][$i]) . '</td>';
                         }
                         ?>
                         <td><?php echo $this->getTasaCierre($vartrf['ventas_nacional'], $vartrf['trafico_nacional']); ?></td>
@@ -666,6 +710,11 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-16').append(data.data_sportage_gt);
                     $('.cer-17').append(data.data_sportage_r_ckd);
                     $('#bg_black').hide();
+                    var enlace  = $('#cid_'+id);
+		    $('html, body').animate({
+		        scrollTop: $(enlace).offset().top
+		    }, 1000);
+                    //$("body").css("overflow", "hidden");
                 }
             });
             //vecobj.dataset.vec = 1;
@@ -680,34 +729,22 @@ $vartrf['testdrive_nacional_categoria'] = array();
                  $('.det_'+mes).remove();
              });
           }
-           //vecobj.dataset.vec = 0; 
-           // colocar color original al td
-           //$('.dde_' + i + '_' + id).css('background-color', '#D9534F');
-           // borrar lo que este en el DOM
-           //$('.det_'+mes).remove();
         }
 
     }
     function closemodal(mes, i) {
-        var id_modelos = [1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17]
+        var id_modelos = [<?php echo implode(',',  $vartrf['id_modelos'] ); ?>];
         $('.det_' + mes).slideUp('slow', function(){
             $(this).remove();
         });
         //remove();
         // poner color original a los tds y colocar data-vec en 0
         for (j=0; j < id_modelos.length; j++){
-            //console.log('.dde_' + i + '_' + id_modelos[j]);
+            console.log('.dde_' + i + '_' + id_modelos[j]);
             $('.dde_' + i + '_' + id_modelos[j]).css('background-color', '#D9534F');
             vecobj = document.getElementById('dde_' + i + '_' + id_modelos[j]);
             vecobj.dataset.vec = 0;
         }
-        
-        //var vecobj = document.getElementById('dde_' + i + '_' + id);
-        //console.log('dde_' + i + '_' + id);
-        //var datpl = vecobj.dataset.vec;
-        //console.log('id: ' + id);
-        //$('.dde_' + i + '_' + id).css('background-color', '#D9534F');vecobj.dataset.vec = 0; 
-        //$('.det_' + mes).remove();
     }
 
     function tabletoExcel(table, name) {
@@ -721,47 +758,46 @@ $vartrf['testdrive_nacional_categoria'] = array();
         window.location.href = uri + base64(format(template, ctx));
 
     }
-    function fnExcelReport()
-    {
-    var tab_text = '<table border="1px" style="font-size:13px" ">';
-    var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><?xml version="1.0" encoding="UTF-8" standalone="yes"?><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-    var textRange; 
-    var j = 0;
-    var tab = document.getElementById('main_info_1'); // id of table
-    var lines = tab.rows.length;
+    function fnExcelReport(){
+        var tab_text = '<table border="1px" style="font-size:13px" ">';
+        var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><?xml version="1.0" encoding="UTF-8" standalone="yes"?><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        var textRange; 
+        var j = 0;
+        var tab = document.getElementById('main_info_1'); // id of table
+        var lines = tab.rows.length;
+        //tab_text = tab_text + template;
+        // the first headline of the table
+        if (lines > 0) {
+            tab_text = tab_text + '<tr bgcolor="#DFDFDF">' + tab.rows[0].innerHTML + '</tr>';
+        }
 
-    // the first headline of the table
-    if (lines > 0) {
-        tab_text = tab_text + '<tr bgcolor="#DFDFDF">' + tab.rows[0].innerHTML + '</tr>';
-    }
+        // table data lines, loop starting from 1
+        for (j = 1 ; j < lines; j++) {     
+            tab_text = tab_text + "<tr>" + tab.rows[j].innerHTML + "</tr>";
+        }
 
-    // table data lines, loop starting from 1
-    for (j = 1 ; j < lines; j++) {     
-        tab_text = tab_text + "<tr>" + tab.rows[j].innerHTML + "</tr>";
-    }
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");             //remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi,"");                 // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, "");    // reomves input params
+        // console.log(tab_text); // aktivate so see the result (press F12 in browser)
 
-    tab_text = tab_text + "</table>";
-    tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");             //remove if u want links in your table
-    tab_text = tab_text.replace(/<img[^>]*>/gi,"");                 // remove if u want images in your table
-    tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, "");    // reomves input params
-    // console.log(tab_text); // aktivate so see the result (press F12 in browser)
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE "); 
 
-    var ua = window.navigator.userAgent;
-    var msie = ua.indexOf("MSIE "); 
+         // if Internet Explorer
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus(); 
+            sa = txtArea1.document.execCommand("SaveAs", true, "DataTableExport.xlsx");
+        }  
+        else // other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
 
-     // if Internet Explorer
-    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-        txtArea1.document.open("txt/html","replace");
-        txtArea1.document.write(tab_text);
-        txtArea1.document.close();
-        txtArea1.focus(); 
-        sa = txtArea1.document.execCommand("SaveAs", true, "DataTableExport.xlsx");
-    }  
-    else // other browser not tested on IE 11
-        sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
-
-    return (sa);
-}   
+        return (sa);
+    }   
 </script>
 
 
