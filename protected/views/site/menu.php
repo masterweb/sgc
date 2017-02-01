@@ -309,11 +309,11 @@ $rol = Yii::app()->user->getState('roles');
                         <?php } ?>
                     <?php } ?>    
                         
-                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas' && $tipo_grupo == 1) { ?>
+                    <?php if (($a->accesoSistema->controlador) == 'gestionInformacion' && ($a->accesoSistema->accion) == 'seguimientobdc' && $tipo == 'ventas' && ($cargo_id == 86 || $cargo_adicional == 86 || $cargo_id == 85)) { ?>
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimientobdc'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD</div></a>
+                                <div class="txt_menu">RGD Web</div></a>
                         </div>
                     </li>
                     <?php } ?>
