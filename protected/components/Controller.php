@@ -4506,9 +4506,9 @@ class Controller extends CController {
                     $criteria->addCondition('gi.bdc = 1', 'AND');
                     $criteria->order = "gi.id DESC";
                 }
-                echo '<pre>';
-                print_r($criteria);
-                echo '</pre>';
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
                 //die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
