@@ -944,11 +944,11 @@ $tipo = $_GET['tipo'];
                             <label for="">Opciones</label>
                             <?php echo $form->dropDownList($model, 'recomendaron', array(
                                 '' => '--Selecione opción--',
-                                'calidad_de_producto' => 'Calidad de Producto',
-                                'atencion' => 'Atención',
-                                'diseno' => 'Diseño',
-                                'facilidades_credito' => 'Facilidades de Crédito',
-                                'garantis' => 'Garantía',
+                                'calidad_de_producto' => 'Por Calidad de Producto',
+                                'atencion' => 'Por Atención',
+                                'diseno' => 'Por Diseño',
+                                'facilidades_credito' => 'Por Facilidades de Crédito',
+                                'garantis' => 'Por Garantía',
                             ), array('class' => 'form-control')); ?>
                             <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error" style="display: none;">Seleccione una opción</label>
                         </div>
