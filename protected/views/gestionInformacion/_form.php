@@ -124,7 +124,7 @@ $tipo = $_GET['tipo'];
             disabledDates: ['03.04.2015', '01.05.2015', '10.08.2015', '09.10.2015', '02.11.2015', '03.11.2015', '25.12.2015'], formatDate: 'd.m.Y'
         });
         $('#GestionVehiculo_version').change(function () {
-            var value = $(this).attr('value');
+            var value = $('#GestionVehiculo_version option:selected');
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("site/getPrice"); ?>',
                 beforeSend: function (xhr) {
@@ -353,7 +353,7 @@ $tipo = $_GET['tipo'];
 
         });
 
-        $('#Cotizador_modelo').change(function () {
+        $('#Cotizador_modelo').change(function (){
             var modelo = $(this).attr('value');
             //alert(value);
             $.ajax({
@@ -367,7 +367,20 @@ $tipo = $_GET['tipo'];
                 }
             });
         });
-
+        $('#GestionInformacion_medio').change(function(){
+            var option = $('#GestionInformacion_medio option:selected').val();
+            if(option == 'recomendacion'){
+                $('#cont-recomendaron').show();
+            }else{
+                $('#cont-recomendaron').hide();
+            }
+        });
+        $('#GestionInformacion_recomendaron').change(function(){
+            var recom = $('#GestionInformacion_recomendaron option:selected').val();
+            if(recom != ''){
+                $('#recomendaron_error').hide();
+            }
+        })
     });
     function validateVehiculo() {
         $("#Cotizador_modelo").rules("add", "required");
@@ -414,6 +427,14 @@ $tipo = $_GET['tipo'];
                     var num_cel = $('#GestionInformacion_celular').val();
                     var num_tel = $('#GestionInformacion_telefono_oficina').val();
                     var num_casa = $('#GestionInformacion_telefono_casa').val();
+                    var opt = $('#GestionInformacion_medio').val();
+                    if(opt == 'recomendacion'){
+                        var rec = $('#GestionInformacion_recomendaron').val();
+                        if(rec == ''){
+                            $('#recomendaron_error').show();
+                            return false;
+                        }
+                    }
                     if (num_cel.indexOf("0") != 0) {
                         $('#GestionInformacion_celular').after('<label for="celular2" generated="true" class="error" id="celular2">Ingrese correctamente su celular</label>')
                         //$('#telefono').val('');
@@ -459,6 +480,14 @@ $tipo = $_GET['tipo'];
                 $('#GestionInformacion_celular').after('<label for="celular2" generated="true" class="error" id="celular2">Ingrese correctamente su celular</label>')
                 //$('#telefono').val('');
                 return false;
+            }
+            var opt = $('#GestionInformacion_medio').val();
+            if(opt == 'recomendacion'){
+                var rec = $('#GestionInformacion_recomendaron').val();
+                if(rec == ''){
+                    $('#recomendaron_error').show();
+                    return false;
+                }
             }
             /*if (num_tel.indexOf("0") != 0) {
                 $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
@@ -632,6 +661,7 @@ $tipo = $_GET['tipo'];
             }
         }
     }
+    
 </script>
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div role="tabpanel">
@@ -896,19 +926,31 @@ $tipo = $_GET['tipo'];
 
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="">¿En qué medio vio/escuchó la publicidad que le impulsó a visitarnos?</label>
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
                                 'television' => 'Televisión',
                                 'prensa_escrita' => 'Prensa escrita',
                                 'radio' => 'Radio',
-                                'referencia' => 'Le recomendaron',
+                                'recomendacion' => 'Le recomendaron',
                                 'pagina_web' => 'Página Web Kia',
                                 'internet' => 'Internet',
                                 'redessociales' => 'Redes sociales',
                                 'conoce_concesionario' => 'Conoce el Concesionario'), 
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
+                        </div>
+                        <div class="col-md-3" id="cont-recomendaron" style="display:none;">
+                            <label for="">Opciones</label>
+                            <?php echo $form->dropDownList($model, 'recomendaron', array(
+                                '' => '--Selecione opción--',
+                                'calidad_de_producto' => 'Calidad de Producto',
+                                'atencion' => 'Atención',
+                                'diseno' => 'Diseño',
+                                'facilidades_credito' => 'Facilidades de Crédito',
+                                'garantis' => 'Garantía',
+                            ), array('class' => 'form-control')); ?>
+                            <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error" style="display: none;">Seleccione una opción</label>
                         </div>
                     </div>
                     <?php

@@ -44,7 +44,7 @@
  * @property string $tipo_ex
  * @property integer $id_comentario
  * @property string $medio
- * 
+ * @property string $recomendaron
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
  */
@@ -155,6 +155,7 @@ class GestionInformacion extends CActiveRecord {
             'tipo_ex' => 'Tipo Ex',
             'id_comentario' => 'Id Comentario',
             'medio' => 'Medio',
+            'recomendaron' => 'Recomendaron',
         );
     }
 

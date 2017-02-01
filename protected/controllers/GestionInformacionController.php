@@ -119,6 +119,9 @@ class GestionInformacionController extends Controller {
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
             $model->apellidos = ucfirst($_POST['GestionInformacion']['apellidos']);
             $model->medio = $_POST['GestionInformacion']['medio'];
+            if($model->medio == 'recomendacion'){
+                $model->recomendaron = $_POST['GestionInformacion']['recomendaron'];
+            }
             if ($_POST['tipo'] == 'gestion'):
                 $model->provincia_conc = $_POST['GestionInformacion']['provincia_conc'];
                 $model->ciudad_conc = $_POST['GestionInformacion']['ciudad_conc'];
@@ -1988,7 +1991,8 @@ class GestionInformacionController extends Controller {
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         //die($dealer_id);
-        
+        $model = new GestionNuevaCotizacion;
+        $con = Yii::app()->db;
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
