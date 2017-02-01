@@ -2779,6 +2779,8 @@ class Controller extends CController {
         $cre = new CDbCriteria();
         if ($grupo_id == 4)// IOKARS
             $cre->condition = " cargo_id IN (71,73) AND dealers_id IN ({$dealer_id}) ";
+        if ($grupo_id == 9)//
+            $cre->condition = " cargo_id IN (71,86) AND dealers_id IN ({$dealer_id}) ";
         else
             $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";
         $cre->order = " nombres ASC";
