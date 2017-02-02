@@ -10,6 +10,7 @@
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
+//die('count: '.$countsc);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
     $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
@@ -35,16 +36,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 ?>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
 <style type="text/css">
-    .tl_seccion_rf_s {
-        background-color: #aa1f2c;
-        padding: 5px 28px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 18px;
-        color: #fff;
-        font-weight: bold;
-        margin-top: 20px;
-        width: 100%;
-    }
+    .tl_seccion_rf_s {background-color: #aa1f2c;padding: 5px 28px;font-family: Arial, Helvetica, sans-serif;font-size: 18px;color: #fff;font-weight: bold;margin-top: 20px;width: 100%;}
     .activos label{font-size: 0.7em !important;}
     .activos .checkbox{margin-bottom: -6px;}
 </style>
@@ -108,75 +100,29 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             });
         });
 
-        $('#GestionSolicitudCredito_apellido_paterno_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_apellido_paterno_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_telefonos_trabajo').keyup(function(){
-            $('#telefonos_trabajo_error').hide();
-        });
-        $('#GestionSolicitudCredito_nombres_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_nombres_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_nombres_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_cedula_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_cedula_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_cedula_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').click(function () {
-            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_empresa_trabajo_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_empresa_trabajo_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_telefono_trabajo_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').click(function () {
-            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_meses_trabajo_conyugue').click(function () {
-            $('#GestionSolicitudCredito_meses_trabajo_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_cargo_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_cargo_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_cargo_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_direccion_empresa_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_direccion_empresa_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').hide();
-        });
-        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').keyup(function () {
-            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').removeClass('error');
-            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').hide();
-            $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').hide();
-        });
-        $('#GestionSolicitudCredito_sueldo_mensual').keyup(function () {
-            $('#GestionSolicitudCredito_sueldo_mensual').removeClass('error');
-            $('#GestionSolicitudCredito_sueldo_mensual_error').hide();
-        });
-        $('#GestionSolicitudCredito_avaluo_propiedad').keyup(function () {
-            $('#GestionSolicitudCredito_avaluo_propiedad_error').hide();
-        });
-        $('#GestionSolicitudCredito_conyugue_trabaja').change(function () {
-            $('#GestionSolicitudCredito_conyugue_trabaja_error').hide();
-        });
+        $('#GestionSolicitudCredito_apellido_paterno_conyugue').keyup(function () {$('#GestionSolicitudCredito_apellido_paterno_conyugue').removeClass('error');$('#GestionSolicitudCredito_apellido_paterno_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_telefonos_trabajo').keyup(function(){$('#telefonos_trabajo_error').hide();});
+        $('#GestionSolicitudCredito_nombres_conyugue').keyup(function () {$('#GestionSolicitudCredito_nombres_conyugue').removeClass('error');$('#GestionSolicitudCredito_nombres_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_cedula_conyugue').keyup(function () {$('#GestionSolicitudCredito_cedula_conyugue').removeClass('error');$('#GestionSolicitudCredito_cedula_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').click(function () {$('#GestionSolicitudCredito_fecha_nacimiento_conyugue').removeClass('error');$('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_empresa_trabajo_conyugue').keyup(function () {$('#GestionSolicitudCredito_empresa_trabajo_conyugue').removeClass('error');$('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').keyup(function () {$('#GestionSolicitudCredito_telefono_trabajo_conyugue').removeClass('error');$('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').click(function () {$('#GestionSolicitudCredito_tiempo_trabajo_conyugue').removeClass('error');$('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_meses_trabajo_conyugue').click(function () {$('#GestionSolicitudCredito_meses_trabajo_conyugue').removeClass('error');$('#GestionSolicitudCredito_meses_trabajo_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_cargo_conyugue').keyup(function () {$('#GestionSolicitudCredito_cargo_conyugue').removeClass('error');$('#GestionSolicitudCredito_cargo_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_direccion_empresa_conyugue').keyup(function () {$('#GestionSolicitudCredito_direccion_empresa_conyugue').removeClass('error');$('#GestionSolicitudCredito_direccion_empresa_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').keyup(function () {$('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').removeClass('error');$('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').hide();});
+        $('#GestionSolicitudCredito_sueldo_mensual_conyugue').keyup(function () {$('#GestionSolicitudCredito_sueldo_mensual_conyugue').removeClass('error');$('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').hide();$('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').hide();});
+        $('#GestionSolicitudCredito_sueldo_mensual').keyup(function () {$('#GestionSolicitudCredito_sueldo_mensual').removeClass('error');$('#GestionSolicitudCredito_sueldo_mensual_error').hide();});
+        $('#GestionSolicitudCredito_avaluo_propiedad').keyup(function () {$('#GestionSolicitudCredito_avaluo_propiedad_error').hide();});
+        $('#GestionSolicitudCredito_conyugue_trabaja').change(function () {$('#GestionSolicitudCredito_conyugue_trabaja_error').hide();});
         $('#GestionSolicitudCreditovehiculo_valor2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        $('#GestionSolicitudCreditovalor_inversion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        $('#GestionSolicitudCreditodireccion_valor_comercial1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        $('#GestionSolicitudCreditodireccion_valor_comercial2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_valor_inversion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_direccion_valor_comercial1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_direccion_valor_comercial2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCreditovehiculo_valor1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        $('#GestionSolicitudCreditovalor_otros_activos1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
-        $('#GestionSolicitudCreditovalor_otros_activos2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_valor_otros_activos1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_valor_otros_activos2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_avaluo_propiedad').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_valor_arriendo').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_sueldo_mensual').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
@@ -201,9 +147,6 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         }else{
             $('#GestionSolicitudCredito_sueldo_mensual').val('$ 0.00');
         }
-        
-        
-        
         var cuotamensual = parseInt($('#GestionSolicitudCredito_cuota_mensual').val());
         var cuotamensualformat = format2(cuotamensual, '$');
         $('#GestionSolicitudCredito_cuota_mensual').val(cuotamensualformat);
@@ -215,34 +158,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         }else{
             $('#GestionSolicitudCredito_avaluo_propiedad').val('$ 0.00');
         }
-        $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {
-            getvalortotal();
-        });    
-        $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {
-            getvalortotal();
-        });
-
-        $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").keyup(function () {
-            getvalortotal();
-        });
-
-        $("[name='GestionSolicitudCredito[vehiculo_valor2]']").keyup(function () {
-            getvalortotal();
-        });
-
-
-        $("[name='GestionSolicitudCredito[valor_inversion]']").keyup(function () {
-            getvalortotal();
-        });
-
-        $("[name='GestionSolicitudCredito[valor_otros_activos1]']").keyup(function () {
-            getvalortotal();
-        });
-
-        $("[name='GestionSolicitudCredito[valor_otros_activos2]']").keyup(function () {
-            getvalortotal();
-        });
-
+        $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {getvalortotal();});    
+        $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[vehiculo_valor2]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[valor_inversion]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[valor_otros_activos1]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[valor_otros_activos2]']").keyup(function () {getvalortotal();});
         $("#GestionSolicitudCredito_fecha_nacimiento").datepicker({
             changeMonth: true,
             changeYear: true,
@@ -1120,7 +1042,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     var validateCedula = CedulaValida(cedulaConyugue);
                     if (validateCedula) {
                         $.ajax({
-                            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax"); ?>',
+                            url: '<?php echo $url; ?>',
                             beforeSend: function (xhr) {
                                 $('#bg_negro').show();  // #bg_negro must be defined somewhere
                             },
@@ -1145,7 +1067,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 } else if (error == 0) {
                     console.log('enter no cony');
                     $.ajax({
-                        url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax"); ?>',
+                        url: '<?php echo $url; ?>',
                         beforeSend: function (xhr) {
                             $('#bg_negro').show();  // #bg_negro must be defined somewhere
                         },
@@ -2555,7 +2477,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Local" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Local" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo1',array('value' => 'Local', 'name' => 'activos[]')); ?>
                                         Local
                                     </label>
                                 </div>
@@ -2563,7 +2486,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Finca" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Finca" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo1',array('value' => 'Finca', 'name' => 'activos[]')); ?>
                                         Finca
                                     </label>
                                 </div>
@@ -2571,7 +2495,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Casa" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Casa" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo1',array('value' => 'Casa', 'name' => 'activos[]')); ?>
                                         Casa
                                     </label>
                                 </div>
@@ -2579,7 +2504,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Dpto" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Dpto" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo1',array('value' => 'Dpto', 'name' => 'activos[]')); ?>
                                         Dpto
                                     </label>
                                 </div>
@@ -2587,7 +2513,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Lote" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Lote" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo1',array('value' => 'Lote', 'name' => 'activos[]')); ?>
                                         Lote
                                     </label>
                                 </div>
@@ -2595,14 +2522,18 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         </div>
                         <div class="col-md-3">
                             <label for="">Dirección</label>
-                            <input type="text" class="form-control" name="GestionSolicitudCredito[direccion_activo1]"/>
+                            <!--<input type="text" class="form-control" name="GestionSolicitudCredito[direccion_activo1]"/>-->
+                            <?php echo $form->textField($model, 'direccion_activo1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                            
                         </div>
                         <div class="col-md-3">
                             <label for="">Sector</label>
-                            <input type="text" class="form-control" name="GestionSolicitudCredito[direccion_sector1]"/>
+                            <!--<input type="text" class="form-control" name="GestionSolicitudCredito[direccion_sector1]"/>-->
+                            <?php echo $form->textField($model, 'direccion_sector1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div><div class="col-md-3">
                             <label for="">Valor Comercial</label>
-                            <input type="text" maxlength="14" class="form-control" id="GestionSolicitudCreditodireccion_valor_comercial1" name="GestionSolicitudCredito[direccion_valor_comercial1]" onkeypress="return validateNumbers(event)"/>
+                            <!--<input type="text" maxlength="14" class="form-control" id="GestionSolicitudCreditodireccion_valor_comercial1" name="GestionSolicitudCredito[direccion_valor_comercial1]" onkeypress="return validateNumbers(event)"/>-->
+                            <?php echo $form->textField($model, 'direccion_valor_comercial1', array('size' => 60, 'maxlength' => 40, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                         </div>
                     </div>
                     <hr />
@@ -2611,7 +2542,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Casa2" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Casa2" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo2',array('value' => 'Casa', 'name' => 'activos2[]')); ?>
                                         Casa
                                     </label>
                                 </div>
@@ -2619,7 +2551,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Finca" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Finca" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo2',array('value' => 'Dpto', 'name' => 'activos2[]')); ?>
                                         Dpto
                                     </label>
                                 </div>
@@ -2627,7 +2560,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="col-md-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" value="Terreno" name="activos[]" id="">
+                                        <!--<input type="checkbox" value="Terreno" name="activos[]" id="">-->
+                                        <?php echo $form->checkBox($model,'tipo_activo2',array('value' => 'Terreno', 'name' => 'activos2[]')); ?>
                                         Terreno
                                     </label>
                                 </div>
@@ -2635,14 +2569,17 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         </div>
                         <div class="col-md-3">
                             <label for="">Dirección</label>
-                            <input type="text" class="form-control" name="GestionSolicitudCredito[direccion_activo2]"/>
+                            <!--<input type="text" class="form-control" name="GestionSolicitudCredito[direccion_activo2]"/>-->
+                            <?php echo $form->textField($model, 'direccion_activo2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-3">
                             <label for="">Sector</label>
-                            <input type="text" class="form-control" name="GestionSolicitudCredito[direccion_sector2]"/>
+                            <!--<input type="text" class="form-control" name="GestionSolicitudCredito[direccion_sector2]"/>-->
+                            <?php echo $form->textField($model, 'direccion_sector2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div><div class="col-md-3">
                             <label for="">Valor Comercial</label>
-                            <input type="text" maxlength="14" class="form-control" id="GestionSolicitudCreditodireccion_valor_comercial2" name="GestionSolicitudCredito[direccion_valor_comercial2]"  onkeypress="return validateNumbers(event)"/>
+                            <!--<input type="text" maxlength="14" class="form-control" id="GestionSolicitudCreditodireccion_valor_comercial2" name="GestionSolicitudCredito[direccion_valor_comercial2]"  onkeypress="return validateNumbers(event)"/>-->
+                            <?php echo $form->textField($model, 'direccion_valor_comercial2', array('size' => 60, 'maxlength' => 40, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                         </div>
                     </div>
                     <hr />
@@ -2704,43 +2641,52 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     <div class="row">
                         <div class="col-md-4">
                             <label for="">Tipo de inversión</label>
-                            <input type="text" name="GestionSolicitudCredito[tipo_inversion]" class="form-control"/>
+<!--                            <input type="text" name="GestionSolicitudCredito[tipo_inversion]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'tipo_inversion', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Institución</label>
-                            <input type="text" name="GestionSolicitudCredito[institucion_inversion]" class="form-control"/>
+                            <!--<input type="text" name="GestionSolicitudCredito[institucion_inversion]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'institucion_inversion', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Valor</label>
-                            <input type="text" id="GestionSolicitudCreditovalor_inversion" maxlength="14" name="GestionSolicitudCredito[valor_inversion]" class="form-control"/>
+                            <!--<input type="text" id="GestionSolicitudCreditovalor_inversion" maxlength="14" name="GestionSolicitudCredito[valor_inversion]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'valor_inversion', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control')); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <label for="">Otros activos</label>
-                            <input type="text" name="GestionSolicitudCredito[otros_activos1]" class="form-control"/>
+                            <!--<input type="text" name="GestionSolicitudCredito[otros_activos1]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'otros_activos', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Descripción</label>
-                            <input type="text" name="GestionSolicitudCredito[descripcion1]" class="form-control"/>
+                            <!--<input type="text" name="GestionSolicitudCredito[descripcion1]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'descripcion1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Valor</label>
-                            <input type="text" id="GestionSolicitudCreditovalor_otros_activos1" maxlength="14" name="GestionSolicitudCredito[valor_otros_activos1]" class="form-control" onkeypress="return validateNumbers(event)"/>
+                            <!--<input type="text" id="GestionSolicitudCreditovalor_otros_activos1" maxlength="14" name="GestionSolicitudCredito[valor_otros_activos1]" class="form-control" onkeypress="return validateNumbers(event)"/>-->
+                            <?php echo $form->textField($model, 'valor_otros_activos1', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <label for="">Otros activos</label>
-                            <input type="text" name="GestionSolicitudCredito[otros_activos2]" class="form-control"/>
+                            <!--<input type="text" name="GestionSolicitudCredito[otros_activos2]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'otros_activos2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Descripción</label>
-                            <input type="text" name="GestionSolicitudCredito[descripcion2]" class="form-control"/>
+                            <!--<input type="text" name="GestionSolicitudCredito[descripcion2]" class="form-control"/>-->
+                            <?php echo $form->textField($model, 'descripcion2', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
                         </div>
                         <div class="col-md-4">
                             <label for="">Valor</label>
-                            <input type="text" id="GestionSolicitudCreditovalor_otros_activos2" maxlength="14" name="GestionSolicitudCredito[valor_otros_activos2]" class="form-control" onkeypress="return validateNumbers(event)"/>
+                            <!--<input type="text" id="GestionSolicitudCreditovalor_otros_activos2" maxlength="14" name="GestionSolicitudCredito[descripcion2]" class="form-control" onkeypress="return validateNumbers(event)"/>-->
+                            <?php echo $form->textField($model, 'valor_otros_activos2', array('size' => 60, 'maxlength' => 14, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                         </div>
                     </div>
                     <div class="row">

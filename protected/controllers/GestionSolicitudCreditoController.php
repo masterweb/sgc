@@ -194,19 +194,22 @@ class GestionSolicitudCreditoController extends Controller {
                     break;
             }
 
-            if (isset($_POST['GestionSolicitudCredito']['otros_activos1']) && !empty($_POST['GestionSolicitudCredito']['otros_activos1'])) {
-                $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos1'];
+            if (isset($_POST['GestionSolicitudCredito']['otros_activos']) && !empty($_POST['GestionSolicitudCredito']['otros_activos'])) {
+                $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos'];
             }
             if (isset($_POST['GestionSolicitudCredito']['otros_activos2']) && !empty($_POST['GestionSolicitudCredito']['otros_activos2'])) {
                 $model->otros_activos2 = $_POST['GestionSolicitudCredito']['otros_activos2'];
             }
-            if (isset($_POST['activos']['0']) && !empty($_POST['activos']['0'])) {
-                $model->tipo_activo1 = $_POST['activos']['0'];
+            for($i = 0; $i <= count($_POST['activos']); $i++){
+                if(!empty($_POST['activos'][$i])){
+                    $model->tipo_activo1 = $_POST['activos'][$i];
+                }
             }
-            if (isset($_POST['activos']['1']) && !empty($_POST['activos']['1'])) {
-                $model->tipo_activo2 = $_POST['activos']['1'];
+            for($i = 0; $i <= count($_POST['activos2']); $i++){
+                if(!empty($_POST['activos2'][$i])){
+                    $model->tipo_activo2 = $_POST['activos2'][$i];
+                }
             }
-
             $hoja_entrega = new GestionHojaEntregaSolicitud;
             $hoja_entrega->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
             $hoja_entrega->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
@@ -311,7 +314,7 @@ class GestionSolicitudCreditoController extends Controller {
 
         if (isset($_POST['GestionSolicitudCredito'])) {
 
-            //            echo '<pre>';
+//            echo '<pre>';
 //            print_r($_POST);
 //            echo '</pre>';
 //            die();
@@ -399,27 +402,28 @@ class GestionSolicitudCreditoController extends Controller {
 
                     break;
                 case 'Vive con Familiares':
-
-
                     break;
 
                 default:
                     break;
             }
 
-            if (isset($_POST['GestionSolicitudCredito']['otros_activos1']) && !empty($_POST['GestionSolicitudCredito']['otros_activos1'])) {
-                $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos1'];
+            if (isset($_POST['GestionSolicitudCredito']['otros_activos']) && !empty($_POST['GestionSolicitudCredito']['otros_activos'])) {
+                $model->otros_activos = $_POST['GestionSolicitudCredito']['otros_activos'];
             }
             if (isset($_POST['GestionSolicitudCredito']['otros_activos2']) && !empty($_POST['GestionSolicitudCredito']['otros_activos2'])) {
                 $model->otros_activos2 = $_POST['GestionSolicitudCredito']['otros_activos2'];
             }
-            if (isset($_POST['activos']['0']) && !empty($_POST['activos']['0'])) {
-                $model->tipo_activo1 = $_POST['activos']['0'];
+            for($i = 0; $i <= count($_POST['activos']); $i++){
+                if(!empty($_POST['activos'][$i])){
+                    $model->tipo_activo1 = $_POST['activos'][$i];
+                }
             }
-            if (isset($_POST['activos']['1']) && !empty($_POST['activos']['1'])) {
-                $model->tipo_activo2 = $_POST['activos']['1'];
+            for($i = 0; $i <= count($_POST['activos2']); $i++){
+                if(!empty($_POST['activos2'][$i])){
+                    $model->tipo_activo2 = $_POST['activos2'][$i];
+                }
             }
-
             $hoja_entrega = new GestionHojaEntregaSolicitud;
             $hoja_entrega->id_informacion = $_POST['GestionSolicitudCredito']['id_informacion'];
             $hoja_entrega->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
