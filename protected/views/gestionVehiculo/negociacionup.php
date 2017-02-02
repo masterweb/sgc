@@ -3655,7 +3655,7 @@ if ($fi == 2) {
                                                 <div class="col-md-12">
                                                     <label for="">Valor de Entrada</label>
                                                     <input type="text" name="GestionFinanciamiento1[entrada]" id="GestionFinanciamiento_entrada" class="form-control" value="<?php echo $model->cuota_inicial; ?>"/>
-                                                    <!--<label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>-->
+                                                    <label class="error error-entrada" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -3922,6 +3922,7 @@ if ($fi == 2) {
                                                             echo $fin2->cuota_inicial;
                                                         }
                                                         ?>"/>
+                                                    <label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -3966,7 +3967,7 @@ if ($fi == 2) {
                                                             echo $fin2->saldo_financiar;
                                                         }
                                                         ?>"/>
-                                                    <!--<label class="error error-entrada3" style="display: none;">Ingrese un valor de entrada igual o superior al 25% del Precio Total</label>-->
+                                                    
                                                 </div>
                                             </div>
                                             <div class="row">
