@@ -425,7 +425,7 @@ if (isset($id)) {
                                                 <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                                 <td><?php echo $this->getVersion($c['version']); ?> </td>
                                                 <td><?php echo $this->getNecesidad($c['id_informacion']); ?> </td>
-                                                <td><?php echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-04-01-2017-2.pdf" class="btn btn-warning btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+                                                <td><?php echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-27-01-2017.pdf" class="btn btn-warning btn-xs" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
                                             ; ?></td>
                                             </tr>
                                             <?php

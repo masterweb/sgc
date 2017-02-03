@@ -400,7 +400,7 @@ class GestionInformacionController extends Controller {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
                 // SI EL CLIENTE ES DE EXHIBICION SALTAMOS EL PASO DE CONSULTA Y SE VA A GESTIONVEHICULO CREATE
-                if($_POST['GestionInformacion']['fuente'] == 'exhibicion'){
+                if($_POST['GestionInformacion']['fuente'] == 'exhibicion' || $_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd'){
                     $this->redirect(array('gestionVehiculo/create', 'id' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
                 }
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
