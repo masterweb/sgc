@@ -29,14 +29,14 @@ $id_responsable = Yii::app()->user->getId();
             changeYear: true,
             dateFormat: 'yy-mm-dd',
             minDate: new Date(1950, 10 - 1, 25),
-            yearRange: '2013:2016'
+            yearRange: '2013:2017'
         });
         $( "#Casos_fecha2" ).datepicker({
             changeMonth: true,
             changeYear: true,
             dateFormat: 'yy-mm-dd',
             minDate: new Date(1950, 10 - 1, 25),
-            yearRange: '2013:2016'
+            yearRange: '2013:2017'
         });
         $("#Casos_fecha2").hide();
         $('#Casos_tipo_fecha').change(function() {

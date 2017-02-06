@@ -964,15 +964,10 @@ $count = count($users);
                                     <?php //echo $fuente_contacto; echo $url; ?>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                     <?php if (($status == 1 || $status == 4) && $desiste != 1) {  ?>
-                                        <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
-                                            <?php if ($area_id != 4 && $cargo_id != 69) { ?> 
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
-                                            <?php } ?>
-                                        <?php } else { ?>
-                                            <?php if ($cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?> 
-                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
-                                            <?php } ?>
-                                                
+                                        <?php if ($paso == '1-2' && $fuente == 'showroom' && $area_id != 4 && $cargo_id != 69) { ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a> 
+                                        <?php } if ($cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom'){ ?>
+                                            <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
@@ -981,7 +976,7 @@ $count = count($users);
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd'){ ?> 
+                                    <?php if(($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd') && $desiste != 1){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?> 
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>
