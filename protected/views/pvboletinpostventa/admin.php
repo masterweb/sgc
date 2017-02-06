@@ -45,7 +45,7 @@ $rol = Yii::app()->user->getState('roles');
             changeYear: true,
             dateFormat: 'yy-mm-dd',
             minDate: new Date(1950, 10 - 1, 25),
-            yearRange: '2013:2016'
+            yearRange: '2013:2017'
         });
 	 });
 </script>    
