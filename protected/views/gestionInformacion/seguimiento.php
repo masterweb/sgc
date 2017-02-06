@@ -38,63 +38,24 @@ $count = count($users);
 
 
     $(function () {
-        $('.textreasignar').keyup(function(){
-            $('#textr easignarerror').hide();
-        });
+        $('.textreasignar').keyup(function(){$('#textr easignarerror').hide();});
         $('[data-toggle="tooltip"]').tooltip();
-        $('#checkMain').click(function(){
-            $('.checkAll').attr('checked', ($(this).is(':checked')) ? true:false);
-        });
-        $('#GestionDiaria_grupo').change(function(){
-            var value = $(this).attr('value');
-            if ($(this).val() != ''){
-                $('#grupo').val(1);
-            } else{
-                $('#grupo').val(0);
-            }
-        });
-        $('#GestionDiaria_concesionario').change(function(){
-            var value = $(this).attr('value');
-            if ($(this).val() != ''){
-                $('#concesionario').val(1);
-            } else{
-                $('#concesionario').val(0);
-            }
-        });
-
-        $('#GestionDiaria_general').keyup(function(){
-            if ($(this).val() != ''){
-                $('#busqueda_general').val(1);
-            } else{
-                $('#busqueda_general').val(0);
-            }
-        });
-        $('#gestion_diaria_categorizacion').change(function(){
-            var value = $(this).attr('value');
-            if (value != '' ){
-                    $('#categorizacion').val(1);
-            } else{$('#categorizacion').val(0); }
-        });
+        $('#checkMain').click(function(){$('.checkAll').attr('checked', ($(this).is(':checked')) ? true:false);});
+        $('#GestionDiaria_grupo').change(function(){var value = $(this).attr('value');if ($(this).val() != ''){$('#grupo').val(1);} else{$('#grupo').val(0);}});
+        $('#GestionDiaria_concesionario').change(function(){var value = $(this).attr('value');if ($(this).val() != ''){$('#concesionario').val(1);} else{$('#concesionario').val(0);}});
+        $('#GestionDiaria_general').keyup(function(){if ($(this).val() != ''){$('#busqueda_general').val(1);} else{$('#busqueda_general').val(0);}});
+        $('#gestion_diaria_categorizacion').change(function(){var value = $(this).attr('value');if (value != '' ){$('#categorizacion').val(1);} else{$('#categorizacion').val(0); }});
         $('#gestion_diaria_status').change(function(){
-            var value = $(this).attr('value');
-            if (value != ''){
-                $( '#status').val(1);
-            } else{$('#status').val(0); }
+            var value = $(this).attr('value');if (value != ''){$( '#status').val(1);} else{$('#status').val(0); }
         });
         $('#GestionDiaria_responsable').change(function(){
-            var value = $(this).attr('value');
-            if (value != ''){
-                $('#responsable').val(1);
-            } else{ $('#responsable').val(0); }
+            var value = $(this).attr('value');if (value != ''){$('#responsable').val(1);} else{ $('#responsable').val(0); }
         });
         $('#GestionNuevaCotizacion_cedula').keyup(function (){
                 $('#cedula2').hide();
         });
         $('#GestionNuevaCotizacion_ruc').change(function() {
-            var resp = validateruc($(this));
-            if (resp != true){
-                alert('Por favor ingrese correctamente el RUC.');
-            }
+            var resp = validateruc($(this));if (resp != true){alert('Por favor ingrese correctamente el RUC.');}
         });
         $('#GestionDiaria_concesionario').change(function () {
             var value = $('#GestionDiaria_concesionario option:selected').val();
@@ -429,7 +390,6 @@ $count = count($users);
         //La cédula es válida
         return true;
     }
-    
     function asignar(id){
         
         $('#asesorasg').val(id);
@@ -444,7 +404,6 @@ $count = count($users);
                 }
             });
     }
-    
     function asignarsave(){
         var checkboxvalues = new Array();
         //recorremos todos los checkbox seleccionados con .each
@@ -488,7 +447,6 @@ $count = count($users);
             });
         }
     }
-    
     function conc(id){
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionariosli"); ?>',
@@ -501,7 +459,6 @@ $count = count($users);
             }
         });
     }
-    
     function asesor(id){
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("site/getAsesoresli"); ?>',
@@ -516,9 +473,7 @@ $count = count($users);
     }
 </script>
 <style type="text/css">
-    .daterangepicker .ranges, .daterangepicker .calendar {
-        float: left !important;
-    }
+    .daterangepicker .ranges, .daterangepicker .calendar {float: left !important;}
     #fecha-range{color: #DCD8D9;}
     #rango_fecha_seguimiento{color: #DCD8D9;}
     #toolinfo{position: absolute;right: -20px;top: 24px;}
@@ -531,12 +486,8 @@ $count = count($users);
     }
     #checkMain{position: relative;top: 2px;}
     #checklabel{font-size: 14px;font-weight: normal;margin-bottom: 0px;}
-
-    .checkbox-danger input[type="checkbox"]:checked + label::before {
-        background-color: #d9534f;
-        border-color: #d9534f; }
-    .checkbox-danger input[type="checkbox"]:checked + label::after {
-        color: #fff; }
+    .checkbox-danger input[type="checkbox"]:checked + label::before {background-color: #d9534f;border-color: #d9534f; }
+    .checkbox-danger input[type="checkbox"]:checked + label::after {color: #fff; }
     .textreasignar{margin-bottom: 0px;height: 33px;margin-right: 3px;border-radius: 0px;}
     #textreasignarerror{color: #C00;font-size: 12px;resize: none;}
     .txtasignamiento{position: absolute;top: -20px;color: #C21930;font-style: italic;}
@@ -750,14 +701,7 @@ $count = count($users);
 //die();
 ?>
                         <?php foreach ($users as $c): ?>
-
-                            <tr>
-                            <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
-                                <?php if ($cargo_id == 70) { ?>
-                                    <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
-                                <?php } ?>
-                                <td class="nowr">
-                                <?php
+                            <?php
                                 //echo $this->getStatus($c['status']);
                                 $status = '';
                                 $paso = '';
@@ -832,7 +776,12 @@ $count = count($users);
                                         break;
                                 }
                                 ?>
-
+                            <tr>
+                            <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
+                                <?php if ($cargo_id == 70) { ?>
+                                    <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
+                                <?php } ?>
+                                <td class="nowr">
                                         <!--<button type="button" class="btn btn-xs btn-primary"><?php //echo $status;  ?></button>-->
                                     <button type="button" class="btn btn-xs btn-paso"><?php echo $paso; ?></button>
 

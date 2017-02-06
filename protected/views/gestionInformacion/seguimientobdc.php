@@ -380,7 +380,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-        <?php if($cargo_id != 69 && $cargo_id != 7200 && $cargo_id != 85){ ?>
+        <?php if($cargo_id != 69 && $cargo_id != 7200 && $cargo_id != 85 &&  $cargo_id != 86 && $tipo_grupo == 1){ ?>
         <?= $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion, 'tipo' => 'bdc'));?>
         <?php } ?>
         <div class="col-md-8">

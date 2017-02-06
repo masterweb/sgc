@@ -1,11 +1,11 @@
 <?php 
+
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-$area_id = (int) Yii::app()->user->getState('area_id'); 
+$area_id = (int) Yii::app()->user->getState('area_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
-//echo $cargo_adicional;
 ?>
-<?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){ ?>
+<?php if($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14){  ?>
 <div class="col-md-4">
             <div class="highlight">
 <h4>Registro de cliente</h4>
@@ -25,7 +25,8 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
     ?>  
     <div class="row">
         <div class="col-md-12" style="position: relative;">
-            <?php echo $form->labelEx($model, 'fuente'); ?>
+
+            <label for="">Fuente</label>
             <?php
             $tipo_array = array();
             $data_tipo = '';
@@ -88,7 +89,7 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
             }
             if($cargo_id == 85 || $cargo_id == 86){ // asesor ventas externas y jefe de ventas externas
                 $tipo_array =  array(
-                    'prospeccion' => 'Prospección',
+                    //'prospeccion' => 'Prospección',
                     //'exhibicion' => 'Exhibición'
                     );
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>';
