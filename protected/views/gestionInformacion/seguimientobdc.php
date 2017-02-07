@@ -718,7 +718,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                                 
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $cargo_id != 85){ ?> 
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && $cargo_id != 85){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && $cargo_id == 85 && $paso == '7'){ ?> 
