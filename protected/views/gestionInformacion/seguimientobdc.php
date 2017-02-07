@@ -707,15 +707,10 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     //echo $url;?>
                                     <a href="<?php echo Yii::app()->createUrl('gestionDiaria/create', array('id' => $c['id'], 'paso' => $paso, 'id_gt' => $c['id'], 'fuente' => $fuente)); ?>" class="btn btn-primary btn-xs btn-danger">Resumen</a><em></em>
                                     <?php if (($status == 1 || $status == 4) && $desiste != 1) { ?>
-                                        <?php if ($paso == '1-2' && $fuente == 'showroom') { ?>
-                                            <?php if ($area_id != 4 && $cargo_id != 69 ) { ?> 
-                                                <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
-                                            <?php } ?>
-                                        <?php } else { ?>
-                                            <?php if ($cargo_id != 72 && $cargo_id != 69 &&  $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?> 
-                                                <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
-                                            <?php } ?>
-                                                
+                                        <?php if ($paso == '1-2' && $fuente == 'showroom' && $area_id != 4 && $cargo_id != 69) { ?>
+                                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/update', array('id' => $c['id'], 'tipo' => 'prospeccion')); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>   
+                                        <?php } if ($cargo_id != 72 && $cargo_id != 69 &&  $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14 && $fuente_contacto == 'showroom') { ?>
+                                            <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && $cargo_id != 85){ ?> 
