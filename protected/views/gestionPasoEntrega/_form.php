@@ -200,21 +200,42 @@ $id_gestion_paso_entrega = $this->getIdPasoEntrega($id_informacion, $id_vehiculo
                 $array_datos_vehiculo = explode(',', $datos_vehiculo[0]['datos_vehiculo']);
 //                echo '<pre>';
 //                print_r($array_datos_vehiculo);
-//                echo '</pre>';    
+//                echo '</pre>'; 
+                
+//                echo '<pre>';
+//                print_r($datos_vehiculo_manual);
+//                echo '</pre>';
                 ?>
-                <div class="row">
-                    <div class="col-md-8">
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr class="odd"><th>Modelo</th><td><?php echo $this->getModeloTestDrive($id_vehiculo); ?></td><th>Cliente</th><td><?php echo ucfirst($cl[0]['nombres']); ?> <?php echo ucfirst($cl[0]['apellidos']); ?></td></tr>
-                                <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr>
-                                <tr class="odd"><th>Motor</th><td><?php echo $array_datos_vehiculo[2]; ?></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
-                                <tr class="odd"><th>Factura</th><td><?php echo $array_datos_vehiculo[5]; ?></td><th>No. Chasis</th><td><?php echo $array_datos_vehiculo[0]; ?></td></tr>
-                                <tr class="odd"><th>Color</th><td><?php echo $array_datos_vehiculo[4]; ?></td><th>Concesionario</th><td><?php echo $array_datos_vehiculo[6]; ?></td></tr> 
-                            </tbody>
-                        </table>
+                <?php if(empty($datos_vehiculo[0]['datos_vehiculo'])){
+                    $datos_vehiculo_manual = GestionCierre::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}")); ?>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr class="odd"><th>Modelo</th><td><?php echo $this->getModeloTestDrive($id_vehiculo); ?></td><th>Cliente</th><td><?php echo $datos_vehiculo_manual->nombre_propietario; ?></td></tr>
+                                    <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $this->getEmailCliente($id_informacion); ?></td></tr>
+                                    <tr class="odd"><th>Número Modelo</th><td><?php echo $datos_vehiculo_manual->numero_modelo; ?></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
+                                    <tr class="odd"><th>Factura</th><td><?php echo $datos_vehiculo_manual->factura; ?></td><th>No. Chasis</th><td><?php echo $datos_vehiculo_manual->numero_chasis; ?></td></tr>
+                                    <tr class="odd"><th>Color</th><td><?php echo $datos_vehiculo_manual->color_vehiculo; ?></td><th>Concesionario</th><td><?php echo $datos_vehiculo_manual->concesionario; ?></td></tr> 
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                <?php }else{ ?>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr class="odd"><th>Modelo</th><td><?php echo $this->getModeloTestDrive($id_vehiculo); ?></td><th>Cliente</th><td><?php echo ucfirst($cl[0]['nombres']); ?> <?php echo ucfirst($cl[0]['apellidos']); ?></td></tr>
+                                    <tr class="odd"><th>Versión</th><td><?php echo $this->getVersionTestDrive($id_vehiculo); ?></td><th>Email</th><td><?php echo $cl[0]['email']; ?></td></tr>
+                                    <tr class="odd"><th>Motor</th><td><?php echo $array_datos_vehiculo[2]; ?></td><th>Celular</th><td><?php echo $cl[0]['celular']; ?></td></tr>
+                                    <tr class="odd"><th>Factura</th><td><?php echo $array_datos_vehiculo[5]; ?></td><th>No. Chasis</th><td><?php echo $array_datos_vehiculo[0]; ?></td></tr>
+                                    <tr class="odd"><th>Color</th><td><?php echo $array_datos_vehiculo[4]; ?></td><th>Concesionario</th><td><?php echo $array_datos_vehiculo[6]; ?></td></tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="row">
                     <h1 class="tl_seccion_rf">Entrega Vehículo <?php echo ($tipo == 1) ? 'Crédito - 10 pasos' : 'Contado - 7 pasos'; ?></h1>
                 </div>
