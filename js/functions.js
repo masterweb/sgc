@@ -961,8 +961,8 @@ $(document).ready(function () {
                     console.log(dias);
                     var fechaActual = new Date().toJSON().slice(0, 10);
                     console.log('Fecha Actual: ' + fechaActual);
-                    var diferencia = restaFechas(fechaActual, fechaArray[0]);
-                    if (diferencia <= dias) {
+                    //var diferencia = restaFechas(fechaActual, fechaArray[0]);
+                    //if (diferencia <= dias) {
                         if (proximoSeguimiento != '') {
                             //console.log('proximo: '+proximoSeguimiento);
                             if ($('#GestionInformacion_check').val() != 2) {
@@ -995,10 +995,10 @@ $(document).ready(function () {
                                 form.submit();
                             }
                         }
-                    } else {
-                        alert('Seleccione una fecha menor o igual a la fecha de Categorización.');
-                        return false;
-                    }
+//                    } else {
+//                        alert('Seleccione una fecha menor o igual a la fecha de Categorización.');
+//                        return false;
+//                    }
                     break;
                 case 'Busca solo precio':
                 case 'Desiste':
