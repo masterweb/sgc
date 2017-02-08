@@ -1986,6 +1986,7 @@ class GestionInformacionController extends Controller {
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
         $dt_hoy = date('Y-m-d'); // Fecha actual
         $dt_unasemana_antes = date('Y-m-d', strtotime('-1 day')); // Fecha resta 1 semanas
+        $dt_unasemana_antes_nuevo = date('Y-m-d', strtotime('-1 week')); // Fecha resta 1 semanas
         $dt_unmes_antes = date('Y-m-d', strtotime('-4 week')); // Fecha resta 1 mes
         //die('responsable id: '.$id_responsable);
         if ($cargo_id != 46)
@@ -2055,7 +2056,7 @@ class GestionInformacionController extends Controller {
                     $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
                     //$criteria->addCondition("gi.bdc = 0");
                     $criteria->addCondition("u.cargo_id IN (71)");
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes_nuevo}' and '{$dt_hoy}'");
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
                 }

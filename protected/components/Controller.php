@@ -4066,6 +4066,9 @@ class Controller extends CController {
                 break;
             case 71: // ASESOR DE VENTAS
                 $criteria->condition = "gi.responsable = {$id_responsable}";
+                if($cargo_adicional == 86){// CARGO ADICIONAL ASESOR WEB
+                    
+                }
                 break;
             case 85: // JEFE WEB - VENTAS EXTERNAS
                 $array_dealers = $this->getResponsablesVariosConc();
@@ -4352,7 +4355,7 @@ class Controller extends CController {
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
                 default:
-                    if($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd')
+                    if(($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd') && $cargo_id = 71 && $cargo_adicional == 0) 
                         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     break;
             }
@@ -5634,7 +5637,7 @@ class Controller extends CController {
                 $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
                 break;
             case 'Web':
-                $condition = "gd.medio_contacto = 'web' AND gd.status = 1";
+                $condition = "gd.medio_contacto = 'web'";
                 break;
             case 'qk':
                 $condition = "gd.medio_contacto = 'exhquk' AND gd.status = 1";
