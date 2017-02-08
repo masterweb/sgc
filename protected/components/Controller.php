@@ -4339,7 +4339,7 @@ class Controller extends CController {
         
         // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
         //die ('get: '.$_GET['tipo_search']);
-        if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
+        //if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
             switch ($_GET['tipo_search']) {
                 case 'web':
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
@@ -4352,10 +4352,11 @@ class Controller extends CController {
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
                 default:
-                    $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                    if($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd')
+                        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     break;
             }
-        }
+        //}
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
@@ -4366,7 +4367,7 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'qktd'){
             $stat = 'Quiero un Kia TD';
         }
-        echo('search type: ' . $search_type);
+        //echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -4730,10 +4731,10 @@ class Controller extends CController {
                 }
                 if ($cargo_id == 70) { // jefe de almacen
                     $criteria->condition = "gi.dealer_id = {$dealer_id}";
-                    if($tipo_search == ''){
-                        $criteria->addCondition("gi.bdc = 0");
-                        $criteria->addCondition("gd.fuente_contacto = 'showroom'");
-                    }
+                    //if($tipo_search == ''){
+                    //    $criteria->addCondition("gi.bdc = 0");
+                    //    $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                    //}
                     if($tipo_search == 'web'){
                         $criteria->addCondition("gd.fuente_contacto = 'web'");
                     }
