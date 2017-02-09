@@ -113,7 +113,7 @@
                                     <a href="<?php echo Yii::app()->createUrl('site/facturaNoRegistered', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger">Continuar</a>
                                     <?php 
                                     $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-                                    if ($grupo_id == 2 || $grupo_id == 3 ) {
+                                    if ($grupo_id == 2 || $grupo_id == 3 || $grupo_id == 9) {
                                          echo '<a href="'.Yii::app()->createUrl('site/facturanc', array('id_vehiculo' => $id_vehiculo, 'id_informacion' => $id_informacion)).'" class="btn btn-danger">Factura Manual</a>';
                                     }
                                     ?>
