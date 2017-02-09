@@ -5631,7 +5631,7 @@ class Controller extends CController {
                 $condition = "gd.seguimiento = 1";
                 break;
             case 'SeguimientoEntrega':
-                $condition = "gd.seguimiento_entrega = 1";
+                $condition = "gd.seguimiento_entrega = 1 AND gd.paso = 10";
                 break;
             case 'Vendido':
                 $condition = "gd.seguimiento = 1 AND gd.paso = 10 AND gd.status = 1";
