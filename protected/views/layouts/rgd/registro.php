@@ -130,7 +130,7 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
     <div class="row exh-cont" style="display: none;">
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Lugar</label>
-            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="Exhibición Ventas Externas">
+            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="Galápagos">
         </div>
     </div>
     <div class="row otro-cont" style="display: none;">
