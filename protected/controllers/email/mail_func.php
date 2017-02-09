@@ -79,9 +79,9 @@ function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $sub
     //$mail->AddBCC('alkanware@gmail.com');
 
     if ($ccarray != '') {
-        for ($j = 0; $j < count($ccarray); $j++) {
-            $mail->AddCC($ccarray[$j]);
-        }
+//        for ($j = 0; $j < count($ccarray); $j++) {
+//            $mail->AddCC($ccarray[$j]);
+//        }
     }
 
     if (!$mail->Send()) {
