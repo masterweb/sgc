@@ -140,8 +140,10 @@ class ReportesController extends Controller {
         $tit_init = 'Búsqueda entre ';
         $varView['AEKIA'] = false;
         $bdcfalse = ' AND gi.bdc = 0 ';
-        if($tipo == 'externas')
+        if($tipo == 'externas'){
             $bdcfalse = ' AND gi.bdc = 1 ';
+            $INERmodelos = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        }
         if($tipo == 'prospeccionweb')
             $bdcfalse = ' AND gi.bdc = 1 ';
         // GRUPO ASIAUTO Y KMOTOR CON CARGO JEFE VENTAS WEB O CARGO ADICIONAL ASESOR VENTAS WEB. SUMA AL EMBUDO BDC = 1
