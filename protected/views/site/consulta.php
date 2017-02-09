@@ -504,12 +504,13 @@ if (isset($id)) {
                 </div>
             </div>
             <div class="row buttons">
+                <?php $paso4 = GestionVehiculo::model()->count(array("condition" => "id_informacion = {$_GET['id_informacion']}")); ?>
                 <input type="hidden" name="GestionInformacion[calendar]" id="GestionInformacion_calendar" value="0">
                 <input type="hidden" name="GestionInformacion[check]" id="GestionInformacion_check" value="1">
                 <?php if ($_GET['fuente'] == 'prospeccion') { ?>
                     <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
                 <?php } else { ?>
-                    <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="4">
+                    <input type="hidden" name="GestionAgendamiento[paso]" id="GestionAgendamiento_paso" value="<?php echo ($paso4 > 0) ? '4' : '1-2'; ?>">
 <?php } ?>
 
                 <input type="hidden" name="GestionAgendamiento[id_informacion]" id="GestionAgendamiento_id_informacion" value="<?php echo $id_informacion; ?>">
