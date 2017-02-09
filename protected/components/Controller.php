@@ -2987,13 +2987,14 @@ class Controller extends CController {
         }
     }
 
-    public function getCita($id_informacion, $cargo_id, $cargo_adicional) {
-        $ga = GestionAgendamiento::model()->find(array(
-            'condition' => "id_informacion = {$id_informacion}",
-            'limit' => 1,
-            'order' => 'id DESC'        
-            ));   
-        if (count($ga) > 0 && ($cargo_id == 86 || $cargo_adicional == 86) && $ga->observaciones == 'Cita' ) {
+    public function getCita($id_informacion, $cargo_id, $cargo_adicional, $fuente) {
+//        $ga = GestionAgendamiento::model()->find(array(
+//            'condition' => "id_informacion = {$id_informacion}",
+//            'limit' => 1,
+//            'order' => 'id DESC'        
+//            ));
+        $ga = GestionCita::model()->find(array('condition' => "id_informacion = {$id_informacion} AND `order` = 1"));    
+        if (count($ga) > 0 && ($cargo_id == 86 || $cargo_adicional == 86) && $fuente === 'web' ) {
             return TRUE;
         } else {
             return FALSE;

@@ -485,10 +485,10 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     $medio_contacto = $this->getMedioContacto($c['id']);
                                     $desiste = $this->getDesiste($c['id']);
                                     $proximo_seguimiento = $this->getSeguimiento($c['id']);
-                                    $cita = $this->getCita($c['id'],$cargo_id, $cargo_adicional);
                                     $categorizacion = $this->getCategorizacionSGC($c['id']);
                                     $fuente = $this->getFuenteSGC($c['id']);
                                     $status = $this->getStatusSGC($c['id']);
+                                    $cita = $this->getCita($c['id'],$cargo_id, $cargo_adicional, $fuente);
                                     $fuente_contacto = $this->getFuenteContacto($c['id']);
                                     //echo 'fuente de contacto: '.$fuente_contacto;
                                     $data_btn_semaforo = "";
