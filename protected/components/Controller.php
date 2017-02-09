@@ -4066,9 +4066,6 @@ class Controller extends CController {
                 break;
             case 71: // ASESOR DE VENTAS
                 $criteria->condition = "gi.responsable = {$id_responsable}";
-                if($cargo_adicional == 86){// CARGO ADICIONAL ASESOR WEB
-                    
-                }
                 break;
             case 85: // JEFE WEB - VENTAS EXTERNAS
                 $array_dealers = $this->getResponsablesVariosConc();
@@ -4355,7 +4352,7 @@ class Controller extends CController {
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
                 default:
-                    if(($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd') && $cargo_id = 71 && $cargo_adicional == 0) 
+                    if(($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd') && $cargo_id == 71 && $cargo_adicional == 0 && ($grupo_id == 2 || $grupo_id == 3)) 
                         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     break;
             }
@@ -4388,9 +4385,9 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
+                echo '<pre>';
+                print_r($criteria);
+                echo '</pre>';
 //                die();
 
                 $count = count($users);
@@ -4690,6 +4687,7 @@ class Controller extends CController {
             case 16:
                 //die('get array: '.$get_array);
                 if ($cargo_id == 46) { // super administrador
+                    echo 'asdqedfwef';
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $title = "Busqueda Total País";
                 }
