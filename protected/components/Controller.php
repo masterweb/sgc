@@ -4686,51 +4686,51 @@ class Controller extends CController {
                 break;
             case 16:
                 //die('get array: '.$get_array);
-                if ($cargo_id == 46) { // super administrador
+                if ($cargo_id === 46) { // super administrador
                     echo 'asdqedfwef';
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $title = "Busqueda Total País";
                 }
-                if ($cargo_id == 69 && $get_array == '') { // gerente comercial
+                if ($cargo_id === 69 && $get_array === '') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 69 && $get_array == 'bdc') { // gerente comercial
+                if ($cargo_id === 69 && $get_array === 'bdc') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (72,73)', 'AND');
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 69 && $get_array == 'web') { // gerente comercial
+                if ($cargo_id === 69 && $get_array === 'web') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (85,86)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 69 && ($get_array == 'exh' || $get_array == 'exhibicion')) { // gerente comercial
+                if ($cargo_id === 69 && ($get_array === 'exh' || $get_array === 'exhibicion')) { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (70,71)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 69 && $get_array == 'exo') { // gerente comercial
+                if ($cargo_id === 69 && $get_array === 'exo') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (75)', 'AND');
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 69 && $get_array == 'seg') { // gerente comercial
+                if ($cargo_id === 69 && $get_array === 'seg') { // gerente comercial
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (71)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
-                if ($cargo_id == 70) { // jefe de almacen
+                if ($cargo_id === 70) { // jefe de almacen
                     $criteria->condition = "gi.dealer_id = {$dealer_id}";
                     //if($tipo_search == ''){
                     //    $criteria->addCondition("gi.bdc = 0");
@@ -4747,7 +4747,7 @@ class Controller extends CController {
                     }
                     $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
                 }
-                if ($cargo_id == 72) { // jefe bdc
+                if ($cargo_id === 72) { // jefe bdc
                     $array_dealers = $this->getDealerGrupoConc($grupo_id);
                     $dealerList = implode(', ', $array_dealers);
                     if ($_GET['GestionDiaria']['tipo'] == 'exo') {
@@ -4761,11 +4761,11 @@ class Controller extends CController {
 
                     $title = "Busqueda por Total BDC : <strong>{$dealer_id}</strong>";
                 }
-                if ($cargo_id == 71) { // asesor de ventas
+                if ($cargo_id === 71) { // asesor de ventas
                     $criteria->condition = "gi.responsable = {$id_responsable}";
                     $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
                 }
-                if ($cargo_id == 73) { // asesor bdc
+                if ($cargo_id === 73) { // asesor bdc
                     $array_dealers = $this->getDealerGrupoConc($grupo_id);
                     $dealerList = implode(', ', $array_dealers);
                     $criteria->condition = "gi.bdc = 1";
@@ -4773,7 +4773,7 @@ class Controller extends CController {
                     $criteria->addCondition("gi.responsable = {$id_responsable}", 'AND');
                     $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
                 }
-                if ($cargo_id == 75) { // asesor exonerados
+                if ($cargo_id === 75) { // asesor exonerados
                     $array_dealers = $this->getDealerGrupoConc($grupo_id);
                     $dealerList = implode(', ', $array_dealers);
                     $criteria->condition = "gi.tipo_form_web = 'exonerados'";
@@ -4781,7 +4781,7 @@ class Controller extends CController {
                     $criteria->addCondition("gi.responsable = {$id_responsable}", 'AND');
                     $title = "Busqueda por Total de Asesor Ventas: <strong>{$id_responsable}</strong>";
                 }
-                if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+                if ($area_id === 4 || $area_id === 12 || $area_id === 13 || $area_id === 14) { // AEKIA USERS
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     if($tipo_search == ''){
                         $criteria->addCondition("gi.bdc = 0");
@@ -4798,7 +4798,7 @@ class Controller extends CController {
                     }
                     $title = "Busqueda por Total País";
                 }
-                if($cargo_id == 85){ // JEFE DE VENTAS WEB
+                if($cargo_id === 85){ // JEFE DE VENTAS WEB
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (86)', 'AND');
