@@ -119,8 +119,19 @@ class GestionInformacionController extends Controller {
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
             $model->apellidos = ucfirst($_POST['GestionInformacion']['apellidos']);
             $model->medio = $_POST['GestionInformacion']['medio'];
-            if($model->medio == 'recomendacion'){
-                $model->recomendaron = $_POST['GestionInformacion']['recomendaron'];
+            switch ($_POST['GestionInformacion']['medio']) {
+                case 'recomendacion':
+                    $model->recomendaron = $_POST['GestionInformacion']['recomendaron'];
+                    break;
+                case 'television':
+                    $model->medio_television = $_POST['GestionInformacion']['medio_television'];
+                    break;
+                case 'prensa_escrita':
+                    $model->medio_prensa = $_POST['GestionInformacion']['medio_prensa'];
+                    break;
+
+                default:
+                    break;
             }
             if ($_POST['tipo'] == 'gestion'):
                 $model->provincia_conc = $_POST['GestionInformacion']['provincia_conc'];

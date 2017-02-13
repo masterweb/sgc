@@ -369,6 +369,32 @@ $tipo = $_GET['tipo'];
         });
         $('#GestionInformacion_medio').change(function(){
             var option = $('#GestionInformacion_medio option:selected').val();
+            switch (option) {
+                case 'recomendaron':// compro otro vehiculo
+                    $('#cont-recomendaron').show();
+                    $('#cont-medio-prensa').hide();
+                    $('#cont-medio-television').hide();
+                    $('#medio_television_error').hide();$('#GestionInformacion_medio_television').removeClass('error');
+                    $('#medio_prensa_error').hide();$('#GestionInformacion_medio_prensa').removeClass('error');
+                    break;
+                case 'prensa_escrita':// si estoy interesado
+                    $('#cont-recomendaron').hide();$('#medio_television_error').hide();$('#GestionInformacion_medio_television').removeClass('error');
+                    $('#cont-medio-prensa').show();
+                    $('#cont-medio-television').hide();
+                    break;
+                case 'television':// no contesta
+                    $('#cont-recomendaron').hide();$('#medio_prensa_error').hide();$('#GestionInformacion_medio_prensa').removeClass('error');
+                    $('#cont-medio-prensa').hide();
+                    $('#cont-medio-television').show();
+                    break;
+                default:
+                    $('#cont-recomendaron').hide();
+                    $('#cont-medio-prensa').hide();
+                    $('#cont-medio-television').hide();
+                    $('#medio_television_error').hide();$('#GestionInformacion_medio_television').removeClass('error');
+                    $('#medio_prensa_error').hide();$('#GestionInformacion_medio_prensa').removeClass('error');
+                    break;
+            }
             if(option == 'recomendacion'){
                 $('#cont-recomendaron').show();
             }else{
@@ -378,9 +404,21 @@ $tipo = $_GET['tipo'];
         $('#GestionInformacion_recomendaron').change(function(){
             var recom = $('#GestionInformacion_recomendaron option:selected').val();
             if(recom != ''){
-                $('#recomendaron_error').hide();
+                $('#recomendaron_error').hide();$('#GestionInformacion_recomendaron').removeClass('error');
             }
-        })
+        });
+        $('#GestionInformacion_medio_prensa').change(function(){
+            var recom = $('#GestionInformacion_medio_prensa option:selected').val();
+            if(recom != ''){
+                $('#medio_prensa_error').hide();$('#GestionInformacion_medio_prensa').removeClass('error');
+            }
+        });
+        $('#GestionInformacion_medio_television').change(function(){
+            var recom = $('#GestionInformacion_medio_television option:selected').val();
+            if(recom != ''){
+                $('#medio_television_error').hide();$('#GestionInformacion_medio_television').removeClass('error');
+            }
+        });
     });
     function validateVehiculo() {
         $("#Cotizador_modelo").rules("add", "required");
@@ -428,13 +466,32 @@ $tipo = $_GET['tipo'];
                     var num_tel = $('#GestionInformacion_telefono_oficina').val();
                     var num_casa = $('#GestionInformacion_telefono_casa').val();
                     var opt = $('#GestionInformacion_medio').val();
-                    if(opt == 'recomendacion'){
-                        var rec = $('#GestionInformacion_recomendaron').val();
-                        if(rec == ''){
-                            $('#recomendaron_error').show();
-                            return false;
-                        }
+                    switch(opt){
+                        case 'recomendaron':
+                            var rec = $('#GestionInformacion_recomendaron').val();$('#GestionInformacion_recomendaron').addClass('error');
+                            if(rec == ''){
+                                $('#recomendaron_error').show();
+                                return false;
+                            }
+                            break;
+                        case 'television':
+                            var rec = $('#GestionInformacion_medio_television').val();$('#GestionInformacion_medio_television').addClass('error');
+                            if(rec == ''){
+                                $('#medio_television_error').show();
+                                return false;
+                            }
+                            break;
+                        case 'prensa_escrita':
+                            var rec = $('#GestionInformacion_medio_prensa').val();$('#GestionInformacion_medio_prensa').addClass('error');
+                            if(rec == ''){
+                                $('#medio_prensa_error').show();
+                                return false;
+                            }
+                            break;    
+                        default:
+                            break;
                     }
+                    
                     if (num_cel.indexOf("0") != 0) {
                         $('#GestionInformacion_celular').after('<label for="celular2" generated="true" class="error" id="celular2">Ingrese correctamente su celular</label>')
                         //$('#telefono').val('');
@@ -482,12 +539,30 @@ $tipo = $_GET['tipo'];
                 return false;
             }
             var opt = $('#GestionInformacion_medio').val();
-            if(opt == 'recomendacion'){
-                var rec = $('#GestionInformacion_recomendaron').val();
-                if(rec == ''){
-                    $('#recomendaron_error').show();
-                    return false;
-                }
+            switch(opt){
+                case 'recomendaron':
+                    var rec = $('#GestionInformacion_recomendaron').val();$('#GestionInformacion_recomendaron').addClass('error');
+                    if(rec == ''){
+                        $('#recomendaron_error').show();
+                        return false;
+                    }
+                    break;
+                case 'television':
+                    var rec = $('#GestionInformacion_medio_television').val();$('#GestionInformacion_medio_television').addClass('error');
+                    if(rec == ''){
+                        $('#medio_television_error').show();
+                        return false;
+                    }
+                    break;
+                case 'prensa_escrita':
+                    var rec = $('#GestionInformacion_medio_prensa').val();$('#GestionInformacion_medio_prensa').addClass('error');
+                    if(rec == ''){
+                        $('#medio_prensa_error').show();
+                        return false;
+                    }
+                    break;    
+                default:
+                    break;
             }
             /*if (num_tel.indexOf("0") != 0) {
                 $('#GestionInformacion_telefono_oficina').after('<label for="telefono2" generated="true" class="error" style="display: block;" id="telefono2">Ingrese el código provincial</label>')
@@ -941,7 +1016,7 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
                         <div class="col-md-3" id="cont-recomendaron" style="display:none;">
-                            <label for="">Opciones</label>
+                            <label for="">Opciones Recomendaron</label>
                             <?php echo $form->dropDownList($model, 'recomendaron', array(
                                 '' => '--Selecione opción--',
                                 'calidad_de_producto' => 'Por Calidad de Producto',
@@ -951,6 +1026,23 @@ $tipo = $_GET['tipo'];
                                 'garantis' => 'Por Garantía',
                             ), array('class' => 'form-control')); ?>
                             <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error" style="display: none;">Seleccione una opción</label>
+                        </div>
+                        <div class="col-md-3" id="cont-medio-prensa" style="display:none;">
+                            <label for="">Medio Prensa</label>
+                            <?php 
+                            //echo $provincia_id;
+                            $medio_prensa = CHtml::listData(GestionMedios::model()->findAll(array('condition' => "id_provincia IN ({$provincia_id},100) AND tipo_medio = 1")),'medio', 'medio');
+                            echo $form->dropDownList($model, 'medio_prensa', $medio_prensa, array('class' => 'form-control', 'empty' => 'Seleccione un medio')); 
+                            ?>
+                            <label for="GestionInformacion_medio_prensa" generated="true" class="error" id="medio_prensa_error" style="display: none;">Seleccione un medio de prensa</label>
+                        </div>
+                        <div class="col-md-3" id="cont-medio-television" style="display:none;">
+                            <label for="">Medio Televisión</label>
+                            <?php
+                            $medio_television = CHtml::listData(GestionMedios::model()->findAll(array('condition' => "id_provincia IN ({$provincia_id},100) AND tipo_medio = 2")),'medio', 'medio');
+                            echo $form->dropDownList($model, 'medio_television', $medio_television, array('class' => 'form-control', 'empty' => 'Seleccione un medio')); 
+                            ?>
+                            <label for="GestionInformacion_medio_television" generated="true" class="error" id="medio_television_error" style="display: none;">Seleccione un medio de televisión</label>
                         </div>
                     </div>
                     <?php
