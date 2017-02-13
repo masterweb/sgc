@@ -45,6 +45,8 @@
  * @property integer $id_comentario
  * @property string $medio
  * @property string $recomendaron
+ * @property string $medio_prensa
+ * @property string $medio_television
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
  */
@@ -156,6 +158,8 @@ class GestionInformacion extends CActiveRecord {
             'id_comentario' => 'Id Comentario',
             'medio' => 'Medio',
             'recomendaron' => 'Recomendaron',
+            'medio_prensa' => 'Medio Prensa',
+            'medio_television' => 'Medio Television',
         );
     }
 
