@@ -260,11 +260,11 @@ class GestionSolicitudCreditoController extends Controller {
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
                 //die('email asesor: '.$emailAsesorCredito);
-                sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
                 $result = TRUE;
                 $arr = array('result' => $result, 'id' => $model->id);
@@ -474,11 +474,11 @@ class GestionSolicitudCreditoController extends Controller {
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
                 //die('email asesor: '.$emailAsesorCredito);
-                sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
                 $this->redirect(array('view', 'id' => $model->id));
             }

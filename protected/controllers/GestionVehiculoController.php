@@ -1323,11 +1323,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     </body>';
         //die('table: '.$general);
         $codigohtml = $general;
-        $headers = 'From: info@kia.com.ec' . "\r\n";
+        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente registrado
         //$email = 'alkanware@gmail.com'; //email administrador
-        $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+        $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
         if ($send) {
             // GRABAR PROFORMA ENVIADA A BASE DE DATOS
             $proforma = new GestionProformasEnviadas;
@@ -1410,14 +1410,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     </body>';
         //die('table: '.$general);
         $codigohtml = $general;
-        $headers = 'From: info@kia.com.ec' . "\r\n";
+        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         //$email = $emailCliente; //email administrador
         $email = $this->getEmailJefeConcesion($cargo, $grupo_id, $dealer_id); //email administrador
         //$email = 'gansaldo72@hotmail.com';
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
-        $send = sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
+        $send = sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
     }
 
     /**

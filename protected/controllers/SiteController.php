@@ -631,11 +631,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 	                        </body>';
                     $codigohtml = $general;
                     $tipo = 'informativo';
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $email = $user->correo; //email administrador
 
-                    if (sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                    if (sendEmailInfoD('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospección"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
 
                         Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Solicitud de cambio de contrase&ntilde;a</h1><p>Estimad@ <b>' . $user->nombres . ' ' . $user->apellido . '</b> su solicitud de cambio de contrase&ntilde;a ha sido realizado exitosamente, por favor revise su correo electr&oacute;nico "<b>' . $user->correo . '</b>" para continuar con el proceso, recuerde revisar en su bandeja de span en caso de no encontrar el email de solicitud de cambio de contrase&ntilde;a.</div>');
                         $this->redirect(array('site/recuperar'));
@@ -719,7 +719,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 							</body>';
                     $codigohtml = $general;
                     $tipo = 'informativo';
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $email = "";
                     $cc = array();
@@ -3105,7 +3105,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
                 $ciudad = $this->getCiudad($id_asesor);
@@ -3113,7 +3113,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                 $fecha_m = date("d m Y");
                 $fecha_m = $this->getFormatFecha($fecha_m);
 
-                $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
 
                 $nombre_cliente = $this->getNombresInfo($_POST['GestionEntrega']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionEntrega']['id_informacion']);
                 $modelo = $this->getModeloInfo($_POST['GestionEntrega']['id_vehiculo']);
@@ -3175,14 +3175,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                 </div>
                             </body>';        //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
                 //$email = 'alkanware@gmail.com'; //email cliente
 
                 $ccarray = array('jorge.rodriguez@ariadna.com.ec', 'gansaldo72@hotmail.com');
 
-                if (sendEmailInfoClienteConcesionario('info@kia.com.ec', "Kia Motors Ecuador", $email, $ccarray, html_entity_decode($asunto), $codigohtml)) {
+                if (sendEmailInfoClienteConcesionario('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $ccarray, html_entity_decode($asunto), $codigohtml)) {
                     //die('send emaail carta');
                 }
                 //die('before request');
@@ -3249,14 +3249,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     </div>
                 </body>';        //die('table: '.$general);
         $codigohtml = $general;
-        $headers = 'From: info@kia.com.ec' . "\r\n";
+        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente
         //$email = 'carli-c@hotmail.com'; //email cliente
 
         $ccarray = array('jorge.rodriguez@ariadna.com.ec', 'gansaldo72@hotmail.com');
 
-        if (sendEmailInfoClienteConcesionario('info@kia.com.ec', "Kia Motors Ecuador", $email, $ccarray, html_entity_decode($asunto), $codigohtml)) {
+        if (sendEmailInfoClienteConcesionario('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $ccarray, html_entity_decode($asunto), $codigohtml)) {
             
         }
     }

@@ -236,11 +236,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     </body>';
                         //die('table: '.$general);
                         $codigohtml = $general;
-                        $headers = 'From: info@kia.com.ec' . "\r\n";
+                        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                         $headers .= 'Content-type: text/html' . "\r\n";
                         $email = $this->getEmailAsesorUsados(77, $grupo_id); //email asesor usados
 
-                        sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                        sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                         //die('after send email');
                     }
                 }
@@ -558,11 +558,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     </body>';
                         //die('table: '.$general);
                         $codigohtml = $general;
-                        $headers = 'From: info@kia.com.ec' . "\r\n";
+                        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                         $headers .= 'Content-type: text/html' . "\r\n";
                         $email = 'nicolasvelah@gmail.com'; //email administrador
 
-                        sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                        sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                         //die('after send email');
                     }
                 }

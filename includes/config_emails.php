@@ -70,7 +70,7 @@ $EMAIL_OPTIONS['URL'] = 'http://kia.com.ec/';
 
 //$EMAIL_OPTIONS['FROM'] = 'boletin@kia.com.ec';
 
-$EMAIL_OPTIONS['FROM'] = 'info@kia.com.ec';
+$EMAIL_OPTIONS['FROM'] = 'servicioalcliente@kiamail.com.ec';
 //$EMAIL_OPTIONS['FROM'] = 'renan@ecuaplanettrading.com';
 
 //Charset 

@@ -205,12 +205,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente registrado
                 //$email = 'alkanware@gmail.com'; //email administrador
 
-                $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                 //die('send: '.$send);
                 //---- SEND EMAIL JEFE DE CONCESIONARIO Y ASESOR COMERCIAL
                 $asunto = 'Kia Motors Ecuador SGC - Prueba de Manejo ID Cliente # ' . $_POST['GestionTestDrive']['id_informacion'];
@@ -252,12 +252,12 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                             </body>';
                 //die('table: '.$general);
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $this->getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id); //email administrador
                 //die('email: '.$email);
                 $emailAsesor = $this->getAsesorEmail($id_asesor);
-                sendEmailInfoTestDrive('info@kia.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
+                sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
                 //die('after send email admin');
                 // ENVIAR TEST DRIVE AL CALL CENTER PARA ENCUESTA
                 $cr = new CDbCriteria(array(

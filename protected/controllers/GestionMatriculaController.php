@@ -203,11 +203,11 @@ class GestionMatriculaController extends Controller {
                             </body>';
                 }
                 $codigohtml = $general;
-                $headers = 'From: info@kia.com.ec' . "\r\n";
+                $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
                 $email = $emailCliente; //email cliente
                 //die('before send email info');
-                $send = sendEmailInfo('info@kia.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+                $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
                 $result = TRUE;
                 $options = array('result' => $result);
                 echo json_encode($options);

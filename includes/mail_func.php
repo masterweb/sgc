@@ -361,7 +361,7 @@ function sendEmailFunctionEncuestaNoCompradores($from, $fromname, $to, $subject,
     $mail->From = $from;
     $mail->FromName = $fromname;
     $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->AddReplyTo('servicioalcliente@kiamail.com.ec');
 
     $mail->Subject = $subject;
     $mail->MsgHTML($body);
@@ -391,7 +391,7 @@ function sendEmailFunctionReportes($fromname, $to, $subject, $body, $cco_email, 
     $mail->From = $from;
     $mail->FromName = $fromname;
     $mail->SetFrom('comunidad@kiamail.com.ec', 'Kia Ecuador');
-    $mail->AddReplyTo('info@kia.com.ec');
+    $mail->AddReplyTo('servicioalcliente@kiamail.com.ec');
 
     $mail->Subject = $subject;
     $mail->MsgHTML($body);
