@@ -4360,6 +4360,9 @@ class Controller extends CController {
                     break;
             }
         //}
+//            echo '<pre>';
+//            print_r($criteria);
+//            echo '</pre>';
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
@@ -5481,11 +5484,14 @@ class Controller extends CController {
 
                 break;
             case 45: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
-                $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}");
                 $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
