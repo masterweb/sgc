@@ -4368,7 +4368,7 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'qktd'){
             $stat = 'Quiero un Kia TD';
         }
-        echo('search type: ' . $search_type);
+        //echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
