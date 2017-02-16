@@ -4368,7 +4368,7 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'qktd'){
             $stat = 'Quiero un Kia TD';
         }
-        //echo('search type: ' . $search_type);
+        echo('search type: ' . $search_type);
         switch ($search_type) {
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
@@ -4732,7 +4732,7 @@ class Controller extends CController {
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 70) { // jefe de almacen
-                    $criteria->condition = "gi.dealer_id = {$dealer_id}";
+                    //$criteria->addCondition("gi.dealer_id = {$dealer_id}");
                     //if($tipo_search == ''){
                     //    $criteria->addCondition("gi.bdc = 0");
                     //    $criteria->addCondition("gd.fuente_contacto = 'showroom'");
@@ -4807,9 +4807,9 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
+                echo '<pre>';
+                print_r($criteria);
+                echo '</pre>';
 //                die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
