@@ -4807,9 +4807,9 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
-                echo '<pre>';
-                print_r($criteria);
-                echo '</pre>';
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
 //                die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
