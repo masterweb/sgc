@@ -4353,8 +4353,10 @@ class Controller extends CController {
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
                 default:
-                    if(($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd') && $cargo_id == 71 && $cargo_adicional == 0 && ($grupo_id == 2 || $grupo_id == 3)) 
-                        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+                    if(($_GET['GestionDiaria']['status'] != 'qk' && $_GET['GestionDiaria']['status'] != 'qktd') && $cargo_id == 71 && $cargo_adicional == 0 && ($grupo_id == 2 || $grupo_id == 3)){
+                       //$criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'"); 
+                    } 
+                        
                     break;
             }
         //}
