@@ -229,7 +229,7 @@ class Controller extends CController {
             'condition' => "id={$id}"
         ));
         $dealer = Usuarios::model()->find($criteria);
-        //die ('dealer: '.$dealer->concesionario_id);
+       //die ('dealer: '.$dealer->concesionario_id);
         if ($dealer->concesionario_id == 0) {
             $usuario = Grupoconcesionariousuario::model()->find(array('condition' => "usuario_id={$id}"));
             $id_conc = $usuario->concesionario_id;
@@ -1244,6 +1244,15 @@ class Controller extends CController {
             $counter++;
         }
         return $array_dealers;
+    }
+    
+    public function getGrupoUsuario($usuario_id) {
+        $user = Usuarios::model()->find(array('condition' => "id = {$usuario_id}"));
+        if ($user != NULL) {
+            return $user->grupo_id;
+        }else{
+            return 0;
+        }
     }
 
     /**
