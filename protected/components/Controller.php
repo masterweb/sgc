@@ -4347,6 +4347,18 @@ class Controller extends CController {
             $search_type = 49;
         }
         
+        // GENERAL - CONCESIONARIO - GERENTE COMERCIAL
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 0 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 50;
+        }
+        
+        // GENERAL - GRUPO - CONCESIONARIO - RESPONSABLE - GERENTE COMERCIAL
+        if ($_GET['busqueda_general'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['categorizacion'] == 0 && $_GET['status'] == 0 && $_GET['responsable'] == 1 
+                && $_GET['fecha'] == 0 && $_GET['seguimiento_rgd'] == 0 && $_GET['fecha_segumiento'] == 0) {
+            $search_type = 51;
+        }
+        
         // REVISAR VARIABLE $tipo_seg PARA SUMAR UNA CONDICION AL CRITERIA
         //die ('get: '.$_GET['tipo_search']);
         //if(isset($_GET['tipo_search']) && !empty($_GET['tipo_search'])){
@@ -4702,44 +4714,44 @@ class Controller extends CController {
             case 16:
                 //die('get array: '.$get_array);
                 if ($cargo_id === 46) { // super administrador
-                    echo 'asdqedfwef';
+                    //echo 'asdqedfwef';
                     $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $title = "Busqueda Total País";
                 }
                 if ($cargo_id === 69 && $get_array === '') { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 69 && $get_array === 'bdc') { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (72,73)', 'AND');
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 69 && $get_array === 'web') { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (85,86)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 69 && ($get_array === 'exh' || $get_array === 'exhibicion')) { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (70,71)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 69 && $get_array === 'exo') { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (75)', 'AND');
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
                 if ($cargo_id === 69 && $get_array === 'seg') { // gerente comercial
-                    $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (71)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
@@ -5623,6 +5635,58 @@ class Controller extends CController {
                 return $data;
 
                 break;
+            case 50: // SEARCH BY BUSQUEDA GENERAL AND CONCESIONARIO
+                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                if($tipo_search == ''){
+                    $criteria->addCondition("gd.fuente_contacto = 'showroom'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;
+                
+            case 51: // SEARCH BY BUSQUEDA GENERAL, CONCESIONARIO Y RESPONSABLE - GERENTE COMERCIAL
+                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
+                $criteria->addCondition("(gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%')",'OR');
+                $criteria->addCondition("gi.id = '{$_GET['GestionDiaria']['general']}'",'OR');
+                $criteria->addCondition("gi.responsable = {$_GET['GestionDiaria']['responsable']}",'AND');
+                $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}",'AND');
+                if($tipo_search == 'web'){
+                    $criteria->addCondition("gd.fuente_contacto = 'web'");
+                }
+                $criteria->group = "gi.id";
+                $criteria->order = "gi.id DESC";
+                $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                $pages = new CPagination(GestionInformacion::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);
+                $users = GestionInformacion::model()->findAll($criteria);
+                $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $data['title'] = $title;
+                $data['users'] = $users;
+                $data['pages'] = $pages;
+                return $data;
+                break;    
             default:
                 break;
         }

@@ -91,7 +91,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         </li>
         <?php endif; ?>
         <?php 
-        $restricted_reportes = ['74', '76', '77','86','85'];
+        $restricted_reportes = ['74', '76', '77','86','85','59','83','82'];
         if(!in_array($cargo_id, $restricted_reportes)):?>
             <li class="wrapper">
                 <div class="forma">
