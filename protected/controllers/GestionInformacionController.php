@@ -2087,7 +2087,7 @@ class GestionInformacionController extends Controller {
                 $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
                 $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
                 $criteria->addCondition("u.grupo_id = {$grupo_id}");
-                $criteria->addCondition("u.cargo_id = 71");
+                $criteria->addCondition("u.cargo_id IN (70,71)");
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                 if($tipo_seg == 'exhibicion' || $tipo_seg == 'exh'){
                     $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
