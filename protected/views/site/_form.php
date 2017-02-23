@@ -465,7 +465,7 @@
                         changeYear: true,
                         dateFormat: 'yy-mm-dd',
                         minDate: new Date(1950, 10 - 1, 25),
-                        yearRange: '1950:2016'
+                        yearRange: '1950:2017'
                     });
                     $('#cargo_adicional').change(function(){
                        var value = $(this).attr('value');
