@@ -439,10 +439,11 @@ if ($cargo_id != 46) {
                 return false;
             }
             //alert('tipo: '+tipo);
+            //alert('vec: '+vec);
             if (tipo == 'gestion') {
-                console.log('enter gestion');
-                if (vec === '1') {// ya posee vehiculo
-                    console.log('enter posee');
+                //alert('enter gestion');
+                if (vec == '1') {// ya posee vehiculo
+                    //alert('enter posee');
                     $('#gestion-consulta-form').validate({
                         rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
                             'GestionVehiculo[modelo]': {required: true}, 'GestionVehiculo[version]': {required: true},
@@ -466,7 +467,7 @@ if ($cargo_id != 46) {
                             form.submit();
                         }
                     });
-                } else if (vec === '0') { // primer vehiculo
+                } else if (vec == '0') { // primer vehiculo
                     console.log('primer vehiculo');
                     $('#gestion-consulta-form').validate({
                         rules: {'GestionConsulta[preg5]': {required: true},
@@ -492,7 +493,7 @@ if ($cargo_id != 46) {
                     });
                 }
             } else {
-                if (vec === '1') {// ya posee vehiculo
+                if (vec == '1') {// ya posee vehiculo
                     //console.log('enter posee');
                     $('#gestion-consulta-form').validate({
                         rules: {'GestionConsulta[preg1_sec1]': {required: true}, 'Cotizador[modelo]': {required: true}, 'Cotizador[year]': {required: true}, 'GestionConsulta[preg1_sec4]': {number: true}, 'GestionConsulta[preg5]': {required: true},
@@ -516,7 +517,7 @@ if ($cargo_id != 46) {
                             form.submit();
                         }
                     });
-                } else if (vec === '0') { // primer vehiculo
+                } else if (vec == '0') { // primer vehiculo
                     console.log('primer vehiculo');
                     $('#gestion-consulta-form').validate({
                         rules: {'GestionConsulta[preg5]': {required: true},
