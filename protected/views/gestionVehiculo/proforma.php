@@ -53,7 +53,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
 
                     <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
                     <?php if($cargo_id == 86 && $grupo_id == 2): ?>
-                    <div class="col-xs-12"><strong>Dirección: Av. 6 de Diciembre y Sta Lucia</strong></div>
+<!--                    <div class="col-xs-12"><strong>Dirección: Av. 6 de Diciembre y Sta Lucia</strong></div>-->
                     <?php else: ?>
                         <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
                     <?php endif; ?>
