@@ -152,13 +152,116 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     </div>
                                 </div>
                             </body>';        //die('table: '.$general);
-        $codigohtml = $general;
+        $html = '<body style="width: 650px; margin: auto; font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px;" width="650px;">
+	<div class="cont-mail" style="width: 650px; margin: auto;">
+		<div class="col-xs-12"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_01.jpg" width="173" height="69" alt=""/></div>
+		<div class="col-xs-12 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px">'.$ciudadCliente.', '.$fecha_m.'<br>
+Señor(a)<br>
+'.$nombre_cliente.'</div><br />
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+                    <tr>
+                        <td>KIA MOTORS ECUADOR le da la bienvenida, agradecemos la confianza al haber escogido uno de nuestros vehículos KIA, con la mejor tecnología Coreana.</tr>
+                    </td>
+                </table>
+<br />		
+<div class="row">
+		
+                <table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+                        <tr>
+                            <td><p>Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA (1800 542 542), donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. 
+                                </p>
+                            <p>Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.</p>
+                            </td>
+                          <td><a href="https://www.kia.com.ec/concesionarios.html"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_05.jpg" width="265" height="208" alt=""/></a></td>
+                        </tr>
+                </table>
+                <br />
+		<table cellpadding="0" cellspacing="0" class="col-xs-12 txt-mail" style="display: block; border: none; font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px" width="650">
+                    <tr>
+                    <td>Para complementar nuestro servicio, le recordamos que tenemos a su disposición un producto denominado “Asistencia KIA” el cual le asiste ante ante cualquier desperfecto mecánico o emergencia, las 24 horas del día, los 365 días del año, por un costo de $25 + IVA.
+                    </td>
+                    </tr>
+                </table>
+                <br>
+                <br />
+                La cobertura del producto “Asistencia KIA” comprende de:</div><br />
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+                    <tr>
+                        <td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_09.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Remolque o traslado</strong> de su vehículo en caso de avería o accidente hasta el concesionario Kia más cercano.</td>
+                    </tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+                    <tr>
+			<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_12.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Auxilio Mecánico:</strong> asistencia en caso llanta baja, falta de combustible, carga de batería.</td>
+                    </tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+                    <tr>
+			<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_14.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Traslado en ambulancia:</strong> en caso accidente de tránsito accidente de tránsito.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_16.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Cobertura en caso de viaje:</strong> en caso de que su vehículo quede inmovilizado, sufra hurto simple o calificado se cubrirá la estancia y desplazamiento de los ocupantes.</td></tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_18.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<div class="col-xs-11 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Transporte o custodia</strong> del vehículo reparado o recuperado en caso de encontrarse en una ciudad que no es de su residencia.</td></tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_20.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Servicio de conductor profesional:</strong> en caso de imposibilidad del conductor para conducir el vehículo por muerte, accidente o cualquier enfermedad grave.</td></tr>
+		</table>
+		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
+			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_22.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Asistencia Legal telefónica:</strong> Asesoría gratuita vía conferencia con nuestros abogados, quienes están en la capacidad legal de guiarlo en caso de tener un accidente de tránsito o infracciones en la vía.</td></tr>
+		</table>
+                <br />
+		<div class="col-xs-12">
+			<table cellpadding="0" cellspacing="0" style="display: block; border: none;">
+				<tr>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_24.jpg" width="29" height="170" alt="" style="display: block; border: none;"/></td>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_25.jpg" width="190" height="170" alt="" style="display: block; border: none;"/></td>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_26.jpg" width="15" height="170" alt="" style="display: block; border: none;"/></td>
+					<td><a href="https://www.kia.com.ec/usuarios/registro.html"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_27.jpg" width="189" height="170" alt="" style="display: block; border: none;"/></a></td>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_28.jpg" width="14" height="170" alt="" style="display: block; border: none;"/></td>
+					<td><a href="https://www.facebook.com/KiaMotorsEcuador/"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_29.jpg" width="189" height="170" alt="" style="display: block; border: none;"/></a></td>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_30.jpg" width="24" height="170" alt="" style="display: block; border: none;"/></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" style="display: block; border: none;">
+				<tr>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_31.jpg" width="650" height="63" alt="" style="display: block; border: none;"/></td>
+				</tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" style="display: block; border: none;">
+                            <tr>
+                                    <td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_32.jpg" width="30" height="30" alt="" style="display: block; border: none;"/></td>
+                                    <td><a href="https://www.kia.com.ec/'. Yii::app()->request->baseUrl.'/images/uploads/'.$foto_entrega.'"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_33.jpg" width="150" height="30" alt="" style="display: block; border: none;"/></a></td>
+                                    <td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_34.jpg" width="470" height="30" alt="" style="display: block; border: none;"/></td>
+                            </tr>
+			</table>
+			<table cellpadding="0" cellspacing="0" class="col-xs-12 txt-mail" style="background-color: #eeedec; padding-top: 15px; padding-left: 30px;" width="650"><tr><td>Atentamente<br>
+                        KIA MOTORS ECUADOR</tr></td></table>
+			<table cellpadding="0" cellspacing="0" style="display: block; border: none;">
+				<tr>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_36.jpg" width="650" height="87" alt="" style="display: block; border: none;"/></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>';
+        $codigohtml = $html;
         $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente
         //$email = 'alkanware@gmail.com'; //email cliente
 
         $ccarray = array('gansaldo72@hotmail.com');
+        //die('img: https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_36.jpg');
 
         if (sendEmailInfoClienteConcesionario('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $ccarray, html_entity_decode($asunto), $codigohtml)) {
             //die('send emaail carta');
@@ -199,7 +302,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $email = $this->getEmailJefeConcesion(70, $grupo_id, $dealer_id); //email administrador
         $emailAsesor = $this->getAsesorEmail($id_asesor);
         sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
-
+        
         $this->render('create', array(
             'model' => $model, 'id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo
         ));
