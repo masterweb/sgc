@@ -152,7 +152,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     </div>
                                 </div>
                             </body>';        //die('table: '.$general);
-        $html = '<body style="width: 650px; margin: auto; font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px;" width="650px;">
+        $html = '<body style="width: 650px; margin: auto; font-family: Arial, "sans-serif !important"; font-size: 12px; color: #5e5e5e; padding-left: 30px;" width="650px;">
 	<div class="cont-mail" style="width: 650px; margin: auto;">
 		<div class="col-xs-12"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_01.jpg" width="173" height="69" alt=""/></div>
 		<div class="col-xs-12 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px">'.$ciudadCliente.', '.$fecha_m.'<br>
@@ -187,37 +187,37 @@ Señor(a)<br>
                 La cobertura del producto “Asistencia KIA” comprende de:</div><br />
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
                     <tr>
-                        <td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_09.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Remolque o traslado</strong> de su vehículo en caso de avería o accidente hasta el concesionario Kia más cercano.</td>
+                        <td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_09.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Remolque o traslado</strong> de su vehículo en caso de avería o accidente hasta el concesionario Kia más cercano.</td>
                     </tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
                     <tr>
-			<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_12.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Auxilio Mecánico:</strong> asistencia en caso llanta baja, falta de combustible, carga de batería.</td>
+			<td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_12.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Auxilio Mecánico:</strong> asistencia en caso llanta baja, falta de combustible, carga de batería.</td>
                     </tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
                     <tr>
-			<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_14.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Traslado en ambulancia:</strong> en caso accidente de tránsito accidente de tránsito.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_14.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Traslado en ambulancia:</strong> en caso accidente de tránsito accidente de tránsito.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     </tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
-			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_16.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Cobertura en caso de viaje:</strong> en caso de que su vehículo quede inmovilizado, sufra hurto simple o calificado se cubrirá la estancia y desplazamiento de los ocupantes.</td></tr>
+			<tr><td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_16.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Cobertura en caso de viaje:</strong> en caso de que su vehículo quede inmovilizado, sufra hurto simple o calificado se cubrirá la estancia y desplazamiento de los ocupantes.</td></tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
-			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_18.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<div class="col-xs-11 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Transporte o custodia</strong> del vehículo reparado o recuperado en caso de encontrarse en una ciudad que no es de su residencia.</td></tr>
+			<tr><td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_18.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" class="col-xs-11 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Transporte o custodia</strong> del vehículo reparado o recuperado en caso de encontrarse en una ciudad que no es de su residencia.</td></tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
-			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_20.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Servicio de conductor profesional:</strong> en caso de imposibilidad del conductor para conducir el vehículo por muerte, accidente o cualquier enfermedad grave.</td></tr>
+			<tr><td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_20.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Servicio de conductor profesional:</strong> en caso de imposibilidad del conductor para conducir el vehículo por muerte, accidente o cualquier enfermedad grave.</td></tr>
 		</table>
 		<table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
-			<tr><td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_22.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
-			<td txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Asistencia Legal telefónica:</strong> Asesoría gratuita vía conferencia con nuestros abogados, quienes están en la capacidad legal de guiarlo en caso de tener un accidente de tránsito o infracciones en la vía.</td></tr>
+			<tr><td width="62"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_22.jpg" width="41" height="28" alt="" style="margin:5px 10px 5px 10px;"/></td>
+			<td width="586" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px"><strong>Asistencia Legal telefónica:</strong> Asesoría gratuita vía conferencia con nuestros abogados, quienes están en la capacidad legal de guiarlo en caso de tener un accidente de tránsito o infracciones en la vía.</td></tr>
 		</table>
                 <br />
 		<div class="col-xs-12">
