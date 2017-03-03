@@ -152,7 +152,16 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     </div>
                                 </div>
                             </body>';        //die('table: '.$general);
-        $html = '<body style="width: 650px; margin: auto; font-family: Arial, "sans-serif !important"; font-size: 12px; color: #5e5e5e; padding-left: 30px;" width="650px;">
+        $html = '<html><head><!--[if mso]>
+ 
+<style>
+    span, td, table, div {
+      font-family: Arial, serif !important;font-size: 12px; color: #5e5e5e;
+    }
+</style>
+ 
+<![endif]--></head>';
+        $html .= '<body style="width: 650px; margin: auto; font-family: Arial, "sans-serif !important"; font-size: 12px; color: #5e5e5e; padding-left: 30px;" width="650px;">
 	<div class="cont-mail" style="width: 650px; margin: auto;">
 		<div class="col-xs-12"><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_01.jpg" width="173" height="69" alt=""/></div>
 		<div class="col-xs-12 txt-mail" style="font-family: Arial, "sans-serif"; font-size: 12px; color: #5e5e5e; padding-left: 30px">'.$ciudadCliente.', '.$fecha_m.'<br>
@@ -168,7 +177,7 @@ Señor(a)<br>
 		
                 <table cellpadding="0" cellspacing="0" style="display: block; border: none;" width="650">
                         <tr>
-                            <td><p>Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA (1800 542 542), donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. 
+                            <td style="padding-right:8px;"><p>Nuestra prioridad es servirle de la mejor manera, por lo que usted tiene a su disposición la nueva línea gratuita de Servicio al Cliente 1800 KIA KIA (1800 542 542), donde Usted podrá obtener información de Vehículos Nuevos, Seminuevos, Talleres de Servicio Autorizado Kia, Costos de Mantenimiento Preventivos, Repuestos y Accesorios, Políticas de Garantías de su Vehículo, etc. 
                                 </p>
                             <p>Nuestro personal de la línea 1800 KIAKIA podrá ayudarle también a realizar su próxima cita de mantenimiento para que Ud. pueda continuar disfrutando de su vehículo Kia en todo momento, basta con llamar y uno de nuestros asesores podrá brindarle el mejor servicio para su próxima cita.</p>
                             </td>
@@ -253,7 +262,7 @@ Señor(a)<br>
 			</table>
 		</div>
 	</div>
-</body>';
+</body></html>';
         $codigohtml = $html;
         $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";

@@ -22,7 +22,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 ?>
 <script>
     $(function () {
-        //$('#toolinfo').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
         $('#GestionDiaria_grupo').change(function(){
             var value = $(this).attr('value');
             if ($(this).val() != ''){
@@ -359,6 +359,62 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
         }
 
     }
+    function asignarsave(){
+        var checkboxvalues = new Array();
+        //recorremos todos los checkbox seleccionados con .each
+        $('input[name="asignar[]"]:checked').each(function() {
+                //$(this).val() es el valor del checkbox correspondiente
+                checkboxvalues.push($(this).val());
+        });
+        
+        if(checkboxvalues.length == 0){
+            alert('Seleccione uno o mas usuarios de la lista del RGD');
+            return false;
+        }
+        
+        var id = $('#asesorasg').val();
+        var textreasignar = $('.textreasignar').val();
+        if($('.textreasignar').val() == ''){
+            $('#textreasignarerror').show();
+            return false;
+        }
+        if (confirm('Está seguro de reasignar el o los clientes?')) {    
+            
+            
+            //console.log(checkboxvalues.length);
+            if(checkboxvalues.length == 0){
+                alert('Seleccione uno o mas usuarios de la lista del RGD');
+                return false;
+            }
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/setAsignamiento"); ?>',
+                beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST', dataType: 'json', data: {id: id, checkboxvalues: checkboxvalues, comentario:textreasignar},
+                success: function (data) {
+                    //$('#bg_negro').hide();
+                    if (data.result == true) {
+                        location.reload();
+                    }
+
+                }
+            });
+        }
+    }
+    function asignar(id){
+        $('#asesorasg').val(id);
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/getResponsable"); ?>',
+                /*beforeSend: function (xhr) {
+                    $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                },*/
+                type: 'POST', data: {id: id},
+                success: function (data) {
+                    $('.txtasignamiento').html(data).show();
+                }
+            });
+    }
 </script>
 <style type="text/css">
     .daterangepicker .ranges, .daterangepicker .calendar {
@@ -373,6 +429,15 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             max-width: 1170px;
         }
     }
+    #checkMain{position: relative;top: 2px;}
+    #checklabel{font-size: 14px;font-weight: normal;margin-bottom: 0px;}
+    .checkbox-danger input[type="checkbox"]:checked + label::before {background-color: #d9534f;border-color: #d9534f; }
+    .checkbox-danger input[type="checkbox"]:checked + label::after {color: #fff; }
+    .textreasignar{margin-bottom: 0px;height: 33px;margin-right: 3px;border-radius: 0px;}
+    #textreasignarerror{color: #C00;font-size: 12px;resize: none;}
+    .txtasignamiento{position: absolute;top: -20px;color: #C21930;font-style: italic;}
+    .group-asignamiento{position: relative !important;}
+    .tooltip{white-space: normal;}
 </style>
 <?php $this->widget('application.components.Notificaciones'); ?>
 <div class="container">
@@ -443,6 +508,82 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
             </div>
         </div>
     </div>
+    <?php if ($cargo_id == 85) { ?>
+        <div class="row">
+            <br />
+            <div class="col-md-12">
+                <!-- Split button -->
+                <div class="btn-group">
+                    <span class="button-checkbox btn btn-default checkbox-danger" data-color="primary">
+                        <!--                    <button type="button" class="btn" data-color="primary" >Unchecked</button>-->
+                        <input type="checkbox" class="" id="checkMain" name="multislt"/><label id="checklabel">&nbsp;Todos</label>
+                    </span>
+                    <!--<button type="button" class="btn btn-default" class="btn-multislt"><input type="checkbox" name="multislt" class="checkMain" id="checkMain"/></button>-->
+                    <!--                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                      </button>-->
+                    <ul class="dropdown-menu">
+                        <li><a class="asign-lt">REASIGNAR</a></li>
+                        <!--                <li><a class="asign-lt">BORRAR</a></li>-->
+                    </ul>
+                </div>
+    <?php //if ($cargo_id == 46 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {  ?>
+    <?php if ($cargo_id == 221987) { ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Grupo <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a id="1" class="asign-lt" onclick="conc(1);">AEKIA S.A.</a></li>
+                            <li><a id="2" class="asign-lt" onclick="conc(2);">GRUPO ASIAUTO</a></li>
+                            <li><a id="3" class="asign-lt" onclick="conc(3);">GRUPO KMOTOR</a></li>
+                            <li><a id="4" class="asign-lt" onclick="conc(4);">IOKARS</a></li>
+                            <li><a id="5" class="asign-lt" onclick="conc(5);">GRUPO EMPROMOTOR</a></li>
+                            <li><a id="6" class="asign-lt" onclick="conc(6);">AUTHESA</a></li>
+                            <li><a id="7" class="asign-lt" onclick="conc(7);">AUTOSCOREA</a></li>
+                            <li><a id="8" class="asign-lt" onclick="conc(8);">GRUPO MERQUIAUTO</a></li>
+                            <li><a id="9" class="asign-lt" onclick="conc(9);">GRUPO MOTRICENTRO</a></li>
+                        </ul>    
+                    </div>
+    <?php } ?>
+    <?php if ($cargo_id == 69) { ?>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Concesionario <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="concesionarios">
+            <?php
+            if ($cargo_id == 69) {
+                echo $this->getConcesionariosli($grupo_id);
+            }
+            ?>
+            </ul>    
+        </div>
+    <?php } ?>
+    <?php if ($cargo_id == 85) { ?>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Asignar a <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="asesores">
+            <?php echo $this->getResponsablesAgencia($id_responsable); ?>
+            </ul>
+        </div>
+        <div class="btn-group group-asignamiento">
+            <span class="txtasignamiento"></span>
+            <textarea rows="2" cols="60" class="textreasignar" name="textreasignar" placeholder="Ingresar Comentario"></textarea>
+            <label generated="true" class="error" id="textreasignarerror" style="display:none;">Ingrese un comentario</label>
+        </div>    
+        <div class="btn-group">
+            <button type="button" class="btn btn-default btn-danger" onclick="asignarsave();">Grabar</button>
+            <input type="hidden" name="asesorasg" id="asesorasg" value=""/>   
+        </div>
+    <?php } ?>
+            </div>
+        </div>
+<?php } ?>
+    <br />
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -450,6 +591,9 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                 <table class="table tablesorter table-striped" id="keywords">
                     <thead>
                         <tr>
+                            <?php if ($cargo_id == 85) { ?>
+                                <th>Asignar</th>
+                            <?php } ?>
                             <th><span>Status</span></th>
                             <th><span>ID</span></th>
                             <th><span>Fecha de Registro</span></th>
@@ -470,6 +614,9 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                     <tbody>
                         <?php foreach ($users as $c): ?>
                             <tr>
+                                <?php if ($cargo_id == 85) { ?>
+                                    <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
+                                <?php } ?>
                                 <td class="nowr">
                                     <?php
                                     //echo $this->getStatus($c['status']);
@@ -570,7 +717,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
                                     ?>
                                     <?php if ($c['reasignado'] == 1): ?>
                                         <button type="button" class="btn btn-xs btn-credito-sgc" data-toggle="tooltip" title="<?php echo $this->getResponsable($c['responsable_cesado']) . ' - ' . $this->getComentarioAsignamiento($c['id_comentario']); ?>">R</button>
-                                        <?php endif; ?>
+                                    <?php endif; ?>
                                         <?php
                                         if ($desiste == 1) {
                                             echo '<button type="button" class="btn btn-xs btn-credito-sgc">D</button>';
