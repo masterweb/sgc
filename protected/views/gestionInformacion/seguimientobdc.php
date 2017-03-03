@@ -23,6 +23,7 @@ if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grup
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
+        $('#checkMain').click(function(){$('.checkAll').attr('checked', ($(this).is(':checked')) ? true:false);});
         $('#GestionDiaria_grupo').change(function(){
             var value = $(this).attr('value');
             if ($(this).val() != ''){
