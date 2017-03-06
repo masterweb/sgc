@@ -9,8 +9,10 @@ function sendEmailFunctionCotizador($from, $fromname, $to, $names, $subject, $bo
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    //$mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
+    //$mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
 
     $mail->From = $from;
@@ -58,8 +60,8 @@ function sendEmailInfoClienteConcesionario($from, $fromname, $to, $ccarray, $sub
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
     //$mail->From = $from;
     //$mail->FromName = $fromname;
@@ -98,8 +100,8 @@ function sendEmailFunction($from, $fromname, $to, $subject, $body, $charset = 'u
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
 
     $mail->From = $from;
@@ -263,8 +265,8 @@ function sendEmailInfo($from, $fromname, $to, $subject, $body) {
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
     //$mail->From = $from;
     //$mail->FromName = $fromname;
@@ -295,8 +297,8 @@ function sendEmailInfoTestDrive($from, $fromname, $to, $toAsesor, $subject, $bod
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
     //$mail->From = $from;
     //$mail->FromName = $fromname;
@@ -328,8 +330,8 @@ function sendEmailInfoD($from, $fromname, $to, $subject, $body, $tipo) {
     $mail->SMTPAuth = true;                  // enable SMTP authentication
     $mail->SMTPSecure = 'tls'; //
     $mail->Port = 587;                    // set the SMTP port for the GMAIL server
-    $mail->Username = "AKIAJ33PFP4WTXB22BUA"; // SMTP account username
-    $mail->Password = "1kLAdlSDogB1mUT/1Dcq0+AbHOptGk49cBn2Op/B";        // SMTP account password
+    $mail->Username = 'AKIAJ6XURPPR6L2IR4KA';
+    $mail->Password = 'AliEZvnKNqwzfXhDRNGZssSfhdpXQjwKqf89LtU7Fmg2';
     $mail->CharSet = 'UTF-8';
 
     //$mail->From = $from;
