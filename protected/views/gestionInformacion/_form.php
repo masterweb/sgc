@@ -475,7 +475,7 @@ $tipo = $_GET['tipo'];
                     var num_casa = $('#GestionInformacion_telefono_casa').val();
                     var opt = $('#GestionInformacion_medio').val();
                     switch(opt){
-                        case 'recomendaron':
+                        case 'recomendacion':
                             var rec = $('#GestionInformacion_recomendaron').val();$('#GestionInformacion_recomendaron').addClass('error');
                             if(rec == ''){
                                 $('#recomendaron_error').show();
