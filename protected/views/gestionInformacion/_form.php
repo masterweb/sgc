@@ -1019,7 +1019,7 @@ $tipo = $_GET['tipo'];
                                 'pagina_web' => 'Página Web Kia',
                                 'internet' => 'Internet',
                                 'redessociales' => 'Redes sociales',
-                                'conoce_concesionario' => 'Conoce el Concesionario'), 
+                                'le_gusta_marca_kia' => 'Le gusta la marca Kia'), 
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
