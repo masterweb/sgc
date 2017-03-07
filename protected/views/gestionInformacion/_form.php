@@ -467,9 +467,6 @@ $tipo = $_GET['tipo'];
                     'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number: 'Ingrese números'}
                 },
                 submitHandler: function (form) {
-                    $('#GestionInformacion_provincia_conc').removeAttr('disabled');
-                    $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
-                    $('#GestionInformacion_concesionario').removeAttr('disabled');
                     var num_cel = $('#GestionInformacion_celular').val();
                     var num_tel = $('#GestionInformacion_telefono_oficina').val();
                     var num_casa = $('#GestionInformacion_telefono_casa').val();
@@ -522,14 +519,15 @@ $tipo = $_GET['tipo'];
                         //$('#telefono').val('');
                         return false;
                     }*/
+                    $('#GestionInformacion_provincia_conc').removeAttr('disabled');
+                    $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
+                    $('#GestionInformacion_concesionario').removeAttr('disabled');
                     form.submit();
                 }
             });
         } else if (tipo == 'prospeccion') {
             //console.log('ENTER PROSPECCION');
-            $('#GestionInformacion_provincia_conc').removeAttr('disabled');
-            $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
-            $('#GestionInformacion_concesionario').removeAttr('disabled');
+            
             var observaciones = $('#GestionProspeccionPr_pregunta').val();
             console.log('observaciones: ' + observaciones);
             var num_cel = $('#GestionInformacion_celular').val();
@@ -582,6 +580,9 @@ $tipo = $_GET['tipo'];
                 //$('#telefono').val('');
                 return false;
             }*/
+            $('#GestionInformacion_provincia_conc').removeAttr('disabled');
+            $('#GestionInformacion_ciudad_conc').removeAttr('disabled');
+            $('#GestionInformacion_concesionario').removeAttr('disabled');
             switch (observaciones) {
                 case '1':// no estoy interesado
                 case '2':// falta de dinero
