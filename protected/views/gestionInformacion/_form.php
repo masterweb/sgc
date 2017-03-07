@@ -1032,7 +1032,7 @@ $tipo = $_GET['tipo'];
                                 'atencion' => 'Por Atención',
                                 'diseno' => 'Por Diseño',
                                 'facilidades_credito' => 'Por Facilidades de Crédito',
-                                'garantis' => 'Por Garantía',
+                                'garantia' => 'Por Garantía',
                             ), array('class' => 'form-control')); ?>
                             <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error" style="display: none;">Seleccione una opción</label>
                         </div>
