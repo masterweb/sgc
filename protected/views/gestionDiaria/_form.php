@@ -433,6 +433,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                               <table class="table table-striped">
                                   <thead>
                                       <tr>
+                                          <th>Última Actualización  SEG</th>
                                           <th>Paso</th>
                                           <th>Motivo</th>
                                           <th>Fecha seguimiento</th>
@@ -442,7 +443,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                   <tbody>
                               <?php
                             foreach ($seg as $vseg) {
-                                echo '<tr><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
+                                echo '<tr><td>'.$vseg['fecha'].'</td><td>'.$this->getPasoSeguimiento($vseg['paso']).'</td>'
                                         . '<td>'.$vseg['observaciones'].'</td>'
                                 . '<td>'.$vseg['agendamiento'].'</td><td>'.$vseg['otro_observacion'].'</td></tr>';
                             }
