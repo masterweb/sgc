@@ -683,6 +683,7 @@ $count = count($users);
                             <th><span>Apellidos</span></th>
                             <th><span>Identificación</span></th>
                             <th><span>Próximo Seguimiento</span></th>
+                            <th><span>Última Actualización  SEG</span></th>
                             <th><span>Responsable</span></th>
                             <th><span>Concesionario</span></th>
                             <th><span>Modelo-Test Drive</span></th>
@@ -714,6 +715,7 @@ $count = count($users);
                                 $medio_contacto = $this->getMedioContacto($c['id']);
                                 $desiste = $this->getDesiste($c['id']);
                                 $proximo_seguimiento = $this->getSeguimiento($c['id']);
+                                $fecha_registro_agendamiento = $this->getFechaRegistroAgendamiento($c['id']);
                                 $categorizacion = $this->getCategorizacionSGC($c['id']);
                                 $fuente = $this->getFuenteSGC($c['id']);
                                 $status = $this->getStatusSGC($c['id']);
@@ -852,6 +854,7 @@ $count = count($users);
                                     ?> 
                                 </td>
                                 <td><?php echo $proximo_seguimiento; if($cita){echo ' (c)';}?></td>
+                                <td><?php echo $fecha_registro_agendamiento; ?></td>
                                 <td><?php echo $this->getResponsable($c['responsable']); ?></td>
                                 <td><?php
                                     echo $this->getNameConcesionarioById($c['dealer_id']);
