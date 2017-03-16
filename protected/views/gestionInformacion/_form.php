@@ -409,6 +409,20 @@ $tipo = $_GET['tipo'];
                 $('#cont-recomendaron').hide();
             }
         });
+
+        $('#GestionInformacion_considero').change(function(){
+            var option = $('#GestionInformacion_considero option:selected').val();
+            switch (option) {
+                case 'recomendacion':// compro otro vehiculo
+                    $('#cont-recomendaron2').show();
+                    $('#recomendaron_error').hide();
+                    break;
+                default:
+                    $('#cont-recomendaron2').hide();
+                    break;
+            }
+            
+        });
         $('#GestionInformacion_recomendaron').change(function(){
             var recom = $('#GestionInformacion_recomendaron option:selected').val();
             if(recom != ''){
@@ -425,6 +439,12 @@ $tipo = $_GET['tipo'];
             var recom = $('#GestionInformacion_medio_television option:selected').val();
             if(recom != ''){
                 $('#medio_television_error').hide();$('#GestionInformacion_medio_television').removeClass('error');
+            }
+        });
+        $('#GestionInformacion_considero_recomendaron').change(function(){
+            var recom = $('#GestionInformacion_considero_recomendaron option:selected').val();
+            if(recom != ''){
+                $('#recomendaron_error2').hide();$('#GestionInformacion_considero_recomendaron').removeClass('error');
             }
         });
     });
@@ -457,13 +477,13 @@ $tipo = $_GET['tipo'];
                     'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[direccion]': {required: true},
                     'GestionInformacion[provincia_domicilio]': {required: true}, 'GestionInformacion[ciudad_domicilio]': {required: true},
                     'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true},
-                    'GestionInformacion[medio]': {required: true},
+                    'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},
                     'GestionInformacion[telefono_casa]': {required: true, minlength: 9, number: true}},
                 messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                     'GestionInformacion[cedula]': {required: 'Ingrese el número'}, 'GestionInformacion[direccion]': {required: 'Ingrese la dirección'},
                     'GestionInformacion[provincia_domicilio]': {required: 'Seleccione la provincia'}, 'GestionInformacion[ciudad_domicilio]': {required: 'Seleccione la ciudad'},
                     'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionInformacion[celular]': {required: 'Ingrese el celular', minlength: 'Ingrese 10 dígitos', number: 'Ingrese números'},
-                    'GestionInformacion[medio]': {required: 'Seleccione el medio'},
+                    'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'},
                     'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono', minlength: 'Ingrese 9 dígitos', number: 'Ingrese números'}
                 },
                 submitHandler: function (form) {
@@ -493,6 +513,18 @@ $tipo = $_GET['tipo'];
                                 return false;
                             }
                             break;    
+                        default:
+                            break;
+                    }
+                    var con = $('#GestionInformacion_considero').val();
+                    switch(con){
+                        case 'recomendacion':
+                           var rec = $('#GestionInformacion_considero_recomendaron').val();$('#GestionInformacion_considero_recomendaron').addClass('error');
+                            if(rec == ''){
+                                $('#recomendaron_error2').show();
+                                return false;
+                            } 
+                            break;
                         default:
                             break;
                     }
@@ -593,10 +625,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true},'GestionInformacion[medio]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true},'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'},'GestionInformacion[medio]': {required: 'Seleccione el medio'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'},'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'}},
                         submitHandler: function (form) {
                             $('#bg_negro').show();
                             form.submit();
@@ -609,10 +641,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true},'GestionInformacion[medio]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionProspeccionRp[marca]': {required: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionProspeccionRp[modelo]': {required: true}, 'GestionProspeccionRp[year]': {required: true},'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'},'GestionInformacion[medio]': {required: 'Seleccione el medio'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números'}, 'GestionProspeccionRp[marca]': {required: 'Ingrese la marca'}, 'GestionProspeccionRp[modelo]': {required: 'Ingrese el modelo'}, 'GestionProspeccionRp[year]': {required: 'Ingrese el año'},'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'}},
                         submitHandler: function (form) {
                             $('#bg_negro').show();
                             form.submit();
@@ -625,10 +657,10 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').hide();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true},'GestionInformacion[medio]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true},'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'},'GestionInformacion[medio]': {required: 'Selecione el medio'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'},'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'}},
                         submitHandler: function (form) {
                             var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
@@ -690,9 +722,9 @@ $tipo = $_GET['tipo'];
                     $('.cont-nocont').show();
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true},'GestionInformacion[medio]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionDiaria[agendamiento2]': {required: true},'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'},'GestionInformacion[medio]': {required: 'Seleccione el medio'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'}, 'GestionDiaria[agendamiento2]': {required: 'Selecione Re Agendar'},'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'}},
                         submitHandler: function (form) {
                             var proximoSeguimiento = $('#agendamiento').val();
                             if (proximoSeguimiento != '') {
@@ -731,10 +763,10 @@ $tipo = $_GET['tipo'];
                 case '15':
                     $('#gestion-informacion-form').validate({
                         rules: {'GestionProspeccionPr[pregunta]': {required: true},'GestionInformacion[nombres]': {required: true}, 'GestionInformacion[apellidos]': {required: true},
-                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true},'GestionInformacion[medio]': {required: true}},
+                            'GestionInformacion[cedula]': {required: true, number: true, minlength: 10}, 'GestionInformacion[email]': {required: true, email: true}, 'GestionInformacion[celular]': {required: true, minlength: 10, number: true}, 'GestionDiaria[agendamiento]': {required: true}, 'GestionProspeccionRp[lugar]': {required: true}, 'GestionProspeccionRp[agregar]': {required: true},'GestionInformacion[medio]': {required: true},'GestionInformacion[considero]': {required: true},},
                         messages: {'GestionInformacion[nombres]': {required: 'Ingrese los nombres'}, 'GestionInformacion[apellidos]': {required: 'Ingrese los apellidos'},
                             'GestionInformacion[cedula]': {required: 'Ingrese la cédula', number: 'Ingrese sólo números', minlength: 'Ingrese 10 dígitos'}, 'GestionInformacion[email]': {required: 'Ingrese el email', email: 'Ingrese un email válido'},
-                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'},'GestionInformacion[medio]': {required: 'Seleccione el medio'}},
+                            'GestionInformacion[celular]': {required: 'Ingrese el celular', number: 'Ingrese solo números', number:'Ingrese números'}, 'GestionDiaria[agendamiento]': {required: 'Ingrese agendamiento'}, 'GestionProspeccionRp[lugar]': {required: 'Seleccione lugar de encuentro'}, 'GestionProspeccionRp[agregar]': {required: 'Seleccione agregar'},'GestionInformacion[medio]': {required: 'Seleccione el medio'},'GestionInformacion[considero]': {required: 'Seleccione una opción'}},
                         submitHandler: function (form) {$('#bg_negro').show();
                             form.submit();
                         }
@@ -1011,16 +1043,18 @@ $tipo = $_GET['tipo'];
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="">¿En qué medio vio/escuchó la publicidad que le impulsó a visitarnos?</label>
+                            <label for="">¿Por qué medio tuvo información de nuestra marca que motivó su visita?</label>
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
+                                'cine' => 'Cine',
                                 'television' => 'Televisión',
-                                'prensa_escrita' => 'Prensa escrita',
-                                'radio' => 'Radio',
-                                'recomendacion' => 'Le recomendaron',
+                                'redessociales' => 'Redes sociales',
                                 'pagina_web' => 'Página Web Kia',
                                 'internet' => 'Internet',
-                                'redessociales' => 'Redes sociales',
-                                'le_gusta_marca_kia' => 'Le gusta la marca Kia'), 
+                                'radio' => 'Radio',
+                                'prensa_escrita' => 'Prensa escrita',
+                                'recomendacion' => 'Le recomendaron',
+                                //'le_gusta_marca_kia' => 'Le gusta la marca Kia'
+                                ), 
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
@@ -1052,6 +1086,33 @@ $tipo = $_GET['tipo'];
                             echo $form->dropDownList($model, 'medio_television', $medio_television, array('class' => 'form-control', 'empty' => 'Seleccione un medio')); 
                             ?>
                             <label for="GestionInformacion_medio_television" generated="true" class="error" id="medio_television_error" style="display: none;">Seleccione un medio de televisión</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">¿Por qué consideró la marca KIA?</label>
+                            <?php echo $form->dropDownList($model, 'considero', array('' => '--Seleccione una opción--',
+                                'garantia' => 'Garantía',
+                                'design' => 'Diseño',
+                                'precio' => 'Precio',
+                                'recomendacion' => 'Le recomendaron',
+                                'servicio' => 'Servicio',
+                                'recompra' => 'Recompra'
+                                ), 
+                                    array('class' => 'form-control')); ?>
+                            <?php echo $form->error($model, 'telefono_casa'); ?>
+                        </div>
+                        <div class="col-md-3" id="cont-recomendaron2" style="display:none;">
+                            <label for="">Opciones Recomendaron</label>
+                            <?php echo $form->dropDownList($model, 'considero_recomendaron', array(
+                                '' => '--Selecione opción--',
+                                'calidad_de_producto' => 'Por Calidad de Producto',
+                                'atencion' => 'Por Atención',
+                                'diseno' => 'Por Diseño',
+                                'facilidades_credito' => 'Por Facilidades de Crédito',
+                                'garantia' => 'Por Garantía',
+                            ), array('class' => 'form-control')); ?>
+                            <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error2" style="display: none;">Seleccione una opción</label>
                         </div>
                     </div>
                     <?php

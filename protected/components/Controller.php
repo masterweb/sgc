@@ -95,12 +95,17 @@ class Controller extends CController {
     }
 
     public function getProvincia($id) {
-        $provincia = Provincias::model()->findByPk($id);
-        if (!is_null($provincia) && !empty($provincia)) {
-            return $provincia->nombre;
-        } else {
-            return 'NA';
+        if($id == 1000){
+            return 'Todas';
+        }else{
+            $provincia = Provincias::model()->findByPk($id);
+            if (!is_null($provincia) && !empty($provincia)) {
+                return $provincia->nombre;
+            } else {
+                return 'NA';
+            }
         }
+        
     }
 
     public function getProvinciaIdDomicilio($id_informacion) {
@@ -1562,6 +1567,11 @@ class Controller extends CController {
         ));
         $ps = GestionDiaria::model()->find($criteria);
         return $ps->proximo_seguimiento;
+    }
+
+    public function getFechaRegistroAgendamiento($id_informacion){
+        $ag = GestionAgendamiento::model()->find(array('condition' => "id_informacion = {$id_informacion}",'limit' => "1"));
+        return $ag->fecha;
     }
 
     public function getCategorizacionSGC($id) {

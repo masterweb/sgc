@@ -119,6 +119,7 @@ class GestionInformacionController extends Controller {
             $model->nombres = ucfirst($_POST['GestionInformacion']['nombres']);
             $model->apellidos = ucfirst($_POST['GestionInformacion']['apellidos']);
             $model->medio = $_POST['GestionInformacion']['medio'];
+            $model->considero = $_POST['GestionInformacion']['considero'];
             switch ($_POST['GestionInformacion']['medio']) {
                 case 'recomendacion':
                     $model->recomendaron = $_POST['GestionInformacion']['recomendaron'];
@@ -130,6 +131,14 @@ class GestionInformacionController extends Controller {
                     $model->medio_prensa = $_POST['GestionInformacion']['medio_prensa'];
                     break;
 
+                default:
+                    break;
+            }
+            switch ($_POST['GestionInformacion']['considero']) {
+                case 'recomendacion':
+                    $model->considero_recomendaron = $_POST['GestionInformacion']['considero_recomendaron'];
+                    break;
+                
                 default:
                     break;
             }

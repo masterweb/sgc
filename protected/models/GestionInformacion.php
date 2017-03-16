@@ -47,6 +47,8 @@
  * @property string $recomendaron
  * @property string $medio_prensa
  * @property string $medio_television
+ * @property string $considero
+ * @property string $considero_recomendacion
  * The followings are the available model relations:
  * @property GestionVehiculo[] $gestionVehiculos
  */
@@ -160,6 +162,8 @@ class GestionInformacion extends CActiveRecord {
             'recomendaron' => 'Recomendaron',
             'medio_prensa' => 'Medio Prensa',
             'medio_television' => 'Medio Television',
+            'considero' => 'Consideracion',
+            'considero_recomendaron' => 'Consideracion Recomendaron',
         );
     }
 
