@@ -251,11 +251,11 @@ class CasosController extends Controller {
                         </body>';
                     $codigohtml = $general;
                     $tipo = 'informativo';
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $email = $_POST['Casos']['email']; //email administrador
 
-                    sendEmailInfo('info@kia.com.ec', "Call Center Informativo", $email, html_entity_decode($asunto), $codigohtml, $tipo);
+                    sendEmailInfo('servicioalcliente@kiamail.com.ec', "Call Center Informativo", $email, html_entity_decode($asunto), $codigohtml, $tipo);
 
                 //-----------EMAIL PARA CASO CASO------------------    
                 elseif ($tipoFormularioPV == 'caso'):
@@ -329,19 +329,19 @@ class CasosController extends Controller {
                     </body>';
                     $codigohtml = $general;
 
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
 
                     $asunto = 'Formulario enviado desde Call Center:';
-                    sendEmailFunctionConc('info@kia.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
+                    sendEmailFunctionConc('servicioalcliente@kiamail.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
 
                     // SI DATOS VIENEN DE COTIZACION ENVIAR LOS DATOS A BASE DE DATOS DE COTIZACIONES adminkia_b4s3k1
                     // ENVIO DE EMAIL AL CONCESIONARIO RESPECTIVO
                     //die('subtema: '.$_POST['Casos']['subtema']);
                     if ($_POST['Casos']['subtema'] == 9) {
                         // CONECCION A LA BASE DE DATOS DE KIA ADMINKIA
-                        DEFINE('DB_USER', 'jrodriguez');
-                        DEFINE('DB_PASSWORD', '@admin.1');
+                        DEFINE('DB_USER', 'root');
+                        DEFINE('DB_PASSWORD', 'lcz3QmXen4dc');
                         DEFINE('DB_HOST', 'localhost');
                         DEFINE('DB_NAME', 'adminkia_b4s3k1');
                         $connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
@@ -468,14 +468,14 @@ class CasosController extends Controller {
                             </div>
                         </body>';
                     $codigohtml = $general;
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $asunto = 'Formulario enviado desde Call Center';
                     $tipo = 'caso';
                     //if (!empty($_POST['Casos']['email'])):
-                        //sendEmailCliente('info@kia.com.ec', "Call Center", $_POST['Casos']['email'], html_entity_decode($asunto), $codigohtml, $tipo);
+                        //sendEmailCliente('servicioalcliente@kiamail.com.ec', "Call Center", $_POST['Casos']['email'], html_entity_decode($asunto), $codigohtml, $tipo);
                     //else:
-                        sendEmailCliente('info@kia.com.ec', "Call Center", 'supervisoroperaciones2@centerphone.com.ec', html_entity_decode($asunto), $codigohtml, $tipo);
+                        sendEmailCliente('servicioalcliente@kiamail.com.ec', "Call Center", 'supervisoroperaciones2@centerphone.com.ec', html_entity_decode($asunto), $codigohtml, $tipo);
                     //endif;
 
                 endif; // FIN DE ENVIO PARA CASOS
@@ -605,12 +605,12 @@ class CasosController extends Controller {
                         </div>
                     </body>';
                     $codigohtml = $general;
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
 
                     $asunto = 'Formulario enviado desde Call Center';
                     $tipo = 'cerrado';
-                    sendEmailInfo('info@kia.com.ec', "Call Center", 'vlondono@kia.com.ec', html_entity_decode($asunto), $codigohtml, $tipo);
+                    sendEmailInfo('servicioalcliente@kiamail.com.ec', "Call Center", 'vlondono@kia.com.ec', html_entity_decode($asunto), $codigohtml, $tipo);
 
                     // email al concesionario, postventa-venta, super administrador
                     $emailSP = 'vlondono@kia.com.ec'; // email super administrador
@@ -686,15 +686,15 @@ class CasosController extends Controller {
                     </body>';
                     $codigohtml = $general;
 
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
 
                     $asunto = 'Formulario enviado desde Call Center:';
-                    sendEmailFunctionConc('info@kia.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
+                    sendEmailFunctionConc('servicioalcliente@kiamail.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
                 } elseif ($_POST['Casos']['estado'] === 'Proceso') {
                     // CONECCION A LA BASE DE DATOS DE KIA ADMINKIA
                     DEFINE('DB_USER', 'root');
-                    DEFINE('DB_PASSWORD', 'k143c89?4Fg&2');
+                    DEFINE('DB_PASSWORD', 'lcz3QmXen4dc');
                     DEFINE('DB_HOST', 'localhost');
                     DEFINE('DB_NAME', 'adminkia_b4s3k1');
                     $connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)
@@ -781,7 +781,7 @@ class CasosController extends Controller {
                     </body>';
                         $codigohtml = $general;
 
-                        $headers = 'From: info@kia.com.ec' . "\r\n";
+                        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                         $headers .= 'Content-type: text/html' . "\r\n";
 
                         $asunto = 'Formulario enviado desde Call Center:';
@@ -796,7 +796,7 @@ class CasosController extends Controller {
                         }
                         $emailSP = 'vlondono@kia.com.ec'; // email super administrador
                         $emailCallCenter = 'vlondono@kia.com.ec';
-                        sendEmailFunctionConc('info@kia.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
+                        sendEmailFunctionConc('servicioalcliente@kiamail.com.ec', "Call Center", $emailSP, html_entity_decode($asunto), $codigohtml, 'utf-8', '', '', '', $emailVP, $emailCallCenter);
                     }
 
 
