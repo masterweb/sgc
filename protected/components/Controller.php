@@ -200,11 +200,15 @@ class Controller extends CController {
     }
 
     public function getConcesionario($id) {
-        $dealers = Dealers::model()->findByPk($id);
-        if (!is_null($dealers) && !empty($dealers)) {
-            return $dealers->name;
-        } else {
-            return 'NA';
+        if($id == 1000){
+            return 'Todos';
+        }else{
+            $dealers = Dealers::model()->findByPk($id);
+            if (!is_null($dealers) && !empty($dealers)) {
+                return $dealers->name;
+            } else {
+                return 'NA';
+            }
         }
     }
 
@@ -254,11 +258,16 @@ class Controller extends CController {
     }
 
     public function getNombreGrupo($id) {
-        $criteria = new CDbCriteria(array(
+        if($id == 1000){
+            return 'Todos';
+        }else{
+            $criteria = new CDbCriteria(array(
             'condition' => "id={$id}"
-        ));
-        $dealer = GrGrupo::model()->find($criteria);
-        return $dealer->nombre_grupo;
+            ));
+            $dealer = GrGrupo::model()->find($criteria);
+            return $dealer->nombre_grupo;
+        }
+        
     }
 
     public function getAsesorCel($id) {
@@ -1359,6 +1368,9 @@ class Controller extends CController {
 
     public function getNameConcesionarioById($id) {
         //die('id: '.$id);
+        if($id == 1000){
+            return 'Todos';
+        }
         if (empty($id)) {
             $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             $grupo = GrGrupo::model()->find(array('condition' => "id={$grupo_id}"));
@@ -1450,6 +1462,9 @@ class Controller extends CController {
 
     public function getResponsableNombres($id) {
         //die($id);
+        if($id == 10000){
+            return 'Todos';
+        }
         if ($id == null) {
             return 'NA';
         }
@@ -1534,7 +1549,8 @@ class Controller extends CController {
         } else {
             $paso = (int) $ps->paso;
         }
-        return $paso;
+        return $paso
+        ;
     }
 
     public function getPasoGestionDiaria($id) {
@@ -3025,7 +3041,8 @@ class Controller extends CController {
     /**
      * Funcion que retorna las fechas actuales en el reporte de trafico
      * @param type $mes_actual
-     * @param type $dia_actual
+     * @param type $dia_inicial Dia incial de inicio
+     * @param type $dia_actual Dia final 
      * @return array $fechas fechas a ser mostradas
      */
     public function getNumeroMeses($mes_actual, $dia_inicial, $dia_actual) {
@@ -4112,6 +4129,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.bdc = 1");
                 //$criteria->addCondition("gd.desiste = 0");
                 $criteria->addCondition("u.cargo_id IN (85,86)");
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
                 $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
                 break;    
             default:
@@ -4425,10 +4443,10 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
+//              echo '<pre>';
+//              print_r($criteria);
+//              echo '</pre>';
+//              die();
 
                 $count = count($users);
                 //die('before render nombre:'.$count);
