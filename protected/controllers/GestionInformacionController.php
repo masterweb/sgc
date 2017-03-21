@@ -2088,6 +2088,7 @@ class GestionInformacionController extends Controller {
                     $criteria->addCondition("gi.bdc = 0");
                     $criteria->addCondition("u.cargo_id = 71");
                     $criteria->addCondition("gd.desiste = 0", 'AND');
+                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes_nuevo}' and '{$dt_hoy}'");
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                 }
