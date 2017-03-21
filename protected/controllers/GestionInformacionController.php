@@ -2041,7 +2041,7 @@ class GestionInformacionController extends Controller {
                     $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
                     $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                     $criteria->addCondition("u.cargo_id IN (70,71)");
-                    $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
+                    //$criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
                 }
