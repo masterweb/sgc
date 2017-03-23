@@ -16,295 +16,305 @@ $dealerList = implode(', ', $array_dealers);
     $fecha_actual = (string) strftime("%Y-%m-%d", $dt);
     //echo 'lenght fecha actual: '.strlen($fecha_actual);
     $responsable_id = Yii::app()->user->getId();
-    $sql = "SELECT * FROM gestion_notificaciones WHERE leido = 'UNREAD' AND id_asesor = {$responsable_id}";
+    $sql = "SELECT * FROM gestion_notificaciones WHERE leido = 'UNREAD' AND id_asesor = {$responsable_id} ORDER BY fecha DESC LIMIT 20";
     $notificaciones = Yii::app()->db->createCommand($sql)->query();
     $count = count($notificaciones);
     $fecha_actual = date("Y/m/d");
+    switch ($cargo_id) {
+        case 85:
+        case 86:
+            
+            if($cargo_adicional == 85 || $cargo_adicional == 86){
 
-    // NOTIFICACIONES PARA ASESORES VENTAS Y ASESORES WEB============================================================================
-    if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86) {
-        $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
+                # NOTIFICACIONES PARA ASESORES DE VENTAS Y ASESORES WEB
+
+                $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
                 inner JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
                 INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id 
                 WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
-        $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
-        $dataWeb = '';
-        $dataWeb .= '<ul id="lAbierto">';
-        foreach ($notificacionesWeb as $wb) {
-            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 7));
-            $dataWeb .= '<li><a href="' . $url . '">Cliente ' . $wb['nombres'] . ' ' . $wb['apellidos'] . ' se ha registrado ' . $wb['fecha'] . '</a></li>';
-        }
-        $dataWeb .= '</ul>';
-    }
+                $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
+                $dataWeb = '';
+                $dataWeb .= '<ul id="lAbierto">';
+                foreach ($notificacionesWeb as $wb) {
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 7));
+                    $dataWeb .= '<li><a href="' . $url . '">Cliente ' . $wb['nombres'] . ' ' . $wb['apellidos'] . ' se ha registrado ' . $wb['fecha'] . '</a></li>';
+                }
+                $dataWeb .= '</ul>';
 
-    // NOTIFICACIONES DE CITAS PARA SOLICITUDES WEB===================================================================================
-    if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86) {
-        $citasWeb = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gn.id as id_not, gn.id_informacion, ga.agendamiento FROM gestion_informacion gi 
+                # NOTIFICACIONES DE CITAS PARA SOLICITUDES WEB
+                $citasWeb = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gn.id as id_not, gn.id_informacion, ga.agendamiento FROM gestion_informacion gi 
                     INNER JOIN gestion_cita gc ON gc.id_informacion =  gi.id 
                     INNER JOIN gestion_notificaciones gn ON gn.id_informacion = gi.id 
                     INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
                     WHERE gi.responsable = {$responsable_id} AND gn.leido = 'UNREAD'";
-        //die($citasWeb);
-        $notificacionesCitas = Yii::app()->db->createCommand($citasWeb)->query();
-        $dataCitas = '';
-        $dataCitas .= '<ul id="lAbierto">';
-        foreach ($notificacionesCitas as $ct) {
-            //$url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 8));
-            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $ct['id_not'], 'id_informacion' => $ct['id_informacion'], 'cid' => $cargo_id, 'tipo' => 8));
-            $dataCitas .= '<li><a href="' . $url . '">Cliente ' . $ct['nombres'] . ' ' . $ct['apellidos'] . ' - ' . $ct['agendamiento'] . '</a></li>';
-        }
-        $dataCitas .= '</ul>';
-    }
+                    //die($citasWeb);
+                    $notificacionesCitas = Yii::app()->db->createCommand($citasWeb)->query();
+                    $dataCitas = '';
+                    $dataCitas .= '<ul id="lAbierto">';
+                    foreach ($notificacionesCitas as $ct) {
+                        //$url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $wb['id'], 'tipo' => 8));
+                        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $ct['id_not'], 'id_informacion' => $ct['id_informacion'], 'cid' => $cargo_id, 'tipo' => 8));
+                        $dataCitas .= '<li><a href="' . $url . '">Cliente ' . $ct['nombres'] . ' ' . $ct['apellidos'] . ' - ' . $ct['agendamiento'] . '</a></li>';
+                    }
+                    $dataCitas .= '</ul>';
 
-    if ($cargo_id != 85) {
+            }
+            if($cargo_id == 85){ // JEFE DE VENTAS WEB
+                // NOTIFICACIONES PARA JEFE DE VENTAS WEB----------------------------------------------------------------------------------------------------
+                $fecha_actual = date("Y/m/d");
+                $array_dealers = Controller::getDealerGrupoConc($grupo_id);
+                $dealerList = implode(', ', $array_dealers);
+                $sqlExt = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gd.proximo_seguimiento, gd.paso, gd.fuente_contacto FROM gestion_informacion gi "
+                        . "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN usuarios u ON u.id = gi.responsable "
+                        . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
+                        . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
+                //die('sql: '.$sqlExt );        
+                $notExt = Yii::app()->db->createCommand($sqlExt)->query();
+                $dataExt = '';
+                $dataExt .= '<ul id="lAbierto">';
+                $countExt = 0;
+                foreach ($notExt as $ext) {
+                    $fecha_array = explode(' ', $ext['proximo_seguimiento']);
+                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $ext['id'], 'tipo' => 6));
+                    if (strtotime($fecha_actual) > strtotime($fecha_array[0])) {
+                        $dataExt .= '<li><a href="' . $url . '">' . $ext['nombres'] . ' ' . $ext['apellidos'] . ' - Cliente no Contactado (48 horas)</a></li>';
+                        $countExt++;
+                    }
+                }
+                $dataExt .= '</ul>';
+            }
+            
 
-        // NOTIFICACIONES DE AGENDAMIENTOS POR ASESORES COMERCIALES-------------------------------------------------------
-        $abierto = "";
-        $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
-        FROM gestion_notificaciones gn 
-        INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
-        INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
-        INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
-        WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 ";
-        switch ($cargo_id) {
-            case 71: // asesor de ventas
-            case 70: // jefe de sucursal    
-                $abiertoSQL .= " AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-                break;
-            case 85: // jefe de ventas externas
+            break;
+        case 71: // ASESOR DE VENTAS
+        case 70: // JEFE DE SUCURSAL
+            # NOTIFICACIONES DE AGENDAMIENTOS PARA ASESORES DE VENTAS
+            $abierto = "";
+            $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
+            FROM gestion_notificaciones gn 
+            INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+            INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
+            INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
+            WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
+            AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+            if($cargo_id == 85){
                 $abiertoSQL .= " AND gn.id_dealer IN ({$dealerList}) AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-                break;
-            default:
-                break;
-        }
-        $abiertoSQL .= ' GROUP BY gd.id_informacion';
-        $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
-    }
+            }
+            $abiertoSQL .= ' GROUP BY gd.id_informacion';
+            //die($abiertoSQL);
 
-    $abierto2 = "";
-    $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
-                    INNER JOIN gestion_status_solicitud gs ON gs.id_informacion = gt.id_informacion 
-                    INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
-            . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
-    //die($abiertoSQL2);
-    $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
+            $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
 
-    // NOTIFICACIONES DE CADUCIDAD PARA CATEGORIZACION---------------------------------------------------------------------------------------------------
-    $abierto3 = "";
-    $abiertoSQL3 = "SELECT gi.id, gi.nombres, gi.apellidos, gc.preg7, gc.fecha FROM gestion_informacion gi 
-INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
-WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
-    $notificacionesAbiertas3 = Yii::app()->db->createCommand($abiertoSQL3)->query();
-    $dias = 0;
-    //$fecha_caducidad = '';
-    $data = '';
-    $count_cat = 0;
-    foreach ($notificacionesAbiertas3 as $value3) {
-        $fecha_array = explode('-', $value3['fecha']);
-        $mes = (int) $fecha_array[1];
-        $dia_array = explode(' ', $fecha_array[2]);
-        $dia = (int) $dia_array[0];
-        //echo '<h1>Fecha: ' . $value3['fecha'] . '</h1>';
-        switch ($value3['preg7']) {
-            case 'Hot A (hasta 7 dias)':
-                $dias = 7;
-                $dia = (string) $dia + 7;
-                $mes = (string) $mes;
-                $dias_mes = getMesDias($fecha_array[1]);
-                if ($dia >= $dias_mes && $dias_mes == 30) {
-                    $dia = $dia - 30;
-                    $mes = (string) $mes + 1;
-                }
-                if ($dia >= $dias_mes && $dias_mes >= 31) {
-                    $dia = $dia - 31;
-                    $mes = (string) $mes + 1;
-                }
-                if (strlen($mes) == 1) {
-                    $mes = '0' . $mes;
-                }
-                if (strlen($dia) == 1) {
-                    $dia = '0' . $dia;
-                }
-                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
-                //echo $fecha_caducidad.'<br />';
-                if ($fecha_actual == $fecha_caducidad) {
-                    $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'cid' => $cargo_id, 'tipo' => 4));
+            $abierto2 = "";
+            $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
+                            INNER JOIN gestion_status_solicitud gs ON gs.id_informacion = gt.id_informacion 
+                            INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion "
+                    . " WHERE gt.leido = 'UNREAD' AND gt.tipo = 2 AND gt.id_asesor = {$responsable_id}";
+            //die($abiertoSQL2);
+            $notificacionesAbiertas2 = Yii::app()->db->createCommand($abiertoSQL2)->query();
 
-                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT A Caduca hoy</a>'
-                            . '</li>';
 
-                    $data .= '</ul>';
-                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
-                    $count_cat++;
-                }
-                break;
-            case 'Hot B (hasta 15 dias)':
-                $dias = 15;
-                $dia = (string) $dia + 15;
+            # NOTIFICACIONES DE CADUCIDAD PARA CATEGORIZACION---------------------------------------------------------------------------------------------------
+            $abierto3 = "";
+            $abiertoSQL3 = "SELECT gi.id, gi.nombres, gi.apellidos, gc.preg7, gc.fecha FROM gestion_informacion gi 
+            INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
+            WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
+            $notificacionesAbiertas3 = Yii::app()->db->createCommand($abiertoSQL3)->query();
+            $dias = 0;
+            //$fecha_caducidad = '';
+            $data = '';
+            $count_cat = 0;
+            foreach ($notificacionesAbiertas3 as $value3) {
+                $fecha_array = explode('-', $value3['fecha']);
+                $mes = (int) $fecha_array[1];
+                $dia_array = explode(' ', $fecha_array[2]);
+                $dia = (int) $dia_array[0];
+                //echo '<h1>Fecha: ' . $value3['fecha'] . '</h1>';
+                switch ($value3['preg7']) {
+                    case 'Hot A (hasta 7 dias)':
+                        $dias = 7;
+                        $dia = (string) $dia + 7;
+                        $mes = (string) $mes;
+                        $dias_mes = getMesDias($fecha_array[1]);
+                        if ($dia >= $dias_mes && $dias_mes == 30) {
+                            $dia = $dia - 30;
+                            $mes = (string) $mes + 1;
+                        }
+                        if ($dia >= $dias_mes && $dias_mes >= 31) {
+                            $dia = $dia - 31;
+                            $mes = (string) $mes + 1;
+                        }
+                        if (strlen($mes) == 1) {
+                            $mes = '0' . $mes;
+                        }
+                        if (strlen($dia) == 1) {
+                            $dia = '0' . $dia;
+                        }
+                        $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
+                        //echo $fecha_caducidad.'<br />';
+                        if ($fecha_actual == $fecha_caducidad) {
+                            $data .= '<ul id="lAbierto">';
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'cid' => $cargo_id, 'tipo' => 4));
 
-                $mes = (string) $mes;
-                $dias_mes = getMesDias($fecha_array[1]);
-                if ($dia >= $dias_mes && $dias_mes == 30) {
-                    $dia = $dia - 30;
-                    $mes = (string) $mes + 1;
-                }
-                if ($dia >= $dias_mes && $dias_mes >= 31) {
-                    $dia = $dia - 31;
-                    $mes = (string) $mes + 1;
-                }
-                if (strlen($mes) == 1) {
-                    $mes = '0' . $mes;
-                }
-                if (strlen($dia) == 1) {
-                    $dia = '0' . $dia;
-                }
-                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
-                //echo $fecha_caducidad.'<br />';
-                if ($fecha_actual == $fecha_caducidad) {
-                    $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+                            $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT A Caduca hoy</a>'
+                                    . '</li>';
 
-                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT B Caduca hoy</a>'
-                            . '</li>';
+                            $data .= '</ul>';
+                            $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                            $count_cat++;
+                        }
+                        break;
+                    case 'Hot B (hasta 15 dias)':
+                        $dias = 15;
+                        $dia = (string) $dia + 15;
 
-                    $data .= '</ul>';
-                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
-                    $count_cat++;
+                        $mes = (string) $mes;
+                        $dias_mes = getMesDias($fecha_array[1]);
+                        if ($dia >= $dias_mes && $dias_mes == 30) {
+                            $dia = $dia - 30;
+                            $mes = (string) $mes + 1;
+                        }
+                        if ($dia >= $dias_mes && $dias_mes >= 31) {
+                            $dia = $dia - 31;
+                            $mes = (string) $mes + 1;
+                        }
+                        if (strlen($mes) == 1) {
+                            $mes = '0' . $mes;
+                        }
+                        if (strlen($dia) == 1) {
+                            $dia = '0' . $dia;
+                        }
+                        $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia;
+                        //echo $fecha_caducidad.'<br />';
+                        if ($fecha_actual == $fecha_caducidad) {
+                            $data .= '<ul id="lAbierto">';
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+
+                            $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT B Caduca hoy</a>'
+                                    . '</li>';
+
+                            $data .= '</ul>';
+                            $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                            $count_cat++;
+                        }
+                        break;
+                    case 'Hot C (hasta 30 dias)':
+                        //echo 'Enter 30 dias';
+                        $dias = 30;
+                        $mes = (string) $mes + 1;
+                        if (strlen($mes) == 1) {
+                            $mes = '0' . $mes;
+                        }
+                        $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                        //echo $fecha_caducidad.'<br />';
+                        //echo 'fecha caducidad: '.$fecha_caducidad . '<br />';
+                        //echo 'fecha actual: '.$fecha_actual. '<br />';
+                        if ($fecha_actual == $fecha_caducidad) {
+                            $data .= '<ul id="lAbierto">';
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+
+                            $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT C Caduca hoy</a>'
+                                    . '</li>';
+
+                            $data .= '</ul>';
+                            $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                            $count_cat++;
+                        }
+
+                        break;
+                    case 'Warm (hasta 3 meses)':
+                        $dias = 90;
+                        $mes = (string) $mes + 3;
+                        if (strlen($mes) == 1) {
+                            $mes = '0' . $mes;
+                        }
+                        $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                        //echo $fecha_caducidad.'<br />';
+                        if ($fecha_actual == $fecha_caducidad) {
+                            $data .= '<ul id="lAbierto">';
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+
+                            $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - WARM 3 meses Caduca hoy</a>'
+                                    . '</li>';
+
+                            $data .= '</ul>';
+                            $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                            $count_cat++;
+                        }
+                        break;
+                    case 'Cold (hasta 6 meses)':
+                        $dias = 180;
+                        $mes = (string) $mes + 6;
+                        if (strlen($mes) == 1) {
+                            $mes = '0' . $mes;
+                        }
+                        $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
+                        //echo $fecha_caducidad.'<br />';
+                        if ($fecha_actual == $fecha_caducidad) {
+                            $data .= '<ul id="lAbierto">';
+                            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+
+                            $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                                    . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - COLD 6 meses Caduca hoy</a>'
+                                    . '</li>';
+
+                            $data .= '</ul>';
+                            $data .= '<input type="hidden" id="actualAbierto" value="10">';
+                            $count_cat++;
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
-                break;
-            case 'Hot C (hasta 30 dias)':
-                //echo 'Enter 30 dias';
-                $dias = 30;
-                $mes = (string) $mes + 1;
-                if (strlen($mes) == 1) {
-                    $mes = '0' . $mes;
-                }
-                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
-                //echo $fecha_caducidad.'<br />';
-                //echo 'fecha caducidad: '.$fecha_caducidad . '<br />';
-                //echo 'fecha actual: '.$fecha_actual. '<br />';
-                if ($fecha_actual == $fecha_caducidad) {
-                    $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
+            }
 
-                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - HOT C Caduca hoy</a>'
-                            . '</li>';
-
-                    $data .= '</ul>';
-                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
-                    $count_cat++;
-                }
-
-                break;
-            case 'Warm (hasta 3 meses)':
-                $dias = 90;
-                $mes = (string) $mes + 3;
-                if (strlen($mes) == 1) {
-                    $mes = '0' . $mes;
-                }
-                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
-                //echo $fecha_caducidad.'<br />';
-                if ($fecha_actual == $fecha_caducidad) {
-                    $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
-
-                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - WARM 3 meses Caduca hoy</a>'
-                            . '</li>';
-
-                    $data .= '</ul>';
-                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
-                    $count_cat++;
-                }
-                break;
-            case 'Cold (hasta 6 meses)':
-                $dias = 180;
-                $mes = (string) $mes + 6;
-                if (strlen($mes) == 1) {
-                    $mes = '0' . $mes;
-                }
-                $fecha_caducidad = $fecha_array[0] . '/' . $mes . '/' . $dia_array[0];
-                //echo $fecha_caducidad.'<br />';
-                if ($fecha_actual == $fecha_caducidad) {
-                    $data .= '<ul id="lAbierto">';
-                    $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => 0, 'id_informacion' => $value3['id'], 'tipo' => 4));
-
-                    $data .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                            . '<a href="' . $url . '">' . $value3["nombres"] . ' ' . $value3['apellidos'] . ' - COLD 6 meses Caduca hoy</a>'
-                            . '</li>';
-
-                    $data .= '</ul>';
-                    $data .= '<input type="hidden" id="actualAbierto" value="10">';
-                    $count_cat++;
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-    if ($cargo_id != 85) {
-        $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
+            # NOTIFICACIONES 
+            $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
                 . "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion"
                 . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer IN ({$dealerList})";
-        $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
-        $datac .= '<ul id="lAbierto">';
-        foreach ($notificacionesCierre as $nt) {
+            $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
+            $datac .= '<ul id="lAbierto">';
+            foreach ($notificacionesCierre as $nt) {
 
-            $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nt['id'], 'id_informacion' => $nt['id_informacion'], 'tipo' => 3));
+                $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nt['id'], 'id_informacion' => $nt['id_informacion'], 'tipo' => 3));
 
-            $datac .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                    . '<a href="' . $url . '">' . $nt["nombres"] . ' ' . $nt['apellidos'] . ' - Cierre de Venta</a>'
-                    . '</li>';
-        }
-        $datac .= '</ul>';
-        $datac .= '<input type="hidden" id="actualAbierto" value="10">';
+                $datac .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                        . '<a href="' . $url . '">' . $nt["nombres"] . ' ' . $nt['apellidos'] . ' - Cierre de Venta</a>'
+                        . '</li>';
+            }
+            $datac .= '</ul>';
+            $datac .= '<input type="hidden" id="actualAbierto" value="10">';
+
+            // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS------------------------------------------------------------------------------------
+            $sqlComentarios = "SELECT * FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD'";
+            $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
+            $dc .= '<ul id="lAbierto">';
+            foreach ($notComentarios as $nc) {
+                
+                $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5, 'id_agendamiento' => $nc['id_agendamiento']));
+
+                $dc .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
+                        . '<a href="' . $url . '">Comentario de ' . Controller::getResponsableNombres($nc['id_asesor_envia']) . '</a>'
+                        . '</li>';
+
+                
+                
+            }
+            $dc .= '</ul>';
+
+            break;    
+        
+        default:
+            # code...
+            break;
     }
 
-    // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS------------------------------------------------------------------------------------
-    $sqlComentarios = "SELECT * FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD'";
-    $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
-    $dc .= '<ul id="lAbierto">';
-    foreach ($notComentarios as $nc) {
-        
-        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id' => $nc['id'], 'id_informacion' => $nc['id_informacion'], 'tipo' => 5, 'id_agendamiento' => $nc['id_agendamiento']));
-
-        $dc .= '<li class="tol" data-toggle="tooltip" data-placement="top" title="">'
-                . '<a href="' . $url . '">Comentario de ' . Controller::getResponsableNombres($nc['id_asesor_envia']) . '</a>'
-                . '</li>';
-
-        
-        
-    }
-    $dc .= '</ul>';
     
-
-    // NOTIFICACIONES PARA JEFE DE VENTAS WEB----------------------------------------------------------------------------------------------------
-    $fecha_actual = date("Y/m/d");
-    $array_dealers = Controller::getDealerGrupoConc($grupo_id);
-    $dealerList = implode(', ', $array_dealers);
-    $sqlExt = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gd.proximo_seguimiento, gd.paso, gd.fuente_contacto FROM gestion_informacion gi "
-            . "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN usuarios u ON u.id = gi.responsable "
-            . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
-            . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
-    //die('sql: '.$sqlExt );        
-    $notExt = Yii::app()->db->createCommand($sqlExt)->query();
-    $dataExt = '';
-    $dataExt .= '<ul id="lAbierto">';
-    $countExt = 0;
-    foreach ($notExt as $ext) {
-        $fecha_array = explode(' ', $ext['proximo_seguimiento']);
-        $url = Yii::app()->createUrl('gestionNotificaciones/vernotificacion', array('id_informacion' => $ext['id'], 'tipo' => 6));
-        if (strtotime($fecha_actual) > strtotime($fecha_array[0])) {
-            $dataExt .= '<li><a href="' . $url . '">' . $ext['nombres'] . ' ' . $ext['apellidos'] . ' - Cliente no Contactado (48 horas)</a></li>';
-            $countExt++;
-        }
-    }
-    $dataExt .= '</ul>';
 
     $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios);
     if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86)
