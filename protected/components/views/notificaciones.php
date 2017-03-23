@@ -8,12 +8,14 @@ $id_responsable = Yii::app()->user->getId();
 $dealer_id = Controller::getConcesionarioDealerId($id_responsable);
 $array_dealers = Controller::getDealerGrupoConc($grupo_id);
 $dealerList = implode(', ', $array_dealers);
+
 ?>
 <div class="cont_notificaciones">
     <?php
     date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador`
     $dt = time();
     $fecha_actual = (string) strftime("%Y-%m-%d", $dt);
+    $dt_unmes_antes = date('Y-m-d', strtotime('-4 week')); // Fecha resta 1 mes
     //echo 'lenght fecha actual: '.strlen($fecha_actual);
     $responsable_id = Yii::app()->user->getId();
     $sql = "SELECT * FROM gestion_notificaciones WHERE leido = 'UNREAD' AND id_asesor = {$responsable_id} ORDER BY fecha DESC LIMIT 20";
@@ -31,7 +33,7 @@ $dealerList = implode(', ', $array_dealers);
                 $webSql = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha FROM gestion_informacion gi 
                 inner JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
                 INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id 
-                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
+                WHERE fuente_contacto = 'web' AND gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC LIMIT 200";
                 $notificacionesWeb = Yii::app()->db->createCommand($webSql)->query();
                 $dataWeb = '';
                 $dataWeb .= '<ul id="lAbierto">';
@@ -102,8 +104,8 @@ $dealerList = implode(', ', $array_dealers);
             }
             $abiertoSQL .= ' GROUP BY gd.id_informacion';
             //die($abiertoSQL);
-
             $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
+
 
             $abierto2 = "";
             $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
