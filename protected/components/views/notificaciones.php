@@ -48,7 +48,7 @@ $dealerList = implode(', ', $array_dealers);
                     INNER JOIN gestion_cita gc ON gc.id_informacion =  gi.id 
                     INNER JOIN gestion_notificaciones gn ON gn.id_informacion = gi.id 
                     INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
-                    WHERE gi.responsable = {$responsable_id} AND gn.leido = 'UNREAD'";
+                    WHERE gi.responsable = {$responsable_id} AND gn.leido = 'UNREAD' LIMIT 200";
                     //die($citasWeb);
                     $notificacionesCitas = Yii::app()->db->createCommand($citasWeb)->query();
                     $dataCitas = '';
@@ -69,7 +69,7 @@ $dealerList = implode(', ', $array_dealers);
                 $sqlExt = "SELECT gi.id, gi.nombres, gi.apellidos, gi.fecha, gd.proximo_seguimiento, gd.paso, gd.fuente_contacto FROM gestion_informacion gi "
                         . "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN usuarios u ON u.id = gi.responsable "
                         . "INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id "
-                        . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC";
+                        . " WHERE gi.dealer_id IN({$dealerList}) and gi.bdc = 1 AND u.cargo_id = 86 AND gc.leido = 'UNREAD' ORDER BY gi.fecha DESC LIMIT 2000";
                 //die('sql: '.$sqlExt );        
                 $notExt = Yii::app()->db->createCommand($sqlExt)->query();
                 $dataExt = '';
@@ -102,7 +102,7 @@ $dealerList = implode(', ', $array_dealers);
             if($cargo_id == 85){
                 $abiertoSQL .= " AND gn.id_dealer IN ({$dealerList}) AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
             }
-            $abiertoSQL .= ' GROUP BY gd.id_informacion';
+            $abiertoSQL .= ' GROUP BY gd.id_informacion ORDER BY gd.id_informacion DESC LIMIT 200';
             //die($abiertoSQL);
             $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
 
@@ -120,7 +120,7 @@ $dealerList = implode(', ', $array_dealers);
             $abierto3 = "";
             $abiertoSQL3 = "SELECT gi.id, gi.nombres, gi.apellidos, gc.preg7, gc.fecha FROM gestion_informacion gi 
             INNER JOIN gestion_consulta gc ON gc.id_informacion = gi.id
-            WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD'";
+            WHERE gi.responsable = {$responsable_id} AND gc.leido = 'UNREAD' ORDER BY gi.id DESC LIMIT 200";
             $notificacionesAbiertas3 = Yii::app()->db->createCommand($abiertoSQL3)->query();
             $dias = 0;
             //$fecha_caducidad = '';
