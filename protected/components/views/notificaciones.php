@@ -278,7 +278,7 @@ $dealerList = implode(', ', $array_dealers);
             # NOTIFICACIONES 
             $sqlCerrados = "SELECT gt.*, gi.nombres, gi.apellidos FROM gestion_notificaciones gt "
                 . "INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion"
-                . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer IN ({$dealerList})";
+                . " WHERE gt.tipo = 3 AND gt.leido = 'UNREAD' AND gt.id_dealer IN ({$dealerList}) ORDER BY gi.id DESC LIMIT 400";
             $notificacionesCierre = Yii::app()->db->createCommand($sqlCerrados)->query();
             $datac .= '<ul id="lAbierto">';
             foreach ($notificacionesCierre as $nt) {
@@ -293,7 +293,7 @@ $dealerList = implode(', ', $array_dealers);
             $datac .= '<input type="hidden" id="actualAbierto" value="10">';
 
             // COMENTARIOS ENVIADOS AL JEFE DE SUCURSAL O AGENTE DE VENTAS------------------------------------------------------------------------------------
-            $sqlComentarios = "SELECT * FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD'";
+            $sqlComentarios = "SELECT id, id_informacion, id_agendamiento, id_asesor_envia FROM gestion_notificaciones WHERE tipo = 5 AND id_asesor = {$id_responsable} AND leido = 'UNREAD' ORDER BY id DESC LIMIT 300";
             $notComentarios = Yii::app()->db->createCommand($sqlComentarios)->query();
             $dc .= '<ul id="lAbierto">';
             foreach ($notComentarios as $nc) {
