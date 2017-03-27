@@ -45,19 +45,22 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
             <div class="col-xs-8" style="border-left:1px solid #888890;">
                 <?php if($cargo_id == 86 && $grupo_id == 2): ?>
                     <h4>ASIAUTO S.A. / Concesionario Kia Motors Ecuador</h4>
-                    <?php else: ?>
+                <?php elseif ($cargo_id == 86 && $grupo_id == 3): ?>
+                    <h4>KMOTOR S.A. / Concesionario Kia Motors Ecuador</h4>
+                <?php else: ?>
                         <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
-                    <?php endif; ?>
+                <?php endif; ?>
                 
                 <div class="target">
 
                     <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
                     <?php if($cargo_id == 86 && $grupo_id == 2): ?>
 <!--                    <div class="col-xs-12"><strong>Dirección: Av. 6 de Diciembre y Sta Lucia</strong></div>-->
+                    <?php elseif($cargo_id == 86 && $grupo_id == 3): ?>
+                        <div class="col-xs-12"><strong>Dirección: <?php echo $this->getDireccionKmotor($id_asesor) ?></strong></div>
                     <?php else: ?>
                         <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
                     <?php endif; ?>
-                    
                     <div class="col-xs-5"><p><strong>T </strong> <?php echo $telefono; ?></p></div>
                     <div class="col-xs-5"><p><strong>M </strong> <?php echo $celular; ?></p></div>
                     <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
