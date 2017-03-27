@@ -26,7 +26,7 @@ $dealerList = implode(', ', $array_dealers);
         case 85:
         case 86:
             
-            if($cargo_adicional == 85 || $cargo_adicional == 86){
+            //if($cargo_adicional == 85 || $cargo_adicional == 86){
 
                 # NOTIFICACIONES PARA ASESORES DE VENTAS Y ASESORES WEB
 
@@ -60,7 +60,7 @@ $dealerList = implode(', ', $array_dealers);
                     }
                     $dataCitas .= '</ul>';
 
-            }
+            //}
             if($cargo_id == 85){ // JEFE DE VENTAS WEB
                 // NOTIFICACIONES PARA JEFE DE VENTAS WEB----------------------------------------------------------------------------------------------------
                 $fecha_actual = date("Y/m/d");
@@ -84,8 +84,34 @@ $dealerList = implode(', ', $array_dealers);
                     }
                 }
                 $dataExt .= '</ul>';
+
+                # NOTIFICACIONES DE AGENDAMIENTOS PARA ASESORES DE VENTAS
+                $abierto = "";
+                $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
+                FROM gestion_notificaciones gn 
+                INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+                INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
+                INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
+                WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
+                AND gn.id_dealer IN ({$dealerList}) AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+                $abiertoSQL .= ' GROUP BY gd.id_informacion ORDER BY gd.id_informacion DESC LIMIT 200';
+                //die($abiertoSQL);
+                $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
             }
-            
+            if ($cargo_id == 86) {
+
+                # NOTIFICACIONES DE AGENDAMIENTOS PARA ASESORES DE VENTAS
+                $abierto = "";
+                $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
+                FROM gestion_notificaciones gn 
+                INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
+                INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
+                INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
+                WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
+                AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
+                $abiertoSQL .= ' GROUP BY gd.id_informacion ORDER BY gd.id_informacion DESC LIMIT 200';
+                $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
+            }
 
             break;
         case 71: // ASESOR DE VENTAS
@@ -99,11 +125,7 @@ $dealerList = implode(', ', $array_dealers);
             INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
             WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
             AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-            if($cargo_id == 85){
-                $abiertoSQL .= " AND gn.id_dealer IN ({$dealerList}) AND (DATE(ga.agendamiento) = '$fecha_actual' OR DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
-            }
             $abiertoSQL .= ' GROUP BY gd.id_informacion ORDER BY gd.id_informacion DESC LIMIT 200';
-            //die($abiertoSQL);
             $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
 
 
@@ -319,17 +341,16 @@ $dealerList = implode(', ', $array_dealers);
     
 
     $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesAbiertas2) + $count_cat + count($notComentarios);
+    //die('num_noficicaciones: '.$num_noficicaciones);
     if ($cargo_id == 85 || $cargo_adicional == 85 || $cargo_id == 86 || $cargo_adicional == 86)
-        $num_noficicaciones = count($notificacionesWeb) + count($notificacionesCitas);
+        $num_noficicaciones = count($notificacionesAbiertas) + count($notificacionesWeb) + count($notificacionesCitas);
     ?>
     <div class="cont_tl_notificaciones" onclick="verN(<?php echo $num_noficicaciones; ?>)">
-    <?php
-    if ($num_noficicaciones > 0):
-        ?>
-            <div class="no_notificaciones"><?php echo $num_noficicaciones; ?></div>
-        <?php else: ?>
-            <div class="no_notificaciones no-not"><?php echo $num_noficicaciones; ?></div>
-        <?php endif; ?>
+    <?php if ($num_noficicaciones > 0): ?>
+        <div class="no_notificaciones"><?php echo $num_noficicaciones; ?></div>
+    <?php else: ?>
+        <div class="no_notificaciones no-not"><?php echo $num_noficicaciones; ?></div>
+    <?php endif; ?>
 
         <div class="tl_notificaciones">Notificaciones</div>
         <div class="clear"></div>
