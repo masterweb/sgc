@@ -1250,7 +1250,12 @@ class Controller extends CController {
         $criteria = new CDbCriteria(array(
             'condition' => "id_grupo={$grupo_id}"
         ));
-        $dealers = GrConcesionarios::model()->findAll($criteria);
+        
+        if($grupo_id == 1000 || $grupo_id == ''){
+            $dealers = GrConcesionarios::model()->findAll();
+        }else{
+            $dealers = GrConcesionarios::model()->findAll($criteria);
+        }
         $counter = 0;
         foreach ($dealers as $value) {
             //echo 'asdasd'.$value['concesionario_id'];
@@ -5875,6 +5880,15 @@ class Controller extends CController {
         $data['meses'] = $meses;
         $data['years'] = $years;
         return $data;
+    }
+
+    public function getDireccionKmotor($id_asesor){
+        $dir = Usuarios::model()->find(array('condition' => "id = {$id_asesor}"));
+        if($dir){
+            return $dir->direccion;
+        }else{
+            return 'NA';
+        }
     }
 
 }
