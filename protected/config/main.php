@@ -1,4 +1,5 @@
 <?php
+
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 // This is the main Web application configuration. Any writable
@@ -77,6 +78,10 @@ return array(
         'user' => array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
+            'authTimeout' => 1800,
+        ),
+        'session' => array(
+            'timeout' => 1800,
         ),
         // uncomment the following to enable URLs in path-format
         'urlManager' => array(
@@ -94,24 +99,24 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=callcenter',
             'emulatePrepare' => true,
-            'username' => 'kia',
-            'password' => 'kia',
+            'username' => 'root',
+            'password' => 'lcz3QmXen4dc',
 //            'username' => 'kia1234',
 //            'password' => 'kia1234',
 //            'password' => '',
             'charset' => 'utf8',
         ),
-         'db2' => array(
-          'connectionString' => 'mysql:host=localhost;dbname=adminkia_b4s3k1',
-          'class'=>'CDbConnection',
-          'emulatePrepare' => true,
-          'username' => 'root',
-          'password' => 'k143c89?4Fg&2',
+        'db2' => array(
+            'connectionString' => 'mysql:host=localhost;dbname=adminkia_b4s3k1',
+            'class' => 'CDbConnection',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => 'lcz3QmXen4dc',
 //          'username' => 'kia1234',
 //          'password' => 'kia1234',
 //          'password' => '',
-          'charset' => 'utf8',
-          ), 
+            'charset' => 'utf8',
+        ),
         'image' => array(
             'class' => 'application.extensions.image.CImageComponent',
             // GD or ImageMagick
@@ -166,18 +171,27 @@ return array(
 //                )
 //            ),
 //        ),
-    /* 'clientScript' => array(
-      'scriptMap' => array(
-      'jquery.js' => false,
-      'jquery.min.js' => false,
-      ),
-      ), */
+        /* 'clientScript' => array(
+          'scriptMap' => array(
+          'jquery.js' => false,
+          'jquery.min.js' => false,
+          ),
+          ), */
+        //'request' => array(
+        //    'class' => 'application.components.HttpRequest',
+        //    'enableCsrfValidation' => true,
+        //),
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
         'adminEmail' => 'webmaster@example.com',
+        //'cargo_id' => (int) Yii::app()->user->getState('cargo_id'),
+        //'grupo_id' => (int) Yii::app()->user->getState('grupo_id'),
+        //'id_responsable' => Yii::app()->user->getId(),
+        //'cargo_adicional' => (int) Yii::app()->user->getState('cargo_adicional'),
+        //'area_id' => (int) Yii::app()->user->getState('area_id'),
         'recaptcha' => array(
             'publicKey' => '6LdpfAYTAAAAAH5QImM0Uzy3Hn1uyF6EAWMbWb89',
             'privateKey' => '6LdpfAYTAAAAACR8BH2nzw-zy5uPb00HXY1TFQWZ',
