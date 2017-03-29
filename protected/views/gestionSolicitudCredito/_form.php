@@ -12,10 +12,10 @@
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario_TEST/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }else{
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario_TEST/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);

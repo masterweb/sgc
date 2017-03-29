@@ -291,8 +291,8 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                //$emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
-                $emailAsesorCredito = 'alkanware@gmail.com';
+                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                //$emailAsesorCredito = 'alkanware@gmail.com';
                 //die('email asesor: '.$emailAsesorCredito);
                 sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
