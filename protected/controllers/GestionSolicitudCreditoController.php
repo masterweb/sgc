@@ -153,6 +153,9 @@ class GestionSolicitudCreditoController extends Controller {
             $model->meses_trabajo = $_POST['GestionSolicitudCredito']['meses_trabajo'];
             $model->meses_trabajo_conyugue = $_POST['GestionSolicitudCredito']['meses_trabajo_conyugue'];
             $model->numero = $_POST['GestionSolicitudCredito']['numero'];
+            if (isset($_POST['GestionSolicitudCredito']['numero_cargas']) && !empty($_POST['GestionSolicitudCredito']['numero_cargas'])) {
+                $model->numero_cargas = $_POST['GestionSolicitudCredito']['numero_cargas'];
+            }    
 
             if (isset($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']) && !empty($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue'])) {
                 $sueldo_conyugue = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']);
@@ -168,7 +171,31 @@ class GestionSolicitudCreditoController extends Controller {
                 $model->otros_ingresos = $otros_ingresos;
             }
 
-
+            if (isset($_POST['GestionSolicitudCredito']['total_ingresos']) && !empty($_POST['GestionSolicitudCredito']['total_ingresos'])) {
+                $total_ingresos = str_replace(',', "", $_POST['GestionSolicitudCredito']['total_ingresos']);
+                $total_ingresos = str_replace('.', ",", $total_ingresos);
+                $total_ingresos = (int) str_replace('$', "", $total_ingresos);
+                $model->total_ingresos = $total_ingresos;
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_arriendo']) && !empty($_POST['GestionSolicitudCredito']['gastos_arriendo'])) {
+                $model->gastos_arriendo = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_arriendo']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros']) && !empty($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros'])) {
+                $model->gastos_alimentacion_otros = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_educacion']) && !empty($_POST['GestionSolicitudCredito']['gastos_educacion'])) {
+                $model->gastos_educacion = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_educacion']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_prestamos']) && !empty($_POST['GestionSolicitudCredito']['gastos_prestamos'])) {
+                $model->gastos_prestamos = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_prestamos']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito']) && !empty($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito'])) {
+                $model->gastos_tarjetas_credito = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['total_egresos']) && !empty($_POST['GestionSolicitudCredito']['total_egresos'])) {
+                $model->total_egresos = $this->setFormat($_POST['GestionSolicitudCredito']['total_egresos']);
+            }
+            //die('post save');
 
             $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
             switch ($tipo_vivienda) {
@@ -222,7 +249,9 @@ class GestionSolicitudCreditoController extends Controller {
                 echo '<pre>';
                 print_r($model->getErrors());
                 echo '</pre>';
+                //die('no validate');
             }
+
             if ($model->save()) {
                 require_once 'email/mail_func.php';
                 //---- SEND EMAIL ASESOR DE CREDITO
@@ -262,7 +291,8 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                //$emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                $emailAsesorCredito = 'alkanware@gmail.com';
                 //die('email asesor: '.$emailAsesorCredito);
                 sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
                 //die('enter save');
@@ -384,7 +414,30 @@ class GestionSolicitudCreditoController extends Controller {
                 $model->otros_ingresos = $otros_ingresos;
             }
 
-
+            if (isset($_POST['GestionSolicitudCredito']['total_ingresos']) && !empty($_POST['GestionSolicitudCredito']['total_ingresos'])) {
+                $total_ingresos = str_replace(',', "", $_POST['GestionSolicitudCredito']['total_ingresos']);
+                $total_ingresos = str_replace('.', ",", $total_ingresos);
+                $total_ingresos = (int) str_replace('$', "", $total_ingresos);
+                $model->total_ingresos = $total_ingresos;
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_arriendo']) && !empty($_POST['GestionSolicitudCredito']['gastos_arriendo'])) {
+                $model->gastos_arriendo = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_arriendo']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros']) && !empty($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros'])) {
+                $model->gastos_alimentacion_otros = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_alimentacion_otros']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_educacion']) && !empty($_POST['GestionSolicitudCredito']['gastos_educacion'])) {
+                $model->gastos_educacion = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_educacion']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_prestamos']) && !empty($_POST['GestionSolicitudCredito']['gastos_prestamos'])) {
+                $model->gastos_prestamos = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_prestamos']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito']) && !empty($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito'])) {
+                $model->gastos_tarjetas_credito = $this->setFormat($_POST['GestionSolicitudCredito']['gastos_tarjetas_credito']);
+            }
+            if (isset($_POST['GestionSolicitudCredito']['total_egresos']) && !empty($_POST['GestionSolicitudCredito']['total_egresos'])) {
+                $model->total_egresos = $this->setFormat($_POST['GestionSolicitudCredito']['total_egresos']);
+            }
 
             $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
             switch ($tipo_vivienda) {
@@ -630,7 +683,7 @@ class GestionSolicitudCreditoController extends Controller {
     public function loadModel($id) {
         $model = GestionSolicitudCredito::model()->findByPk($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            throw new CHttpException(404, 'The requested page does not exists.');
         return $model;
     }
 
@@ -754,6 +807,13 @@ class GestionSolicitudCreditoController extends Controller {
             $this->redirect(array('gestionSolicitudCredito/admin'));
         }
         $this->render('status', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo, 'id_status' => $id_status, 'modelst' => $modelst,));
+    }
+
+    public function setFormat($input){
+        $res = str_replace(',', "", $input);
+        $res = str_replace('.', ",", $input);
+        $res = (int) str_replace('$', "", $input);
+        return $res;
     }
 
 }

@@ -10,13 +10,12 @@
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
-//die('count: '.$countsc);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = 'https://www.kia.com.ec/intranet/usuario_TEST/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }else{
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = 'https://www.kia.com.ec/intranet/usuario_TEST/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
@@ -39,8 +38,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     .tl_seccion_rf_s {background-color: #aa1f2c;padding: 5px 28px;font-family: Arial, Helvetica, sans-serif;font-size: 18px;color: #fff;font-weight: bold;margin-top: 20px;width: 100%;}
     .activos label{font-size: 0.7em !important;}
     .activos .checkbox{margin-bottom: -6px;}
+    .tl_seccion_rft{margin-left: 0px;width:100%;}
 </style>
 <script type="text/javascript">
+    //getIngresosTotal();
+    //getEgresosTotal();
     $(document).ready(function () {
         var estadocv  = $("#GestionSolicitudCredito_estado_civil").val();
         switch (estadocv) {
@@ -125,9 +127,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_valor_otros_activos2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_avaluo_propiedad').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_valor_arriendo').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_gastos_alimentacion_otros').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_gastos_educacion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_gastos_prestamos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_gastos_tarjetas_credito').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_sueldo_mensual').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_sueldo_mensual_conyugue').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_gastos_arriendo').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+
         $('#GestionSolicitudCredito_otros_ingresos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_total_ingresos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_total_egresos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_monto_financiar').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_entrada').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_cuota_mensual').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+
         var valor = parseInt($('#GestionSolicitudCredito_valor').val());
         var valorformat = format2(valor, '$');
         $('#GestionSolicitudCredito_valor').val(valorformat);
@@ -147,6 +161,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         }else{
             $('#GestionSolicitudCredito_sueldo_mensual').val('$ 0.00');
         }
+        var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+        if(!isNaN(sueldo_mensual)){
+            sueldo_mensual = format2(sueldo_mensual, '$');
+            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').val(sueldo_mensual);
+        }else{
+            $('#GestionSolicitudCredito_sueldo_mensual_conyugue').val('$ 0.00');
+        }
         var cuotamensual = parseInt($('#GestionSolicitudCredito_cuota_mensual').val());
         var cuotamensualformat = format2(cuotamensual, '$');
         $('#GestionSolicitudCredito_cuota_mensual').val(cuotamensualformat);
@@ -158,6 +179,70 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         }else{
             $('#GestionSolicitudCredito_avaluo_propiedad').val('$ 0.00');
         }
+
+        var otros_ingresos = parseInt($('#GestionSolicitudCredito_otros_ingresos').val());
+        if(!isNaN(otros_ingresos)){
+            otros_ingresos = format2(otros_ingresos, '$');
+            $('#GestionSolicitudCredito_otros_ingresos').val(otros_ingresos);
+        }else{
+            $('#GestionSolicitudCredito_otros_ingresos').val('$ 0.00');
+        }
+
+        var total_ingresos = parseInt($('#GestionSolicitudCredito_total_ingresos').val());
+        if(!isNaN(total_ingresos)){
+            total_ingresos = format2(total_ingresos, '$');
+            $('#GestionSolicitudCredito_total_ingresos').val(total_ingresos);
+        }else{
+            $('#GestionSolicitudCredito_total_ingresos').val('$ 0.00');
+        }
+
+        var gastos_alimentacion_otros = parseInt($('#GestionSolicitudCredito_gastos_alimentacion_otros').val());
+        if(!isNaN(gastos_alimentacion_otros)){
+            gastos_alimentacion_otros = format2(gastos_alimentacion_otros, '$');
+            $('#GestionSolicitudCredito_gastos_alimentacion_otros').val(gastos_alimentacion_otros);
+        }else{
+            $('#GestionSolicitudCredito_gastos_alimentacion_otros').val('$ 0.00');
+        }
+
+        var gastos_prestamos = parseInt($('#GestionSolicitudCredito_gastos_prestamos').val());
+        if(!isNaN(gastos_prestamos)){
+            gastos_prestamos = format2(gastos_prestamos, '$');
+            $('#GestionSolicitudCredito_gastos_prestamos').val(gastos_prestamos);
+        }else{
+            $('#GestionSolicitudCredito_gastos_prestamos').val('$ 0.00');
+        }
+
+        var gastos_tarjetas_credito = parseInt($('#GestionSolicitudCredito_gastos_tarjetas_credito').val());
+        if(!isNaN(gastos_tarjetas_credito)){
+            gastos_tarjetas_credito = format2(gastos_tarjetas_credito, '$');
+            $('#GestionSolicitudCredito_gastos_tarjetas_credito').val(gastos_tarjetas_credito);
+        }else{
+            $('#GestionSolicitudCredito_gastos_tarjetas_credito').val('$ 0.00');
+        }
+
+        var gastos_educacion = parseInt($('#GestionSolicitudCredito_gastos_educacion').val());
+        if(!isNaN(gastos_educacion)){
+            gastos_educacion = format2(gastos_educacion, '$');
+            $('#GestionSolicitudCredito_gastos_educacion').val(gastos_educacion);
+        }else{
+            $('#GestionSolicitudCredito_gastos_educacion').val('$ 0.00');
+        }
+
+        var total_egresos = parseInt($('#GestionSolicitudCredito_total_egresos').val());
+        if(!isNaN(total_egresos)){
+            total_egresos = format2(total_egresos, '$');
+            $('#GestionSolicitudCredito_total_egresos').val(total_egresos);
+        }else{
+            $('#GestionSolicitudCredito_total_egresos').val('$ 0.00');
+        }
+
+        var sueldo_mensual = parseInt($('#GestionSolicitudCredito_gastos_arriendo').val());
+        if(!isNaN(sueldo_mensual)){
+            sueldo_mensual = format2(sueldo_mensual, '$');
+            $('#GestionSolicitudCredito_gastos_arriendo').val(sueldo_mensual);
+        }else{
+            $('#GestionSolicitudCredito_gastos_arriendo').val('$ 0.00');
+        }
         $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {getvalortotal();});    
         $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").keyup(function () {getvalortotal();});
@@ -165,6 +250,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $("[name='GestionSolicitudCredito[valor_inversion]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[valor_otros_activos1]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[valor_otros_activos2]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[sueldo_mensual]']").keyup(function () {getIngresosTotal();});
+        $("[name='GestionSolicitudCredito[sueldo_mensual_conyugue]']").keyup(function () {getIngresosTotal();});
+        $("[name='GestionSolicitudCredito[otros_ingresos]']").keyup(function () {getIngresosTotal();});
+        $("[name='GestionSolicitudCredito[gastos_arriendo]']").keyup(function () {getEgresosTotal();});
+        $("[name='GestionSolicitudCredito[gastos_alimentacion_otros]']").keyup(function () {getEgresosTotal();});
+        $("[name='GestionSolicitudCredito[gastos_educacion]']").keyup(function () {getEgresosTotal();});
+        $("[name='GestionSolicitudCredito[gastos_prestamos]']").keyup(function () {getEgresosTotal();});
+        $("[name='GestionSolicitudCredito[gastos_tarjetas_credito]']").keyup(function () {getEgresosTotal();});
         $("#GestionSolicitudCredito_fecha_nacimiento").datepicker({
             changeMonth: true,
             changeYear: true,
@@ -457,9 +550,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 'GestionSolicitudCredito[sueldo_mensual]': {required: true},
+                'GestionSolicitudCredito[total_ingresos]': {required: true},
                 'GestionSolicitudCredito[celular]': {required: true},
                 'GestionSolicitudCredito[habita]': {required: true},
-                'GestionSolicitudCredito[numero]': {required: true}
+                'GestionSolicitudCredito[numero]': {required: true},
+                'GestionSolicitudCredito[gastos_alimentacion_otros]': {required: true},
+                'GestionSolicitudCredito[numero]': {required: true},
+                'GestionSolicitudCredito[total_egresos]': {required: true}
             },
             messages: {},
             submitHandler: function (form) {
@@ -524,6 +621,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 }
                 
                 if (cedulaConyugue != '' && error == 0) {
+                    console.log('enter primero');
                     var validateCedula = CedulaValida(cedulaConyugue);
                     if (validateCedula) {
                         $.ajax({
@@ -546,6 +644,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         $('#GestionSolicitudCredito_cedula_conyugue').focus();
                     }
                 } else if (error == 0) {
+                    console.log('enter error 0');
                     $.ajax({
                         url: '<?php echo $url; ?>',
                         beforeSend: function (xhr) {
@@ -1117,6 +1216,26 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $("[name='GestionSolicitudCredito[total_activos]']").val(total);
     }
 
+    function getIngresosTotal(){
+        var sueldo_mensual = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+        var sueldo_mensual_conyugue = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+        var otros_ingresos = formatnumber($('#GestionSolicitudCredito_otros_ingresos').val());
+        total = sueldo_mensual + sueldo_mensual_conyugue +  otros_ingresos;
+        total = format2(total, '$');
+        $('#GestionSolicitudCredito_total_ingresos').val(total); 
+    }
+
+    function getEgresosTotal(){
+        var arriendo = formatnumber($('#GestionSolicitudCredito_gastos_arriendo').val());
+        var gastos_alimentacion_otros = formatnumber($('#GestionSolicitudCredito_gastos_alimentacion_otros').val());
+        var gastos_educacion = formatnumber($('#GestionSolicitudCredito_gastos_educacion').val());
+        var gastos_prestamos = formatnumber($('#GestionSolicitudCredito_gastos_prestamos').val());
+        var gastos_tarjetas_credito = formatnumber($('#GestionSolicitudCredito_gastos_tarjetas_credito').val());
+        total = arriendo + gastos_alimentacion_otros + gastos_educacion + gastos_prestamos + gastos_tarjetas_credito;
+        total = format2(total, '$');
+        $('#GestionSolicitudCredito_total_egresos').val(total);
+    }
+
     function formatnumber(precioanterior) {
         if (precioanterior == '') {
             return 0;
@@ -1319,6 +1438,10 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->labelEx($model, 'monto_financiar'); ?>
                                 <?php echo $form->textField($model, 'monto_financiar', array('class' => 'form-control', 'value' => ($credito == 1) ? $value['valor_financiamiento'] : 0)); ?>
                                 <?php echo $form->error($model, 'monto_financiar'); ?>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="">Tipo de Vehículo</label>
+                                <input type="text" value="<?php echo $this->getTipoVehiculo($id_modelo); ?>" disabled="true" class="form-control">
                             </div>
 <!--                            <div class="col-md-2">
                                 <br />
@@ -1700,7 +1823,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_conyugue_trabaja_error" style="display: none;">Seleccione una opción.</label>
                                 </div>
-                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <?php echo $form->labelEx($model, 'numero_cargas'); ?>
+                                    <?php echo $form->dropDownList($model, 'numero_cargas', array('' => '--Seleccione--', '1' => '1' , '2' => "2", '3' => "3", '4' => "4", '5' => "6", '7' => "7", '8' => "8", '9' => "9", '10' => "10"), array('class' => 'form-control')); ?>
+                                    <?php echo $form->error($model, 'numero_cargas'); ?>
+                                </div>
                             </div>
                     
                         <?php } ?>
@@ -2310,31 +2439,71 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
 
                         </div>
-                    <?php } ?>    
-                    <div class="row">
-                        <h1 class="tl_seccion_rf">Ingresos</h1>
-                    </div>
+                    <?php } ?>  
 
                     <div class="row">
-                        <div class="col-md-4">
-                            <?php echo $form->labelEx($model, 'sueldo_mensual'); ?>
-                            <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                            <?php echo $form->error($model, 'sueldo_mensual'); ?>
+                        <div class="col-md-6">
+                            <h1 class="tl_seccion_rf tl_seccion_rft">Ingresos Mensuales Familiares</h1>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'sueldo_mensual'); ?>
+                                <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'sueldo_mensual'); ?>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_error" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
-                        </div>
-                        <div class="col-md-4">
-                            <?php echo $form->labelEx($model, 'sueldo_mensual_conyugue'); ?>
-                            <?php echo $form->textField($model, 'sueldo_mensual_conyugue', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                            <?php echo $form->error($model, 'sueldo_mensual_conyugue'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'sueldo_mensual_conyugue'); ?>
+                                <?php echo $form->textField($model, 'sueldo_mensual_conyugue', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'sueldo_mensual_conyugue'); ?>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_conyugue_error" style="display: none;">Este campo es requerido.</label>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_conyugue_error2" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'otros_ingresos'); ?>
+                                <?php echo $form->textField($model, 'otros_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'otros_ingresos'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'total_ingresos'); ?>
+                                <?php echo $form->textField($model, 'total_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'total_ingresos'); ?>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <?php echo $form->labelEx($model, 'otros_ingresos'); ?>
-                            <?php echo $form->textField($model, 'otros_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
-                            <?php echo $form->error($model, 'otros_ingresos'); ?>
+                        <div class="col-md-6">
+                            <h1 class="tl_seccion_rf tl_seccion_rft">Gastos Mensuales Familiares</h1>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'gastos_arriendo'); ?>
+                                <?php echo $form->textField($model, 'gastos_arriendo', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'gastos_arriendo'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'gastos_alimentacion_otros'); ?>
+                                <?php echo $form->textField($model, 'gastos_alimentacion_otros', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'gastos_alimentacion_otros'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'gastos_educacion'); ?>
+                                <?php echo $form->textField($model, 'gastos_educacion', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'gastos_educacion'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'gastos_prestamos'); ?>
+                                <?php echo $form->textField($model, 'gastos_prestamos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'gastos_prestamos'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'gastos_tarjetas_credito'); ?>
+                                <?php echo $form->textField($model, 'gastos_tarjetas_credito', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'gastos_tarjetas_credito'); ?>
+                            </div>
+                            <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'total_egresos'); ?>
+                                <?php echo $form->textField($model, 'total_egresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->error($model, 'total_egresos'); ?>
+                            </div>
                         </div>
                     </div>
+
+                    
                     <div class="row">
                         <div class="offset6 col-md-3">
                             <button class="btn btn-danger btn-xs" onclick="createsc3()">Grabar</button>
