@@ -5891,4 +5891,33 @@ class Controller extends CController {
         }
     }
 
+    public function getTipoVehiculo($id_modelo){
+        $tipo = Versiones::model()->find(array("condition" => "id_modelos = {$id_modelo}"));
+        if($tipo){
+            switch ($tipo->categoria) {
+                case 1:
+                    return 'Auto';
+                    break;
+                case 2:
+                    return 'SUV';
+                    break; 
+                case 3:
+                    return 'MPV';
+                    break; 
+                case 4 :
+                    return 'Comercial';
+                    break;           
+                
+                default:
+                    # code...
+                    break;
+            }
+            return $tipo->categoria;
+        }else{
+            return 'NA';
+        }
+        
+        
+    }
+
 }
