@@ -1534,7 +1534,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento'); ?>
-                                    <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control')); ?>
+                                    <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true')); ?>
                                     <?php echo $form->error($model, 'fecha_nacimiento'); ?>
                                 </div>
                                 <div class="col-md-3">
@@ -1964,7 +1964,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </div>
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento_conyugue'); ?>
-                                    <?php echo $form->textField($model, 'fecha_nacimiento_conyugue', array('size' => 60, 'maxlength' => 85, 'class' => 'form-control')); ?>
+                                    <?php echo $form->textField($model, 'fecha_nacimiento_conyugue', array('size' => 60, 'maxlength' => 85, 'class' => 'form-control','readonly' => 'true')); ?>
                                     <?php echo $form->error($model, 'fecha_nacimiento_conyugue'); ?>
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_fecha_nacimiento_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
