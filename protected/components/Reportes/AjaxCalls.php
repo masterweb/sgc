@@ -144,6 +144,7 @@ class AjaxCalls{
     }
 
     public function AjaxGetAsesores() {
+        //die('enter get asesores:================');
         $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
         $resposable = isset($_POST["responsable"]) ? $_POST["responsable"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
@@ -176,7 +177,7 @@ class AjaxCalls{
             $responsable = 'responsable';
         }
         $sql_asesores_act = "SELECT distinct ".$responsable." FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        //echo 'sql asesores actuales: '.$sql_asesores_act;
+        //die ('sql asesores actuales: '.$sql_asesores_act);
         //die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
@@ -201,6 +202,7 @@ class AjaxCalls{
                 }        
             }
             $asesores_aa = rtrim($asesores_aa, ", ");
+            //die('asesoresaa: '.$asesores_aa);
             //print_r($asesores_aa2);
             //FIN
 
@@ -254,9 +256,13 @@ class AjaxCalls{
                 $request = $request->queryAll();
 
                 if(empty($request)){
-                    $data = '<option value=""> No hay asesores activos en este rango de fechas</option>';
+                    $data = '<option value="">--Seleccione Asesor--</option><option value="1000">Todos</option>';
                 }else{
-                    $data = '<option value="">--Seleccione Asesor--</option>'; 
+                    $data = '<option value="">--Seleccione Asesor--</option><option value="1000"';
+                    if($resposable == 1000){
+                        $data .= ' selected';
+                    }
+                    $data .= '>Todos</option>';
                 }
                 
                 foreach ($request as $value) {
@@ -322,7 +328,7 @@ class AjaxCalls{
         }
 
         $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."') ORDER BY dealer_id ASC";
-        echo $sql;
+        //die('sql 1: '.$sql);
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
         foreach ($request as $id_concesionario) {
@@ -333,16 +339,22 @@ class AjaxCalls{
         if(!empty($concesionario)){
             $concesionario = " dealer_id IN (".$concesionario.") ";
         }
-        //echo $concesionario;
+        //die('concesionario'.$concesionario);
 
         $join = '';
         if($tipo == 'p'){
             $where = "provincia = {$grupo_id} AND ";
+            if($grupo_id == 1000){
+                $where = "";
+            }
         }else{
             if($cargo_id == 70){
                 $join = ' LEFT JOIN grupoconcesionariousuario as gc ON gc.concesionario_id = dealer_id ';
                 $where = " ";
-                $concesionario = $this->GetUserDealers();;
+                $concesionario = $this->GetUserDealers();
+            }
+            if($grupo_id == 1000){
+                $where = "";
             }else{
                 $where = "id_grupo = {$grupo_id} AND ";
             }
@@ -351,8 +363,17 @@ class AjaxCalls{
         //die ('sql 2:'.$sql);
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
-
+        
         $data = '<option value="">--Seleccione Concesionario--</option>';
+        if(count($request) > 1){ # OPCION TODOS SELECCIONADO COLOCAR SELECTED AL OPTION
+            $data .= '<option value="1000" ';
+            if($active == 1000){
+                 $data .= 'selected';
+            }
+            $data .= '>Todos</option>';
+            
+        }
+        
         foreach ($request as $value) {
             if($value['nombre'] != 'TODOS'){
                 $data .= '<option value="' . $value['dealer_id'].'" ';
@@ -363,6 +384,7 @@ class AjaxCalls{
                 $data .= '</option>';
             }
         }
+        
 
         return $data;
     }
@@ -447,7 +469,7 @@ class AjaxCalls{
                 if(empty($request)){
                     $data = '<option value=""> No hay Provincias activas en este rango de fechas</option>';
                 }else{
-                    $data = '<option value="">--Seleccione Provincia--</option>'; 
+                    $data = '<option value="">--Seleccione Provincia--</option><option value="1000">Todas</option>'; 
                 }
                 
                 foreach ($request as $value) {
@@ -542,7 +564,7 @@ class AjaxCalls{
                 if(empty($request2)){
                     $data = '<option value=""> No hay grupos activos en este rango de fechas</option>';
                 }else{
-                    $data = '<option value="">--Seleccione Grupo--</option>'; 
+                    $data = '<option value="">--Seleccione Grupo--</option><option value="1000">Todos</option>'; 
                 }
                 
                 foreach ($request as $value) {

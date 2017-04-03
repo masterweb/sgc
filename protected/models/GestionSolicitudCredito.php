@@ -23,6 +23,7 @@
  * @property string $fecha_nacimiento
  * @property string $nacionalidad
  * @property string $estado_civil
+ * @property integer $numero_cargas
  * @property string $empresa_trabajo
  * @property string $telefonos_trabajo
  * @property integer $tiempo_trabajo
@@ -166,6 +167,7 @@ class GestionSolicitudCredito extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
+            'gestionInformacion' => array(self::HAS_MANY, 'GestionInformacion', 'id'),
         );
     }
 
@@ -226,6 +228,13 @@ class GestionSolicitudCredito extends CActiveRecord {
             'celular' => 'Celular',
             'sueldo_mensual' => 'Sueldo Mensual',
             'sueldo_mensual_conyugue' => 'Sueldo Mensual Conyugue',
+            'gastos_arriendo' => 'Arriendo',
+            'gastos_alimentacion_otros' => 'Alimentación, Agua, Luz y Otros',
+            'gastos_educacion' => 'Educación',
+            'gastos_prestamos' => 'Préstamos',
+            'gastos_tarjetas_credito' => 'Tarjetas de Crédito',
+            'total_ingresos' => 'Total Ingresos',
+            'total_egresos' => 'Total Egresos',
             'banco1' => 'Banco 1',
             'cuenta_ahorros1' => 'Cta Ahorros',
             'banco2' => 'Banco 2',
@@ -353,6 +362,7 @@ class GestionSolicitudCredito extends CActiveRecord {
         $criteria->compare('id_vehiculo', $this->id_vehiculo);
         $criteria->compare('cuenta_corriente1', $this->cuenta_corriente1, true);
         $criteria->compare('cuenta_corriente2', $this->cuenta_corriente2, true);
+        $criteria->compare('id_solicitud', $this->id_solicitud, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

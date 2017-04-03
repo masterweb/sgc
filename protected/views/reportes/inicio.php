@@ -15,6 +15,14 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 }
 //echo 'area id: '.$area;
 //echo 'tipo grupo: '.$tipo_grupo;
+//echo '<pre>';
+//print_r($varView['fecha_inicial_actual']);
+//echo '</pre>';
+//echo '<pre>';
+//print_r($varView['flag_search']);
+//echo '</pre>';
+//echo 'flag_search: '.$varView['flag_search']
+//die();
 ?>
 <div id="tabs_repo">
 <!--    <ul class="nav nav-tabs tabs_triger">
@@ -27,11 +35,11 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
     <div class="tab_repo active" id="tab1">        
         <!-- EMBUDO -->
         <br /><br />
-        <div class="cont_repo">
+        <divv class="cont_repo">
             <div class="row">
                 <div class="col-md-12">
                     <button class="trigerFiltros btn btn-warning abrirFiltros"><b>Buscar por filtros</b></button>
-                    <button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>
+                    <!--<button class="btn btn-warning" onclick="window.history.back()"><< Regresar</button>-->
                     <?php
 //                    switch ($tipo) {
 //                        case 'exhibicion':
@@ -46,15 +54,11 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 //                            }
 //                            break;
 //                        case 'externas':
-//                            echo '<a class="btn btn-warning" href="'. Yii::app()->createUrl('Reportes/inicio').'>">Tráfico</a>';
-//                            echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')).'">Exhibición</a>';
 //                            if(($tipo_grupo == 1 || $tipo_grupo == 0) && ($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85)){ 
 //                                echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccionweb')).'">Prospección Web</a>';
 //                            }
 //                            break;
 //                        case 'prospeccionweb':
-//                            echo '<a class="btn btn-warning" href="'. Yii::app()->createUrl('Reportes/inicio').'>">Tráfico</a>';
-//                            echo '<a class="btn btn-warning" href="'. Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')).'">Exhibición</a>';
 //                            if(($tipo_grupo == 1)  || $area == 1){
 //                                if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){
 //                                    echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')).'">Ventas Web</a>';
@@ -63,29 +67,41 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 //                            break;
 //
 //                        default:
-//                            echo '<a class="btn btn-warning" href="'. Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')).'">Exhibición</a>';
-//                            if(($tipo_grupo == 1)  || $area == 1){
-//                                if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){
+//                            if($tipo == '' && $tipo != 'externas') { 
+//                                echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')).'">Exhibición</a>';
+//                            }
+//                            if(($tipo != 'externas') && ($tipo_grupo == 1)  || $area == 1){
+//                                if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86 || $cargo_id == 69)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){
 //                                    echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')).'">Ventas Web</a>';
 //                                } 
 //                            }
-//                            if(($tipo_grupo == 1 || $tipo_grupo == 0) && ($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85)){ 
+//                            if(($tipo != 'prospeccionweb') &&($tipo_grupo == 1) && ($cargo_id == 85 || $cargo_id == 86 || $area == 1 || $cargo_id == 69)){ 
 //                                echo '<a class="btn btn-warning" href="'.Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccionweb')).'">Prospección Web</a>';
 //                            }
 //                            break;
 //                    }
                     ?>
                     <?php if($tipo == 'exhibicion'){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>">Tráfico</a>
-                    <?php } if($tipo == '' && $tipo != 'externas') { ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>">Tráfico</a>
+                        <?php if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86 || $cargo_id == 69)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){ ?>
+                            <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
+                        <?php } ?>
                     <?php } ?>
-                    <?php if(($tipo != 'prospeccionweb') &&($tipo_grupo == 1) && ($cargo_id == 85 || $cargo_id == 86 || $area == 1)){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'prospeccionweb')); ?>">Prospección Web</a>
+                    <?php if($tipo == '' && $tipo != 'externas') { ?>
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
+                        <?php if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86 || $cargo_id == 69)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){ ?>
+                            <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
+                        <?php } ?>
+                    <?php } ?>
+                    <?php if($tipo == 'externas'){ ?>
+                        <?php if(($cargo_id == 70 || $cargo_id == 71 || $cargo_id == 69 || $cargo_id == 61) && $tipo_grupo == 1) { ?>
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>">Tráfico</a>
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'exhibicion')); ?>">Exhibición</a>
+                        <?php } ?>
                     <?php } ?>
                     <?php if(($tipo != 'externas') && ($tipo_grupo == 1)  || $area == 1){
                     if(($tipo_grupo == 1 && ($cargo_id == 85 || $cargo_id == 86)) || ($tipo_grupo == 0 && (($cargo_id == 70 || $cargo_id == 71) && ($cargo_adicional == 85 || $cargo_adicional == 86))) || $area == 1 ){ ?>
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>
+                    <!--<a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>-->
                     <?php } 
                     }?>
                     <form id="excel_form" method="post" class="pull-right">
@@ -102,7 +118,7 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
         </div>
         <!-- FIN EMBUDO -->
     </div>
-    <div class="tab_repo" id="tab2">        
+    <!--<div class="tab_repo" id="tab2">        
         <div class="cont_repo">
             <h3>Encuestas</h3>
         </div>
@@ -121,6 +137,6 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
         <div class="cont_repo">
             <h3>Noticias Kia</h3>
         </div>
-    </div>
+    </div>-->
 </div>
 <?= $this->renderPartial('//reportes/modulos/footer', array('varView' => $varView)); ?>

@@ -85,6 +85,18 @@ class ReportesController extends Controller {
         $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
         $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));
 
+        /*$varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
+        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
+        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
+        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
+        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-31 days', $dt));
+        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-31 days', $dt)) . '-01';
+        $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
+        $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));*/
+
+        $varView['flag_search'] = 0;
+        
+
         $con = Yii::app()->db;
 
         //SI BUSCAN POR VERSION O MODELO Y RECIBE VARIABLES PARA LA CONSULTA
@@ -98,6 +110,7 @@ class ReportesController extends Controller {
 //        echo '<pre>';
 //        print_r($_GET);
 //        echo '</pre>';
+//        die();
         
 //        echo '<pre>';
 //        print_r($lista_datos);
@@ -262,6 +275,7 @@ class ReportesController extends Controller {
                 $varView['fecha_actual'] = $gi_fecha1[1];
                 $date = new DateTime($varView['fecha_actual']);
                 $varView['nombre_mes_actual'] = $date->format('F - Y');
+                $varView['flag_search'] = 1;
             }
             if ($_GET['GI']['fecha2'] != '') {
                 //echo('fecha2');
@@ -270,6 +284,7 @@ class ReportesController extends Controller {
                 $varView['fecha_anterior'] = $gi_fecha2[1];
                 $date = new DateTime($varView['fecha_anterior']);
                 $varView['nombre_mes_anterior'] = $date->format('F - Y');
+                $varView['flag_search'] = 2;
             }
             if ($_GET['GI']['responsable'] != '') {
                 $cargo = $this->getCargo($_GET['GI']['responsable']);
@@ -279,7 +294,10 @@ class ReportesController extends Controller {
                 }
                 $varView['id_responsable'] = $_GET['GI']['responsable'];
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
+                if($varView['id_responsable'] == 1000)
+                    $id_persona = "gi.dealer_id = " . $_GET['GI']['concesionario'];
                 $varView['js_responsable'] = $varView['id_responsable'];
+                $varView['flag_search'] = 3;
             }
             if ($_GET['GI']['concesionario'] != '') {
                 $varView['$concesionario'] = $_GET['GI']['concesionario'];
@@ -287,15 +305,21 @@ class ReportesController extends Controller {
                 if ($_GET['GI']['responsable'] == '') {
                     $id_persona = "gi.dealer_id = " . $varView['$concesionario'];
                 }
+                if($varView['$concesionario'] == 1000){ # SI LA BUSQUEDA ES TODOS LOS CONCESIONARIOS
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GI']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $id_persona = "gi.dealer_id IN ({$dealerList})";
+                }
                 // ASESOR WEB PARA GRUPO ASIAUTO Y KMOTOR, SE SUMA EL CONCESIONARIO SELECCIONADO EN LA BUSQUEDA
-                if($varView['cargo_id'] == 85 && ($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3)){
+                if($varView['cargo_id'] == 85 && ($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && $varView['$concesionario'] != 1000){
                    $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
                 }
+                $varView['flag_search'] = 4;
             }
             //echo('get tipo t: '.$_GET['GI']['tipo_t'].', get grupo: '.$_GET['GI']['grupo']).'<br />';
             if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['grupo'] != '') {
                 $con = Yii::app()->db;
-                if ($_GET['GI']['tipo_t'] == 'provincias') {
+                /*if ($_GET['GI']['tipo_t'] == 'provincias') {
                     $varView['checked_p'] = true;
                     $varView['checked_g'] = false;
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
@@ -308,8 +332,107 @@ class ReportesController extends Controller {
                     $varView['id_grupo'] = $_GET['GI']['grupo'];
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
+                }*/
+                if($_GET['GI']['concesionario'] != 1000){
+                    $varView['flag_search'] = 51;
+                    $varView['$concesionario'] = $_GET['GI']['concesionario'];
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $varView["js_dealer"] = $_GET['GI']['concesionario'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
                 }
-                $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['responsable'] == 1000){
+                    $varView['flag_search'] = 52;
+                    $varView['$concesionario'] = $_GET['GI']['concesionario'];
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $varView["js_dealer"] = $_GET['GI']['concesionario'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                }
+                if($_GET['GI']['grupo'] != 1000 && $_GET['GI']['concesionario'] == ''){
+                    $varView['flag_search'] = 53;
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                }else{
+                    $varView['flag_search'] = 54;
+                    $varView['$concesionario'] = $_GET['GI']['concesionario'];
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $varView["js_dealer"] = $_GET['GI']['concesionario'];
+                    $grupos_sql = "SELECT * from gr_concesionarios";
+                }
+                
+                $request_sql = $con->createCommand($grupos_sql)->queryAll();
+
+                foreach ($request_sql as $key3 => $value3) {
+                    $conse_active .= $value3['dealer_id'] . ', ';
+                }
+                $conse_active = rtrim($conse_active, ", ");
+                $condicion_GP = ' AND (dealer_id IN (' . $conse_active . ')) ';
+                //echo $condicion_GP;
+                //die();
+                //$varView['flag_search'] = 5;
+            }
+
+            if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['provincias'] != '') {
+                //die('enter provincia');
+                $con = Yii::app()->db;
+                /*if ($_GET['GI']['tipo_t'] == 'provincias') {
+                    $varView['checked_p'] = true;
+                    $varView['checked_g'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];
+                    $cond_conce = 'provincia';
+                    $id_busqueda = $varView['id_provincia'];
+              
+                } else {
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                }*/
+                if($_GET['GI']['concesionario'] != 1000){
+                    $varView['checked_p'] = true;
+                    $varView['checked_g'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];
+                    $cond_conce = 'provincia';
+                    $id_busqueda = $varView['id_provincia'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                }
+                if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['responsable'] == 1000){
+                    $varView['checked_p'] = true;
+                    $varView['checked_g'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];
+                    $cond_conce = 'provincia';
+                    $id_busqueda = $varView['id_provincia'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                }
+                if($_GET['GI']['concesionario'] == 1000){
+                    $varView['checked_p'] = true;
+                    $varView['checked_g'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];
+                    $cond_conce = 'provincia';
+                    $id_busqueda = $varView['id_provincia'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                }
+                else{ # BUQUEDA POR DEFECTO AL DAR CLICK EN TODOS
+                    $varView['$concesionario'] = $_GET['GI']['concesionario'];
+                    $varView['checked_p'] = true;
+                    $varView['checked_g'] = false;
+                    $varView['id_provincia'] = $_GET['GI']['provincias'];
+                    $grupos_sql = "SELECT * from gr_concesionarios";
+                }
+                
 
                 $request_sql = $con->createCommand($grupos_sql);
                 $request_sql = $request_sql->queryAll();
@@ -321,6 +444,7 @@ class ReportesController extends Controller {
                 $condicion_GP = ' AND (dealer_id IN (' . $conse_active . ')) ';
                 //echo $condicion_GP;
                 //die();
+                $varView['flag_search'] = 6;
             }
 
             if ($_GET['GI']['tipo'] != '') {

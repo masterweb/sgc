@@ -3307,7 +3307,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             if($id == 1000){
                 $conc = Concesionarios::model()->findAll(array('condition' => "provincia <> 0", 'order' => 'nombre asc'));
             }
-            $data = '<option value="">--Seleccione concesionario--</option>';
+            $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
             foreach ($conc as $ciudad) {
                 $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
             }

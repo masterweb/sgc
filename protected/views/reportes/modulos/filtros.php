@@ -100,13 +100,13 @@
                     <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="grupos" class="tipo_busqueda_por" 
                     <?php if($varView['checked_g'] == true){echo 'checked';} ?>
                     >Por Grupos</label>
-<!--                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda_por"
-                    <?php //if($varView['checked_p'] == true){echo 'checked';} ?>
-                    >Por Provincias</label>-->
+                    <label class="radio-inline"><input type="radio" name="GI[tipo_t]" value="provincias" class="tipo_busqueda_por"
+                    <?php if($varView['checked_p'] == true){echo 'checked';} ?>
+                    >Por Provincias</label>
                     <hr/>
                 </div>
                 <!-- PROVINCIAS -->
-<!--                <div class="col-md-6 cont_prov">
+                <div class="col-md-6 cont_prov">
                     <label for="">Provincias</label>
                     <select name="GI[provincias]" id="GestionInformacionProvincias" class="form-control">
                         <option value="">--Seleccione Provincias--</option>
@@ -123,7 +123,7 @@
                         }
                         ?>
                     </select>
-                </div>-->
+                </div>
             
                 <!-- GRUPOS -->
                 <div class="col-md-6 cont_grup">
@@ -149,18 +149,19 @@
     <!-- FILTRO CONCESIONARIOS -->
     <?php if ($varView['cargo_id'] == 69 || $varView['cargo_id'] == 70 || $varView['AEKIA'] == true || $varView['cargo_id'] == 85): ?>
     <?php 
-//                echo '<pre>';
-//                print_r($varView['lista_conce']);
-//                echo '</pre>';
+    //            echo '<pre>';
+    //            print_r($varView['lista_conce']);
+    //            echo '</pre>';
     ?>
         <div class="col-md-6">
             <label for="">Concesionarios</label>
             <select name="GI[concesionario]" id="GestionInformacionConcesionario" class="form-control" >
                 <option value="">--Seleccione Concesionario--</option>
                 <?php
-//                echo '<pre>';
-//                print_r($varView['lista_conce']);
-//                echo '</pre>';
+                //echo '=================================================================';
+                //echo '<pre>';
+                //print_r($varView['lista_conce']);
+                //echo '</pre>';
                 if($varView['lista_conce'] != 'null'){
                     echo '<option value="">Conc</option>';
                     foreach ($varView['lista_conce'] as $value) {

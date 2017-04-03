@@ -2,77 +2,29 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>
-<!--<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>-->
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
     
 $(document).ready(function() {
-    $('#trafico_nacional').DataTable( {
-        buttons: [
-            'excelHtml5'
-        ]
-    } );
-    $('#trafico_provincia').change(function(){
-        if ($(this).val() != ''){
-            $('#provincia').val(1);
-        } else{
-            $('#provincia').val(0);
-        }
-    });
-    $('#trafico_grupo').change(function(){
-        if ($(this).val() != ''){
-            $('#grupo').val(1);
-        } else{
-            $('#grupo').val(0);
-        }
-    });
-    $('#trafico_concesionario').change(function(){
-        if ($(this).val() != ''){
-            $('#concesionario').val(1);
-        } else{
-            $('#concesionario').val(0);
-        }
-    });
-    $('#trafico_responsable').change(function(){
-        if ($(this).val() != ''){
-            $('#responsable').val(1);
-        } else{
-            $('#responsable').val(0);
-        }
-    });
-    $('#trafico_categoria').change(function(){
-        if ($(this).val() != ''){
-            $('#categoria').val(1);
-        } else{
-            $('#categoria').val(0);
-        }
-    });
-    $('#trafico_year').change(function(){
-        if ($(this).val() != ''){
-            $('#year').val(1);
-        } else{
-            $('#year').val(0);
-        }
-    });
-    $('#trafico_fecha1').change(function(){
-        if ($(this).val() != ''){
-            $('#fecha1').val(1);
-        } else{
-            $('#fecha1').val(0);
-        }
-    });
-    $('#trafico_fecha2').change(function(){
-        if ($(this).val() != ''){
-            $('#fecha2').val(1);
-        } else{
-            $('#fecha2').val(0);
-        }
-    });
+//    $('#trafico_nacional').DataTable( {
+//        buttons: [
+//            'excelHtml5'
+//        ]
+//    });
+    $('#trafico_provincia').change(function(){if ($(this).val() != ''){$('#provincia').val(1);} else{$('#provincia').val(0);}});
+    $('#trafico_grupo').change(function(){if($(this).val()!=''){$('#grupo').val(1)}else{$('#grupo').val(0);}});
+    $('#trafico_concesionario').change(function(){if($(this).val()!=''){$('#concesionario').val(1);}else{$('#concesionario').val(0);}});
+    $('#trafico_responsable').change(function(){if($(this).val()!=''){$('#responsable').val(1);}else{$('#responsable').val(0);}});
+    $('#trafico_categoria').change(function(){if($(this).val()!=''){$('#categoria').val(1);}else{$('#categoria').val(0);}});
+    $('#trafico_year').change(function(){if($(this).val()!=''){$('#year').val(1);}else{$('#year').val(0);}});
+    $('#trafico_fecha1').change(function(){if($(this).val()!=''){$('#fecha1').val(1);}else{$('#fecha1').val(0);}});
+    $('#trafico_fecha2').change(function(){if($(this).val()!=''){$('#fecha2').val(1);}else{$('#fecha2').val(0);}})
     var today = new Date();
     var startDate = new Date(today.getFullYear(), 02, 1);
     var endDate = new Date(today.getFullYear(), 02, 31);
@@ -141,6 +93,10 @@ $(document).ready(function() {
 });
 </script>
 <style type="text/css">
+    .alert {
+        font-size: 14px;
+        margin-bottom: 15px !important;
+    }
     @media (min-width: 1200px){
         .container {width: 1280px;}
     }
@@ -197,16 +153,7 @@ $(document).ready(function() {
     .odd-mh > td.cir-18{background-color: #000000;}
     button.close{padding: 0 4px !important; border: 1px solid;}
     .close {font-size: 19px;font-weight: normal;}
-    #bg_black {
-        background-color: #fff;
-        bottom: 0;
-        left: 0;
-        opacity: 0.7;
-        position: fixed;
-        right: 0;
-        top: 0;
-        z-index: 1040;
-    }
+    #bg_black {background-color: #fff;bottom: 0;left: 0;opacity: 0.7;position: fixed;right: 0;top: 0;z-index: 1040;}
     .cssload-aim{
 	position: fixed;
 	width: 20px;
@@ -284,7 +231,7 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 }
 //echo 'flag search: '.$vartrf['flag_search'];
 //echo '<pre>';
-//echo print_r($vartrf);
+//echo print_r($vartrf['search']['where']);
 //echo '</pre>';
 $where = $vartrf['search']['where'];
 $vartrf['id_modelos'];
@@ -304,14 +251,14 @@ $vartrf['testdrive_nacional_categoria'] = array();
 <div class="row">
     <h1 class="tl_seccion">Reporte de Tráfico</h1>
 </div>
-    <div class="row">
-        <div class="col-md-2">
-            <a href="<?php echo Yii::app()->createUrl('trafico/graficos', array())?>" class="btn btn-danger">Gráficos</a>
-            
-        </div>
-        <div class="col-md-12"><hr /></div>
-        
+<div class="row">
+    <div class="col-md-2">
+        <a href="<?php echo Yii::app()->createUrl('trafico/graficos', array())?>" class="btn btn-danger">Gráficos</a>
+
     </div>
+    <div class="col-md-12"><hr /></div>
+
+</div>
 <div class="row">
     <div class="col-md-8">
         <div class="highlight">
@@ -361,7 +308,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         
                         <select name="GestionDiaria[grupo]" id="trafico_grupo" class="form-control">
                             <option value="">--Seleccione Grupo--</option>
-                            <option value="1000">TODOS</option>
+                            <option value="1000">Todos</option>
                             <option value="6">AUTHESA</option>
                             <option value="2">GRUPO ASIAUTO</option>
                             <option value="5">GRUPO EMPROMOTOR</option>
@@ -397,10 +344,10 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="">Categoría</label>
+                        <label for="">Tipo de Vehículo</label>
                         <select name="GestionDiaria[categoria]" id="trafico_categoria" class="form-control">
                             <option value="">--Seleccione Categoria--</option>
-                            <option value="5">Todos</option>
+                            <option value="5" selected>Todos</option>
                             <option value="1">Autos</option>
                             <option value="2">SUV</option>
                             <option value="3">MPV</option>
@@ -430,7 +377,12 @@ $vartrf['testdrive_nacional_categoria'] = array();
     </div>
 </div>    
 <br />
-
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+          <strong>Para visualizar el detalle del trafico debe dar click sobre cada mes</strong>         </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsives">
@@ -545,7 +497,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 ?>
                     <?php 
                     ?>
-                    <tr>
+                <tr>
                         <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle-t">TOTAL</td>
                     </tr>  
                     <tr>
@@ -649,7 +601,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         }
                         ?>
                         <td><?php echo $this->getTasaCierre($vartrf['ventas_nacional'], $vartrf['trafico_nacional']); ?></td>
-                    </tr>
+                    </tr>    
                     
             </table>
             
@@ -733,14 +685,16 @@ $vartrf['testdrive_nacional_categoria'] = array();
 
     }
     function closemodal(mes, i) {
+        //alert('mes: '+mes+',i: '+i);
         var id_modelos = [<?php echo implode(',',  $vartrf['id_modelos'] ); ?>];
+        //alert('id modelos: '+id_modelos);
         $('.det_' + mes).slideUp('slow', function(){
             $(this).remove();
         });
         //remove();
         // poner color original a los tds y colocar data-vec en 0
         for (j=0; j < id_modelos.length; j++){
-            console.log('.dde_' + i + '_' + id_modelos[j]);
+            //console.log('.dde_' + i + '_' + id_modelos[j]);
             $('.dde_' + i + '_' + id_modelos[j]).css('background-color', '#D9534F');
             vecobj = document.getElementById('dde_' + i + '_' + id_modelos[j]);
             vecobj.dataset.vec = 0;

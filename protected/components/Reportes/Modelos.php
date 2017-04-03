@@ -18,7 +18,10 @@ class Modelos {
                     $id_busqueda = $GestionInformacionProvincias;
                 }
                 $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
-
+                if($GestionInformacionProvincias == 1000 || $GestionInformacionGrupo == 1000){
+                    $grupos_sql = "SELECT * from gr_concesionarios";
+                }
+                //die('grupos sql: '.$grupos_sql);
                 $request_sql = $con->createCommand($grupos_sql);
                 $request_sql = $request_sql->queryAll();
 

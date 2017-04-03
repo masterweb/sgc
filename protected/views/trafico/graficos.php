@@ -1,9 +1,9 @@
 <?php
 
 ini_set('display_errors', 1);
-echo '<pre>';
-print_r($vartrf['fechas_activas']);
-echo '</pre>';
+//echo '<pre>';
+//print_r($vartrf['fechas_activas']);
+//echo '</pre>';
 //echo 'flag search: '.$vartrf['flag_search'];
 //echo 'mes actual: '.$vartrf['mes_actual'].'<br />';
 //echo 'mes anterior: '.$vartrf['mes_anterior'];
@@ -47,49 +47,6 @@ $tasacierre9 = array();
 $tasacierre10 = array();
 $tasacierre11 = array();
 
-$traficodetalle_mes_anterior_1 = array();
-$traficodetalle_mes_anterior_2 = array();
-$traficodetalle_mes_anterior_3 = array();
-$traficodetalle_mes_anterior_4 = array();
-$traficodetalle_mes_anterior_5 = array();
-$traficodetalle_mes_anterior_6 = array();
-$traficodetalle_mes_anterior_7 = array();
-$traficodetalle_mes_anterior_8 = array();
-$traficodetalle_mes_anterior_9 = array();
-$traficodetalle_mes_anterior_10 = array();
-$traficodetalle_mes_anterior_11 = array();
-$traficodetalle_mes_anterior_12 = array();
-$traficodetalle_mes_anterior_13 = array();
-$traficodetalle_mes_anterior_14 = array();
-$traficodetalle_mes_anterior_15 = array();
-$traficodetalle_mes_anterior_16 = array();
-$traficodetalle_mes_anterior_17 = array();
-
-$traficodetalle_mes_actual_1 = array();
-$traficodetalle_mes_actual_2 = array();
-$traficodetalle_mes_actual_3 = array();
-$traficodetalle_mes_actual_4 = array();
-$traficodetalle_mes_actual_5 = array();
-$traficodetalle_mes_actual_6 = array();
-$traficodetalle_mes_actual_7 = array();
-$traficodetalle_mes_actual_8 = array();
-$traficodetalle_mes_actual_9 = array();
-$traficodetalle_mes_actual_10 = array();
-$traficodetalle_mes_actual_11 = array();
-$traficodetalle_mes_actual_12 = array();
-$traficodetalle_mes_actual_13 = array();
-$traficodetalle_mes_actual_14 = array();
-$traficodetalle_mes_actual_15 = array();
-$traficodetalle_mes_actual_16 = array();
-$traficodetalle_mes_actual_17 = array();
-
-$trafico_total0 = 0;$trafico_total1 = 0;$trafico_total2 = 0;$trafico_total3 = 0;$trafico_total4 = 0;
-$trafico_total5 = 0;$trafico_total6 = 0;$trafico_total7 = 0;$trafico_total8 = 0;$trafico_total9 = 0;
-$trafico_total10 = 0;$trafico_total11 = 0;
-
-$ventas_total0 = 0;$ventas_total1 = 0;$ventas_total2 = 0;$ventas_total3 = 0;$ventas_total4 = 0;
-$ventas_total5 = 0;$ventas_total6 = 0;$ventas_total7 = 0;$ventas_total8 = 0;$ventas_total9 = 0;
-$ventas_total10 = 0;$ventas_total11 = 0;
 $count = 0;
 //echo 'count modelos: '.count($vartrf['modelos']);
 $flag = 0;
@@ -132,12 +89,10 @@ $ventas_total11 = array_sum($ventas11);
 //echo '</pre>';
 $k = 0;
 foreach ($vartrf['modelos'] as $val) {
-    //echo '<pre><h5>'.$val['nombre_modelo'].'</h5>';
     for ($i = 0; $i < $vartrf['mes_actual']; $i++) { 
             //echo ${trafico.$i}[$k].',<br />';
     }
     $k++;
-    //echo '</pre>';
 }
 $k = 0;
 // mes de enero
@@ -148,24 +103,37 @@ if($vartrf['mes_actual'] == 1){
 
 $flag = 0;
 foreach ($vartrf['modelos'] as $val) {
+    $j = 0;
     for ($i = 1; $i <= $vartrf['dia_actual']; $i++) {
-        $d = $i;
+        $d = $i; 
         if ($i < 10) {
                 $d = '0' . $i;
         }
+        //echo 'id: '.$val['id'].'<br>';
         ${"traficodetalle_mes_anterior_".$val['id']}[] = $this->getTraficoVersion($vartrf['mes_anterior'], $vartrf['versiones'][$flag], $vartrf['year_actual1'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']); 
+        //echo 'Antes de la suma: '.${"traficodetalle_mes_anterior_".$val['id']}[$j].'<br>';
+        if($j > 0){
+            ${"traficodetalle_mes_anterior_".$val['id']}[$j] =  ${"traficodetalle_mes_anterior_".$val['id']}[$j] +  ${"traficodetalle_mes_anterior_".$val['id']}[$j-1];
+        }
+        
+        $j++;
     }
     $flag++;
 }
+
 $flag = 0;
 foreach ($vartrf['modelos'] as $val) {
+    $j = 0;
     for ($i = 1; $i <= $vartrf['dia_actual']; $i++) {
         $d = $i;
         if ($i < 10) {
                 $d = '0' . $i;
         }
         ${"traficodetalle_mes_actual_".$val['id']}[] = $this->getTraficoVersion($vartrf['mes_actual'], $vartrf['versiones'][$flag], $vartrf['year_actual'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']); 
-
+        if($j > 0){
+            ${"traficodetalle_mes_actual_".$val['id']}[$j] =  ${"traficodetalle_mes_actual_".$val['id']}[$j] +  ${"traficodetalle_mes_actual_".$val['id']}[$j-1];
+        }
+        $j++;
     }
     $flag++;
 }
@@ -192,18 +160,8 @@ foreach ($vartrf['modelos'] as $val) {
         var today = new Date();
         var startDate = new Date(today.getFullYear(), 02, 1);
         var endDate = new Date(today.getFullYear(), 02, 31);
-        $("#trafico_fecha1").datepicker({
-           dateFormat: 'dd',
-           startDate: startDate,
-           endDate: endDate,
-           dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-        });
-        $("#trafico_fecha2").datepicker({
-           dateFormat: 'dd',
-           startDate: startDate,
-           endDate: endDate,
-           dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
-        });
+        $("#trafico_fecha1").datepicker({dateFormat: 'dd',startDate: startDate,endDate: endDate,dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']});
+        $("#trafico_fecha2").datepicker({dateFormat: 'dd',startDate: startDate,endDate: endDate,dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']});
         $('#trafico_provincia').change(function(){if ($(this).val() != ''){$('#provincia').val(1);}else{$('#provincia').val(0);}});
         $('#trafico_grupo').change(function(){if ($(this).val() != ''){$('#grupo').val(1);}else{$('#grupo').val(0);}});
         $('#trafico_concesionario').change(function(){if ($(this).val() != ''){$('#concesionario').val(1);} else{$('#concesionario').val(0);}});
@@ -217,18 +175,13 @@ foreach ($vartrf['modelos'] as $val) {
             var cargo_id = <?php echo $vartrf['cargo_id']; ?>;
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getGrupos"); ?>',
-                beforeSend: function (xhr) {
-                    $('#info5').show();  // #info must be defined somehwere
+                beforeSend: function (xhr) {$('#info5').show();  // #info must be defined somehwere
                 },
                 type: 'POST', dataType: 'json', data: {id: value},
                 success: function (data) {
                     $('#info5').hide();
                     // GERENTE COMERCIAL
-                    if(cargo_id == 69){
-                        $('#trafico_concesionario').html(data.data);
-                    }else{
-                        $('#trafico_grupo').html(data.data);
-                    }
+                    if(cargo_id == 69){$('#trafico_concesionario').html(data.data);}else{$('#trafico_grupo').html(data.data);}
                 }
             });
         });
@@ -420,7 +373,7 @@ foreach ($vartrf['modelos'] as $val) {
                 }
             },
             tooltip: {
-                valueSuffix: ''
+                valueSuffix: ' %'
             },
             series: [{
                 type: 'column', 
@@ -448,9 +401,9 @@ foreach ($vartrf['modelos'] as $val) {
         <?php $k = 0;
         foreach ($vartrf['modelos'] as $val) { ?>
         Highcharts.chart('containerh'+<?php echo $k; ?>, {
-            //chart: {
-            //    type: 'spline'
-            //},
+            /*chart: {
+                type: 'spline'
+            },*/
             colors: [
                 '#2f7ed8','#0d233a','#8bbc21'
             ],
@@ -485,6 +438,13 @@ foreach ($vartrf['modelos'] as $val) {
                         }
                     },
                     enableMouseTracking: true
+                },
+                spline: {
+                    lineWidth: 2,
+                    
+                    marker: {
+                        enabled: false
+                    }
                 }
             },
             tooltip: {
@@ -509,7 +469,6 @@ foreach ($vartrf['modelos'] as $val) {
 </script>
 <style type="text/css">
 .ui-datepicker-calendar thead{display: none;}
-.tl_seccion{font-size: 18px;}
 @media (min-width: 1200px){
     .container {width: 1280px;max-width: 1400px;}
 }
@@ -625,10 +584,10 @@ foreach ($vartrf['modelos'] as $val) {
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="">Categoría</label>
+                            <label for="">Tipo de Vehículo</label>
                             <select name="GestionDiaria[categoria]" id="trafico_categoria" class="form-control">
                                 <option value="">--Seleccione Categoria--</option>
-                                <option value="5">Todos</option>
+                                <option value="5" selected>Todos</option>
                                 <option value="1">Autos</option>
                                 <option value="2">SUV</option>
                                 <option value="3">MPV</option>
@@ -657,7 +616,18 @@ foreach ($vartrf['modelos'] as $val) {
         </div>
     </div>
     <div class="row">
-        <h1 class="tl_seccion">TRÁFICO - VENTAS :<?php echo $vartrf['search']['titulo']; ?></h1>
+        <div class="col-md-12">
+            <div class="table-responsives">
+                <table class="table table-bordered" id="trafico_nacional" name="main_info_1">
+                    <tr>
+                        <th colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" align="left" scope="col">TRÁFICO VENTAS - <?php echo $vartrf['search']['titulo']; ?></th>
+                    </tr>
+                </table>
+            </div>
+        </div>        
+    </div>
+    <div class="row">
+        <h1 class="tl_seccion">TRÁFICO - VENTAS</h1>
     </div>
     <div class="row">
         <div class="col-md-6">

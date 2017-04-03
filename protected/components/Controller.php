@@ -1247,14 +1247,28 @@ class Controller extends CController {
 
     public function getDealerGrupoConc($grupo_id) {
         $array_dealers = array();
-        $criteria = new CDbCriteria(array(
-            'condition' => "id_grupo={$grupo_id}"
-        ));
-        
         if($grupo_id == 1000 || $grupo_id == ''){
-            $dealers = GrConcesionarios::model()->findAll();
+            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+            $grupo = (int) Yii::app()->user->getState('grupo_id');
+
+            switch ($cargo_id) {
+                case 61: # AEKIA
+                    $dealers = GrConcesionarios::model()->findAll();
+                    break;
+                case 69: # GERENTE COMERCIAL GRUPO CONCESIONARIOS
+                    $dealers = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = {$grupo}"));
+                    break;
+                case 85: # JEFE DE VENTAS WEB
+                    $dealers = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = {$grupo}"));
+                    break;    
+                
+                default:
+                    # code...
+                    break;
+            }
+            
         }else{
-            $dealers = GrConcesionarios::model()->findAll($criteria);
+            $dealers = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = {$grupo_id}"));
         }
         $counter = 0;
         foreach ($dealers as $value) {
