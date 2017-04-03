@@ -227,6 +227,7 @@ $(function () {
 
     //carga concesionarios por provincia o por grupo
     function loaddealers(e, t){
+        //console.log('------------------LOAD DEALERS----------------------------');
         vaciar2();
         loadmodelos(e);
         if(tipo_b == 'exonerados'){
@@ -234,6 +235,7 @@ $(function () {
         }else if(tipo_b == 'bdc'){
             loadEstadoBDC(e)
         }
+        //console.log('e.attr value: '+e.attr('value'));
         if(e.attr('value') != ''){
             loading('activar');
             var value = e.attr('value');
@@ -265,12 +267,14 @@ $(function () {
     }
     //carga responsables   
     function loadresponsables(e){
+        //console.log('=================LOAD RESPONSABLES===================');
         loadmodelos(e);
         if(tipo_b == 'exonerados'){
             loadExonerados(e);
         }else if(tipo_b == 'bdc'){
             loadEstadoBDC(e)
         }
+        //console.log('e attr value responsables: '+e.attr('value'));
         if(e.attr('value') != ''){
             loading('activar');
             var value = e.attr('value');
@@ -295,6 +299,8 @@ $(function () {
                     loading('desactivar');                
                 }
             });
+        }else{
+            $('#GestionDiariaresponsable').html('<option value="">--Seleccione--</option><option value="1000">Todos</option>');
         }        
     }
     
@@ -404,6 +410,7 @@ $(function () {
     checkFiltro($('.tipo_busqueda_por:checked')); 
 
     function checkFiltro(e){
+        //console.log('e attr value filtro: '+e.attr('value'));
         if(e.attr('value') == 'grupos'){
             $('.cont_grup').show();
             $('.cont_prov').hide();           
@@ -543,6 +550,7 @@ $(function () {
 
     //NOTIFICACION DE FILTROS Y VARIABLES ACTIVAS
     function filtros_notification(){
+        //console.log('=======================================enter filtros notificacion');
         active_selects = '';
         if(tipo_b != 'traficoacumulado'){
             vaciarTA();            
@@ -552,7 +560,7 @@ $(function () {
             tipo_form = $('#gestion-nueva-cotizacion-form option:selected');
         }
         tipo_form.each(function( index ) {
-            console.log(index + ": " + $( this ).text());
+            //console.log(index + ": " + $( this ).text());
             char_ini = $( this ).text().substr(0, 2);
             if(char_ini != '--'){
                 campo = $( this ).parent().attr('name');
@@ -567,6 +575,7 @@ $(function () {
         });
         
         var var_filtros_activos = '<h4>Filtros Activos:</h4> <b>Perfil:</b> ' + nombre_usuario + '<br>'+active_selects;
+        //console.log(var_filtros_activos);
         $('.resultados_embudo').html(var_filtros_activos);
     }
 
