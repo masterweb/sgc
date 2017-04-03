@@ -85,14 +85,6 @@ class ReportesController extends Controller {
         $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
         $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));
 
-        /*$varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
-        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
-        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
-        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
-        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-31 days', $dt));
-        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-31 days', $dt)) . '-01';
-        $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
-        $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));*/
 
         $varView['flag_search'] = 0;
         
