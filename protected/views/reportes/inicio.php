@@ -104,6 +104,8 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                     <!--<a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>-->
                     <?php } 
                     }?>
+                    <!-- ACCESO PARA REPORTE DIARIO DE TODOS LOS USUARIOS -->
+                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/inicio'); ?>">Reporte Diario</a>
                     <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
                     </form>

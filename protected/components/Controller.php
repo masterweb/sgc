@@ -258,7 +258,25 @@ class Controller extends CController {
     }
 
     public function getNombreGrupo($id) {
-        if($id == 1000){
+        switch ($id) {
+            case 1000:
+                return 'Todos';
+                break;
+            case '':
+                $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+                $dealer = GrGrupo::model()->find(array("condition" => "id={$grupo_id}"));
+                return $dealer->nombre_grupo;
+                break;    
+            
+            default:
+                $criteria = new CDbCriteria(array(
+                'condition' => "id={$id}"
+                ));
+                $dealer = GrGrupo::model()->find($criteria);
+                return $dealer->nombre_grupo;
+                break;
+        }
+        /*if($id == 1000 ||   $id == ''){
             return 'Todos';
         }else{
             $criteria = new CDbCriteria(array(
@@ -266,7 +284,7 @@ class Controller extends CController {
             ));
             $dealer = GrGrupo::model()->find($criteria);
             return $dealer->nombre_grupo;
-        }
+        }*/
         
     }
 

@@ -1605,7 +1605,18 @@ class TraficoController extends Controller {
         $area_id = isset($_POST["area_id"]) ? $_POST["area_id"] : "";
         $grupo_id = isset($_POST["grupo_id"]) ? $_POST["grupo_id"] : "";
         if ($id == 1000) {
-            $data = '<option value="">--Seleccione Grupo--</option>
+            switch ($cargo_id) {
+                case 69: # GERENTE COMERCIAL
+                    $res = GrConcesionarios::model()->findAll(array('condition' => "id_grupo = {$grupo_id}"));
+                    $data = '<option value="">--Seleccione Concesionario--</option><option value="1000">Todos</option>';
+                    if (count($res) > 0) {
+                        foreach ($res as $value) {
+                            $data .= '<option value="' . $value['dealer_id'] . '">' . $value['nombre'] . '</option>';
+                        }
+                    }
+                    break;
+                case 61: # AEKIA JEFE DE RED
+                        $data = '<option value="">--Seleccione Grupo--</option>
                             <option value="1000">Todos</option>
                             <option value="6">AUTHESA</option>
                             <option value="2">GRUPO ASIAUTO</option>
@@ -1614,6 +1625,13 @@ class TraficoController extends Controller {
                             <option value="8">GRUPO MERQUIAUTO</option>
                             <option value="9">GRUPO MOTRICENTRO</option>
                             <option value="4">IOKARS</option>';
+                        break;    
+                
+                default:
+
+                    break;
+            }
+            
         } else {
             // GERENTE COMERCIAL - EJEMPLO ASIAUTO
             if ($cargo_id == 69) {
