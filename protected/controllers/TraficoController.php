@@ -618,7 +618,7 @@ class TraficoController extends Controller {
                     $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
                 }
                 $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
-                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['dia_actual'] = $_GET['GestiodnDiaria']['fecha2'];
                 $vartrf['search']['fecha'] = true;
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
@@ -827,6 +827,26 @@ class TraficoController extends Controller {
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
+            // BUSQUEDA POR CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                
+                $vartrf['flag_search'] = 23;
+                $this->render('inicio', array('vartrf' => $vartrf));
+                exit();
+            }
             // BUSQUEDA POR FECHAS - CONCESIONARIO - RESPONSABLE ============================================================================================
             if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
                 if ($_GET['year'] == 1) {
@@ -842,7 +862,7 @@ class TraficoController extends Controller {
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
-                $vartrf['flag_search'] = 23;
+                $vartrf['flag_search'] = 24;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -868,7 +888,7 @@ class TraficoController extends Controller {
                 foreach ($vartrf['modelos'] as $value) {
                     $vartrf['id_modelos'][] = $value['id'];
                 }
-                $vartrf['flag_search'] = 24;
+                $vartrf['flag_search'] = 25;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -893,7 +913,7 @@ class TraficoController extends Controller {
                 foreach ($vartrf['modelos'] as $value) {
                     $vartrf['id_modelos'][] = $value['id'];
                 }
-                $vartrf['flag_search'] = 25;
+                $vartrf['flag_search'] = 26;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -908,7 +928,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Defecto - Año: ' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: Autos';
-                $vartrf['flag_search'] = 26;
+                $vartrf['flag_search'] = 27;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -926,7 +946,7 @@ class TraficoController extends Controller {
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
-                $vartrf['flag_search'] = 27;
+                $vartrf['flag_search'] = 28;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -939,7 +959,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Defecto - Año: ' . $_GET['GestionDiaria']['year'] . ', Categoría: Autos';
-                $vartrf['flag_search'] = 28;
+                $vartrf['flag_search'] = 29;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -962,7 +982,7 @@ class TraficoController extends Controller {
                 $dealerList = implode(', ', $array_dealers);
                 $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
-                $vartrf['flag_search'] = 29;
+                $vartrf['flag_search'] = 30;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 $flag_search = 28;
                 exit();
@@ -993,7 +1013,7 @@ class TraficoController extends Controller {
                 foreach ($vartrf['modelos'] as $value) {
                     $vartrf['id_modelos'][] = $value['id'];
                 }
-                $vartrf['flag_search'] = 30;
+                $vartrf['flag_search'] = 31;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1026,7 +1046,7 @@ class TraficoController extends Controller {
                 
                 //$vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . 'Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
-                $vartrf['flag_search'] = 31;
+                $vartrf['flag_search'] = 32;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1061,7 +1081,7 @@ class TraficoController extends Controller {
                 
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $vartrf['flag_search'] = 32;
+                $vartrf['flag_search'] = 33;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1097,7 +1117,7 @@ class TraficoController extends Controller {
                 }
                 
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: Autos';
-                $vartrf['flag_search'] = 33;
+                $vartrf['flag_search'] = 34;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1131,7 +1151,7 @@ class TraficoController extends Controller {
                 }
                 
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
-                $vartrf['flag_search'] = 34;
+                $vartrf['flag_search'] = 35;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1167,7 +1187,7 @@ class TraficoController extends Controller {
                 foreach ($vartrf['modelos'] as $value) {
                     $vartrf['id_modelos'][] = $value['id'];
                 }
-                $vartrf['flag_search'] = 35;
+                $vartrf['flag_search'] = 36;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1209,7 +1229,7 @@ class TraficoController extends Controller {
                 foreach ($vartrf['modelos'] as $value) {
                     $vartrf['id_modelos'][] = $value['id'];
                 }
-                $vartrf['flag_search'] = 36;
+                $vartrf['flag_search'] = 37;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }
@@ -1227,7 +1247,7 @@ class TraficoController extends Controller {
                 }
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por por ' . $tit.' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Categoría: Todos';
-                $vartrf['flag_search'] = 37;
+                $vartrf['flag_search'] = 38;
                 $this->render('inicio', array('vartrf' => $vartrf));
                 exit();
             }

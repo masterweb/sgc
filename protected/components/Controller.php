@@ -3989,7 +3989,7 @@ class Controller extends CController {
                 $srf = "BETWEEN '".$year."-03-".$dia_inicial."' AND '".$year."-03-".$dia_final."'";
                 break;
             case 3:
-                $srf = "BETWEEN '".$year."-04-".$dia_inicial."' AND '".$year."-01-".$dia_final."'";
+                $srf = "BETWEEN '".$year."-04-".$dia_inicial."' AND '".$year."-04-".$dia_final."'";
                 break;
             case 4:
                 $srf = "BETWEEN '".$year."-05-".$dia_inicial."' AND '".$year."-05-".$dia_final."'";
