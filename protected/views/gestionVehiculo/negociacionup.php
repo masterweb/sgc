@@ -2757,6 +2757,7 @@ if ($fi == 2) {
         }
     }
     function edit(id){
+        //console.log('enter edit');
         var sum_accesorios_total = ''; 
         var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val(); 
         //console.log('tipo financiamiento: '+tipoFinanciamiento);
@@ -2779,7 +2780,9 @@ if ($fi == 2) {
                 sum_accesorios_total = $('#sum-accesorios-total2').val();
                 
                 // En actualizar datos poner datos de los accesorios manuales
-                setAccesoriosManuales(sum_accesorios_total);
+                if(sum_accesorios_total != null){
+                    setAccesoriosManuales(sum_accesorios_total);
+                }
                 
                 // primero quitar los checks de los otros que esten seleccionados
                 if(tipoFinanciamiento == 0){
@@ -2843,8 +2846,11 @@ if ($fi == 2) {
                 $('#GestionFinanciamiento_plazo2').removeAttr('disabled');
                 
                 sum_accesorios_total = $('#sum-accesorios-total3').val();
+
                 // En actualizar datos poner datos de los accesorios manuales
-                setAccesoriosManuales(sum_accesorios_total);
+                if(sum_accesorios_total != null){
+                    setAccesoriosManuales(sum_accesorios_total);
+                }
                 
                 // primero quitar los checks de los otros que esten seleccionados
                 if(tipoFinanciamiento == 0){
@@ -2911,7 +2917,9 @@ if ($fi == 2) {
                 
                 sum_accesorios_total = $('#sum-accesorios-total4').val();
                 // En actualizar datos poner datos de los accesorios manuales
-                setAccesoriosManuales(sum_accesorios_total);
+                if(sum_accesorios_total != null){
+                    setAccesoriosManuales(sum_accesorios_total);
+                }
                 
                 // primero quitar los checks de los otros que esten seleccionados
                 if(tipoFinanciamiento == 0){
