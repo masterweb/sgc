@@ -4126,6 +4126,10 @@ class Controller extends CController {
                     $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
                 }
+                if ($tipo_search == 'pro') {
+                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
+                }
                 
                 break;
             case 70: // JEFE DE SUCURSAL
@@ -4173,7 +4177,7 @@ class Controller extends CController {
                 break;
         }
 
-        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14 || $cargo_id == 69) { // AEKIA USERS
             if ($get_array == 'exo') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 $criteria->condition = "u.cargo_id IN (75)";
@@ -4449,9 +4453,9 @@ class Controller extends CController {
                     break;
             }
         //}
-//            echo '<pre>';
-//            print_r($criteria);
-//            echo '</pre>';
+        //    echo '<pre>';
+        //    print_r($criteria);
+        //    echo '</pre>';
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);

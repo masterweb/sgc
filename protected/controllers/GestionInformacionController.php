@@ -1688,6 +1688,10 @@ class GestionInformacionController extends Controller {
                 $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
                 
             }
+            //   echo '<pre>';
+            //   print_r($criteria);
+            //   echo '</pre>';
+            //   die();
             
             //die('search type: '.$search);
 
@@ -2223,9 +2227,10 @@ class GestionInformacionController extends Controller {
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
         //die('cargo: '.$cargo_id);
+        // GERENTE COMERCIAL
         if ($cargo_id == 69) {
             // SELECT ANTIGUO QUE SE ENLAZABA GON GESTION DIARIA 
-            $criteria->condition = " gi.bdc = 1 AND u.grupo_id = {$grupo_id}";
+            $criteria->condition = " u.grupo_id = {$grupo_id}";
             $criteria->group = 'gi.cedula, gi.ruc, gi.pasaporte';   
             $criteria->order = "gi.id DESC";
         }
@@ -2264,13 +2269,14 @@ class GestionInformacionController extends Controller {
             $criteria->order = "gi.id DESC";     
             //die($sql);
         }
-        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) {
+        // USUARIOS AEKIA Y GERENTE COMERCIAL DE GRUPO
+        if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14 || $cargo_id == 69) {
             if($tipo_seg == 'web'){
                 $criteria->condition = " gi.bdc = 1 AND (u.cargo_id IN (85,86) OR u.cargo_adicional IN (85,86))";
                 $criteria->addCondition("gd.fuente_contacto = 'web'"); 
             }
             if($tipo_seg == 'prospeccion'){
-                $criteria->condition = " gi.bdc = 1 AND (u.cargo_id IN (85,86,72,73) OR u.cargo_adicional IN (85,86))";
+                $criteria->addCondition(" u.cargo_id IN (70,71)");
                 $criteria->addCondition("gd.fuente_contacto = 'prospeccion'"); 
             }
             if($tipo_seg == NULL){
@@ -2282,9 +2288,9 @@ class GestionInformacionController extends Controller {
             //die('else: '.$sql);
         }
         //die($sql);
-        /*echo '<pre>';
-        print_r($criteria);
-        echo '</pre>';*/
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
         $users = GestionInformacion::model()->findAll($criteria);
         $tipo = '';
 
