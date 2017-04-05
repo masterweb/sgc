@@ -1,4 +1,5 @@
 <?php
+$area_id = (int) Yii::app()->user->getState('area_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //$con = Yii::app()->db;
@@ -153,7 +154,16 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                     <a href="<?php echo Yii::app()->createUrl('uusuarios/contactos'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/contactos.png" width="46" height="56"></div>
                         <div class="txt_menu">Directorio de Contactos</div></a>
                 </div>
-            </li><?php
+            </li>
+            <?php if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) : // AEKIA USERS ?>
+            <li class="wrapper">
+                <div class="forma">
+                    <a href="<?php echo Yii::app()->createUrl('trafico/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/base.png" width="46" height="56"></div>
+                        <div class="txt_menu">Base de Datos</div></a>
+                </div>
+            </li>   
+            <?php endif; ?>
+            <?php
     }
         ?>
     </ul>
