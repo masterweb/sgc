@@ -1247,6 +1247,7 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         $id_asesor = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_asesor);
         $cargo = (int) Yii::app()->user->getState('cargo_id');
+        $grupo = (int) Yii::app()->user->getState('grupo_id');
         $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $con = Yii::app()->db;
 
@@ -1287,9 +1288,15 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                                   <td width="228" style="color:#1f497d">' . $this->getResponsable($id_asesor) . ' - Asesor Ventas Kia</td>
                                 </tr>
                                 <tr>
-                                  <td width="178" rowspan="5"><img src="images/logo_pdf2.png" /></td>
-                                  <td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNombreConcesionario($concesionarioid)) . '</strong></td>
-                                </tr>
+                                  <td width="178" rowspan="5"><img src="images/logo_pdf2.png" /></td>';
+                                    if($cargo == 86 && $grupo == 2): 
+                                        $general .=  '<td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">ASIAUTO S.A. / Concesionario Kia Motors Ecuador</strong></td>';
+                                    elseif ($cargo == 86 && $grupo == 3):
+                                        $general .=  '<td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">KMOTOR S.A. / Concesionario Kia Motors Ecuador</strong></td>';
+                                    else: 
+                                        $general .=  '<td colspan="2"><strong style="color: #AB1F2C; font-size: 16px;">' . strtoupper($this->getNombreConcesionario($concesionarioid)) . '</strong></td>';
+                                    endif;
+                                $general .=  '</tr>
 
                                 <tr>
                                   <td colspan="2">' . $this->getConcesionarioDireccion($id_asesor) . '</td>
@@ -1313,11 +1320,11 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
                             <br/>';
         } else {
             $general .= '<p style="margin: 2px 0;">La proforma es referencial y sujeta a revisión y análisis por parte de nuestro Jefe de Sucursal '
-                    . 'al momento de concretar la compra de su vehículo. Tiene una validez de 48 horas. '
+                    . 'al momento de concretar la compra de su  vehículo. Tiene una validez de 48 horas. '
                     . 'Las especificaciones y precios pueden variar sin previo aviso.'
                     . '* Precios y/o observaciones sujetos a cambio sin previo aviso </p>';
         }
-        $general .= '<br /><br /><p style="margin: 2px 0;">Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
+        $general .= '<br><p style="margin: 2px 0;">Nota de descargo: La información contenida en este e-mail es confidencial y sólo puede ser utilizada por el individuo o la compañía a la cual está dirigido. Esta información no debe ser distribuida ni copiada total o parcialmente por ningún medio sin la autorización de AEKIA S.A.
 La organización no asume responsabilidad sobre información, opiniones o criterios contenidos en este mail que no esté relacionada con negocios oficiales de nuestra compañía.
 </p></div>
                     </body>';
@@ -1325,8 +1332,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $codigohtml = $general;
         $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
-        $email = $emailCliente; //email cliente registrado
-        //$email = 'alkanware@gmail.com'; //email administrador
+        //$email = $emailCliente; //email cliente registrado
+        $email = 'alkanware@gmail.com'; //email administrador
         $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
         if ($send) {
             // GRABAR PROFORMA ENVIADA A BASE DE DATOS
