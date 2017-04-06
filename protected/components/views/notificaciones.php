@@ -120,14 +120,14 @@ $dealerList = implode(', ', $array_dealers);
             $abierto = "";
             $abiertoSQL = "SELECT gn.id as id_not,gn.id_agendamiento, ga.agendamiento, gi.nombres, gi.apellidos, gd.* 
             FROM gestion_notificaciones gn 
-            INNER JOIN gestion_agendamiento ga ON ga.id = gn.id_agendamiento 
             INNER JOIN gestion_informacion gi on gi.id = gn.id_informacion 
-            INNER JOIN gestion_diaria gd ON gd.id_informacion =  gn.id_informacion 
-            WHERE gn.leido = 'UNREAD' AND gn.tipo = 1 
+            LEFT JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id
+            INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+            WHERE gn.tipo = 1 
             AND gn.id_asesor = {$responsable_id} AND (DATE(ga.agendamiento) = '$fecha_actual' AND DATE(gd.proximo_seguimiento) = '$fecha_actual' )";
             $abiertoSQL .= ' GROUP BY gd.id_informacion ORDER BY gd.id_informacion DESC LIMIT 200';
             $notificacionesAbiertas = Yii::app()->db->createCommand($abiertoSQL)->query();
-
+            //die('abiertoSQL: '.$abiertoSQL);
 
             $abierto2 = "";
             $abiertoSQL2 = "SELECT gt.*, gi.nombres, gi.apellidos, gs.`status` FROM gestion_notificaciones gt 
