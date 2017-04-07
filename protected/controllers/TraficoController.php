@@ -24,7 +24,8 @@ class TraficoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo','getNombreConcesionario','getTitulo'),
+                'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo',
+                    'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -3509,6 +3510,44 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         }
         $titulo .= $titulo_rep;
         echo $titulo;
+    }
+
+    public function actionGetConcesionariosGrupo(){
+        $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
+        $grupo_id = isset($_POST['grupo_id']) ? $_POST["grupo_id"] : "";
+
+        $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
+        if($grupo_id == 1000)
+            $conc = GrConcesionarios::model()->findAll(array('condition' => "dealer_id <> 0", 'order' => 'nombre'));
+        else
+            $conc = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = {$grupo_id}"));
+
+        foreach ($conc as $value) {
+            $data .= '<option value="'.$value['dealer_id'].'"';
+            if($value['dealer_id'] == $dealer_id){
+                $data .= ' selected';
+            }
+            $data .= '>'.$value['nombre'].'</option>';
+        }
+        $options = array('options' => $data);
+        echo json_encode($options);
+    }
+
+    public function actionGetResponsablesConcecionario(){
+        $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
+        $responsable = isset($_POST['responsable']) ? $_POST["responsable"] : "";
+        $data = '<option value="">--Seleccione responsable--</option><option value="10000">Todos</option>';
+        $res = Usuarios::model()->findAll(array("condition" => "dealers_id = {$dealer_id} AND cargo_id IN (71) AND estado = 'ACTIVO'","order" => "nombres ASC"));
+        
+        foreach ($res as $value) {
+            $data .= '<option value="'.$value['id'].'"';
+            if($value['id'] == $responsable){
+                $data .= ' selected';
+            }
+            $data .= '>'.strtoupper($this->getResponsableNombres($value['id'])).'</option>';
+        }
+        $options = array('options' => $data);
+        echo json_encode($options);
     }
 
 }
