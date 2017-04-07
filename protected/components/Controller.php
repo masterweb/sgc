@@ -263,9 +263,16 @@ class Controller extends CController {
                 return 'Todos';
                 break;
             case '':
-                $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-                $dealer = GrGrupo::model()->find(array("condition" => "id={$grupo_id}"));
-                return $dealer->nombre_grupo;
+                $cargo_id = (int) Yii::app()->user->getState('cargo_id');          
+                $area_id = (int) Yii::app()->user->getState('area_id');
+                if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){
+                    return 'Todos';
+                }else{
+                    $dealer = GrGrupo::model()->find(array("condition" => "id={$grupo_id}"));
+                    return $dealer->nombre_grupo;
+                }
+
+                
                 break;    
             
             default:
@@ -1410,8 +1417,14 @@ class Controller extends CController {
         }
         if (empty($id)) {
             $grupo_id = (int) Yii::app()->user->getState('grupo_id');
-            $grupo = GrGrupo::model()->find(array('condition' => "id={$grupo_id}"));
-            return $grupo->nombre_grupo;
+            $area_id = (int) Yii::app()->user->getState('area_id');
+            if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){
+                return 'Todos';
+            }else{
+                $grupo = GrGrupo::model()->find(array('condition' => "id={$grupo_id}"));
+                return $grupo->nombre_grupo;
+            }
+            
         } else {
             $criteria = new CDbCriteria(array(
                 'condition' => "id={$id}"

@@ -10,14 +10,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
 
 <script type="text/javascript">
-    
 $(document).ready(function() {
-//    $('#trafico_nacional').DataTable( {
-//        buttons: [
-//            'excelHtml5'
-//        ]
-//    });
-    $('#trafico_provincia').change(function(){if ($(this).val() != ''){$('#provincia').val(1);} else{$('#provincia').val(0);}});
+
+    $('#trafico_provincia').change(function(){if ($(this).val() != ''){$('#provincia').val(1);$('#provincia_onchange').val(1);} else{$('#provincia').val(0);$('#provincia_onchange').val(0);}});
     $('#trafico_grupo').change(function(){if($(this).val()!=''){$('#grupo').val(1)}else{$('#grupo').val(0);}});
     $('#trafico_concesionario').change(function(){if($(this).val()!=''){$('#concesionario').val(1);}else{$('#concesionario').val(0);}});
     $('#trafico_responsable').change(function(){if($(this).val()!=''){$('#responsable').val(1);}else{$('#responsable').val(0);}});
@@ -43,6 +38,8 @@ $(document).ready(function() {
     
     
     $('#trafico_provincia').change(function(){
+        $('#grupo').val(0);$('#concesionario').val(0);
+        vaciar();
         var value = $(this).attr('value');
         var cargo_id = <?php echo $vartrf['cargo_id']; ?>;
         $.ajax({
@@ -63,6 +60,10 @@ $(document).ready(function() {
         });
     });
     $('#trafico_grupo').change(function(){
+        if($('#provincia_onchange').val() == 0){
+            vaciarProvincia();
+        }
+        
         var value = $(this).attr('value');
         var provincia = $('#trafico_provincia').val();
         //console.log(provincia);
@@ -230,8 +231,9 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
     $area = 1;
 }
 //echo 'flag search: '.$vartrf['flag_search'];
+//echo 'meses: '.$vartrf['mes_actual'];
 //echo '<pre>';
-//echo print_r($vartrf['search']['where']);
+//echo print_r($_GET);
 //echo '</pre>';
 $where = $vartrf['search']['where'];
 $vartrf['id_modelos'];
@@ -249,7 +251,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
 
 <div class="container">
 <div class="row">
-    <h1 class="tl_seccion">Reporte de Tráfico</h1>
+    <h1 class="tl_seccion">Reporte de Tráfico Diario</h1>
 </div>
 <div class="row">
     <div class="col-md-2">
@@ -363,6 +365,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <input type="hidden" name="fecha1" id="fecha1" value="0" />
                         <input type="hidden" name="fecha2" id="fecha2" value="0" />
                         <input type="hidden" name="provincia" id="provincia" value="0" />
+                        <input type="hidden" name="provincia_onchange" id="provincia_onchange" value="0" />
                         <input type="hidden" name="grupo" id="grupo" value="<?php echo ($area == 0 && ($vartrf['cargo_id'] == 69)) ? 1 : 0;  ?>" />
                         <input type="hidden" name="concesionario" id="concesionario" value="<?php echo ($vartrf['cargo_id'] == 70) ? 1 : 0 ?>" />
                         <input type="hidden" name="responsable" id="responsable" value="0" />
@@ -610,6 +613,22 @@ $vartrf['testdrive_nacional_categoria'] = array();
 </div>
 </div>
 <script type="text/javascript">
+    setSelectedOption();
+
+    // VACIAR SELECT DE PROVINCIAS
+    function vaciarProvincia(){
+        data = '<option value="">--Seleccione provincia--</option><option value="1000">Todos</option><option value="1">Azuay</option><option value="5">Chimborazo</option><option value="7">El Oro</option><option value="8">Esmeraldas</option><option value="10">Guayas</option><option value="11">Imbabura</option><option value="12">Loja</option><option value="13">Los Ríos</option><option value="14">Manabí</option><option value="16">Napo</option><option value="18">Pastaza</option><option value="19">Pichincha</option><option value="21">Tsachilas</option><option value="23">Tungurahua</option>';
+        $('#trafico_provincia').html(data);$('#provincia').val(0);$('#concesionario').val(0);
+        $('#trafico_responsable').html('<option value="">--Seleccione responsable-</option>');$('#responsable').val(0);
+    }
+
+    //vaciar selects
+    function vaciar(){
+        $('#trafico_concesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
+        $('#trafico_responsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+        //$("#GestionInformacionGrupo option:selected").prop("selected", false);
+        //$("#GestionInformacionProvincias option:selected").prop("selected", false);
+    }
     function detail(versiones, dia_inicial, dia_actual, year, mes, id, nombre_modelo, i, categoria) {
         var where = '<?php echo $where; ?>';
         //console.log('i: '+i);
@@ -751,7 +770,83 @@ $vartrf['testdrive_nacional_categoria'] = array();
             sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
 
         return (sa);
-    }   
+    } 
+    function setSelectedOption(){
+        var provincia = '<?php echo isset($_GET['GestionDiaria']['provincia']) ? $_GET['GestionDiaria']['provincia'] : ''; ?>';
+        var grupo = '<?php echo isset($_GET['GestionDiaria']['grupo']) ? $_GET['GestionDiaria']['grupo'] : ''; ?>';
+        var concesionario = '<?php echo isset($_GET['GestionDiaria']['concesionario']) ? $_GET['GestionDiaria']['concesionario'] : ''; ?>';
+        var responsable = '<?php echo isset($_GET['GestionDiaria']['responsable']) ? $_GET['GestionDiaria']['responsable'] : ''; ?>';
+        var categoria = '<?php echo isset($_GET['GestionDiaria']['categoria']) ? $_GET['GestionDiaria']['categoria'] : ''; ?>';
+        if(provincia != ''){
+            $("#trafico_provincia option").each(function(){
+                if($(this).val() ==  provincia){$(this).prop("selected", true);}
+            });
+            $('#provincia').val(1);
+        }
+        if(grupo != ''){
+            $("#trafico_grupo option").each(function(){
+                //console.log('value: -----' + $(this).val());
+                if($(this).val() ==  grupo){$(this).prop("selected", true);}
+            });
+            $('#grupo').val(1);
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
+                success: function (data) {
+                    //console.log(data.options);
+                    $('#trafico_concesionario').html(data.options);
+                }
+            });
+
+        }
+        if(concesionario != ''){
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
+                success: function (data) {
+                    //console.log(data.options);
+                    $('#trafico_concesionario').html(data.options);
+                }
+            });
+            $('#concesionario').val(1);
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getResponsablesConcecionario"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, responsable : responsable},
+                success: function (data) {
+                    //console.log(data.options);
+                    $('#trafico_responsable').html(data.options);
+                }
+            });
+        }
+        if(responsable != ''){
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getResponsablesConcecionario"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, responsable : responsable},
+                success: function (data) {
+                    //console.log(data.options);
+                    $('#trafico_responsable').html(data.options);
+                }
+            });
+            $('#responsable').val(1);
+        }
+        if(categoria != ''){
+            $("#trafico_categoria option").each(function(){
+                if($(this).val() ==  categoria){$(this).prop("selected", true);}
+            }); 
+        }
+    }  
 </script>
 
 
