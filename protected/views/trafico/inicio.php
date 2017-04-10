@@ -680,6 +680,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-15').append(data.data_sportage_r);
                     $('.cer-16').append(data.data_sportage_gt);
                     $('.cer-17').append(data.data_sportage_r_ckd);
+                    $('.cer-19').append(data.data_sportage_xline);
                     $('#bg_black').hide();
                     var enlace  = $('#cid_'+id);
 		    $('html, body').animate({
