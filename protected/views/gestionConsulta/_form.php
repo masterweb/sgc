@@ -1046,6 +1046,7 @@ if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
                                         "21" => "Sportage Active",
                                         "95" => "Sportage GT",
                                         "83" => "Sportage R",
+                                        "97" => "Sportage Xline",
                                         //"96" => "Sportage R CKD",
                                         //"10" => "Sorento",
                                         //"25" => "K 2700 Cabina Simple",
