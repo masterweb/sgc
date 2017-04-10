@@ -4453,8 +4453,11 @@ class Controller extends CController {
                     break;
                 case 'exhibicion':
                 case 'exh':    
-                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
                     break;
+                case 'exhqk':    
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                    break;    
                 case 'prospeccion':
                     $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     break;
@@ -4728,6 +4731,13 @@ class Controller extends CController {
                     if($tipo_search == 'pro'){
                         $criteria->addCondition("gd.fuente_contacto = 'prospeccion'");
                     }
+                    if($tipo_search == 'exhibicion'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
+                    if($tipo_search == 'exhqk'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                    }
+
                     $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'", 'AND');
                     $nombre_grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                     $title = "Busqueda por Grupo: <strong>{$nombre_grupo}</strong>";
@@ -4826,6 +4836,13 @@ class Controller extends CController {
                     //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (70,71)', 'AND');
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
+                }
+                if ($cargo_id === 69 && ($get_array === 'exhqk')) { // gerente comercial
+                    //$criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                    $criteria->condition = "gr.id_grupo = {$grupo_id}";
+                    $criteria->addCondition('u.cargo_id IN (70,71)', 'AND');
                     $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
                     $title = "Busqueda por Grupo Total: <strong>" . $this->getNombreGrupo($grupo_id) . "</strong>";
                 }
@@ -4856,6 +4873,9 @@ class Controller extends CController {
                     }
                     if($tipo_search == 'exhibicion'){
                         $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    }
+                    if($tipo_search == 'exhqk'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
                     }
                     $title = "Busqueda por Total Concesionario : <strong>{$dealer_id}</strong>";
                 }
@@ -4908,6 +4928,11 @@ class Controller extends CController {
                     if($tipo_search == 'exhibicion'){
                         $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
                     }
+                    if($tipo_search == 'exhqk'){
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia'");
+                    }
+                    
+
                     $title = "Busqueda por Total País";
                 }
                 if($cargo_id === 85){ // JEFE DE VENTAS WEB
@@ -5328,6 +5353,12 @@ class Controller extends CController {
                 if($tipo_search == 'web'){
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                 }
+                if($tipo_search == 'exhibicion'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                }
+                if($tipo_search == 'exhqk'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkiatd' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -5474,6 +5505,13 @@ class Controller extends CController {
                 if($tipo_search == ''){
                     $criteria->addCondition("gd.fuente_contacto = 'showroom'");
                 }
+                if($tipo_search == 'exhibicion'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                }
+                if($tipo_search == 'exhqk'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                }
+                
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -5497,6 +5535,13 @@ class Controller extends CController {
                 if($tipo_search == 'web'){
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                 }
+                if($tipo_search == 'exhibicion'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                }
+                if($tipo_search == 'exhqk'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                }
+                
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -5732,6 +5777,13 @@ class Controller extends CController {
                 if($tipo_search == ''){
                     $criteria->addCondition("gd.fuente_contacto = 'showroom'");
                 }
+                if($tipo_search == 'exhibicion'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                }
+                if($tipo_search == 'exhqk'){
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                }
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));

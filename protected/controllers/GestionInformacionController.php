@@ -2124,9 +2124,13 @@ class GestionInformacionController extends Controller {
             switch ($tipo_seg) {
                 case 'exhibicion':
                 case 'exh':    
-                    $criteria->addCondition(" gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'"); 
+                    $criteria->addCondition(" gd.fuente_contacto = 'exhibicion'"); 
                     $criteria->addCondition("DATE(gi.fecha) = '{$dt_unasemana_antes}'");
                     break;
+                case 'exhqk':    
+                    $criteria->addCondition(" gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'"); 
+                    $criteria->addCondition("DATE(gi.fecha) = '{$dt_unasemana_antes}'");
+                    break;    
                 case 'web':
                     break;
                 default:
@@ -2169,6 +2173,10 @@ class GestionInformacionController extends Controller {
                         $tipo_search = 'exhibicion';
                         $get_array = 'exhibicion';
                         break;
+                    case 'exhqk':    
+                        $tipo_search = 'exhqk';
+                        $get_array = 'exhqk';
+                        break;    
                     case 'prospeccion':
                         $tipo_search = 'pro';
                         $get_array = 'pro';
