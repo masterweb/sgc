@@ -335,7 +335,7 @@ if (isset($id)) {
                                                 "95" => "Sportage GT",
                                                 "83" => "Sportage R",
                                                 "97" => "Sportage Xline",
-                                                //"10" => "Sorento",
+                                                "10" => "Sorento",
                                                 //"25" => "K 2700 Cabina Simple",
                                                 //"87" => "K 2700 Cabina Doble",
                                                 "86" => "K 3000"), array('class' => 'form-control'));
@@ -393,6 +393,7 @@ if (isset($id)) {
                                             <option value="95">Sportage GT</option>
                                             <option value="83">Sportage R</option>
                                             <option value="97">Sportage Xline</option>
+                                            <option value="10">Sorento</option>
                                             <option value="86">K 3000</option>
                                         </select>
                                     </div>
@@ -529,6 +530,7 @@ if (isset($id)) {
                                             <option value="95">Sportage GT</option>
                                             <option value="83">Sportage R</option>
                                             <option value="97">Sportage Xline</option>
+                                            <option value="10">Sorento</option>
                                             <option value="86">K 3000</option>
                                         </select>
                                     </div>
