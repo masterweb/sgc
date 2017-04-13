@@ -196,6 +196,7 @@ class GestionSolicitudCreditoController extends Controller {
                 $model->total_egresos = $this->setFormat($_POST['GestionSolicitudCredito']['total_egresos']);
             }
             //die('post save');
+            $model->tipo_producto = $_POST['GestionSolicitudCredito']['tipo_producto'];
 
             $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
             switch ($tipo_vivienda) {
@@ -413,6 +414,9 @@ class GestionSolicitudCreditoController extends Controller {
                 $otros_ingresos = (int) str_replace('$', "", $otros_ingresos);
                 $model->otros_ingresos = $otros_ingresos;
             }
+            if (isset($_POST['GestionSolicitudCredito']['numero_cargas']) && !empty($_POST['GestionSolicitudCredito']['numero_cargas'])) {
+                $model->numero_cargas = $_POST['GestionSolicitudCredito']['numero_cargas'];
+            } 
 
             if (isset($_POST['GestionSolicitudCredito']['total_ingresos']) && !empty($_POST['GestionSolicitudCredito']['total_ingresos'])) {
                 $total_ingresos = str_replace(',', "", $_POST['GestionSolicitudCredito']['total_ingresos']);
@@ -438,6 +442,7 @@ class GestionSolicitudCreditoController extends Controller {
             if (isset($_POST['GestionSolicitudCredito']['total_egresos']) && !empty($_POST['GestionSolicitudCredito']['total_egresos'])) {
                 $model->total_egresos = $this->setFormat($_POST['GestionSolicitudCredito']['total_egresos']);
             }
+            $model->tipo_producto = $_POST['GestionSolicitudCredito']['tipo_producto'];
 
             $tipo_vivienda = $_POST['GestionSolicitudCredito']['habita'];
             switch ($tipo_vivienda) {

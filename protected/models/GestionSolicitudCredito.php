@@ -188,6 +188,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'plazo' => 'Plazo',
             'taza' => 'Taza',
             'cuota_mensual' => 'Cuota Mensual',
+            'tipo_producto' => 'Tipo de Producto',
             'apellido_paterno' => 'Apellido Paterno',
             'apellido_materno' => 'Apellido Materno',
             'nombres' => 'Nombres',

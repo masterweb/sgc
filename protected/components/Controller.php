@@ -3343,6 +3343,10 @@ class Controller extends CController {
             $res = GestionModelos::model()->findAll(array('condition' => "status = 'ACTIVO' AND categoria = {$categoria}", 'order' => "nombre_modelo ASC", 'order' => "orden"));
         }
         //$res = Versiones::model()->findAll(array("condition" => "status = 1 AND categoria = 1", 'group' => "id_modelos", 'order' => "orden"));
+        //echo '<pre>';
+        //print_r($res);
+        //echo '</pre>';
+        //die();
         $versiones = array();
         
         $ct = 0;
@@ -3528,7 +3532,7 @@ class Controller extends CController {
      * @param int $id_responsable id del usuario responsable
      * @return int $count Numero de coincidencias
      */
-    public function getTraficoVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+    public function getTraficoVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $ckd, $categoria) {
         //echo 'year:'.$year.'<br />';
         if($search['fecha'])
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
@@ -3566,6 +3570,17 @@ class Controller extends CController {
                 break;
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        
+        if($ckd == 1){
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            $CKDsRender = '';
+            foreach ($CKDs as $key => $value) {
+                $CKDsRender .= $value['id_modelos'] . ', ';
+            }
+            $CKDsRender = rtrim($CKDsRender, ", ");
+            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+        }
+        
 //        echo '<pre>';
 //        print_r($criteria);
 //        echo '</pre>';
@@ -3585,7 +3600,7 @@ class Controller extends CController {
      * @return int $count Numero de proformas generadas
      */
     public function getProformaVersion($mes, $versiones, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
-        if($search['fecha'])
+        if($search['fecha'])    
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
         else
            $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
@@ -3640,7 +3655,7 @@ class Controller extends CController {
      * @param array $search Array con parametros de busqueda
      * @return int $count Numero de proformas generadas
      */
-    public function getProformaVersionTotal($mes,$year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+    public function getProformaVersionTotal($mes,$year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $ckd, $categoria) {
         if($search['fecha'])
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
         else
@@ -3652,8 +3667,8 @@ class Controller extends CController {
         $criteria->select = "COUNT(DISTINCT gf.id)";
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id   ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id";
         if($search['grupo']){
             
         }
@@ -3679,9 +3694,19 @@ class Controller extends CController {
                 break;
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-//        echo '<pre>';
+
+        if($ckd == 1){
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            $CKDsRender = '';
+            foreach ($CKDs as $key => $value) {
+                $CKDsRender .= $value['id_modelos'] . ', ';
+            }
+            $CKDsRender = rtrim($CKDsRender, ", ");
+            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+        } 
+//        echo '<pre>------------getProformaVersionTotal----------------------------';
 //        print_r($criteria);
-//        echo '</pre>';        
+//        echo '</pre>';       
         $count = GestionFinanciamiento::model()->count($criteria);
         return $count;
     }
@@ -3730,7 +3755,7 @@ class Controller extends CController {
         return $count;
     }
     
-    public function getTestDriveVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+    public function getTestDriveVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $ckd, $categoria) {
         if($search['fecha'])
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
         else
@@ -3768,6 +3793,18 @@ class Controller extends CController {
                 break;
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        if($ckd == 1){
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            $CKDsRender = '';
+            foreach ($CKDs as $key => $value) {
+                $CKDsRender .= $value['id_modelos'] . ', ';
+            }
+            $CKDsRender = rtrim($CKDsRender, ", ");
+            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+        } 
+//        echo '<pre>-------------------------TD';
+//        print_r($criteria);
+//        echo '</pre>';
         $count = GestionTestDrive::model()->count($criteria);
         return $count;
     }
@@ -3871,7 +3908,7 @@ class Controller extends CController {
      * @param array $search Array con parametros de busqueda
      * @return int $count Numero de coincidencias
      */
-    public function getVentasVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+    public function getVentasVersionTotal($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $ckd, $categoria) {
         if($search['fecha'])
            $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
         else
@@ -3912,6 +3949,15 @@ class Controller extends CController {
                 break;
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        if($ckd == 1){
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            $CKDsRender = '';
+            foreach ($CKDs as $key => $value) {
+                $CKDsRender .= $value['id_modelos'] . ', ';
+            }
+            $CKDsRender = rtrim($CKDsRender, ", ");
+            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+        } 
 //        echo '<pre>';
 //        print_r($criteria);
 //        echo '</pre>'; 
@@ -5997,16 +6043,16 @@ class Controller extends CController {
         if($tipo){
             switch ($tipo->categoria) {
                 case 1:
-                    return 'Auto';
+                    return 'LP';
                     break;
                 case 2:
-                    return 'SUV';
+                    return 'LC';
                     break; 
                 case 3:
-                    return 'MPV';
+                    return 'LC';
                     break; 
                 case 4 :
-                    return 'Comercial';
+                    return 'CA';
                     break;           
                 
                 default:

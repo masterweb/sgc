@@ -9,6 +9,108 @@
 /* @var $this GestionSolicitudCreditoController */
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
+
+# CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
+$ced = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
+$valid_cedula = 0;
+$vartrf = array();
+if($ced){
+    $dat = GestionDatabook::model()->count(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+    if($dat == 0){
+        $uriservicio = "http://www.playavip.com.ec/webservicesinpsercom.php?ced=".$ced->cedula."&usr=inpsercom";
+        $xml = simplexml_load_file($uriservicio);
+        if($xml->civil->cedula != ''){
+            $xml_string = $xml->asXML();
+            //echo '<pre>' . utf8_decode($xml_string) . '</pre>';
+            $modeldb = new GestionDatabook;
+            $modeldb->id_informacion = $id_informacion;
+            $modeldb->id_vehiculo = $id_vehiculo;
+            $modeldb->identificacion = $ced->cedula;
+            $modeldb->xml_databook = utf8_decode($xml_string);
+            $modeldb->save();
+            $valid_cedula = 1;
+            $vartrf['cedula'] = $xml->civil->cedula;
+            $vartrf['estadocivil'] = $xml->civil->cedula;
+            $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
+            $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
+            $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
+            $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
+            $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
+            $vartrf['salarioactual'] = $xml->actual->salarioactual;
+            $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
+            $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
+            $vartrf['cargo'] = $xml->actual->cargo;
+            $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
+            $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
+            $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
+            // CALCULAR TIEMPO DE TRABAJO EN MESES
+            $dt = time();
+            $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
+            $fechaanterior = new DateTime($vartrf['fechaentrada']);
+            $fechaactual = new DateTime();
+            $fechaactual->format('d/m/Y');
+            $diferencia = $fechaactual->diff($fechaanterior);
+            $meses = ( $diferencia->y * 12 ) + $diferencia->m;
+            $years = floor($meses / 12);
+            $meses_resto = $meses % 12;
+
+
+        }
+        
+        
+        /*if ($modeldb->validate()) {
+            echo 'no errors';
+        } else {
+            // validation failed: $errors is an array containing error messages
+            $errors = $modeldb->errors;
+            echo 'Error';
+            echo '<pre>';
+            print_r($errors);
+            echo '</pre>';
+            
+        }*/
+        
+        
+    }else{
+        //echo 'ELSE-------------';
+        $valid_cedula = 1;
+        $dat = GestionDatabook::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+        $xml = simplexml_load_string($dat->xml_databook);
+        $vartrf['cedula'] = $xml->civil->cedula;
+        $vartrf['estadocivil'] = $xml->civil->cedula;
+        $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
+        $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
+        $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
+        $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
+        $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
+        $vartrf['salarioactual'] = $xml->actual->salarioactual;
+        $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
+        $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
+        $vartrf['cargo'] = $xml->actual->cargo;
+        $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
+        $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
+        $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
+        // CALCULAR TIEMPO DE TRABAJO EN MESES
+        $dt = time();
+        $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
+        $fechaanterior = new DateTime($vartrf['fechaentrada']);
+        $fechaactual = new DateTime();
+        $fechaactual->format('d/m/Y');
+        $diferencia = $fechaactual->diff($fechaanterior);
+        $meses = ( $diferencia->y * 12 ) + $diferencia->m;
+        $years = floor($meses / 12);
+        $meses_resto = $meses % 12;
+
+        /*echo '<pre>';
+        print_r($vartrf);
+        echo '</pre>';*/
+        //die();
+    }
+
+}
+//echo 'valid cedula: '.$valid_cedula;
+# END CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
+
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
@@ -41,8 +143,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     .tl_seccion_rft{margin-left: 0px;width:100%;}
 </style>
 <script type="text/javascript">
-    //getIngresosTotal();
-    //getEgresosTotal();
+    //getIngresosTotalLoad();
+    //getEgresosTotalLoad();
     $(document).ready(function () {
         var estadocv  = $("#GestionSolicitudCredito_estado_civil").val();
         switch (estadocv) {
@@ -1236,6 +1338,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_total_egresos').val(total);
     }
 
+
     function formatnumber(precioanterior) {
         if (precioanterior == '') {
             return 0;
@@ -1441,7 +1544,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-2">
                                 <label for="">Tipo de Vehículo</label>
-                                <input type="text" value="<?php echo $this->getTipoVehiculo($id_modelo); ?>" disabled="true" class="form-control">
+                                <input type="text" value="<?php echo $this->getTipoVehiculo($id_modelo); ?>" readoonly="readonly" class="form-control" name="GestionSolicitudCredito[tipo_producto]">
                             </div>
 <!--                            <div class="col-md-2">
                                 <br />
@@ -1534,7 +1637,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento'); ?>
-                                    <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true')); ?>
+                                    <?php if($valid_cedula){ ?>
+                                        <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true','value' => $vartrf['anionacimiento'] .'-'. $vartrf['mesnacimiento'] .'-'. $vartrf['dianacimiento'])); ?>
+                                    <?php }else{ ?>
+                                        <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true')); ?>
+                                    <?php } ?>
                                     <?php echo $form->error($model, 'fecha_nacimiento'); ?>
                                 </div>
                                 <div class="col-md-3">
@@ -1839,11 +1946,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <div class="row">
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'empresa_trabajo'); ?>
-                                <?php echo $form->textField($model, 'empresa_trabajo', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                                <?php echo $form->textField($model, 'empresa_trabajo', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control','value' => $vartrf['nombreempleador'])); ?>
                                 <?php echo $form->error($model, 'empresa_trabajo'); ?></div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'telefonos_trabajo'); ?>
-                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)','value' => $vartrf['telefonoempleador'])); ?>
                                 <label class="error" id="telefonos_trabajo_error" style="display: none;">Ingrese un número vállido.</label>
                                 <?php echo $form->error($model, 'telefonos_trabajo'); ?></div>
                             <div class="col-md-2">
@@ -1861,7 +1968,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     '6' => '6 años',
                                     '7' => '7 años',
                                     '8' => 'Más de 7 años',
-                                        ), array('class' => 'form-control'));
+                                        ), array('class' => 'form-control','options' => array($years => array('selected' => true))));
                                 ?>
                                 <?php echo $form->error($model, 'tiempo_trabajo'); ?>
                             </div>
@@ -1882,13 +1989,13 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     '10' => '10 meses',
                                     '11' => '11 meses',
                                     '12' => '12 meses',
-                                        ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo'));
+                                        ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo','options' => array($meses_resto => array('selected' => true))));
                                 ?>
                                 
                             </div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'cargo'); ?>
-                                <?php echo $form->textField($model, 'cargo', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                <?php echo $form->textField($model, 'cargo', array('size' => 50, 'maxlength' => 50, 'class' => 'form-control','value' => $vartrf['cargo'])); ?>
                                 <?php echo $form->error($model, 'cargo'); ?>
                             </div>
 
@@ -1897,7 +2004,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'direccion_empresa'); ?>
-                                <?php echo $form->textField($model, 'direccion_empresa', array('size' => 60, 'maxlength' => 200, 'class' => 'form-control')); ?>
+                                <?php echo $form->textField($model, 'direccion_empresa', array('size' => 60, 'maxlength' => 200, 'class' => 'form-control','value' => $vartrf['direccionempleador'])); ?>
                                 <?php echo $form->error($model, 'direccion_empresa'); ?>
                             </div>
                             <div class="col-md-4">
@@ -1922,7 +2029,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'actividad_empresa'); ?>
-                                <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
+                                <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control','value' => $vartrf['actividadempleador'])); ?>
                                 <?php echo $form->error($model, 'actividad_empresa'); ?>
                             </div>
                         </div>
@@ -1939,7 +2046,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'apellido_paterno_conyugue'); ?>
-                                    <?php echo $form->textField($model, 'apellido_paterno_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
+                                    <?php echo $form->textField($model, 'apellido_paterno_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control', 'value' => $vartrf['nombreconyuge'])); ?>
                                     <?php echo $form->error($model, 'apellido_paterno_conyugue'); ?>
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_apellido_paterno_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
@@ -1958,7 +2065,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'cedula_conyugue'); ?>
-                                    <?php echo $form->textField($model, 'cedula_conyugue', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                    <?php echo $form->textField($model, 'cedula_conyugue', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $vartrf['conyugecedula'])); ?>
                                     <?php echo $form->error($model, 'cedula_conyugue'); ?>
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_cedula_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
@@ -2446,7 +2553,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <h1 class="tl_seccion_rf tl_seccion_rft">Ingresos Mensuales Familiares</h1>
                             <div class="col-md-12">
                                 <?php echo $form->labelEx($model, 'sueldo_mensual'); ?>
-                                <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $vartrf['salarioactual'])); ?>
                                 <?php echo $form->error($model, 'sueldo_mensual'); ?>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_error" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
                             </div>
@@ -2863,6 +2970,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <label for="">Total</label>
                             <?php echo $form->textField($model, 'total_activos', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                             
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h1 class="tl_seccion_rf">Firma del Cliente</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="">
                         </div>
                     </div>
                     <div class="row buttons">

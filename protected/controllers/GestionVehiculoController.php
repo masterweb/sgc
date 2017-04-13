@@ -657,7 +657,7 @@ class GestionVehiculoController extends Controller {
                 $model->total_accesorios = $total_accesorios;
                 $model->precio_vehiculo = $precio_vehiculo;
                 $model->cuota_inicial = $precio_entrada;
-                $model->tasa = (int) $_POST['GestionFinanciamiento1']['tasa'];
+                $model->tasa = $_POST['GestionFinanciamiento1']['tasa'];
                 $model->plazos = $_POST['GestionFinanciamiento1']['plazo'];
                 $model->ts = $_POST['GestionFinanciamiento1']['tiempo_seguro'];
                 $model->valor_financiamiento = $precio_financiamiento;
