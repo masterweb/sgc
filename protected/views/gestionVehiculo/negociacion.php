@@ -2916,7 +2916,6 @@ if($fuente == 'web'){
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label for="">Tasa</label>
                                                 <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" maxlength="5"/>
                                             </div>
                                         </div>

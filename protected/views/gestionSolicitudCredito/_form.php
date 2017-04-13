@@ -2977,7 +2977,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="">
+                            <?php
+                            $cri = new CDbCriteria(array(
+                                'condition' => "id_informacion={$id_informacion}"
+                            ));
+                            $firma = GestionFirma::model()->count($cri);
+                            if ($firma > 0):
+                                $fr = GestionFirma::model()->find($cri);
+                                $imgfr = $fr->firma;
+                                ?>
+                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
+                                <?php
+                            else:
+                                ?>
+                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $this->getFirma($id_vehiculo); ?>" alt="" width="200" height="100" />
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="row buttons">
