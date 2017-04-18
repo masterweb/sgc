@@ -3355,18 +3355,18 @@ class Controller extends CController {
             //echo 'id modelo: '.$value['id_modelo'].', tipo: '.$value['tipo'].'<br />';
             $str_versiones = '';
             if($value['id_modelo'] == 85 && $value['tipo'] == 0){ // rio r sedan
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` = 1 AND tipo = 0 AND orden = 2"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1,3) AND tipo = 0 AND orden = 2"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }
             elseif($value['id_modelo'] == 85 && $value['tipo'] == 1){ // rio r hb
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` = 1 AND tipo = 1 AND orden = 3"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3) AND tipo = 1 AND orden = 3"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }else{ // otros modelos
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` = 1"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3)"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
@@ -3375,10 +3375,11 @@ class Controller extends CController {
             $versiones[$ct] = $str_versiones;
             $ct++;
         }
-//        echo '<pre>';
-//        print_r($versiones);
-//        echo '</pre>';
-//        die();
+        
+        /*echo '<pre>';
+        print_r($versiones);
+        echo '</pre>';
+        die();*/
         return $versiones;
     }
     /**
@@ -3572,7 +3573,9 @@ class Controller extends CController {
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
         
         if($ckd == 1){
-            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            if($categoria == 5)
+                $categoria = '1,2,3,4';
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria IN ({$categoria})")->queryAll();
             $CKDsRender = '';
             foreach ($CKDs as $key => $value) {
                 $CKDsRender .= $value['id_modelos'] . ', ';
@@ -3696,7 +3699,9 @@ class Controller extends CController {
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
 
         if($ckd == 1){
-            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            if($categoria == 5)
+                $categoria = '1,2,3,4';
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria IN ({$categoria})")->queryAll();
             $CKDsRender = '';
             foreach ($CKDs as $key => $value) {
                 $CKDsRender .= $value['id_modelos'] . ', ';
@@ -3794,7 +3799,9 @@ class Controller extends CController {
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
         if($ckd == 1){
-            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            if($categoria == 5)
+                $categoria = '1,2,3,4';
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria IN ({$categoria})")->queryAll();
             $CKDsRender = '';
             foreach ($CKDs as $key => $value) {
                 $CKDsRender .= $value['id_modelos'] . ', ';
@@ -3950,7 +3957,9 @@ class Controller extends CController {
         }
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
         if($ckd == 1){
-            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria = {$categoria}")->queryAll();
+            if($categoria == 5)
+                $categoria = '1,2,3,4';
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria IN ({$categoria})")->queryAll();
             $CKDsRender = '';
             foreach ($CKDs as $key => $value) {
                 $CKDsRender .= $value['id_modelos'] . ', ';
