@@ -1437,13 +1437,75 @@ class TraficoController extends Controller {
             $search_array['dia_anterior'] = $dia_inicial;
             $search_array['dia_actual'] = $dia_actual;
         }
+        
+
+        switch ($id_modelo) {
+            case 1:
+                $bgcolor = '#FB0A2A';
+                break;
+            case 2:
+                $bgcolor = '#33cc00';
+                break;
+            case 3:
+                $bgcolor = '#ff0033';
+                break;
+            case 4:
+                $bgcolor = '#B17F0C';
+                break;
+            case 5:
+                $bgcolor = '#660000';
+                break;
+            case 6:
+                $bgcolor = '#cccccc';
+                break;    
+            case 7:
+                $bgcolor = '#003333';
+                break;
+            case 8:
+                $bgcolor = '#b1b14a';
+                break;
+            case 9:
+                $bgcolor = '#b1b14a';
+                break;
+            case 10:
+                $bgcolor = '#ffcc33';
+                break;
+            case 11:
+                $bgcolor = '#3333ff';
+                break;
+            case 12:
+                $bgcolor = '#1d219e';
+                break; 
+            case 13:
+                $bgcolor = '#E1141B';
+                break;
+            case 14:
+                $bgcolor = '#197719';
+                break;
+            case 15:
+                $bgcolor = '#aaa62b';
+                break;
+            case 16:
+                $bgcolor = '#ad5b56';
+                break;
+            case 17:
+                $bgcolor = '#33cc00';
+                break;
+            case 18:
+                $bgcolor = '#000000';
+                break;                       
+            
+            default:
+                # code...
+                break;
+        }
 
         $fmes = $this->getNombreMes($mes);
 
         $button = '<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closemodal(\'' . $mes . '\',\'' . $i . '\');"><span aria-hidden="true">×</span></button>';
         //$button = '';
         $data .= "<table class='det_" . $mes . "'>";
-        $data .= "<tr class='odd-mh' style='font-size:13px;'><td colspan='" . $colspan . "' class='cir-{$id_modelo}'>Detalle de: " . $nombre_modelo . ", Fecha: Desde el " . $dia_inicial . "-" . $fmes . "-" . $year . " al " . $dia_actual . "-" . $fmes . "-" . $year . " " . $button . "</td></tr>";
+        $data .= "<tr class='odd-mh' style='font-size:13px;' bgcolor='".$bgcolor."'><td colspan='" . $colspan . "' class='cir-{$id_modelo}'>Detalle de: " . $nombre_modelo . ", Fecha: Desde el " . $dia_inicial . "-" . $fmes . "-" . $year . " al " . $dia_actual . "-" . $fmes . "-" . $year . " " . $button . "</td></tr>";
         $data .= "<tr class='odd-mt'><td>Funnel</td>";
         $names = array('Tráfico Acumulado', 'Tráfico', 'Proforma', 'Test Drive', 'Ventas', 'Tasa de Test Drive', 'Tasa de Cierre');
         // ARMAR MESES Y DIAS 

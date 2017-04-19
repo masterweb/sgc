@@ -414,7 +414,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $vartrf['ventas'] = array();
                     
                     ?>
-                    <tr>
+                    <tr bgcolor="#848485">
                         <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle" id="cid_<?php echo $val['id']; ?>"><span class="cir cir-<?php echo $val['id']; ?>"></span><?php echo '<strong>' . $val['nombre_modelo'] . '</strong>'; ?></td>
                     </tr>
                     <tr>
