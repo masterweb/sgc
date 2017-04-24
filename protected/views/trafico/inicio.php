@@ -838,11 +838,17 @@ $vartrf['testdrive_nacional_categoria'] = array();
         return (sa);
     } 
     function setSelectedOption(){
+        var fecha1 = '<?php echo isset($_GET['GestionDiaria']['fecha1']) ? $_GET['GestionDiaria']['fecha1'] : ''; ?>';
+        var fecha2 = '<?php echo isset($_GET['GestionDiaria']['fecha2']) ? $_GET['GestionDiaria']['fecha2'] : ''; ?>';
         var provincia = '<?php echo isset($_GET['GestionDiaria']['provincia']) ? $_GET['GestionDiaria']['provincia'] : ''; ?>';
         var grupo = '<?php echo isset($_GET['GestionDiaria']['grupo']) ? $_GET['GestionDiaria']['grupo'] : ''; ?>';
         var concesionario = '<?php echo isset($_GET['GestionDiaria']['concesionario']) ? $_GET['GestionDiaria']['concesionario'] : ''; ?>';
         var responsable = '<?php echo isset($_GET['GestionDiaria']['responsable']) ? $_GET['GestionDiaria']['responsable'] : ''; ?>';
         var categoria = '<?php echo isset($_GET['GestionDiaria']['categoria']) ? $_GET['GestionDiaria']['categoria'] : ''; ?>';
+        if(fecha1 !='' && fecha2 !=''){
+            $('#trafico_fecha1').val(fecha1);$('#trafico_fecha2').val(fecha2);
+            $('#fecha1').val(1);$('#fecha2').val(1);
+        }
         if(provincia != ''){
             $("#trafico_provincia option").each(function(){
                 if($(this).val() ==  provincia){$(this).prop("selected", true);}
