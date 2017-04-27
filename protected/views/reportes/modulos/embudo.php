@@ -37,8 +37,8 @@
                         <td id="mi_e3"><?= $varView['dif_rac']?></td>
                     </tr>
                     <tr><td id="mi_a4">CITAS</td>
-                        <td id="mi_b4"><?= $varView['trafico_mes_actual']; ?></td>
-                        <td id="mi_c4"><?= $varView['trafico_mes_anterior']; ?></td>
+                        <td id="mi_b4"><?= $varView['trafico_citas_mes_actual']; ?></td>
+                        <td id="mi_c4"><?= $varView['trafico_citas_mes_anterior']; ?></td>
                         <td id="mi_d4"><?= $varView['var_tr']?></td>
                         <td id="mi_e4"><?= $varView['dif_tr']?></td>
                     </tr>
