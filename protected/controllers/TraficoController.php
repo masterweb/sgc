@@ -1834,6 +1834,7 @@ class TraficoController extends Controller {
      * return array 
      */
     public function getReporteTrafico($fecha, $grupo, $concesionario, $responsable, $fuente_contacto, $tipo_reporte) {
+        ini_set('memory_limit', '512M');
         $data = array();
         switch ($fuente_contacto) {
             case 'showroom':
@@ -3340,7 +3341,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                     $name_file = "Reporte TestDrive";
                     break;
                 case 4: // VENTAS
-                    $objPHPExcel->setActiveSheetIndex(0)
+                    /*$objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', $tituloReporte) // Titulo del reporte
                     ->setCellValue('A2', 'id_vehiculo')    
                     ->setCellValue('B2', 'Nombre')
@@ -3357,8 +3358,9 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                     ->setCellValue('M2', 'direccion')
                     ->setCellValue('N2', 'bdc')
                     ->setCellValue('O2', 'nombre_modelo')
-                    ->setCellValue('P2', 'nombre_version');
-                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre_version');*/
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'id_vehiculo') 
                     ->setCellValue('Q2', 'version')
                     ->setCellValue('R2', 'status')
                     ->setCellValue('S2', 'cierre')
@@ -3415,13 +3417,13 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                         $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
                         break;
                     case 4: // VENTAS
-                        $objPHPExcel->setActiveSheetIndex(0)
+                        /*$objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('A' . $i, $row['id_vehiculo'])
                         ->setCellValue('B' . $i, $row['name'])
                         ->setCellValue('C' . $i, $row['id'])
-                        ->setCellValue('D' . $i, ($row['nombres']))
-                        ->setCellValue('E' . $i, ($row['apellidos']))
-                        ->setCellValue('F' . $i, ($row['cedula']))
+                        ->setCellValue('D' . $i, $row['nombres'])
+                        ->setCellValue('E' . $i, $row['apellidos'])
+                        ->setCellValue('F' . $i, $row['cedula'])
                         ->setCellValue('G' . $i, $row['ruc'])
                         ->setCellValue('H' . $i, $row['pasaporte'])
                         ->setCellValue('I' . $i, $row['email'])
@@ -3431,8 +3433,9 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                         ->setCellValue('M' . $i, $row['direccion'])
                         ->setCellValue('N' . $i, $row['bdc'])
                         ->setCellValue('O' . $i, $row['nombre_modelo'])
-                        ->setCellValue('P' . $i, $row['nombre_version']);
+                        ->setCellValue('P' . $i, $row['nombre_version']);*/
                         $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['id_vehiculo'])
                         ->setCellValue('Q' . $i, $row['version'])
                         ->setCellValue('R' . $i, $row['status'])
                         ->setCellValue('S' . $i, $row['cierre'])
@@ -3491,6 +3494,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
 
             // Inmovilizar paneles
             $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0, 3);
+            
 
             // Redirect output to a client's web browser (Excel5)
             header('Content-Type: application/vnd.ms-excel');
