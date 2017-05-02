@@ -658,11 +658,20 @@ class ReportesController extends Controller {
             $retorno = $constructor->buscar(
                     $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
             );
-            
+
+            /*echo '<pre>';
+            print_r($retorno);
+            echo '</pre>';*/
+
+
             $varView['prospeccion_mes_anterior'] = $retorno[0];
             $varView['prospeccion_mes_actual'] = $retorno[1];
             $varView['trafico_mes_anterior'] = $retorno[2];
             $varView['trafico_mes_actual'] = $retorno[3];
+            $varView['traficockd1'] = $retorno[4];
+            $varView['traficocbu1'] = $retorno[5];
+            $varView['traficockd2'] = $retorno[6];
+            $varView['traficocbu2'] = $retorno[7];
             if($tipo == 'externas'){
                 $varView['trafico_mes_anterior'] = $retorno[0];
                 $varView['trafico_mes_actual'] = $retorno[1];
@@ -670,10 +679,7 @@ class ReportesController extends Controller {
                 $varView['trafico_citas_mes_actual'] = $retorno[3];
             }
 
-            $varView['traficockd1'] = $retorno[4];
-            $varView['traficocbu1'] = $retorno[5];
-            $varView['traficockd2'] = $retorno[6];
-            $varView['traficocbu2'] = $retorno[7];
+           
             $varView['proforma_mes_anterior'] = $retorno[8];
             $varView['proforma_mes_actual'] = $retorno[9];
             $varView['proformackd1'] = $retorno[10];
