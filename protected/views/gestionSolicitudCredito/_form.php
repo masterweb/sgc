@@ -1613,7 +1613,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
                             <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'year'); ?>
-                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017'), array('class' => 'form-control')); ?>
+                                <?php echo $form->dropDownList($model, 'year', array('' => '-Seleccione-', '2014' => '2014', '2015' => '2015', '2016' => '2016', '2017' => '2017', '2018' => '2018'), array('class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'year'); ?>
                             </div>
                             <div class="col-md-2">
