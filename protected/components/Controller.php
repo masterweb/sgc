@@ -6050,19 +6050,16 @@ class Controller extends CController {
     public function getTipoVehiculo($id_modelo){
         $tipo = Versiones::model()->find(array("condition" => "id_modelos = {$id_modelo}"));
         if($tipo){
-            switch ($tipo->categoria) {
-                case 1:
+            switch ($tipo->tipo_vehiculo) {
+                case 'LP':
                     return 'LP';
                     break;
-                case 2:
+                case 'LC':
                     return 'LC';
                     break; 
-                case 3:
+                case 'LC':
                     return 'LC';
-                    break; 
-                case 4 :
-                    return 'CA';
-                    break;           
+                    break;          
                 
                 default:
                     # code...

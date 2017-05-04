@@ -1579,6 +1579,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     //  echo '</pre>';
                     ?>
                     <?php foreach ($vec as $value) { ?>
+                    <?php echo 'seguro: '.$value['seguro']; ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'modelo'); ?>
@@ -2750,6 +2751,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 '' => '-Seleccione-',
                                 'Padre' => 'Padre',
                                 'Madre' => 'Madre',
+                                'Hijo' => 'Hijo',
                                 'Hermano' => 'Hermano',
                                 'Primo' => 'Primo/a',
                                 'Tio' => 'Tio/a',
@@ -2778,6 +2780,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 '' => '-Seleccione-',
                                 'Padre' => 'Padre',
                                 'Madre' => 'Madre',
+                                'Hijo' => 'Hijo',
                                 'Hermano' => 'Hermano',
                                 'Primo' => 'Primo/a',
                                 'Tio' => 'Tio/a',
@@ -3030,21 +3033,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <?php
-                        $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
-                        if ($firma > 0):
-                            $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
-                            $imgfr = $fr->firma;
+                        //$firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                        //if ($firma > 0):
+                        //    $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                        //    $imgfr = $fr->firma;
                             ?>
 
-                            <div class="row">
+                            <!--<div class="row">
                                 <div class="col-md-5">
                                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
                                     <hr>
                                     Firma Cliente
                                 </div>
                                 
-                            </div>
-                        <?php else: ?>
+                            </div>-->
+                        <?php //else: ?>
                             <div id="inline1" style="width:800px;display: none;height: 400px;">
                                 <!--div class="row">
                                     <h1 class="tl_seccion_rf">Ingreso de firma</h1>
@@ -3078,7 +3081,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     Firma Cliente
                                 </div>
                             </div>
-                        <?php endif; ?>
+                        <?php //endif; ?>
                     </div>
                     <div class="row">
                         
