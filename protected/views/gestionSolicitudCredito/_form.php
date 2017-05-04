@@ -1579,7 +1579,6 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     //  echo '</pre>';
                     ?>
                     <?php foreach ($vec as $value) { ?>
-                    <?php echo 'seguro: '.$value['seguro']; ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'modelo'); ?>
