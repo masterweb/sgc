@@ -253,6 +253,14 @@ class GestionFinanciamientoController extends Controller {
                 $sql = "UPDATE gestion_diaria SET paso = '7' WHERE id_informacion = {$_POST['GestionFinanciamiento1']['id_informacion']}";
                 $request = $con->createCommand($sql)->query();
 
+                $sol = GestionSolicitudCredito::model()->count(array("condition" => "id_informacion = {$_POST['GestionFinanciamiento1']['id_informacion']} AND id_vehiculo = {$_POST['GestionFinanciamiento1']['id_vehiculo']}"));
+                if($sol > 0){
+                    $sqlup = "UPDATE gestion_solicitud_credito SET entrada = ".$this->setFormat($_POST['GestionFinanciamiento1']['entrada']).", valor = ".$this->setFormat($_POST['GestionFinanciamiento1']['precio']).", 
+                     plazo = ".$this->setFormat($_POST['GestionFinanciamiento1']['plazo'])." , cuota_mensual = ".$this->setFormat($_POST['GestionFinanciamiento1']['cuota_mensual']) .", 
+                     monto_financiar = ". $this->setFormat($_POST['GestionFinanciamiento1']['valor_financiamiento']) . " WHERE id_informacion = {$_POST['GestionFinanciamiento1']['id_informacion']} AND id_vehiculo = {$_POST['GestionFinanciamiento1']['id_vehiculo']}";
+                     $request = $con->createCommand($sqlup)->execute();
+                }
+
                 $precio_financiamiento = '';
                 $precio_financiamiento2 = '';
                 $precio_financiamiento3 = '';
@@ -1185,6 +1193,13 @@ class GestionFinanciamientoController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function setFormat($input){
+        $res = str_replace(',', "", $input);
+        $res = str_replace('.', ",", $input);
+        $res = (int) str_replace('$', "", $input);
+        return $res;
     }
 
 }

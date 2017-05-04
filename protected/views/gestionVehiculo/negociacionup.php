@@ -3734,7 +3734,7 @@ if ($fi == 2) {
                                                 <div class="row">
                                                     <div class="col-md-9">&nbsp;</div>
                                                     <div class="col-md-3" id="cont-edit1">
-                                                        <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>
+                                                        <!--<button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>-->
                                                     </div>
                                                 </div>
                                         </div>
@@ -3872,7 +3872,7 @@ if ($fi == 2) {
                                                     <div class="col-md-9">
                                                     </div>
                                                     <div class="col-md-3" id="cont-edit2">
-                                                        <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>
+                                                        <!--<button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>-->
                                                         <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                     </div>
                                                 </div>
@@ -4014,7 +4014,7 @@ if ($fi == 2) {
                                                 <div class="col-md-9">&nbsp;
                                                 </div>
                                                 <div class="col-md-3" id="cont-edit3">
-                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>-->
                                                 </div>
                                             </div>
                                             
@@ -4098,7 +4098,7 @@ if ($fi == 2) {
                                                 <div class="col-md-9">
                                                 </div>
                                                 <div class="col-md-3" id="cont-edit1">
-                                                    <button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="save1" onclick="save(1);" disabled="">Guardar</button>-->
                                                 </div>
                                             </div>
                                         </div>
@@ -4166,7 +4166,7 @@ if ($fi == 2) {
                                                 <div class="col-md-9">
                                                 </div>
                                                 <div class="col-md-3" id="cont-edit2">
-                                                    <button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="save2" onclick="save(2);" disabled="">Guardar</button>-->
                                                     <!--<button type="button" class="btn btn-default btn-xs" id="delete2" onclick="deleter(2);">Borrar</button>-->
                                                 </div>
                                             </div>
@@ -4233,7 +4233,7 @@ if ($fi == 2) {
                                                 <div class="col-md-9">
                                                 </div>
                                                 <div class="col-md-3" id="cont-edit3">
-                                                    <button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>
+                                                    <!--<button type="button" class="btn btn-default btn-xs" id="save3" onclick="save(3);" disabled="">Guardar</button>-->
                                                 </div>
                                             </div>
                                             
@@ -4287,7 +4287,15 @@ if ($fi == 2) {
                 <div class="row">
                     <div class="col-md-8">
                         <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="btnagendamiento" style="display: none;">Agendar Seguimiento</a>
-                        <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/create/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger" style="display: none;" id="btn-continuar">Generar Solicitud de Crédito</a>
+                        <?php
+                        $lk = 'create';
+                        $txlk = "Generar";
+                        $solic = GestionSolicitudCredito::model()->count(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+                        if($solic > 0){
+                            $lk = 'update';
+                        }
+                        ?>
+                        <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/'.$lk.'/', array('id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo)); ?>" class="btn btn-danger" style="display: none;" id="btn-continuar">Generar Solicitud de Crédito</a>
                         <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" style="display: none;" id="btn-continuar-ct">Continuar</a>
                     </div>
                 </div>
