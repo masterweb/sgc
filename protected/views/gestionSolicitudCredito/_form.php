@@ -1,10 +1,20 @@
-    <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/jquery.fancybox.css?v=2.1.4" type="text/css"/>               
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5" type="text/css"/>        
+<link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css"/>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/jquery-ui.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/date.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/js/daterangepicker.jQuery.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.maskMoney.js" type="text/javascript"></script>
+<!-- Add fancyBox -->
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/jquery.fancybox.pack.js?v=2.1.4"></script>
+<!-- Optionally add helpers - button, thumbnail and/or media -->
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.5"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/sketch.js"></script>
 <?php
 /* @var $this GestionSolicitudCreditoController */
 /* @var $model GestionSolicitudCredito */
@@ -14,9 +24,12 @@
 $ced = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
 $valid_cedula = 0;
 $vartrf = array();
+$vartrf['read_first_time'] = 0;
+//$vartrf['salarioactual'] = 0;
 if($ced){
     $dat = GestionDatabook::model()->count(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
     if($dat == 0){
+        //die('enter dat 0');
         $uriservicio = "http://www.playavip.com.ec/webservicesinpsercom.php?ced=".$ced->cedula."&usr=inpsercom";
         $xml = simplexml_load_file($uriservicio);
         if($xml->civil->cedula != ''){
@@ -29,6 +42,7 @@ if($ced){
             $modeldb->xml_databook = utf8_decode($xml_string);
             $modeldb->save();
             $valid_cedula = 1;
+            $vartrf['read_first_time'] = 1;
             $vartrf['cedula'] = $xml->civil->cedula;
             $vartrf['estadocivil'] = $xml->civil->cedula;
             $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
@@ -44,7 +58,7 @@ if($ced){
             $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
             $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
             // CALCULAR TIEMPO DE TRABAJO EN MESES
-            $dt = time();
+            /*$dt = time();
             $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
             $fechaanterior = new DateTime($vartrf['fechaentrada']);
             $fechaactual = new DateTime();
@@ -52,7 +66,7 @@ if($ced){
             $diferencia = $fechaactual->diff($fechaanterior);
             $meses = ( $diferencia->y * 12 ) + $diferencia->m;
             $years = floor($meses / 12);
-            $meses_resto = $meses % 12;
+            $meses_resto = $meses % 12;*/
 
 
         }
@@ -83,7 +97,7 @@ if($ced){
         $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
         $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
         $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
-        $vartrf['salarioactual'] = $xml->actual->salarioactual;
+        //$vartrf['salarioactual'] = $xml->actual->salarioactual;
         $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
         $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
         $vartrf['cargo'] = $xml->actual->cargo;
@@ -91,7 +105,7 @@ if($ced){
         $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
         $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
         // CALCULAR TIEMPO DE TRABAJO EN MESES
-        $dt = time();
+        /*$dt = time();
         $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
         $fechaanterior = new DateTime($vartrf['fechaentrada']);
         $fechaactual = new DateTime();
@@ -99,7 +113,7 @@ if($ced){
         $diferencia = $fechaactual->diff($fechaanterior);
         $meses = ( $diferencia->y * 12 ) + $diferencia->m;
         $years = floor($meses / 12);
-        $meses_resto = $meses % 12;
+        $meses_resto = $meses % 12;*/
 
         /*echo '<pre>';
         print_r($vartrf);
@@ -108,6 +122,7 @@ if($ced){
     }
 
 }
+//echo 'salarioactual: '.$vartrf['salarioactual'];
 //echo 'valid cedula: '.$valid_cedula;
 # END CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
 
@@ -143,9 +158,41 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     .tl_seccion_rft{margin-left: 0px;width:100%;}
 </style>
 <script type="text/javascript">
-    //getIngresosTotalLoad();
-    //getEgresosTotalLoad();
+    //getIngresosTotal();
+    //getEgresosTotal();
     $(document).ready(function () {
+        $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function () {
+                $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " + this + ";'></a> ");
+            });
+            $.each([3, 5, 10, 15], function () {
+                $('#colors_demo .tools').append("<a href='#colors_sketch' data-size='" + this + "' style='background: #ccc'>" + this + "</a> ");
+            });
+        $('.reset-canvas').click(function () {
+            var cnv = $('#colors_sketch').get(0);
+            var ctx = cnv.getContext('2d');
+            clearCanvas(cnv, ctx); // note, this erases the canvas but not the drawing history!
+            $('#colors_sketch').sketch().actions = [10]; // found it... probably not a very nice solution though
+
+        });    
+        $('.fancybox').fancybox();
+        var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual').val());
+        if(!isNaN(sueldo_mensual)){
+            sueldo_mensual = format2(sueldo_mensual, '$');
+            $('#GestionSolicitudCredito_sueldo_mensual').val(sueldo_mensual);
+        }else{
+            $('#GestionSolicitudCredito_sueldo_mensual').val('$ 0.00');
+        }
+        var read_first_time = parseInt('<?php echo $vartrf['read_first_time']; ?>');
+        if(read_first_time == 1){
+            var salario_solicitante = parseInt('<?php echo $vartrf['salarioactual']; ?>');
+            salario_solicitante = format2(salario_solicitante,'$');
+            $('#GestionSolicitudCredito_sueldo_mensual').val(salario_solicitante);
+        }
+        //salario_solicitante = format2(salario_solicitante,'$');
+
+        //var salario_solicitante = parseInt('<?php echo $vartrf['salarioactual']; ?>');
+        //salario_solicitante = format2(salario_solicitante,'$');
+        //$('#GestionSolicitudCredito_sueldo_mensual').val(salario_solicitante);
         var estadocv  = $("#GestionSolicitudCredito_estado_civil").val();
         switch (estadocv) {
             case 'Soltero':
@@ -256,13 +303,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         var entradaformat = format2(entrada, '$');
         $('#GestionSolicitudCredito_entrada').val(entradaformat);
 
-        var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual').val());
-        if(!isNaN(sueldo_mensual)){
-            sueldo_mensual = format2(sueldo_mensual, '$');
-            $('#GestionSolicitudCredito_sueldo_mensual').val(sueldo_mensual);
-        }else{
-            $('#GestionSolicitudCredito_sueldo_mensual').val('$ 0.00');
-        }
+        
         var sueldo_mensual = parseInt($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
         if(!isNaN(sueldo_mensual)){
             sueldo_mensual = format2(sueldo_mensual, '$');
@@ -1018,7 +1059,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#confirm').show();
         $('#finalizar').hide();
     }
-    function confirm() {
+    function confirmar() {
         $('#confirm').hide();
         $('#send-asesor').show();
     }
@@ -1320,6 +1361,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
     function getIngresosTotal(){
         var sueldo_mensual = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+        //console.log('sueldo mensual tot: '+sueldo_mensual);
         var sueldo_mensual_conyugue = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
         var otros_ingresos = formatnumber($('#GestionSolicitudCredito_otros_ingresos').val());
         total = sueldo_mensual + sueldo_mensual_conyugue +  otros_ingresos;
@@ -1338,9 +1380,20 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_total_egresos').val(total);
     }
 
+    function getIngresosTotalLoad(){
+        var sueldo_mensual = ($('#GestionSolicitudCredito_sueldo_mensual').val());
+        alert('sueldo mensual conyugye: '+sueldo_mensual);
+        var sueldo_mensual_conyugue = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+        
+        var otros_ingresos = formatnumber($('#GestionSolicitudCredito_otros_ingresos').val());
+        total = sueldo_mensual + sueldo_mensual_conyugue +  otros_ingresos;
+        total = format2(total, '$');
+        $('#GestionSolicitudCredito_total_ingresos').val(total); 
+    }
+
 
     function formatnumber(precioanterior) {
-        if (precioanterior == '') {
+        if (precioanterior == '' || typeof precioanterior == "undefined") {
             return 0;
         } else {
             precioanterior = precioanterior.replace(',', '');
@@ -1516,14 +1569,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>  
                     <?php
                     $criteria = new CDbCriteria(array(
-                        'condition' => "id_informacion={$id_informacion}",
+                        'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}",
                         'order' => 'id DESC',
                         'limit' => 1
                     ));
                     $vec = GestionFinanciamiento::model()->findAll($criteria);
-                    /* echo '<pre>';
-                      print_r($vec);
-                      echo '</pre>'; */
+                    // echo '<pre>';
+                    //  print_r($vec);
+                    //  echo '</pre>';
                     ?>
                     <?php foreach ($vec as $value) { ?>
                         <div class="row">
@@ -2553,7 +2606,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <h1 class="tl_seccion_rf tl_seccion_rft">Ingresos Mensuales Familiares</h1>
                             <div class="col-md-12">
                                 <?php echo $form->labelEx($model, 'sueldo_mensual'); ?>
-                                <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)', 'value' => $vartrf['salarioactual'])); ?>
+                                <?php echo $form->textField($model, 'sueldo_mensual', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                 <?php echo $form->error($model, 'sueldo_mensual'); ?>
                             <label for="" generated="true" class="error" id="GestionSolicitudCredito_sueldo_mensual_error" style="display: none;">Sueldo mensual debe ser mayor a $ 300</label>
                             </div>
@@ -2976,24 +3029,61 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <h1 class="tl_seccion_rf">Firma del Cliente</h1>
                     </div>
                     <div class="row">
-                        <div class="col-md-4">
-                            <?php
-                            $cri = new CDbCriteria(array(
-                                'condition' => "id_informacion={$id_informacion}"
-                            ));
-                            $firma = GestionFirma::model()->count($cri);
-                            if ($firma > 0):
-                                $fr = GestionFirma::model()->find($cri);
-                                $imgfr = $fr->firma;
-                                ?>
-                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
-                                <?php
-                            else:
-                                ?>
-                                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/uploads/<?php echo $this->getFirma($id_vehiculo); ?>" alt="" width="200" height="100" />
-                            <?php endif; ?>
-                        </div>
+                        <?php
+                        $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                        if ($firma > 0):
+                            $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                            $imgfr = $fr->firma;
+                            ?>
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
+                                    <hr>
+                                    Firma Cliente
+                                </div>
+                                
+                            </div>
+                        <?php else: ?>
+                            <div id="inline1" style="width:800px;display: none;height: 400px;">
+                                <!--div class="row">
+                                    <h1 class="tl_seccion_rf">Ingreso de firma</h1>
+                                </div-->
+                                <div class="row">
+                                    <div class="col-md-12">                                                     
+
+                                            <?= $this->renderPartial('//firma', array('id_informacion' => $id_informacion));?> 
+
+                                        <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
+                                    </div>
+                                </div>
+                                <!--div class="row">
+                                    <div class="col-md-8">
+                                        <div class="tools">
+                                            <!--<a href="#colors_sketch" data-download="png" class="btn btn-success">Descargar firma</a>-->
+                                            <!--input type="button"  data-clear='true' class="reset-canvas btn btn-warning" value="Borrar Firma">
+                                            <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma">
+                                        </div>
+                                    </div>
+                                </div-->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" id="cont-firma">
+                                    <!--<a href="<?php echo Yii::app()->createUrl('site/signature/', array('id' => $id, 'id_informacion' => $id_informacion)); ?>" class="btn btn-xs btn-primary">Ingresar Firma</a>-->
+                                    <a href="#inline1" class="fancybox btn btn-xs btn-primary">Ingresar Firma</a> 
+                                </div>
+                                <div class="col-md-5" id="cont-firma-img" style="display: none;">
+                                    <img src="" alt="" width="200" height="100" id="img-firma">
+                                    <hr>
+                                    Firma Cliente
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
+                    <div class="row">
+                        
+                    </div>
+                    
                     <div class="row buttons">
                         <div class="col-md-4">
                             <input class="btn btn-danger" id="finalizar" type="submit" name="yt0" value="Crear" onclick="sendSol();">
@@ -3001,7 +3091,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <a class="btn btn-warning" id="confirm" style="display: none;" onclick="confirm();">Confirmar</a>
+                            <a class="btn btn-warning" id="confirm" style="display: none;" onclick="confirmar();">Confirmar</a>
                         </div>
                     </div>
                     <div class="row">
