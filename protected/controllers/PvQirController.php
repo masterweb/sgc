@@ -127,10 +127,10 @@ class PvQirController extends Controller {
                         //$this->sendMail($HTML, $subject, 'marcelo.rodriguez@ariadna.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
                         //$this->sendMail($HTML, $subject, 'fjacome@aekia.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
                         $tipo = 'informativo';
-                        $headers = 'From: info@kia.com.ec' . "\r\n"; 
+                        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n"; 
                         $headers .= 'Content-type: text/html' . "\r\n";
                         $email = "";
-                        if(sendEmailFunction('info@kia.com.ec', (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
+                        if(sendEmailFunction('servicioalcliente@kiamail.com.ec', (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
                                 $transaction->commit();
                         }
                         $this->redirect(array('admin'));

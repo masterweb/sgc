@@ -133,12 +133,12 @@ class PvQircomentarioController extends Controller {
                         //$this->sendMail($HTML, $subject, 'fjacome@aekia.com.ec', $ccToFrom, 'comunidad@kiamail.com.ec', 'KIA Ecuador');
 						$codigohtml = $HTML;
 						$tipo = 'informativo';
-						$headers = 'From: info@kia.com.ec' . "\r\n";
+						$headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
 						$headers .= 'Content-type: text/html' . "\r\n";
 						$email = $mailPara;
 						$cc = array('jorge.rodriguez@ariadna.com.ec', 'ssalvador@aekia.com.ec', 'rlopez@aekia.com.ec', 'fjacome@aekia.com.ec');
 						//$cc = array('jael@walkerbrand.com');
-						if(sendEmailFunction('info@kia.com.ec',  (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
+						if(sendEmailFunction('servicioalcliente@kiamail.com.ec',  (utf8_decode(utf8_encode("Kia -  Sistema de Prospección"))), $email, ($asunto), utf8_decode(utf8_encode($codigohtml)), $tipo,$cc,'','')){
 							$transaction->commit();
 						}
 						
@@ -164,13 +164,13 @@ class PvQircomentarioController extends Controller {
                         $HTML.=' <img src="images/footer_mail.jpg"/>';
 						$codigohtml = $HTML;
 						$tipo = 'informativo';
-						$headers = 'From: info@kia.com.ec' . "\r\n";
+						$headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
 						$headers .= 'Content-type: text/html' . "\r\n";
 						$email = $mailPara;
 					
 						$cc = array('jorge.rodriguez@ariadna.com.ec','ssalvador@aekia.com.ec', 'rlopez@aekia.com.ec');
 						
-						if(sendEmailFunction('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo,$cc,'','')){
+						if(sendEmailFunction('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo,$cc,'','')){
 							$transaction->commit();
 						}
 						

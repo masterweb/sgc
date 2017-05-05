@@ -145,11 +145,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 							</body>';
                     $codigohtml = $general;
                     $tipo = 'informativo';
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $email = $usuario->correo; //email administrador
 
-                    if (sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                    if (sendEmailInfoD('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
                         Yii::app()->user->setFlash('success', '<img src="' . Yii::app()->request->baseUrl . '/images/agradecimiento.png"/>');
                         $eliminar = Usuarios::model()->findAll(array('condition' => "estado=:match", 'params' => array(':match' => "RECHAZADO")));
                         if (!empty($eliminar)) {
@@ -841,11 +841,11 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 								</body>';
                     $codigohtml = $general;
                     $tipo = 'informativo';
-                    $headers = 'From: info@kia.com.ec' . "\r\n";
+                    $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                     $headers .= 'Content-type: text/html' . "\r\n";
                     $email = $model->correo; //email administrador 
 
-                    if (sendEmailInfoD('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
+                    if (sendEmailInfoD('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo)) {
                         Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Actualizaci&oacute;n de contrase&ntilde;a</h1><p>Estimad@ <b>' . $model->nombres . ' ' . $model->apellido . '</b> la actualizaci&oacute;n de contrase&ntilde;a ha sido realizada exitosamente.</div>');
                         $this->redirect(array("uusuarios/cambiar"));
                     }

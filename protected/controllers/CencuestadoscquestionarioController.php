@@ -116,13 +116,13 @@ class CencuestadoscquestionarioController extends Controller {
 								</body>';
                         $codigohtml = $general;
                         $tipo = 'informativo';
-                        $headers = 'From: info@kia.com.ec' . "\r\n";
+                        $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                         $headers .= 'Content-type: text/html' . "\r\n";
                         $email = $usuarioDato->correo; //email administrador 
 
 
 
-                        if (!sendEmailInfoD('info@kia.com.ec', utf8_decode(utf8_encode("Kia -  Sistema de Prospección")), $email, utf8_decode(utf8_encode($asunto)), utf8_decode(utf8_encode($codigohtml)), $tipo)) {
+                        if (!sendEmailInfoD('servicioalcliente@kiamail.com.ec', utf8_decode(utf8_encode("Kia -  Sistema de Prospección")), $email, utf8_decode(utf8_encode($asunto)), utf8_decode(utf8_encode($codigohtml)), $tipo)) {
                             Yii::app()->user->setFlash('success', '<div class="exitoRegistro" style="text-align:justify"><h1>Se produjo un error al notificar al usuario: </h1><p>Estimad@ <b>' . utf8_decode(utf8_encode($usuarioDato->nombres . ' ' . $usuarioDato->apellido)) . '</b> intente recargando la p&acute;gina nuevamente.</div>');
                             $this->redirect(array('cencuestadoscquestionario/generar/id/' . $id));
                         }
@@ -1006,7 +1006,7 @@ class CencuestadoscquestionarioController extends Controller {
 					</body>';
             $codigohtml = $general;
             $tipo = 'informativo';
-            $headers = 'From: info@kia.com.ec' . "\r\n";
+            $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
             $headers .= 'Content-type: text/html' . "\r\n";
             $email = "";
             $cc = array();
@@ -1026,7 +1026,7 @@ class CencuestadoscquestionarioController extends Controller {
               print_r($cc);
               die(); */
 
-            sendEmailFunction('info@kia.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo, $cc, '', '');
+            sendEmailFunction('servicioalcliente@kiamail.com.ec', html_entity_decode("Kia -  Sistema de Prospecci&oacute;n"), $email, html_entity_decode($asunto), $codigohtml, $tipo, $cc, '', '');
         }
         //FIN DE VERIFICA
         $this->render('encuestas', array(
