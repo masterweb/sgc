@@ -1,9 +1,10 @@
 <script type="text/javascript">
 
   function UploadPic() {
-
+//alert('upload pic send');
         // generate the image data
         var data = document.getElementById("colors_sketch2").toDataURL("image/png");
+        //console.log('data: '+data);
         var output = data.replace(/^data:image\/(png|jpg);base64,/, "");
         // Sending the image data to Server
         if (confirm("Antes de continuar, esta seguro que ha realizado su firma correctamente?")) {
@@ -48,9 +49,9 @@
     </div>
     <div class="m-signature-pad--footer">
       <div class="description">Firma arriba</div>
-      <button type="button" class="button clear" data-action="clear">Borrar</button>
+      <button type="button" class="button clear btn" data-action="clear">Borrar</button>
       <button type="button" class="button save" data-action="save" style="display:none;">Guardar</button>
-      <button type="button" class="button save" onclick="UploadPic()" >Guardar</button>
+      <button type="button" class="button save btn btn-danger" onclick="UploadPic()" >Guardar</button>
 
       <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/signature_pad.js"></script>
       <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/app.js"></script>

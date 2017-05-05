@@ -602,4 +602,22 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-5"><h4 class="tl_seccion_rf">Total Activos: <?php echo $value['total_activos']; ?></h4></div>
     </div>
+    <div class="row">
+        <div class="col-xs-5">
+            <h4 class="tl_seccion_rf">Firma</h4>
+            <?php 
+            $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+            if ($firma > 0):
+                $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                $imgfr = $fr->firma;
+            ?>
+
+                            
+                <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
+                <hr>
+                Firma Cliente
+                                
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
