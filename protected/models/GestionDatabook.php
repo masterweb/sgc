@@ -10,6 +10,7 @@
  * @property string $identificacion
  * @property string $xml_databook
  * @property string $status
+ * @property string $fecha
  */
 class GestionDatabook extends CActiveRecord
 {
@@ -70,6 +71,7 @@ class GestionDatabook extends CActiveRecord
 			'identificacion' => 'Identificacion',
 			'xml_databook' => 'Datos Databook',
 			'status' => 'Status',
+			'fecha' => 'Fecha',
 		);
 	}
 

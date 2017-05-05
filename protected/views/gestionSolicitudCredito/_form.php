@@ -40,6 +40,8 @@ if($ced){
             $modeldb->id_vehiculo = $id_vehiculo;
             $modeldb->identificacion = $ced->cedula;
             $modeldb->xml_databook = utf8_decode($xml_string);
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $modeldb->fecha = date("Y-m-d H:i:s"); 
             $modeldb->save();
             $valid_cedula = 1;
             $vartrf['read_first_time'] = 1;
