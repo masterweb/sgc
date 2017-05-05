@@ -3034,29 +3034,90 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <?php
-                        //$firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
-                        //if ($firma > 0):
-                        //    $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
-                        //    $imgfr = $fr->firma;
+                        $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
+                        if ($firma > 0):
+                            $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
+                            $imgfr = $fr->firma;
                             ?>
 
-                            <!--<div class="row">
+                        <div class="row">
                                 <div class="col-md-5">
                                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
                                     <hr>
                                     Firma Cliente
                                 </div>
                                 
-                            </div>-->
-                        <?php //else: ?>
+                            </div>
+                        <?php else: ?>
                             <div id="inline1" style="width:800px;display: none;height: 400px;">
                                 <!--div class="row">
                                     <h1 class="tl_seccion_rf">Ingreso de firma</h1>
                                 </div-->
                                 <div class="row">
-                                    <div class="col-md-12">                                                     
+                                    <div class="col-md-12"> 
+                                            <script type="text/javascript">
+                                                  function UploadPic() {
+                                                        alert('upload pic send');
+                                                        // generate the image data
+                                                        var data = document.getElementById("colors_sketch2").toDataURL("image/png");
+                                                        //console.log('data: '+data);
+                                                        var output = data.replace(/^data:image\/(png|jpg);base64,/, "");
+                                                        // Sending the image data to Server
+                                                        if (confirm("Antes de continuar, esta seguro que ha realizado su firma correctamente?")) {
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: '<?php echo Yii::app()->createUrl("/site/grabarFirma") ?>',
+                                                                // tipo 2 cuando es firma para solicitud de credito
+                                                                data: {imageData: output, id_informacion: "<?php echo $id_informacion; ?>", tipo: 2},
+                                                                success: function (msg) {
+                                                                    if (msg == 1) {
+                                                                        alert('Firma cargada exitosamente.');
+                                                                        //var ur = 'https://www.kia.com.ec/intranet/ventas/index.php/gestionTestDrive/create/'+<?php echo $_GET['id'] ?>+'?id_informacion='+<?php echo $id_informacion; ?>;
+                                                                        //$(location).attr('href', ur)
+                                                                        $('#cont-firma').hide();
+                                                                        $.ajax({
+                                                                            type: 'POST',
+                                                                            dataType: "json",
+                                                                            url: '<?php echo Yii::app()->createUrl("/site/getFirma") ?>',
+                                                                            data: {id_informacion: "<?php echo $id_informacion; ?>"},
+                                                                            success: function (data) {
+                                                                                //console.log('firma digital: '+data.firma);
+                                                                                $('#img-firma').attr('src', '/intranet/usuario/upload/firma/' + data.firma);
+                                                                                $('#cont-firma').hide();
+                                                                                $('#cont-firma-img').show();
+                                                                                //$('#cont-btn').show();
+                                                                            }
+                                                                        });
 
-                                            <?= $this->renderPartial('//firma', array('id_informacion' => $id_informacion));?> 
+                                                                        $.fancybox.close();
+                                                                    }
+                                                                }
+                                                            });
+
+                                                        }
+                                                    }                                     
+
+
+                                            </script>
+                                            <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/canvas/signature-pad.css" rel="stylesheet">
+                                            <div id="signature-pad" class="m-signature-pad">
+                                                <div class="m-signature-pad--body">
+                                                      <canvas id="colors_sketch2"></canvas>
+                                                </div>
+                                                <div class="m-signature-pad--footer">
+                                                    <div class="description">Firma arriba</div>
+                                                    <button type="button" class="button clear btn" data-action="clear">Borrar</button>
+                                                    <button type="button" class="button save" data-action="save" style="display:none;">Guardar</button>
+                                                    <button type="button" class="button save btn btn-danger" onclick="UploadPic()" >Guardar</button>
+
+                                                    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/signature_pad.js"></script>
+                                                    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/canvas/app.js"></script>
+
+                                                      <!--ORIGINLAES-->
+                                                      <!--button type="button" class="button save" data-action="save" >Guardar</button>
+                                                      <input type="button"  onclick="UploadPic()" class=" btn btn-info" value="Subir Firma"-->
+                                                </div>
+                                            </div>
 
                                         <!--canvas id="colors_sketch" width="800" height="300"></canvas-->
                                     </div>
@@ -3082,7 +3143,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     Firma Cliente
                                 </div>
                             </div>
-                        <?php //endif; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="row">
                         
