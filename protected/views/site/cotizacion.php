@@ -21,7 +21,7 @@ $codigoconcesionario = $this->getCodigoConcesionario($concesionarioid);
 ?>
 <?php
 $criteria = new CDbCriteria(array(
-    'condition' => "id_informacion={$id_informacion}",
+    'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}",
     'order' => 'id DESC',
     'limit' => 1
         ));
