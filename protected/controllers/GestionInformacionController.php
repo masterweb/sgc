@@ -1998,8 +1998,8 @@ class GestionInformacionController extends Controller {
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
-        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9 ){
-            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 ){
+            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, ASIAUTO, IOKARS
         }
         $area_id = (int) Yii::app()->user->getState('area_id');
         //die('cargo id:'.$cargo_id);
