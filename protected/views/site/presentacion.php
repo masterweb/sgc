@@ -147,7 +147,7 @@ if($fuente == 'web'){
                                     <tr>
                                         <td><?php echo $this->getModel($c['modelo']); ?> </td>
                                         <td><?php echo $this->getVersion($c['version']); ?> </td>
-                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-20-04-2017.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                        <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-09-05-2017.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
 
                                         <?php
                                         $criteria5 = new CDbCriteria(array('condition' => "id_vehiculo='{$c['id']}'"));

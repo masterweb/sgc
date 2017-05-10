@@ -1522,7 +1522,7 @@ $tipo = $_GET['tipo'];
                             <?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Grabar', array('class' => 'btn btn-danger', 'id' => 'finalizar', 'onclick' => 'sendInfo();')); ?>
                             <?php
                             if ($_GET['tipo'] == 'prospeccion') {
-                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-20-04-2017.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
+                                echo '<a href="' . Yii::app()->request->baseUrl . '/images/LISTA-DE-PRECIOS-KIA-09-05-2017.pdf" class="btn btn-warning" type="submit" name="yt0" target="_blank">Lista de Precios</a>';
                             }
                             ?>
 
