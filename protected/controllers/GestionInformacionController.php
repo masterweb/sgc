@@ -1998,8 +1998,8 @@ class GestionInformacionController extends Controller {
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
-        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9 ){
-            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 ){
+            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, ASIAUTO, IOKARS
         }
         $area_id = (int) Yii::app()->user->getState('area_id');
         //die('cargo id:'.$cargo_id);
@@ -5789,6 +5789,8 @@ GROUP BY gv.id_informacion";
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $comentario = isset($_POST["comentario"]) ? $_POST["comentario"] : "";
         $checkboxvalues = isset($_POST["checkboxvalues"]) ? $_POST["checkboxvalues"] : "";
+        $cargo_id = $this->getCargo($id);
+        $dealer_id = $this->getDealerId($id);
         $con = Yii::app()->db;
         $result = TRUE;
         date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
@@ -5801,6 +5803,10 @@ GROUP BY gv.id_informacion";
         foreach ($checkboxvalues as $value) {
             $param = explode(',', $value);
             $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id} WHERE id = {$param[0]}";
+            if($cargo_id == 86 && Yii::app()->user->getState('grupo_id') == 3) # REASIGNAR CLIENTES A ASESORES WEB DE KMOTOR
+                $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id}, dealer_id = {$dealer_id}, concesionario = {$dealer_id} WHERE id = {$param[0]}";
+            
+            
             if (!$request = $con->createCommand($sql)->execute()) {
                 $result = FALSE;
             }
