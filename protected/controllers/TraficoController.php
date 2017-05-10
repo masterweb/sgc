@@ -1326,7 +1326,10 @@ class TraficoController extends Controller {
                     break;
                 case 19:
                     $data_sportage_xline = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
-                    break;    
+                    break;  
+                case 20:
+                    $data_niro_xline = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
+                    break;  
                 default:
                     break;
             }
@@ -1336,7 +1339,7 @@ class TraficoController extends Controller {
             'data_cerato_koup' => $data_cerato_koup, 'data_cerato_r' => $data_cerato_r, 'data_grand_carnival' => $data_grand_carnival,
             'data_k3000' => $data_k3000, 'data_optima' => $data_optima, 'data_rio_sedan' => $data_rio_sedan, 'data_rio_hb' => $data_rio_hb,
             'data_soul_ev' => $data_soul_ev, 'data_soul_r' => $data_soul_r, 'data_sportage_active' => $data_sportage_active,
-            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd, 'data_sportage_xline' => $data_sportage_xline);
+            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd, 'data_sportage_xline' => $data_sportage_xline, 'data_niro_xline' => $data_niro_xline);
         echo json_encode($options);
         /* for ($i = 1; $i <= $dia; $i++) {
           $d = $i;
