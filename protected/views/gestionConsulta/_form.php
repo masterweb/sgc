@@ -621,6 +621,7 @@ if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
                                         <option value="Sportage GT">Sportage GT</option>
                                         <option value="Sportage Active">Sportage Active</option>
                                         <option value="Sportage R">Sportage R</option>
+                                        <option value="Niro">Niro Xline</option>
                                         <option value="Sorento">Sorento</option>
                                         <option value="Carens R">Carens R</option>
                                         <option value="Carnival R">Carnival R</option>
@@ -1049,6 +1050,7 @@ if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
                                         "97" => "Sportage Xline",
                                         //"96" => "Sportage R CKD",
                                         "10" => "Sorento",
+                                        "98" => "Niro Xline",
                                         //"25" => "K 2700 Cabina Simple",
                                         //"87" => "K 2700 Cabina Doble",
                                         "86" => "K 3000"), array('class' => 'form-control', 'options' => array($id_modelo => array('selected' => true))));
