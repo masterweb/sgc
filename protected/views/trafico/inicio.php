@@ -137,6 +137,7 @@ $(document).ready(function() {
     .cir-18{background-color: #000000;}
     .cir-19{background-color: #FF0000;}
     .cir-20{background-color: #7F00FF;}
+    .cir-21{background-color: #D2322D;}
     .odd-mh > td.cir-1{background-color: #FB0A2A;}
     .odd-mh > td.cir-2{background-color:#4080FF;}
     .odd-mh > td.cir-3{background-color: #33cc00;}
@@ -157,6 +158,7 @@ $(document).ready(function() {
     .odd-mh > td.cir-18{background-color: #000000;}
     .odd-mh > td.cir-19{background-color: #FF0000;}
     .odd-mh > td.cir-20{background-color: #7F00FF;}
+    .odd-mh > td.cir-21{background-color: #D2322D;}
     button.close{padding: 0 4px !important; border: 1px solid;}
     .close {font-size: 19px;font-weight: normal;}
     #bg_black {background-color: #fff;bottom: 0;left: 0;opacity: 0.7;position: fixed;right: 0;top: 0;z-index: 1040;}
@@ -751,6 +753,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-17').append(data.data_sportage_r_ckd);
                     $('.cer-19').append(data.data_sportage_xline);
                     $('.cer-20').append(data.data_niro_xline);
+                    $('.cer-21').append(data.data_sorento);
                     $('#bg_black').hide();
                     var enlace  = $('#cid_'+id);
 		    $('html, body').animate({
