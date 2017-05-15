@@ -220,8 +220,12 @@ class ReportesController extends Controller {
                         $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_id IN (70,71) ";
                     }
                     if($tipo == 'prospeccionweb')
-                        $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_adicional = 86 "; 
+                        $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND u.cargo_adicional = 86 ";
+
+                    if($tipo == 'externas')
+                        $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND (u.cargo_id = 86 OR u.cargo_adicional = 86 ) ";
                 }
+                //die('id persona case: '.$id_persona);
                 break;
             case 71: // asesor de ventas TERMINADO------>
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
