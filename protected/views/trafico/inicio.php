@@ -287,7 +287,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         ),
                     ));
                     ?>
-                <h4>Búsqueda: (Seleccione solo uno de los filtros)</h4>
+                <h4>Búsqueda: </h4>
                 <div class="row">
                     <div class="col-md-4">
                         <label for="Trafico_fecha">Fecha inicio</label>
@@ -424,7 +424,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle" id="cid_<?php echo $val['id']; ?>"><span class="cir cir-<?php echo $val['id']; ?>"></span><?php echo '<strong>' . $val['nombre_modelo'] . '</strong>'; ?></td>
                     </tr>
                     <tr>
-                        <td bgcolor="#D9534F" class="tr-f">Funnel</td>
+                        <td bgcolor="#D9534F" class="tr-f">&nbsp;</td>
                         <?php for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                             echo '<td bgcolor="#D9534F" class="tr-f dde_' . $i . '_' . $val['id'] . '"  id="dde_' . $i . '_' . $val['id'] . '" onclick="detail(\'' . $vartrf['versiones'][$flag] . '\',\'' . $vartrf['dia_inicial'] . '\',\'' . $vartrf['dia_actual'] . '\',\'' . $vartrf['year_actual'] . '\',\'' . $vartrf['fechas_date'][$i] . '\',' . $val['id'] . ',\'' . $val['nombre_modelo'] . '\',' . $i . ','.$vartrf['categoria'].');" data-vec="0">' . $vartrf['fechas'][$i] . '</td>';
                         }
