@@ -3495,9 +3495,9 @@ class Controller extends CController {
         }
         $criteria->condition = "gi.bdc = 0 ".$search['where'];
         if($flag){
-            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+            $criteria->addCondition("DATE(gv.fecha) ".$srf);
         }else{
-            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+            $criteria->addCondition("DATE(gv.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
         }
         switch ($cargo_id) {
             case 71: // JEFE DE ALMACEN
@@ -3647,9 +3647,9 @@ class Controller extends CController {
         }
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-//        echo '<pre>';
-//        print_r($criteria);
-//        echo '</pre>';        
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';        
         $count = GestionFinanciamiento::model()->count($criteria);
         return $count;
     }
