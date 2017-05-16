@@ -61,7 +61,7 @@ class ConstructorSQL {
         $fuente_prospeccion = " gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion'";
         $innerGestionDiaria = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
         $innerExternas = "";
-        $date_fecha = "gv";
+        $date_fecha = "gi";
         $whereExh = "";
         $whereExt = "";
         if ($tipo == 'exhibicion') {
