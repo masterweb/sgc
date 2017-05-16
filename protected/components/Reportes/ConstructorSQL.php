@@ -112,7 +112,7 @@ class ConstructorSQL {
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(*)'];
         $retorno[] = $prospeccion_mes_actual;
 
-        echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
+        //echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
 
         //BUSQUEDA POR TRAFICO O CITAS WEB=====================================================================================================================================       
         $trafico_mes_anterior = $this->SQLconstructor(
@@ -154,7 +154,7 @@ class ConstructorSQL {
         $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
         $retorno[] = $traficocbu2;
 
-        echo "<h4>BUSQUEDA POR PROFORMA</h4>";
+        //echo "<h4>BUSQUEDA POR PROFORMA</h4>";
         // BUSQUEDA POR PROFORMA====================================================================================================================================================  
         $proforma_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
@@ -206,7 +206,7 @@ class ConstructorSQL {
         $proformacbu2 = ($proformacbu2[0]['COUNT(DISTINCT gf.id)'] - $proformackd2);
         $retorno[] = $proformacbu2;
 
-        echo "<h4>BUSQUEDA POR TEST DRIVE</h4>";
+        //echo "<h4>BUSQUEDA POR TEST DRIVE</h4>";
         // BUSQUEDA POR TEST DRIVE=============================================================================================================  
         $td_mes_anterior = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext . $innerGestionDiaria . $INERmodelos_td, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
@@ -250,7 +250,7 @@ class ConstructorSQL {
         $tdcbu2 = ($tdcbu2[0]['COUNT(*)'] - $tdckd2);
         $retorno[] = $tdcbu2;
 
-        echo "<h4>BUSQUEDA POR VENTAS</h4>";
+        //echo "<h4>BUSQUEDA POR VENTAS</h4>";
         // BUSQUEDA POR VENTAS=============================================================================================================  
         $vh_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
