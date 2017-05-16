@@ -3517,9 +3517,9 @@ class Controller extends CController {
         //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-        //echo '<pre>';
-        //print_r($criteria);
-        //echo '</pre>';
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
         $count = GestionInformacion::model()->count($criteria);
         
         //return $count.', versiones: '.$versiones;
@@ -3556,9 +3556,9 @@ class Controller extends CController {
         }
         $criteria->condition = "gi.bdc = 0 ".$search['where'];
         if($flag){
-            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+            $criteria->addCondition("DATE(gv.fecha) ".$srf);
         }else{
-            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+            $criteria->addCondition("DATE(gv.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
         }
         switch ($cargo_id) {
             case 71: // JEFE DE ALMACEN
@@ -3682,9 +3682,9 @@ class Controller extends CController {
         }
         $criteria->condition = "gi.bdc = 0 ".$search['where'];
         if($flag){
-            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+            $criteria->addCondition("DATE(gv.fecha) ".$srf);
         }else{
-            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+            $criteria->addCondition("DATE(gv.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
         }
         switch ($cargo_id) {
             case 71: // JEFE DE ALMACEN
@@ -3761,6 +3761,9 @@ class Controller extends CController {
         //$criteria->addCondition("DATE(gt.fecha) ".$srf);
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
         $count = GestionTestDrive::model()->count($criteria);
         return $count;
     }
@@ -3904,9 +3907,9 @@ class Controller extends CController {
         //$criteria->addCondition("DATE(gf.fecha) ".$srf);
         $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
-        /*echo '<pre>';
-        print_r($criteria);
-        echo '</pre>'; */
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>'; 
         $count = GestionFactura::model()->count($criteria);
         return $count;
     }
@@ -3931,7 +3934,7 @@ class Controller extends CController {
         $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion  = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
         
         
