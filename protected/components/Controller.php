@@ -3495,9 +3495,9 @@ class Controller extends CController {
         }
         $criteria->condition = "gi.bdc = 0 ".$search['where'];
         if($flag){
-            $criteria->addCondition("DATE(gv.fecha) ".$srf);
+            $criteria->addCondition("DATE(gi.fecha) ".$srf);
         }else{
-            $criteria->addCondition("DATE(gv.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
         }
         switch ($cargo_id) {
             case 71: // JEFE DE ALMACEN
@@ -3515,7 +3515,7 @@ class Controller extends CController {
                 break;
         }
         //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
-        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gv.version IN (".$versiones.") AND gv.orden = 1");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
     //    echo '<pre>';
     //    print_r($criteria);

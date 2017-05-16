@@ -89,6 +89,7 @@ class GestionVehiculoController extends Controller {
      */
     public function actionCreateAjax($id = NULL) {
         //die('enter create ajax');
+        $md = GestionVehiculo::model()->count(array("condition" => "id_informacion = {$_POST['GestionVehiculo']['id_informacion']}"));
         $model = new GestionVehiculo;
 
         // Uncomment the following line if AJAX validation is needed
@@ -102,6 +103,9 @@ class GestionVehiculoController extends Controller {
             $model->attributes = $_POST['GestionVehiculo'];
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
+            if($md > 0){
+                $model->orden = 2;
+            }
             $gestion = new GestionDiaria;
             $gestion->id_informacion = $_POST['GestionVehiculo']['id_informacion'];
             $gestion->id_vehiculo = 0;
