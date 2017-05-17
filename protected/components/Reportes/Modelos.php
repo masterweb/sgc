@@ -134,6 +134,7 @@ class Modelos {
         $con = Yii::app()->db;
 
         $sqlModelos_nv = "SELECT id_versiones, id_modelos, nombre_version from versiones WHERE id_modelos = '{$id}' AND `status` = 1";
+        //$sqlModelos_nv = "SELECT id_versiones, id_modelos, nombre_version from versiones WHERE id_modelos = '{$id}' AND `status` IN (1,3)";
         $requestModelos_nv = $con->createCommand($sqlModelos_nv);
         $versiones_car = $requestModelos_nv->queryAll();
 

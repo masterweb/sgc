@@ -3357,18 +3357,18 @@ class Controller extends CController {
             //echo 'id modelo: '.$value['id_modelo'].', tipo: '.$value['tipo'].'<br />';
             $str_versiones = '';
             if($value['id_modelo'] == 85 && $value['tipo'] == 0){ // rio r sedan
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1,3) AND tipo = 0 AND orden = 2"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1) AND tipo = 0 AND orden = 2"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }
             elseif($value['id_modelo'] == 85 && $value['tipo'] == 1){ // rio r hb
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3) AND tipo = 1 AND orden = 3"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1) AND tipo = 1 AND orden = 3"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }else{ // otros modelos
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3)"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1)"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
@@ -3522,7 +3522,7 @@ class Controller extends CController {
     //    echo '</pre>';
         $count = GestionInformacion::model()->count($criteria);
         
-        //return $count.', versiones: '.$versiones;
+        //return $cogit stautunt.', versiones: '.$versiones;
         return $count;
     }
     
