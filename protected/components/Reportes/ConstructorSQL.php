@@ -55,6 +55,8 @@ class ConstructorSQL {
     function renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $consulta_gp = null, $tipo) {
         //echo 'TIPO: '.$tipo;
         //die('id persona render: '.$id_persona);
+        //die( $INERmodelos);
+        //die('asdasdasd:'.$innerGestionDiaria .'1 <br>'. $INERmodelos.'2 <br>'. $id_persona .'3 <br>'. $consultaBDC .'4 <br>'. $modelos .'5 <br>'. $versiones .'6 <br>'. $consulta_gp);
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $fuente_contacto_historial = "";
         $fuente_contacto = "gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'";
@@ -116,49 +118,57 @@ class ConstructorSQL {
 
         //BUSQUEDA POR TRAFICO O CITAS WEB=====================================================================================================================================       
         $trafico_mes_anterior = $this->SQLconstructor(
-                'COUNT(DISTINCT gi.id) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
+                'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExt, $group_ext
+                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gv.orden = 1" . $whereExt, $group_ext
         );
         //echo 'traf mes anterior: '.$trafico_mes_anterior[0]['COUNT(*)'];
-        $trafico_mes_anterior = $trafico_mes_anterior[0]['COUNT(DISTINCT gi.id)'];
+    //    echo '<pre>';
+    //    print_r($trafico_mes_anterior);
+    //    echo '</pre>';
+    //    die();
+        $trafico_mes_anterior = count($trafico_mes_anterior);
+        //$trafico_mes_anterior = $trafico_mes_anterior[0]['DISTINCT gi.id, gv.version'];
         $retorno[] = $trafico_mes_anterior;
 
         $trafico_mes_actual = $this->SQLconstructor(
-                'COUNT(DISTINCT gi.id) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
+                'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExt, $group_ext
+                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt, $group_ext
         );
-        $trafico_mes_actual = $trafico_mes_actual[0]['COUNT(DISTINCT gi.id)'];
+        $trafico_mes_actual = count($trafico_mes_actual);
+        //$trafico_mes_actual = $trafico_mes_actual[0]['DISTINCT gi.id, gv.version'];
         $retorno[] = $trafico_mes_actual;
 
 
         $traficockd1 = $this->SQLconstructor(
-                'COUNT(DISTINCT gi.id) ' . $select_ext, 'gestion_informacion gi', $join_ext .
+                'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext .
                 ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior .
-                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExt, $group_ext
+                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt, $group_ext
         );
-        $traficockd1 = $traficockd1[0]['COUNT(DISTINCT gi.id)'];
+        $traficockd1 = count($traficockd1);
+        //$traficockd1 = $traficockd1[0]['DISTINCT gi.id, gv.version'];
         $retorno[] = $traficockd1;
         $traficocbu1 = $trafico_mes_anterior - $traficockd1; // resto de modelos
         $retorno[] = $traficocbu1;
 
         $traficockd2 = $this->SQLconstructor(
-                'COUNT(DISTINCT gi.id) ' . $select_ext, 'gestion_informacion gi', $join_ext .
+                'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext .
                 ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual .
-                "' AND '" . $fecha_actual . "')  AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExt, $group_ext
+                "' AND '" . $fecha_actual . "')  AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt, $group_ext
         );
-        $traficockd2 = $traficockd2[0]['COUNT(DISTINCT gi.id)'];
+        $traficockd2 = count($traficockd2);
+        //$traficockd2 = $traficockd2[0]['DISTINCT gi.id, gv.version'];
         $retorno[] = $traficockd2;
 
         $traficocbu2 = $trafico_mes_actual - $traficockd2; // resto de modelos
         $retorno[] = $traficocbu2;
 
-        //echo "<h4>BUSQUEDA POR PROFORMA</h4>";
+    //    echo "<h4>BUSQUEDA POR PROFORMA</h4>";
         // BUSQUEDA POR PROFORMA====================================================================================================================================================  
         $proforma_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
-                $innerGestionDiaria . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
+                $innerGestionDiaria . 'INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
                 $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto})" . $whereExh, $group_ext
         );
         $proforma_mes_anterior = $proforma_mes_anterior[0]['COUNT(DISTINCT gf.id)'];
@@ -166,7 +176,7 @@ class ConstructorSQL {
 
         $proforma_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
-                $innerGestionDiaria . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
+                $innerGestionDiaria . 'INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
                 $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh, $group_ext
         );
         $proforma_mes_actual = $proforma_mes_actual[0]['COUNT(DISTINCT gf.id)'];
@@ -206,7 +216,7 @@ class ConstructorSQL {
         $proformacbu2 = ($proformacbu2[0]['COUNT(DISTINCT gf.id)'] - $proformackd2);
         $retorno[] = $proformacbu2;
 
-        //echo "<h4>BUSQUEDA POR TEST DRIVE</h4>";
+    //    echo "<h4>BUSQUEDA POR TEST DRIVE</h4>";
         // BUSQUEDA POR TEST DRIVE=============================================================================================================  
         $td_mes_anterior = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext . $innerGestionDiaria . $INERmodelos_td, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .

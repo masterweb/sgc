@@ -3357,18 +3357,18 @@ class Controller extends CController {
             //echo 'id modelo: '.$value['id_modelo'].', tipo: '.$value['tipo'].'<br />';
             $str_versiones = '';
             if($value['id_modelo'] == 85 && $value['tipo'] == 0){ // rio r sedan
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1) AND tipo = 0 AND orden = 2"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1,3) AND tipo = 0 AND orden = 2"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }
             elseif($value['id_modelo'] == 85 && $value['tipo'] == 1){ // rio r hb
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1) AND tipo = 1 AND orden = 3"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3) AND tipo = 1 AND orden = 3"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
             }else{ // otros modelos
-                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1)"));
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3)"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
@@ -3486,7 +3486,7 @@ class Controller extends CController {
         //echo 'srf: '.$srf.'<br />';
         
         $criteria = new CDbCriteria;
-        $criteria->select = "COUNT(DISTINCT gi.id)";
+        $criteria->select = "DISTINCT gi.id, gv.version";
         $criteria->alias = 'gi';
         $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
         $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
@@ -3520,7 +3520,7 @@ class Controller extends CController {
     //    echo '<pre>';
     //    print_r($criteria);
     //    echo '</pre>';
-        $count = GestionInformacion::model()->count($criteria);
+        $count = GestionInformacion::model()->findAll($criteria);
         
         //return $cogit stautunt.', versiones: '.$versiones;
         return $count;
@@ -3547,7 +3547,7 @@ class Controller extends CController {
         //echo 'srf: '.$srf.'<br />';
         
         $criteria = new CDbCriteria;
-        $criteria->select = "COUNT(DISTINCT gi.id)";
+        $criteria->select = "DISTINCT gi.id, gv.version";
         $criteria->alias = 'gi';
         $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
         $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
@@ -3586,13 +3586,14 @@ class Controller extends CController {
                 $CKDsRender .= $value['id_modelos'] . ', ';
             }
             $CKDsRender = rtrim($CKDsRender, ", ");
+            $criteria->addCondition("gv.orden = 1");
             $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
         }
         
 //        echo '<pre>';
 //        print_r($criteria);
 //        echo '</pre>';
-        $count = GestionInformacion::model()->count($criteria);
+        $count = GestionInformacion::model()->findAll($criteria);
         
         //return $count.', versiones: '.$versiones;
         return $count;
@@ -3620,7 +3621,7 @@ class Controller extends CController {
         $criteria->alias = 'gf';
         $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
         $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id   ";
-        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo";
         if($search['grupo']){
             
         }
