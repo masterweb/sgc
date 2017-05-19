@@ -4166,7 +4166,7 @@ class Controller extends CController {
         $title = '';
         $data = array();
         $area_id = (int) Yii::app()->user->getState('area_id');
-        //echo 'area id: '.$area_id;
+        //die ('area id: '.$area_id);
         if ($cargo_id != 46)
             $dealer_id = $this->getDealerId($id_responsable);
         $criteria = new CDbCriteria;
@@ -4185,26 +4185,26 @@ class Controller extends CController {
                 break;
             case 69: // GERENTE COMERCIAL
                 if ($tipo_search == '') {
-                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
                     $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
                 }
                 if ($tipo_search == 'web') {
-                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND (u.cargo_id IN(85,86) OR u.cargo_adicional IN(85,86))";
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                 }
                 if ($tipo_search == 'exhibicion') {
-                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
                     $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
                 }
                 if ($tipo_search == 'exo') {
-                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(75)";
                 }
                 if ($tipo_search == 'pro') {
-                    $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
+                    //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
                 }
                 
@@ -4255,6 +4255,7 @@ class Controller extends CController {
         }
 
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14 || $cargo_id == 69) { // AEKIA USERS
+            //die('enter areas');
             if ($get_array == 'exo') {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 $criteria->condition = "u.cargo_id IN (75)";
@@ -4270,6 +4271,10 @@ class Controller extends CController {
         }
 
         $search_type = 0;
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
+    //    die();
 
         //die('search type combined: '.$search_type);
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
@@ -6084,7 +6089,7 @@ class Controller extends CController {
 
     public function getConcesionariosDobleCargo($id_responsable){
         $conc = Grupoconcesionariousuario::model()->findAll(array("condition" => "usuario_id = {$id_responsable} AND tipo_id = 2"));
-        
+
     }
 
 }
