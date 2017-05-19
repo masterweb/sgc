@@ -1997,6 +1997,7 @@ class GestionInformacionController extends Controller {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+        $doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
         $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
         if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 ){
             $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, ASIAUTO, IOKARS
@@ -2064,6 +2065,10 @@ class GestionInformacionController extends Controller {
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
+                }
+                # JEFES AGENCIA Y JEJE WEB DE MAS DE UN CONCESIONARIO
+                if($cargo_adicional == 85 && $doble_concesionario == 1){
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
                 }
                 break;
             case 71: // ASESOR DE VENTAS

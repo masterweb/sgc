@@ -6082,4 +6082,9 @@ class Controller extends CController {
         
     }
 
+    public function getConcesionariosDobleCargo($id_responsable){
+        $conc = Grupoconcesionariousuario::model()->findAll(array("condition" => "usuario_id = {$id_responsable} AND tipo_id = 2"));
+        
+    }
+
 }
