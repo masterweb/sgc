@@ -30,7 +30,7 @@ class GestionMediosController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update','reportes','traficoDetalle'),
+                'actions' => array('create', 'update','reportes','traficoDetalle','reportesBusqueda'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -159,33 +159,77 @@ class GestionMediosController extends Controller {
     }
 
     public function actionReportes() {
+    	/*echo '<pre>';
+    	print_r($_POST);
+    	echo '</pre>';
+    	die();
+    	*/
+
+    	if(isset($_POST['GI'])){
+
+			
+	    	$fechas1=$_POST['GI']['fecha1'];
+	    	$fechas2=$_POST['GI']['fecha2'];
+	      
+    	
+    	}
+		else{
+			$fechas1=null;
+			$fechas2=null;
+		}
+		//$fechasDesde = $fechas1 //array();
+		//$fechasHasta = array();
+	    		
+    		//die($_POST['GI'] );
+    		//die();
+    		
+
+		
+
+
         date_default_timezone_set('America/Guayaquil');
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
-
         $varView = array();
-
         $varView['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
         $varView['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
         $varView['area_id'] = (int) Yii::app()->user->getState('area_id');
         $varView['cargo_adicional'] = (int) Yii::app()->user->getState('cargo_adicional');
-        //$varView['cargo_adicional'] = 85;
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
-        //echo 'dealer id: '.$varView['dealer_id'];
         $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
         $varView['provincia_id'] = $varView['nombre_usuario']->provincia_id;
         $varView['cargo_usuario'] = Cargo::model()->findByPk($varView['nombre_usuario']->cargo_id);
-        $varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
-        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
-        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
-        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
-        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-1 month', $dt));
-        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-1 month', $dt)) . '-01';
-        $varView['nombre_mes_actual'] = strftime("%B - %Y", $dt);
-        $varView['nombre_mes_anterior'] = strftime("%B - %Y", strtotime('-1 month', $dt));
+       
         
+        
+
+
+        if(!is_null($fechas1)&&!is_null($fechas2)){
+        	$rangoFechas1=explode(" - ", $fechas1);//str_split($fechas1,' - ');
+        	$rangoFechas2=explode(" - ", $fechas2);//str_split($fechas2);
+        	
+
+			
+        	$varView['fecha_actual']=$rangoFechas1[1];//$fecha_final1;
+	        
+	        $varView['fecha_inicial_actual'] = $rangoFechas1[0];//$fecha_inicial1;
+	        
+	        $varView['fecha_anterior'] = $rangoFechas2[1];//$fecha_final2;
+	        $varView['fecha_inicial_anterior'] = $rangoFechas2[0];//$fecha_inicial2;	
+
+        }
+        else{
+        	
+        	 $varView['fecha_actual'] = strftime("%Y-%m-%d", $dt);
+	        $varView['fecha_actual2'] = strtotime('+1 day', strtotime($varView['fecha_actual']));
+	        $varView['fecha_actual2'] = date('Y-m-d', $varView['fecha_actual2']);
+	        $varView['fecha_inicial_actual'] = (new DateTime('first day of this month'))->format('Y-m-d');
+	        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-1 month', $dt));
+	        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-1 month', $dt)) . '-01';
+        }
         $varView['cine'] = $this->getReporte('cine',$varView['fecha_inicial_actual'], $varView['fecha_actual']);
+
         $varView['cine_anterior'] = $this->getReporte('cine',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
         $varView['television'] = $this->getReporte('television',$varView['fecha_inicial_actual'], $varView['fecha_actual']);
         $varView['television_anterior'] = $this->getReporte('television',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
@@ -201,11 +245,13 @@ class GestionMediosController extends Controller {
         $varView['internet_anterior'] = $this->getReporte('internet',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
         $varView['redes_sociales'] = $this->getReporte('redessociales',$varView['fecha_inicial_actual'], $varView['fecha_actual']);
         $varView['redes_sociales_anterior'] = $this->getReporte('redessociales',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
-        
-        
         $this->render('reportes', array('varView' => $varView));
+
     }
     
+
+     
+
     /**
      * 
      * @param string $tipo_medio - Medio Prensa, television 
@@ -220,30 +266,35 @@ class GestionMediosController extends Controller {
         $posts = GestionInformacion::model()->count($criteria);
         return $posts;
     }
-    
+   
     public function actionTraficoDetalle() {
+
+
         $tipo_medio =  isset($_POST['tipo_medio']) ? $_POST["tipo_medio"] : "";
+
         $fecha_inicial = isset($_POST['fecha_inicial']) ? $_POST["fecha_inicial"] : "";
         $fecha_final = isset($_POST['fecha_final']) ? $_POST["fecha_final"] : "";
-        $provincia = isset($_POST['provincia']) ? $_POST["provincia"] : "";
+        //$provincia = isset($_POST['provincia']) ? $_POST["provincia"] : "";
 
-        $det = GestionInformacion::model()->count(array("condition" => "medio = {tipo_medio} AND (DATE(fecha) BETWEEN '{$fecha_inicial}' AND '{$fecha_actual}')","group" => ""));
-        $data_television = array();
-        $data_prensa = array();
+        
+       
+       
+       
         if($tipo_medio == 'television'){
-            $tel = GestionMedios::model()->findAll(array("condition" => "tipo_medio = 2"));
-            foreach ($tel as $value) {
-                
-            }
-            $data_television[] = 0;
+          
+           $group='medio_television';
+           
         }
         if($tipo_medio == 'prensa_escrita'){
-            $tel = GestionMedios::model()->findAll(array("condition" => "tipo_medio = 1"));
+        	
+        	$group='medio_prensa';
+           
         }
-
+ 		$sql = 'SELECT ' . $group .' AS medio, count(id) as cantidad FROM callcenter.gestion_informacion WHERE medio = \''.$tipo_medio.'\' AND (DATE(fecha) BETWEEN \''.$fecha_inicial.'\' AND \''.$fecha_final.'\') GROUP BY '.$group.' HAVING cantidad>0 ORDER BY cantidad DESC';
+ 		
+        $det = Yii::app()->db->createCommand($sql)->queryAll();
         $options = array('data' => $det);
         echo json_encode($options);
-
     }
     
 
