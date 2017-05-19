@@ -654,7 +654,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <td>PROFORMA</td><?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                             $proformackd1 =  $this->getProformaVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);
-                            $proformacbu1 = $vartrf['proforma_nacional_total'][$i] - $proformackd1;
+                            $proformacbu1 = $vartrf['proforma_suma_total'][$i] - $proformackd1;
                             echo '<td><table class="ens"><tr><td>'.$proformackd1.'</td><td>'.$proformacbu1.'</td></tr></table></td>';
                         }
                         ?>

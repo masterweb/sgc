@@ -3627,9 +3627,9 @@ class Controller extends CController {
         }
         $criteria->condition = "gi.bdc = 0 ".$search['where'];
         if($flag){
-            $criteria->addCondition("DATE(gv.fecha) ".$srf);
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
         }else{
-            $criteria->addCondition("DATE(gv.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
         }
         switch ($cargo_id) {
             case 71: // JEFE DE ALMACEN
