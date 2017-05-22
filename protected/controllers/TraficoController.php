@@ -62,6 +62,7 @@ class TraficoController extends Controller {
         $vartrf['dia_actual'] = date("d");
         $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['dia_inicial'], $vartrf['dia_actual']);
         $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+        //$vartrf['dia_inicial'] = (new DateTime('first day of this month'))->format('Y-m-d');
         $vartrf['modelos'] = $this->getModelosTrafico(5);
         $vartrf['versiones'] = $this->getModelosTraficoVersion(5);
         $vartrf['id_modelos'] = array();
@@ -1537,7 +1538,7 @@ class TraficoController extends Controller {
                 switch ($i) {
                     case 1:
                         //$datatr = $this->getDataDia($versiones, $year, $mes, $d);
-                        $datatr = $this->getTraficoVersion($mes, $versiones, $year, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable);
+                        $datatr = count($this->getTraficoVersion($mes, $versiones, $year, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable));
                         $trafico_diario[] = $datatr;
                         $datata = $datata + $datatr;
                         $data .= "<td>" . $datata . "</td>";
