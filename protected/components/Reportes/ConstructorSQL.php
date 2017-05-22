@@ -260,11 +260,11 @@ class ConstructorSQL {
         $tdcbu2 = ($tdcbu2[0]['COUNT(*)'] - $tdckd2);
         $retorno[] = $tdcbu2;
 
-        //echo "<h4>BUSQUEDA POR VENTAS</h4>";
+    //echo "<h4>BUSQUEDA POR VENTAS</h4>";
         // BUSQUEDA POR VENTAS=============================================================================================================  
         $vh_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
-                $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
+                'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
                 " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto})" . $whereExh, $group_ext
         );
 
@@ -273,7 +273,7 @@ class ConstructorSQL {
 
         $vh_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
-                $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
+                'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
                 " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto})" . $whereExh, $group_ext
         );
         $vh_mes_actual = $vh_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
@@ -313,6 +313,8 @@ class ConstructorSQL {
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
             $area = 1;
         }
+
+    //echo '==========================================================================================================';    
 
         if ($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86 || $area == 1 || $cargo_id == 69) {
             // GENERACI0N DE CONSULTAS PARA AGENTES DE VENTAS EXTERNAS=========================================================================================
