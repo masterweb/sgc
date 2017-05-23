@@ -1866,7 +1866,7 @@ class TraficoController extends Controller {
         switch ($tipo_reporte) {
             case 1: // TRAFICO
                 $from = " FROM gestion_informacion gi";
-                $select_ini = "SELECT d.`name`, gi.id, ";
+                $select_ini = "SELECT DISTINCT d.`name`, gi.id, ";
                 $select_fin = " gi.fecha, gv.version, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television";
                 $inner = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
@@ -1876,7 +1876,7 @@ INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";
                 $date = "gi";
                 $and = "";
-                $group_order = " GROUP BY gi.id";
+                $group_order = " AND gv.orden = 1";
                 $titulo_reporte = 'Reporte Tráfico desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break;
             case 2: // PROFORMAS
@@ -1885,11 +1885,11 @@ LEFT JOIN usuarios u ON u.id = gi.responsable";
                 $select_fin = " gf.fecha, gv.version";
                 $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
 INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
-INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
 INNER JOIN dealers d ON d.id = gi.dealer_id 
 INNER JOIN modelos m ON m.id_modelos = gv.modelo 
 LEFT JOIN versiones v ON v.id_versiones = gv.version";
-                $date = "gv";
+                $date = "gf";
                 $and = "";
                 $group_order = " GROUP BY gf.id ORDER BY gf.fecha";
                 $titulo_reporte = 'Reporte Proformas desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
