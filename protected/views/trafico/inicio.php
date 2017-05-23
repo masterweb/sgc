@@ -237,7 +237,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
     $area = 1;
 }
-//echo 'versiones: '.$vartrf['versiones'];
+echo 'flag search: '.$vartrf['flag_search'];
 
 //echo 'meses: '.$vartrf['mes_actual'];
 //echo '<pre>';
@@ -291,11 +291,11 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 <div class="row">
                     <div class="col-md-4">
                         <label for="Trafico_fecha">Fecha inicio</label>
-                        <input type="text" name="GestionDiaria[fecha1]" id="trafico_fecha1" class="form-control"/>
+                        <input type="text" name="GestionDiaria[fecha1]" id="trafico_fecha1" class="form-control" value="<?php echo $vartrf['dia_inicial']; ?>"/>
                     </div>
                     <div class="col-md-4">
                         <label for="Trafico_fecha">Fecha fin</label>
-                        <input type="text" name="GestionDiaria[fecha2]" id="trafico_fecha2" class="form-control" />
+                        <input type="text" name="GestionDiaria[fecha2]" id="trafico_fecha2" class="form-control" value="<?php echo $vartrf['dia_actual']; ?>" />
                     </div>
                     <div class="col-md-4">
                         <label for="">Año</label>
@@ -582,18 +582,18 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     <tr class="odd">
                         <td>Ventas</td>
                         <?php
-                        if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
-                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                                $vartrf['venta_nacional_total'][$i] = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],0,5);
-                                echo '<td>' . $vartrf['venta_nacional_total'][$i] . '</td>';
-                                $vartrf['ventas_nacional'] += $vartrf['venta_nacional_total'][$i];
-                            }
-                        }else{
+                        //if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                        //    for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                        //        $vartrf['venta_nacional_total'][$i] = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],0,5);
+                        //        echo '<td>' . $vartrf['venta_nacional_total'][$i] . '</td>';
+                        //        $vartrf['ventas_nacional'] += $vartrf['venta_nacional_total'][$i];
+                        //    }
+                        //}else{
                             for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                                 echo '<td>' . $vartrf['venta_suma_total'][$i] . '</td>';
                                 $vartrf['ventas_nacional'] += $vartrf['venta_suma_total'][$i];
                             }
-                        }
+                        //}
                         
                         ?>
                         <td><?php echo $vartrf['ventas_nacional']; ?></td>
@@ -644,8 +644,13 @@ $vartrf['testdrive_nacional_categoria'] = array();
                             $traficockd1 = count($this->getTraficoVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']));
                             //$traficocbu1 = $vartrf['trafico_nacional_total'][$i] - $traficockd1;
                             //$traficockd1 = $vartrf['trafico_suma_total'][$i];
-                            $traficocbu1 = $vartrf['trafico_suma_total'][$i] - $traficockd1;
-                            echo '<td><table class="ens"><tr><td>'.$traficockd1.'</td><td>'.$traficocbu1.'</td></tr></table></td>';
+                            if($traficockd1 == 0){
+                                echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $traficocbu1 = $vartrf['trafico_suma_total'][$i] - $traficockd1;
+                                echo '<td><table class="ens"><tr><td>'.$traficockd1.'</td><td>'.$traficocbu1.'</td></tr></table></td>';
+                            }
+                            
                         }
                         ?>
                         
@@ -654,8 +659,13 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <td>PROFORMA</td><?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                             $proformackd1 =  $this->getProformaVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);
-                            $proformacbu1 = $vartrf['proforma_suma_total'][$i] - $proformackd1;
-                            echo '<td><table class="ens"><tr><td>'.$proformackd1.'</td><td>'.$proformacbu1.'</td></tr></table></td>';
+                            if($proformackd1 == 0){
+                                 echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $proformacbu1 = $vartrf['proforma_suma_total'][$i] - $proformackd1;
+                                echo '<td><table class="ens"><tr><td>'.$proformackd1.'</td><td>'.$proformacbu1.'</td></tr></table></td>';
+                            }
+                            
                         }
                         ?>
                     </tr>
@@ -664,8 +674,13 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
                             $testdriveckd1 =  $this->getTestDriveVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);
-                            $testdrivecbu1 = $vartrf['testdrive_nacional_total'][$i] - $testdriveckd1;
-                            echo '<td><table class="ens"><tr><td>'.$testdriveckd1.'</td><td>'.$testdrivecbu1.'</td></tr></table></td>';
+                            if($testdriveckd1 == 0){
+                                echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $testdrivecbu1 = $vartrf['testdrive_suma_total'][$i] - $testdriveckd1;
+                                echo '<td><table class="ens"><tr><td>'.$testdriveckd1.'</td><td>'.$testdrivecbu1.'</td></tr></table></td>';
+                            }
+                            
                         }
                         ?>
                     </tr>
@@ -674,8 +689,13 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {;
                             $ventasckd1 = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);
-                            $ventascbu1 = $vartrf['venta_nacional_total'][$i] - $ventasckd1;
-                            echo '<td><table class="ens"><tr><td>'.$ventasckd1.'</td><td>'.$ventascbu1.'</td></tr></table></td>';
+                            if($ventasckd1 == 0){
+                                echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $ventascbu1 = $vartrf['venta_suma_total'][$i] - $ventasckd1;
+                                echo '<td><table class="ens"><tr><td>'.$ventasckd1.'</td><td>'.$ventascbu1.'</td></tr></table></td>';
+                            }
+                            
                         }
                         ?>
                     </tr>

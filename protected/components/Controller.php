@@ -1320,7 +1320,7 @@ class Controller extends CController {
     public function getResponsablesVariosConc() {
         $id_responsable = Yii::app()->user->getId();
         $array_dealers = array();
-        $dealers = Grupoconcesionariousuario::model()->findAll(array('condition' => "usuario_id={$id_responsable}"));
+        $dealers = Grupoconcesionariousuario::model()->findAll(array('condition' => "usuario_id={$id_responsable} AND tipo_id = 1"));
         $counter = 0;
         foreach ($dealers as $value) {
             //echo 'asdasd'.$value['concesionario_id'];
@@ -3587,12 +3587,16 @@ class Controller extends CController {
             }
             $CKDsRender = rtrim($CKDsRender, ", ");
             $criteria->addCondition("gv.orden = 1");
-            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            if(count($CKDs) > 0)
+                $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            else
+                return 0;
         }
         
-//        echo '<pre>';
-//        print_r($criteria);
-//        echo '</pre>';
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
+    //    die();
         $count = GestionInformacion::model()->findAll($criteria);
         
         //return $count.', versiones: '.$versiones;
@@ -3713,7 +3717,10 @@ class Controller extends CController {
                 $CKDsRender .= $value['id_modelos'] . ', ';
             }
             $CKDsRender = rtrim($CKDsRender, ", ");
-            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            if(count($CKDs) > 0)
+                $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            else
+                return 0;
         } 
 //        echo '<pre>------------getProformaVersionTotal----------------------------';
 //        print_r($criteria);
@@ -3816,7 +3823,10 @@ class Controller extends CController {
                 $CKDsRender .= $value['id_modelos'] . ', ';
             }
             $CKDsRender = rtrim($CKDsRender, ", ");
-            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            if(count($CKDs) > 0)
+                $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            else
+                return 0;
         } 
 //        echo '<pre>-------------------------TD';
 //        print_r($criteria);
@@ -3974,7 +3984,10 @@ class Controller extends CController {
                 $CKDsRender .= $value['id_modelos'] . ', ';
             }
             $CKDsRender = rtrim($CKDsRender, ", ");
-            $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            if(count($CKDs) > 0)
+                $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            else
+                return 0;
         } 
 //        echo '<pre>';
 //        print_r($criteria);
@@ -4270,7 +4283,7 @@ class Controller extends CController {
             }
         }
 
-        $search_type = 0;
+        $search_type = 0;   
     //    echo '<pre>';
     //    print_r($criteria);
     //    echo '</pre>';
