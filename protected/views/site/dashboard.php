@@ -168,7 +168,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         ?>
         <li class="wrapper">
             <div class="forma">
-                    <a href="<?php echo Yii::app()->createUrl('site/biblioteca'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/biblioteca3.png" width="46" height="56"></div>
+                    <a href="<?php echo Yii::app()->createUrl('site/biblioteca'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/biblioteca-res.png" width="48" height="48"></div>
                         <div class="txt_menu">Biblioteca</div></a>
                 </div>
         </li>

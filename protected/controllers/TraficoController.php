@@ -1847,18 +1847,26 @@ class TraficoController extends Controller {
             case 'showroom':
                 $fuente = " AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')";
                 $bdc = " AND gi.bdc = 0";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " AND gv.orden = 1 ";
                 break;
             case 'web':
                 $fuente = " AND (gd.fuente_contacto = 'web')";
                 $bdc = " AND gi.bdc = 1";
+                $distint = "SELECT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             case 'prospeccion':
                 $fuente = " AND (gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion')";
                 $bdc = " ";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             case 'exhibicion':
                 $fuente = " AND (gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd')";
                 $bdc = " AND gi.bdc = 0";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             default:
                 break;
@@ -1866,7 +1874,7 @@ class TraficoController extends Controller {
         switch ($tipo_reporte) {
             case 1: // TRAFICO
                 $from = " FROM gestion_informacion gi";
-                $select_ini = "SELECT DISTINCT d.`name`, gi.id, ";
+                $select_ini = $distint;
                 $select_fin = " gi.fecha, gv.version, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television";
                 $inner = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
@@ -1876,7 +1884,7 @@ INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";
                 $date = "gi";
                 $and = "";
-                $group_order = " AND gv.orden = 1";
+                $group_order = $version;
                 $titulo_reporte = 'Reporte Tráfico desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break;
             case 2: // PROFORMAS
@@ -1966,7 +1974,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         $sql .= $bdc;
         $sql .= $and;
         $sql .= $group_order;
-        //die('sql '.$sql);
+    //    die('sql '.$sql);
         $post = Yii::app()->db->createCommand($sql)->queryAll();
         $data['posts'] = $post;
         $data['titulo_reporte'] = $titulo_reporte.$titulo_rep;
