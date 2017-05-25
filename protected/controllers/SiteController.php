@@ -531,8 +531,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $htmlad = "";
 
         if (!empty($concesionarios)) {
-            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" onchange="getConc(this.value);">';
-            $html .="<option value=''>Seleccione >></option>";
+            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" >';
+            $html .="<option value=''>Seleccione cargo</option>";
             $htmlad .='<select required name="Usuarios[cargo_adicional]" id="Usuarios_cargo_id" class="form-control">';
             $htmlad .="<option value=''>Seleccione >></option>";
             foreach ($concesionarios as $c) {
@@ -3892,4 +3892,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 //            $conc4 = Yii::app()->db->createCommand($queryVehiculo)->execute();
 //        }
 //    }
+    public function actionBiblioteca(){
+        $this->render('biblioteca');
+    }  
 }
