@@ -100,7 +100,7 @@
                 <?php if((Yii::app()->user->getState('area_id') == 1887) && ($controller != 'site') && ($action != 'dashboard')): ?>
                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo_SGC_nuevo.png" class="img-responsive" id="imglogo">
                 <?php else: ?>
-                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/intranet.png" class="img-responsive" id="imglogo">
+                    <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/SGC.png" class="img-responsive" id="imglogo">
                 <?php endif; ?>
                 <!--/a-->
             </div>

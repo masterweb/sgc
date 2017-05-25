@@ -124,7 +124,8 @@ $this->breadcrumbs = array(
         </div>
     </div>
 </div>
-<div class="foot"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/foot_1.png">
+<div class="foot">
+    <!--<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/foot_1.png">-->
 </div>
 
 

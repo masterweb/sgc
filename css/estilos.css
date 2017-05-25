@@ -835,6 +835,9 @@ ul.versiones li input{
     font-size: 11px;
     cursor: pointer;
 }
+.lt-web{
+    background-color: #5cb85c;
+}
 .home{
     background:url(../images/home.png) 10px 0px no-repeat;
     padding-left: 38px !important;
@@ -946,7 +949,7 @@ ul.versiones li input{
     padding: 70px 0;
     text-align: center;
     color: #fff;
-    background: url(../images/fondofinal.jpg) bottom center no-repeat #000;
+    background: url(../images/fondo-new-2017.jpg) bottom center no-repeat #000;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -956,12 +959,13 @@ ul.versiones li input{
     width: 100%;
 }
 .cont-log{
-    background: rgba(220, 216, 217, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 15px;
     width: auto;
     min-height: 500px;
     padding: 17px;
 }
+
 .cont-log form{margin-top: 25px;padding: 0;}
 .form-input{height: 45px;background-color: rgba(220, 216, 217, 0.47) !important;border: none;color: #ffffff;}
 .input-group{margin-top: 15px;}
