@@ -985,7 +985,12 @@ ul.versiones li input{
         height: 100%;
         /*padding: 0;*/
     }
+    
 }
+@media (max-width: 768px){
+    .nav-tabs li span{display:none;}
+}
+
 @media (max-width: 991px){
     input[type="checkbox"]{float: none !important;}
 }

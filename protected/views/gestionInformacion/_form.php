@@ -826,7 +826,7 @@ $tipo = $_GET['tipo'];
                     <?php echo $form->errorSummary($model); ?>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'nombres', array('required' => 'required'));  ?>
                             <label class="" for="">Nombres <?php
                                 if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -836,7 +836,7 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->textField($model, 'nombres', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $nombres)); ?>
                             <?php echo $form->error($model, 'nombres'); ?>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'apellidos');   ?>
                             <label class="" for="">Primer Apellido <?php
                                 if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -846,7 +846,7 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->textField($model, 'apellidos', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $apellidos)); ?>
                             <?php echo $form->error($model, 'apellidos'); ?>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'apellidos');    ?>
                             <label class="" for="">Segundo Apellido</label>
                             <?php echo $form->textField($model, 'last_name', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $apellidos)); ?>
@@ -860,7 +860,7 @@ $tipo = $_GET['tipo'];
 //echo '--------- IDENT: '.$identificacion;
                         ?>
                         <?php if ($identificacion == 'ci'): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php //echo $form->labelEx($model, 'cedula');   ?>
                                 <label class="" for="">Cédula <?php
                                     if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -877,7 +877,7 @@ $tipo = $_GET['tipo'];
                             </div>
                         <?php endif; ?>
                         <?php if ($identificacion == 'ruc'): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php //echo $form->labelEx($model, 'cedula');   ?>
                                 <label class="" for="">RUC <?php
                                     if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -894,7 +894,7 @@ $tipo = $_GET['tipo'];
                             </div>
                         <?php endif; ?>
                         <?php if ($identificacion == 'pasaporte'): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php //echo $form->labelEx($model, 'cedula');   ?>
                                 <label class="" for="">Pasaporte <?php
                                     if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -910,7 +910,7 @@ $tipo = $_GET['tipo'];
                                        <?php echo $form->error($model, 'pasaporte'); ?>
                             </div>
                         <?php endif; ?>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'direccion');    ?>
                             <label class="" for="">Dirección <?php
                                 if ($_GET['tipo'] == 'gestion') {
@@ -923,7 +923,7 @@ $tipo = $_GET['tipo'];
                     </div>
 
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'email');    ?>
                             <label class="" for="">Provincia Domicilio <?php
                                 if ($_GET['tipo'] == 'gestion') {
@@ -974,7 +974,7 @@ $tipo = $_GET['tipo'];
                             ?>
                             <?php echo $form->error($model, 'provincia_domicilio'); ?>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'celular');   ?>
                             <label class="" for="">Ciudad Domicilio <?php
                                 if ($_GET['tipo'] == 'gestion') {
@@ -996,7 +996,7 @@ $tipo = $_GET['tipo'];
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'email');    ?>
                             <label class="" for="">Email <?php
                                 if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -1006,7 +1006,7 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->textField($model, 'email', array('size' => 45, 'maxlength' => 45, 'class' => 'form-control', 'value' => $email)); ?>
                             <?php echo $form->error($model, 'email'); ?>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'celular');   ?>
                             <label class="" for="">Celular <?php
                                 if ($_GET['tipo'] == 'gestion' || $_GET['tipo'] == 'prospeccion') {
@@ -1018,7 +1018,7 @@ $tipo = $_GET['tipo'];
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <input type="hidden" name="GestionInformacion[id_cotizacion]" id="GestionInformacion_id_cotizacion" value="<?php echo $id; ?>">
                             <?php //echo $form->labelEx($model, 'telefono_casa');   ?>
                             <label class="" for="">Teléfono Domicilio <?php
@@ -1029,7 +1029,7 @@ $tipo = $_GET['tipo'];
                             <?php echo $form->textField($model, 'telefono_casa', array('size' => 15, 'maxlength' => 9, 'class' => 'form-control', 'value' => $telefono_casa, 'onkeypress' => 'return validateNumbers(event)')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
                             <?php //echo $form->labelEx($model, 'telefono_oficina');     ?>
                             <label class="" for="">Teléfono Oficina <?php
                                 /* if ($_GET['tipo'] == 'gestion') {
@@ -1042,7 +1042,7 @@ $tipo = $_GET['tipo'];
 
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                             <label for="">¿Por qué medio tuvo información de nuestra marca que motivó su visita?</label>
                             <?php echo $form->dropDownList($model, 'medio', array('' => '--Seleccione el medio--',
                                 'cine' => 'Cine',
@@ -1058,7 +1058,7 @@ $tipo = $_GET['tipo'];
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
-                        <div class="col-md-3" id="cont-recomendaron" style="display:none;">
+                        <div class="col-md-3 col-sm-6 col-xs-12" id="cont-recomendaron" style="display:none;">
                             <label for="">Opciones Recomendaron</label>
                             <?php echo $form->dropDownList($model, 'recomendaron', array(
                                 '' => '--Selecione opción--',
@@ -1070,7 +1070,7 @@ $tipo = $_GET['tipo'];
                             ), array('class' => 'form-control')); ?>
                             <label for="GestionInformacion_recomendaron" generated="true" class="error" id="recomendaron_error" style="display: none;">Seleccione una opción</label>
                         </div>
-                        <div class="col-md-3" id="cont-medio-prensa" style="display:none;">
+                        <div class="col-md-3 col-sm-6 col-xs-12" id="cont-medio-prensa" style="display:none;">
                             <label for="">Medio Prensa</label>
                             <?php 
                             //echo $provincia_id;
@@ -1079,7 +1079,7 @@ $tipo = $_GET['tipo'];
                             ?>
                             <label for="GestionInformacion_medio_prensa" generated="true" class="error" id="medio_prensa_error" style="display: none;">Seleccione un medio de prensa</label>
                         </div>
-                        <div class="col-md-3" id="cont-medio-television" style="display:none;">
+                        <div class="col-md-3 col-sm-6 col-xs-12" id="cont-medio-television" style="display:none;">
                             <label for="">Medio Televisión</label>
                             <?php
                             $medio_television = CHtml::listData(GestionMedios::model()->findAll(array('condition' => "id_provincia IN ({$provincia_id},100) AND tipo_medio = 2")),'medio', 'medio');
@@ -1089,7 +1089,7 @@ $tipo = $_GET['tipo'];
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                             <label for="">¿Por qué consideró la marca KIA?</label>
                             <?php echo $form->dropDownList($model, 'considero', array('' => '--Seleccione una opción--',
                                 'garantia' => 'Garantía',
@@ -1102,7 +1102,7 @@ $tipo = $_GET['tipo'];
                                     array('class' => 'form-control')); ?>
                             <?php echo $form->error($model, 'telefono_casa'); ?>
                         </div>
-                        <div class="col-md-3" id="cont-recomendaron2" style="display:none;">
+                        <div class="col-md-3 col-sm-6 col-xs-12" id="cont-recomendaron2" style="display:none;">
                             <label for="">Opciones Recomendaron</label>
                             <?php echo $form->dropDownList($model, 'considero_recomendaron', array(
                                 '' => '--Selecione opción--',
@@ -1130,7 +1130,7 @@ $tipo = $_GET['tipo'];
                             <h1 class="tl_seccion_rf">Datos del Concesionario</h1>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php echo $form->labelEx($model, 'provincia_conc'); ?>
                                 <?php
                                 $criteria = new CDbCriteria(array(
@@ -1150,7 +1150,7 @@ $tipo = $_GET['tipo'];
                                 <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));   ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php echo $form->labelEx($model, 'ciudad_conc'); ?>
                                 <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                                 <?php
@@ -1162,7 +1162,7 @@ $tipo = $_GET['tipo'];
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 col-xs-12">
                                 <?php echo $form->labelEx($model, 'concesionario'); ?>
                                 <div id="info6" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
                                 <?php
