@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'gestion_files':
  * @property string $id
  * @property string $nombre
+ * @property string $descripcion
  * @property string $year
  * @property string $mes
  * @property integer $tipo
@@ -45,7 +46,7 @@ class GestionFiles extends CActiveRecord
 			array('tipo', 'required'),
 			array('tipo', 'numerical', 'integerOnly'=>true),
 			array('nombre, provincia, modelo', 'length', 'max'=>255),
-			array('year, mes, fecha_actualizacion, fecha', 'safe'),
+			array('descripcion, year, mes, fecha_actualizacion, fecha', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, nombre, descripcion, tipo, provincia, modelo, fecha_actualizacion, fecha', 'safe', 'on'=>'search'),
@@ -71,6 +72,7 @@ class GestionFiles extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
+			'descripcion' => 'Descripcion',
 			'year' => 'Año',
 			'mes' => 'Mes',
 			'tipo' => 'Tipo',

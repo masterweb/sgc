@@ -21,6 +21,12 @@ $(document).ready(function() {
 /* @var $model GestionFiles */
 /* @var $form CActiveForm */
 ?>
+<div class="container">
+<div class="row">
+	<div class="col-md-12">
+		<h2>Formulario para Biblioteca</h2>
+	</div>
+</div>
 
 <div class="form">
 
@@ -35,7 +41,7 @@ $(document).ready(function() {
 	<?php //echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<?php echo $form->labelEx($model,'nombre'); ?>
 			<?php echo $form->FileField($model,'nombre',array('size'=>60,'maxlength'=>255,'class' => 'form-control')); ?>
 			<?php echo $form->error($model,'nombre'); ?>
@@ -44,13 +50,22 @@ $(document).ready(function() {
 
 	<div class="row">
 		<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
+			<?php echo $form->labelEx($model,'descripcion'); ?>
+			<?php echo $form->textField($model,'descripcion', array('class' => 'form-control')); ?>
+			<?php echo $form->error($model,'descripcion'); ?>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="row">
+		<div class="col-md-4">
 			<?php echo $form->labelEx($model,'year'); ?>
 			<?php echo $form->dropDownList($model,'year',array('2017' => '2017', '2018' => '2018'), array('class' => 'form-control')); ?>
 			<?php echo $form->error($model,'year'); ?>
 		</div>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<?php echo $form->labelEx($model,'mes'); ?>
 		<?php echo $form->dropDownList($model,'mes',array(
 		'Enero' => 'Enero',
@@ -71,7 +86,7 @@ $(document).ready(function() {
 	</div>
 
 	<div class="row">
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<?php echo $form->labelEx($model,'tipo'); ?>
 			<?php echo $form->dropDownList($model,'tipo',array('1' => 'Libros de Producto', '2' => 'Presentación de Producto', '3' => 
 			'Proceso de Ventas', '4' => 'Precios de Mercado', '5' => 'Cuadros Comparativos Competencia'), array('class' => 'form-control')); ?>
@@ -80,14 +95,17 @@ $(document).ready(function() {
 	</div>
 
 	<div class="row">
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<?php echo $form->labelEx($model,'provincia'); ?>
-		<?php echo $form->textField($model,'provincia',array('size'=>60,'maxlength'=>255,'class' => 'form-control')); ?>
+		<?php
+        $provincias = CHtml::listData(Provincias::model()->findAll(array('condition' => "estado = 's'", 'order' => "nombre")), "id_provincia", "nombre");
+        ?>
+		<?php echo $form->dropDownList($model,'provincia', $provincias, array('class' => 'form-control', 'empty' => 'Seleccione una provincia')); ?>
 		<?php echo $form->error($model,'provincia'); ?></div>
 	</div>
 
 	<div class="row">
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<?php echo $form->labelEx($model,'modelo'); ?>
 		<?php echo $form->textField($model,'modelo',array('size'=>60,'maxlength'=>255,'class' => 'form-control')); ?>
 		<?php echo $form->error($model,'modelo'); ?>
@@ -103,7 +121,7 @@ $(document).ready(function() {
 	</div>-->
 
 	<div class="row buttons">
-		<div class="col-md-2">
+		<div class="col-md-4">
 			<?php echo CHtml::submitButton($model->isNewRecord ? 'Grabar' : 'Save', array('class' => 'btn btn-danger')); ?>
 		</div>
 	</div>
@@ -111,3 +129,4 @@ $(document).ready(function() {
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+</div>

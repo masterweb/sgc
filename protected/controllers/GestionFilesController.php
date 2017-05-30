@@ -74,31 +74,20 @@ class GestionFilesController extends Controller
 			echo '</pre>';
 			die();*/
 			$model->attributes=$_POST['GestionFiles'];
-			require_once 'upload/uploadfile.php';
-			$upload = new Upload();
-			$targetDirectory = Yii::getPathOfAlias("webroot") . "/images/uploads/libreria/";
-			$fileName = $_FILES['GestionFiles']['name'];
-			$upload->SetFileName($fileName);
-	        $upload->SetTempName($_FILES['GestionFiles']['tmp_name']);
-	        $upload->SetUploadDirectory($targetDirectory);
-	        //$upload->SetValidExtensions(array('pdf', 'doc', 'docx','xls', 'xlsx', 'jpg', 'jpeg'));
-	        $upload->SetMaximumFileSize(12097152); //12 MB de limite
-	        $name = $upload->GetFileName();
-	        $upload->UploadFile();
 
-			//$archivoThumb = CUploadedFile::getInstance($model, 'nombre');
-			date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-			//$fileName = "{$archivoThumb}";  // file name
-			//if ($archivoThumb != "") {
-					//die('enter file');
-					$model->nombre = $fileName;
-					$model->fecha_actualizacion = date("Y-m-d H:i:s");
-			//		$model->fecha_actualizacion = $_POST['GestionFiles']['fecha_actualizacion'];
-					if ($model->save()) {
-						$this->redirect(array('admin'));
-					}
-			//}
-			//if($model->save())
+			$archivoThumb = CUploadedFile::getInstance($model, 'nombre');
+            $fileName = "{$archivoThumb}";  // file name
+            if ($archivoThumb != "") {
+                    //die('enter file');
+                $model->nombre = $fileName;
+                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                $model->fecha_actualizacion = date("Y-m-d H:i:s");
+                if ($model->save()) {
+                    $archivoThumb->saveAs(Yii::getPathOfAlias("webroot") . "/images/uploads/libreria/" . $fileName);
+                    $this->redirect(array('admin'));
+                }
+            }
+			
 				
 		}
 
