@@ -31,47 +31,53 @@ if($ced){
     if($dat == 0){
         //die('enter dat 0');
         $uriservicio = "http://www.playavip.com.ec/webservicesinpsercom.php?ced=".$ced->cedula."&usr=inpsercom";
-        $xml = simplexml_load_file($uriservicio);
-        if($xml->civil->cedula != ''){
-            $xml_string = $xml->asXML();
-            //echo '<pre>' . utf8_decode($xml_string) . '</pre>';
-            $modeldb = new GestionDatabook;
-            $modeldb->id_informacion = $id_informacion;
-            $modeldb->id_vehiculo = $id_vehiculo;
-            $modeldb->identificacion = $ced->cedula;
-            $modeldb->xml_databook = utf8_decode($xml_string);
-            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-            $modeldb->fecha = date("Y-m-d H:i:s"); 
-            $modeldb->save();
-            $valid_cedula = 1;
-            $vartrf['read_first_time'] = 1;
-            $vartrf['cedula'] = $xml->civil->cedula;
-            $vartrf['estadocivil'] = $xml->civil->cedula;
-            $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
-            $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
-            $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
-            $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
-            $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
-            $vartrf['salarioactual'] = $xml->actual->salarioactual;
-            $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
-            $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
-            $vartrf['cargo'] = $xml->actual->cargo;
-            $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
-            $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
-            $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
-            // CALCULAR TIEMPO DE TRABAJO EN MESES
-            /*$dt = time();
-            $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
-            $fechaanterior = new DateTime($vartrf['fechaentrada']);
-            $fechaactual = new DateTime();
-            $fechaactual->format('d/m/Y');
-            $diferencia = $fechaactual->diff($fechaanterior);
-            $meses = ( $diferencia->y * 12 ) + $diferencia->m;
-            $years = floor($meses / 12);
-            $meses_resto = $meses % 12;*/
+        libxml_use_internal_errors(TRUE); // this turns off spitting errors on your screen
+        try{
+            $xml = simplexml_load_file($uriservicio);
+            if($xml->civil->cedula != ''){
+                $xml_string = $xml->asXML();
+                //echo '<pre>' . utf8_decode($xml_string) . '</pre>';
+                $modeldb = new GestionDatabook;
+                $modeldb->id_informacion = $id_informacion;
+                $modeldb->id_vehiculo = $id_vehiculo;
+                $modeldb->identificacion = $ced->cedula;
+                $modeldb->xml_databook = utf8_decode($xml_string);
+                date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+                $modeldb->fecha = date("Y-m-d H:i:s"); 
+                $modeldb->save();
+                $valid_cedula = 1;
+                $vartrf['read_first_time'] = 1;
+                $vartrf['cedula'] = $xml->civil->cedula;
+                $vartrf['estadocivil'] = $xml->civil->cedula;
+                $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
+                $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
+                $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
+                $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
+                $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
+                $vartrf['salarioactual'] = $xml->actual->salarioactual;
+                $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
+                $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
+                $vartrf['cargo'] = $xml->actual->cargo;
+                $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
+                $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
+                $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
+                // CALCULAR TIEMPO DE TRABAJO EN MESES
+                /*$dt = time();
+                $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
+                $fechaanterior = new DateTime($vartrf['fechaentrada']);
+                $fechaactual = new DateTime();
+                $fechaactual->format('d/m/Y');
+                $diferencia = $fechaactual->diff($fechaanterior);
+                $meses = ( $diferencia->y * 12 ) + $diferencia->m;
+                $years = floor($meses / 12);
+                $meses_resto = $meses % 12;*/
 
 
+            }
+        } catch(Exception $e){
+            //ctadie('enter exception');
         }
+        
         
         
         /*if ($modeldb->validate()) {
@@ -3139,6 +3145,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 </div>
                                 <div class="col-md-5" id="cont-firma-img" style="display: none;">
                                     <img src="" alt="" width="200" height="100" id="img-firma">
+                                    <input type="hidden" id="img-firma-cont" value="">
                                     <hr>
                                     Firma Cliente
                                 </div>
