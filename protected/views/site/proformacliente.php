@@ -169,15 +169,25 @@ $fecha_proforma = explode(' ', $fecha->fecha);
         <div class="row"><div class="col-md-12">Opción 1<hr style="color:#911714;"></div></div>
 
         <?php
-        $paramAutos = explode('@', $value['accesorios']);
-        $strinAcc = '';
-        $valAcc = 0;
-        foreach ($paramAutos as $val) {
-            $strD = explode('-', $val);
-            $strinAcc .= $strD[1] . ',';
-            $valAcc += (int) $strD[0];
-        }
 
+        # SI NO HAY ACCESORIOS OPCIONALES Y ACCESORIOS MANUALES - PONER PRECIO NORMAL DEL VEHICULO
+        if(empty($value['accesorios']) && empty($value['accesorios_manual'])){
+            $precio_fr = $value['precio'];
+        }
+        # SI HAY ACCESORIOS OPCIONALES
+        if(!empty($value['accesorios'])){
+            $paramAutos = explode('@', $value['accesorios']);
+            $strinAcc = '';
+            $valAcc = 0;
+            foreach ($paramAutos as $val) {
+                $strD = explode('-', $val);
+                $strinAcc .= $strD[1] . ',';
+                $valAcc += (int) $strD[0];
+            }
+            $precio_fr = $value['precio'] +  $valAcc;
+        }
+        
+        # SI HAY ACCESORIOS MANUALES
         if (!empty($value['accesorios_manual'])) {
             $strAccManuales = $value['accesorios_manual'];
             $strAccManuales = substr($strAccManuales, 0, -1);
@@ -186,21 +196,22 @@ $fecha_proforma = explode(' ', $fecha->fecha);
             foreach ($paramsAccManuales as $val) {
                 $strD = explode('-', $val);
                 $strinAcc .= $strD[1] . ',';
+                $valAcc += (int) $strD[0];
             }
-            // calcular diferencia de los accesorios manuales
-            $precioNormal = $this->getPrecioNormal($value['version']);
-            $dif = $value['precio_vehiculo'] - $precioNormal - $valAcc;
-            $valAcc += (int) $dif;
+            $precio_fr = $value['precio'] + $valAcc;
+            
         }
+        //die('precio fr: '.$precio_fr);
 
+        // CADENA DE ACCCESORIOS OPCIONALES Y MANUALES
         $strinAcc = trim(substr($strinAcc, 0, -1));
 
         $precioNormal = $this->getPrecioNormal($value['version']);
-        if (count($paramAutos) > 0) {
+        /*if (count($paramAutos) > 0) {
             $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
         } else {
             $precioAccesorios = 0;
-        }
+        }*/
         ?>
 
         <div class="row">
@@ -214,7 +225,7 @@ $fecha_proforma = explode(' ', $fecha->fecha);
             <div class="col-xs-12"><strong>ACCESORIOS TOTAL: </strong> $ <?php echo number_format($value['total_accesorios']); ?></div>    
         </div>
         <div class="row">
-            <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($value['precio_vehiculo']); ?></div>
+            <div class="col-xs-8"><strong>PRECIO DE VENTA INCLUÍDO ACCESORIOS (INC. I.V.A): </strong> $ <?php echo number_format($precio_fr); ?></div>
 
         </div>
         <div class="row">

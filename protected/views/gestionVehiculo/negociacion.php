@@ -290,8 +290,8 @@ if($fuente == 'web'){
             var accesorio2 = $(this).val();
             var idacc = $(this).prop('id');
             var id = idacc.split("-");
-            var precioanterior = formatnumber($('#precio_accesorios').val());
-            var precioanterior2 = $('#precio_accesorios2').val();
+            var precioanterior = formatnumber($('#precio_accesorios').val()); // suma de accesorios
+            var precioanterior2 = $('#precio_accesorios2').val(); //  suma de accesorios + valor de vehiculo
             console.log('precio anterior2: '+precioanterior2);
             var valorFin = $('#GestionFinanciamiento_entrada').val();
             var valorFin2 = $('#GestionFinanciamiento_entrada2').val();
@@ -302,14 +302,16 @@ if($fuente == 'web'){
             var savecounter = 0; // numero de formulario a editar original
             // si no se ha generado una proforma, continua el proceso normal
             
-            // ya se ha generado una proforma
-            if(flag == 1){
-                savecounter = $('#options-cont').val();// guardamos el valor del contador de formularios
-                // asignamos al contador de formularios el valor del click edit() del formulario
-                counter = $('#GestionFinanciamiento_mod').val();
-            }
+            // ya se ha generado una proforma se debe dar click en el boton edit de cada opcion para hacer activa la opcion
+    //        if(flag == 1){
+    //            savecounter = $('#options-cont').val();// guardamos el valor del contador de formularios
+    //            // asignamos al contador de formularios el valor del click edit() del formulario
+    //           counter = $('#GestionFinanciamiento_mod').val();
+    //        }
             
             var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val();
+
+            // numero de accesorios opcionales en los checkbox
             var accesorioscont = $('#accesorioscont').val();
             var stracc1 = '';var stracc2 = '';var stracc3 = '';
             
@@ -317,6 +319,7 @@ if($fuente == 'web'){
                 
             }
             if ($(this).prop('checked')) {
+
                 var precionuevo = parseInt(precioanterior2) + parseInt(accesorio2);
                 console.log('precio nuevo: '+precionuevo);
                 var accesorios_sum = parseInt(precioanterior) + parseInt(accesorio2);
@@ -340,7 +343,7 @@ if($fuente == 'web'){
                         
                         for (var i = 1; i <= accesorioscont; i++) {
                             if ($('#accesorio-' + i).prop('checked')) {
-                                //console.log('Accesorio '+i+', checked');
+                                console.log('Accesorio '+i+', checked');
                                 acc1.push(i);
                                 sat = $('#accesorio-' + i).val();
                                 param = sat.split('-');
@@ -357,7 +360,7 @@ if($fuente == 'web'){
                         console.log('ARRAY ACCESORIOS 1: '+acc1);
                         if(flag == 1){// si se ha generado una proforma
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                     case '3':
@@ -391,7 +394,7 @@ if($fuente == 'web'){
                         console.log('ARRAY ACCESORIOS 2: '+acc2);
                         if(flag == 1){
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                     case '4':
@@ -424,7 +427,7 @@ if($fuente == 'web'){
                         console.log('ARRAY ACCESORIOS 3: '+acc3);
                         if(flag == 1){
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                 }
@@ -451,7 +454,7 @@ if($fuente == 'web'){
                                 calcFinanciamiento();
                             }
                         }
-                        /*for (var i = 1; i <= accesorioscont; i++) {
+                        for (var i = 1; i <= accesorioscont; i++) {
                             if ($('#accesorio-' + i).prop('checked')) {
                                 //console.log('Accesorio '+i+', checked');
                                 acc1.push(i);
@@ -463,13 +466,13 @@ if($fuente == 'web'){
                                     //$('#accspan-' + i).removeClass('label-price');
                                 }
                             }
-                        }*/
+                        }
                         //console.log('string accesorios3: '+stracc3);
                         $('#GestionFinanciamiento_acc1').val(stracc1);
                         console.log('ARRAY ACCESORIOS 1: '+acc1);
                         if(flag == 1){
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                     case '3':
@@ -504,7 +507,7 @@ if($fuente == 'web'){
                         console.log('ARRAY ACCESORIOS 2: '+acc2);
                         if(flag == 1){
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                     case '4':
@@ -539,7 +542,7 @@ if($fuente == 'web'){
                         console.log('ARRAY ACCESORIOS 3: '+acc3);
                         if(flag == 1){
                             // volver a poner el valor del contador original
-                            $('#options-cont').val(savecounter);
+                        //    $('#options-cont').val(savecounter);
                         }
                         break;
                 }
@@ -618,18 +621,19 @@ if($fuente == 'web'){
         }
 
     }
+    // FUNCION PARA SUMAR VALORES DE ACCESORIOS MANUALES A PRECIO VEHICULO Y PRECIO VEHICULO SEGURO TOTAL
     function sco(){
         tipo_finan = $('#GestionFinanciamiento_tipo_financiamiento').val();
         options_cont = $('#options-cont').val();
-        //console.log('options cont: '+options_cont);
+        console.log('options cont: '+options_cont);
         switch(options_cont){
             case '2':
-                sumaccres = $('#sum-accesorios-res2').val();
+                sumaccres = $('#sum-accesorios-res2').val(); // suma de accesorios 
                 accmanuales = formatnumber($('#sum-accesorios2').val());
-                //console.log('accmanuales: '+accmanuales);
-                precioaccesorios = formatnumber($('#precio_accesorios').val());
-                //console.log('precio accesorios: '+precioaccesorios);
-                precioaccesorios2 = parseInt($('#precio_accesorios2').val());
+                console.log('accmanuales: '+accmanuales);
+                precioaccesorios = formatnumber($('#precio_accesorios').val());// suma de accesorios opcionales y manuales
+                console.log('precio accesorios: '+precioaccesorios);
+                precioaccesorios2 = parseInt($('#precio_accesorios2').val());// suma de accesorios opcionales, manuales y precio del vehiculo normal 
                 if(tipo_finan == 1){
                     precio = formatnumber($('#GestionFinanciamiento_precio').val());
                 }else{
@@ -640,10 +644,24 @@ if($fuente == 'web'){
                     sumaccres = formatnumber(sumaccres);
                     precioaccesorios = precioaccesorios - sumaccres;
                 }  
-
+                // suma de todos los accesorios 
                 tacc = accmanuales + precioaccesorios;
+                console.log('accmanuales + precioaccesorios: '+tacc);
                 //precio_finan = precio + accmanuales;
+
+                // precio de vehiculo + suma de todos los accesorios
                 precio_finan = tacc + formatnumber($('#precio_normal').val());
+
+                // si existe un seguro seleccionado, sumar valor total de accesorios manuales a precio total vehiculo seguro
+                if($('#GestionFinanciamiento_tiempo_seguro_contado').val() != undefined){
+                    console.log('entra a no undefined');
+                    precio_finan_seguro = formatnumber($('#GestionFinanciamiento_precio_contado_total').val());
+                    precio_finan_seguro += accmanuales;
+                    $('#GestionFinanciamiento_precio_contado_total').val(format2(precio_finan_seguro, '$'));
+                }
+                
+                console.log('precio finan: '+precio_finan);
+
                 $('#precio_accesorios2').val(precio_finan);
                 tacc = format2(tacc, '$');precio_finan = format2(precio_finan, '$');
                 $("#precio_accesorios").val(tacc);
@@ -1350,6 +1368,7 @@ if($fuente == 'web'){
                 $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                 if ($('#GestionFinanciamiento_tipo_financiamiento').val() == 1)
                     $('.def').removeAttr('disabled');
+                $('#total-acc1').val($('#precio_accesorios').val());
                 //$('#GestionFinanciamiento_acc1').val(stracc1);
                 break;
             case '3':
@@ -1371,6 +1390,7 @@ if($fuente == 'web'){
                 $('#GestionFinanciamiento_plazo2').removeAttr('disabled');
                 $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                 $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
+                $('#total-acc2').val($('#precio_accesorios').val());
                 //$('#GestionFinanciamiento_acc2').val(stracc2);
                 break;
             case '4':
@@ -1398,6 +1418,7 @@ if($fuente == 'web'){
                 $('#GestionFinanciamiento_tiempo_seguro').removeAttr('disabled');
                 $('#GestionFinanciamiento_tiempo_seguro2').removeAttr('disabled');
                 $('#GestionFinanciamiento_tiempo_seguro3').removeAttr('disabled');
+                $('#total-acc3').val($('#precio_accesorios').val());
                 //$('#GestionFinanciamiento_acc3').val(stracc3);
                 break;
         }
@@ -2916,6 +2937,7 @@ if($fuente == 'web'){
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                <label for="">Tasa</label>
                                                 <input type="text" name="GestionFinanciamiento1[tasa]" id="GestionFinanciamiento_tasa" class="form-control" value="16,06" maxlength="5"/>
                                             </div>
                                         </div>
