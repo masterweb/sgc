@@ -847,6 +847,7 @@ if ($fi == 2) {
                 // asignamos al contador de formularios el valor del click edit() del formulario
                 counter = $('#GestionFinanciamiento_mod').val();
             }
+            //console.log('counter: '+counter);
             
             var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val();
             var accesorioscont = $('#accesorioscont').val();
@@ -3160,7 +3161,7 @@ if ($fi == 2) {
     }
     
     function setContadoPrecio(secure, counter, accesorio2,tipo){
-    //console.log('secure: '+secure);
+    console.log('secure: '+secure + ', counter: '+ counter + ', accesorios: ' + accesorio2 + ', tipo: '+ tipo);
         if(counter == 2){
             counter = '';
         }else{
@@ -3172,9 +3173,11 @@ if ($fi == 2) {
                 case '':
                 case '0':
                     precionuevo = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val())+ parseInt(accesorio2);
-                    //console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
-                    //console.log('precionuevo suma: '+precionuevo);
+                    sumacontado = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val()) + parseInt(accesorio2);
+                    console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
+                    console.log('precionuevo suma: '+precionuevo);
                     $('#GestionFinanciamiento_precio_contado'+counter).val(format2(precionuevo, '$'));
+                    $('#GestionFinanciamiento_precio_contado'+counter).val(format2(sumacontado, '$'));
                     //alert('pone nuevo valor a precio contado');
                     break;
                 case '1':
@@ -3183,9 +3186,13 @@ if ($fi == 2) {
                 case '4':
                 case '5':
                     precionuevo = formatnumber($('#GestionFinanciamiento_precio_contado_total'+counter).val())+ parseInt(accesorio2);
-                    //console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
-                    //console.log('precionuevo suma: '+precionuevo);
+                    // sumar accesorios al precio de contado
+                    sumacontado = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val()) + parseInt(accesorio2);
+                    console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
+                    console.log('precionuevo suma: '+precionuevo);
                     $('#GestionFinanciamiento_precio_contado_total'+counter).val(format2(precionuevo, '$'));
+                    $('#GestionFinanciamiento_precio_contado'+counter).val(format2(sumacontado, '$'));
+
                     //alert('pone nuevo valor a precio contado');
                     break;
                 default:

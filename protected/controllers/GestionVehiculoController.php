@@ -1133,7 +1133,7 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $con = Yii::app()->db;
         $sql = "SELECT gf.forma_pago, gf.precio_vehiculo,gf.total_accesorios, gf.seguro, gf.valor_financiamiento, gf.cuota_inicial, gf.saldo_financiar, gf.plazos, 
 gf.entidad_financiera, gf.id as id_financiamiento, gf.ts, gf.observaciones, gf.cuota_mensual, gi.nombres, gi.apellidos, gi.direccion, gi.celular, gi.telefono_casa, 
-gi.responsable, gv.modelo, gv.version, gv.accesorios, gv.accesorios_manual
+gi.responsable, gv.modelo, gv.version, gv.accesorios, gv.accesorios_manual, gv.precio
 FROM gestion_financiamiento gf 
 INNER JOIN gestion_informacion gi ON gi.id =  gf.id_informacion 
 INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo 
