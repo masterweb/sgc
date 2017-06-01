@@ -3795,6 +3795,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('carta de bienvenida.pdf', 'I');
     }
+
+    public function actionBiblioteca(){
+        $this->render('biblioteca');
+    }
     
     /*public function actionSolicitud(){
         $criteria = new CDbCriteria;
