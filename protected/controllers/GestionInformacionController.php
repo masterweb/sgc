@@ -1998,9 +1998,9 @@ class GestionInformacionController extends Controller {
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
-        $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
+        $tipo_grupo = 1; // GRUPOS KMOTOR POR DEFECTO
         if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 ){
-            $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, ASIAUTO, IOKARS
+            $tipo_grupo = 0; // GRUPOS IOKARS, EMPROMOTOR, AUTHESA, ASIAUTO, MERQUIAUTO, MOTRICENTRO
         }
         $area_id = (int) Yii::app()->user->getState('area_id');
         //die('cargo id:'.$cargo_id);
@@ -2037,9 +2037,9 @@ class GestionInformacionController extends Controller {
                 break;
             case 70: // JEFE DE SUCURSAL
                 if($cargo_adicional == 0){ // CON UN SOLO CARGO
-                    $array_dealers = $this->getResponsablesVariosConc();
+                    $array_dealers = $this->getResponsablesVariosConc(1);
                     if(count($array_dealers) == 0){
-                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                     }
                     $dealerList = implode(', ', $array_dealers);
                     $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
@@ -2052,32 +2052,47 @@ class GestionInformacionController extends Controller {
                 }
                 if ($cargo_adicional == 85 && $tipo_grupo == 0) { // JEFE DE SUCURSAL CON SEGUNDO CARGO JEFE DE VENTAS EXTERNAS - CONCESIONARIOS INDEPENDIENTES
                     //die('enter jefe');
-                    $array_dealers = $this->getResponsablesVariosConc();
-                    if(count($array_dealers) == 0){
-                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    if($doble_concesionario == 1){
+                        $array_dealers = $this->getResponsablesVariosConc(2);
+                        if(count($array_dealers) == 0){
+                            $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,2);
+                        }
+                    }else{
+                        $array_dealers = $this->getResponsablesVariosConc(1);
+                        if(count($array_dealers) == 0){
+                            $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                        }
                     }
+                    
                     $dealerList = implode(', ', $array_dealers);
                     $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
                     $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
                     $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                     $criteria->addCondition("gi.bdc = 0 OR gi.bdc = 1");
-                    $criteria->addCondition("u.cargo_id IN (70,71)");
+                    if($doble_concesionario == 1){
+                       $criteria->addCondition("u.cargo_id IN (70,71,86)"); 
+                       }else{
+                            $criteria->addCondition("u.cargo_id IN (70,71)");
+                       }
+                    
                     $criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes}' and '{$dt_hoy}'");
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
                 }
                 # JEFES AGENCIA Y JEJE WEB DE MAS DE UN CONCESIONARIO
-                if($cargo_adicional == 85 && $doble_concesionario == 1){
-                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
-                }
+                //if($cargo_adicional == 85 && $doble_concesionario == 1){
+                //    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,2);
+                //    $dealerList = implode(', ', $array_dealers);
+                //    $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                //}
                 break;
             case 71: // ASESOR DE VENTAS
                 // ASESOR DE VENTAS Y ASESOR DE VENTAS EXTERNAS DOBLE CARGO
                 if ($cargo_adicional == 86 && $tipo_grupo == 0) { 
                     //die('enter jefe');
-                    $array_dealers = $this->getResponsablesVariosConc();
+                    $array_dealers = $this->getResponsablesVariosConc(1);
                     if(count($array_dealers) == 0){
-                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                     }
                     $dealerList = implode(', ', $array_dealers);
                     $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' ";
@@ -2219,7 +2234,7 @@ class GestionInformacionController extends Controller {
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $area_id = (int) Yii::app()->user->getState('area_id');
         $id_responsable = Yii::app()->user->getId();
-        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
         $dealerList = implode(', ', $array_dealers);
         $dealer_id = $this->getDealerId($id_responsable);
         
@@ -2731,7 +2746,7 @@ class GestionInformacionController extends Controller {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $id_responsable = Yii::app()->user->getId();
-        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
         $dealerList = implode(', ', $array_dealers);
 
         $area_id = (int) Yii::app()->user->getState('area_id');
@@ -5795,6 +5810,7 @@ GROUP BY gv.id_informacion";
         $comentario = isset($_POST["comentario"]) ? $_POST["comentario"] : "";
         $checkboxvalues = isset($_POST["checkboxvalues"]) ? $_POST["checkboxvalues"] : "";
         $cargo_id = $this->getCargo($id);
+        $cargo_adicional = Yii::app()->user->getState('grupo_id') ;
         $dealer_id = $this->getDealerId($id);
         $con = Yii::app()->db;
         $result = TRUE;
@@ -5810,7 +5826,9 @@ GROUP BY gv.id_informacion";
             $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id} WHERE id = {$param[0]}";
             if($cargo_id == 86 && Yii::app()->user->getState('grupo_id') == 3) # REASIGNAR CLIENTES A ASESORES WEB DE KMOTOR
                 $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id}, dealer_id = {$dealer_id}, concesionario = {$dealer_id} WHERE id = {$param[0]}";
-            
+            if((Yii::app()->user->getState('grupo_id') == 2) && $cargo_adicional == 85){ # REASIGNAR CLIENTES DE ASIAUTO CON JEFE DOBLE CARGO
+                 $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id}, dealer_id = {$dealer_id}, concesionario = {$dealer_id} WHERE id = {$param[0]}";
+            }
             
             if (!$request = $con->createCommand($sql)->execute()) {
                 $result = FALSE;

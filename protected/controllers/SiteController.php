@@ -3800,6 +3800,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $this->render('biblioteca');
     }
     
+    
     /*public function actionSolicitud(){
         $criteria = new CDbCriteria;
         $criteria->select = "gs.status, gs.id_informacion, gs.id_vehiculo";

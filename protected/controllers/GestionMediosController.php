@@ -30,7 +30,7 @@ class GestionMediosController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update','reportes','traficoDetalle','reportesBusqueda'),
+                'actions' => array('create', 'update','reportes','traficoDetalle','reportesBusqueda','traficoDetalleConsidera'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -228,6 +228,7 @@ class GestionMediosController extends Controller {
 	        $varView['fecha_anterior'] = strftime("%Y-%m-%d", strtotime('-1 month', $dt));
 	        $varView['fecha_inicial_anterior'] = strftime("%Y-%m", strtotime('-1 month', $dt)) . '-01';
         }
+       
         $varView['cine'] = $this->getReporte('cine',$varView['fecha_inicial_actual'], $varView['fecha_actual']);
 
         $varView['cine_anterior'] = $this->getReporte('cine',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
@@ -245,7 +246,37 @@ class GestionMediosController extends Controller {
         $varView['internet_anterior'] = $this->getReporte('internet',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
         $varView['redes_sociales'] = $this->getReporte('redessociales',$varView['fecha_inicial_actual'], $varView['fecha_actual']);
         $varView['redes_sociales_anterior'] = $this->getReporte('redessociales',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+        
+
+        /*PREGUNTA PORQUE CONSIDERO KIA*/
+
+        $varView['garantia'] = $this->getReporteConsidera('garantia',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['garantia_anterior'] = $this->getReporteConsidera('garantia',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+
+		$varView['diseño'] = $this->getReporteConsidera('diseno',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['diseño_anterior'] = $this->getReporteConsidera('diseno',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+		$varView['precio'] = $this->getReporteConsidera('precio',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['precio_anterior'] = $this->getReporteConsidera('precio',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+
+		$varView['recomendacion_considera'] = $this->getReporteConsidera('recomendacion',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['recomendacion_considera_anterior'] = $this->getReporteConsidera('recomendacion',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+
+		$varView['servicio'] = $this->getReporteConsidera('servicio',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['servicio_anterior'] = $this->getReporteConsidera('servicio',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+
+		$varView['recompra'] = $this->getReporteConsidera('recompra',$varView['fecha_inicial_actual'], $varView['fecha_actual']);	
+		$varView['recompra_anterior'] = $this->getReporteConsidera('recompra',$varView['fecha_inicial_anterior'], $varView['fecha_anterior']);
+
+
+
         $this->render('reportes', array('varView' => $varView));
+
+
 
     }
     
@@ -260,11 +291,47 @@ class GestionMediosController extends Controller {
      */
     public function getReporte($tipo_medio, $fecha_inicial, $fecha_actual) {
         $criteria = new CDbCriteria;
-        $criteria->condition = "medio = '{$tipo_medio}'";
-        $criteria->addCondition("(DATE(fecha) BETWEEN '{$fecha_inicial}' AND '{$fecha_actual}')");
+        $criteria->select = "DISTINCT gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, m.nombre_modelo, v.nombre_version, gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, 
+gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, 
+gi.considero_recomendaron as marca_kia_recomendacion, gi.bdc";
+        $criteria->alias = 'gi';
+        $criteria->join = "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        $criteria->join .= " INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= " INNER JOIN modelos m ON m.id_modelos = gv.modelo"; 
+        $criteria->join .= " LEFT JOIN versiones v ON v.id_versiones = gv.version";
+        $criteria->join .= " INNER JOIN dealers d ON d.id = gi.dealer_id ";
+        $criteria->join .= " LEFT JOIN usuarios u ON u.id = gi.responsable ";
+        $criteria->condition = "gi.medio = '{$tipo_medio}'";
+        $criteria->addCondition("(DATE(gi.fecha) BETWEEN '{$fecha_inicial}' AND '{$fecha_actual}')");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        $criteria->addCondition(" gi.bdc = 0 AND gv.orden = 1");
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //   echo '</pre>';
+    //    die();
        
-        $posts = GestionInformacion::model()->count($criteria);
-        return $posts;
+        $posts = GestionInformacion::model()->findAll($criteria);
+        return count($posts);
+    }
+    public function getReporteConsidera($considera, $fecha_inicial, $fecha_actual) {
+        $criteria = new CDbCriteria;
+        $criteria->select = "DISTINCT gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, m.nombre_modelo, v.nombre_version, gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, 
+gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, 
+gi.considero_recomendaron as marca_kia_recomendacion, gi.bdc";
+        $criteria->alias = 'gi';
+        $criteria->join = "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        $criteria->join .= " INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= " INNER JOIN modelos m ON m.id_modelos = gv.modelo"; 
+        $criteria->join .= " LEFT JOIN versiones v ON v.id_versiones = gv.version";
+        $criteria->join .= " INNER JOIN dealers d ON d.id = gi.dealer_id ";
+        $criteria->join .= " LEFT JOIN usuarios u ON u.id = gi.responsable ";
+        $criteria->condition = "gi.considero = '{$considera}'";
+        $criteria->addCondition("(DATE(gi.fecha) BETWEEN '{$fecha_inicial}' AND '{$fecha_actual}')");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        $criteria->addCondition(" gi.bdc = 0 AND gv.orden = 1");
+       
+        $posts = GestionInformacion::model()->findAll($criteria);
+        return count($posts);
     }
    
     public function actionTraficoDetalle() {
@@ -276,28 +343,74 @@ class GestionMediosController extends Controller {
         $fecha_final = isset($_POST['fecha_final']) ? $_POST["fecha_final"] : "";
         //$provincia = isset($_POST['provincia']) ? $_POST["provincia"] : "";
 
-        
-       
-       
-       
         if($tipo_medio == 'television'){
           
-           $group='medio_television';
+           $group='gi.medio_television';
            
         }
-        if($tipo_medio == 'prensa_escrita'){
+        else if($tipo_medio == 'prensa_escrita'){
         	
-        	$group='medio_prensa';
+        	$group='gi.medio_prensa';
            
         }
- 		$sql = 'SELECT ' . $group .' AS medio, count(id) as cantidad FROM callcenter.gestion_informacion WHERE medio = \''.$tipo_medio.'\' AND (DATE(fecha) BETWEEN \''.$fecha_inicial.'\' AND \''.$fecha_final.'\') GROUP BY '.$group.' HAVING cantidad>0 ORDER BY cantidad DESC';
+        else if($tipo_medio == 'recomendacion'){
+        	
+        	$group='gi.recomendaron';
+           
+        }
+ 		$sql = 'SELECT DISTINCT ' . $group .' AS medio, count(gi.id) as cantidad FROM gestion_informacion gi 
+        INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id  
+        INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  
+        INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+        LEFT JOIN versiones v ON v.id_versiones = gv.version 
+        INNER JOIN dealers d ON d.id = gi.dealer_id 
+        LEFT JOIN usuarios u ON u.id = gi.responsable 
+        WHERE gi.medio = \''.$tipo_medio.'\' AND (DATE(gi.fecha) BETWEEN \''.$fecha_inicial.'\' AND \''.$fecha_final.'\') 
+        AND (gd.fuente_contacto = "showroom" OR gd.fuente_contacto = "trafico") AND ( gi.bdc = 0 AND gv.orden = 1)
+        GROUP BY '.$group.' HAVING cantidad>0 ORDER BY cantidad DESC';
+        //die($sql);
  		
         $det = Yii::app()->db->createCommand($sql)->queryAll();
         $options = array('data' => $det);
         echo json_encode($options);
     }
     
+    public function actionTraficoDetalleConsidera() {
 
+
+        $tipo_considera =  isset($_POST['tipo_considera']) ? $_POST["tipo_considera"] : "";
+
+        $fecha_inicial = isset($_POST['fecha_inicial']) ? $_POST["fecha_inicial"] : "";
+        $fecha_final = isset($_POST['fecha_final']) ? $_POST["fecha_final"] : "";
+        //$provincia = isset($_POST['provincia']) ? $_POST["provincia"] : "";
+
+        
+       
+       
+       
+        if($tipo_considera == 'recomendacion'){
+          
+           $group='gi.considero_recomendaron';
+           
+        }
+       
+ 		$sql = 'SELECT DISTINCT ' . $group .' AS medio, count(gi.id) as cantidad 
+        FROM callcenter.gestion_informacion gi 
+        INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id  
+        INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  
+        INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+        LEFT JOIN versiones v ON v.id_versiones = gv.version 
+        INNER JOIN dealers d ON d.id = gi.dealer_id 
+        LEFT JOIN usuarios u ON u.id = gi.responsable 
+        WHERE gi.considero = \''.$tipo_considera.'\' 
+        AND (DATE(gi.fecha) BETWEEN \''.$fecha_inicial.'\' AND \''.$fecha_final.'\') 
+        AND (gd.fuente_contacto = "showroom" OR gd.fuente_contacto = "trafico") AND ( gi.bdc = 0 AND gv.orden = 1) 
+        GROUP BY '.$group.' HAVING cantidad>0 ORDER BY cantidad DESC';
+ 		
+        $det = Yii::app()->db->createCommand($sql)->queryAll();
+        $options = array('data' => $det);
+        echo json_encode($options);
+    }
 }
 
 

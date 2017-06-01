@@ -1317,10 +1317,10 @@ class Controller extends CController {
      * 
      * @return array arraydealers con las ids de los concesionarios
      */
-    public function getResponsablesVariosConc() {
+    public function getResponsablesVariosConc($tipo) {
         $id_responsable = Yii::app()->user->getId();
         $array_dealers = array();
-        $dealers = Grupoconcesionariousuario::model()->findAll(array('condition' => "usuario_id={$id_responsable} AND tipo_id = 1"));
+        $dealers = Grupoconcesionariousuario::model()->findAll(array('condition' => "usuario_id={$id_responsable} AND tipo_id = {$tipo}"));
         $counter = 0;
         foreach ($dealers as $value) {
             //echo 'asdasd'.$value['concesionario_id'];
@@ -1330,11 +1330,11 @@ class Controller extends CController {
         return $array_dealers;
     }
 
-    public function getDealerGrupoConcUsuario($id_responsable) {
+    public function getDealerGrupoConcUsuario($id_responsable,$tipo) {
 
         $array_dealers = array();
         $criteria = new CDbCriteria(array(
-            'condition' => "usuario_id={$id_responsable}"
+            'condition' => "usuario_id={$id_responsable} AND tipo_id = {$tipo}"
         ));
         $dealers = Grupoconcesionariousuario::model()->findAll($criteria);
         $counter = 0;
@@ -1572,6 +1572,15 @@ class Controller extends CController {
         $cargo = Usuarios::model()->find(array('condition' => "id = {$id}"));
         if($cargo){
             return $cargo->cargo_id; 
+        }else{
+            return 0;
+        }
+    }
+
+    public function getCargoAdicional($id) {
+        $cargo = Usuarios::model()->find(array('condition' => "id = {$id}"));
+        if($cargo){
+            return $cargo->cargo_adicional; 
         }else{
             return 0;
         }
@@ -2857,12 +2866,42 @@ class Controller extends CController {
         $dealer_id = $this->getConcesionarioDealerId($id_responsable);
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 
         if (empty($dealer_id)) {
             $array_dealers = $this->getDealerGrupoConc($grupo_id);
             $dealer_id = implode(', ', $array_dealers);
         }
 
+        /*$cre = new CDbCriteria();
+        $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";
+
+        if ($grupo_id == 4)// IOKARS
+            $cre->condition = " cargo_id IN (71,73) AND dealers_id IN ({$dealer_id}) ";
+        if ($grupo_id == 9)// MOTRICENTRO
+            $cre->condition = " cargo_id IN (71,86) AND dealers_id IN ({$dealer_id}) ";
+        if(($grupo_id ==  2 || $grupo_id ==  3) && $cargo_id == 85) // ASIAUTO Y KMOTOR - CARGO JEFE WEB  
+            $cre->condition = " cargo_id = 86 AND dealers_id IN ({$dealer_id}) ";
+        if($grupo_id == 2 && $cargo_adicional == 85){ // ASIAUTO - JEFE SHOWROOM/JEFE WEB
+            $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,2);
+            $dealerList = implode(', ', $array_dealers);
+            $cre->condition = " cargo_id IN (71,86) AND dealers_id IN ({$dealerList}) ";  
+
+        }
+              
+            
+        $cre->order = " nombres ASC";
+        $asesores = Usuarios::model()->findAll($cre);
+        $data = '';
+        foreach ($asesores as $value) {
+            if($value['cargo_id'] == 86 || $value['cargo_adicional'] == 86){
+                $data .= '<li><a id="' . $value['id'] . '" onclick="asignar(' . $value['id'] . ');" class="asign-lt lt-web">' . $value['nombres'] . ' ' . $value['apellido'] . '</a></li>';
+            }else{
+                $data .= '<li><a id="' . $value['id'] . '" onclick="asignar(' . $value['id'] . ');" class="asign-lt">' . $value['nombres'] . ' ' . $value['apellido'] . '</a></li>';
+            }
+            
+        }
+        return $data;*/
         $cre = new CDbCriteria();
         $cre->condition = " cargo_id = 71 AND dealers_id IN ({$dealer_id}) ";
 
@@ -3507,7 +3546,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3568,7 +3607,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3643,7 +3682,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3699,7 +3738,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3759,7 +3798,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3806,7 +3845,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3908,7 +3947,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -3967,7 +4006,7 @@ class Controller extends CController {
                 $criteria->addCondition("gi.dealer_id = {$dealer_id}");
                 break;
             case 69: // JEFE CONCESION O GERENTE COMERCIAL
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
                 break;
@@ -4223,9 +4262,9 @@ class Controller extends CController {
                 
                 break;
             case 70: // JEFE DE SUCURSAL
-                $array_dealers = $this->getResponsablesVariosConc();
+                $array_dealers = $this->getResponsablesVariosConc(1);
                 if(count($array_dealers) == 0){
-                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 }
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->condition = "gi.dealer_id IN ({$dealerList})";
@@ -4239,9 +4278,9 @@ class Controller extends CController {
                 $criteria->condition = "gi.responsable = {$id_responsable}";
                 break;
             case 85: // JEFE WEB - VENTAS EXTERNAS
-                $array_dealers = $this->getResponsablesVariosConc();
+                $array_dealers = $this->getResponsablesVariosConc(1);
                 if(count($array_dealers) == 0){
-                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 }
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
@@ -4251,9 +4290,9 @@ class Controller extends CController {
                 $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
                 break;
             case 86: // ASESOR WEB O VENTAS EXTERNAS
-                $array_dealers = $this->getResponsablesVariosConc();
+                $array_dealers = $this->getResponsablesVariosConc(1);
                 if(count($array_dealers) == 0){
-                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                    $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 }
                 $dealerList = implode(', ', $array_dealers);
                 $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
