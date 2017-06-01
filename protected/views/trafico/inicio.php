@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jquery.dataTables.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/buttons.html5.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>-->
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
@@ -27,13 +27,15 @@ $(document).ready(function() {
        dateFormat: 'dd',
        startDate: startDate,
        endDate: endDate,
-       dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+       dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+       changeMonth: true
     });
     $("#trafico_fecha2").datepicker({
        dateFormat: 'dd',
        startDate: startDate,
        endDate: endDate,
-       dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+       dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+       changeMonth: true
     });
     
     
@@ -114,6 +116,7 @@ $(document).ready(function() {
     .odd-mt > td, .odd-mh > td, .odd-desc > td{font-size: 11px;}
     .close{color: #fff;text-shadow: 0 1px 0 #ffffff;opacity: 0.9;filter: alpha(opacity=90);}
     .ui-datepicker-calendar thead{display: none;}
+    .ui-datepicker .ui-datepicker-header{ display: block !important;}
     .cir{
         width: 10px;height: 10px;-moz-border-radius: 50%;-webkit-border-radius: 50%;border-radius: 50%;display: inline-block;margin-right: 2px;
     }
