@@ -1153,6 +1153,10 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         return false;
                     } 
                 }
+                if($('#img-firma-cont').val() == ''){
+                    alert("Por favor ingrese la firma del cliente");  
+                    return false;  
+                }
                 switch (estado_civil) {
                     case 'Soltero':
                     case 'Viudo':
@@ -3049,6 +3053,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <div class="row">
                                 <div class="col-md-5">
                                     <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
+                                    <input type="hidden" id="img-firma-cont" value="<?php echo $imgfr; ?>">
                                     <hr>
                                     Firma Cliente
                                 </div>
@@ -3088,7 +3093,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                                                             data: {id_informacion: "<?php echo $id_informacion; ?>"},
                                                                             success: function (data) {
                                                                                 //console.log('firma digital: '+data.firma);
-                                                                                $('#img-firma').attr('src', '/intranet/usuario/upload/firma/' + data.firma);
+                                                                                $('#img-firma').attr('src', '/intranet/usuario_TEST/upload/firma/' + data.firma);
+                                                                                $('#img-firma-cont').val(data.firma);
                                                                                 $('#cont-firma').hide();
                                                                                 $('#cont-firma-img').show();
                                                                                 //$('#cont-btn').show();
