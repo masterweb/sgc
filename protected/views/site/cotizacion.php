@@ -553,9 +553,9 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <div class="col-xs-5">
             <h4 class="tl_seccion_rf">Firma</h4>
             <?php 
-            $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+            $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
             if ($firma > 0):
-                $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
+                $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
                 $imgfr = $fr->firma;
             ?>
 
