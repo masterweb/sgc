@@ -1,6 +1,7 @@
 <?php
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
+$doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
 //echo 'grupo id: '.$grupo_id;
 $id_responsable = Yii::app()->user->getId();
 ?>
@@ -74,10 +75,18 @@ $id_responsable = Yii::app()->user->getId();
 
                 switch ($cargo_id) {
                     case 70: // JEFE SUCURSAL
-                        $array_dealers = $this->getResponsablesVariosConc();
-                        if(count($array_dealers) == 0){
-                            $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable);
+                        if($doble_concesionario == 1){
+                            $array_dealers = $this->getResponsablesVariosConc(2);
+                            if(count($array_dealers) == 0){
+                                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,2);
+                            }
+                        }else{
+                            $array_dealers = $this->getResponsablesVariosConc(1);
+                            if(count($array_dealers) == 0){
+                                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                            }
                         }
+                        
                         $dealerList = implode(', ', $array_dealers);
                         $cre->condition = " cargo_id IN (70,71) AND dealers_id IN ({$dealerList}) ";
                         if($cargo_adicional == 85){
@@ -104,6 +113,7 @@ $id_responsable = Yii::app()->user->getId();
                     default:
                         break;
                 }
+
 //        $cre->condition = " cargo_id =71 AND dealers_id = {$dealer_id} ";
 //                echo '<pre>';
 //                print_r($cre);
