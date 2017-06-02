@@ -3093,7 +3093,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                                                             data: {id_informacion: "<?php echo $id_informacion; ?>"},
                                                                             success: function (data) {
                                                                                 //console.log('firma digital: '+data.firma);
-                                                                                $('#img-firma').attr('src', '/intranet/usuario_TEST/upload/firma/' + data.firma);
+                                                                                $('#img-firma').attr('src', '/intranet/usuario/upload/firma/' + data.firma);
                                                                                 $('#img-firma-cont').val(data.firma);
                                                                                 $('#cont-firma').hide();
                                                                                 $('#cont-firma-img').show();
