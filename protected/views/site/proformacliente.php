@@ -169,10 +169,10 @@ $fecha_proforma = explode(' ', $fecha->fecha);
         <div class="row"><div class="col-md-12">Opción 1<hr style="color:#911714;"></div></div>
 
         <?php
-
+        $precio_fr = $this->getPrecioNormal($value['version']);
         # SI NO HAY ACCESORIOS OPCIONALES Y ACCESORIOS MANUALES - PONER PRECIO NORMAL DEL VEHICULO
         if(empty($value['accesorios']) && empty($value['accesorios_manual'])){
-            $precio_fr = $value['precio'];
+        //    $precio_fr = $value['precio'];
         }
         # SI HAY ACCESORIOS OPCIONALES
         if(!empty($value['accesorios'])){
@@ -206,7 +206,7 @@ $fecha_proforma = explode(' ', $fecha->fecha);
         // CADENA DE ACCCESORIOS OPCIONALES Y MANUALES
         $strinAcc = trim(substr($strinAcc, 0, -1));
 
-        $precioNormal = $this->getPrecioNormal($value['version']);
+        // $precioNormal = $this->getPrecioNormal($value['version']);
         /*if (count($paramAutos) > 0) {
             $precioAccesorios = $value['precio_vehiculo'] - $precioNormal;
         } else {
@@ -215,7 +215,7 @@ $fecha_proforma = explode(' ', $fecha->fecha);
         ?>
 
         <div class="row">
-            <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precioNormal); ?></div>
+            <div class="col-xs-7"><strong>PRECIO DE VENTA VEHÍCULO (INC. I.V.A): </strong> $ <?php echo number_format($precio_fr); ?></div>
         </div>
 
         <div class="row">
