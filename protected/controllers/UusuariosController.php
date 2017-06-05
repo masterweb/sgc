@@ -26,7 +26,7 @@ class UusuariosController extends Controller {
     public function accessRules() {
         return array(
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('admin', 'view', 'create', 'confirmar', 'update', 'eliminar', 'traerconsesionario', 'search', 'searchC', 'contactos', 'perfil', 'cambiar', 'celebraciones'),
+                'actions' => array('admin', 'view', 'create', 'confirmar', 'update', 'eliminar', 'traerconsesionario', 'search', 'searchC', 'contactos', 'perfil', 'cambiar', 'celebraciones','getExcelContactos'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -350,29 +350,29 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionContactos() {
-        $criteria = new CDbCriteria;
+       // $criteria = new CDbCriteria;
         //$criteria->condition = 'estado ="ACTIVO" and id !='.(int)Yii::app()->user->id;
-        $criteria->condition = 'estado ="ACTIVO" ';
-        $criteria->order = 'id desc';
+       // $criteria->condition = 'estado ="ACTIVO" ';
+      //  $criteria->order = 'id desc';
         // Count total records
-        $pages = new CPagination(Usuarios::model()->count($criteria));
+      //  $pages = new CPagination(Usuarios::model()->count($criteria));
 
         // Set Page Limit
-        $pages->pageSize = 10;
+      //  $pages->pageSize = 10;
 
         // Apply page criteria to CDbCriteria
-        $pages->applyLimit($criteria);
+       // $pages->applyLimit($criteria);
 
         // Grab the records
-        $posts = Usuarios::model()->findAll($criteria);
+       // $posts = Usuarios::model()->findAll($criteria);
 
         $cargo = Cargo::model()->findAll();
         $concesionarios = Dealers::model()->findAll(array('order' => 'name ASC'));
 
         // Render the view
         $this->render('contactos', array(
-            'model' => $posts,
-            'pages' => $pages,
+            'model' =>null,
+            'pages' => null,
             'busqueda' => '',
             'apellidos' => '',
             'email' => '',
@@ -510,10 +510,180 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionSearchC() {
+        
+    
         $p = new CHtmlPurifier();
        
-        if (!empty($_GET['Usuarios']['nombres']) || !empty($_GET['Usuarios']['email']) || $_GET['Usuarios']['grupo_id'] !='--') {
+        if (!empty($_GET['Usuarios']['nombres']) || !empty($_GET['Usuarios']['email']) || $_GET['Usuarios']['grupo'] !='--') {
             
+           
+            $nombres = '';
+            $apellidos = '';
+            $cargos = '';
+            $concesionarioss = '';
+            $email = '';
+            $cargo_id = '';
+            $grupo_id = '';
+            $area_id = '';
+            $patronBusqueda='';
+            $ubicacion='';
+            $area='';
+
+            $criteria=new CDbCriteria;
+            
+            if(!empty($_GET['Usuarios']['nombres'])){
+                $nombres = $p->purify($_GET['Usuarios']['nombres']);
+                $criteria->condition = "nombres LIKE '%$nombres%'";
+            }
+            if(!empty($_GET['Usuarios']['apellidos']) && !empty($_GET['Usuarios']['nombres'])){
+                $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                $criteria->addCondition("apellido LIKE '%$apellidos%'");
+            }else  if(!empty($_GET['Usuarios']['apellidos'])){
+             
+                 $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+                 $criteria->condition = "apellido LIKE '%$apellidos%'";
+            }
+            
+            if(!empty($_GET['Usuarios']['email'])){
+              
+                $email = $p->purify($_GET['Usuarios']['email']);
+                $criteria->addCondition ('correo = "'.$email.'"');
+            }
+
+            if(!empty($_GET['Usuarios']['cargo_id']) && $_GET['Usuarios']['cargo_id']>0 && $_GET['Usuarios']['cargo_id']!=999){
+               
+                $cargo_id = $p->purify($_GET['Usuarios']['cargo_id']);
+                $criteria->addCondition ('cargo_id = '.$cargo_id);
+            }
+            else if ( $_GET['Usuarios']['cargo_id']==999){
+                 $cargo_id = $p->purify($_GET['Usuarios']['cargo_id']);
+            }
+
+            if(!empty($_GET['Usuarios']['grupo'])  && $_GET['Usuarios']['grupo']>0 && $_GET['Usuarios']['grupo']!=999){
+                   
+                $grupo_id = $p->purify($_GET['Usuarios']['grupo']);
+                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
+            }
+            else if($_GET['Usuarios']['grupo']==999){
+                 $grupo_id = $p->purify($_GET['Usuarios']['grupo']);
+            }
+
+            if(!empty($_GET['Usuarios']['concesionario'])  && $_GET['Usuarios']['concesionario']>0 && $_GET['Usuarios']['concesionario']!=1000){
+              
+                $concesionario_id = $p->purify($_GET['Usuarios']['concesionario']);
+                $criteria ->addCondition ( 'dealers_id = '.$concesionario_id);
+            }
+            else if( $_GET['Usuarios']['concesionario']==1000){
+                    $concesionario_id = $p->purify($_GET['Usuarios']['concesionario']);
+            }
+             if(!empty($_GET['Usuarios']['responsable'])  && $_GET['Usuarios']['responsable']>0 && $_GET['Usuarios']['responsable']!=10000){
+               
+                $responsable_id = $p->purify($_GET['Usuarios']['responsable']);
+                $criteria->addCondition ( 'id = '.$responsable_id);
+            }
+            else if( $_GET['Usuarios']['responsable']==10000){
+
+                $responsable_id = $p->purify($_GET['Usuarios']['responsable']);
+            }
+
+            if(!empty($_GET['Usuarios']['ubicacion'])  && $_GET['Usuarios']['ubicacion']>0){
+                $ubicacion = $p->purify($_GET['Usuarios']['ubicacion']);
+
+            }
+
+            if(!empty($_GET['Cargo']['area_id'])  && $_GET['Cargo']['area_id']>0){
+                $area = $p->purify($_GET['Cargo']['area_id']);
+
+            }
+
+
+
+           
+
+                $criteria->addCondition ( 'estado ="ACTIVO" ');
+                $criteria->order = 'id desc';
+
+                $posts = Usuarios::model()->findAll($criteria);
+
+            if (!empty($posts)) {
+                  
+              /* $pages = new CPagination(Usuarios::model()->count($criteria));
+                $pages->pageSize = 10;
+                $pages->applyLimit($criteria);*/
+                $cargo = Cargo::model()->findAll();
+                $concesionarios = Dealers::model()->findAll(array('order' => 'name ASC'));
+                $this->render('contactos', array(
+                    'model' => $posts,
+                    'pages' => null,//$pages,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
+                    'email' => $email,
+                    'cargo' => $cargo,
+                    'concesionarios' => $concesionarios,
+                    'cargos' => $cargos,
+                    'concesionarioss' => $grupo_id,
+                    'concesionario_selected' => $concesionario_id,
+                    'responsable_selected' => $responsable_id,
+                    'cargo_id' => $cargo_id,
+                    'ubicacion_selected' => $ubicacion,
+                    'area_selected' => $area
+                    )
+                );
+            } 
+            else {
+                Yii::app()->user->setFlash('error', "No se encontraron datos con la busqueda realizada.");
+                //$this->redirect(array('uusuarios/contactos/'));
+                 $this->render('contactos', array(
+                    'model' => null,
+                    'pages' => null,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
+                    'email' => $email,
+                    'cargo' => $cargo,
+                    'concesionarios' => $concesionarios,
+                    'cargos' => $cargos,
+                    'concesionarioss' => $grupo_id,
+                    'concesionario_selected' => $concesionario_id,
+                    'responsable_selected' => $responsable_id,
+                    'cargo_id' => $cargo_id,
+                    'ubicacion_selected' => $ubicacion,
+                    'area_selected' => $area
+                    )
+                );
+            }
+        } else {
+            Yii::app()->user->setFlash('error', "Ingrese un valor para realizar la busqueda.");
+           // $this->redirect(array('uusuarios/contactos/'));
+            $this->render('contactos', array(
+                    'model' => null,
+                    'pages' => null,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
+                    'email' => $email,
+                    'cargo' => $cargo,
+                    'concesionarios' => $concesionarios,
+                    'cargos' => $cargos,
+                    'concesionarioss' => $grupo_id,
+                    'concesionario_selected' => $concesionario_id,
+                    'responsable_selected' => $responsable_id,
+                    'cargo_id' => $cargo_id,
+                    'ubicacion_selected' => $ubicacion,
+                    'area_selected' => $area
+                    )
+                );
+        }
+    }
+
+
+    public function actionGetExcelContactos() {
+        
+    
+        $p = new CHtmlPurifier();
+        date_default_timezone_set('America/Guayaquil');
+       
+        if (!empty($_GET['nombres']) || !empty($_GET['email']) || $_GET['grupo'] !='--') {
+            
+           
             $nombres = '';
             $apellidos = '';
             $cargos = '';
@@ -525,57 +695,255 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $patronBusqueda='';
 
             $criteria=new CDbCriteria;
-
-            if(!empty($_GET['Usuarios']['nombres'])){
-                $nombres = $p->purify($_GET['Usuarios']['nombres']);
+            
+            if(!empty($_GET['nombres'])){
+                $nombres = $p->purify($_GET['nombres']);
                 $criteria->condition = "nombres LIKE '%$nombres%'";
-                //$criteria->condition = "nombres ='$nombres' ";
-                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
-                $criteria->addCondition('apellido LIKE :nombre');
-                $criteria->params=array(
-                    ':nombre'=>'%$nombres%',
-                );*/
+
+              
             }
-            if(!empty($_GET['Usuarios']['apellidos']) && !empty($_GET['Usuarios']['nombres'])){
-                $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+            if(!empty($_GET['apellidos']) && !empty($_GET['nombres'])){
+                $apellidos = $p->purify($_GET['apellidos']);
                 $criteria->addCondition("apellido LIKE '%$apellidos%'");
-                //$criteria->condition = "nombres ='$nombres' ";
-                /*$criteria->addCondition('nombres LIKE "%nombre"','OR');
-                $criteria->addCondition('apellido LIKE :nombre');
-                $criteria->params=array(
-                    ':nombre'=>'%$nombres%',
-                );*/
-            }else  if(!empty($_GET['Usuarios']['apellidos'])){
-                 $apellidos = $p->purify($_GET['Usuarios']['apellidos']);
+            }
+            else  if(!empty($_GET['apellidos'])){
+             
+                 $apellidos = $p->purify($_GET['apellidos']);
                  $criteria->condition = "apellido LIKE '%$apellidos%'";
+
+              
             }
             
-            if(!empty($_GET['Usuarios']['email'])){
-                $email = $p->purify($_GET['Usuarios']['email']);
+            if(!empty($_GET['email'])){
+              
+                $email = $p->purify($_GET['email']);
                 $criteria->addCondition ('correo = "'.$email.'"');
+
+              
             }
 
-            if(!empty($_GET['Usuarios']['cargo_id']) && $_GET['Usuarios']['cargo_id']>0){
-                $cargo_id = $p->purify($_GET['Usuarios']['cargo_id']);
+           /* if(!empty($_GET['cargo']) && $_GET['cargo']>0){
+               
+                $cargo_id = $p->purify($_GET['cargo']);
                 $criteria->addCondition ('cargo_id = '.$cargo_id);
-            }
 
-            if(!empty($_GET['Usuarios']['grupo_id'])  && $_GET['Usuarios']['grupo_id']>0){
-                $grupo_id = $p->purify($_GET['Usuarios']['grupo_id']);
-                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
-            }
-
-            /*if(!empty($_GET['Cargo']['area_id']) && $_GET['Cargo']['area_id']>0 ){
-                $area_id = $p->purify($_GET['Cargo']['area_id']);
-                $criteria->condition = 'area_id = '.$area_id;
+              
             }*/
 
-            $posts = Usuarios::model()->findAll($criteria);
+
+            if(!empty($_GET['cargo']) && $_GET['cargo']>0 && $_GET['cargo']!=999){
+               
+                $cargo_id = $p->purify($_GET['cargo']);
+                $criteria->addCondition ('cargo_id = '.$cargo_id);
+            }
+            else if ( $_GET['cargo']==999){
+                 $cargo_id = $p->purify($_GET['cargo']);
+            }
 
 
+
+           /* if(!empty($_GET['grupo'])  && $_GET['grupo']>0){
+                   
+                $grupo_id = $p->purify($_GET['grupo']);
+                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
+
+              
+            }*/
+
+            if(!empty($_GET['grupo'])  && $_GET['grupo']>0 && $_GET['grupo']!=999){
+                   
+                $grupo_id = $p->purify($_GET['grupo']);
+                $criteria->addCondition ( 'grupo_id = '.$grupo_id);
+            }
+            else if($_GET['grupo']==999){
+                 $grupo_id = $p->purify($_GET['grupo']);
+            }
+
+
+
+           /* if(!empty($_GET['concesionario'])  && $_GET['concesionario']>0){
+              
+                $concesionario_id = $p->purify($_GET['concesionario']);
+                $criteria ->addCondition ( 'dealers_id = '.$concesionario_id);
+
+              
+            }*/
+
+             if(!empty($_GET['concesionario'])  && $_GET['concesionario']>0 && $_GET['concesionario']!=1000){
+              
+                $concesionario_id = $p->purify($_GET['concesionario']);
+                $criteria ->addCondition ( 'dealers_id = '.$concesionario_id);
+            }
+            else if($_GET['concesionario']==1000){
+                    $concesionario_id = $p->purify($_GET['concesionario']);
+            }
+
+
+
+
+
+
+         /*    if(!empty($_GET['responsable'])  && $_GET['responsable']>0){
+               
+                $responsable_id = $p->purify($_GET['responsable']);
+                $criteria->addCondition ( 'id = '.$responsable_id);
+
+            
+            }*/
+
+
+            if(!empty($_GET['responsable'])  && $_GET['responsable']>0 && $_GET['responsable']!=10000){
+               
+                $responsable_id = $p->purify($_GET['responsable']);
+                $criteria->addCondition ( 'id = '.$responsable_id);
+            }
+            else if( $_GET['responsable']==10000){
+
+                $responsable_id = $p->purify($_GET['responsable']);
+            }
+
+
+
+                $criteria->addCondition ( 'estado ="ACTIVO" ');
+                $criteria->order = 'id desc';
+
+                $posts = Usuarios::model()->findAll($criteria);
+
+               
 
             if (!empty($posts)) {
-                $pages = new CPagination(count($posts));
+
+                 
+
+
+
+                 Yii::import('ext.phpexcel.XPHPExcel');
+            $objPHPExcel = XPHPExcel::createPHPExcel();
+
+                $objPHPExcel->getProperties()->setCreator("SGC Kia Ecuador")
+                    ->setLastModifiedBy("SGC")
+                    ->setTitle("Office 2007 XLSX Test Document")
+                    ->setSubject("Office 2007 XLSX Test Document")
+                    ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+                    ->setKeywords("office 2007 openxml php")
+                    ->setCategory("Test result file");
+
+                    
+                     $objPHPExcel->setActiveSheetIndex(0)
+                    ->mergeCells('A1:J1');
+
+
+                    $estiloTituloReporte = array(
+                        'font' => array('name' => 'Tahoma','bold' => true,'italic' => false,'strike' => false,'size' => 11,'color' => array('rgb' => 'B6121A')),
+                        'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,'rotation' => 0,'wrap' => TRUE)
+                    ); 
+
+
+
+                    $estiloTituloColumnas = array(
+                        'font' => array('name' => 'Arial','bold' => true,'size' => 9,'color' => array('rgb' => '333333')),
+                        'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID,'color' => array('rgb' => 'F1F1F1')),
+                        'borders' => array('top' => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM,'color' => array('rgb' => '143860')),
+                            'bottom' => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM,'color' => array('rgb' => '143860')),
+                            'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb' => '143860')),
+                            'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => array('rgb' => '143860'))
+                        ),
+                        'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+                            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+                            'wrap' => TRUE
+                        )
+                    );
+
+
+
+                  
+
+
+                         $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Contactos de Usuarios') // Titulo del reporte
+                    ->setCellValue('A2', 'Área')
+                    ->setCellValue('B2', 'Cargo')
+                    ->setCellValue('C2', 'Nombres')
+                    ->setCellValue('D2', 'Apellidos')
+                    ->setCellValue('E2', 'Grupo')
+                    ->setCellValue('F2', 'Concesionario')
+                    ->setCellValue('G2', 'Teléfono')
+                    ->setCellValue('H2', 'Extensión')
+                    ->setCellValue('I2', 'Email')
+                    ->setCellValue('J2', 'Celular');
+
+                   $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($estiloTituloReporte);     
+                   $objPHPExcel->getActiveSheet()->getStyle('A2:J2')->applyFromArray($estiloTituloColumnas);
+
+                   $i = 3;
+            foreach ($posts as $row) {
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $i,  strtoupper($row->cargo->area->descripcion))
+                        ->setCellValue('B' . $i, strtoupper($row->cargo->descripcion))
+                        ->setCellValue('C' . $i, $row['nombres'])
+                        ->setCellValue('D' . $i, $row['apellido'])
+                        ->setCellValue('E' . $i, (!empty($row->grupo_id))?$row->grupo->nombre_grupo:'--')
+                        ->setCellValue('F' . $i, ($row->concesionario_id>=1)?$this->traerConcesionariosGR($row->concesionario_id,1):$this->traerConcesionariosU($row->id,1))
+                        ->setCellValue('G' . $i, $row['telefono'])
+                        ->setCellValue('H' . $i, $row['extension'])
+                        ->setCellValue('I' . $i, $row['correo'])
+                        ->setCellValue('J' . $i, $row['celular'],PHPExcel_Cell_DataType::TYPE_STRING);
+                       
+
+                        $i++;
+          }
+                   
+
+
+                   
+
+                     $objPHPExcel->getActiveSheet()->getColumnDimension("A")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("B")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("C")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("D")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("E")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("F")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("G")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("H")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("I")->setAutoSize(true);
+                    $objPHPExcel->getActiveSheet()->getColumnDimension("J")->setAutoSize(true);
+
+
+
+
+                     $objPHPExcel->getActiveSheet()->setTitle('Contactos');
+                      $objPHPExcel->setActiveSheetIndex(0);
+
+                header('Content-Type: application/vnd.ms-excel');
+                header('Content-Disposition: attachment;filename="ReporteContactos.xls"');
+                header('Cache-Control: max-age=0');
+                //      If/ you're serving to IE 9, then the following may be needed
+                header('Cache-Control: max-age=1');
+
+                //      If you're serving to IE over SSL, then the following may be needed
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                header('Pragma: public'); // HTTP/1.0
+
+                $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+
+              //  $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel); 
+
+                $objWriter->save('php://output');
+
+                Yii::app()->end();
+
+
+
+                /*$html='';
+                   foreach ($posts as $c) {
+                        $html .="<option value='" . $c->id . "'>" . $c->nombres . "</option>";
+                    }
+                    echo ('data:'.$html);
+                die();*/
+              /* $pages = new CPagination(count($posts));
                 $pages->pageSize = 10;
                 $cargo = Cargo::model()->findAll();
                 $concesionarios = Dealers::model()->findAll(array('order' => 'name ASC'));
@@ -589,9 +957,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                     'concesionarios' => $concesionarios,
                     'cargos' => $cargos,
                     'concesionarioss' => $grupo_id,
-                        )
-                );
-            } else {
+                    'concesionario_selected' => $concesionario_id,
+                    'responsable_selected' => $responsable_id,
+                    'cargo_id' => $cargo_id
+                    )
+                );*/
+            } 
+            else {
                 Yii::app()->user->setFlash('error', "No se encontraron datos con la busqueda realizada.");
                 $this->redirect(array('uusuarios/contactos/'));
             }
@@ -599,7 +971,25 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             Yii::app()->user->setFlash('error', "Ingrese un valor para realizar la busqueda.");
             $this->redirect(array('uusuarios/contactos/'));
         }
+
+
+        $this->render('contactos', array(
+                    'model' => $posts,
+                    'pages' => $pages,
+                    'busqueda' => $nombres,
+                    'apellidos' => $apellidos,
+                    'email' => $email,
+                    'cargo' => $cargo,
+                    'concesionarios' => $concesionarios,
+                    'cargos' => $cargos,
+                    'concesionarioss' => $grupo_id,
+                    'concesionario_selected' => $concesionario_id,
+                    'responsable_selected' => $responsable_id,
+                    'cargo_id' => $cargo_id
+                    )
+                );
     }
+
 
     public function loadModel($id) {
         //die('id: '.$id);

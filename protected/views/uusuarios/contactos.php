@@ -37,6 +37,54 @@ $rol = Yii::app()->user->getState('roles');
         }
         
     }
+    function getConcesionarios(id){
+
+
+
+     $('#contacto_concesionario').html("<img src= \"<?php echo Yii::app()->createUrl("../images/ajax-loader.gif")?>\" />");
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getConcesionarios"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {id : id},
+                success: function (data) {
+                    $('#contacto_concesionario').html(data.responseText);
+                   $('#contacto_concesionario').val('<?php echo $concesionario_selected;?>');   
+
+                },error:function(data){
+                    $('#contacto_concesionario').html(data.responseText);
+                    $('#contacto_concesionario').val('<?php echo $concesionario_selected;?>');  
+                    getAsesores(<?php echo $concesionario_selected;?>);
+                }
+            });
+    }
+
+     function getAsesores(id){
+        $('#contacto_responsable').html("<img src= \"<?php echo Yii::app()->createUrl("../images/ajax-loader.gif")?>\" />");
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getAsesores"); ?>',
+                beforeSend: function (xhr) {
+                },
+                type: 'POST',dataType: 'json',data: {dealer_id : id},
+                success: function (data) {
+                    $('#contacto_responsable').html(data.responseText);
+                    $('#contacto_responsable').val('<?php echo $responsable_selected;?>');
+                },error:function(data){
+                    $('#contacto_responsable').html(data.responseText);
+                    $('#contacto_responsable').val('<?php echo $responsable_selected;?>');
+                }
+            });
+    }
+
+    function get_excel(nombres, apellidos,email,cargo,grupo, concesionario, responsable)
+    {
+      
+         var path='<?php echo Yii::app()->createAbsoluteUrl("uusuarios/getExcelContactos"); ?>';
+       
+       window.location=path+'?nombres='+nombres+'&apellidos='+apellidos+'&email='+email+'&cargo='+cargo+'&grupo='+grupo+'&concesionario='+concesionario+'&responsable='+responsable;
+    }
+    
 </script>    
 <style>
     .form-search{
@@ -90,8 +138,9 @@ $rol = Yii::app()->user->getState('roles');
                             <label class="col-sm-2 control-label" for="Cargo_area_id">Ubicaci&oacute;n</label>
                             <div class="col-sm-4">
                                 <?php 
-                                        echo '<select class="form-control" onchange="traerArea(this.value)">';
+                                        echo '<select id="select_ubicacion" class="form-control" onchange="traerArea(this.value)" name="Usuarios[ubicacion]">';
                                         echo '<option value="0">--Seleccione la Ubicaci&oacute;n--</option>';
+                                         echo '<option value="999">TODOS</option>';
                                         echo '<option value="1">AEKIA</option>';
                                         echo '<option value="2">CONCESIONARIO</option>';
                                         echo '</select>';
@@ -113,14 +162,16 @@ $rol = Yii::app()->user->getState('roles');
                                 
                             </div>
                         
-                            <label class = 'col-sm-2 control-label'>Grupo Concesionarios</label>
+                            <label class = 'col-sm-2 control-label'>Grupo</label>
                             <div class="col-sm-4">
                                 <!--<select class = 'form-control' name="Usuarios[grupo_id]" id="Usuarios_grupo_id" onchange="buscarConcesionario(this.value)">-->
-                                <select class = 'form-control' name="Usuarios[grupo_id]" id="Usuarios_grupo_id">
+                                <select class = 'form-control' id="Usuarios_grupo_id" name="Usuarios[grupo]" onchange="getConcesionarios(this.value)">
                                     <option> -- Seleccione -- </option>
                                     <?php
                                         $grupo = GrGrupo::model()->findAll();
+                                        $count=0;
                                         if(!empty($grupo)){
+                                            echo '<option value="999">TODOS</option>';
                                             foreach($grupo as $c){
                                                 echo '<option value="'.$c->id.'">'.$c->nombre_grupo.'</option>';
                                             }
@@ -128,13 +179,28 @@ $rol = Yii::app()->user->getState('roles');
                                     ?>
                                 </select>
                             </div>
-                            <!--<label class = 'col-sm-2 control-label'>Concesionarios</label>
-                            <div class="col-sm-4">
-                                <div id="concesionarioscbo"><h6><< Primero seleccione un grupo de concesionario</h6></div>
-                                
-                            </div>-->
-                            
                         </div>
+                        <div class="form-group">
+                           <label class = 'col-sm-2 control-label'>Concesionario</label>
+                            <div class="col-sm-4">
+                               
+                                    <select name="Usuarios[concesionario]" id="contacto_concesionario" onchange="getAsesores(this.value)" class="form-control">
+                                        
+                                    </select>
+                            </div>
+                             <label class = 'col-sm-2 control-label'>Responsable</label>
+                            <div class="col-sm-4">
+                                
+                                <select class = 'form-control' name="Usuarios[responsable]" id="contacto_responsable" >
+                                  
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
 					</div>
 					<div class="row">
 						<div class="row col-md-19">
@@ -145,86 +211,92 @@ $rol = Yii::app()->user->getState('roles');
 					</div>
 				</div>
 					
-					
+				    <div style="height:10px;">
+                    </div>
                     <div class="row buttons">
-                        <?php //echo CHtml:submitButton($model->isNewRecord ? 'Buscar' : 'Save', array('class' => 'btn btn-danger'));     ?>
-                        <input class="btn btn-danger" type="submit" name="yt0" value="Buscar">
+                        <div class="col-md-12"> 
+                            <?php //echo CHtml:submitButton($model->isNewRecord ? 'Buscar' : 'Save', array('class' => 'btn btn-danger'));     ?>
+                            <input class="btn btn-danger" type="submit" name="yt0" value="Buscar">
+
+                             <button type="button" class="btn btn-warning" aria-label="Close" onclick="get_excel('<?php echo $busqueda;?>','<?php echo $apellidos;?>','<?php echo $email;?>','<?php echo $cargo_id;?>','<?php echo $concesionarioss;?>','<?php echo $concesionario_selected;?>','<?php echo $responsable_selected;?>')">Descargar Excel</button>   
+                         </div>        
                     </div>
                     <?php $this->endWidget(); ?>
                 </div>
 				
             </div>
 			
-        </div>
 
-	  <div class="row">
-        <div class="col-md-9">
-            <?php
-            if (isset($title_busqueda)):
-                echo '<h4 style="color:#AA1F2C;border-bottom: 1px solid;">' . $title_busqueda . '</h4>';
-            endif;
-            ?>
-        </div>
-    </div>
-	<?php if(!empty($model)){?>
+            <div class="row">
+                <div class="col-md-9">
+                    <?php
+                    if (isset($title_busqueda)):
+                        echo '<h4 style="color:#AA1F2C;border-bottom: 1px solid;">' . $title_busqueda . '</h4>';
+                    endif;
+                    ?>
+                </div>
+            </div>   
+
+            <?php if(!empty($model)){?>
     <div class="row">
+    <div class="col-md-12">
         <div class="table-responsive">
-		<div>
-			<!--<a href="<?php echo Yii::app()->createUrl('uusuarios/celebraciones'); ?>" class="btn btn-primary btn-xs btn-danger btnCrear">Ver Cumplea&ntilde;eros del mes</a>-->
-			
-		</div>
-		<div class="input-group"> <span class="input-group-addon">Filtrar por Apellidos y Nombres</span>
-			<input id="filter" type="text" class="form-control" placeholder="Ingrese aqu&iacute;">
-		</div>
+        <div>
+            <!--<a href="<?php echo Yii::app()->createUrl('uusuarios/celebraciones'); ?>" class="btn btn-primary btn-xs btn-danger btnCrear">Ver Cumplea&ntilde;eros del mes</a>-->
+            
+        </div>
+        <div class="input-group"> <span class="input-group-addon">Filtrar por Apellidos y Nombres</span>
+            <input id="filter" type="text" class="form-control" placeholder="Ingrese aqu&iacute;">
+        </div>
             <table class="tables tablesorter table-striped" id="keywords">
                 <thead>
                     <tr>
                         <th><span>ID</span></th>
                         <th><span>&aacute;rea</span></th>
                         <th><span>Cargo</span></th>
-						<th><span>Nombres</span></th>
-						<th><span>Apellidos</span></th>
-						<th><span>Grupo</span></th>
+                        <th><span>Nombres</span></th>
+                        <th><span>Apellidos</span></th>
+                        <th><span>Grupo</span></th>
                         <th><span>Concesionario</span></th>
                         <th><span>Tel&eacute;fono</span></th>
                         <th><span>Extensi&oacute;n</span></th>
                         <th><span>Email</span></th>
-						<th><span>Celular</span></th>
+                        <th><span>Celular</span></th>
                         
                     </tr>
                 </thead>
                 <tbody class="searchable">
                     <?php
-//$model = Casos::model()->findAll();
-					$cont=0;
+                    //$model = Casos::model()->findAll();
+                    $cont=0;
                     foreach ($model as $c):
                         $cont++;
-						?>
+                        ?>
                         <tr>
                             <td><?php echo $cont;/*$c->id;*/ ?> </td>
                             <td><?php echo strtoupper($c->cargo->area->descripcion) ?> </td>
                             <td><?php echo strtoupper($c->cargo->descripcion) ?> </td>
                             <td><?php 
-							$cumple = explode('-',$c->fechanacimiento);
+                            $cumple = explode('-',$c->fechanacimiento);
                             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
-							if($cumple[1].$cumple[2] == date("md")){
-								echo '<img src="'.Yii::app()->request->baseUrl.'/images/usuarios/cumple.png" width="16">&nbsp;';
-							}
-							echo $c->nombres ?> </td>
+                            if($cumple[1].$cumple[2] == date("md")){
+                                echo '<img src="'.Yii::app()->request->baseUrl.'/images/usuarios/cumple.png" width="16">&nbsp;';
+                            }
+                            echo $c->nombres ?> </td>
                             <td><?php echo $c->apellido ?> </td>
                             <td><?php echo (!empty($c->grupo_id))?$c->grupo->nombre_grupo:'--'; ?> </td>
                             <td><?php 
-							//echo $c->concesionario_id;
-							//if(!empty($c->concesionario_id))
-								//echo $c->concesionario_id;
-								echo ($c->concesionario_id>=1)?$this->traerConcesionariosGR($c->concesionario_id,1):$this->traerConcesionariosU($c->id,1);
-							//else
-								//echo '--';
-							?> </td>
+                            //echo $c->concesionario_id;
+                            //if(!empty($c->concesionario_id))
+                                //echo $c->concesionario_id;
+                                echo ($c->concesionario_id>=1)?$this->traerConcesionariosGR($c->concesionario_id,1):$this->traerConcesionariosU($c->id,1);
+                            //else
+                                //echo '--';
+                            ?> </td>
                             <td><a href="tel://<?php echo $c->telefono ?>"><?php echo $c->telefono ?></a> </td>
                             <td><?php echo $c->extension ?> </td>
                             <td><?php echo $c->correo ?> </td>
-							<td><a href="tel://<?php echo $c->celular ?>"><?php echo $c->celular ?></a></td>
+                            <td><a href="tel://<?php echo $c->celular ?>"><?php echo $c->celular ?></a></td>
                             
                         </tr>
                         <?php
@@ -233,12 +305,17 @@ $rol = Yii::app()->user->getState('roles');
                 </tbody>
             </table>
         </div>
-
-    </div>
-   <div class="row">
-        <div class="col-md-5">
-<?php $this->widget('CLinkPager', array('pages' => $pages, 'maxButtonCount' => 5)); ?>
         </div>
+    </div>   
+
+ </div>
+
+	  
+	
+   <div class="row">
+       <!-- <div class="col-md-5">
+            <?php $this->widget('CLinkPager', array('pages' => $pages, 'maxButtonCount' => 10)); ?>
+        </div>-->
        <div class="col-md-12 links-tabs links-footer">
             
             <div class="col-md-2"><p>Tambi&eacute;n puedes ir a:</p></div>
@@ -304,6 +381,7 @@ $rol = Yii::app()->user->getState('roles');
 <script>
 	$(function(){
 		$("#Search_cargo").val('<?php echo $cargos ?>');
+
 		$("#Usuarios_grupo_id").val('<?php echo $concesionarioss ?>');
 		
 	});
@@ -364,6 +442,8 @@ $rol = Yii::app()->user->getState('roles');
     }
     function buscarCargo(vl){
         //concesionarioscbo
+        $("#ccargos").html("<img src= \"<?php echo Yii::app()->createUrl("../images/ajax-loader.gif")?>\" />");
+        var arr;
         $.ajax({
             url: '<?php echo Yii::app()->createUrl("site/traercargos")?>',
             type:'POST',
@@ -371,13 +451,18 @@ $rol = Yii::app()->user->getState('roles');
             data:{
                 rs : vl,
             },
+
             success:function(result){
+               
                 if(result == 0){
                     alert("No se pudo realizar la consulta de cargos.");
                     $("#ccargos").html("<p style='font-size:13px;font-weight:bold;padding-top:5px;'>Seleccione un &aacute;rea.</p>");
                 }else{
-                    //alert(result)
-                    $("#ccargos").html(result);
+                    arr=JSON.parse(result)
+                   
+                    $("#ccargos").html(arr.options);    
+                   $('#Usuarios_cargo_id').val(<?php echo $cargo_id;?>);   
+
                 }
             }
         });
@@ -386,6 +471,7 @@ $rol = Yii::app()->user->getState('roles');
 
 
     function traerArea(vl){
+        $("#dArea").html("<img src= \"<?php echo Yii::app()->createUrl("../images/ajax-loader.gif")?>\" >");
         if(vl>0){
             $.ajax({
                 url: '<?php echo Yii::app()->createUrl("/site/traerArea")?>',
@@ -397,7 +483,10 @@ $rol = Yii::app()->user->getState('roles');
                 success:function(result){
                     if(result != 0){
                         $("#dArea").html(result);
+                        $('#Cargo_area_id').val(<?php echo $area_selected;?>);    
                         buscarCargo($("#Cargo_area_id").val());
+
+
                     }else{
                          $("#dArea").html('Seleccione una Ubicacion por favor.');
                     }
@@ -429,4 +518,17 @@ $rol = Yii::app()->user->getState('roles');
             });
         }
     }
+
+    $(function() {
+        getConcesionarios($('#Usuarios_grupo_id').val());
+
+        $('#select_ubicacion').val(<?php echo $ubicacion_selected;?>);
+        traerArea(<?php echo $ubicacion_selected;?>);
+      // alert(<?php echo $ubicacion_selected;?>);
+        //alert(<?php echo $area_selected;?>);
+       
+        //alert(<?php echo $concesionario_selected;?>);
+
+    });
+
 </script>
