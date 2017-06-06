@@ -2,7 +2,6 @@
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
-//echo 'grupo id: '.$grupo_id;
 $id_responsable = Yii::app()->user->getId();
 ?>
 <?php if ($tipo_filtro == 'general'): ?>
@@ -124,7 +123,7 @@ $id_responsable = Yii::app()->user->getId();
                 ?>
                 <div class="col-md-6">
                     <label for="">Responsable</label>
-                    <?php echo $form->dropDownList($mod, 'responsable', $usu, array('class' => 'form-control', 'empty' => 'Seleccione un responsable')); ?>
+                    <?php ecwho $form->dropDownList($mod, 'responsable', $usu, array('class' => 'form-control', 'empty' => 'Seleccione un responsable')); ?>
 
                 </div>
             <?php endif; ?>
