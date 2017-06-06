@@ -1,7 +1,7 @@
 <?php
 /* @var $this GestionFilesController */
 /* @var $model GestionFiles */
-$bl = GestionFiles::model()->findAll(array('condition' => "tipo = {$tipo}"));
+$bl = GestionFiles::model()->findAll(array('condition' => "tipo = {$tipo}",'order' => 'fecha_actualizacion DESC'));
 
 /*$this->breadcrumbs=array(
 	'Gestion Files'=>array('index'),
