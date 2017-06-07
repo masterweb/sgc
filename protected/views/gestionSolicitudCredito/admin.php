@@ -2,6 +2,7 @@
 /* @var $this GestionSolicitudCreditoController */
 /* @var $model GestionSolicitudCredito */
 
+
 $this->breadcrumbs = array(
     'Gestion Solicitud Creditos' => array('index'),
     'Manage',
@@ -90,10 +91,10 @@ if (isset($search)) {
             break;
 
         case 74:
-            $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor);
+            $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor,1);
             //echo 'array dealers: '.count($array_dealers);
             if(count($array_dealers) > 0){
-                $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor);
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_asesor,1);
                 $dealerList = implode(', ', $array_dealers);
                 //echo 'dealer list: '.$dealerList;
                 $sql = "SELECT gc.* FROM gestion_solicitud_credito gc 
@@ -213,7 +214,8 @@ if (isset($search)) {
                             <th><span>Email</span></th>
                             <th><span>Ver</span></th>
                             <th><span>Status</span></th>
-                            <th><span>Edición</span></th>
+                            <th><span>&nbsp;</span></th>
+                            <th><span>&nbsp;</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -264,9 +266,15 @@ if (isset($search)) {
                                     ?>
                                 </td>
                                 <td>
-                                    <?php //if ($status == 1 || $status == 4 || $status == 'na') { ?>
-                                        <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $c['id'], 'id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'], 'id_status' => $c['id'])); ?>" class="btn btn-primary btn-xs">Ingresar</a>
-                                    <?php //} ?>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $c['id'], 'id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'], 'id_status' => $c['id'])); ?>" class="btn btn-primary btn-xs">Ver</a>
+                                </td>
+                                <td>
+                                    <?php 
+                                    $sc = GestionSolicitudCredito::model()->count(array("condition" => "id_informacion = {$c['id_informacion']} AND id_vehiculo = {$c['id_vehiculo']}"));
+                                    if($sc > 0):
+                                    ?>
+                                    <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/update/', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id_vehiculo'])); ?>" class="btn btn-primary btn-xs btn-danger">Editar</a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

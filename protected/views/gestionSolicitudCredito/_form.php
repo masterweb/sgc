@@ -137,10 +137,10 @@ if($ced){
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
 if($countsc > 0){
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }else{
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
-    $url_load = 'https://www.kia.com.ec/intranet/usuario/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
@@ -296,6 +296,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_total_ingresos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_total_egresos').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_monto_financiar').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
+        $('#GestionSolicitudCredito_valor').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_entrada').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_cuota_mensual').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
 
@@ -1497,7 +1498,15 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         ),
                     ));
                     ?>
-                    <a href="<?php echo Yii::app()->request->baseUrl; ?>/index.php/site/negociacion/<?= $id_informacion ?>" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" >Regresar</a>
+                    <?php 
+                    if(Yii::app()->user->getState('cargo_id') == 74){ // si es asesora de credito
+                        echo '<a href="'. Yii::app()->createUrl('gestionSolicitudCredito/admin').'" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" ><< Regresar</a>';
+                    }else{
+                        echo '<a href="'. Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)).'" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" >Regresar</a>';
+                        
+                    }
+                    ?>
+                    
                     <br><br>
                     <p class="note">Campos con <span class="required">*</span> son requeridos.</p>
                     <?php //echo $form->errorSummary($model); ?>
@@ -1580,12 +1589,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <h1 class="tl_seccion_rf">Datos del Vehículo</h1>
                     </div>  
                     <?php
-                    $criteria = new CDbCriteria(array(
-                        'condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}",
-                        'order' => 'id DESC',
-                        'limit' => 1
-                    ));
-                    $vec = GestionFinanciamiento::model()->findAll($criteria);
+                    $vec = GestionFinanciamiento::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo}", 'order' => 'id DESC', 'limit' => 1));
                     // echo '<pre>';
                     //  print_r($vec);
                     //  echo '</pre>';
@@ -1594,7 +1598,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'modelo'); ?>
-                                <?php echo $form->textField($model, 'modelo', array('class' => 'form-control', 'value' => $modelo)); ?>
+                                <?php echo $form->textField($model, 'modelo', array('class' => 'form-control', 'value' => $modelo, 'readonly' => true)); ?>
                                 <?php echo $form->error($model, 'modelo'); ?>
                             </div>
                             <div class="col-md-3">
@@ -3184,7 +3188,12 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <a href="<?php echo Yii::app()->createUrl('site/negociacion/' . $id_informacion); ?>" class="btn btn-danger" id="continue">Agendar Seguimiento</a>
+                            <?php 
+                            if($cargo_id == 70 || $cargo_id == 71){
+                                echo '<a href="'.Yii::app()->createUrl('site/negociacion/' . $id_informacion).'" class="btn btn-danger" id="continue">Agendar Seguimiento</a>';
+                            }
+                             ?>
+                            
                         </div>
                     </div>
                     <?php $this->endWidget(); ?>

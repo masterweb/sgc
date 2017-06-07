@@ -153,6 +153,17 @@ class GestionSolicitudCreditoController extends Controller {
             $model->meses_trabajo = $_POST['GestionSolicitudCredito']['meses_trabajo'];
             $model->meses_trabajo_conyugue = $_POST['GestionSolicitudCredito']['meses_trabajo_conyugue'];
             $model->numero = $_POST['GestionSolicitudCredito']['numero'];
+
+            # INGRESAR NUEVOS VALORES POSIBLES EN TABLA GESTION_FINANCIAMIENTO - UPDATE
+            $fin = GestionFinanciamiento::model()->find(array('condition' => "id_informacion = {$_POST['GestionSolicitudCredito']['id_informacion']} AND id_vehiculo = {$_POST['GestionSolicitudCredito']['id_vehiculo']}"));
+            $fin->precio_vehiculo = $valor;
+            $fin->valor_financiamiento = $monto_financiar;
+            $fin->cuota_inicial = $entrada;
+            $fin->cuota_mensual = $cuotamensual;
+            $fin->plazos = $_POST['GestionSolicitudCredito']['plazo'];
+            $fin->tasa = $_POST['GestionSolicitudCredito']['taza'];
+            $fin->update();
+
             if (isset($_POST['GestionSolicitudCredito']['numero_cargas']) && !empty($_POST['GestionSolicitudCredito']['numero_cargas'])) {
                 $model->numero_cargas = $_POST['GestionSolicitudCredito']['numero_cargas'];
             }    
@@ -400,6 +411,16 @@ class GestionSolicitudCreditoController extends Controller {
             $model->meses_trabajo = $_POST['GestionSolicitudCredito']['meses_trabajo'];
             $model->meses_trabajo_conyugue = $_POST['GestionSolicitudCredito']['meses_trabajo_conyugue'];
             $model->numero = $_POST['GestionSolicitudCredito']['numero'];
+
+            # INGRESAR NUEVOS VALORES POSIBLES EN TABLA GESTION_FINANCIAMIENTO - UPDATE
+            $fin = GestionFinanciamiento::model()->find(array('condition' => "id_informacion = {$_POST['GestionSolicitudCredito']['id_informacion']} AND id_vehiculo = {$_POST['GestionSolicitudCredito']['id_vehiculo']}"));
+            $fin->precio_vehiculo = $valor;
+            $fin->valor_financiamiento = $monto_financiar;
+            $fin->cuota_inicial = $entrada;
+            $fin->cuota_mensual = $cuotamensual;
+            $fin->plazos = $_POST['GestionSolicitudCredito']['plazo'];
+            $fin->tasa = $_POST['GestionSolicitudCredito']['taza'];
+            $fin->update();
 
             if (isset($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']) && !empty($_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue'])) {
                 $sueldo_conyugue = str_replace(',', "", $_POST['GestionSolicitudCredito']['sueldo_mensual_conyugue']);
