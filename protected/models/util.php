@@ -407,10 +407,10 @@ class Util {
     }
 
     public static function getAsesoresByCreditoGrupo($grupo_id, $id_asesor) {
-        $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor);
+        $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor,1);
         if (count($array_dealers) > 0) {
             //echo 'mayor cero';
-            $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor);
+            $array_dealers = Controller::getDealerGrupoConcUsuario($id_asesor,1);
             $dealerList = implode(', ', $array_dealers);
             $sql = "SELECT * FROM usuarios WHERE grupo_id = {$grupo_id} AND dealers_id IN ({$dealerList}) AND cargo_id IN (71,70) ORDER BY nombres ASC";
         } else {
