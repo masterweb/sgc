@@ -678,15 +678,77 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         
                 <?php } // End - Paso 6 - Demostración ?>
                 <?php if ($this->getAnswer(5, $id) > 0) { ?>
+                    <?php $art4 = GestionFinanciamiento::model()->findAll(array('condition' => "id_informacion={$_GET['id']}")); ?>
                     <div class="col-md-10" id="negociacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/negociacion_on.png" alt=""></span> - Paso 7 - Negociación</h3></div>
+                    <div class="col-md-10">
+                        <table class="table table-striped">
+                            <thead> <tr><th>Modelo - Versión</th><th>Forma de Pago</th><th>Proforma</th> <th>Precio Total</th><th>Solicitud de Crédito</th> </tr> </thead>
+                            <tbody>
+                            <?php foreach ($art4 as $c1) : ?>
+                                <tr>
+                                    <td><?php echo $this->getNombreModelo($c1['id_informacion'], $c1['id_vehiculo']); ?></td>
+                                    <td><?php echo $c1['forma_pago']; ?></td>
+                                    <td><a class="btn btn-success btn-xs" href="<?php echo Yii::app()->createUrl('site/proformaCliente/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" target="_blank">PDF Proforma</a></td>
+                                    <td>$ <?php echo number_format($c1['precio_vehiculo'], 2); ?></td>
+                                    <td>
+                                        <?php
+                                            //echo 'id informacion: '.$c1['id_informacion'].', id vehiculo: '.$c1['id_vehiculo'];
+                                            $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
+                                            $cr = new CDbCriteria;
+                                            $cr->join = " INNER JOIN gestion_firma gf ON gf.id_informacion = sc.id_informacion";
+                                            $cr->condition = "sc.id_informacion = {$c1['id_informacion']} AND id_vehiculo = {$c1['id_vehiculo']}";
+                                            $cr->alias = 'sc';
+                                            $st = GestionSolicitudCredito::model()->count($cr);
+
+                                            $solicitud = FALSE;
+                                            switch ($status) {
+                                                case 'na':
+                                                    echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
+                                                    break;
+                                                case '1':
+                                                    echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
+                                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+                                                    echo '<strong>Observación: </strong>'.$comentario;
+                                                    $solicitud = TRUE;
+                                                    break;
+                                                case '2':
+                                                    echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+                                                    $solicitud = TRUE;
+                                                    break;
+                                                case '3':
+                                                    echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>&nbsp;&nbsp;';
+                                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+                                                    $solicitud = TRUE;
+                                                    echo '<strong>Observación: </strong>'.$comentario;
+
+                                                    break;
+                                                case '4':
+                                                    echo '<a class="btn btn-tomate btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
+                                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+                                                    $solicitud = TRUE;
+                                                    echo '<strong>Observación: </strong>'.$comentario;
+
+                                                    break;
+                                                
+
+                                                default:
+                                                    break;
+                                            }
+                                        ?>
+                                        <?php if($st > 0): ?>
+                                        <a href="<?php echo Yii::app()->createUrl('site/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>    
+                            </tbody>
+                        </table>
+                    </div>
                     <?php
-                    $criteria9 = new CDbCriteria(array(
-                        'condition' => "id_informacion={$_GET['id']}"
-                    ));
-                    $art4 = GestionFinanciamiento::model()->findAll($criteria9);
-                    foreach ($art4 as $c1) {
+                    //$art4 = GestionFinanciamiento::model()->findAll(array('condition' => "id_informacion={$_GET['id']}"));
+                    //foreach ($art4 as $c1) {
                         ?>        
-                        <div class="col-md-8">
+<!--                        <div class="col-md-8">
                             <h4 class="text-danger">Forma de pago</h4>
                             <div class="col-md-2"><p><?php echo $c1['forma_pago']; ?></p></div>
                             <div class="col-md-4">
@@ -698,55 +760,62 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             <div class="col-md-4">
                                 <p>$ <?php echo number_format($c1['precio_vehiculo'], 2); ?></p>
                             </div>
-                        </div>
-                        <?php if ($c1['forma_pago'] == 'Crédito'):?>
-                        <div class="col-md-8">
-                            <h4 class="text-danger">Solicitud de Crédito</h4>
+                        </div>-->
+                        <?php //if ($c1['forma_pago'] == 'Crédito'):?>
+<!--                        <div class="col-md-8">
+                            <h4 class="text-danger">Solicitud de Crédito</h4>-->
+                            
                             <?php
                             //echo 'id informacion: '.$c1['id_informacion'].', id vehiculo: '.$c1['id_vehiculo'];
-                            $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
-                            $solicitud = FALSE;
-                            switch ($status) {
-                                case 'na':
-                                    echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
-                                    break;
-                                case '1':
-                                    echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
-                                    echo '<strong>Observación: </strong>'.$comentario;
-                                    $solicitud = TRUE;
-                                    break;
-                                case '2':
-                                    echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
-                                    $solicitud = TRUE;
-                                    break;
-                                case '3':
-                                    echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
-                                    $solicitud = TRUE;
-                                    echo '<strong>Observación: </strong>'.$comentario;
-
-                                    break;
-                                case '4':
-                                    echo '<a class="btn btn-tomate btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
-                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
-                                    $solicitud = TRUE;
-                                    echo '<strong>Observación: </strong>'.$comentario;
-
-                                    break;
-                                
-
-                                default:
-                                    break;
-                            }
+//                            $status = $this->getStatusSolicitud($c1['id_informacion'], $c1['id_vehiculo']);
+//                            $cr = new CDbCriteria;
+//                            $cr->join = " INNER JOIN gestion_firma gf ON gf.id_informacion = sc.id_informacion";
+//                            $cr->condition = "sc.id_informacion = {$c1['id_informacion']} AND id_vehiculo = {$c1['id_vehiculo']}";
+//                            $cr->alias = 'sc';
+//                            $st = GestionSolicitudCredito::model()->count($cr);
+//
+//                            $solicitud = FALSE;
+//                            switch ($status) {
+//                                case 'na':
+//                                    echo '<a class="btn btn-warning btn-xs" target="_blank">Sin Status</a>';
+//                                    break;
+//                                case '1':
+//                                    echo '<a class="btn btn-warning btn-xs" target="_blank">En Análisis</a>&nbsp;&nbsp;';
+//                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+//                                    echo '<strong>Observación: </strong>'.$comentario;
+//                                    $solicitud = TRUE;
+//                                    break;
+//                                case '2':
+//                                    echo '<a class="btn btn-success btn-xs" target="_blank">Aprobado</a>';
+//                                    $solicitud = TRUE;
+//                                    break;
+//                                case '3':
+//                                    echo '<a class="btn btn-danger btn-xs" target="_blank">Negado</a>&nbsp;&nbsp;';
+//                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+//                                    $solicitud = TRUE;
+//                                    echo '<strong>Observación: </strong>'.$comentario;
+//
+//                                    break;
+//                                case '4':
+//                                    echo '<a class="btn btn-tomate btn-xs" target="_blank">Condicionado</a>&nbsp;&nbsp;';
+//                                    $comentario = $this->getComentarioStatus($c1['id_informacion'],$c1['id_vehiculo']);
+//                                    $solicitud = TRUE;
+//                                    echo '<strong>Observación: </strong>'.$comentario;
+//
+//                                    break;
+//                                
+//
+//                                default:
+//                                    break;
+//                            }
                             ?>
-                            <?php //if($solicitud == TRUE): ?>
-                            <a href="<?php echo Yii::app()->createUrl('site/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>
+                            <?php //if($st > 0): ?>
+                            <!--<a href="<?php echo Yii::app()->createUrl('site/cotizacion/', array('id_informacion' => $c1['id_informacion'], 'id_vehiculo' => $c1['id_vehiculo'])); ?>" class="btn btn-xs btn-success" target="_blank">Solicitud de Crédito</a>-->
                             <?php //endif; ?>
                         </div>
-                        <?php endif; ?>
+                        <?php //endif; ?>
 
-                    <?php } // end foreach   ?>
+                    <?php //} // end foreach   ?>
                     <?php
                     $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id} AND paso = 7"));
                     $agen5 = GestionAgendamiento::model()->count($crit5);
