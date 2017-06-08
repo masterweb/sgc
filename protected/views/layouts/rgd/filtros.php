@@ -1,7 +1,38 @@
+<script type="
+text/javascript">
+    
+function get_version(id){
+
+
+
+    //$('#contacto_concesionario').html("<img src= \"<?php echo Yii::app()->createUrl("../images/ajax-loader.gif")?>\" />");
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/getVersion"); ?>',
+                beforeSend: function (xhr) {
+                    //$('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',dataType: 'json',data: {id : id},
+                success: function (data) {
+                    $('#GestionDiaria_version').html('');    
+                    $('#GestionDiaria_version').html(data);
+                   
+
+                },error:function(data){
+
+                        $('#GestionDiaria_version').html('');    
+                        $('#GestionDiaria_version').html(data.responseText);
+
+                }
+    });
+
+}
+
+</script>
 <?php
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
+//echo 'grupo id: '.$grupo_id;
 $id_responsable = Yii::app()->user->getId();
 ?>
 <?php if ($tipo_filtro == 'general'): ?>
@@ -123,7 +154,7 @@ $id_responsable = Yii::app()->user->getId();
                 ?>
                 <div class="col-md-6">
                     <label for="">Responsable</label>
-                    <?php ecwho $form->dropDownList($mod, 'responsable', $usu, array('class' => 'form-control', 'empty' => 'Seleccione un responsable')); ?>
+                    <?php echo $form->dropDownList($mod, 'responsable', $usu, array('class' => 'form-control', 'empty' => 'Seleccione un responsable')); ?>
 
                 </div>
             <?php endif; ?>
@@ -190,6 +221,31 @@ $id_responsable = Yii::app()->user->getId();
                     <label for="">Responsable</label>
                     <select name="GestionDiaria[responsable]" id="GestionDiaria_responsable" class="form-control">
                         <option value="">--Seleccione responsable--</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="">Modelo</label>
+                    <select name="GestionDiaria[modelo]" id="GestionDiaria_modelo" class="form-control" onchange="get_version(this.value)">
+                      
+                        <?php
+                                        $all_models = Modelos::model()->findAll();
+                                       
+                                        if(!empty($all_models)){
+                                            echo ' <option value="">--Seleccione modelo--</option>';
+                                            echo '<option value="999">Todos</option>';
+                                            foreach($all_models as $m){
+                                                echo '<option value="'.$m->id_modelos.'">'.$m->nombre_modelo.'</option>';
+                                            }
+                                        }
+                        ?>
+                    </select>
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="">Versión</label>
+                    <select name="GestionDiaria[version]" id="GestionDiaria_version" class="form-control">
+                        <option value="">--Seleccione version--</option>
                     </select>
                 </div>    
             </div>

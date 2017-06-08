@@ -3554,8 +3554,11 @@ class Controller extends CController {
                 break;
         }
         //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
-        $criteria->addCondition("gv.version IN (".$versiones.") AND gv.orden = 1");
+        # SI NO ES VERSION PARA SUMATORIA TOTAL DETALLE
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        $criteria->addCondition("gv.orden = 1");
     //    echo '<pre>';
     //    print_r($criteria);
     //    echo '</pre>';
@@ -3689,7 +3692,8 @@ class Controller extends CController {
             default:
                 break;
         }
-        $criteria->addCondition("gv.version IN (".$versiones.")");
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
     //    echo '<pre>';
     //    print_r($criteria);
@@ -3806,7 +3810,8 @@ class Controller extends CController {
                 break;
         }
         //$criteria->addCondition("DATE(gt.fecha) ".$srf);
-        $criteria->addCondition("gv.version IN (".$versiones.")");
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
     //    echo '<pre>';
     //    print_r($criteria);
@@ -3955,7 +3960,8 @@ class Controller extends CController {
                 break;
         }
         //$criteria->addCondition("DATE(gf.fecha) ".$srf);
-        $criteria->addCondition("gv.version IN (".$versiones.")");
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
         $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
     //    echo '<pre>';
     //    print_r($criteria);
@@ -4230,9 +4236,15 @@ class Controller extends CController {
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+       
+
+
+
+      
         
         switch ($cargo_id) {
             case 46: // SUPER ADMINISTRADOR
+
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 break;
             case 69: // GERENTE COMERCIAL
@@ -4309,17 +4321,33 @@ class Controller extends CController {
         if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14 || $cargo_id == 69) { // AEKIA USERS
             //die('enter areas');
             if ($get_array == 'exo') {
-                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN gr_concesionarios grc ON grc.dealer_id = gi.dealer_id';
                 $criteria->condition = "u.cargo_id IN (75)";
             }
             if ($tipo_search == 'web') {
-                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN gr_concesionarios grc ON grc.dealer_id = gi.dealer_id';
                 $criteria->condition = "u.cargo_id IN(85,86,70,71) OR u.cargo_adicional IN(85,86)";
             }
             if ($tipo_search == '') {
-                $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
+                $criteria->join .= ' INNER JOIN gr_concesionarios grc ON grc.dealer_id = gi.dealer_id';
                 $criteria->condition = "u.cargo_id IN (70,71)";
             }
+        }
+
+
+         if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        //    echo $_GET['GestionDiaria']['modelo'];
+             $modelo=$_GET['GestionDiaria']['modelo'];            
+             $criteria->addCondition("gv.modelo = {$modelo} ");
+        }
+        else if($_GET['GestionDiaria']['modelo']==999){
+            $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        }
+        if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999) {
+      //      echo $_GET['GestionDiaria']['version'];
+              $version=$_GET['GestionDiaria']['version'];   
+            $criteria->addCondition("gv.version = {$version} ");
         }
 
         $search_type = 0;   
@@ -4604,7 +4632,11 @@ class Controller extends CController {
             $stat = 'Quiero un Kia TD';
         }
         //echo('search type: ' . $search_type);
+        
+        
         switch ($search_type) {
+
+
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
                 $data['title'] = $title;
@@ -5948,6 +5980,8 @@ class Controller extends CController {
             default:
                 break;
         }
+
+
     }
     
     private static function setStatusCriteria($status){

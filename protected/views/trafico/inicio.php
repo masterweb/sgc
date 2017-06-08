@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jquery.dataTables.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/dataTables.buttons.min.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/buttons.html5.min.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>-->
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datatable/jszip.min.js"></script>
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/daterangepicker.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/jquery-ui.css" type="text/css" />
 <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/jquery-ui-bootstrap/third-party/jQuery-UI-Date-Range-Picker/css/ui.daterangepicker.css" type="text/css" />
@@ -240,7 +240,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AEKIA USERS
     $area = 1;
 }
-echo 'flag search: '.$vartrf['flag_search'];
+// echo 'flag search: '.$vartrf['flag_search'];
 
 //echo 'meses: '.$vartrf['mes_actual'];
 //echo '<pre>';
@@ -514,14 +514,15 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 ?>
                     <?php 
                     ?>
+<!-- SUMA DE TOTAL NACIONAL ============================================================================================================================-->
                 <tr>
-                        <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle-t">TOTAL</td>
+                        <td colspan="<?php echo $vartrf['mes_actual'] + 2; ?>" class="oddtitle-t" bgcolor='#888888'><strong>TOTAL</strong></td>
                     </tr>  
                     <tr>
                         <td bgcolor="#D9534F" class="tr-f">&nbsp;</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td bgcolor="#D9534F" class="tr-f dde_' . $i . '_' . $val['id'] . '"  id="dde_' . $i . '_' . $val['id'] . '" data-vec="0">' . $vartrf['fechas'][$i] . '</td>';
+                            echo '<td bgcolor="#D9534F" class="tr-f ddo_' . $i . '_' . $val['id'] . '"  id="ddo_' . $i . '_' . $val['id'] . '" data-vec="0" onclick="detail_total('.$i.','.$val['id'].','.$vartrf['dia_inicial'].','.$vartrf['dia_actual'].','.$vartrf['year_actual'].','.$vartrf['fechas_date'][$i].','.$vartrf['categoria'].');">' . $vartrf['fechas'][$i] . '</td>';
                         }
                         ?>
                         <td bgcolor="#D9534F" class="tr-f">Total</td>
@@ -619,7 +620,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         ?>
                         <td><?php echo $this->getTasaCierre($vartrf['ventas_nacional'], $vartrf['trafico_nacional']); ?></td>
                     </tr> 
-                    <tr><td></td></tr> 
+                    <tr><td class='cer-det-tot' colspan="<?php echo $vartrf['mes_actual'] + 2; ?>"></td></tr> 
                     <tr bgcolor="#888">
                         <td colspan="<?php echo $vartrf['mes_actual'] + 1; ?>" class="oddtitlet">Ensamblado Nacional (CKD) e internacional (CBU)</td>
                     </tr> 
@@ -725,10 +726,49 @@ $vartrf['testdrive_nacional_categoria'] = array();
         //$("#GestionInformacionGrupo option:selected").prop("selected", false);
         //$("#GestionInformacionProvincias option:selected").prop("selected", false);
     }
+
+    function detail_total(i, id, dia_inicial, dia_actual, year, mes, categoria){
+        var where = '<?php echo $where; ?>';
+        fr = 0;
+        var vecobj = document.getElementById('ddo_' + i + '_' + id);
+        var datpl = vecobj.dataset.vec;
+        if(datpl == 0){
+            vecobj.dataset.vec = 1;
+        }else{
+            fr++;
+        }
+        
+        if(fr == 0){
+            $('.ddo_' + i + '_' + id).css('background-color', '#47A447');
+            $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getDetalleTotal"); ?>',
+                beforeSend: function (xhr) {
+                    $('#bg_black').show();  // #info must be defined somehwere
+                },
+                type: 'POST',
+                dataType: 'json',
+                data: {i:i, id:id, dia_inicial: dia_inicial, dia_actual: dia_actual, year: year, mes: mes, where : where, categoria: categoria},
+                success: function(data){
+                    $('.cer-det-tot').append(data.data_total);
+                    $('#bg_black').hide();
+                }
+            });
+        }else{
+            vecobj = document.getElementById('ddo_' + i + '_' + id);
+            vecobj.dataset.vec = 0;
+            $('.ddo_' + i + '_' + id).css('background-color', '#D9534F');
+            //$('.det_'+mes).remove();
+            $('.det_'+mes).slideUp('slow',function(){
+                $('.det_'+mes).remove();
+            });
+        }
+        
+    }
     function detail(versiones, dia_inicial, dia_actual, year, mes, id, nombre_modelo, i, categoria) {
         var where = '<?php echo $where; ?>';
         //console.log('i: '+i);
         fr = 0;
+        // LISTADO DE VEHICULOS POR CATEGORIA
         var id_modelos = [<?php echo implode(',',  $vartrf['id_modelos'] ); ?>];
         //var id_modelos = [1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17];
         for (j=0; j < id_modelos.length; j++){
@@ -781,9 +821,9 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-21').append(data.data_sorento);
                     $('#bg_black').hide();
                     var enlace  = $('#cid_'+id);
-		    $('html, body').animate({
-		        scrollTop: $(enlace).offset().top
-		    }, 1000);
+        		    $('html, body').animate({
+        		        scrollTop: $(enlace).offset().top
+        		    }, 1000);
                     //$("body").css("overflow", "hidden");
                 }
             });
@@ -801,6 +841,17 @@ $vartrf['testdrive_nacional_categoria'] = array();
           }
         }
 
+    }
+    /*
+    Funcion para cerrar el modal de detalle total
+    */
+    function closetotal(mes, i, id){
+        $('.det_' + mes).slideUp('slow', function(){
+            $(this).remove();
+        });
+        $('.ddo_' + i + '_' + id).css('background-color', '#D9534F');
+        vecobj = document.getElementById('ddo_' + i + '_' + id);
+        vecobj.dataset.vec = 0;
     }
     function closemodal(mes, i) {
         //alert('mes: '+mes+',i: '+i);
