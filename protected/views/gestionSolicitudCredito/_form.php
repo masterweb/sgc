@@ -20,6 +20,16 @@
 /* @var $model GestionSolicitudCredito */
 /* @var $form CActiveForm */
 
+# CONSULTA SI EXISTE UNA SOLICITUD DE CREDITO YA INGRESADA
+$countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
+if($countsc > 0){ // SI EXISTE SOLICITUD UPDATE 
+    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
+    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+}else{ // SI NO EXISTE CREA UNA NUEVA
+    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
+    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+}
+
 # CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
 $ced = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
 $valid_cedula = 0;
@@ -98,20 +108,24 @@ if($ced){
         $valid_cedula = 1;
         $dat = GestionDatabook::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
         $xml = simplexml_load_string($dat->xml_databook);
-        $vartrf['cedula'] = $xml->civil->cedula;
-        $vartrf['estadocivil'] = $xml->civil->cedula;
-        $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
-        $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
-        $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
-        $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
-        $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
-        //$vartrf['salarioactual'] = $xml->actual->salarioactual;
-        $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
-        $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
-        $vartrf['cargo'] = $xml->actual->cargo;
-        $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
-        $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
-        $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
+
+        if($countsc == 0){
+            $vartrf['cedula'] = $xml->civil->cedula;
+            $vartrf['estadocivil'] = $xml->civil->cedula;
+            $vartrf['dianacimiento'] = $xml->civil->dianacimiento;
+            $vartrf['mesnacimiento'] = $xml->civil->mesnacimiento;
+            $vartrf['anionacimiento'] = $xml->civil->anionacimiento;
+            $vartrf['nombreempleador'] = $xml->actual->nombreempleador;
+            $vartrf['direccionempleador'] = $xml->actual->direccionempleador;
+            //$vartrf['salarioactual'] = $xml->actual->salarioactual;
+            $vartrf['telefonoempleador'] = $xml->actual->telefonoempleador;
+            $vartrf['fechaentrada'] = $xml->actual->fechaentrada;
+            $vartrf['cargo'] = $xml->actual->cargo;
+            $vartrf['actividadempleador'] = $xml->actual->actividadempleador;
+            $vartrf['nombreconyuge'] = $xml->civil->nombreconyuge;
+            $vartrf['conyugecedula'] = $xml->conyugecedula->conyugecedula;
+        }
+        
         // CALCULAR TIEMPO DE TRABAJO EN MESES
         /*$dt = time();
         $vartrf['fecha_actual'] = strftime("%d/%m/%Y", $dt);
@@ -134,14 +148,7 @@ if($ced){
 //echo 'valid cedula: '.$valid_cedula;
 # END CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
 
-$countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
-if($countsc > 0){
-    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
-    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
-}else{
-    $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
-    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
-}
+
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
 if((int) Yii::app()->user->getState('cargo_id') == 86 || (int) Yii::app()->user->getState('cargo_adicional')){
@@ -218,7 +225,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         var tipo_propiedad  = $("#GestionSolicitudCredito_habita").val();
         switch (tipo_propiedad) {
             case 'Propia':
-                $('#cont-avaluo').show();
+                //$('#cont-avaluo').show();
                 break;
             case 'Rentada':
                 $('#cont-arriendo').show();
@@ -452,15 +459,15 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             switch (value) {
                 case 'Rentada':
                     $('#cont-arriendo').show();
-                    $('#cont-avaluo').hide();
+                    //$('#cont-avaluo').hide();
                     break;
                 case 'Propia':
                     $('#cont-arriendo').hide();
-                    $('#cont-avaluo').show();
+                   // $('#cont-avaluo').show();
                     break;
                 case 'Vive con Familiares':
                     $('#cont-arriendo').hide();
-                    $('#cont-avaluo').hide();
+                    //$('#cont-avaluo').hide();
                     break;
             }
 
@@ -616,6 +623,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     } 
                 }
                 error = validate_estado_civil(estado_civil, error, conyugue_trabaja, 2);
+                if(error > 0)
+                    return false;
                 
                 var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
                 var fechaActual = new Date().toJSON().slice(0, 10);
@@ -729,7 +738,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         return false;
                     } 
                 }
-                validate_estado_civil(estado_civil, error, conyugue_trabaja,3);
+                var conyugue_validate = validate_estado_civil(estado_civil, error, conyugue_trabaja,3);
+                if(conyugue_validate > 0)
+                    return false;
                 
                 var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
                 var fechaActual = new Date().toJSON().slice(0, 10);
@@ -741,14 +752,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     return false;
                 }
                 var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
-                if(tipo_propiedad == 'Propia'){
+            /*    if(tipo_propiedad == 'Propia'){
                     var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
                     if(avaluo_propiedad < 9999){
                         $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
                         $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
                         return false;
                     }
-                }
+                }*/
                 
                 var dataform = $("#gestion-solicitud-credito-form").serialize();
                 var count = 0;
@@ -880,14 +891,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     return false;
                 }
                 var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
-                if(tipo_propiedad == 'Propia'){
+                /*if(tipo_propiedad == 'Propia'){
                     var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
                     if(avaluo_propiedad < 9999){
                         $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
                         $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
                         return false;
                     }
-                }
+                }*/
                 
                 var dataform = $("#gestion-solicitud-credito-form").serialize();
                 var count = 0;
@@ -954,6 +965,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         });
     }
     function validate_estado_civil(estado_civil, error, conyugue_trabaja,tipo){
+        var error = 0;
         switch (estado_civil) {
             case 'Soltero':
             case 'Viudo':
@@ -971,7 +983,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     $('#GestionSolicitudCredito_sueldo_mensual_error').show();
                     $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
                     error++;
-                    return false;
+                    // return false;
                 }
                 //validateCasado();
                 break;
@@ -1279,14 +1291,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 }
                 
                 var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
-                if(tipo_propiedad == 'Propia'){
+                /*if(tipo_propiedad == 'Propia'){
                     var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
                     if(avaluo_propiedad < 9999){
                         $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
                         $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
                         return false;
                     }
-                }
+                }*/
                 //console.log('enter submit');
                 //if (confirm('Desea grabar los datos ingresados y enviar la solicitud al Asesor de Crédito?')) {
                 var dataform = $("#gestion-solicitud-credito-form").serialize();
@@ -2036,7 +2048,30 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     '5' => '5 años',
                                     '6' => '6 años',
                                     '7' => '7 años',
-                                    '8' => 'Más de 7 años',
+                                    '8' => '8 años',
+                                    '9' => '9 años',
+                                    '10' => '10 años',
+                                    '11' => '11 años',
+                                    '12' => '12 años',
+                                    '13' => '13 años',
+                                    '14' => '14 años',
+                                    '15' => '15 años',
+                                    '16' => '16 años',
+                                    '17' => '17 años',
+                                    '18' => '18 años',
+                                    '19' => '19 años',
+                                    '20' => '20 años',
+                                    '21' => '21 años',
+                                    '22' => '22 años',
+                                    '23' => '23 años',
+                                    '24' => '24 años',
+                                    '25' => '25 años',
+                                    '26' => '26 años',
+                                    '27' => '27 años',
+                                    '28' => '28 años',
+                                    '29' => '29 años',
+                                    '30' => '30 años',
+                                    '31' => 'Más de 30 años',
                                         ), array('class' => 'form-control','options' => array($years => array('selected' => true))));
                                 ?>
                                 <?php echo $form->error($model, 'tiempo_trabajo'); ?>
@@ -2056,8 +2091,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     '8' => '8 meses',
                                     '9' => '9 meses',
                                     '10' => '10 meses',
-                                    '11' => '11 meses',
-                                    '12' => '12 meses',
+                                    '11' => '11 meses'
                                         ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo','options' => array($meses_resto => array('selected' => true))));
                                 ?>
                                 
@@ -2101,6 +2135,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->textField($model, 'actividad_empresa', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control','value' => $vartrf['actividadempleador'])); ?>
                                 <?php echo $form->error($model, 'actividad_empresa'); ?>
                             </div>
+                            <div class="col-md-4">
+                                <?php echo $form->labelEx($model, 'email_laboral'); ?>
+                                <?php echo $form->textField($model, 'email_laboral', array('size' => 100, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'email_laboral'); ?>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="offset6 col-md-3">
@@ -2138,6 +2177,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->error($model, 'cedula_conyugue'); ?>
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_cedula_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
+                                <div class="col-md-3">
+                                    <?php echo $form->labelEx($model, 'ruc_conyugue'); ?>
+                                    <?php echo $form->textField($model, 'ruc_conyugue', array('size' => 60, 'maxlength' => 13, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
+                                    <?php echo $form->error($model, 'ruc_conyugue'); ?>
+                                    
+                                </div>
+                                <div class="col-md-3">
+                                    <?php echo $form->labelEx($model, 'pasaporte_conyugue'); ?>
+                                    <?php echo $form->textField($model, 'pasaporte_conyugue', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                    <?php echo $form->error($model, 'pasaporte_conyugue'); ?>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento_conyugue'); ?>
                                     <?php echo $form->textField($model, 'fecha_nacimiento_conyugue', array('size' => 60, 'maxlength' => 85, 'class' => 'form-control','readonly' => 'true')); ?>
@@ -2435,6 +2489,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php
                                     echo $form->dropDownList($model, 'tiempo_trabajo_conyugue', array(
                                         '' => '--Seleccione--',
+                                        '0' => 'Menos de 1 año',
                                         '1' => '1 año',
                                         '2' => '2 años',
                                         '3' => '3 años',
@@ -2442,6 +2497,30 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         '5' => '5 años',
                                         '6' => '6 años',
                                         '7' => '7 años',
+                                        '8' => '8 años',
+                                        '9' => '9 años',
+                                        '10' => '10 años',
+                                        '11' => '11 años',
+                                        '12' => '12 años',
+                                        '13' => '13 años',
+                                        '14' => '14 años',
+                                        '15' => '15 años',
+                                        '16' => '16 años',
+                                        '17' => '17 años',
+                                        '18' => '18 años',
+                                        '19' => '19 años',
+                                        '20' => '20 años',
+                                        '21' => '21 años',
+                                        '22' => '22 años',
+                                        '23' => '23 años',
+                                        '24' => '24 años',
+                                        '25' => '25 años',
+                                        '26' => '26 años',
+                                        '27' => '27 años',
+                                        '28' => '28 años',
+                                        '29' => '29 años',
+                                        '30' => '30 años',
+                                        '31' => 'Más de 30 años'
                                             ), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($model, 'tiempo_trabajo_conyugue'); ?>
@@ -2462,8 +2541,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         '8' => '8 meses',
                                         '9' => '9 meses',
                                         '10' => '10 meses',
-                                        '11' => '11 meses',
-                                        '12' => '12 meses',
+                                        '11' => '11 meses'
                                             ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo_conyugue'));
                                     ?>
                                     
@@ -2579,24 +2657,31 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'ciudad_domicilio'); ?>
                             </div>
                         </div>
-
                         <div class="row">
-                            <div class="col-md-4">
-                                <?php echo $form->labelEx($model, 'barrio'); ?>
-                                <?php echo $form->textField($model, 'barrio', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
-                                <?php echo $form->error($model, 'barrio'); ?>
-                            </div>
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'calle'); ?>
                                 <?php echo $form->textField($model, 'calle', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control', 'value' => $val['direccion'])); ?>
                                 <?php echo $form->error($model, 'calle'); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $form->labelEx($model, 'numero'); ?>
-                                <?php echo $form->textField($model, 'numero', array('size' => 60, 'maxlength' => 15, 'class' => 'form-control')); ?>
-                                <?php echo $form->error($model, 'numero'); ?>
+                                <?php echo $form->labelEx($model, 'interseccion'); ?>
+                                <?php echo $form->textField($model, 'interseccion', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'interseccion'); ?>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <?php echo $form->labelEx($model, 'numero'); ?>
+                                <?php echo $form->textField($model, 'numero', array('size' => 60, 'maxlength' => 40, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'numero'); ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php echo $form->labelEx($model, 'barrio'); ?>
+                                <?php echo $form->textField($model, 'barrio', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'barrio'); ?>
+                            </div>
+                        </div>
+                        
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($model, 'referencia_domicilio'); ?>
@@ -2766,6 +2851,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 '' => '-Seleccione-',
                                 'Padre' => 'Padre',
                                 'Madre' => 'Madre',
+                                'Suegro' => 'Suegro/a',
+                                'Cunado' => 'Cuñado/a',
                                 'Hijo' => 'Hijo',
                                 'Hermano' => 'Hermano',
                                 'Primo' => 'Primo/a',
@@ -2795,6 +2882,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 '' => '-Seleccione-',
                                 'Padre' => 'Padre',
                                 'Madre' => 'Madre',
+                                'Suegro' => 'Suegro/a',
+                                'Cunado' => 'Cuñado/a',
                                 'Hijo' => 'Hijo',
                                 'Hermano' => 'Hermano',
                                 'Primo' => 'Primo/a',
