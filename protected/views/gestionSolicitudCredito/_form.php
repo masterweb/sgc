@@ -1718,11 +1718,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
 
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento'); ?>
-                                    <?php if($valid_cedula){ ?>
-                                        <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true','value' => $vartrf['anionacimiento'] .'-'. $vartrf['mesnacimiento'] .'-'. $vartrf['dianacimiento'])); ?>
-                                    <?php }else{ ?>
+                                    <?php //if($valid_cedula){ ?>
+                                        <?php //echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true','value' => $vartrf['anionacimiento'] .'-'. $vartrf['mesnacimiento'] .'-'. $vartrf['dianacimiento'])); ?>
+                                    <?php// }else{ ?>
                                         <?php echo $form->textField($model, 'fecha_nacimiento', array('size' => 60, 'maxlength' => 75, 'class' => 'form-control','readonly' => 'true')); ?>
-                                    <?php } ?>
+                                    <?php //} ?>
                                     <?php echo $form->error($model, 'fecha_nacimiento'); ?>
                                 </div>
                                 <div class="col-md-3">
