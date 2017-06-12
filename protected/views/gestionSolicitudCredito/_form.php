@@ -151,10 +151,12 @@ if($ced){
 
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
+if((int) Yii::app()->user->getState('cargo_id') == 87){
+    $dealer_id = $this->getConcesionarioDealerIdIngresado($id_informacion);
+}
 if((int) Yii::app()->user->getState('cargo_id') == 86 || (int) Yii::app()->user->getState('cargo_adicional')){
     $dealer_id = $this->getConcesionarioId($id_informacion);
 }
-
 $id_responsable = $this->getResponsableId($id_informacion);
 $id_modelo = $this->getIdModelo($id_vehiculo);
 //$nombre_modelo = $this->getVersion($id_vehiculo);

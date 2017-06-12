@@ -1494,6 +1494,16 @@ class Controller extends CController {
         }
     }
 
+    public function getConcesionarioDealerIdIngresado($id_informacion){
+        //die($id_informacion);
+        $info = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
+        if($info){
+            return $info->dealer_id;
+        }else{
+            return 0;
+        }
+    }
+
     public function getConcesionarioGrupoRuc($id) {
         //die('id: '.$id);
         $criteria = new CDbCriteria(array(
@@ -4272,6 +4282,7 @@ class Controller extends CController {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 break;
             case 69: // GERENTE COMERCIAL
+                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                 if ($tipo_search == '') {
                     //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
@@ -4285,7 +4296,7 @@ class Controller extends CController {
                 if ($tipo_search == 'exhibicion') {
                     //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
-                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
                 }
                 if ($tipo_search == 'exo') {
                     //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
