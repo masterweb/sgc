@@ -420,7 +420,7 @@ class GestionInformacionController extends Controller {
                     $this->redirect(array('gestionInformacion/seguimiento'));
                 }
                 // SI EL CLIENTE ES DE EXHIBICION SALTAMOS EL PASO DE CONSULTA Y SE VA A GESTIONVEHICULO CREATE
-                if($_POST['GestionInformacion']['fuente'] == 'exhibicion' || $_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd'){
+                if($_POST['GestionInformacion']['fuente'] == 'exhibicion' || $_POST['GestionInformacion']['fuente'] == 'exhibicion quierounkiatd' || $_POST['GestionInformacion']['fuente'] == 'exhibicion_automundo_uio'){
                     $this->redirect(array('gestionVehiculo/create', 'id' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
                 }
                 //$this->redirect(array('gestionConsulta/create', 'id_informacion' => $model->id, 'tipo' => $_POST['tipo'], 'fuente' => $fuente));
@@ -2209,7 +2209,6 @@ class GestionInformacionController extends Controller {
                         break;
                 }
             }
-
             $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array, $tipo_search);
             $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages'], 'tipo_seg' => $tipo_search));
             exit();
