@@ -286,6 +286,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'tipo_activo1' => 'tipo_activo1',
             'tipo_activo2' => 'tipo_activo2',
             'id_solicitud' => 'Id Solicitud',
+            'edit' => 'Editado Por'
         );
     }
 

@@ -83,6 +83,14 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
 <section class="dashb">
         <!--<div><img class="img_rs" src="<?php //echo Yii::app()->request->baseUrl;     ?>/images/img_14.jpg"></div>-->
     <ul class="menu dashboard">
+        <?php if($cargo_id == 87): ?>
+        <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('site/menu/opcion/' . md5(2) . '/tipo/ventas'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/img_21.jpg" width="46" height="56"></div>
+                                <div class="txt_menu">SGC</div></a>
+                        </div>
+                    </li>
+        <?php endif; ?>
         <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86): ?>
         <li class="wrapper">
             <div class="forma">
@@ -92,7 +100,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         </li>
         <?php endif; ?>
         <?php 
-        $restricted_reportes = ['74', '76', '77','86','85','59','83','82'];
+        $restricted_reportes = ['74', '76', '77','86','85','59','83','82','87'];
         if(!in_array($cargo_id, $restricted_reportes)):?>
             <li class="wrapper">
                 <div class="forma">

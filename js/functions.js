@@ -589,6 +589,15 @@ $(document).ready(function () {
                 $('.motivo-cont').hide();
                 $('.empresa-cont').hide();
                 break;
+            case 'exhibicion_automundo_uio':
+            case 'exhibicion quierounkiatd':
+                $("#GestionNuevaCotizacion_tipo").html(data);
+                $('.tipo-cont').show();
+                $('#cont-ident').show();
+                $('.exh-cont').hide();
+                $('.motivo-cont').hide();
+                $('.empresa-cont').hide();
+                break;
             case 'web':
                 $('.tipo-cont').hide();
                 $('#cont-ident').show();

@@ -538,6 +538,30 @@ class Controller extends CController {
         }
     }
 
+    public function getResponsableFyi($id) {
+        //echo 'id: '.$id;
+        $responsableid = Usuarios::model()->findByPk($id);
+        /* echo '<pre>';
+          print_r($dealers);
+          echo '</pre>'; */
+        //echo $dealers->responsable;
+        //die('dddde');
+        if (!is_null($responsableid) && !empty($responsableid)) {
+            return $responsableid->nombres . ' ' . $responsableid->apellido;
+        } else {
+            return 'NA';
+        }
+    }
+
+    public function getResponsableEditSc($id_informacion, $id_vehiculo){
+        $sc = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+        if (!is_null($sc) && !empty($sc)) {
+            return $sc->edit;
+        }else{
+            return 0;
+        }
+    }
+
     /**
      * Funcion que devuelve nombre de responsable asesor de 1800
      * @param type $id
@@ -4631,6 +4655,9 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'qktd'){
             $stat = 'Quiero un Kia TD';
         }
+        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
+            $stat = 'Exhibición Automundo Quito';
+        }
         //echo('search type: ' . $search_type);
         
         
@@ -4707,7 +4734,7 @@ class Controller extends CController {
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
                 //$title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>";
-                $title = "Busqueda por Status: <strong>".$stat."</strong>";
+                $title = "Busqueda por Status: <strong>".$stat."</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5229,7 +5256,7 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong>";
+                $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5378,7 +5405,7 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
+                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>- <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5545,7 +5572,7 @@ class Controller extends CController {
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5572,7 +5599,7 @@ class Controller extends CController {
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} - <strong>Cantidad: ".count($users)."</strong> ";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5594,7 +5621,7 @@ class Controller extends CController {
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} ";
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".count($users)."</strong> ";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5727,7 +5754,7 @@ class Controller extends CController {
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} ";
+                $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".count($users)."</strong> ";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5753,7 +5780,7 @@ class Controller extends CController {
 //                echo '<pre>';s
 //                print_r($criteria);
 //                echo '</pre>';
-                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5801,7 +5828,7 @@ class Controller extends CController {
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong>";
+                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5828,7 +5855,7 @@ class Controller extends CController {
 //                echo '<pre>';s
 //                print_r($criteria);
 //                echo '</pre>';
-                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Concesionario: <strong>{$concesionario}</strong>";
+                $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Concesionario: <strong>{$concesionario}</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5850,7 +5877,7 @@ class Controller extends CController {
                 $users = GestionInformacion::model()->findAll($criteria);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} ";
+                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".count($users)."</strong> ";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -5873,7 +5900,7 @@ class Controller extends CController {
                 $users = GestionInformacion::model()->findAll($criteria);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
-                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} Responsable: <strong>{$responsable}</strong>";
+                $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".count($users)."</strong>";
                 $data['title'] = $title;
                 $data['users'] = $users;
                 $data['pages'] = $pages;
@@ -6017,6 +6044,9 @@ class Controller extends CController {
             case 'qktd':
                 $condition = "gd.medio_contacto = 'exhquktd' AND gd.status = 1";
                 break;
+            case 'exhibicion_automundo_uio':
+                $condition = "gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1";
+                break;    
             default:
                 break;
         }

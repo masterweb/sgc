@@ -2196,7 +2196,11 @@ class GestionInformacionController extends Controller {
                     case 'exhqk':    
                         $tipo_search = 'exhqk';
                         $get_array = 'exhqk';
-                        break;    
+                        break;  
+                    case 'exhibicion_automundo_uio':
+                        $tipo_search = 'exhibicion_automundo_uio';
+                        $get_array = 'exhibicion_automundo_uio';
+                        break;     
                     case 'prospeccion':
                         $tipo_search = 'pro';
                         $get_array = 'pro';

@@ -30,7 +30,7 @@ class GestionSolicitudCreditoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'createAjax', 'cotizacion', 'admin', 'aprobar', 'aprobarhj', 'status'),
+                'actions' => array('create', 'update', 'createAjax', 'cotizacion', 'admin', 'aprobar', 'aprobarhj', 'status','fyi'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -254,6 +254,10 @@ class GestionSolicitudCreditoController extends Controller {
             $hoja_entrega->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
             $hoja_entrega->status = 'pendiente';
             $hoja_entrega->save();
+            // INSERTAR ID DEL ASESOR CREDITO FYI QUE EDITA LA SOLICITUD
+            if(Yii::app()->user->getState('cargo_id') == 87){
+                $model->edit = (int) Yii::app()->user->getId();
+            }
             //die('before save');
             if ($model->validate()) {
                 
@@ -261,7 +265,7 @@ class GestionSolicitudCreditoController extends Controller {
                 echo '<pre>';
                 print_r($model->getErrors());
                 echo '</pre>';
-                //die('no validate');
+                die('no validate');
             }
 
             if ($model->save()) {
@@ -303,11 +307,13 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
-                //$emailAsesorCredito = 'alkanware@gmail.com';
-                //die('email asesor: '.$emailAsesorCredito);
-                sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
-                //die('enter save');
+                if(Yii::app()->user->getState('cargo_id') != 87){
+                    $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                    //$emailAsesorCredito = 'alkanware@gmail.com';
+                    //die('email asesor: '.$emailAsesorCredito);
+                    sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                    //die('enter save');
+                }
                 $result = TRUE;
                 $arr = array('result' => $result, 'id' => $model->id);
                 echo json_encode($arr);
@@ -508,6 +514,10 @@ class GestionSolicitudCreditoController extends Controller {
             $hoja_entrega->id_vehiculo = $_POST['GestionSolicitudCredito']['id_vehiculo'];
             $hoja_entrega->status = 'pendiente';
             $hoja_entrega->save();
+            // INSERTAR ID DEL ASESOR CREDITO FYI QUE EDITA LA SOLICITUD
+            if(Yii::app()->user->getState('cargo_id') == 87){
+                $model->edit = (int) Yii::app()->user->getId();
+            }
             //die('before save');
             if ($model->validate()) {
                 
@@ -555,9 +565,12 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
-                //die('email asesor: '.$emailAsesorCredito);
-                sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                if(Yii::app()->user->getState('cargo_id') != 87){
+                    $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                    //die('email asesor: '.$emailAsesorCredito);
+                    sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                }
+                
                 //die('enter save');
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -692,11 +705,25 @@ class GestionSolicitudCreditoController extends Controller {
                 }
             }
         }
+        if(Yii::app()->user->getState('cargo_id') == 87){
+            $con = Yii::app()->db;
 
-
-        $this->render('admin', array(
+            # SGC DE CLIENTES CON FUENTE EXHIBICION AUTOMIUNDO UIO
+            $sql = "SELECT gi.*, gf.id_vehiculo FROM gestion_informacion gi
+            INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+            INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+            INNER JOIN gestion_financiamiento gf ON gf.id_vehiculo = gv.id 
+            WHERE gd.fuente_contacto = 'exhibicion_automundo_uio' ";
+            $sql .= " GROUP BY gv.id ORDER BY gi.id DESC";
+            $exh = $con->createCommand($sql)->queryAll($sql);
+            $this->render('fyi', array('exh' => $exh));
+        }else{
+            $this->render('admin', array(
             'model' => $model,
-        ));
+            ));
+        }
+
+        
     }
 
     /**
@@ -840,6 +867,29 @@ class GestionSolicitudCreditoController extends Controller {
         $res = str_replace('.', ",", $input);
         $res = (int) str_replace('$', "", $input);
         return $res;
+    }
+
+    public function actionFyi(){
+        $con = Yii::app()->db;
+
+        # SGC DE CLIENTES CON FUENTE EXHIBICION AUTOMIUNDO UIO
+        $sql = "SELECT gi.*, gf.id_vehiculo FROM gestion_informacion gi
+        INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+        INNER JOIN gestion_financiamiento gf ON gf.id_vehiculo = gv.id 
+        WHERE gd.fuente_contacto = 'exhibicion_automundo_uio' ";
+      
+
+        
+        if(isset($_GET['GestionSolicitudCredito'])){
+            //die('enter get');
+            if(!empty($_GET['GestionSolicitudCredito']['general']))
+                $sql .= " AND gi.id = '{$_GET['GestionSolicitudCredito']['general']}'";
+        }
+        
+        $sql .= " GROUP BY gv.id ORDER BY gi.id DESC";
+        $exh = $con->createCommand($sql)->queryAll($sql);
+        $this->render('fyi', array('exh' => $exh));
     }
 
 }

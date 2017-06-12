@@ -28,6 +28,7 @@ $crit5 = new CDbCriteria(array(
     'condition' => "id_informacion={$id} AND (forma_pago = 'Contado' OR forma_pago = 'Crédito')"
         ));
 $gf = GestionFinanciamiento::model()->count($crit5);
+$ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"));
 ?>
 <script type="text/javascript">
     $(function () {
@@ -174,12 +175,25 @@ $gf = GestionFinanciamiento::model()->count($crit5);
                                                 </td>
                                                 <?php $countsc = $this->getNumSolicitudCredito($c['id_informacion'], $c['id']);?>
                                                 <td>
-                                                <?php if($countsc > 0): ?>    
+                                                <?php if($countsc > 0): ?> 
+                                                    <?php if($ex->fuente_contacto != 'exhibicion_automundo_uio'): ?>   
                                                     <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/update', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs">Solicitud</a>
-                                                </td>
-                                                <?php else: ?>
+                                                    <?php endif; ?>
+                                                <?php elseif($ex->fuente_contacto != 'exhibicion_automundo_uio'): ?>
                                                     <a href="" class="btn btn-danger btn-xs" disabled="true">Solicitud</a>
                                                 <?php endif; ?>
+                                                <?php 
+                                                    if($ex->fuente_contacto == 'exhibicion_automundo_uio'):
+                                                        $cre = 'create'; 
+                                                        $sc = GestionSolicitudCredito::model()->count(array("condition" => "id_informacion = {$c['id_informacion']} AND id_vehiculo = {$c['id']}"));
+                                                        if($sc > 0){
+                                                            $cre = 'update';
+                                                        }
+                                                ?>
+                                                    <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/'.$cre, array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs">Solicitud</a>
+                                                <?php endif; ?>
+                                                </td>
+
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>

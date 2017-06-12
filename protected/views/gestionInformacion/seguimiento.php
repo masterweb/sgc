@@ -162,7 +162,8 @@ $count = count($users);
             case 'showroom':
             case 'exhibicion':
             case 'exhibicion quierounkiac':
-            case 'exhibicion quierounkiatd':     
+            case 'exhibicion quierounkiatd': 
+            case 'exhibicion_automundo_uio':    
                 console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
                 rules: {
@@ -818,6 +819,9 @@ $count = count($users);
                                     if($desiste != 1 && $paso != 10){
                                         echo '&nbsp' . $data_btn_semaforo;
                                     }
+                                    if($fuente_contacto == 'exhibicion_automundo_uio'){
+                                        
+                                    }
                                     ?>
                                     <?php
                                     //if($c['bdc'] == 1){
@@ -979,7 +983,7 @@ $count = count($users);
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd') && $desiste != 1){ ?> 
+                                    <?php if(($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd' || $fuente_contacto == 'exhibicion_automundo_uio') && $desiste != 1){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?> 
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>

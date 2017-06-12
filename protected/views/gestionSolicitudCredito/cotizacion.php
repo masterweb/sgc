@@ -341,11 +341,11 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-8">
                 <em class="tit-lab" for="">Dirección Empresa Cónyugue: </em>
                 <?php echo $value['direccion_empresa_conyugue']; ?>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-8">
                 <em class="tit-lab" for="">Tipo Relación Laboral Cónyugue: </em>
                 <?php echo $value['tipo_relacion_laboral_conyugue']; ?>
             </div>
@@ -360,12 +360,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <em class="tit-lab" for="">Tipo de Propiedad: </em>
             <?php echo $value['habita']; ?>
         </div>
-        <?php if ($value['habita'] == 'Propia'): ?>
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Avalúo Propiedad: </em>
-                <?php echo number_format($value['avaluo_propiedad']); ?>
-            </div>
-        <?php endif; ?>
+        
         <?php if ($value['habita'] == 'Rentada'): ?>
             <div class="col-xs-3">
                 <em class="tit-lab" for="">Valor de Arriendo: </em>
@@ -416,12 +411,70 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <?php echo '$. ' . number_format($value['sueldo_mensual']); ?>
         </div>
         <?php if ($value['estado_civil'] == 'Casado' || $value['estado_civil'] == 'Casado sin separación de bienes') { ?>
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 <em class="tit-lab" for="">Sueldo mensual Cónyugue: </em>
                 <?php echo '$. ' . ($value['sueldo_mensual_conyugue']); ?>
             </div>
         <?php } ?>
     </div>
+    <?php if (!empty($value['otros_ingresos'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Otros Ingresos: </em>
+            <?php echo '$. ' . number_format($value['otros_ingresos']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">TOTAL INGRESOS: </em>
+            <?php echo '$. ' . number_format($value['total_ingresos']); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12"><h4 class="tl_seccion_rf">Egresos</h4></div>
+    </div>
+    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    <?php if (!empty($value['gastos_arriendo'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Gastos Arriendo: </em>
+            <?php echo '$. ' . number_format($value['gastos_arriendo']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_alimentacion_otros'])) { ?>
+    <div class="row">
+        <div class="col-xs-6">
+            <em class="tit-lab" for="">Gastos Alimentación, Agua, Luz y Otros: </em>
+            <?php echo '$. ' . number_format($value['gastos_alimentacion_otros']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_prestamos'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Gastos Préstamos: </em>
+            <?php echo '$. ' . number_format($value['gastos_prestamos']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_tarjetas_credito'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Gastos Tarjetas de Crédito: </em>
+            <?php echo '$. ' . number_format($value['gastos_tarjetas_credito']); ?>
+        </div>
+    </div>
+    <?php } ?>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">TOTAL EGRESOS: </em>
+            <?php echo '$. ' . number_format($value['total_egresos']); ?>
+        </div>
+    </div>
+    
     <?php if (!empty($value['banco1']) || !empty($value['banco2'])): ?>
 
         <div class="row">

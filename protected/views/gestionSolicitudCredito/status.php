@@ -81,9 +81,11 @@
                     <tr class="odd"><th>Fecha Nacimiento</th><td><?php echo $modelst->fecha_nacimiento; ?></td></tr>
                     <tr class="even"><th>Nacionalidad</th><td><?php echo $modelst->nacionalidad; ?></td></tr>
                     <tr class="odd"><th>Estado Civil</th><td><?php echo $modelst->estado_civil; ?></td></tr>
+                    <tr class="odd"><th>Número de Cargas</th><td><?php echo $modelst->numero_cargas; ?></td></tr>
                     <tr class="even"><th>Empresa Trabajo</th><td><?php echo $modelst->empresa_trabajo; ?></td></tr>
                     <tr class="odd"><th>Teléfonos Trabajo</th><td><?php echo $modelst->telefonos_trabajo; ?></td></tr>
                     <tr class="even"><th>Años de Trabajo</th><td><?php echo util::getTiempoTrabajo($modelst->id_informacion); ?></td></tr>
+                    <tr class="even"><th>Meses de Trabajo</th><td><?php echo ($modelst->meses_trabajo); ?></td></tr>
                     <tr class="odd"><th>Cargo</th><td><?php echo $modelst->cargo; ?></td></tr>
                     <tr class="even"><th>Dirección Empresa</th><td><?php echo $modelst->direccion_empresa; ?></td></tr>
                     <tr class="odd"><th>Tipo Relación Laboral</th><td><?php echo $modelst->tipo_relacion_laboral; ?></td></tr>
@@ -113,11 +115,21 @@
                     <?php } ?>
                     
                     <tr class="odd"><th>Calle Principal</th><td><?php echo $modelst->calle; ?></td></tr>
+                     <tr class="odd"><th>Intersección</th><td><?php echo $modelst->interseccion; ?></td></tr>
                     <tr class="even"><th>Barrio</th><td><?php echo $modelst->barrio; ?></td></tr>
                     <tr class="odd"><th>Referencia Domicilio</th><td><?php echo $modelst->referencia_domicilio; ?></td></tr>
                     <tr class="even"><th>Teléfono Residencia</th><td><?php echo $modelst->telefono_residencia; ?></td></tr>
                     <tr class="odd"><th>Celular</th><td><?php echo $modelst->celular; ?></td></tr>
                     <tr class="even"><th>Sueldo Mensual</th><td>$. <?php echo $modelst->sueldo_mensual; ?></td></tr>
+                    <tr class="even"><th>Sueldo Cónyugue</th><td>$. <?php echo $modelst->sueldo_mensual_conyugue; ?></td></tr>
+                    <tr class="even"><th>Otros Ingresos</th><td>$. <?php echo $modelst->otros_ingresos; ?></td></tr>
+                    <tr class="even"><th>Total Ingesos</th><td>$. <?php echo $modelst->total_ingresos; ?></td></tr>
+                    <tr class="even"><th>Arriendo</th><td>$. <?php echo $modelst->gastos_arriendo; ?></td></tr>
+                    <tr class="even"><th>Alimentación, Agua, Luz y otros</th><td>$. <?php echo $modelst->gastos_alimentacion_otros; ?></td></tr>
+                    <tr class="even"><th>Educación</th><td>$. <?php echo $modelst->gastos_educacion; ?></td></tr>
+                    <tr class="even"><th>Préstamos</th><td>$. <?php echo $modelst->gastos_prestamos; ?></td></tr>
+                    <tr class="even"><th>Tarjeta de Crédito</th><td>$. <?php echo $modelst->gastos_tarjetas_credito; ?></td></tr>
+                    <tr class="even"><th>Total Egresos</th><td>$. <?php echo $modelst->total_egresos; ?></td></tr>
                     <?php if($modelst->estado_civil == 'Casado' || $modelst->estado_civil == 'Casado sin separación de bienes' || $modelst->estado_civil == 'Union Libre'){ ?>
                     <tr class="odd"><th>Sueldo Mensual Conyugue</th><td>$. <?php echo $modelst->sueldo_mensual_conyugue; ?></td></tr>
                     <?php } ?>
@@ -133,9 +145,35 @@
                     <tr class="odd"><th>Referencia Personal 2</th><td><?php echo $modelst->referencia_personal2; ?></td></tr>
                     <tr class="odd"><th>Parentesco</th><td><?php echo $modelst->parentesco2; ?></td></tr>
                     <tr class="odd"><th>Teléfono Referencia 2</th><td><?php echo $modelst->telefono_referencia2; ?></td></tr>
-                    <tr class="even"><th>Activos</th><td><?php echo $modelst->activos; ?></td></tr>
-                    <tr class="odd"><th>Pasivos</th><td><?php echo $modelst->pasivos; ?></td></tr>
-                    <tr class="even"><th>Patrimonio</th><td><?php echo $modelst->patrimonio; ?></td></tr>
+                    <?php if(!empty($modelst->tipo_activo1)): ?>
+                    <tr class="even"><th>Tipo Activo</th><td><?php echo $modelst->tipo_activo1; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->direccion_valor_comercial1; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->tipo_activo2)): ?>
+                    <tr class="even"><th>Tipo Activo</th><td><?php echo $modelst->tipo_activo2; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->direccion_valor_comercial2; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->vehiculo_marca2)): ?>
+                    <tr class="even"><th>Modelo</th><td><?php echo $modelst->vehiculo_modelo2; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->vehiculo_valor2; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->tipo_inversion)): ?>
+                    <tr class="even"><th>Tipo Inversión</th><td><?php echo $modelst->tipo_inversion; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->valor_inversion; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->otros_activos)): ?>
+                    <tr class="even"><th>Tipo Inversión</th><td><?php echo $modelst->otros_activos; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->valor_otros_activos1; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->otros_activos2)): ?>
+                    <tr class="even"><th>Otros</th><td><?php echo $modelst->otros_activos2; ?></td></tr>
+                    <tr class="even"><th>Valor</th><td><?php echo $modelst->valor_otros_activos2; ?></td></tr>
+                    <?php endif; ?>
+                    <?php if(!empty($modelst->total_activos)): ?>
+                    <tr class="even"><th>Total Activos</th><td><?php echo $modelst->total_activos; ?></td></tr>
+                    <?php endif; ?>
+
+                    
                 </tbody>
             </table>
             <?php
@@ -285,6 +323,7 @@
                         <label for="">Estado de Solicitud de Crédito</label>
                         <div class="row">
                             <div class="col-md-4">
+                                <?php $sc = GestionSolicitudCredito::model()->findAll(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}")); ?>
                                 <select name="GestionStatus[status]" class="form-control" id="GestionStatus_status">
                                     <option value="">--Seleccione--</option>
                                     <option value="1">En Análisis</option>

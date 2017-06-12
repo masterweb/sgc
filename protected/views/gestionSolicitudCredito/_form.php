@@ -443,6 +443,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     $('.conyugue').slideUp();
                     $('#GestionSolicitudCredito_sueldo_mensual_conyugue').val('');
                     $('.conyugue_trabaja').hide();
+                    $('#GestionSolicitudCredito_apellido_paterno_conyugue').val('');
+                    $('#GestionSolicitudCredito_apellido_materno_conyugue').val('');
+                    $('#GestionSolicitudCredito_nombres_conyugue').val('');
+                    $('#GestionSolicitudCredito_cedula_conyugue').val('');
+                    $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val('');
+                    $('#GestionSolicitudCredito_conyugue_trabaja').val('');
+                    $('#GestionSolicitudCredito_empresa_trabajo_conyugue').val('');
+                    $('#GestionSolicitudCredito_telefono_trabajo_conyugue').val('');
+                    $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val('');
+                    $('#GestionSolicitudCredito_meses_trabajo_conyugue').val('');
+                    $('#GestionSolicitudCredito_cargo_conyugue').val('');
+                    $('#GestionSolicitudCredito_direccion_empresa_conyugue').val('');
+                    $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val('');
+                    $('#GestionSolicitudCredito_nacionalidad_conyugue').val('');
+                    $('#GestionSolicitudCredito_nacionalidad_conyugue option[value="EC"]').attr('selected',false);
                     break;
                 case 'Casado sin separación de bienes':
                 case 'Casado':
@@ -516,6 +531,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         });
     });
     function createsc(){
+        var error = 0;
         $('#gestion-solicitud-credito-form').validate({
             rules: {
                 'GestionSolicitudCredito[modelo]': {required: true},
@@ -964,6 +980,483 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             }
         });
     }
+
+    function createsc5() {
+        //console.log('enter send');
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true},
+                'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
+                'GestionSolicitudCredito[barrio]': {required: true},
+                'GestionSolicitudCredito[calle]': {required: true},
+                'GestionSolicitudCredito[telefono_residencia]': {required: true},
+                'GestionSolicitudCredito[sueldo_mensual]': {required: true},
+                //'GestionSolicitudCredito[banco1]': {required: true},
+                //'GestionSolicitudCredito[cuenta_ahorros1]':{required: true},
+                'GestionSolicitudCredito[celular]': {required: true},
+                'GestionSolicitudCredito[referencia_personal1]': {required: true},
+                'GestionSolicitudCredito[parentesco1]': {required: true},
+                'GestionSolicitudCredito[telefono_referencia1]': {required: true},
+                //'GestionSolicitudCredito[referencia_personal2]': {required: true},
+                //'GestionSolicitudCredito[parentesco2]': {required: true},
+                //'GestionSolicitudCredito[telefono_referencia2]': {required: true},
+                'GestionSolicitudCredito[habita]': {required: true},
+                'GestionSolicitudCredito[numero]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var error = 0;
+                console.log('enter submit');
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                
+                switch (estado_civil) {
+                    case 'Soltero':
+                    case 'Viudo':
+                    case 'Divorciado':
+                    case 'Casado con separación de bienes':
+                        var cadena = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                            var letra = cadena.charAt(1);
+                            if(letra == '0'){
+                               error++; 
+                               $('#telefonos_trabajo_error').show();
+                               $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
+                            }
+                        var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                        if(sueldo_soltero < 300){
+                            $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                            error++;
+                            return false;
+                        }
+                        //validateCasado();
+                        break;
+                    case 'Casado sin separación de bienes':
+                    case 'Casado':
+                    case 'Union Libre':
+                        //validateSoltero();
+                        if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
+                            $('#GestionSolicitudCredito_apellido_paterno_conyugue').focus().addClass('error');
+                            error++;
+                        }
+                        if ($('#GestionSolicitudCredito_nombres_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_nombres_conyugue_error').show();
+                            $('#GestionSolicitudCredito_nombres_conyugue').focus().addClass('error');
+                            error++;
+                        }
+                        if ($('#GestionSolicitudCredito_cedula_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_cedula_conyugue_error').show();
+                            $('#GestionSolicitudCredito_cedula_conyugue').focus().addClass('error');
+                            error++;
+                        }
+                        if ($('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val() == '') {
+                            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue_error').show();
+                            $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').focus().addClass('error');
+                            error++;
+                        }
+                        if(conyugue_trabaja == ''){
+                            $('#GestionSolicitudCredito_conyugue_trabaja_error').show();
+                            $('#GestionSolicitudCredito_conyugue_trabaja').focus().addClass('error');
+                            error++;
+                        }
+                        if(conyugue_trabaja == 1){
+                            if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_tiempo_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_meses_trabajo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_meses_trabajo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_meses_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_cargo_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_cargo_conyugue_error').show();
+                                $('#GestionSolicitudCredito_cargo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_direccion_empresa_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_direccion_empresa_conyugue_error').show();
+                                $('#GestionSolicitudCredito_direccion_empresa_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue_error').show();
+                                $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error').show();
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                        }
+                        var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
+                        if(sueldo_soltero < 300){
+                            $('#GestionSolicitudCredito_sueldo_mensual_error').show();
+                            $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
+                            error++;
+                            return false;
+                        }
+                        if(conyugue_trabaja == 1){
+                            var sueldo_casado = formatnumber($('#GestionSolicitudCredito_sueldo_mensual_conyugue').val());
+                            if(sueldo_casado < 300){
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue_error2').show();
+                                $('#GestionSolicitudCredito_sueldo_mensual_conyugue').focus().addClass('error');
+                                errot++;
+                                return false;
+                            }
+                        }
+                        break;
+                }
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                
+                var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
+                /*if(tipo_propiedad == 'Propia'){
+                    var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
+                    if(avaluo_propiedad < 9999){
+                        $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
+                        $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
+                        return false;
+                    }
+                }*/
+                //console.log('enter submit');
+                //if (confirm('Desea grabar los datos ingresados y enviar la solicitud al Asesor de Crédito?')) {
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                if (cedulaConyugue != '' && error == 0) {
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                $('#bg_negro').hide();
+                                $('#finalizar').hide();
+                                $('#generatepdf').show();
+                                $('#continue').show();
+                                $('#send-asesor').hide();
+                                //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    console.log('enter no cony');
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            $('#bg_negro').hide();
+                            $('#finalizar').hide();
+                            $('#generatepdf').show();
+                            $('#continue').show();
+                            $('#send-asesor').hide();
+                            //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
+                        }
+                    });
+                }
+
+                //}
+            }
+        });
+    }
+    function createsc6(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true}
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var error = 0;
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                error = validate_estado_civil(estado_civil, error, conyugue_trabaja, 2);
+                if(error > 0)
+                    return false;
+                
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                if (cedulaConyugue != '' && error == 0) {
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                //$('#bg_negro').hide();
+                                $(location).attr('href', '<?php echo $url_load; ?>');
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            //$('#bg_negro').hide();
+                            $(location).attr('href', '<?php echo $url_load; ?>');
+                        }
+                    });
+                }
+            }
+        });
+    }
+    function createsc7(){
+        $('#gestion-solicitud-credito-form').validate({
+            rules: {
+                'GestionSolicitudCredito[modelo]': {required: true},
+                'GestionSolicitudCredito[valor]': {required: true},
+                'GestionSolicitudCredito[monto_financiar]': {required: true},
+                'GestionSolicitudCredito[entrada]': {required: true},
+                'GestionSolicitudCredito[year]': {required: true},
+                'GestionSolicitudCredito[plazo]': {required: true},
+                'GestionSolicitudCredito[taza]': {required: true},
+                'GestionSolicitudCredito[cuota_mensual]': {required: true},
+                'GestionSolicitudCredito[apellido_paterno]': {required: true},
+                'GestionSolicitudCredito[nombres]': {required: true},
+                'GestionSolicitudCredito[cedula]': {required: true},
+                'GestionSolicitudCredito[estado_civil]': {required: true},
+                'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
+                'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
+                'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
+                'GestionSolicitudCredito[cargo]': {required: true},
+                'GestionSolicitudCredito[direccion_empresa]': {required: true},
+                'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
+                'GestionSolicitudCredito[email]': {required: true},
+                'GestionSolicitudCredito[actividad_empresa]': {required: true},
+                'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
+                'GestionSolicitudCredito[numero]': {required: true},
+                'GestionSolicitudCredito[barrio]': {required: true},
+                'GestionSolicitudCredito[calle]': {required: true},
+                'GestionSolicitudCredito[telefono_residencia]': {required: true},
+                
+            },
+            messages: {},
+            submitHandler: function (form) {
+                var error = 0;
+                var estado_civil = $('#GestionSolicitudCredito_estado_civil').val();
+                var telefono_trabajo = $('#GestionSolicitudCredito_telefonos_trabajo').val();
+                var conyugue_trabaja = $('#GestionSolicitudCredito_conyugue_trabaja').val();
+                //alert(conyugue_trabaja);
+                if(countChar(telefono_trabajo) == false){
+                    $('#telefonos_trabajo_error').show();
+                    $('#GestionSolicitudCredito_telefonos_trabajo').focus();
+                    return false;
+                }
+                if(estado_civil == 'Casado' || estado_civil == 'Casado sin separación de bienes'){
+                   if(countChar($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val()) == false){
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue_error').show();
+                        $('#GestionSolicitudCredito_telefono_trabajo_conyugue').focus();
+                        return false;
+                    } 
+                }
+                var conyugue_validate = validate_estado_civil(estado_civil, error, conyugue_trabaja,7);
+                if(conyugue_validate > 0)
+                    return false;
+                
+                var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
+                var fechaActual = new Date().toJSON().slice(0, 10);
+                //console.log('Fecha Actual: '+fechaActual);
+                var diferencia = restaFechas(fechaNac, fechaActual);
+                //console.log('dias: '+diferencia);
+                if (diferencia < 6480) {
+                    alert('El cliente debe ser mayor de 18 años');
+                    return false;
+                }
+                var tipo_propiedad = $('#GestionSolicitudCredito_habita').val();
+            /*    if(tipo_propiedad == 'Propia'){
+                    var avaluo_propiedad = formatnumber($('#GestionSolicitudCredito_avaluo_propiedad').val())
+                    if(avaluo_propiedad < 9999){
+                        $('#GestionSolicitudCredito_avaluo_propiedad_error').show();
+                        $('#GestionSolicitudCredito_avaluo_propiedad').focus().addClass('error');
+                        return false;
+                    }
+                }*/
+                
+                var dataform = $("#gestion-solicitud-credito-form").serialize();
+                var count = 0;
+                var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
+                console.log('valor cedula: ' + cedulaConyugue);
+                if (cedulaConyugue != '' && error == 0) {
+                    console.log('enter primero');
+                    var validateCedula = CedulaValida(cedulaConyugue);
+                    if (validateCedula) {
+                        $.ajax({
+                            url: '<?php echo $url; ?>',
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                            },
+                            datatype: "json",
+                            type: 'POST',
+                            data: dataform,
+                            success: function (data) {
+                                //var returnedData = JSON.parse(data);
+                                //alert(returnedData.result);
+                                //$('#bg_negro').hide();
+                                $(location).attr('href', '<?php echo $url_load; ?>');
+                            }
+                        });
+                    } else {
+                        alert('Cédula inválida de cónyugue');
+                        $('#GestionSolicitudCredito_cedula_conyugue').focus();
+                    }
+                } else if (error == 0) {
+                    console.log('enter error 0');
+                    $.ajax({
+                        url: '<?php echo $url; ?>',
+                        beforeSend: function (xhr) {
+                            $('#bg_negro').show();  // #bg_negro must be defined somewhere
+                        },
+                        datatype: "json",
+                        type: 'POST',
+                        data: dataform,
+                        success: function (data) {
+                            //var returnedData = JSON.parse(data);
+                            //alert(returnedData.result);
+                            //$('#bg_negro').hide();
+                            $(location).attr('href', '<?php echo $url_load; ?>');
+                        }
+                    });
+                }
+            }
+        });
+    }
     function validate_estado_civil(estado_civil, error, conyugue_trabaja,tipo){
         var error = 0;
         switch (estado_civil) {
@@ -979,12 +1472,26 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                        $('#GestionSolicitudCredito_telefonos_trabajo').focus().addClass('error');
                     }
                 var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
-                if(sueldo_soltero < 300){
+                if(sueldo_soltero < 300 && tipo != 7){
                     $('#GestionSolicitudCredito_sueldo_mensual_error').show();
                     $('#GestionSolicitudCredito_sueldo_mensual').focus().addClass('error');
                     error++;
                     // return false;
                 }
+                $('#GestionSolicitudCredito_apellido_paterno_conyugue').val('');
+                $('#GestionSolicitudCredito_nombres_conyugue').val('');
+                $('#GestionSolicitudCredito_cedula_conyugue').val('');
+                $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val('');
+                $('#GestionSolicitudCredito_conyugue_trabaja').val('');
+                $('#GestionSolicitudCredito_empresa_trabajo_conyugue').val('');
+                $('#GestionSolicitudCredito_telefono_trabajo_conyugue').val('');
+                $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val('');
+                $('#GestionSolicitudCredito_meses_trabajo_conyugue').val('');
+                $('#GestionSolicitudCredito_cargo_conyugue').val('');
+                $('#GestionSolicitudCredito_direccion_empresa_conyugue').val('');
+                $('#GestionSolicitudCredito_tipo_relacion_laboral_conyugue').val('');
+                $('#GestionSolicitudCredito_nacionalidad_conyugue').val('');
+
                 //validateCasado();
                 break;
             case 'Casado sin separación de bienes':
@@ -1513,7 +2020,12 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     <?php 
                     if(Yii::app()->user->getState('cargo_id') == 74){ // si es asesora de credito
                         echo '<a href="'. Yii::app()->createUrl('gestionSolicitudCredito/admin').'" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" ><< Regresar</a>';
-                    }else{
+                    }
+                    if(Yii::app()->user->getState('cargo_id') == 87){ // asesora de credito fyi automundo
+                        echo '<a href="'. Yii::app()->createUrl('gestionSolicitudCredito/fyi').'" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" ><< Regresar</a>';
+                    }
+
+                    else{
                         echo '<a href="'. Yii::app()->createUrl('site/negociacion', array('id' => $id_informacion)).'" class="btn btn-xs btn-cat306 btn-cat btn-success btn-danger" >Regresar</a>';
                         
                     }
@@ -1732,6 +2244,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         <option value="EC">Ecuador</option>
                                         <option value="CO">Colombia</option>
                                         <option value="PE">Perú</option>
+                                        <option value="VE">Venezuela</option>
+                                        <option value="CU">Cuba</option>
                                         <option value="AF">Afganistán</option>
                                         <option value="AL">Albania</option>
                                         <option value="DE">Alemania</option>
@@ -1781,7 +2295,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         <option value="KR">Corea del Sur</option>
                                         <option value="CR">Costa Rica</option>
                                         <option value="HR">Croacia (Hrvatska)</option>
-                                        <option value="CU">Cuba</option>
+                                        
                                         <option value="CW">Curazao</option>
                                         <option value="DK">Dinamarca</option>
                                         <option value="DM">Dominica</option>
@@ -1977,7 +2491,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         <option value="UY">Uruguay</option>
                                         <option value="UZ">Uzbekistán</option>
                                         <option value="VU">Vanuatu</option>
-                                        <option value="VE">Venezuela</option>
+                                        
                                         <option value="VN">Vietnam</option>
                                         <option value="WF">Wallis y Futuna</option>
                                         <option value="YE">Yemen</option>
@@ -2015,12 +2529,18 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             <div class="row">
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'numero_cargas'); ?>
-                                    <?php echo $form->dropDownList($model, 'numero_cargas', array('' => '--Seleccione--', '1' => '1' , '2' => "2", '3' => "3", '4' => "4", '5' => "6", '7' => "7", '8' => "8", '9' => "9", '10' => "10"), array('class' => 'form-control')); ?>
+                                    <?php echo $form->dropDownList($model, 'numero_cargas', array('' => '--Seleccione--', '1' => '1' , '2' => "2", '3' => "3",
+                                     '4' => "4", '5' => "6", '7' => "7", '8' => "8", '9' => "9", '10' => "10"), array('class' => 'form-control', 'options' => array('1' => array('selected' => true)))); ?>
                                     <?php echo $form->error($model, 'numero_cargas'); ?>
                                 </div>
                             </div>
                     
                         <?php } ?>
+                        <!--<div class="row">
+                            <div class="offset6 col-md-3">
+                                <button class="btn btn-danger btn-xs" onclick="createsc6()">Grabar</button>
+                            </div>
+                        </div>-->
                         <div class="row">
                             <h1 class="tl_seccion_rf">Empleo/Actividad Actual del Solicitante</h1>
                         </div> 
@@ -2201,271 +2721,280 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'nacionalidad_conyugue'); ?>
                                     <?php //echo $form->textField($model, 'nacionalidad_conyugue', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control'));  ?>
-                                    <select name="GestionSolicitudCredito[nacionalidad_conyugue]" id="GestionSolicitudCredito_nacionalidad_conyugue" class="form-control">
-                                        <option value="EC">Ecuador</option>
-                                        <option value="CO">Colombia</option>
-                                        <option value="PE">Perú</option>
-                                        <option value="AF">Afganistán</option>
-                                        <option value="AL">Albania</option>
-                                        <option value="DE">Alemania</option>
-                                        <option value="AD">Andorra</option>
-                                        <option value="AO">Angola</option>
-                                        <option value="AI">Anguila</option>
-                                        <option value="AQ">Antártida</option>
-                                        <option value="AG">Antigua y Barbuda</option>
-                                        <option value="AN">Antiguas Antillas Holandesas</option>
-                                        <option value="SA">Arabia Saudí</option>
-                                        <option value="DZ">Argelia</option>
-                                        <option value="AR">Argentina</option>
-                                        <option value="AM">Armenia</option>
-                                        <option value="AW">Aruba</option>
-                                        <option value="AU">Australia</option>
-                                        <option value="AT">Austria</option>
-                                        <option value="PS">Autoridad Palestina</option>
-                                        <option value="AZ">Azerbaiyán</option>
-                                        <option value="BD">Bangladesh</option>
-                                        <option value="BB">Barbados</option>
-                                        <option value="BY">Belarús</option>
-                                        <option value="BE">Bélgica</option>
-                                        <option value="BZ">Belice</option>
-                                        <option value="BJ">Benín</option>
-                                        <option value="BM">Bermudas</option>
-                                        <option value="BO">Bolivia</option>
-                                        <option value="BQ">Bonaire</option>
-                                        <option value="BA">Bosnia y Herzegovina</option>
-                                        <option value="BW">Botsuana</option>
-                                        <option value="BR">Brasil</option>
-                                        <option value="BN">Brunéi</option>
-                                        <option value="BG">Bulgaria</option>
-                                        <option value="BF">Burkina Faso</option>
-                                        <option value="BI">Burundi</option>
-                                        <option value="BT">Bután</option>
-                                        <option value="CV">Cabo Verde</option>
-                                        <option value="KH">Camboya</option>
-                                        <option value="CM">Camerún</option>
-                                        <option value="CA">Canadá</option>
-                                        <option value="TD">Chad</option>
-                                        <option value="CL">Chile</option>
-                                        <option value="CN">China</option>
-                                        <option value="CY">Chipre</option>
+                                    <?php 
+                                    echo $form->dropDownList($model, 'nacionalidad_conyugue', array(
+                                        '' => '--Seleccione nacionalidad--',
+                                        "EC"=>'Ecuador',
+                                        "CO"=>'Colombia',
+                                        "PE"=>'Perú',
+                                        "VE"=>'Venezuela',
+                                        "CU"=>'Cuba',
+                                        "AF"=>'Afganistán',
+                                        "AL"=>'Albania',
+                                        "DE"=>'Alemania',
+                                        "AD"=>'Andorra',
+                                        "AO"=>'Angola',
+                                        "AI"=>'Anguila',
+                                        "AQ"=>'Antártida',
+                                        "AG"=>'Antigua y Barbuda',
+                                        "AN"=>'Antiguas Antillas Holandesas',
+                                        "SA"=>'Arabia Saudí',
+                                        "DZ"=>'Argelia',
+                                        "AR"=>'Argentina',
+                                        "AM"=>'Armenia',
+                                        "AW"=>'Aruba',
+                                        "AU"=>'Australia',
+                                        "AT"=>'Austria',
+                                        "PS"=>'Autoridad Palestina',
+                                        "AZ"=>'Azerbaiyán',
+                                        "BD"=>'Bangladesh',
+                                        "BB"=>'Barbados',
+                                        "BY"=>'Belarús',
+                                        "BE"=>'Bélgica',
+                                        "BZ"=>'Belice',
+                                        "BJ"=>'Benín',
+                                        "BM"=>'Bermudas',
+                                        "BO"=>'Bolivia',
+                                        "BQ"=>'Bonaire',
+                                        "BA"=>'Bosnia y Herzegovina',
+                                        "BW"=>'Botsuana',
+                                        "BR"=>'Brasil',
+                                        "BN"=>'Brunéi',
+                                        "BG"=>'Bulgaria',
+                                        "BF"=>'Burkina Faso',
+                                        "BI"=>'Burundi',
+                                        "BT"=>'Bután',
+                                        "CV"=>'Cabo Verde',
+                                        "KH"=>'Camboya',
+                                        "CM"=>'Camerún',
+                                        "CA"=>'Canadá',
+                                        "TD"=>'Chad',
+                                        "CL"=>'Chile',
+                                        "CN"=>'China',
+                                        "CY"=>'Chipre',
 
-                                        <option value="KM">Comoras</option>
-                                        <option value="CD">Congo (RDC)</option>
-                                        <option value="KP">Corea del Norte</option>
-                                        <option value="KR">Corea del Sur</option>
-                                        <option value="CR">Costa Rica</option>
-                                        <option value="HR">Croacia (Hrvatska)</option>
-                                        <option value="CU">Cuba</option>
-                                        <option value="CW">Curazao</option>
-                                        <option value="DK">Dinamarca</option>
-                                        <option value="DM">Dominica</option>
+                                        "KM"=>'Comoras',
+                                        "CD"=>'Congo (RDC)',
+                                        "KP"=>'Corea del Norte',
+                                        "KR"=>'Corea del Sur',
+                                        "CR"=>'Costa Rica',
+                                        "HR"=>'Croacia (Hrvatska)',
+                                        
+                                        "CW"=>'Curazao',
+                                        "DK"=>'Dinamarca',
+                                        "DM"=>'Dominica',
 
-                                        <option value="EG">Egipto</option>
-                                        <option value="SV">El Salvador</option>
-                                        <option value="AE">Emiratos Árabes Unidos</option>
-                                        <option value="ER">Eritrea</option>
-                                        <option value="SK">Eslovaquia</option>
-                                        <option value="SI">Eslovenia</option>
-                                        <option value="ES">España</option>
-                                        <option value="US">Estados Unidos</option>
-                                        <option value="EE">Estonia</option>
-                                        <option value="ET">Etiopía</option>
-                                        <option value="MK">Ex-República Yugoslava de Macedonia</option>
-                                        <option value="PH">Filipinas</option>
-                                        <option value="FI">Finlandia</option>
-                                        <option value="FR">Francia</option>
-                                        <option value="GA">Gabón</option>
-                                        <option value="GM">Gambia</option>
-                                        <option value="GE">Georgia</option>
-                                        <option value="GS">Georgia del Sur e Islas Sandwich del Sur</option>
-                                        <option value="GH">Ghana</option>
-                                        <option value="GI">Gibraltar</option>
-                                        <option value="GD">Granada</option>
-                                        <option value="GR">Grecia</option>
-                                        <option value="GL">Groenlandia</option>
-                                        <option value="GP">Guadalupe</option>
-                                        <option value="GU">Guam</option>
-                                        <option value="GT">Guatemala</option>
-                                        <option value="GF">Guayana Francesa</option>
-                                        <option value="GG">Guernsey</option>
-                                        <option value="GN">Guinea</option>
-                                        <option value="GQ">Guinea Ecuatorial</option>
-                                        <option value="GW">Guinea-Bissau</option>
-                                        <option value="GY">Guyana</option>
-                                        <option value="HT">Haití</option>
-                                        <option value="HN">Honduras</option>
-                                        <option value="HK">Hong Kong RAE</option>
-                                        <option value="HU">Hungría</option>
-                                        <option value="IN">India</option>
-                                        <option value="ID">Indonesia</option>
-                                        <option value="IQ">Irak</option>
-                                        <option value="IR">Irán</option>
-                                        <option value="IE">Irlanda</option>
-                                        <option value="AC">Isla Ascensión</option>
-                                        <option value="BV">Isla Bouvet</option>
-                                        <option value="CX">Isla Christmas</option>
-                                        <option value="IM">Isla de Man</option>
-                                        <option value="NF">Isla Norfolk</option>
-                                        <option value="IS">Islandia</option>
-                                        <option value="AX">Islas Åland</option>
-                                        <option value="KY">Islas Caimán</option>
-                                        <option value="CC">Islas Cocos</option>
-                                        <option value="CK">Islas Cook</option>
-                                        <option value="FO">Islas Feroe</option>
-                                        <option value="FJ">Islas Fiji</option>
-                                        <option value="HM">Islas Heard y McDonald</option>
-                                        <option value="FK">Islas Malvinas</option>
-                                        <option value="MP">Islas Marianas del Norte</option>
-                                        <option value="MH">Islas Marshall</option>
-                                        <option value="UM">Islas menores alejadas de los Estados Unidos</option>
-                                        <option value="PN">Islas Pitcairn</option>
-                                        <option value="SB">Islas Salomón</option>
-                                        <option value="TC">Islas Turcas y Caicos</option>
-                                        <option value="VG">Islas Vírgenes Británicas</option>
-                                        <option value="VI">Islas Vírgenes, EE.UU.</option>
-                                        <option value="IL">Israel</option>
-                                        <option value="IT">Italia</option>
-                                        <option value="JM">Jamaica</option>
-                                        <option value="SJ">Jan Mayen</option>
-                                        <option value="JP">Japón</option>
-                                        <option value="JE">Jersey</option>
-                                        <option value="JO">Jordania</option>
-                                        <option value="KZ">Kazajistán</option>
-                                        <option value="KE">Kenia</option>
-                                        <option value="KG">Kirguistán</option>
-                                        <option value="KI">Kiribati</option>
-                                        <option value="XK">Kosovo</option>
-                                        <option value="KW">Kuwait</option>
-                                        <option value="LA">Laos</option>
-                                        <option value="BS">Las Bahamas</option>
-                                        <option value="LS">Lesoto</option>
-                                        <option value="LV">Letonia</option>
-                                        <option value="LB">Líbano</option>
-                                        <option value="LR">Liberia</option>
-                                        <option value="LY">Libia</option>
-                                        <option value="LI">Liechtenstein</option>
-                                        <option value="LT">Lituania</option>
-                                        <option value="LU">Luxemburgo</option>
-                                        <option value="MO">Macao RAE</option>
-                                        <option value="MG">Madagascar</option>
-                                        <option value="MY">Malasia</option>
-                                        <option value="MW">Malawi</option>
-                                        <option value="MV">Maldivas</option>
-                                        <option value="ML">Malí</option>
-                                        <option value="MT">Malta</option>
-                                        <option value="MA">Marruecos</option>
-                                        <option value="MQ">Martinica</option>
-                                        <option value="MU">Mauricio</option>
-                                        <option value="MR">Mauritania</option>
-                                        <option value="YT">Mayotte</option>
-                                        <option value="MX">México</option>
-                                        <option value="FM">Micronesia</option>
-                                        <option value="MD">Moldova</option>
-                                        <option value="MC">Mónaco</option>
-                                        <option value="MN">Mongolia</option>
-                                        <option value="ME">Montenegro</option>
-                                        <option value="MS">Montserrat</option>
-                                        <option value="MZ">Mozambique</option>
-                                        <option value="MM">Myanmar</option>
-                                        <option value="NA">Namibia</option>
-                                        <option value="NR">Nauru</option>
-                                        <option value="NP">Nepal</option>
-                                        <option value="NI">Nicaragua</option>
-                                        <option value="NE">Níger</option>
-                                        <option value="NG">Nigeria</option>
-                                        <option value="NU">Niue</option>
-                                        <option value="NO">Noruega</option>
-                                        <option value="NC">Nueva Caledonia</option>
-                                        <option value="NZ">Nueva Zelanda</option>
-                                        <option value="OM">Omán</option>
-                                        <option value="NL">Países Bajos</option>
-                                        <option value="PK">Pakistán</option>
-                                        <option value="PW">Palaos</option>
-                                        <option value="PA">Panamá</option>
-                                        <option value="PG">Papúa Nueva Guinea</option>
-                                        <option value="PY">Paraguay</option>
-
-                                        <option value="PF">Polinesia Francesa</option>
-                                        <option value="PL">Polonia</option>
-                                        <option value="PT">Portugal</option>
-                                        <option value="PR">Puerto Rico</option>
-                                        <option value="QA">Qatar</option>
-                                        <option value="BH">Reino de Baréin</option>
-                                        <option value="UK">Reino Unido</option>
-                                        <option value="CF">República Centroafricana</option>
-                                        <option value="CZ">República Checa</option>
-                                        <option value="CI">República de Côte d'Ivoire</option>
-                                        <option value="CG">República del Congo</option>
-                                        <option value="DO">República Dominicana</option>
-                                        <option value="RE">Reunión</option>
-                                        <option value="RW">Ruanda</option>
-                                        <option value="RO">Rumania</option>
-                                        <option value="RU">Rusia</option>
-                                        <option value="XS">Saba</option>
-                                        <option value="KN">Saint Kitts y Nevis</option>
-                                        <option value="WS">Samoa</option>
-                                        <option value="AS">Samoa Americana</option>
-                                        <option value="BL">San Bartolomé</option>
-                                        <option value="XE">San Eustaquio</option>
-                                        <option value="SM">San Marino</option>
-                                        <option value="MF">San Martín</option>
-                                        <option value="PM">San Pedro y Miquelón</option>
-                                        <option value="VC">San Vicente y las Granadinas</option>
-                                        <option value="SH">Santa Elena, Ascensión y Tristán de Acuña</option>
-                                        <option value="LC">Santa Lucía</option>
-                                        <option value="VA">Santa Sede (Ciudad del Vaticano)</option>
-                                        <option value="ST">Santo Tomé y Príncipe</option>
-                                        <option value="SN">Senegal</option>
-                                        <option value="RS">Serbia</option>
-                                        <option value="YU">Serbia, Montenegro</option>
-                                        <option value="SC">Seychelles</option>
-                                        <option value="SL">Sierra Leona</option>
-                                        <option value="SG">Singapur</option>
-                                        <option value="SX">Sint Maarten</option>
-                                        <option value="SY">Siria</option>
-                                        <option value="SO">Somalia</option>
-                                        <option value="LK">Sri Lanka</option>
-                                        <option value="SZ">Suazilandia</option>
-                                        <option value="ZA">Sudáfrica</option>
-                                        <option value="SD">Sudán</option>
-                                        <option value="SE">Suecia</option>
-                                        <option value="CH">Suiza</option>
-                                        <option value="SR">Surinam</option>
-                                        <option value="TH">Tailandia</option>
-                                        <option value="TW">Taiwán</option>
-                                        <option value="TZ">Tanzania</option>
-                                        <option value="TJ">Tayikistán</option>
-                                        <option value="IO">Territorio Británico del Océano Índico</option>
-                                        <option value="TF">Tierras Australes y Antárticas Francesas</option>
-                                        <option value="TP">Timor Oriental</option>
-                                        <option value="TL">Timor-Leste</option>
-                                        <option value="TG">Togo</option>
-                                        <option value="TK">Tokelau</option>
-                                        <option value="TO">Tonga</option>
-                                        <option value="TT">Trinidad y Tobago</option>
-                                        <option value="TA">Tristán da Cunha</option>
-                                        <option value="TN">Túnez</option>
-                                        <option value="TM">Turkmenistán</option>
-                                        <option value="TR">Turquía</option>
-                                        <option value="TV">Tuvalu</option>
-                                        <option value="UA">Ucrania</option>
-                                        <option value="UG">Uganda</option>
-                                        <option value="UY">Uruguay</option>
-                                        <option value="UZ">Uzbekistán</option>
-                                        <option value="VU">Vanuatu</option>
-                                        <option value="VE">Venezuela</option>
-                                        <option value="VN">Vietnam</option>
-                                        <option value="WF">Wallis y Futuna</option>
-                                        <option value="YE">Yemen</option>
-                                        <option value="DJ">Yibuti</option>
-                                        <option value="ZM">Zambia</option>
-                                        <option value="ZW">Zimbabue</option>
-                                    </select>
+                                        "EG"=>'Egipto',
+                                        "SV"=>'El Salvador',
+                                        "AE"=>'Emiratos Árabes Unidos',
+                                        "ER"=>'Eritrea',
+                                        "SK"=>'Eslovaquia',
+                                        "SI"=>'Eslovenia',
+                                        "ES"=>'España',
+                                        "US"=>'Estados Unidos',
+                                        "EE"=>'Estonia',
+                                        "ET"=>'Etiopía',
+                                        "MK"=>'Ex-República Yugoslava de Macedonia',
+                                        "PH"=>'Filipinas',
+                                        "FI"=>'Finlandia',
+                                        "FR"=>'Francia',
+                                        "GA"=>'Gabón',
+                                        "GM"=>'Gambia',
+                                        "GE"=>'Georgia',
+                                        "GS"=>'Georgia del Sur e Islas Sandwich del Sur',
+                                        "GH"=>'Ghana',
+                                        "GI"=>'Gibraltar',
+                                        "GD"=>'Granada',
+                                        "GR"=>'Grecia',
+                                        "GL"=>'Groenlandia',
+                                        "GP"=>'Guadalupe',
+                                        "GU"=>'Guam',
+                                        "GT"=>'Guatemala',
+                                        "GF"=>'Guayana Francesa',
+                                        "GG"=>'Guernsey',
+                                        "GN"=>'Guinea',
+                                        "GQ"=>'Guinea Ecuatorial',
+                                        "GW"=>'Guinea-Bissau',
+                                        "GY"=>'Guyana',
+                                        "HT"=>'Haití',
+                                        "HN"=>'Honduras',
+                                        "HK"=>'Hong Kong RAE',
+                                        "HU"=>'Hungría',
+                                        "IN"=>'India',
+                                        "ID"=>'Indonesia',
+                                        "IQ"=>'Irak',
+                                        "IR"=>'Irán',
+                                        "IE"=>'Irlanda',
+                                        "AC"=>'Isla Ascensión',
+                                        "BV"=>'Isla Bouvet',
+                                        "CX"=>'Isla Christmas',
+                                        "IM"=>'Isla de Man',
+                                        "NF"=>'Isla Norfolk',
+                                        "IS"=>'Islandia',
+                                        "AX"=>'Islas Åland',
+                                        "KY"=>'Islas Caimán',
+                                        "CC"=>'Islas Cocos',
+                                        "CK"=>'Islas Cook',
+                                        "FO"=>'Islas Feroe',
+                                        "FJ"=>'Islas Fiji',
+                                        "HM"=>'Islas Heard y McDonald',
+                                        "FK"=>'Islas Malvinas',
+                                        "MP"=>'Islas Marianas del Norte',
+                                        "MH"=>'Islas Marshall',
+                                        "UM"=>'Islas menores alejadas de los Estados Unidos',
+                                        "PN"=>'Islas Pitcairn',
+                                        "SB"=>'Islas Salomón',
+                                        "TC"=>'Islas Turcas y Caicos',
+                                        "VG"=>'Islas Vírgenes Británicas',
+                                        "VI"=>'Islas Vírgenes, EE.UU.',
+                                        "IL"=>'Israel',
+                                        "IT"=>'Italia',
+                                        "JM"=>'Jamaica',
+                                        "SJ"=>'Jan Mayen',
+                                        "JP"=>'Japón',
+                                        "JE"=>'Jersey',
+                                        "JO"=>'Jordania',
+                                        "KZ"=>'Kazajistán',
+                                        "KE"=>'Kenia',
+                                        "KG"=>'Kirguistán',
+                                        "KI"=>'Kiribati',
+                                        "XK"=>'Kosovo',
+                                        "KW"=>'Kuwait',
+                                        "LA"=>'Laos',
+                                        "BS"=>'Las Bahamas',
+                                        "LS"=>'Lesoto',
+                                        "LV"=>'Letonia',
+                                        "LB"=>'Líbano',
+                                        "LR"=>'Liberia',
+                                        "LY"=>'Libia',
+                                        "LI"=>'Liechtenstein',
+                                        "LT"=>'Lituania',
+                                        "LU"=>'Luxemburgo',
+                                        "MO"=>'Macao RAE',
+                                        "MG"=>'Madagascar',
+                                        "MY"=>'Malasia',
+                                        "MW"=>'Malawi',
+                                        "MV"=>'Maldivas',
+                                        "ML"=>'Malí',
+                                        "MT"=>'Malta',
+                                        "MA"=>'Marruecos',
+                                        "MQ"=>'Martinica',
+                                        "MU"=>'Mauricio',
+                                        "MR"=>'Mauritania',
+                                        "YT"=>'Mayotte',
+                                        "MX"=>'México',
+                                        "FM"=>'Micronesia',
+                                        "MD"=>'Moldova',
+                                        "MC"=>'Mónaco',
+                                        "MN"=>'Mongolia',
+                                        "ME"=>'Montenegro',
+                                        "MS"=>'Montserrat',
+                                        "MZ"=>'Mozambique',
+                                        "MM"=>'Myanmar',
+                                        "NA"=>'Namibia',
+                                        "NR"=>'Nauru',
+                                        "NP"=>'Nepal',
+                                        "NI"=>'Nicaragua',
+                                        "NE"=>'Níger',
+                                        "NG"=>'Nigeria',
+                                        "NU"=>'Niue',
+                                        "NO"=>'Noruega',
+                                        "NC"=>'Nueva Caledonia',
+                                        "NZ"=>'Nueva Zelanda',
+                                        "OM"=>'Omán',
+                                        "NL"=>'Países Bajos',
+                                        "PK"=>'Pakistán',
+                                        "PW"=>'Palaos',
+                                        "PA"=>'Panamá',
+                                        "PG"=>'Papúa Nueva Guinea',
+                                        "PY"=>'Paraguay',
+                                        "PF"=>'Polinesia Francesa',
+                                        "PL"=>'Polonia',
+                                        "PT"=>'Portugal',
+                                        "PR"=>'Puerto Rico',
+                                        "QA"=>'Qatar',
+                                        "BH"=>'Reino de Baréin',
+                                        "UK"=>'Reino Unido',
+                                        "CF"=>'República Centroafricana',
+                                        "CZ"=>'República Checa',
+                                        "CI"=>'República de CIvoire',
+                                        "CG"=>'República del Congo',
+                                        "DO"=>'República Dominicana',
+                                        "RE"=>'Reunión',
+                                        "RW"=>'Ruanda',
+                                        "RO"=>'Rumania',
+                                        "RU"=>'Rusia',
+                                        "XS"=>'Saba',
+                                        "KN"=>'Saint Kitts y Nevis',
+                                        "WS"=>'Samoa',
+                                        "AS"=>'Samoa Americana',
+                                        "BL"=>'San Bartolomé',
+                                        "XE"=>'San Eustaquio',
+                                        "SM"=>'San Marino',
+                                        "MF"=>'San Martín',
+                                        "PM"=>'San Pedro y Miquelón',
+                                        "VC"=>'San Vicente y las Granadinas',
+                                        "SH"=>'Santa Elena, Ascensión y Tristán de Acuña',
+                                        "LC"=>'Santa Lucía',
+                                        "VA"=>'Santa Sede (Ciudad del Vaticano)',
+                                        "ST"=>'Santo Tomé y Príncipe',
+                                        "SN"=>'Senegal',
+                                        "RS"=>'Serbia',
+                                        "YU"=>'Serbia, Montenegro',
+                                        "SC"=>'Seychelles',
+                                        "SL"=>'Sierra Leona',
+                                        "SG"=>'Singapur',
+                                        "SX"=>'Sint Maarten',
+                                        "SY"=>'Siria',
+                                        "SO"=>'Somalia',
+                                        "LK"=>'Sri Lanka',
+                                        "SZ"=>'Suazilandia',
+                                        "ZA"=>'Sudáfrica',
+                                        "SD"=>'Sudán',
+                                        "SE"=>'Suecia',
+                                        "CH"=>'Suiza',
+                                        "SR"=>'Surinam',
+                                        "TH"=>'Tailandia',
+                                        "TW"=>'Taiwán',
+                                        "TZ"=>'Tanzania',
+                                        "TJ"=>'Tayikistán',
+                                        "IO"=>'Territorio Británico del Océano Índico',
+                                        "TF"=>'Tierras Australes y Antárticas Francesas',
+                                        "TP"=>'Timor Oriental',
+                                        "TL"=>'Timor-Leste',
+                                        "TG"=>'Togo',
+                                        "TK"=>'Tokelau',
+                                        "TO"=>'Tonga',
+                                        "TT"=>'Trinidad y Tobago',
+                                        "TA"=>'Tristán da Cunha',
+                                        "TN"=>'Túnez',
+                                        "TM"=>'Turkmenistán',
+                                        "TR"=>'Turquía',
+                                        "TV"=>'Tuvalu',
+                                        "UA"=>'Ucrania',
+                                        "UG"=>'Uganda',
+                                        "UY"=>'Uruguay',
+                                        "UZ"=>'Uzbekistán',
+                                        "VU"=>'Vanuatu',
+                                        "VN"=>'Vietnam',
+                                        "WF"=>'Wallis y Futuna',
+                                        "YE"=>'Yemen',
+                                        "DJ"=>'Yibuti',
+                                        "ZM"=>'Zambia',
+                                        "ZW"=>'Zimbabue',
+                                            ), array('class' => 'form-control','id' => 'GestionSolicitudCredito_meses_trabajo'));
+                                    
+                                     ?>
+                                    
                                     <?php echo $form->error($model, 'nacionalidad_conyugue'); ?>
                                 </div>
 
                             </div>
-
+                            <div class="row">
+                                <div class="offset6 col-md-3">
+                                    <button class="btn btn-danger btn-xs" onclick="createsc6()">Grabar</button>
+                                </div>
+                            </div>
                             <div class="row">
                                 <h1 class="tl_seccion_rf">Empleo/Actividad Actual del Cónyugue</h1>
                             </div>
@@ -2700,8 +3229,12 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             </div>
 
                         </div>
-                    <?php } ?>  
-
+                    <?php } ?> 
+                    <div class="row">
+                        <div class="offset6 col-md-3">
+                            <button class="btn btn-danger btn-xs" onclick="createsc7()">Grabar</button>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <h1 class="tl_seccion_rf tl_seccion_rft">Ingresos Mensuales Familiares</h1>
@@ -3133,6 +3666,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         </div>
                     </div>
                     <div class="row">
+                        <div class="offset6 col-md-3">
+                            <button class="btn btn-danger btn-xs" onclick="createsc5()">Grabar</button>
+                        </div>
+                    </div>
+                    <div class="row">
                         <h1 class="tl_seccion_rf">Firma del Cliente</h1>
                     </div>
                     <div class="row">
@@ -3267,7 +3805,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     </div>
                     <div class="row">
                         <div class="col-md-2">
-                            <input class="btn btn-success" id="send-asesor" type="submit" style="display: none;" onclick="send();" value="Enviar a Asesor de Crédito">
+                            <input class="btn btn-success" id="send-asesor" type="submit" style="display: none;" onclick="send();" value="Enviar">
                         </div>
                     </div>
                     <div class="row">

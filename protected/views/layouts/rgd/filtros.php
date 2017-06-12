@@ -93,6 +93,7 @@ $id_responsable = Yii::app()->user->getId();
                     <option value="Web">Web</option>
                     
                     <?php endif; ?>
+                    <option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>
                 </select>
             </div>
             <?php if ($cargo_id == 70 || $cargo_id == 72 || $cargo_id == 85): ?>
