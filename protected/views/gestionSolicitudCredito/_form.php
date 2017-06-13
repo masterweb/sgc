@@ -284,6 +284,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $('#GestionSolicitudCredito_sueldo_mensual').keyup(function () {$('#GestionSolicitudCredito_sueldo_mensual').removeClass('error');$('#GestionSolicitudCredito_sueldo_mensual_error').hide();});
         $('#GestionSolicitudCredito_avaluo_propiedad').keyup(function () {$('#GestionSolicitudCredito_avaluo_propiedad_error').hide();});
         $('#GestionSolicitudCredito_conyugue_trabaja').change(function () {$('#GestionSolicitudCredito_conyugue_trabaja_error').hide();});
+        $('#GestionSolicitudCredito_vehiculo_valor1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_vehiculo_valor2').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_valor_inversion').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
         $('#GestionSolicitudCredito_direccion_valor_comercial1').maskMoney({prefix: '$ ', allowNegative: true, thousands: ',', decimal: '.', affixesStay: true});
@@ -898,7 +899,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         return false;
                     } 
                 }
-                validate_estado_civil(estado_civil, error, conyugue_trabaja,3);
+                validate_estado_civil(estado_civil, error, conyugue_trabaja,4);
                 
                 var fechaNac = $('#GestionSolicitudCredito_fecha_nacimiento').val();
                 var fechaActual = new Date().toJSON().slice(0, 10);
@@ -1197,8 +1198,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 //var returnedData = JSON.parse(data);
                                 //alert(returnedData.result);
                                 $('#bg_negro').hide();
-                                $('#finalizar').hide();
-                                $('#generatepdf').show();
+                                //$('#finalizar').hide();
+                                //$('#generatepdf').show();
                                 $('#continue').show();
                                 $('#send-asesor').hide();
                                 //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
@@ -1222,8 +1223,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             //var returnedData = JSON.parse(data);
                             //alert(returnedData.result);
                             $('#bg_negro').hide();
-                            $('#finalizar').hide();
-                            $('#generatepdf').show();
+                            //$('#finalizar').hide();
+                            //$('#generatepdf').show();
                             $('#continue').show();
                             $('#send-asesor').hide();
                             //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
@@ -1279,7 +1280,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         return false;
                     } 
                 }
-                error = validate_estado_civil(estado_civil, error, conyugue_trabaja, 2);
+                error = validate_estado_civil(estado_civil, error, conyugue_trabaja, 6);
                 if(error > 0)
                     return false;
                 
@@ -1363,6 +1364,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[tipo_relacion_laboral]': {required: true},
                 'GestionSolicitudCredito[email]': {required: true},
                 'GestionSolicitudCredito[actividad_empresa]': {required: true},
+                'GestionSolicitudCredito[habita]': {required: true},
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[numero]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
@@ -1526,7 +1528,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     $('#GestionSolicitudCredito_conyugue_trabaja').focus().addClass('error');
                     error++;
                 }
-                if(conyugue_trabaja == 1){
+                if(conyugue_trabaja == 1 && (tipo == 2 ||  tipo == 7 || tipo == 4 || tipo == 5)){
                     if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
                         $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
                         $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
