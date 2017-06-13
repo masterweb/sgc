@@ -183,7 +183,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div> 
     <div class="row"><div class="col-xs-12"><hr /></div></div>
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-6">
             <em class="tit-lab" for="">Empresa Trabajo</em>
             <?php echo $value['empresa_trabajo']; ?>
         </div>
@@ -191,7 +191,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <em class="tit-lab" for="">Teléfonos Trabajo</em>
             <?php echo $value['telefonos_trabajo']; ?>
         </div>
-        <div class="col-xs-4">
+        <div class="col-xs-6">
             <em class="tit-lab" for="">Años de Trabajo</em>
             <?php echo $value['tiempo_trabajo'].' años'; ?>
         </div>
@@ -206,7 +206,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-12">
             <em class="tit-lab" for="">Dirección de la Empresa</em>
             <?php echo $value['direccion_empresa']; ?>
         </div>
@@ -304,20 +304,15 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row"><div class="col-xs-12"><hr /></div></div>
     <div class="row">
         <div class="col-xs-5">
-            <em class="tit-lab" for="">Tipo de Propiedad</em>
+            <em class="tit-lab" for="">Tipo de Propiedad: </em>
             <?php echo $value['habita']; ?>
         </div>
-        <?php if($value['habita'] == 'Propia'): ?>
-        <div class="col-xs-3">
-            <em class="tit-lab" for="">Avalúo Propiedad</em>
-            <?php echo number_format($value['avaluo_propiedad']); ?>
-        </div>
-        <?php endif; ?>
-        <?php if($value['habita'] == 'Rentada'): ?>
-        <div class="col-xs-3">
-            <em class="tit-lab" for="">Valor de Arriendo</em>
-            <?php echo number_format($value['valor_arriendo']); ?>
-        </div>
+        
+        <?php if ($value['habita'] == 'Rentada'): ?>
+            <div class="col-xs-3">
+                <em class="tit-lab" for="">Valor de Arriendo: </em>
+                <?php echo '$. ' . number_format($value['valor_arriendo']); ?>
+            </div>
         <?php endif; ?>
     </div>
     <div class="row">
@@ -370,33 +365,91 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         </div>
         <?php } ?>
     </div>
-    <?php if(!empty($value['banco1']) || !empty($value['banco2'])): ?>
-    
+    <?php if (!empty($value['otros_ingresos'])) { ?>
     <div class="row">
-        <div class="col-xs-12"><h4 class="tl_seccion_rf">Referencias Bancarias</h4></div>
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Otros Ingresos: </em>
+            <?php echo '$. ' . number_format($value['otros_ingresos']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">TOTAL INGRESOS: </em>
+            <?php echo '$. ' . number_format($value['total_ingresos']); ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12"><h4 class="tl_seccion_rf">Egresos</h4></div>
     </div>
     <div class="row"><div class="col-xs-12"><hr /></div></div>
+    <?php if (!empty($value['gastos_arriendo'])) { ?>
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Banco 1</em>
-            <?php echo $value['banco1']; ?>
-        </div>
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Cuenta 1</em>
-            <?php echo $value['cuenta_ahorros1']; ?>
+            <em class="tit-lab" for="">Gastos Arriendo: </em>
+            <?php echo '$. ' . number_format($value['gastos_arriendo']); ?>
         </div>
     </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_alimentacion_otros'])) { ?>
+    <div class="row">
+        <div class="col-xs-6">
+            <em class="tit-lab" for="">Gastos Alimentación, Agua, Luz y Otros: </em>
+            <?php echo '$. ' . number_format($value['gastos_alimentacion_otros']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_prestamos'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Gastos Préstamos: </em>
+            <?php echo '$. ' . number_format($value['gastos_prestamos']); ?>
+        </div>
+    </div>
+    <?php } ?>
+    <?php if (!empty($value['gastos_tarjetas_credito'])) { ?>
+    <div class="row">
+        <div class="col-xs-4">
+            <em class="tit-lab" for="">Gastos Tarjetas de Crédito: </em>
+            <?php echo '$. ' . number_format($value['gastos_tarjetas_credito']); ?>
+        </div>
+    </div>
+    <?php } ?>
 
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Banco 2</em>
-            <?php echo $value['banco2']; ?>
-        </div>
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Cuenta 2</em>
-            <?php echo $value['cuenta_ahorros2']; ?>
+            <em class="tit-lab" for="">TOTAL EGRESOS: </em>
+            <?php echo '$. ' . number_format($value['total_egresos']); ?>
         </div>
     </div>
+    <?php if(!empty($value['banco1']) || !empty($value['banco2'])): ?>
+    
+    <div class="row">
+            <div class="col-xs-12"><h4 class="tl_seccion_rf">Referencias Bancarias</h4></div>
+        </div>
+        <div class="row"><div class="col-xs-12"><hr /></div></div>
+        <div class="row">
+            <div class="col-xs-4">
+                <em class="tit-lab" for="">Banco 1: </em>
+                <?php echo $this->getNameBanco($value['banco1']); ?>
+            </div>
+            <div class="col-xs-4">
+                <em class="tit-lab" for="">Cuenta 1: </em>
+                <?php echo $value['cuenta_ahorros1']; ?>
+            </div>
+        </div>
+        <?php if (!empty($value['banco2'])){?>
+        <div class="row">
+            <div class="col-xs-4">
+                <em class="tit-lab" for="">Banco 2: </em>
+                <?php echo $this->getNameBanco($value['banco2']); ?>
+            </div>
+            <div class="col-xs-4">
+                <em class="tit-lab" for="">Cuenta 2: </em>
+                <?php echo $value['cuenta_ahorros2']; ?>
+            </div>
+        </div>
+        <?php } ?>
     <?php endif; ?>
 
     <div class="row">
