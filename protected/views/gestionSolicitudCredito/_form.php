@@ -407,6 +407,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         $("[name='GestionSolicitudCredito[avaluo_propiedad]']").keyup(function () {getvalortotal();});    
         $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").keyup(function () {getvalortotal();});
+        $("[name='GestionSolicitudCredito[vehiculo_valor1]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[vehiculo_valor2]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[valor_inversion]']").keyup(function () {getvalortotal();});
         $("[name='GestionSolicitudCredito[valor_otros_activos1]']").keyup(function () {getvalortotal();});
@@ -1874,6 +1875,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         console.log('avaluo: '+avaluo);
         var valorcomercial1 = $("[name='GestionSolicitudCredito[direccion_valor_comercial1]']").val();
         var valorcomercial2 = $("[name='GestionSolicitudCredito[direccion_valor_comercial2]']").val();
+        var vehiculovalor1 = $("[name='GestionSolicitudCredito[vehiculo_valor1]']").val();
         var vehiculovalor2 = $("[name='GestionSolicitudCredito[vehiculo_valor2]']").val();
         var valorinversion = $("[name='GestionSolicitudCredito[valor_inversion]']").val();
         var valoriotrosactivos1 = $("[name='GestionSolicitudCredito[valor_otros_activos1]']").val();
@@ -1881,13 +1883,14 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         avaluo = formatnumber(avaluo);
         valorcomercial1 = formatnumber(valorcomercial1);
         valorcomercial2 = formatnumber(valorcomercial2);
+        vehiculovalor1 = formatnumber(vehiculovalor1);
         vehiculovalor2 = formatnumber(vehiculovalor2);
         valorinversion = formatnumber(valorinversion);
         valoriotrosactivos1 = formatnumber(valoriotrosactivos1);
         valoriotrosactivos2 = formatnumber(valoriotrosactivos2);
         var valuetotal = $("[name='GestionSolicitudCredito[total_activos]']").val();
         valueft = formatnumber(valuetotal);
-        total = avaluo + valorcomercial1 + valorcomercial2 + vehiculovalor2 + valorinversion + valoriotrosactivos1 + valoriotrosactivos2;
+        total = avaluo + valorcomercial1 + valorcomercial2 + vehiculovalor1 + vehiculovalor2 + valorinversion + valoriotrosactivos1 + valoriotrosactivos2;
         total = format2(total, '$');
 
         $("[name='GestionSolicitudCredito[total_activos]']").val(total);
@@ -3561,7 +3564,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                         ));
                         $art = GestionConsulta::model()->findAll($criteria4);
                         foreach ($art as $c):
-                            if ($c['preg1_sec5'] == 0): // SI TIENE VEHICULO
+                            if ($c['preg1_sec5'] == 0 ): // SI TIENE VEHICULO
                                 $params = explode('@', $c['preg1_sec2']);
                                 //print_r($params);
                                 $modelo_auto = $params[1] . ' ' . $params[2];
@@ -3582,10 +3585,29 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <label for="">Valor Comercial</label>
                                     <input type="text" maxlength="14" id="GestionSolicitudCreditovehiculo_valor1" name="GestionSolicitudCredito[vehiculo_valor1]" class="form-control" onkeypress="return validateNumbers(event)"/>
                                 </div>
-                                <?php
-                            endif;
-                        endforeach;
-                        ?>
+                            <?php elseif($c['preg1_sec5'] == 1 || empty($c['preg1_sec5'])): ?>
+                                <div class="col-md-3">
+                                    <label for="">Vehículo: Marca</label>
+                                    <?php echo $form->textField($model, 'vehiculo_marca1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                    <!--<input type="text" name="GestionSolicitudCredito[vehiculo_marca2]" class="form-control"/>-->
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Modelo</label>
+                                    <?php echo $form->textField($model, 'vehiculo_modelo1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                    <!--<input type="text" name="GestionSolicitudCredito[vehiculo_modelo2]" class="form-control"/>-->
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Año</label>
+                                    <?php echo $form->textField($model, 'vehiculo_year1', array('size' => 60, 'maxlength' => 10, 'class' => 'form-control')); ?>
+                                    <!--<input type="text" name="GestionSolicitudCredito[vehiculo_year2]" class="form-control"/>-->
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Valor Comercial</label>
+                                    <?php echo $form->textField($model, 'vehiculo_valor1', array('size' => 60, 'maxlength' => 50, 'class' => 'form-control')); ?>
+                                    <!--<input type="text" id="GestionSolicitudCreditovehiculo_valor2" maxlength="14" name="GestionSolicitudCredito[vehiculo_valor2]" class="form-control" onkeypress="return validateNumbers(event)"/>-->
+                                </div>
+                            <?php endif; ?>    
+                        <?php endforeach;?>
                     </div>
                     <div class="row">
                         <div class="col-md-3">

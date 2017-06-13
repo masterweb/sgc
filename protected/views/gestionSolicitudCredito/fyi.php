@@ -135,7 +135,7 @@ $grupo_id = (int) Yii::app()->user->getState('grupo_id');
                     				<?php
                     				$sc = GestionSolicitudCredito::model()->count(array('condition' => "id_informacion = {$value['id']} AND id_vehiculo = {$value['id_vehiculo']}")); 
                     				if($sc > 0){
-                    					$scc = GestionSolicitudCredito::model()->findAll(array('condition' => "id_informacion = {$value['id']} AND id_vehiculo = {$value['id_vehiculo']}"));
+                    					$scc = GestionSolicitudCredito::model()->findAll(array('condition' => "id_informacion = {$value['id']} AND id_vehiculo = {$value['id_vehiculo']}",'limit'=>1,));
                     					foreach ($scc as $key) {
                     						echo '<a href="'. Yii::app()->createUrl('gestionSolicitudCredito/status/', array('id' => $key['id'], 'id_informacion' => $key['id_informacion'], 'id_vehiculo' => $key['id_vehiculo'], 'id_status' => $key['id'])).'" class="btn btn-primary btn-xs">Ver</a>';
  										}
