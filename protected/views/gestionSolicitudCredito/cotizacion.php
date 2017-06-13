@@ -583,6 +583,27 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             </div>
         <?php endif; ?>
     </div>
+    <br />
+    <div class="row">
+        <?php if ($value['vehiculo_marca1']): ?>
+            <div class="col-xs-2">
+                <label for=""><em class="tit-lab">Vehículo: Marca: </em></label>
+                <p><?php echo $value['vehiculo_marca1']; ?>
+            </div>
+            <div class="col-xs-2">
+                <label for=""><em class="tit-lab">Modelo: </em></label>
+                <p><?php echo $value['vehiculo_modelo1']; ?>
+            </div>
+            <div class="col-xs-2">
+                <label for=""><em class="tit-lab">Año: </em></label>
+                <p><?php echo $value['vehiculo_year1']; ?>
+            </div>
+            <div class="col-xs-2">
+                <label for=""><em class="tit-lab">Valor Comercial: </em></label>
+                <p><?php echo $value['vehiculo_valor1']; ?>
+            </div>
+        <?php endif; ?>
+    </div>
     <div class="row">
         <?php if ($value['vehiculo_marca2']): ?>
             <div class="col-xs-2">
