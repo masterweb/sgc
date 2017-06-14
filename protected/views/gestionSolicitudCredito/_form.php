@@ -425,15 +425,15 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             changeMonth: true,
             changeYear: true,
             dateFormat: 'yy-mm-dd',
-            minDate: new Date(1950, 10 - 1, 25),
-            yearRange: '1950:1996'
+            minDate: new Date(1940, 10 - 1, 25),
+            yearRange: '1940:1996'
         });
         $("#GestionSolicitudCredito_fecha_nacimiento_conyugue").datepicker({
             changeMonth: true,
             changeYear: true,
             dateFormat: 'yy-mm-dd',
-            minDate: new Date(1950, 10 - 1, 25),
-            yearRange: '1950:1996'
+            minDate: new Date(1940, 10 - 1, 25),
+            yearRange: '1940:1996'
         });
         $('#GestionSolicitudCredito_estado_civil').change(function () {
             var value = $(this).attr('value');
