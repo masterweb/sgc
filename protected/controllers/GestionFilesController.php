@@ -84,7 +84,7 @@ class GestionFilesController extends Controller
                 $model->fecha_actualizacion = date("Y-m-d H:i:s");
                 if ($model->save()) {
                     $archivoThumb->saveAs(Yii::getPathOfAlias("webroot") . "/images/uploads/libreria/" . $fileName);
-                    $this->redirect(array('admin'));
+                    $this->redirect(array('view'));
                 }
             }
 			
