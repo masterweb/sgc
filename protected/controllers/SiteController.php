@@ -526,13 +526,20 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
+       
+        if($valor!=999)
         $concesionarios = Cargo::model()->findAll(array('order' => 'descripcion ASC', 'condition' => "area_id=:match AND estado = 'ACTIVO'", 'params' => array(':match' => (int) $valor)));
+       else
+        $concesionarios = Cargo::model()->findAll();
+
+
         $html = "";
         $htmlad = "";
 
         if (!empty($concesionarios)) {
             $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" >';
             $html .="<option value=''>Seleccione cargo</option>";
+             $html .="<option value='999'>TODOS</option>";
             $htmlad .='<select required name="Usuarios[cargo_adicional]" id="Usuarios_cargo_id" class="form-control">';
             $htmlad .="<option value=''>Seleccione >></option>";
             foreach ($concesionarios as $c) {
@@ -995,9 +1002,15 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     public function actionTraerArea() {
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
-        $model = Area::model()->findAll(array('condition' => 'tipo=' . $valor));
+        
+        if($valor!=999)$model = Area::model()->findAll(array('condition' => 'tipo=' . $valor));
+        else $model = Area::model()->findAll();
+        
         if (!empty($model)) {
-            echo '<select class="form-control" name="Cargo[area_id]" id="Cargo_area_id" onchange="buscarCargo(this.value)">';
+            echo '<select class="form-control" name="Usuarios[area]" id="Cargo_area_id" onchange="buscarCargo(this.value)">';
+
+            echo '<option value="999">TODOS</option>';
+
             foreach ($model as $m) {
                 echo '<option value="' . $m->id . '">' . $m->descripcion . '</option>';
             }
@@ -1684,7 +1697,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0, 'cedula');
+            //$data_createc = $this->Createc($id, 0, 'cedula');
             $data .= '</table></div></div></div></div></div></div></div></div>';
         }
         if ($ced == 0) {
@@ -1695,7 +1708,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'cedula');
+            //$data_createc = $this->Createc($id, $id_nueva_cotizacion, 'cedula');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
             $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
@@ -1811,7 +1824,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             }
             $data .= '</table></div></div></div>';
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, 0, 'ruc');
+            //$data_createc = $this->Createc($id, 0, 'ruc');
         }
         if ($ced == 0) {
             $model->ruc = $id;
@@ -1821,7 +1834,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'ruc');
+            //$data_createc = $this->Createc($id, $id_nueva_cotizacion, 'ruc');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
             $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
@@ -3307,7 +3320,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             if($id == 1000){
                 $conc = Concesionarios::model()->findAll(array('condition' => "provincia <> 0", 'order' => 'nombre asc'));
             }
-            $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
+            if($id == 999){
+              $conc = Concesionarios::model()->findAll();
+            }
+            $data = '<option value="">--Seleccione concesionario--</option><option value="1000">TODOS</option>';
             foreach ($conc as $ciudad) {
                 $data .= '<option value="' . $ciudad['dealer_id'] . '">' . $ciudad['nombre'] . '</option>';
             }
@@ -3324,6 +3340,24 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         }*/
         echo $data;
     }
+
+    public function actionGetVersion() {
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+            $criteria = new CDbCriteria;
+            if($id == 999){
+              $version = Versiones::model()->findAll();
+            }
+            else{
+               $version = Versiones::model()->findAll(array('condition' => "id_modelos={$id}", 'order' => 'nombre_version asc'));
+            }
+            
+            $data = '<option value="">--Seleccione versión--</option><option value="999">Todos</option>';
+            foreach ($version as $v) {
+                $data .= '<option value="' . $v['id_versiones'] . '">' . $v['nombre_version'] . '</option>';
+            }
+        echo $data;
+    }
+
 
     public function actionGetConcesionariosli() {
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
@@ -3795,11 +3829,6 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         # Outputs ready PDF
         $mPDF1->Output('carta de bienvenida.pdf', 'I');
     }
-
-    public function actionBiblioteca(){
-        $this->render('biblioteca');
-    }
-    
     
     /*public function actionSolicitud(){
         $criteria = new CDbCriteria;
@@ -3897,4 +3926,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 //            $conc4 = Yii::app()->db->createCommand($queryVehiculo)->execute();
 //        }
 //    }
+
+
+  public function actionBiblioteca(){
+    $this->render('biblioteca');
+  } 
+
+  public function actionProducto(){
+    $this->render('producto');
+  }   
 }
