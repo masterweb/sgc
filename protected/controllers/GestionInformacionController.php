@@ -1045,6 +1045,9 @@ class GestionInformacionController extends Controller {
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break;
+                    case 'exhibicion_automundo_uio':
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1");    
+                            break;    
 
                     default:
                         break;
@@ -1272,6 +1275,9 @@ class GestionInformacionController extends Controller {
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
+                        case 'exhibicion_automundo_uio':
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1");    
+                            break;
                     default:
                         break;
                 }
@@ -1317,6 +1323,9 @@ class GestionInformacionController extends Controller {
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
+                        case 'exhibicion_automundo_uio':
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1");    
+                            break;
                     default:
                         break;
                 }
@@ -1471,6 +1480,9 @@ class GestionInformacionController extends Controller {
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
+                        case 'exhibicion_automundo_uio':
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1");    
+                            break;
                     default:
                         break;
                 }
@@ -1674,26 +1686,29 @@ class GestionInformacionController extends Controller {
                     case 'qk':
                         $criteria->addCondition("gd.medio_contacto = 'exhquk' AND gd.status = 1");
                         break; 
+                    case 'exhibicion_automundo_uio':
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1");    
+                            break;
                     default:
                         break;
                 }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria2']['responsable']);
-//                echo '<pre>';
-//               print_r($criteria);
-//               echo '</pre>';
-//               die();
+    //            echo '<pre>';
+    //            print_r($criteria);
+    //            echo '</pre>';
+    //            die();
                 $posts = GestionInformacion::model()->findAll($criteria);
                 $tituloReporte = "Búsqueda por Status: {$_GET['GestionDiaria2']['status']}, Responsable: {$responsable}";
                 
             }
-            //   echo '<pre>';
-            //   print_r($criteria);
-            //   echo '</pre>';
-            //   die();
+    //       echo '<pre>';
+    //       print_r($criteria);
+    //      echo '</pre>';
+    //       die();
             
-            //die('search type: '.$search);
+    //        die('search type: '.$search);
 
             //$this->render('seguimiento');
         }
