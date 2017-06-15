@@ -320,10 +320,12 @@ if (isset($id)) {
                                                 "" => "--Escoja un Modelo--",
                                                 "84" => "Picanto R",
                                                 "85" => "Rio R",
+                                                "100" => "Nuevo Rio",
                                                 //"91" => "Rio Taxi",
                                                 "24" => "Cerato Forte",
                                                 "94" => "Cerato Koup",
-                                                "90" => "Cerato R",
+                                                "99" => "Nuevo Cerato",
+                                                //"90" => "Cerato R",
                                                 "89" => "Óptima R",
                                                 "88" => "Quoris",
                                                 "20" => "Carens R",
@@ -381,9 +383,10 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
+                                            <option value="100">Nuevo Rio</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="94">Cerato Koup</option>
-                                            <option value="90">Cerato R</option>
+                                            <option value="99">Nuevo Cerato</option>
                                             <option value="89">Óptima R</option>
                                             <option value="88">Quoris</option>
                                             <option value="20">Carens R</option>
@@ -518,9 +521,10 @@ if (isset($id)) {
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
                                             <option value="85">Rio R</option>
+                                            <option value="100">Nuevo Rio</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="94">Cerato Koup</option>
-                                            <option value="90">Cerato R</option>
+                                            <option value="99">Nuevo Cerato</option>
                                             <option value="89">Óptima R</option>
                                             <option value="88">Quoris</option>
                                             <option value="20">Carens R</option>
