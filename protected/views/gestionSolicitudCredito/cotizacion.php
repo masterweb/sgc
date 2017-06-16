@@ -89,17 +89,17 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         </tr>
     </table>
 </htmlpagefooter>
-<div class="container cont-print">
+<div class="container cont-print" style="font-size: 9pt;">
 
     <div class="row">
-        <div class="col-xs-12"><h3><strong>SOLICITUD DE CRÉDITO EXPRESS</strong></h3></div>
+        <div class="col-xs-12" style="text-align: center"><h3><strong>SOLICITUD DE CRÉDITO</strong></h3></div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <em class="tit-lab" for="">Asesor Comercial: </em><?php echo $this->getResponsableNombres($id_asesor); ?>
+            <label for="">Asesor Comercial: </label><?php echo $this->getResponsableNombres($id_asesor); ?>
         </div>
         <div class="col-xs-12">
-            <em class="tit-lab" for="">Concesionario: </em><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?>
+            <label for="">Concesionario: </label><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?>
         </div>
     </div>
     <div class="row">
@@ -125,48 +125,74 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Datos del Vehículo</h4></div> 
     </div> 
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    
 
 
     <?php foreach ($sol as $value) { ?>
         <div class="row">
+            <div class="col-xs-4">
+                <label for="">Modelo: </label>
+            </div>
+            
             <div class="col-xs-6">
-                <em class="tit-lab" for="">Modelo: </em>
                 <?php echo $value['modelo']; ?>
             </div>
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Valor: </em>
+
+
+            <div class="col-xs-4">
+                <label for="">Valor: </label>
+
+            </div>
+            <div class="col-xs-6">
                 <?php echo '$. ' . number_format($value['valor']); ?>
 
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Monto a Financiar: </em>
+
+
+            <div class="col-xs-4">
+                <label for="">Monto a Financiar: </label>
+            </div>
+
+            <div class="col-xs-6">
                 <?php echo '$. ' . number_format($value['monto_financiar']); ?>
             </div>
 
         </div>
         <div class="row">
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Entrada: </em>
+            <div class="col-xs-4">
+                <label for="">Entrada: </label>
+
+            </div>
+            <div class="col-xs-6">
                 <?php echo '$. ' . number_format($value['entrada']); ?>
+            </div>
+
+
+            <div class="col-xs-4">
+                <label for="">Año: </label>
 
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Año: </em>
+             <div class="col-xs-6">
                 <?php echo $value['year']; ?>
-
             </div>
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Plazo: </em>
+
+             <div class="col-xs-4">
+                <label for="">Plazo: </label>
+            </div>
+
+            <div class="col-xs-6">
                 <?php echo $value['plazo'] . ' meses'; ?>
-
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Tasa: </em>
+            <div class="col-xs-4">
+                <label for="">Tasa: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['taza'] . '%'; ?>
             </div>
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Cuota Mensual: </em>
+            <div class="col-xs-4">
+                <label for="">Cuota Mensual: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo '$. ' . number_format($value['cuota_mensual']); ?>
             </div>
         </div>
@@ -174,25 +200,34 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Datos del Solicitante</h4></div>
     </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+   
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Apellido Paterno: </em>
+            <label for="">Apellido Paterno: </label>
+        </div>
+         <div class="col-xs-6">
             <?php echo $value['apellido_paterno']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Apellido Materno: </em>
+            <label for="">Apellido Materno: </label>
+        </div>
+
+        <div class="col-xs-6">
             <?php echo $value['apellido_materno']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Nombres: </em>
+            <label for="">Nombres: </label>
+            
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['nombres']; ?>
         </div>
-
     </div>
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Celular: </em>
+            <label class="tit-lab" for="">Celular: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['celular']; ?>
         </div>
     </div>
@@ -200,82 +235,113 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <?php if(!empty($value['cedula'])){ ?>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Cédula: </em>
+            <label for="">Cédula: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['cedula']; ?>
         </div>
         <?php } ?>
         <?php if(!empty($value['ruc'])){ ?>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Ruc: </em>
+            <label for="">Ruc: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['ruc']; ?>
         </div>
         <?php } ?>
         <?php if(!empty($value['pasaporte'])){ ?>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Pasaporte: </em>
+            <label for="">Pasaporte: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['pasaporte']; ?>
         </div>
         <?php } ?>
-        <div class="col-xs-4"><em class="tit-lab" for="">Fecha de Nacimiento: </em>
+        <div class="col-xs-4">
+            <label for="">Fecha de Nacimiento: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['fecha_nacimiento']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Nacionalidad: </em>
+            <label for="">Nacionalidad: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['nacionalidad']; ?>
         </div>
 
     </div>
     <div class="row">
+        <div class="col-xs-4">
+            <label for="">Estado Civil: </label>
+        </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Estado Civil: </em>
             <?php echo $value['estado_civil']; ?>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Empleo/Actividad Actual del Solicitante</h4></div>
     </div> 
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Empresa Trabajo: </em>
+            <label for="">Empresa Trabajo: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['empresa_trabajo']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Teléfonos Trabajo: </em>
+            <label for="">Teléfonos Trabajo: </label>
+        </div>
+         <div class="col-xs-6">
             <?php echo $value['telefonos_trabajo']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Años de Trabajo: </em>
+            <label for="">Años de Trabajo: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['tiempo_trabajo'] . ' años'; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Meses de Trabajo: </em>
+            <label for="">Meses de Trabajo: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['meses_trabajo'] . ' meses'; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Cargo: </em>
+            <label for="">Cargo: </label>
+        </div>
+         <div class="col-xs-6">
             <?php echo $value['cargo']; ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
-            <em class="tit-lab" for="">Dirección de la Empresa: </em>
-            <?php echo $value['direccion_empresa']; ?>
+        <div class="col-xs-4">
+            <label for="">Dirección de la Empresa: </label>
         </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Tipo de Relación Laboral: </em>
+            <?php echo $value['direccion_empresa']; ?>
+        </div>
+        
+        <div class="col-xs-4">
+            <label for="">Tipo de Relación Laboral: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['tipo_relacion_laboral']; ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-6">
-            <em class="tit-lab" for="">Email: </em>
-            <?php echo $value['email']; ?>
+        <div class="col-xs-4">
+            <label for="">Email: </label>
         </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Actividad de la Empresa: </em>
+            <?php echo $value['email']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Actividad de la Empresa: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['actividad_empresa']; ?>
         </div>
     </div>
@@ -284,32 +350,46 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <div class="row">
             <div class="col-xs-12"><h4 class="tl_seccion_rf">Datos del Cónyugue</h4></div>
         </div> 
-        <div class="row"><div class="col-xs-12"><hr /></div></div>
         <div class="row">
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Apellido Paterno Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Apellido Paterno Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['apellido_paterno_conyugue']; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Apellido Materno Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Apellido Materno Cónyugue: </label>
+            </div>
+             <div class="col-xs-6">
                 <?php echo $value['apellido_materno_conyugue']; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Nombres Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Nombres Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['nombres_conyugue']; ?>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Cédula Cónyugue: </em>
+                <label for="">Cédula Cónyugue: </label>
+            </div>
+
+            <div class="col-xs-6">
                 <?php echo $value['cedula_conyugue']; ?>
             </div>
+
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Fecha de Nacimiento Cónyugue: </em>
+                <label for="">Fecha de Nacimiento Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['fecha_nacimiento_conyugue']; ?>
             </div>
+            
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Nacionalidad Cónyugue: </em>
+                <label for="">Nacionalidad Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['nacionalidad_conyugue']; ?>
             </div>
         </div>
@@ -317,36 +397,51 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <div class="row">
             <div class="col-xs-12"><h4 class="tl_seccion_rf">Empleo/Actividad Actual del Cónyugue</h4></div>
         </div>
-        <div class="row"><div class="col-xs-12"><hr /></div></div>
+        
         <div class="row">
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Empresa Trabajo Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Empresa Trabajo Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['empresa_trabajo_conyugue']; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Teléfono Trabajo Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Teléfono Trabajo Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['telefono_trabajo_conyugue']; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Años de Trabajo Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Años de Trabajo Cónyugue: </label>
+            </div>
+             <div class="col-xs-6">
                 <?php echo $value['tiempo_trabajo_conyugue'] . ' años'; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Meses de Trabajo Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Meses de Trabajo Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['meses_trabajo_conyugue'] . ' meses'; ?>
             </div>
-            <div class="col-xs-5">
-                <em class="tit-lab" for="">Cargo Cónyugue: </em>
+            <div class="col-xs-4">
+                <label for="">Cargo Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['cargo_conyugue']; ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-8">
-                <em class="tit-lab" for="">Dirección Empresa Cónyugue: </em>
+            <div class="col-xs-4">
+                <label class="tit-lab" for="">Dirección Empresa Cónyugue: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_empresa_conyugue']; ?>
             </div>
-            <div class="col-xs-8">
-                <em class="tit-lab" for="">Tipo Relación Laboral Cónyugue: </em>
+            
+             <div class="col-xs-4">
+                <label class="tit-lab" for="">Tipo Relación Laboral Cónyugue: </label>
+            </div>   
+            <div class="col-xs-6">
                 <?php echo $value['tipo_relacion_laboral_conyugue']; ?>
             </div>
         </div>
@@ -354,31 +449,48 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Domicilio Actual</h4></div>
     </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    
     <div class="row">
-        <div class="col-xs-5">
-            <em class="tit-lab" for="">Tipo de Propiedad: </em>
+        <div class="col-xs-4">
+            <label for="">Tipo de Propiedad: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['habita']; ?>
         </div>
-        
+        <?php if ($value['habita'] == 'Propia'): ?>
+            <div class="col-xs-4">
+                <label for="">Avalúo Propiedad: </label>
+            </div>
+            <div class="col-xs-6">
+                <?php echo number_format($value['avaluo_propiedad']); ?>
+            </div>
+        <?php endif; ?>
         <?php if ($value['habita'] == 'Rentada'): ?>
-            <div class="col-xs-3">
-                <em class="tit-lab" for="">Valor de Arriendo: </em>
+            <div class="col-xs-4">
+                <label for="">Valor de Arriendo: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo '$. ' . number_format($value['valor_arriendo']); ?>
             </div>
         <?php endif; ?>
     </div>
     <div class="row">
-        <div class="col-xs-8">
-            <em class="tit-lab" for="">Calle: </em>
+        <div class="col-xs-4">
+            <label for="">Calle: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['calle']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Barrio: </em>
+            <label for="">Barrio: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['barrio']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Barrio: </em>
+            <label for="">Barrio: </label>
+        </div>
+         <div class="col-xs-6">
             <?php echo $value['numero']; ?>
         </div>
     </div>
@@ -387,15 +499,21 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
 
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Referencia Domicilio: </em>
+            <label for="">Referencia Domicilio: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['referencia_domicilio']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Teléfono Residencia: </em>
+            <label for="">Teléfono Residencia: </label>
+        </div>
+         <div class="col-xs-6">
             <?php echo $value['telefono_residencia']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Celular: </em>
+            <label for="">Celular: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['celular']; ?>
         </div>
 
@@ -404,101 +522,55 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Ingresos</h4></div>
     </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    
     <div class="row">
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Sueldo mensual: </em>
+            <label for="">Sueldo mensual: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo '$. ' . number_format($value['sueldo_mensual']); ?>
         </div>
         <?php if ($value['estado_civil'] == 'Casado' || $value['estado_civil'] == 'Casado sin separación de bienes') { ?>
+            <div class="col-xs-4">
+                <label for="">Sueldo mensual Cónyugue: </label>
+            </div>
             <div class="col-xs-6">
-                <em class="tit-lab" for="">Sueldo mensual Cónyugue: </em>
                 <?php echo '$. ' . ($value['sueldo_mensual_conyugue']); ?>
             </div>
         <?php } ?>
     </div>
-    <?php if (!empty($value['otros_ingresos'])) { ?>
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Otros Ingresos: </em>
-            <?php echo '$. ' . number_format($value['otros_ingresos']); ?>
-        </div>
-    </div>
-    <?php } ?>
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">TOTAL INGRESOS: </em>
-            <?php echo '$. ' . number_format($value['total_ingresos']); ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12"><h4 class="tl_seccion_rf">Egresos</h4></div>
-    </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
-    <?php if (!empty($value['gastos_arriendo'])) { ?>
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Gastos Arriendo: </em>
-            <?php echo '$. ' . number_format($value['gastos_arriendo']); ?>
-        </div>
-    </div>
-    <?php } ?>
-    <?php if (!empty($value['gastos_alimentacion_otros'])) { ?>
-    <div class="row">
-        <div class="col-xs-6">
-            <em class="tit-lab" for="">Gastos Alimentación, Agua, Luz y Otros: </em>
-            <?php echo '$. ' . number_format($value['gastos_alimentacion_otros']); ?>
-        </div>
-    </div>
-    <?php } ?>
-    <?php if (!empty($value['gastos_prestamos'])) { ?>
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Gastos Préstamos: </em>
-            <?php echo '$. ' . number_format($value['gastos_prestamos']); ?>
-        </div>
-    </div>
-    <?php } ?>
-    <?php if (!empty($value['gastos_tarjetas_credito'])) { ?>
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">Gastos Tarjetas de Crédito: </em>
-            <?php echo '$. ' . number_format($value['gastos_tarjetas_credito']); ?>
-        </div>
-    </div>
-    <?php } ?>
-
-    <div class="row">
-        <div class="col-xs-4">
-            <em class="tit-lab" for="">TOTAL EGRESOS: </em>
-            <?php echo '$. ' . number_format($value['total_egresos']); ?>
-        </div>
-    </div>
-    
     <?php if (!empty($value['banco1']) || !empty($value['banco2'])): ?>
 
         <div class="row">
             <div class="col-xs-12"><h4 class="tl_seccion_rf">Referencias Bancarias</h4></div>
         </div>
-        <div class="row"><div class="col-xs-12"><hr /></div></div>
+        
         <div class="row">
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Banco 1: </em>
+                <label for="">Banco 1: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $this->getNameBanco($value['banco1']); ?>
             </div>
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Cuenta 1: </em>
+                <label for="">Cuenta 1: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['cuenta_ahorros1']; ?>
             </div>
         </div>
         <?php if (!empty($value['banco2'])){?>
         <div class="row">
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Banco 2: </em>
+                <label for="">Banco 2: </label>
+            </div>
+             <div class="col-xs-6">
                 <?php echo $this->getNameBanco($value['banco2']); ?>
             </div>
             <div class="col-xs-4">
-                <em class="tit-lab" for="">Cuenta 2: </em>
+                <label for="">Cuenta 2: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['cuenta_ahorros2']; ?>
             </div>
         </div>
@@ -508,56 +580,76 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Referencias Personales</h4></div>
     </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    
     <div class="row">
+        <div class="col-xs-4">
+            <label for="">Referencia Personal 1: </label>
+        </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Referencia Personal 1: </em>
             <?php echo $value['referencia_personal1']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Parentesco 1: </em>
-            <?php echo $value['parentesco1']; ?>
+            <label for="">Parentesco 1: </label>
         </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Teléfono Referencia 1: </em>
+            <?php echo $value['parentesco1']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Teléfono Referencia 1: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['telefono_referencia1']; ?>
         </div>
     </div>
     <br />
     <div class="row">
+        <div class="col-xs-4">
+            <label for="">Referencia Personal 2: </label>
+        </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Referencia Personal 2: </em>
             <?php echo $value['referencia_personal2']; ?>
         </div>
         <div class="col-xs-4">
-            <em class="tit-lab" for="">Parentesco 2: </em>
-            <?php echo $value['parentesco2']; ?>
+            <label for="">Parentesco 2: </label>
         </div>
         <div class="col-xs-6">
-            <em class="tit-lab" for="">Teléfono Referencia 2: </em>
+            <?php echo $value['parentesco2']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Teléfono Referencia 2: </label>
+        </div>
+        <div class="col-xs-6">
             <?php echo $value['telefono_referencia2']; ?>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12"><h4 class="tl_seccion_rf">Activos y Propiedades</h4></div>
     </div>
-    <div class="row"><div class="col-xs-12"><hr /></div></div>
+    
     <div class="row">
         <?php if ($value['tipo_activo1']): ?>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Activo 1: </em></label>
+            <div class="col-xs-4">
+                <label for="">Activo 1: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['tipo_activo1']; ?></p>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Dirección: </em></label>
+            <div class="col-xs-4">
+                <label for="">Dirección:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_activo1']; ?></p>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Sector: </em></label>
+            <div class="col-xs-4">
+                <label for="">Sector:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_sector1']; ?>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Valor: </em></label>
+            <div class="col-xs-4">
+                <label for="">Valor: </label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_valor_comercial1']; ?>
             </div>
         <?php endif; ?>
@@ -565,61 +657,57 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <br />
     <div class="row">
         <?php if ($value['tipo_activo2']): ?>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Activo 2: </em></label>
+            <div class="col-xs-4">
+                <label for="">Activo 2:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['tipo_activo2']; ?>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Dirección: </em></label>
+            <div class="col-xs-4">
+                <label for="">Dirección:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_activo2']; ?>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Sector: </em></label>
+            <div class="col-xs-4">
+                <label for="">Sector:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_sector2']; ?>
             </div>
-            <div class="col-xs-3">
-                <label for=""><em class="tit-lab">Valor: </em></label>
+            
+            <div class="col-xs-4">
+                <label for="">Valor:</label>
+            </div>
+            <div class="col-xs-6">
                 <?php echo $value['direccion_valor_comercial2']; ?>
-            </div>
-        <?php endif; ?>
-    </div>
-    <br />
-    <div class="row">
-        <?php if ($value['vehiculo_marca1']): ?>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Vehículo: Marca: </em></label>
-                <p><?php echo $value['vehiculo_marca1']; ?>
-            </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Modelo: </em></label>
-                <p><?php echo $value['vehiculo_modelo1']; ?>
-            </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Año: </em></label>
-                <p><?php echo $value['vehiculo_year1']; ?>
-            </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Valor Comercial: </em></label>
-                <p><?php echo $value['vehiculo_valor1']; ?>
             </div>
         <?php endif; ?>
     </div>
     <div class="row">
         <?php if ($value['vehiculo_marca2']): ?>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Vehículo: Marca: </em></label>
+            <div class="col-xs-4">
+                <label for="">Vehículo: Marca:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['vehiculo_marca2']; ?>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Modelo: </em></label>
+            <div class="col-xs-4">
+                <label for="">Modelo:</label>
+            </div>
+             <div class="col-xs-6">
                 <p><?php echo $value['vehiculo_modelo2']; ?>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Año: </em></label>
+            <div class="col-xs-4">
+                <label for="">Año:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['vehiculo_year2']; ?>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Valor Comercial: </em></label>
+            <div class="col-xs-4">
+                <label for="">Valor Comercial:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['vehiculo_valor2']; ?>
             </div>
         <?php endif; ?>
@@ -627,48 +715,66 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     <br />
     <div class="row">
         <?php if ($value['tipo_inversion']): ?>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Tipo de inversión: </em></label>
+            <div class="col-xs-4">
+                <label for="">Tipo de inversión:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['tipo_inversion']; ?>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Institución: </em></label>
+            <div class="col-xs-4">
+                <label for="">Institución:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['institucion_inversion']; ?>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Valor: </em></label>
+            <div class="col-xs-4">
+                <label for="">Valor:</label>
+            </div>
+             <div class="col-xs-6">
                 <p><?php echo $value['valor_inversion']; ?>
             </div>
         <?php endif; ?>
     </div>
     <div class="row">
         <?php if ($value['otros_activos']): ?>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Otros activos: </em></label>
+            <div class="col-xs-4">
+                <label for="">Otros activos:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['otros_activos']; ?></p>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Descripción: </em></label>
+            <div class="col-xs-4">
+                <label for="">Descripción:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['descripcion1']; ?></p>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Valor: </em></label>
+            <div class="col-xs-4">
+                <label for="">Valor:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['valor_otros_activos1']; ?></p>
             </div>
         <?php endif; ?>
     </div>
     <div class="row">
         <?php if ($value['otros_activos2']): ?>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Otros activos: </em></label>
+            <div class="col-xs-4">
+                <label for="">Otros activos:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['otros_activos2']; ?></p>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-4">
                 <label for=""><em class="tit-lab">Descripción: </em></label>
+            </div>
+             <div class="col-xs-6">
                 <p><?php echo $value['descripcion2']; ?></p>
             </div>
-            <div class="col-xs-2">
-                <label for=""><em class="tit-lab">Valor: </em></label>
+            <div class="col-xs-4">
+                <label for="">Valor:</label>
+            </div>
+            <div class="col-xs-6">
                 <p><?php echo $value['valor_otros_activos2']; ?></p>
             </div>
         <?php endif; ?>
@@ -680,16 +786,16 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <div class="col-xs-5">
             <h4 class="tl_seccion_rf">Firma</h4>
             <?php 
-            $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
+            $firma = GestionFirma::model()->count(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
             if ($firma > 0):
-                $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 2"));
+                $fr = GestionFirma::model()->find(array('condition' => "id_informacion={$id_informacion} AND tipo = 1"));
                 $imgfr = $fr->firma;
             ?>
 
                             
                 <img src="<?php echo Yii::app()->request->baseUrl; ?>/upload/firma/<?php echo $imgfr; ?>" alt="" width="200" height="100">
                 <hr>
-                Firma Cliente
+            
                                 
             <?php endif; ?>
         </div>

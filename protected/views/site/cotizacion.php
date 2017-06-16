@@ -94,9 +94,9 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div>  
 
     <div class="row">
-        <div class="col-xs-4"><h5>Solicitud No.:</h5></div>
+        <div class="col-xs-4 tit-lab"><h4>Solicitud No.:</h4></div>
 
-        <div class="col-xs-6"><h5><?php echo $codigoconcesionario; ?>-SC-<?php echo $codigo_asesor; ?>-<?php echo $id_hoja; ?></h5></div>
+        <div class="col-xs-6 it-lab"><h4><?php echo $codigoconcesionario; ?>-SC-<?php echo $codigo_asesor; ?>-<?php echo $id_hoja; ?></h4></div>
     </div>
        
     <div class="row">
@@ -450,35 +450,64 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div>
 
     <div class="row">
-        <div class="col-xs-5"><h4 class="tl_seccion_rf">INGRESOS MENSUALES FAMILIARES</h4></div>
-        <div class="col-xs-5"><h4 class="tl_seccion_rf">GASTOS MENSUALES FAMILIARES</h4></div>
-    </div>
+        <div class="col-xs-10"><h4 class="tl_seccion_rf">INGRESOS MENSUALES FAMILIARES</h4></div>
+     </div>   
     <div class="row">
-        <div class="col-xs-2">
+        <div class="col-xs-4">
             <label for="">Sueldo mensual:</label>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-6">
                 <?php echo number_format($value['sueldo_mensual']); ?>
         </div>
-        <div class="row">
-           <div class="col-xs-2">
-                    <label for="">Arriendo:</label>
-            </div>
-            <div class="col-xs-3">
-                    <?php echo number_format($value['gastos_arriendo']); ?>
-            </div>
-        </div> 
+        
     </div>   
-    
+
     <div class="row">
         <?php if($value['estado_civil'] == 'Casado' || $value['estado_civil'] == 'Casado sin separación de bienes'){ ?>
-        <div class="col-xs-3">
+        <div class="col-xs-4">
             <label for="">Sueldo Cónyugue:</label>
         </div>
-        <div class="col-xs-2">
+        <div class="col-xs-6">
                 <?php echo empty($value['sueldo_mensual_conyugue']) ? 0 : number_format($value['sueldo_mensual_conyugue']); ?>
         </div>
         <?php } ?>
+    </div>
+
+    <div class="row">
+             
+            <div class="col-xs-4">
+                <label for="">Otros Ingresos:</label>            
+            </div>
+            <div class="col-xs-6">
+                <?php echo  number_format($value['otros_ingresos']); ?>
+            </div>
+            
+    </div>
+
+    <div class="row">
+        <div class="col-xs-4">
+            <label for="">TOTAL INGRESOS: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo number_format($value['total_ingresos']); ?>
+        </div>   
+    </div>
+     <div class="row">
+        <div class="col-xs-10"><h4 class="tl_seccion_rf">GASTOS MENSUALES FAMILIARES</h4></div>
+    </div>
+    <div class="row">
+           <div class="col-xs-4">
+                    <label for="">Arriendo:</label>
+            </div>
+            <div class="col-xs-6">
+                    <?php echo number_format($value['gastos_arriendo']); ?>
+            </div>
+    </div> 
+
+    
+    
+    <div class="row">
+       
         <?php if (!empty($value['gastos_alimentacion_otros'])) { ?>
         
             
@@ -494,61 +523,42 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
 
     
 
-    <div class="row">
+  
              
-            <div class="col-xs-3">
-                <label for="">Otros Ingresos:</label>            
-            </div>
-            <div class="col-xs-2">
-                <?php echo  number_format($value['otros_ingresos']); ?>
-            </div>
-            <div class="row">
-                <div class="col-xs-3">
-                    <label for="">Préstamos:</label>
-                </div>
-                <div class="col-xs-2">
-                    <?php echo  number_format($value['gastos_prestamos']); ?>
-                </div>
-            </div>
-      
-    </div>
-
-
-
     <div class="row">
-        <div class="col-xs-2">
-            <label for="">TOTAL INGRESOS: </label>
-        </div>
-        <div class="col-xs-3">
-            <?php echo number_format($value['total_ingresos']); ?>
-        </div>
-        <div class="row">
-            <div class="col-xs-2">
+         <div class="col-xs-4">
+               <label for="">Préstamos:</label>
+         </div>
+          <div class="col-xs-6">
+                    <?php echo  number_format($value['gastos_prestamos']); ?>
+          </div>
+    </div>
+      
+   
+
+
+
+    <div class="row">     
+            <div class="col-xs-4">
                 <label for="">Tarjetas de Crédito: </label>
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-6">
                 <?php echo  number_format($value['gastos_tarjetas_credito']); ?>
-            </div>
-        </div>    
+            </div> 
     </div>
     
     
 
     <div class="row">
-        <div class="col-xs-3">
-            -
-        </div>
-        <div class="col-xs-2">
-            -
-        </div>
-        <div class="row">
-            <div class="col-xs-3">
+       
+    
+            <div class="col-xs-4">
                 <label for="">TOTAL EGRESOS: </label>
             </div>
-            <div class="col-xs-2">
+            <div class="col-xs-6">
                 <?php echo number_format($value['total_egresos']); ?>
             </div>
-        </div>
+        
     </div>
 
 
