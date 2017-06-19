@@ -4270,10 +4270,9 @@ class Controller extends CController {
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-       
-
-
-
+        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
+            $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        }  
       
         
         switch ($cargo_id) {
