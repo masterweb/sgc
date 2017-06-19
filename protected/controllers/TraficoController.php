@@ -25,7 +25,7 @@ class TraficoController extends Controller {
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo',
-                    'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario','getDetalleTotal'),
+                    'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario','getDetalleTotal','getConcesionariosProvincia'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -3602,6 +3602,25 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         echo json_encode($options);
     }
 
+    public function actionGetConcesionariosProvincia(){
+        $provincia_id =  isset($_POST['provincia_id']) ? $_POST["provincia_id"] : "";
+        $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
+
+        $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
+        
+        $conc = GrConcesionarios::model()->findAll(array("condition" => "provincia = {$provincia_id}"));
+
+        foreach ($conc as $value) {
+            $data .= '<option value="'.$value['dealer_id'].'"';
+            if($value['dealer_id'] == $dealer_id){
+                $data .= ' selected';
+            }
+            $data .= '>'.$value['nombre'].'</option>';
+        }
+        $options = array('options' => $data);
+        echo json_encode($options);
+    }
+
     public function actionGetResponsablesConcecionario(){
         $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
         $responsable = isset($_POST['responsable']) ? $_POST["responsable"] : "";
@@ -3719,6 +3738,8 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         $data .= "</table>";
         $options = array('data_total' => $data);
         echo json_encode($options);
+
+
     }
 
     public function getTraficoDetalleTotal($dia_inicial, $dia_actual, $year_actual, $mes, $search, $categoria){

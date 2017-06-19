@@ -929,6 +929,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
         var concesionario = '<?php echo isset($_GET['GestionDiaria']['concesionario']) ? $_GET['GestionDiaria']['concesionario'] : ''; ?>';
         var responsable = '<?php echo isset($_GET['GestionDiaria']['responsable']) ? $_GET['GestionDiaria']['responsable'] : ''; ?>';
         var categoria = '<?php echo isset($_GET['GestionDiaria']['categoria']) ? $_GET['GestionDiaria']['categoria'] : ''; ?>';
+        // console.log('proviincia: '+provincia);
         if(fecha1 !='' && fecha2 !=''){
             $('#trafico_fecha1').val(fecha1);$('#trafico_fecha2').val(fecha2);
             $('#fecha1').val(1);$('#fecha2').val(1);
@@ -937,6 +938,33 @@ $vartrf['testdrive_nacional_categoria'] = array();
             $("#trafico_provincia option").each(function(){
                 if($(this).val() ==  provincia){$(this).prop("selected", true);}
             });
+            // LISTA DE CONCESIONARIOS POR PROVINCIA EN DROPDOWNLIST CONCESIONARIO
+            if(concesionario != ''){
+                $.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosProvincia"); ?>',
+                    beforeSend: function (xhr) {
+                        //$('#bg_black').show();  // #info must be defined somehwere
+                    },
+                    type: 'POST',dataType: 'json',data: {provincia_id : provincia, dealer_id: concesionario},
+                    success: function (data) {
+                        //console.log(data.options);
+                        $('#trafico_concesionario').html(data.options);
+                    }
+                });
+                /*$.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
+                    beforeSend: function (xhr) {
+                        //$('#bg_black').show();  // #info must be defined somehwere
+                    },
+                    type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
+                    success: function (data) {
+                        //console.log(data.options);
+                        $('#trafico_concesionario').html(data.options);
+                    }
+                });*/
+            }
+
+            
             $('#provincia').val(1);
         }
         if(grupo != ''){
@@ -945,31 +973,52 @@ $vartrf['testdrive_nacional_categoria'] = array();
                 if($(this).val() ==  grupo){$(this).prop("selected", true);}
             });
             $('#grupo').val(1);
-            $.ajax({
-                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
-                beforeSend: function (xhr) {
-                    //$('#bg_black').show();  // #info must be defined somehwere
-                },
-                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
-                success: function (data) {
-                    //console.log(data.options);
-                    $('#trafico_concesionario').html(data.options);
-                }
-            });
+            // SI GRUPO ESTA SELECCIONADO Y PROVINCIA NO ESTA SELECICONADO
+            if(provincia == ''){
+                console.log('provincia vacia');
+                $.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
+                    beforeSend: function (xhr) {
+                        //$('#bg_black').show();  // #info must be defined somehwere
+                    },
+                    type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
+                    success: function (data) {
+                        //console.log(data.options);
+                        $('#trafico_concesionario').html(data.options);
+                    }
+                });
+            }
+            if(concesionario == '' && provincia != ''){
+                $.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosProvincia"); ?>',
+                    beforeSend: function (xhr) {
+                        //$('#bg_black').show();  // #info must be defined somehwere
+                    },
+                    type: 'POST',dataType: 'json',data: {provincia_id : provincia, dealer_id: concesionario},
+                    success: function (data) {
+                        //console.log(data.options);
+                        $('#trafico_concesionario').html(data.options);
+                    }
+                });
+            }
+            
 
         }
         if(concesionario != ''){
-            $.ajax({
-                url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
-                beforeSend: function (xhr) {
-                    //$('#bg_black').show();  // #info must be defined somehwere
-                },
-                type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
-                success: function (data) {
-                    //console.log(data.options);
-                    $('#trafico_concesionario').html(data.options);
-                }
-            });
+            // SI GRUPO ESTA SELECCIONADO Y PROVINCIA NO ESTA SELECICONADO
+            if(provincia == ''){
+                $.ajax({
+                    url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getConcesionariosGrupo"); ?>',
+                    beforeSend: function (xhr) {
+                        //$('#bg_black').show();  // #info must be defined somehwere
+                    },
+                    type: 'POST',dataType: 'json',data: {dealer_id : concesionario, grupo_id : grupo},
+                    success: function (data) {
+                        //console.log(data.options);
+                        $('#trafico_concesionario').html(data.options);
+                    }
+                });
+            }
             $('#concesionario').val(1);
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("trafico/getResponsablesConcecionario"); ?>',
