@@ -36,7 +36,7 @@ $valid_cedula = 0;
 $vartrf = array();
 $vartrf['read_first_time'] = 0;
 //$vartrf['salarioactual'] = 0;
-if($ced){
+/*if($ced){
     $dat = GestionDatabook::model()->count(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
     if($dat == 0){
         //die('enter dat 0');
@@ -83,7 +83,7 @@ if($ced){
                 $meses_resto = $meses % 12;*/
 
 
-            }
+/*            }
         } catch(Exception $e){
             //ctadie('enter exception');
         }
@@ -103,7 +103,7 @@ if($ced){
         }*/
         
         
-    }else{
+/*    }else{
         //echo 'ELSE-------------';
         $valid_cedula = 1;
         $dat = GestionDatabook::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
@@ -141,14 +141,14 @@ if($ced){
         print_r($vartrf);
         echo '</pre>';*/
         //die();
-    }
+//    }
 
-}
+//}
 //echo 'salarioactual: '.$vartrf['salarioactual'];
 //echo 'valid cedula: '.$valid_cedula;
 # END CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
 
-
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $id_asesor = Yii::app()->user->getId();
 $dealer_id = $this->getConcesionarioDealerId($id_asesor);
 if((int) Yii::app()->user->getState('cargo_id') == 87){
@@ -728,6 +728,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[actividad_empresa]': {required: true},
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
+                <?php if($grupo_id == 3 || $grupo_id == 4)
+                echo "'GestionSolicitudCredito[manzana]': {required: true},";
+                 ?>
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 'GestionSolicitudCredito[sueldo_mensual]': {required: true},
@@ -873,6 +876,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[actividad_empresa]': {required: true},
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
+                <?php if($grupo_id == 3 || $grupo_id == 4)
+                echo "'GestionSolicitudCredito[manzana]': {required: true},";
+                 ?>
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 'GestionSolicitudCredito[sueldo_mensual]': {required: true},
@@ -1012,6 +1018,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[actividad_empresa]': {required: true},
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
+                <?php if($grupo_id == 3 || $grupo_id == 4)
+                echo "'GestionSolicitudCredito[manzana]': {required: true},";
+                 ?>
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 'GestionSolicitudCredito[sueldo_mensual]': {required: true},
@@ -1198,11 +1207,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 //var returnedData = JSON.parse(data);
                                 //alert(returnedData.result);
                                 $('#bg_negro').hide();
-                                //$('#finalizar').hide();
-                                //$('#generatepdf').show();
-                                $('#continue').show();
-                                $('#send-asesor').hide();
-                                //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
+                                $(location).attr('href', '<?php echo $url_load; ?>');
                             }
                         });
                     } else {
@@ -1223,11 +1228,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             //var returnedData = JSON.parse(data);
                             //alert(returnedData.result);
                             $('#bg_negro').hide();
-                            //$('#finalizar').hide();
-                            //$('#generatepdf').show();
-                            $('#continue').show();
-                            $('#send-asesor').hide();
-                            //$('#GestionFinanciamiento_ipdfid').val(returnedData.id);
+                            $(location).attr('href', '<?php echo $url_load; ?>');
                         }
                     });
                 }
@@ -1368,6 +1369,10 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[numero]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
+                <?php if($grupo_id == 3 || $grupo_id == 4)
+                echo "'GestionSolicitudCredito[manzana]': {required: true},";
+                 ?>
+                
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 
@@ -1643,6 +1648,9 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[actividad_empresa]': {required: true},
                 'GestionSolicitudCredito[ciudad_domicilio]': {required: true},
                 'GestionSolicitudCredito[barrio]': {required: true},
+                <?php if($grupo_id == 3 || $grupo_id == 4)
+                echo "'GestionSolicitudCredito[manzana]': {required: true},";
+                 ?>
                 'GestionSolicitudCredito[calle]': {required: true},
                 'GestionSolicitudCredito[telefono_residencia]': {required: true},
                 'GestionSolicitudCredito[sueldo_mensual]': {required: true},
@@ -3200,21 +3208,34 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'calle'); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $form->labelEx($model, 'interseccion'); ?>
+                                <?php // echo $form->labelEx($model, 'interseccion', array('class' => 'required')); ?>
+                                <label class="required" for="GestionSolicitudCredito_manzana">Intersección <span class="required">*</span></label>
                                 <?php echo $form->textField($model, 'interseccion', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'interseccion'); ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <?php echo $form->labelEx($model, 'numero'); ?>
+                                <?php // echo $form->labelEx($model, 'numero', array('class' => 'required')); ?>
+                                <label class="required" for="GestionSolicitudCredito_manzana">Número <span class="required">*</span></label>
                                 <?php echo $form->textField($model, 'numero', array('size' => 60, 'maxlength' => 40, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'numero'); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $form->labelEx($model, 'barrio'); ?>
+                                <?php // echo $form->labelEx($model, 'barrio', array('class' => 'required')); ?>
+                                <label class="required" for="GestionSolicitudCredito_manzana">Barrio <span class="required">*</span></label>
                                 <?php echo $form->textField($model, 'barrio', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'barrio'); ?>
+                            </div>
+                            <div class="col-md-4">
+                                <?php // echo $form->labelEx($model, 'manzana', array('class' => 'required')); ?>
+                                <label class="required" for="GestionSolicitudCredito_manzana">Manzana
+                                    <?php if($grupo_id == 3 || $grupo_id == 4)
+                                    echo '<span class="required">*</span>' ?>
+                                 
+                             </label>
+                                <?php echo $form->textField($model, 'manzana', array('size' => 60, 'maxlength' => 80, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'manzana'); ?>
                             </div>
                         </div>
                         

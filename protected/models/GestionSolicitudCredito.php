@@ -149,14 +149,14 @@ class GestionSolicitudCredito extends CActiveRecord {
             array('direccion_empresa, direccion_activo1, direccion_sector1, direccion_activo2, direccion_sector2, email_laboral, interseccion', 'length', 'max' => 200),
             array('actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, ruc_conyugue, pasaporte_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, calle, barrio, referencia_domicilio, institucion_inversion, valor_inversion', 'length', 'max' => 80),
             array('fecha_nacimiento_conyugue', 'length', 'max' => 85),
-            array('domicilio_actual, habita, referencia_personal1, referencia_personal2', 'length', 'max' => 150),
+            array('domicilio_actual, habita, referencia_personal1, referencia_personal2, manzana', 'length', 'max' => 150),
             array('celular', 'length', 'max' => 10),
             array('telefono_referencia1, telefono_referencia2', 'length', 'max' => 60),
             array('descripcion1, descripcion2', 'length', 'max' => 70),
             array('fecha', 'safe'),
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
-            array('id, concesionario, vendedor, fecha, modelo, valor, monto_financiar, entrada, year, plazo, taza, cuota_mensual, apellido_paterno, apellido_materno, nombres, cedula, fecha_nacimiento, nacionalidad, estado_civil, empresa_trabajo, telefonos_trabajo, tiempo_trabajo, cargo, direccion_empresa, tipo_relacion_laboral, email, actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, fecha_nacimiento_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, telefono_trabajo_conyugue, tiempo_trabajo_conyugue, cargo_conyugue, direccion_empresa_conyugue, tipo_relacion_laboral_conyugue, domicilio_actual, habita, avaluo_propiedad, vive, valor_arriendo, calle, barrio, referencia_domicilio, telefono_residencia, celular, sueldo_mensual, sueldo_mensual_conyugue, banco1, cuenta_ahorros1, banco2, cuenta_ahorros2, referencia_personal1, referencia_personal2, parentesco1, parentesco2, telefono_referencia1, telefono_referencia2, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio, otros_ingresos, cuenta_corriente1, cuenta_corriente2, direccion_activo1, direccion_sector1, direccion_valor_comercial1, direccion_activo2, direccion_sector2, direccion_valor_comercial2, vehiculo_marca1, vehiculo_modelo1, vehiculo_year1, vehiculo_valor1, vehiculo_marca2, vehiculo_modelo2, vehiculo_year2, vehiculo_valor2, tipo_inversion, institucion_inversion, valor_inversion, otros_activos, descripcion1, valor_otros_activos1, otros_activos2, descripcion2, valor_otros_activos2', 'safe', 'on'=>'search'),
+            array('id, concesionario, vendedor, fecha, modelo, valor, monto_financiar, manzana, entrada, year, plazo, taza, cuota_mensual, apellido_paterno, apellido_materno, nombres, cedula, fecha_nacimiento, nacionalidad, estado_civil, empresa_trabajo, telefonos_trabajo, tiempo_trabajo, cargo, direccion_empresa, tipo_relacion_laboral, email, actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, fecha_nacimiento_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, telefono_trabajo_conyugue, tiempo_trabajo_conyugue, cargo_conyugue, direccion_empresa_conyugue, tipo_relacion_laboral_conyugue, domicilio_actual, habita, avaluo_propiedad, vive, valor_arriendo, calle, barrio, referencia_domicilio, telefono_residencia, celular, sueldo_mensual, sueldo_mensual_conyugue, banco1, cuenta_ahorros1, banco2, cuenta_ahorros2, referencia_personal1, referencia_personal2, parentesco1, parentesco2, telefono_referencia1, telefono_referencia2, activos, pasivos, patrimonio, id_informacion, id_vehiculo, status, provincia_domicilio, ciudad_domicilio, otros_ingresos, cuenta_corriente1, cuenta_corriente2, direccion_activo1, direccion_sector1, direccion_valor_comercial1, direccion_activo2, direccion_sector2, direccion_valor_comercial2, vehiculo_marca1, vehiculo_modelo1, vehiculo_year1, vehiculo_valor1, vehiculo_marca2, vehiculo_modelo2, vehiculo_year2, vehiculo_valor2, tipo_inversion, institucion_inversion, valor_inversion, otros_activos, descripcion1, valor_otros_activos1, otros_activos2, descripcion2, valor_otros_activos2', 'safe', 'on'=>'search'),
         );
     }
 
@@ -228,6 +228,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'valor_arriendo' => 'Valor Arriendo',
             'calle' => 'Calle Principal',
             'barrio' => 'Barrio',
+            'manzana' => 'Manzana',
             'referencia_domicilio' => 'Referencia Domicilio',
             'telefono_residencia' => 'Teléfono Residencia',
             'celular' => 'Celular',
