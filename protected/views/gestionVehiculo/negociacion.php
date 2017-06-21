@@ -2879,6 +2879,7 @@ if($fuente == 'web'){
                                                     <option value="ISSA">ISSFA</option>
                                                     <option value="Originarsa">Originarsa</option>
                                                     <option value="Produbanco">Produbanco</option>
+                                                    <option value="Portcoll">Portcoll S.A.</option>
                                                     <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>
@@ -2988,6 +2989,7 @@ if($fuente == 'web'){
                                                     <option value="ISSA">ISSFA</option>
                                                     <option value="Originarsa">Originarsa</option>
                                                     <option value="Produbanco">Produbanco</option>
+                                                    <option value="Portcoll">Portcoll S.A.</option>
                                                     <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>
@@ -3097,6 +3099,7 @@ if($fuente == 'web'){
                                                     <option value="ISSA">ISSFA</option>
                                                     <option value="Originarsa">Originarsa</option>
                                                     <option value="Produbanco">Produbanco</option>
+                                                    <option value="Portcoll">Portcoll S.A.</option>
                                                     <option value="Unifinsa">Unifinsa</option>
                                                 </select>
                                             </div>

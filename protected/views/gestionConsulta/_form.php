@@ -611,9 +611,11 @@ if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
                                         <option value="Rio R 4p">Rio R 4p</option>
                                         <option value="Rio R 5p">Rio R 5p</option>
                                         <option value="Rio R Taxi">Rio R Taxi</option>
+                                        <option value="NuevoRioR">Nuevo Rio R</option>
                                         <option value="Cerato Forte">Cerato Forte</option>
                                         <option value="Cerato Forte Koup">Cerato Koup</option>
                                         <option value="Cerato R">Cerato R</option>
+                                        <option value="NuevoCeraro">Nuevo Cerato</option>
                                         <option value="Optima Híbrido">Optima Híbrido</option>
                                         <option value="Quoris">Quoris</option>
                                         <option value="Soul">Soul Gasolina</option>

@@ -3656,6 +3656,7 @@ if ($fi == 2) {
                                                         <option value="ISSA" <?php if($model->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                         <option value="Originarsa" <?php if($model->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                         <option value="Produbanco" <?php if($model->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                        <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                         <option value="Unifinsa" <?php if($model->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
@@ -3772,6 +3773,7 @@ if ($fi == 2) {
                                                             <option value="ISSA" <?php if($fin1->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                             <option value="Originarsa" <?php if($fin1->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                             <option value="Produbanco" <?php if($fin1->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                            <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                             <option value="Unifinsa" <?php if($fin1->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                         </select>
                                                     </div>
@@ -3914,6 +3916,7 @@ if ($fi == 2) {
                                                         <option value="ISSA" <?php if($fin2->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                         <option value="Originarsa" <?php if($fin2->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                         <option value="Produbanco" <?php if($fin2->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
+                                                        <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                         <option value="Unifinsa" <?php if($fin2->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
