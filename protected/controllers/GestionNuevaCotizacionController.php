@@ -553,7 +553,8 @@ class GestionNuevaCotizacionController extends Controller {
 
                 case 'exhibicion quierounkia':
                 case 'exhibicion quierounkiatd':
-                case 'exhibicion_automundo_uio':    
+                case 'exhibicion_automundo_uio':   
+                case 'exhibicion_automundo_gye': 
                     //die('enter showroom');
 
                     $model->setscenario('consulta');

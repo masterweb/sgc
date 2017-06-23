@@ -162,8 +162,9 @@ $count = count($users);
             case 'showroom':
             case 'exhibicion':
             case 'exhibicion quierounkiac':
-            case 'exhibicion quierounkiatd': 
-            case 'exhibicion_automundo_uio':    
+            case 'exhibicion quierounkiatd':     
+            case 'exhibicion_automundo_uio':
+            case 'exhibicion_automundo_gye':      
                 console.log('enter showroom');
                 $('#gestion-nueva-cotizacion-form').validate({
                 rules: {
@@ -525,7 +526,7 @@ $count = count($users);
 ?>
         <div class="col-md-8">
             <div class="highlight">
-        <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo_seg' => $tipo_seg)); ?>
+        <?= $this->renderPartial('//layouts/rgd/filtros', array('formaction' => 'gestionInformacion/seguimiento', 'cargo_id' => $cargo_id, 'dealer_id' => $dealer_id, 'tipo_filtro' => 'general', 'tipo_seg' => $tipo_seg, 'modelo_seleccionado' => $modelo_seleccionado, 'version_seleccionada' => $version_seleccionada)); ?>
             </div>
         </div>
     </div>
@@ -818,9 +819,6 @@ $count = count($users);
                                     }
                                     if($desiste != 1 && $paso != 10){
                                         echo '&nbsp' . $data_btn_semaforo;
-                                    }
-                                    if($fuente_contacto == 'exhibicion_automundo_uio'){
-                                        
                                     }
                                     ?>
                                     <?php

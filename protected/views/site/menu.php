@@ -5,8 +5,12 @@ $area_id = (int) Yii::app()->user->getState('area_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
+$exh = 'UIO';
 if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9 ){
     $tipo_grupo = 0; // GRUPOS MOTRICENTRO, MERQUIAUTO, AUTHESA, AUTOSCOREA, IOKARS
+}
+if($grupo_id == 3 || $grupo_id == 4){
+    $exh = 'GYE';
 }
 //echo 'cargo id: '.$cargo_id;
 // vanessa17_ldu@hotmail.com, nutri_mas2@hotmail.com
@@ -422,7 +426,7 @@ $rol = Yii::app()->user->getState('roles');
                     <li class="wrapper">
                         <div class="forma">
                             <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/fyi'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
-                                <div class="txt_menu">RGD Exhibición UIO</div></a>
+                                <div class="txt_menu">RGD Exhibición <?php echo $exh; ?></div></a>
                         </div>
                     </li>
                 <?php endif; ?>

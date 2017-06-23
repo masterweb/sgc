@@ -15,12 +15,14 @@ function get_version(id){
                 success: function (data) {
                     $('#GestionDiaria_version').html('');    
                     $('#GestionDiaria_version').html(data);
-                   
+                   $('#GestionDiaria_version').val(<?php echo $version_seleccionada; ?>);
 
                 },error:function(data){
 
                         $('#GestionDiaria_version').html('');    
                         $('#GestionDiaria_version').html(data.responseText);
+
+                         $('#GestionDiaria_version').val(<?php echo $version_seleccionada; ?>);
 
                 }
     });
@@ -75,6 +77,9 @@ $id_responsable = Yii::app()->user->getId();
                 </div>
             <?php endif; ?>
         </div>
+
+        
+
         <div class="row">
             <div class="col-md-6">
                 <label for="GestionNuevaCotizacion_fuente">Status</label>
@@ -93,7 +98,15 @@ $id_responsable = Yii::app()->user->getId();
                     <option value="Web">Web</option>
                     
                     <?php endif; ?>
-                    <option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>
+                    <?php 
+                    if($grupo_id == 3 || $grupo_id == 4){
+                        echo '<option value="exhibicion_automundo_gye">Exhibición Automundo GYE</option>';
+                    }
+                    if($grupo_id == 2){
+                        echo '<option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>';
+                    }
+                     ?>
+                    
                 </select>
             </div>
             <?php if ($cargo_id == 70 || $cargo_id == 72 || $cargo_id == 85): ?>
@@ -183,6 +196,33 @@ $id_responsable = Yii::app()->user->getId();
                 <input type="text" name="GestionDiaria[rango_fecha]" id="rango_fecha_seguimiento" class="form-control"/>
             </div>
         </div>
+        
+        <div class="row">
+            
+                <div class="col-md-6">
+                    <label for="">Modelo</label>
+                    <select name="GestionDiaria[modelo]" id="GestionDiaria_modelo" class="form-control" onchange="get_version(this.value)">
+                      
+                        <?php
+                                        $all_models = Modelos::model()->findAll();
+                                       
+                                        if(!empty($all_models)){
+                                            echo ' <option value="">--Seleccione modelo--</option>';
+                                            echo '<option value="999">Todos</option>';
+                                            foreach($all_models as $m){
+                                                echo '<option value="'.$m->id_modelos.'">'.$m->nombre_modelo.'</option>';
+                                            }
+                                        }
+                        ?>
+                    </select>
+                </div>  
+                <div class="col-md-6">
+                    <label for="">Versión</label>
+                    <select name="GestionDiaria[version]" id="GestionDiaria_version" class="form-control">
+                        <option value="">--Seleccione version--</option>
+                    </select>
+                </div>      
+        </div>
         <!--    <div class="row">
                 <div class="col-md-6">
                     <label for="">Fuente</label>
@@ -224,32 +264,9 @@ $id_responsable = Yii::app()->user->getId();
                         <option value="">--Seleccione responsable--</option>
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label for="">Modelo</label>
-                    <select name="GestionDiaria[modelo]" id="GestionDiaria_modelo" class="form-control" onchange="get_version(this.value)">
-                      
-                        <?php
-                                        $all_models = Modelos::model()->findAll();
-                                       
-                                        if(!empty($all_models)){
-                                            echo ' <option value="">--Seleccione modelo--</option>';
-                                            echo '<option value="999">Todos</option>';
-                                            foreach($all_models as $m){
-                                                echo '<option value="'.$m->id_modelos.'">'.$m->nombre_modelo.'</option>';
-                                            }
-                                        }
-                        ?>
-                    </select>
-                </div>    
+                  
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="">Versión</label>
-                    <select name="GestionDiaria[version]" id="GestionDiaria_version" class="form-control">
-                        <option value="">--Seleccione version--</option>
-                    </select>
-                </div>    
-            </div>
+          
             <!--hr />
             <div class="row">
                 <div class="col-md-6">
@@ -334,6 +351,8 @@ $id_responsable = Yii::app()->user->getId();
                 <?php $this->endWidget(); ?>
             <?php endif; ?>   
         </div>
+
+
     </div>
 <?php else: ?>
 
@@ -366,6 +385,7 @@ $id_responsable = Yii::app()->user->getId();
                 </div>
             <?php endif; ?>
         </div>
+        
 
 
         <div class="row">
@@ -377,3 +397,11 @@ $id_responsable = Yii::app()->user->getId();
         <?php $this->endWidget(); ?>
     </div>
 <?php endif; ?>
+<script type="text/javascript">
+    
+      //  alert(<?php echo $modelo_seleccionado; ?>);
+     $('#GestionDiaria_modelo').val(<?php echo $modelo_seleccionado; ?>);
+     get_version(<?php echo $modelo_seleccionado; ?>);
+
+
+</script>

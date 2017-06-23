@@ -58,6 +58,11 @@ class GestionSolicitudCreditoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate($id_informacion = NULL, $id_vehiculo = NULL) {
+        //die('enter create, id_informacion: '.$id_informacion.', id_vehiculo: '.$id_vehiculo);
+        $mo = GestionSolicitudCredito::model()->count(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
+        if($mo >0){
+            $this->redirect(array('gestionSolicitudCredito/update','id_informacion' => $id_informacion, 'id_vehiculo' => $id_vehiculo ));
+        }
         //die('id informacion: '.$id_informacion.', id vehiculo: '.$id_vehiculo);
         $model = new GestionSolicitudCredito;
 
@@ -88,10 +93,10 @@ class GestionSolicitudCreditoController extends Controller {
 
 
         if (isset($_POST['GestionSolicitudCredito'])) {
-//            echo '<pre>';
-//            print_r($_POST);
-//            echo '</pre>';
-//            die();
+    //        echo '<pre>';
+    //        print_r($_POST);
+    //        echo '</pre>';
+    //       die();
             //die('enter post');
             // CREAR ID SOLICITUD DE CREDITO
             $hoja_solicitud = new GestionSolicitud;
@@ -871,14 +876,29 @@ class GestionSolicitudCreditoController extends Controller {
 
     public function actionFyi(){
         $con = Yii::app()->db;
+        $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+
+        // GRUPO KMOTOR, IOKARS
+        if($grupo_id == 3 || $grupo_id == 4)
+            $ex = 'exhibicion_automundo_gye';
+        // GRUPO ASIAUTO
+        if($grupo_id == 2)
+            $ex = 'exhibicion_automundo_uio';
+
 
         # SGC DE CLIENTES CON FUENTE EXHIBICION AUTOMIUNDO UIO
         $sql = "SELECT gi.*, gf.id_vehiculo FROM gestion_informacion gi
         INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
         INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
         INNER JOIN gestion_financiamiento gf ON gf.id_vehiculo = gv.id 
-        WHERE gd.fuente_contacto = 'exhibicion_automundo_uio' ";
-      
+        WHERE gd.fuente_contacto = '{$ex}'";
+        if($grupo_id == 3){
+            $sql .= " AND (gi.dealer_id IN(10,80,81,72,77))";
+        }
+        if($grupo_id == 4){
+            $sql .= " AND (gi.dealer_id IN(78))";
+        }
+        //die('sql: '.$sql);
 
         
         if(isset($_GET['GestionSolicitudCredito'])){
