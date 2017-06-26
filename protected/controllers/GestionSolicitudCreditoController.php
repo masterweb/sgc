@@ -892,24 +892,53 @@ class GestionSolicitudCreditoController extends Controller {
         INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
         INNER JOIN gestion_financiamiento gf ON gf.id_vehiculo = gv.id 
         WHERE gd.fuente_contacto = '{$ex}'";
+
+        $criteria = new CDbCriteria;
+        $criteria->select = 'gv.*';
+        $criteria->alias = 'gv';
+        $criteria->join = " INNER JOIN gestion_informacion gi ON gi.id = gv.id_informacion";
+        $criteria->join .= " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id";
+        $criteria->join .= " INNER JOIN gestion_financiamiento gf ON gf.id_vehiculo = gv.id";
+        $criteria->condition = " gd.fuente_contacto = '{$ex}'"; 
+
         if($grupo_id == 3){
             $sql .= " AND (gi.dealer_id IN(10,80,81,72,77))";
+            $criteria->addCondition("gi.dealer_id IN(10,80,81,72,77)");
         }
         if($grupo_id == 4){
             $sql .= " AND (gi.dealer_id IN(78))";
+            $criteria->addCondition("gi.dealer_id IN(78)");
         }
         //die('sql: '.$sql);
 
         
         if(isset($_GET['GestionSolicitudCredito'])){
             //die('enter get');
-            if(!empty($_GET['GestionSolicitudCredito']['general']))
+            if(!empty($_GET['GestionSolicitudCredito']['general'])){
                 $sql .= " AND gi.id = '{$_GET['GestionSolicitudCredito']['general']}'";
+                $criteria->addCondition("gi.id = '{$_GET['GestionSolicitudCredito']['general']}'");
+            }
+                
         }
         
-        $sql .= " GROUP BY gv.id ORDER BY gi.id DESC";
-        $exh = $con->createCommand($sql)->queryAll($sql);
-        $this->render('fyi', array('exh' => $exh));
+        $sql .= " GROUP BY gv.id ORDER BY gi.id DESC LIMIT 0,100";
+        //die('sql: '.$sql);
+        $criteria->group = "gv.id";
+        $criteria->order = "gi.id DESC";
+        $pages = new CPagination(GestionVehiculo::model()->count($criteria));
+        $pages->pageSize = 10;
+        $pages->applyLimit($criteria);
+        $exh = GestionVehiculo::model()->findAll($criteria);
+
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
+    //   die('sql: '.$sql);
+        
+
+        
+        //$exh = $con->createCommand($sql)->queryAll($sql);
+        $this->render('fyi', array('exh' => $exh, 'pages' => $pages));
     }
 
 }

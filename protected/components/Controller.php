@@ -208,8 +208,19 @@ class Controller extends CController {
                 return $dealers->name;
             } else {
                 return 'NA';
+
             }
         }
+    }
+
+    public function getConcesionarioFYI($id_informacion){
+        $dealer_id = GestionInformacion::model()->findByPk($id_informacion);
+        if (!is_null($dealer_id) && !empty($dealer_id)) {
+            return $this->getConcesionario($dealer_id->dealer_id);
+        } else {
+            return 'NA';
+        }
+
     }
 
     public function getConcesionarioTlf($id) {
@@ -538,6 +549,15 @@ class Controller extends CController {
         }
     }
 
+    public function getResponsableInformacion($id_informacion){
+        $responsableid = GestionInformacion::model()->findByPk($id_informacion);
+        if (!is_null($responsableid) && !empty($responsableid)) {
+            return $this->getResponsable($responsableid->responsable);
+        } else {
+            return 'NA';
+        }
+    }
+
     public function getResponsableFyi($id) {
         //echo 'id: '.$id;
         $responsableid = Usuarios::model()->findByPk($id);
@@ -837,6 +857,22 @@ class Controller extends CController {
 
             default:
                 break;
+        }
+    }
+
+    public function getIdentificacionTipoFYI($id) {
+        $criteria = new CDbCriteria(array(
+            "condition" => "id = {$id}",
+        ));
+        $gestion = GestionInformacion::model()->find($criteria);
+        if(!empty($gestion->cedula)){
+            return $gestion->cedula;
+        }
+        if(!empty($gestion->pasaporte)){
+            return $gestion->pasaporte;
+        }
+        if(!empty($gestion->ruc)){
+            return $gestion->ruc;
         }
     }
 
@@ -3493,6 +3529,28 @@ class Controller extends CController {
         }
         return $data;
     }
+
+    public function getAllProvincias() {
+        $data = '<option value="">--Seleccione provincia--</option><option value="1000">Todos</option>';
+    
+            $data .= '<option value="1">Azuay</option>
+                    <option value="5">Chimborazo</option>
+                    <option value="7">El Oro</option>
+                    <option value="8">Esmeraldas</option>
+                    <option value="10">Guayas</option>
+                    <option value="11">Imbabura</option>
+                    <option value="12">Loja</option>
+                    <option value="13">Los Ríos</option>
+                    <option value="14">Manabí</option>
+                    <option value="16">Napo</option>
+                    <option value="18">Pastaza</option>
+                    <option value="19">Pichincha</option>
+                    <option value="21">Tsachilas</option>
+                    <option value="23">Tungurahua</option>';
+        
+     
+        return $data;
+    }
     
     public function getConcesionarios($vartrf) {
         $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
@@ -4144,7 +4202,7 @@ class Controller extends CController {
         
     }
     
-    private function getBetweenfecha($mes, $year, $dia_inicial, $dia_final) {
+    public function getBetweenfecha($mes, $year, $dia_inicial, $dia_final) {
         //echo 'dia inicial: '.$dia_inicial.'<br />';
         $srf = '';
         switch ($mes) {
@@ -4273,6 +4331,10 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }  
+       
+
+
+
       
         
         switch ($cargo_id) {
@@ -4281,7 +4343,6 @@ class Controller extends CController {
                 $criteria->join .= ' INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id';
                 break;
             case 69: // GERENTE COMERCIAL
-                $criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                 if ($tipo_search == '') {
                     //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
@@ -4297,7 +4358,7 @@ class Controller extends CController {
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
                     if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio'){
                         $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
-                    } 
+                }
                     
                 }
                 if ($tipo_search == 'exo') {
@@ -4372,26 +4433,32 @@ class Controller extends CController {
         }
 
 
-         if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+       /*  if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
              $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
-        //    echo $_GET['GestionDiaria']['modelo'];
+           // echo $_GET['GestionDiaria']['modelo'];
+            //die();
              $modelo=$_GET['GestionDiaria']['modelo'];            
              $criteria->addCondition("gv.modelo = {$modelo} ");
         }
         else if($_GET['GestionDiaria']['modelo']==999){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+             //echo 'toods';
+            //die();
         }
         if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999) {
-      //      echo $_GET['GestionDiaria']['version'];
+          //  echo $_GET['GestionDiaria']['version'];
+            //die();
               $version=$_GET['GestionDiaria']['version'];   
             $criteria->addCondition("gv.version = {$version} ");
-        }
-        //if(!empty())
+        }*/
+
+
+
         $search_type = 0;   
-//        echo '<pre>';
-//        print_r($criteria);
-//        echo '</pre>';
-//        die();
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
+    //    die();
 
         //die('search type combined: '.$search_type);
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
@@ -4638,9 +4705,9 @@ class Controller extends CController {
                     $criteria->addCondition("gd.fuente_contacto = 'web'");
                     break;
                 case 'exhibicion':
-                case 'exh':
+                case 'exh':    
                     if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio'){
-                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
                     }  
                     
                     break;
@@ -4657,10 +4724,17 @@ class Controller extends CController {
                         
                     break;
             }
+
+
+
+
+
+
+
         //}
-//            echo '<pre>';
-//            print_r($criteria);
-//            echo '</pre>';
+        //    echo '<pre>';
+        //    print_r($criteria);
+        //    echo '</pre>';
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
@@ -4674,9 +4748,15 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
             $stat = 'Exhibición Automundo Quito';
         }
-//        echo('search type: ' . $search_type);
-        
-        
+        else if($_GET['GestionDiaria']['modelo']==999){
+            $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+        }
+        if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+        {
+              $version=$_GET['GestionDiaria']['version'];   
+            $criteria->addCondition("gv.version = {$version} ");
+        }
+
         switch ($search_type) {
 
 
@@ -4741,15 +4821,14 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-    //            echo '<pre>';
-    //            print_r($criteria);
-    //            echo '</pre>';
-    //            die();
+//                echo '<pre>';
+//                print_r($criteria);
+//                echo '</pre>';
+//                die();
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
                 $users = GestionInformacion::model()->findAll($criteria);
-
                 //$title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>";
                 $title = "Busqueda por Status: <strong>".$stat."</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
                 $data['title'] = $title;
@@ -4809,6 +4888,23 @@ class Controller extends CController {
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                     $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
                 }
+
+
+
+                  if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                       
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }   
+
 
                 //WHERE gi.responsable = {$_GET['GestionDiaria']['responsable']} 
                 if ($_GET['GestionDiaria']['tipo'] == 'exo') {
@@ -4896,6 +4992,24 @@ class Controller extends CController {
                     $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
                 }
                 $criteria->addCondition('gd.desiste = 0', 'AND');
+
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                       
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+                 
+
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -4950,6 +5064,22 @@ class Controller extends CController {
                     $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$dt_unmes_antes}' and '{$dt_hoy}'", 'AND');
                     $title = "Busqueda por Concesionario Total: <strong>{$_GET['GestionDiaria']['concesionario']}</strong>";
                 }
+
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
@@ -4992,6 +5122,23 @@ class Controller extends CController {
                     $criteria->group = "gi.id";
                     $criteria->order = "gi.id DESC";
                 }
+
+
+                 if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                        
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
+
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);
@@ -5137,6 +5284,20 @@ class Controller extends CController {
                     $criteria->condition = "gr.id_grupo = {$grupo_id}";
                     $criteria->addCondition('u.cargo_id IN (86)', 'AND');
                 }
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+                
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 //die($sql);
@@ -5167,6 +5328,19 @@ class Controller extends CController {
                 if ($get_array == ''){
                     $criteria->addCondition("gd.fuente_contacto = 'showroom'");
                 }
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                       
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 if($_GET['GestionDiaria']['responsable'] != 'all'){
@@ -5248,6 +5422,11 @@ class Controller extends CController {
                 $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
                 $criteria->addCondition($condition);
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+                
+
+                
+
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $pages = new CPagination(GestionInformacion::model()->count($criteria));
@@ -5266,6 +5445,22 @@ class Controller extends CController {
                 $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
                 $criteria->addCondition($condition);
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
+
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                       
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -5285,6 +5480,23 @@ class Controller extends CController {
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
                 $criteria->addCondition('gd.desiste = 0', 'AND');
+
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                       
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                       
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -5328,6 +5540,21 @@ class Controller extends CController {
                     default:
                         break;
                 }
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -5370,6 +5597,21 @@ class Controller extends CController {
                     default:
                         break;
                 }
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
@@ -5439,6 +5681,21 @@ class Controller extends CController {
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $fecha_actual = (string) date("Y/m/d");
 
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -5481,6 +5738,23 @@ class Controller extends CController {
                     default:
                         break;
                 }
+
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -5523,6 +5797,21 @@ class Controller extends CController {
                     default:
                         break;
                 }
+
+            if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -5813,6 +6102,21 @@ class Controller extends CController {
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $fecha_actual = (string) date("Y/m/d");
 
+
+                if (!empty($_GET['GestionDiaria']['modelo']) && $_GET['GestionDiaria']['modelo']>0 && $_GET['GestionDiaria']['modelo']!=999) {
+                         $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+                         $modelo=$_GET['GestionDiaria']['modelo'];            
+                         $criteria->addCondition("gv.modelo = {$modelo} ");
+                    }
+                    else if($_GET['GestionDiaria']['modelo']==999){
+                        $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
+                    }
+                    if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
+                    {
+                          $version=$_GET['GestionDiaria']['version'];   
+                        $criteria->addCondition("gv.version = {$version} ");
+                    }  
+
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
 //                echo '<pre>';
@@ -6063,7 +6367,10 @@ class Controller extends CController {
                 break;
             case 'exhibicion_automundo_uio':
                 $condition = "gd.fuente_contacto = 'exhibicion_automundo_uio' AND gd.status = 1";
-                break;    
+                break;  
+            case 'exhibicion_automundo_gye':
+                $condition = "gd.fuente_contacto = 'exhibicion_automundo_gye' AND gd.status = 1";
+                break;       
             default:
                 break;
         }
