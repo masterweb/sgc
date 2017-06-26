@@ -221,6 +221,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             case 'Casado sin separación de bienes':
             case 'Casado':
             case 'Union Libre':
+            case 'Union_hecho':
                 $('.conyugue').show();
             break;
         }
@@ -466,6 +467,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 case 'Casado sin separación de bienes':
                 case 'Casado':
                 case 'Union Libre':
+                case 'Union_hecho':
                     //validateSoltero();    
                     $('.conyugue').slideDown();$('.conyugue_trabaja').show();$('#GestionSolicitudCredito_conyugue_trabaja').focus();
                     break;
@@ -1081,6 +1083,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     case 'Casado sin separación de bienes':
                     case 'Casado':
                     case 'Union Libre':
+                    case 'Union_hecho':
                         //validateSoltero();
                         if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
                             $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
@@ -1507,6 +1510,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             case 'Casado sin separación de bienes':
             case 'Casado':
             case 'Union Libre':
+            case 'Union_hecho':
                 //validateSoltero();
                 if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
                     $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
@@ -1714,6 +1718,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     case 'Casado sin separación de bienes':
                     case 'Casado':
                     case 'Union Libre':
+                    case 'Union_hecho':
                         //validateSoltero();
                         if ($('#GestionSolicitudCredito_apellido_paterno_conyugue').val() == '') {
                             $('#GestionSolicitudCredito_apellido_paterno_conyugue_error').show();
@@ -2530,7 +2535,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         'Soltero' => 'Soltero/a',
                                         'Viudo' => 'Viudo/a',
                                         'Divorciado' => 'Divorciado/a',
-                                        'Union Libre' => 'Union Libre'), array('class' => 'form-control'));
+                                        'Union Libre' => 'Union Libre', 'Union_hecho' => 'Union de Hecho'), array('class' => 'form-control'));
                                     ?>
                                     <?php echo $form->error($model, 'estado_civil'); ?>
                                 </div>
