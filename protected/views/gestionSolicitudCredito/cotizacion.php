@@ -520,8 +520,8 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
     </div>
 
     <div class="row">
-        <div class="col-xs-12"><h4 class="tl_seccion_rf">Ingresos</h4></div>
-    </div>
+        <div class="col-xs-10"><h4 class="tl_seccion_rf">INGRESOS MENSUALES FAMILIARES</h4></div>
+     </div>
     
     <div class="row">
         <div class="col-xs-4">
@@ -535,9 +535,79 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
                 <label for="">Sueldo mensual Cónyugue: </label>
             </div>
             <div class="col-xs-6">
-                <?php echo '$. ' . ($value['sueldo_mensual_conyugue']); ?>
+                <?php echo ''. ($value['sueldo_mensual_conyugue']); ?>
             </div>
         <?php } ?>
+        <?php if(!empty($value['otros_ingresos'])): ?>
+        <div class="col-xs-4">
+            <label for="">Otros Ingresos: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['otros_ingresos']); ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Descripción Otros Ingresos: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '' . ($value['descripcion_otros_ingresos']); ?>
+        </div>
+        <?php endif; ?>
+        
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <label for="">TOTAL INGRESOS: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo number_format($value['total_ingresos']); ?>
+        </div>   
+    </div>
+    <div class="row">
+        <div class="col-xs-10"><h4 class="tl_seccion_rf">GASTOS MENSUALES FAMILIARES</h4></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <label for="">Gastos Arriendo: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['gastos_arriendo']); ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Gastos Alimentación, Otros: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['gastos_alimentacion_otros']); ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Gastos Educación: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['gastos_educacion']); ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Gastos Préstamos: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['gastos_prestamos']); ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Gastos Tarjetas de Crédito: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo '$. ' . number_format($value['gastos_tarjetas_credito']); ?>
+        </div>
+        
+    </div>
+    <div class="row">
+       
+    
+            <div class="col-xs-4">
+                <label for="">TOTAL EGRESOS: </label>
+            </div>
+            <div class="col-xs-6">
+                <?php echo number_format($value['total_egresos']); ?>
+            </div>
+        
     </div>
     <?php if (!empty($value['banco1']) || !empty($value['banco2'])): ?>
 
