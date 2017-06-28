@@ -78,6 +78,7 @@
  * @property integer $provincia_domicilio
  * @property integer $ciudad_domicilio
  * @property string $otros_ingresos
+ * @property string $descripcion_otros_ingresos
  * @property string $cuenta_corriente1
  * @property string $cuenta_corriente2
  * @property string $direccion_activo1
@@ -149,7 +150,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             array('direccion_empresa, direccion_activo1, direccion_sector1, direccion_activo2, direccion_sector2, email_laboral, interseccion', 'length', 'max' => 200),
             array('actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, ruc_conyugue, pasaporte_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, calle, barrio, referencia_domicilio, institucion_inversion, valor_inversion', 'length', 'max' => 80),
             array('fecha_nacimiento_conyugue', 'length', 'max' => 85),
-            array('domicilio_actual, habita, referencia_personal1, referencia_personal2, manzana', 'length', 'max' => 150),
+            array('domicilio_actual, habita, referencia_personal1, referencia_personal2, manzana,descripcion_otros_ingresos', 'length', 'max' => 150),
             array('celular', 'length', 'max' => 10),
             array('telefono_referencia1, telefono_referencia2', 'length', 'max' => 60),
             array('descripcion1, descripcion2', 'length', 'max' => 70),
@@ -233,6 +234,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'telefono_residencia' => 'Teléfono Residencia',
             'celular' => 'Celular',
             'sueldo_mensual' => 'Sueldo Mensual',
+            'descripcion_otros_ingresos' => 'Descripción Otros Ingresos',
             'sueldo_mensual_conyugue' => 'Sueldo Mensual Conyugue',
             'gastos_arriendo' => 'Arriendo',
             'gastos_alimentacion_otros' => 'Alimentación, Agua, Luz y Otros',

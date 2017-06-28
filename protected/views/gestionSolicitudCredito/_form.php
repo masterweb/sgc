@@ -3290,6 +3290,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->error($model, 'otros_ingresos'); ?>
                             </div>
                             <div class="col-md-12">
+                                <?php echo $form->labelEx($model, 'descripcion_otros_ingresos'); ?>
+                                <?php echo $form->textField($model, 'descripcion_otros_ingresos', array('size' => 20, 'maxlength' => 100, 'class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'descripcion_otros_ingresos'); ?>
+                            </div>
+                            <div class="col-md-12">
                                 <?php echo $form->labelEx($model, 'total_ingresos'); ?>
                                 <?php echo $form->textField($model, 'total_ingresos', array('size' => 20, 'maxlength' => 11, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
                                 <?php echo $form->error($model, 'total_ingresos'); ?>

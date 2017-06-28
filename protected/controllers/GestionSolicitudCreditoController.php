@@ -354,13 +354,19 @@ class GestionSolicitudCreditoController extends Controller {
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id_informacion = NULL, $id_vehiculo = NULL) {
+        //die('id_informacion; '.$id_informacion);
         if (isset($_POST['GestionSolicitudCredito'])) {
-            $id = $this->getIdSolicitudCredito($_POST['GestionSolicitudCredito']['id_informacion'], $_POST['GestionSolicitudCredito']['id_vehiculo']);
+            //$id = $this->getIdSolicitudCredito($_POST['GestionSolicitudCredito']['id_informacion'], $_POST['GestionSolicitudCredito']['id_vehiculo']);
+            $model = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$_POST['GestionSolicitudCredito']['id_informacion']} AND id_vehiculo = {$_POST['GestionSolicitudCredito']['id_vehiculo']}"));
         } else {
-            $id = $this->getIdSolicitudCredito($id_informacion, $id_vehiculo);
+            //die('enter else');
+            //$id = $this->getIdSolicitudCredito($id_informacion, $id_vehiculo);
+            $model = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
         }
+        //die('id: '.$id);
 
-        $model = $this->loadModel($id);
+        //$model = $this->loadModel($id);
+        //$model = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}"));
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -739,6 +745,7 @@ class GestionSolicitudCreditoController extends Controller {
      * @throws CHttpException
      */
     public function loadModel($id) {
+        //die('idpk:'.$id);
         $model = GestionSolicitudCredito::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exists.');
