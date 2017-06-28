@@ -22,13 +22,15 @@
 
 # CONSULTA SI EXISTE UNA SOLICITUD DE CREDITO YA INGRESADA
 $countsc = $this->getNumSolicitudCredito($id_informacion,$id_vehiculo);
+//echo 'countsc:'.$countsc.'<br>';
 if($countsc > 0){ // SI EXISTE SOLICITUD UPDATE 
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/update");
     $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }else{ // SI NO EXISTE CREA UNA NUEVA
     $url = Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/createAjax");
-    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/update?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
+    $url_load = Yii::app()->request->baseUrl.'/index.php/gestionSolicitudCredito/create?id_informacion='.$id_informacion.'&id_vehiculo='.$id_vehiculo;
 }
+//echo 'url load: '.$url_load;
 
 # CONSULTA A WEBSERVICE DE DATABOOK=======================================================================================
 $ced = GestionInformacion::model()->find(array("condition" => "id = {$id_informacion}"));
@@ -790,7 +792,19 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 var count = 0;
                 var cedulaConyugue = $('#GestionSolicitudCredito_cedula_conyugue').val();
                 console.log('valor cedula: ' + cedulaConyugue);
-                
+                var otros_ingresos = formatnumber($('#GestionSolicitudCredito_otros_ingresos').val());
+                //alert(otros_ingresos);
+                if(otros_ingresos > 0){
+                    if($('#GestionSolicitudCredito_descripcion_otros_ingresos').val() == ''){
+                        //alert('Ingrese descripcion de otros ingresos');
+                        $('#GestionSolicitudCredito_descripcion_otros_ingresos_error').show();
+                        $('#GestionSolicitudCredito_descripcion_otros_ingresos').focus();
+                        return false;
+                    }
+                }else{
+                    $('#GestionSolicitudCredito_descripcion_otros_ingresos_error').hide();
+                }
+
                 var sueldo_soltero = formatnumber($('#GestionSolicitudCredito_sueldo_mensual').val());
                 if(sueldo_soltero < 300){
                     $('#GestionSolicitudCredito_sueldo_mensual_error').show();
@@ -3293,6 +3307,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->labelEx($model, 'descripcion_otros_ingresos'); ?>
                                 <?php echo $form->textField($model, 'descripcion_otros_ingresos', array('size' => 20, 'maxlength' => 100, 'class' => 'form-control')); ?>
                                 <?php echo $form->error($model, 'descripcion_otros_ingresos'); ?>
+                                <label for="" generated="true" class="error" id="GestionSolicitudCredito_descripcion_otros_ingresos_error" style="display: none;">Ingrese la descripción de otros ingresos</label>
                             </div>
                             <div class="col-md-12">
                                 <?php echo $form->labelEx($model, 'total_ingresos'); ?>
