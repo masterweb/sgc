@@ -1589,6 +1589,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     }
 
                 }
+                // VALIDACION QUE CEDULAS NO SEAN IGUALES DE PRINCIPAL Y CONYUGUE
+                if($('#GestionSolicitudCredito_cedula').val() == $('#GestionSolicitudCredito_cedula_conyugue').val()){
+                    alert('Cédula de Deudor y Cónyugue son iguales, por favor corregir');
+                    error++;
+                }
                 break;
         }
         return error;
