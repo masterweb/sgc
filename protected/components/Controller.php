@@ -198,7 +198,26 @@ class Controller extends CController {
             return 'NA';
         }
     }
-
+    public function getConcesionarioImplodeProvinciaGrupo($provincia,$grupo){
+        $gr = GrConcesionarios::model()->findAll(array('condition' => "provincia = {$provincia} AND id_grupo = {$grupo}"));
+            $counter = 0;
+            foreach ($gr as $value) {
+                //echo 'asdasd'.$value['concesionario_id'];
+                $array_dealers[$counter] = $value['dealer_id'];
+                $counter++;
+            }
+            return implode(', ', $array_dealers);
+    }
+    public function getConcesionarioImplodeGrupo($grupo){
+        $gr = GrConcesionarios::model()->findAll(array('condition' => "id_grupo = {$grupo}"));
+            $counter = 0;
+            foreach ($gr as $value) {
+                //echo 'asdasd'.$value['concesionario_id'];
+                $array_dealers[$counter] = $value['dealer_id'];
+                $counter++;
+            }
+            return implode(', ', $array_dealers);
+    }
     public function getConcesionario($id) {
         if($id == 1000){
             return 'Todos';
@@ -1735,6 +1754,15 @@ class Controller extends CController {
         return $ps->fuente_contacto;
     }
 
+    public function getReasignadoTm($id_informacion){
+        $res = GestionInformacion::model()->findByPk($id_informacion);
+        if($res){
+            return $res->reasignado_tm;
+        }else{
+            return 0;
+        }
+    }
+
     public function getStatusSGC($id_informacion) {
         $criteria = new CDbCriteria(array(
             'condition' => "id_informacion={$id_informacion}"
@@ -2989,6 +3017,19 @@ class Controller extends CController {
             $data .= '<li><a id="' . $value['id'] . '" onclick="asignar(' . $value['id'] . ');" class="asign-lt">' . $value['nombres'] . ' ' . $value['apellido'] . '</a></li>';
         }
         return $data;
+    }
+
+    public function getJefeAgenciaTW($id_informacion){
+        //die('id informacion: '.$id_informacion);
+        $dealer = GestionInformacion::model()->findByPk($id_informacion);
+
+        //die('dealer id: '.$dealer->dealer_id);
+        if($dealer){
+            $us = Usuarios::model()-> find(array('condition' => "cargo_id = 70 AND dealers_id = {$dealer->dealer_id}"));
+            return $us->id;
+        }else{
+            return 0;
+        }
     }
 
     public function getConcesionariosli($id) {
@@ -4322,13 +4363,13 @@ class Controller extends CController {
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
-            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario, gi.reasignado_tm";
         $criteria->alias = 'gi';
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
+        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio' || $_GET['GestionDiaria']['status'] == 'exhibicion_automundo_gye'){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }  
        
@@ -4356,8 +4397,9 @@ class Controller extends CController {
                 if ($tipo_search == 'exhibicion') {
                     //$criteria->join .= " INNER JOIN gr_concesionarios gr ON gr.dealer_id = gi.dealer_id";
                     $criteria->condition = "gr.id_grupo = {$grupo_id} AND u.cargo_id IN(70,71)";
-                    if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio'){
+                    if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio' || $_GET['GestionDiaria']['status'] != 'exhibicion_automundo_gye'){
                         $criteria->addCondition("gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd' OR gd.fuente_contacto = 'exhibicion quierounkiatd'");
+
                 }
                     
                 }
@@ -4706,8 +4748,9 @@ class Controller extends CController {
                     break;
                 case 'exhibicion':
                 case 'exh':    
-                    if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio'){
-                    $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
+                    if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio' && $_GET['GestionDiaria']['status'] != 'exhibicion_automundo_gye'){
+                        echo 'enttyweruyavskd';
+                        $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
                     }  
                     
                     break;
@@ -4732,12 +4775,13 @@ class Controller extends CController {
 
 
         //}
-        //    echo '<pre>';
-        //    print_r($criteria);
-        //    echo '</pre>';
+    //        echo '<pre>';
+    //        print_r($criteria);
+    //        echo '</pre>';
         
         // END COMBINADAS-----------------------------------------------------------------
         //$search_type = $this->getSqlCombined($fechaPk);
+    //    echo 'searchtype: '.$search_type;    
         $stat = $_GET['GestionDiaria']['status'];
         if($_GET['GestionDiaria']['status'] == 'qk'){
             $stat = 'Quiero un Kia';
@@ -4747,6 +4791,9 @@ class Controller extends CController {
         }
         if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio'){
             $stat = 'Exhibición Automundo Quito';
+        }
+        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_gye'){
+            $stat = 'Automundo Guayaquil';
         }
         else if($_GET['GestionDiaria']['modelo']==999){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';

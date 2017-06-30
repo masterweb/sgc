@@ -105,6 +105,10 @@ $id_responsable = Yii::app()->user->getId();
                     if($grupo_id == 2){
                         echo '<option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>';
                     }
+                    if($grupo_id == 1){ // AEKIA
+                        echo '<option value="exhibicion_automundo_gye">Exhibición Automundo GYE</option>';
+                        echo '<option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>';
+                    }
                      ?>
                     
                 </select>
