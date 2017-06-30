@@ -4749,7 +4749,6 @@ class Controller extends CController {
                 case 'exhibicion':
                 case 'exh':    
                     if($_GET['GestionDiaria']['status'] != 'exhibicion_automundo_uio' && $_GET['GestionDiaria']['status'] != 'exhibicion_automundo_gye'){
-                        echo 'enttyweruyavskd';
                         $criteria->addCondition("gd.fuente_contacto = 'exhibicion'");
                     }  
                     
