@@ -343,6 +343,23 @@ class Controller extends CController {
         }
     }
 
+    public function getAsesorName($id) {
+        $dealers = Usuarios::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->nombres.' '.$dealers->apellido;
+        } else {
+            return 'NA';
+        }
+    }
+    public function getAsesorDealersId($id) {
+        $dealers = Usuarios::model()->findByPk($id);
+        if (!is_null($dealers) && !empty($dealers)) {
+            return $dealers->dealers_id;
+        } else {
+            return 'NA';
+        }
+    }
+
     public function getEmailAsesorCredito($dealers_id) {
         //die('id: '.$dealers_id);
         $dealers = Usuarios::model()->find(array('condition' => "dealers_id={$dealers_id} AND cargo_id = 74"));
@@ -2956,6 +2973,15 @@ class Controller extends CController {
         }
     }
 
+    public function getFechaCitaByIdInformacion($id_informacion) {
+        $gestion = GestionCita::model()->find(array("condition" => "id_informacion = {$id_informacion}"));
+        if ($gestion) {
+            return $gestion->fecha;
+        } else {
+            return 'NA';
+        }
+    }
+
     /*     * **
      * Funcion para devolver los responsables de agencia para reasignacion de clientes
      */
@@ -4794,6 +4820,13 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_gye'){
             $stat = 'Automundo Guayaquil';
         }
+        
+        if($_GET['GestionDiaria']['status'] == 'reasignados_tw'){
+            $stat = 'TeleMercadeo Web Reasignado';
+        }
+        if($_GET['GestionDiaria']['status'] == 'devueltos_tw'){
+            $stat = 'Devueltos TeleMercadeo Web';
+        }
         else if($_GET['GestionDiaria']['modelo']==999){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }
@@ -6416,7 +6449,13 @@ class Controller extends CController {
                 break;  
             case 'exhibicion_automundo_gye':
                 $condition = "gd.fuente_contacto = 'exhibicion_automundo_gye' AND gd.status = 1";
-                break;       
+                break;  
+            case 'reasignados_tw':
+                $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 1)";
+                break;  
+            case 'devueltos_tw':
+                $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 2)";
+                break;           
             default:
                 break;
         }
@@ -6576,6 +6615,26 @@ class Controller extends CController {
     public function getConcesionariosDobleCargo($id_responsable){
         $conc = Grupoconcesionariousuario::model()->findAll(array("condition" => "usuario_id = {$id_responsable} AND tipo_id = 2"));
 
+    }
+
+
+    public function getVersionByIdInformacion($id_informacion) {
+      
+         $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion}",
+        ));
+        $modelo = GestionVehiculo::model()->find($criteria);
+        $name_version = $this->getVersion($modelo->version);
+        return $name_version;
+    }
+
+     public function getModeloByIdInformacion($id_informacion) {
+         $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion}",
+        ));
+        $modelo = GestionVehiculo::model()->find($criteria);
+        $name_model = $this->getModel($modelo->modelo);
+        return $name_model;
     }
 
 }

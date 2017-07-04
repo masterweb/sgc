@@ -429,7 +429,15 @@ $rol = Yii::app()->user->getState('roles');
                                 <div class="txt_menu">RGD Exhibición <?php echo $exh; ?></div></a>
                         </div>
                     </li>
-                <?php endif; ?>
+            <?php endif; ?>
+            <?php if($cargo_id == 89): ?>
+                    <li class="wrapper">
+                        <div class="forma">
+                            <a href="<?php echo Yii::app()->createUrl('gestionInformacion/seguimiento', array('tipo_seg' => 'tw')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/usuarios.png" width="46" height="56"></div>
+                                <div class="txt_menu">RGD TW</div></a>
+                        </div>
+                    </li>
+            <?php endif; ?>
 
     </ul>
 </section>

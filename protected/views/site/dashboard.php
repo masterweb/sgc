@@ -91,7 +91,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                         </div>
                     </li>
         <?php endif; ?>
-        <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_adicional == 85 || $cargo_adicional == 86): ?>
+        <?php if($cargo_id == 85 || $cargo_id == 86 || $cargo_id == 89 || $cargo_adicional == 85 || $cargo_adicional == 86 || $cargo_adicional == 89): ?>
         <li class="wrapper">
             <div class="forma">
                 <a href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
@@ -100,7 +100,7 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         </li>
         <?php endif; ?>
         <?php 
-        $restricted_reportes = ['74', '76', '77','86','85','59','83','82','87'];
+        $restricted_reportes = ['74', '76', '77','86','85','59','83','82','87','89'];
         if(!in_array($cargo_id, $restricted_reportes)):?>
             <li class="wrapper">
                 <div class="forma">

@@ -51,12 +51,56 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                 $('.cont-img').hide();
             }
         });
+        $('#GestionPresentacion_presentacion').change(function(event) {
+            var value = $(this).attr('value');
+            switch(value){
+                case '0':
+                    $('.cont-cedula').hide();
+                break;
+                case '1':
+                    $('.cont-cedula').show();
+                break;
+                
+            }
+        });
     });
+    function sendTM(){
+        console.log('enter presen');
+        $('#gestion-presentaciontm-form').validate({
+            rules: {
+                'GestionPresentaciontm[presentacion]': {
+                    required: true
+                },
+            },
+            messages: {
+                
+            },
+           submitHandler: function (form) {
+            var presen = $('#GestionPresentacion_presentacion').val();
+            switch(presen){
+                case '0':// no se presento cliente
+                break;
+                case '1':// se presento cliente
+                var d = document.getElementById('GestionPresentacion_img');
+                if(d.value == ''){
+                    alert('Debe ingresar cédula o documento');
+                    return false;
+                }
+                if($('#GestionPresentacion_observaciones').val() == ''){
+                    alert('Campo observaciones obligatorio');
+                    return false;
+                }
+                break;
+                
+            }
+            form.submit();
+           } 
+        });
+    }
 
 </script>
 
-<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/jasny-bootstrap.css" rel="stylesheet"/>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/jasny-bootstrap.js"></script>
+
 <div class="container">
     <div role="tabpanel">
         <!-- Nav tabs -->
@@ -90,6 +134,81 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
         <!-- Tab panels -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="profile">
+                <?php 
+                $reasignado_tm = $this->getReasignadoTm($id);
+                if($reasignado_tm == 1):
+                ?>    
+                <div class="row">
+                    <h1 class="tl_seccion">Presentación Cliente</h1>
+                </div>
+                <div class="highlight">
+                    
+                    <div class="form">
+                        <?php $agendamiento = new GestionAgendamiento; ?>
+
+                        <?php
+                        $form = $this->beginWidget('CActiveForm', array(
+                            'action' => Yii::app()->createUrl('gestionPresentaciontm/create'),
+                            'id' => 'gestion-presentaciontm-form',
+                            'enableAjaxValidation' => false,
+                            'htmlOptions' => array('enctype' => 'multipart/form-data',
+                                'onsubmit' => "return false;", /* Disable normal form submit */
+                                'onkeypress' => " if(event.keyCode == 13){ sendTM(); } " /* Do ajax call when user presses enter key */
+                            ),
+                        ));
+                        ?>
+                        <?php //echo $form->errorSummary($agendamiento);   ?>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="">Se presentó el cliente:</label>
+                                <select class="form-control" name="GestionPresentaciontm[presentacion]" id="GestionPresentacion_presentacion">
+                                    <option value="" selected="selected">-Seleccione -</option>
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                    <option value="2">Seguimiento</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="cont-cedula" style="display:none;">
+                            <div class="row">
+                                <div class="row cont-img">
+                                    <div class="col-md-4">
+                                        <label for="">Solicitar Cédula/Documento</label>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"></div>
+                                            <div>
+                                                <span class="btn btn-default btn-file"><span class="fileinput-new">Seleccionar imágen</span><span class="fileinput-exists">Cambiar</span>
+                                                    <input class="form-control" name="GestionPresentaciontm[img]" id="GestionPresentacion_img" type="file">
+                                                </span>
+                                                <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="">Observaciones</label>
+                                        <textarea name="GestionPresentaciontm[observaciones]" id="GestionPresentacion_observaciones" cols="30" rows="6"></textarea>
+                                        <?php //echo $form->error($model, 'observacion'); ?> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row buttons">
+                            <input type="hidden" name="GestionPresentaciontm[id_informacion]" id="GestionPresentacion_id_informacion" value="<?php echo $id; ?>">
+                            <div class="col-md-2">
+                            <input class="btn btn-danger" onclick="sendTM();" type="submit" name="yt0" value="Grabar">
+                            </div>
+                        </div>
+                    <?php $this->endWidget(); ?>
+                    </div><!-- END FORM  -->
+
+                </div><!--  END OF HIGHLIGHT -->
+                <div class="row">
+                    
+                </div>
+                <?php endif; ?>
                 <div class="row">
                     <h1 class="tl_seccion">Lista de Negociación</h1>
                 </div>
@@ -176,7 +295,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                                 <?php $countsc = $this->getNumSolicitudCredito($c['id_informacion'], $c['id']);?>
                                                 <td>
                                                 <?php if($countsc > 0): ?> 
-                                                    <?php if($ex->fuente_contacto != 'exhibicion_automundo_uio' && $ex->fuente_contacto == 'exhibicion_automundo_gye'): ?>   
+                                                    <?php if($ex->fuente_contacto != 'exhibicion_automundo_uio' && $ex->fuente_contacto != 'exhibicion_automundo_gye'): ?>   
                                                     <a href="<?php echo Yii::app()->createUrl('gestionSolicitudCredito/update', array('id_informacion' => $c['id_informacion'], 'id_vehiculo' => $c['id'])); ?>" class="btn btn-success btn-xs">Solicitud</a>
                                                     <?php endif; ?>
                                                 <?php elseif($ex->fuente_contacto != 'exhibicion_automundo_uio' && $ex->fuente_contacto != 'exhibicion_automundo_gye'): ?>
@@ -247,7 +366,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                             ),
                         ));
                         ?>
-<?php //echo $form->errorSummary($agendamiento);   ?>
+                        <?php //echo $form->errorSummary($agendamiento);   ?>
                         <div class="row">
                             <div class="col-md-4">
                                 <?php echo $form->labelEx($agendamiento, 'categorizacion'); ?>
@@ -263,7 +382,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                     'Cold (hasta 6 meses)' => 'Warm(hasta 6 meses)',
                                     'Very Cold(mas de 6 meses)' => 'Very Cold(mas de 6 meses)'), array('class' => 'form-control', 'options' => array($categorizacion => array('selected' => true))));
                                 ?>
-<?php echo $form->error($agendamiento, 'categorizacion'); ?>
+                            <?php echo $form->error($agendamiento, 'categorizacion'); ?>
                             </div>
 
                         </div>
@@ -276,7 +395,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                         <?php //echo CHtml::submitButton($agendamiento->isNewRecord ? 'Cambiar' : 'Save', array('class' => 'btn btn-danger', 'onclick' => 'sendCat();'));  ?>
                             </div>
                         </div>
-<?php $this->endWidget(); ?>
+                    <?php $this->endWidget(); ?>
                     </div><!-- END FORM  -->
 
                 </div><!--  END OF HIGHLIGHT -->
@@ -313,14 +432,19 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                 <?php echo $form->error($agendamiento, 'categorizacion'); ?>
                             </div>
                             <div class="col-md-4">
-<?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--','Cita' => 'Cita', 'Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
-                                <?php echo $form->error($agendamiento, 'observaciones'); ?>
+                                <label for="">Observaciones de Seguimiento</label>
+                                <?php if($cargo_id == 89 && (GestionFinanciamiento::model()->count(array('condition' => "id_informacion = {$id}")) > 0)): ?>
+                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Cita' => 'Cita','Seguimiento' => 'Seguimiento', 'Desiste' => 'Desiste'), array('class' => 'form-control')); ?>
+                                <?php elseif($cargo_id == 89 && (GestionFinanciamiento::model()->count(array('condition' => "id_informacion = {$id}")) == 0)): ?>
+                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php else: ?>
+                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Cita' => 'Cita', 'Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php endif; ?>
                             </div>
                             <div class="col-md-4 agendamiento">
-<?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
-<?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'autocomplete'=>"off")); ?>
-<?php echo $form->error($agendamiento, 'agendamiento'); ?>
+                            <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>
+                            <?php echo $form->textField($agendamiento, 'agendamiento', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control', 'autocomplete'=>"off")); ?>
+                            <?php echo $form->error($agendamiento, 'agendamiento'); ?>
                             </div>
                         </div>
                         <div class="row">
@@ -422,3 +546,5 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
 </div>
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/jasny-bootstrap.css" rel="stylesheet"/>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/jasny-bootstrap.js"></script>

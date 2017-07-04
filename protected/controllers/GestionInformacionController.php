@@ -2037,11 +2037,16 @@ class GestionInformacionController extends Controller {
         $criteria = new CDbCriteria;
         $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
-            gi.reasignado,gi.responsable_cesado,gi.id_comentario";
+            gi.reasignado,gi.responsable_cesado,gi.id_comentario, gi.reasignado_tm";
         $criteria->alias = 'gi';
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
-        $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+        if($cargo_id == 89){
+            $criteria->join .= ' INNER JOIN usuarios u ON (u.id = gi.responsable OR u.id = gi.responsable_origen_tm)';
+        }else{
+            $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
+        }
+        
         
         switch ($cargo_id) {
             case 46: // SUPER ADMINISTRADOR AEKIA
@@ -2119,12 +2124,29 @@ class GestionInformacionController extends Controller {
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
                 }
+                // ASESOR REASIGNADO MEDIANTE JEFE DE AGENCIA DESDE ASESOR TELEMARKETING WEB
+                if ($cargo_adicional == 89 && $tipo_grupo == 0) { 
+                    //die('enter jefe');
+                    $array_dealers = $this->getResponsablesVariosConc(1);
+                    if(count($array_dealers) == 0){
+                        $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                    }
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' ";
+                    $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                    $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
+                    //$criteria->addCondition("gi.bdc = 0");
+                    $criteria->addCondition("u.cargo_id IN (71)");
+                    //$criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes_nuevo}' and '{$dt_hoy}'");
+                    $criteria->group = 'gi.id';
+                    $criteria->order = "gi.id DESC";
+                }
                 // ASESOR DE VENTAS UN SOLO CARGO
                 if ($cargo_adicional == 0) { 
                     $criteria->join .= ' LEFT JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
                     $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' AND gd.status = 1 ";
                     $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen = {$id_responsable})");
-                    $criteria->addCondition("gi.bdc = 0");
+                    //$criteria->addCondition("gi.bdc = 0");
                     $criteria->addCondition("u.cargo_id = 71");
                     $criteria->addCondition("gd.desiste = 0", 'AND');
                     //$criteria->addCondition("DATE(gd.fecha) BETWEEN '{$dt_unasemana_antes_nuevo}' and '{$dt_hoy}'");
@@ -2147,6 +2169,17 @@ class GestionInformacionController extends Controller {
                 $criteria->group = 'gi.id';
                 $criteria->order = "gi.id DESC";
                 break;
+            case 89:
+                
+                    $dealerList = implode(', ', $array_dealers);
+                    $criteria->condition = "gd.desiste = 0 AND gd.paso <> '10' ";
+                    $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen_tm = {$id_responsable})");
+                    //$criteria->addCondition("gi.bdc = 0");
+                    $criteria->addCondition("u.cargo_id IN (89)");
+                    $criteria->addCondition("u.grupo_id = 2");
+                    $criteria->group = 'gi.id';
+                    $criteria->order = "gi.id DESC";
+            break;    
 
             default:
                 break;
@@ -5824,6 +5857,7 @@ GROUP BY gv.id_informacion";
      * return true or false
      */
     public function actionSetAsignamiento() {
+       
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
         $comentario = isset($_POST["comentario"]) ? $_POST["comentario"] : "";
         $checkboxvalues = isset($_POST["checkboxvalues"]) ? $_POST["checkboxvalues"] : "";
@@ -5842,8 +5876,11 @@ GROUP BY gv.id_informacion";
         foreach ($checkboxvalues as $value) {
             $param = explode(',', $value);
             $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id} WHERE id = {$param[0]}";
+            
+            
             if($cargo_id == 86 && Yii::app()->user->getState('grupo_id') == 3) # REASIGNAR CLIENTES A ASESORES WEB DE KMOTOR
                 $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id}, dealer_id = {$dealer_id}, concesionario = {$dealer_id} WHERE id = {$param[0]}";
+           
             if((Yii::app()->user->getState('grupo_id') == 2) && $cargo_adicional == 85){ # REASIGNAR CLIENTES DE ASIAUTO CON JEFE DOBLE CARGO
                  $sql = "UPDATE gestion_informacion SET responsable = {$id}, reasignado = 1, responsable_cesado = {$param[1]}, id_comentario = {$model->id}, dealer_id = {$dealer_id}, concesionario = {$dealer_id} WHERE id = {$param[0]}";
             }
@@ -5855,7 +5892,14 @@ GROUP BY gv.id_informacion";
             $request2 = $con->createCommand($sqlNot)->execute();
 
             $sqlSC = "UPDATE gestion_solicitud_credito SET vendedor = {$id} where id_informacion = {$param[0]}";
-            $request3 = $con->createCommand($sqlSC)->execute();
+            //$request3 = $con->createCommand($sqlSC)->execute();
+           
+
+                      
+
+
+            $this -> sendReasignNotification($id,$param[0],$comentario);
+          
         }
         $options = array('result' => $result);
         echo json_encode($options);
@@ -5869,6 +5913,122 @@ GROUP BY gv.id_informacion";
         } else {
             echo '';
         }
+    }
+
+    public function sendReasignNotification($asesorComercial,$id_informacion,$observacion){
+             
+
+        $nameAsesorComercial = $this->getAsesorName($asesorComercial);
+         $jefe_agencia_id = $this->getJefeAgenciaTW($id_informacion);
+        $nameJefeAgencia = $this->getAsesorName($jefe_agencia_id);
+        $nombreCliente = $this->getNombreCliente($id_informacion);
+        $nombreConcecionario = $this->getConcesionario($this->getAsesorDealersId($asesorComercial));     
+        $version=$this->getVersionByIdInformacion($id_informacion);
+        $modelo=$this->getModeloByIdInformacion($id_informacion);
+
+        $fechaCita=$this->getFechaCitaByIdInformacion($id_informacion);
+
+            require_once 'email/mail_func.php';
+
+              $body=   '<style>
+                            body {margin: 0; padding: 0; min-width: 100%!important;}
+                        </style>
+                    </head>
+
+                    <body>
+                        <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
+                            <tr>
+                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/mail_factura_03.jpg" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
+                            </tr>
+
+
+                            <tr>
+                                <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Estimado/a <strong>'.$nameAsesorComercial.'</strong>,<br/>
+                                    </td>
+                             </tr>
+
+                              <tr>
+                                <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">El Jefe de Agencia <strong>'.$nameJefeAgencia.'</strong>, acabó de re asignar una nueva cita del cliente <strong>'.$nombreCliente.'</strong> para su concesionario <strong>'.$nombreConcecionario.'.</strong><br/>
+                                 
+                                </tr> 
+                                </table>
+                                <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
+
+                                    <tr>
+                                        <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;" width="25%">Fecha de Cita:
+                                         </td>
+                                         <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:left; padding-top:15px; padding-bottom:15px;" width="75%"><strong>'.$fechaCita.'</strong><br/>
+                                         </td>
+                                     </tr>
+
+
+                                      <tr>
+                                        <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;" width="25%">Observación:
+                                         </td>
+                                         <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:left; padding-top:15px; padding-bottom:15px;" width="75%"><strong>'.$observacion.'</strong><br/>
+                                         </td>
+                                     </tr>
+
+                                     <tr>
+                                        <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;" width="25%">Modelo:
+                                         </td>
+                                         <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:left; padding-top:15px; padding-bottom:15px;" width="75%"><strong>'.$modelo.'</strong><br/>
+                                         </td>
+                                     </tr>
+
+                                    <tr>
+                                        <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;" width="25%">Versión:
+                                         </td>
+                                         <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:left; padding-top:15px; padding-bottom:15px;" width="75%"><strong>'.$version.'</strong><br/>
+                                         </td>
+                                     </tr>
+                                </table>    
+                                <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
+
+                                        <tr>
+                                            <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">
+                                            Por favor realizar la gestión del cliente y confirmar si se realizó o no la cita programada del cliente por medio de la Telemercaderista.</td>
+                                             
+                                        </tr> 
+                                        <tr>
+                                            <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">
+                                            <strong>Kia Motors Ecuador.</strong></td>
+                                             
+                                        </tr> 
+
+                                        <tr>
+                                            <td style="padding-top:15px;">
+                                                <table cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td><img src="images/mailing/mail_factura_19.jpg" width="56" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><img src="images/mailing/mail_factura_20.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><img src="images/mailing/mail_factura_21.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><a href="https://www.kia.com.ec/usuarios/registro.html" target="_blank"><img src="images/mailing/mail_factura_22.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                        <td><img src="images/mailing/mail_factura_23.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><a href="https://www.kia.com.ec/Atencion-al-Cliente/prueba-de-manejo.html" target="_blank"><img src="images/mailing/mail_factura_24.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                        <td><img src="images/mailing/mail_factura_25.jpg" width="67" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="https://www.kia.com.ec/" target="_blank"><img src="images/mailing/mail_factura_26.jpg" width="685" height="130" alt="" style="display:block; border:none;"/></a></td>
+                                        </tr>
+
+
+                                 </table>    
+                                    
+                            </body>';
+
+                         
+                   
+                $emailCliente = 'dandee_ds@hotmail.com';//$this->getAsesorEmail($asesorComercial);
+               
+               
+                $id_asesor = Yii::app()->user->getId();
+               $emailAsesor = $this->getAsesorEmail($id_asesor);
+               $asunto = 'REASIGNACION TEST NO HAGA CASO ESTE CORREO';           
+                sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
     }
 
     

@@ -24,6 +24,28 @@ $count = count($users);
 //echo '</pre>';
 ?>
 <script>
+    function sendtm(url,id_informacion, dealer_id){
+        $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("site/sendEmailTM"); ?>',
+                beforeSend: function (xhr) {
+                //$('#info-3').show();  // #bg_negro must be defined somewhere
+                },
+                type: 'POST',
+                //dataType: 'json', 
+                data: {id_informacion: id_informacion, dealer_id: dealer_id },
+                success: function (data) {
+
+                    alert(data);
+                    
+                }
+            });
+        
+        //alert(id_informacion+' '+dealer_id);
+
+        $(location).attr('href', url);
+
+
+    }
     function validateruc(e)  {
         if (e.val().length < 13) {
             return false;
@@ -433,6 +455,8 @@ $count = count($users);
                 alert('Seleccione uno o mas usuarios de la lista del RGD');
                 return false;
             }
+              // alert('<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/setAsignamiento"); ?>'); 
+
             $.ajax({
                 url: '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/setAsignamiento"); ?>',
                 beforeSend: function (xhr) {
@@ -440,7 +464,7 @@ $count = count($users);
                 },
                 type: 'POST', dataType: 'json', data: {id: id, checkboxvalues: checkboxvalues, comentario:textreasignar},
                 success: function (data) {
-                    //$('#bg_negro').hide();
+                   
                     if (data.result == true) {
                         location.reload();
                     }
@@ -723,6 +747,7 @@ $count = count($users);
                                 $status = $this->getStatusSGC($c['id']);
                                 $cita = $this->getCita($c['id'],$cargo_id, $cargo_adicional,$fuente);
                                 $fuente_contacto = $this->getFuenteContacto($c['id']);
+
                                 //echo 'fuente de contacto: '.$fuente_contacto;
                                 $data_btn_semaforo = "";
                                 if (!empty($proximo_seguimiento)) {
@@ -781,7 +806,8 @@ $count = count($users);
                                 }
                                 ?>
                             <tr>
-                            <?php //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
+                            <?php //echo 'reasignado tm : '.$c['reasignado_tm'];
+                            //if($cargo_id == 46 || $cargo_id == 69 || $cargo_id == 70 || $area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){  ?>
                                 <?php if ($cargo_id == 70) { ?>
                                     <td><input type="checkbox" name="asignar[]" class="checkAll" value="<?php echo $c['id']; ?>,<?php echo $c['responsable']; ?>"/></td>
                                 <?php } ?>
@@ -790,9 +816,19 @@ $count = count($users);
                                     <button type="button" class="btn btn-xs btn-paso"><?php echo $paso; ?></button>
 
                                     <?php
-                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == ''):
+                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == '' && $c['reasignado_tm'] == 0):
                                         ?>
                                         <button type="button" class="btn btn-xs btn-warning">Web</button>
+                                    <?php endif; ?>
+                                    <?php
+                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == '' && $c['reasignado_tm'] == 1):
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-info">WebR</button>
+                                    <?php endif; ?>
+                                    <?php
+                                    if ($medio_contacto == 'web' && $c['tipo_form_web'] == '' && $c['reasignado_tm'] == 2): // DEVUELTO DESDE ASESOR COMERCIAL A TELEMERCADEO WEB
+                                        ?>
+                                        <button type="button" class="btn btn-xs btn-danger">WebR</button>
                                     <?php endif; ?>
                                     <?php
                                     if ($medio_contacto == 'exhquk' && $c['tipo_form_web'] == ''):
@@ -975,13 +1011,20 @@ $count = count($users);
                                             <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web') && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
+                                    <?php } ?>
+                                    
+
+   <!-- <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>            -->
+
+                                    <?php if(($fuente_contacto == 'web' && ($c['reasignado_tm'] == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>            
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd' || $fuente_contacto == 'exhibicion_automundo_uio') && $desiste != 1){ ?> 
+                                    <?php if(($fuente_contacto == 'exhibicion quierounkia' || $fuente_contacto == 'exhibicion quierounkiatd' || $fuente_contacto == 'exhibicion_automundo_uio' || $fuente_contacto == 'exhibicion_automundo_gye') && $desiste != 1){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
                                     <?php } ?> 
                                     <?php if ($status == 3 && $cargo_id != 72 && $cargo_id != 69 && $area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) { ?>

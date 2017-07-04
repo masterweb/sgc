@@ -109,6 +109,14 @@ $id_responsable = Yii::app()->user->getId();
                         echo '<option value="exhibicion_automundo_gye">Exhibición Automundo GYE</option>';
                         echo '<option value="exhibicion_automundo_uio">Exhibición Automundo UIO</option>';
                     }
+                    // SI ES ASESOR COMERCIAL CON DOBLE CARGO TELEMARKETING WEB Y GRUPO ASIAUTO
+                    // SI ES JEFE DE ALMACEN Y GRUPO ASIAUTO
+                    if(($cargo_id == 70 || $cargo_id == 71 || $cargo_adicional == 89) && $grupo_id == 2)
+                        echo '<option value="reasignados_tw">Reasignados TW</option>';
+                    if($cargo_id == 89 && $grupo_id == 2){ // SI ES ASESOR TELEMARKETING WEB Y GRUPO ASIAUTO
+                        echo '<option value="reasignados_tw">Reasignados TW</option>';
+                        echo '<option value="devueltos_tw">Devueltos TW</option>';
+                    }
                      ?>
                     
                 </select>

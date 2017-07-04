@@ -453,27 +453,45 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         date_default_timezone_set("America/Bogota");
         $p = new CHtmlPurifier();
         $valor = $p->purify($_POST["rs"]);
+        $usuario_id = $p->purify($_POST["usuario_id"]);
         //die('valor:'.$valor);
-        $concesionarios = GrConcesionarios::model()->findAll(array('order' => 'nombre ASC', 'condition' => "id_grupo=:match", 'params' => array(':match' => (int) $valor)));
-        $html = "";
-        $html2 = "";
-        if (!empty($concesionarios)) {
-            $html .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
-            $html2 .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_ida][]" id="Usuarios_concesionario_ida" class="form-control cccc">';
-            //$html .="<option>Seleccione >></option>";
-            foreach ($concesionarios as $c) {
-                $html .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
-                $html2 .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
-            }
-            $html .="</select>";
-            $html2 .="</select>";
-            $data = array('result' => true, 'options1' => $html, 'options2' => $html2);
-            echo json_encode($data);
-        } else {
-            $data = array('result' => false, 'options1' => $html, 'options2' => $html2);
-            echo json_encode($data);
-            die();
+        // SI EL USUARIO NO ES TELEMERCADERISTA WEB
+        if($usuario_id != 89){
+          $concesionarios = GrConcesionarios::model()->findAll(array('order' => 'nombre ASC', 'condition' => "id_grupo=:match", 'params' => array(':match' => (int) $valor)));
+          $html = "";
+          $html2 = "";
+          if (!empty($concesionarios)) {
+              $html .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
+              $html2 .='<select required title="Para seleccionar m&aacute;s de un elemento presione la tecla CTRL y realice clic en los items que desea agregar." multiple name="Usuarios[concesionario_ida][]" id="Usuarios_concesionario_ida" class="form-control cccc">';
+              //$html .="<option>Seleccione >></option>";
+              foreach ($concesionarios as $c) {
+                  $html .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
+                  $html2 .="<option value='" . $c->dealer_id . "'>" . $c->nombre . "</option>";
+              }
+              $html .="</select>";
+              $html2 .="</select>";
+              $data = array('result' => true, 'options1' => $html, 'options2' => $html2);
+              echo json_encode($data);
+          } else {
+              $data = array('result' => false, 'options1' => $html, 'options2' => $html2);
+              echo json_encode($data);
+              die();
+          }
+        // SI ES TELEMERCADERSITA WEB CARGA SOLO EL GRUPO SELECCIONADO  
+        }else{
+          $html .='<select required name="Usuarios[concesionario_id][]" onchange="verciudadcon(this.value)" id="Usuarios_concesionario_id" class="form-control cccc">';
+          $html2 .='<select required name="Usuarios[concesionario_ida][]" id="Usuarios_concesionario_ida" class="form-control cccc">';
+              //$html .="<option>Seleccione >></option>";
+              
+          $html .='<option value="1000">TODOS</option>';
+          $html2 .='<option value="1000">TODOS</option>';
+              
+          $html .="</select>";
+          $html2 .="</select>";
+          $data = array('result' => true, 'options1' => $html, 'options2' => $html2);
+          echo json_encode($data);
         }
+        
     }
 
     public function actionTraerconsesionarioext() {
@@ -537,7 +555,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $htmlad = "";
 
         if (!empty($concesionarios)) {
-            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" >';
+            $html .='<select required name="Usuarios[cargo_id]" id="Usuarios_cargo_id" class="form-control" onchange="vergrupo(this.value);" >';
             $html .="<option value=''>Seleccione cargo</option>";
              $html .="<option value='999'>TODOS</option>";
             $htmlad .='<select required name="Usuarios[cargo_adicional]" id="Usuarios_cargo_id" class="form-control">';
@@ -3934,5 +3952,158 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
   public function actionProducto(){
     $this->render('producto');
-  }   
+  } 
+
+  public function actionGetGrupos(){
+    $usuario_id = isset($_POST["usuario_id"]) ? $_POST["usuario_id"] : "";
+    $data = '<option> -- Seleccione -- </option>';
+    if($usuario_id != 89){
+      $grupo = GrGrupo::model()->findAll();
+      foreach ($grupo as $c) {
+        $data .= '<option value="' . $c->id . '">' . $c->nombre_grupo . '</option>';
+      }
+    }else{
+      $data .= '<option value="2">GRUPO ASIAUTO</option>';
+    }
+    echo $data;
+  }
+
+  public function actionSendEmailTM(){
+    $id_informacion = isset($_POST["id_informacion"]) ? $_POST["id_informacion"] : "";
+    $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+    $nombreSolicitud = $this->getNombreCliente($id_informacion);
+    $modelos = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc'));
+    $nombreAuto = $this->getModel($modelos->modelo);
+    $gv = GestionVersiones::model()->find(array('condition' => "id_versiones = {$modelos->version}"));
+    $ficha_tecnica = $gv->pdf;
+    $asesor = Usuarios::model()->find(array('condition' => "id = {$id_informacion}"));
+    require_once 'email/mail_func.php';
+
+    $body = '<style>
+                            body {margin: 0; padding: 0; min-width: 100%!important;}
+                        </style>
+                    </head>
+
+                    <body>
+                        <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
+                            <tr>
+                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/mail_factura_03.jpg" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Hola <strong>'.$nombreSolicitud.'</strong>,<br/>
+                                    Gracias por contactarnos. Ahora estás más cerca de tu nuevo '.utf8_encode($nombreAuto).'</td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/'.$ficha_tecnica.'" target="_blank"><img src="https://www.kia.com.ec/images/mailing/'.$form_cotizacion->id_modelos.'.jpg" width="570" height="240" alt="" style="display:block; border:none;"/></a></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Soy <strong>'.$asesor["nombres"]." ".$asesor["apellido"].'</strong>, me encargaré de preparar tu cotización,<br/>
+                                        pronto me contactaré contigo.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table cellpadding="0" cellspacing="0" align="center">
+                                                <tr>
+                                                    <td>
+                                                        <table cellpadding="0" cellspacing="0" width="300">
+                                                            <tr>
+                                                                <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Si tienes alguna duda comunícate conmigo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom:10px;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td rowspan="2"><img src="images/mailing/mail_factura_11.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Teléfono:</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;">'.$asesor["telefono"].'</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom:10px;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td rowspan="2"><img src="images/mailing/mail_factura_14.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Email:</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><a href="mailto:'.$asesor["correo"].'" style="color:#5e5e5e;">'.$asesor["correo"].'</a></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding-bottom:10px;">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td rowspan="2"><img src="images/mailing/mail_factura_16.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Dirección:</strong></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;">'.$asesor["direccion"].'</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td><a href="'.$asesor["google_maps"].'" target="_blank"><img src="images/mailing/mail_factura_09.jpg" width="256" height="226" alt=""/></a></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top:15px;">
+                                            <table cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td><img src="images/mailing/mail_factura_19.jpg" width="56" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    <td><img src="images/mailing/mail_factura_20.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    <td><img src="images/mailing/mail_factura_21.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    <td><a href="https://www.kia.com.ec/usuarios/registro.html" target="_blank"><img src="images/mailing/mail_factura_22.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                    <td><img src="images/mailing/mail_factura_23.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    <td><a href="https://www.kia.com.ec/Atencion-al-Cliente/prueba-de-manejo.html" target="_blank"><img src="images/mailing/mail_factura_24.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                    <td><img src="images/mailing/mail_factura_25.jpg" width="67" height="160" alt="" style="display:block; border:none;"/></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="https://www.kia.com.ec/" target="_blank"><img src="images/mailing/mail_factura_26.jpg" width="685" height="130" alt="" style="display:block; border:none;"/></a></td>
+                                    </tr>
+                                </table>
+                            </body>';
+               
+
+                $emailCliente = $this->getEmailCliente($id_informacion);
+                $id_asesor = Yii::app()->user->getId();
+               $emailAsesor = $this->getAsesorEmail($id_asesor);
+               $asunto = 'Kia Motors Ecuador SGC TEST NO HAGA CASO A ESTE CORREO TEST';
+               //echo sendEmailFunction('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $array_mails_us, $array_noms_us, html_entity_decode("Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion"), $body, /*$ccEmail_array*/$email, /*$ccEmail_array*/$email, 0);
+                
+                echo sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
+                die();            
+              /*  if (sendEmailFunction('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $array_mails_us, $array_noms_us, html_entity_decode("Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion"), $body, $ccEmail_array, $ccEmail_array, 0)) 
+                {
+                    alert('send');
+                }
+                else*/
+
+
+  }
+
+  public function actionSendMeetingNotification(){
+
+   echo 'wokig';
+   die();
+
+
+  }
+
+    
 }
+
+
+

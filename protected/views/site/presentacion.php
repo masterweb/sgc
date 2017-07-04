@@ -285,9 +285,12 @@ if($fuente == 'web'){
                             <?php echo $form->error($agendamiento,'categorizacion'); ?>
                             </div>
                             <div class="col-md-4">
-                                <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
-                                <?php echo $form->dropDownList($agendamiento,'observaciones',array(''=> '--Seleccione--', 'Cita' => 'Cita','Seguimiento' => 'Seguimiento','Falta de tiempo'=>'Falta de tiempo', 'Llamada de emergencia'=>'Llamada de emergencia', 'Busca solo precio'=>'Busca solo precio','Desiste' => 'Desiste','Otro' => 'Otro'), array('class' => 'form-control')); ?>
-                                <?php echo $form->error($agendamiento, 'observaciones'); ?>
+                                <label for="">Observaciones de Seguimiento</label>
+                                <?php if($cargo_id == 89): ?>
+                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php else: ?>
+                                <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Cita' => 'Cita','Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                                <?php endif; ?>
                             </div>
                             <div class="col-md-4 agendamiento">
                                 <?php echo $form->labelEx($agendamiento, 'agendamiento'); ?>

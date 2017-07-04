@@ -551,13 +551,15 @@
                 }
                 function buscarConcesionario(vl) {
                     //concesionarioscbo
+                    var usuario_id = $('#Usuarios_cargo_id').val();
+                    console.log(usuario_id);
                     $.ajax({
                         url: '<?php echo Yii::app()->createUrl("site/traerconsesionario") ?>',
                         type: 'POST',
                         dataType: 'json',
                         async: true,
                         data: {
-                            rs: vl
+                            rs: vl, usuario_id : usuario_id
                         },
                         success: function (data) {
                             if (data.result == false) {
@@ -775,7 +777,7 @@
                             }
                         }
                     });
-                    }
+                }
                 function numeros(evt)
                 {
                     var code = (evt.which) ? evt.which : evt.keyCode;
@@ -799,6 +801,27 @@
                 });
                 function celular(vl) {
                     $("#" + vl).val('09');
+                }
+                function vergrupo(usuario_id){
+                    
+                       $.ajax({
+                            url: '<?php echo Yii::app()->createUrl("/site/getGrupos") ?>',
+                            type: 'POST',
+                            async: false,
+                            data: {
+                                usuario_id: usuario_id,
+                            },
+                            success: function (result) {
+                                if (result != 0) {
+                                    $("#Usuarios_grupo_id").html(result);
+                                    
+                                } else {
+                                    // $("#Usuarios_grupo_id").html('Se produjo un error vuelva a cargar el sitio e intente nuevamente.');
+                                }
+                            }
+                        }); 
+                    
+                    
                 }
 
 </script>
