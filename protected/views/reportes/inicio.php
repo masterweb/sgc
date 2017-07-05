@@ -5,8 +5,8 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $tipo_grupo = 0; // GRUPO KMOTOR Y ASIAUTO
 $area = 0; 
-// GRUPO AEKIA, ASIAUTO Y KMOTOR
-if($grupo_id == 1 || $grupo_id == 2 || $grupo_id == 3){
+// GRUPO AEKIA Y KMOTOR
+if($grupo_id == 1 || $grupo_id == 3){
     $tipo_grupo = 1;
 }
 $area_id = (int) Yii::app()->user->getState('area_id');
