@@ -2044,15 +2044,17 @@ if ($fi == 2) {
                     alert('Email enviado satisfactoriamente');
                 }
                 $('#btnsendprof').show();
-                if(fuente == 'web' &&(grupo == 2 || grupo == 3)){
+                if(fuente == 'web' &&(grupo == '2' || grupo == '3')){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
                     $(location).attr('href', urld);
+                    return false;
                 }
-                if(fuente == 'web' &&(grupo != 2 || grupo != 3)){
+                if(fuente == 'web' &&(grupo != '2' || grupo != '3')){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimientobdc"); ?>';
                     $(location).attr('href', urld);
+                    return false;
                 }
                 $('#bg_negro').hide();
                 
