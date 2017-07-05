@@ -51,7 +51,7 @@ class ReportesController extends Controller {
             $tipo = $tipo;
         }
         $GF = new GlobalFunctions;
-
+       
         date_default_timezone_set('America/Guayaquil');
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
@@ -258,6 +258,9 @@ class ReportesController extends Controller {
                 if($tipo == 'prospeccionweb')
                     $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
+            case 89:// asesor TELEMARKETING WEB------> TRABAJAR
+                $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+                break;    
         }
 
         // procesamos las variables de busqueda del filtro
@@ -589,10 +592,12 @@ class ReportesController extends Controller {
                         $contador['proforma_ckd_mant'][] = $tipo['modelo'];
                     }
                 } else if ($tipo['tipo'] == 'VENTAS') {
+
                     $contador['ventas_mant'][] = $tipo['tipo'];
                     if (in_array($tipo['modelo'], $ckd)) {
                         $contador['ventas_ckd_mant'][] = $tipo['modelo'];
                     }
+
                 }
             }
 
@@ -647,8 +652,13 @@ class ReportesController extends Controller {
             $varView['tdcbu1'] = count($contador['testdrive_mant']) - count($contador['testdrive_ckd_mant']);
             $varView['tdckd2'] = count($contador['testdrive_ckd_mact']);
             $varView['tdcbu2'] = count($contador['testdrive_mact']) - count($contador['testdrive_ckd_mact']);
+            
             $varView['vh_mes_anterior'] = count($contador['ventas_mant']);
             $varView['vh_mes_actual'] = count($contador['ventas_mact']);
+
+
+
+
             $varView['vhckd1'] = count($contador['ventas_ckd_mant']);
             $varView['vhcbu1'] = count($contador['ventas_mant']) - count($contador['ventas_ckd_mant']);
             $varView['vhckd2'] = count($contador['ventas_ckd_mact']);
@@ -659,55 +669,86 @@ class ReportesController extends Controller {
             }
 
             $constructor = new ConstructorSQL;
+          
             $retorno = $constructor->buscar(
                     $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
             );
 
-            /*echo '<pre>';
-            print_r($retorno);
-            echo '</pre>';*/
+        //    echo '<pre>';
+        //    print_r($retorno);
+        //    echo '</pre>';
+        //    die();
 
 
-            $varView['prospeccion_mes_anterior'] = $retorno[0];
-            $varView['prospeccion_mes_actual'] = $retorno[1];
-            $varView['trafico_mes_anterior'] = $retorno[2];
-            $varView['trafico_mes_actual'] = $retorno[3];
-            $varView['traficockd1'] = $retorno[4];
-            $varView['traficocbu1'] = $retorno[5];
-            $varView['traficockd2'] = $retorno[6];
-            $varView['traficocbu2'] = $retorno[7];
-            if($tipo == 'externas'){
-                $varView['trafico_mes_anterior'] = $retorno[0];
-                $varView['trafico_mes_actual'] = $retorno[1];
-                $varView['trafico_citas_mes_anterior'] = $retorno[2];
-                $varView['trafico_citas_mes_actual'] = $retorno[3];
+            //$varView['prospeccion_mes_anterior'] = $retorno[0];
+            $varView['prospeccion_mes_anterior'] = $retorno['prospeccion_mes_anterior'];
+            //$varView['prospeccion_mes_actual'] = $retorno[1];
+            $varView['prospeccion_mes_actual'] = $retorno['prospeccion_mes_actual'];
+           // $varView['trafico_mes_anterior'] = $retorno[2];
+            $varView['trafico_mes_anterior'] = $retorno['trafico_mes_anterior'];
+            //$varView['trafico_mes_actual'] = $retorno[3];
+            $varView['trafico_mes_actual'] = $retorno['trafico_mes_actual'];
+            $varView['traficockd1'] = $retorno['traficockd1'];
+            $varView['traficocbu1'] = $retorno['traficocbu1'];
+            $varView['traficockd2'] = $retorno['traficockd2'];
+            $varView['traficocbu2'] = $retorno['traficocbu2'];
+            if($tipo == 'externas'||$tipo == ''){
+                $varView['trafico_mes_anterior'] = $retorno['trafico_mes_anterior'];
+                $varView['trafico_mes_actual'] = $retorno['trafico_mes_actual'];
+                $varView['trafico_citas_mes_anterior'] = $retorno['trafico_citas_mes_anterior'];
+                $varView['trafico_citas_mes_actual'] = $retorno['trafico_citas_mes_actual'];
+               
+              /*
+               $varView['vcont_mes_anterior'] = $retorno[26];
+                $varView['vcred_mes_anterior'] = $retorno[27];
+                $varView['vcont_mes_actual'] = $retorno[28];
+                $varView['vcred_mes_actual'] = $retorno[29];*/
+
             }
+           /* else{
+                
 
+                 $varView['vcont_mes_anterior'] = $retorno[32];
+                $varView['vcred_mes_anterior'] = $retorno[33];
+                $varView['vcont_mes_actual'] = $retorno[34];
+                $varView['vcred_mes_actual'] = $retorno[35];
+            }*/
            
-            $varView['proforma_mes_anterior'] = $retorno[8];
-            $varView['proforma_mes_actual'] = $retorno[9];
-            $varView['proformackd1'] = $retorno[10];
-            $varView['proformacbu1'] = $retorno[11];
-            $varView['proformackd2'] = $retorno[12];
-            $varView['proformacbu2'] = $retorno[13];
-            $varView['td_mes_anterior'] = $retorno[14];
-            $varView['td_mes_actual'] = $retorno[15];
-            $varView['tdckd1'] = $retorno[16];
-            $varView['tdcbu1'] = $retorno[17];
-            $varView['tdckd2'] = $retorno[18];
-            $varView['tdcbu2'] = $retorno[19];
-            $varView['vh_mes_anterior'] = $retorno[20];
-            $varView['vh_mes_actual'] = $retorno[21];
-            $varView['vhckd1'] = $retorno[22];
-            $varView['vhcbu1'] = $retorno[23];
-            $varView['vhckd2'] = $retorno[24];
-            $varView['vhcbu2'] = $retorno[25];
-            $varView['cotizaciones_enviadas_anterior'] = $retorno[26];
-            $varView['cotizaciones_enviadas_actual'] = $retorno[27];
-            $varView['respuestas_enviadas_anterior'] = $retorno[28];
-            $varView['respuestas_enviadas_actual'] = $retorno[29];
-            $varView['proformas_enviadas_anterior'] = $retorno[30];
-            $varView['proformas_enviadas_actual'] = $retorno[31];
+            $varView['proforma_mes_anterior'] = $retorno['proforma_mes_anterior'];
+            $varView['proforma_mes_actual'] = $retorno['proforma_mes_actual'];
+            $varView['proformackd1'] = $retorno['proformackd1'];
+            $varView['proformacbu1'] = $retorno['proformacbu1'];
+            $varView['proformackd2'] = $retorno['proformackd2'];
+            $varView['proformacbu2'] = $retorno['proformacbu2'];
+            $varView['td_mes_anterior'] = $retorno['td_mes_anterior'];
+            $varView['td_mes_actual'] = $retorno['td_mes_actual'];
+            $varView['tdckd1'] = $retorno['tdckd1'];
+            $varView['tdcbu1'] = $retorno['tdcbu1'];
+            $varView['tdckd2'] = $retorno['tdckd2'];
+            $varView['tdcbu2'] = $retorno['tdcbu2'];
+            $varView['vh_mes_anterior'] = $retorno['vh_mes_anterior'];
+            $varView['vh_mes_actual'] = $retorno['vh_mes_actual'];
+            $varView['vhckd1'] = $retorno['vhckd1'];
+            $varView['vhcbu1'] = $retorno['vhcbu1'];
+            $varView['vhckd2'] = $retorno['vhckd2'];
+            $varView['vhcbu2'] = $retorno['vhcbu2'];
+           
+            $varView['cotizaciones_enviadas_anterior'] = $retorno['cotizaciones_enviadas_anterior'];
+            $varView['cotizaciones_enviadas_actual'] = $retorno['cotizaciones_enviadas_actual'];
+            $varView['respuestas_enviadas_anterior'] = $retorno['respuestas_enviadas_anterior'];
+            $varView['respuestas_enviadas_actual'] = $retorno['respuestas_enviadas_actual'];
+            $varView['proformas_enviadas_anterior'] = $retorno['proformas_enviadas_anterior'];
+            $varView['proformas_enviadas_actual'] = $retorno['proformas_enviadas_actual'];
+
+
+
+
+             $cont=count($retorno)-1;   
+             $varView['vcont_mes_anterior'] = $retorno['vcont_mes_anterior'];
+                $varView['vcred_mes_anterior'] = $retorno['vcred_mes_anterior'];
+                $varView['vcont_mes_actual'] = $retorno['vcont_mes_actual'];
+                $varView['vcred_mes_actual'] = $retorno['vcred_mes_actual'];
+
         }
 
         $varView['dif_ckd_trafico'] = $varView['traficockd2'] - $varView['traficockd1'];
@@ -734,6 +775,16 @@ class ReportesController extends Controller {
         $varView['var_ve'] = $GF->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'var');
         $varView['dif_ve'] = $GF->DIFconstructor($varView['vh_mes_actual'], $varView['vh_mes_anterior'], 'dif');
 
+        
+        $varView['var_cred'] = $GF->DIFconstructor($varView['vcred_mes_actual'], $varView['vcred_mes_anterior'], 'var');
+        $varView['dif_cred'] = $GF->DIFconstructor($varView['vcred_mes_actual'], $varView['vcred_mes_anterior'], 'dif');
+
+
+         $varView['var_cont'] = $GF->DIFconstructor($varView['vcont_mes_actual'], $varView['vcont_mes_anterior'], 'var');
+        $varView['dif_cont'] = $GF->DIFconstructor($varView['vcont_mes_actual'], $varView['vcont_mes_anterior'], 'dif');
+
+
+
         $varView['titulo'] = $tit_init . $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . $tit_ext;
 
         //set Tasas
@@ -748,9 +799,22 @@ class ReportesController extends Controller {
         $varView['tasa_dif_testdrive'] = $GF->tasa_dif($varView['tasa_testdrive_actual'], $varView['tasa_testdrive_anterior']);
 
         //tasa cierre
+        
         $varView['tasa_cierre_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['vh_mes_actual']);
         $varView['tasa_cierre_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['vh_mes_anterior']);
         $varView['tasa_dif_cierre'] = $GF->tasa_dif($varView['tasa_cierre_actual'], $varView['tasa_cierre_anterior']);
+
+
+        //tasa cierre credito
+        $varView['tasa_credito_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['vcred_mes_actual']);
+        $varView['tasa_credito_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['vcred_mes_anterior']);
+        $varView['tasa_dif_credito'] = $GF->tasa_dif($varView['tasa_credito_actual'], $varView['tasa_credito_anterior']);
+
+        //tasa cierre contado
+        $varView['tasa_contado_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['vcont_mes_actual']);
+        $varView['tasa_contado_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['vcont_mes_anterior']);
+        $varView['tasa_dif_contado'] = $GF->tasa_dif($varView['tasa_contado_actual'], $varView['tasa_contado_anterior']);
+
 
         //tasa proformas ckd y cbu
         $varView['tasa_proforma_ckd_m1'] = $GF->tasa($varView['traficockd2'], $varView['proformackd2']);
