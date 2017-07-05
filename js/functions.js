@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('.tipo-form-drop').hide();
     /*inicio script de 1800----------------------*/
     $('#GestionDiaria_seguimiento').change(function(){
+
             var value = $(this).attr('value');
             //alert(value);
             switch(value){
@@ -936,7 +937,8 @@ $(document).ready(function () {
                 case 'Seguimiento':
                 case 'Falta de tiempo':
                 case 'Llamada de emergencia':
-                case 'Cita':    
+                case 'Cita':  
+                
                     var proximoSeguimiento = $('#GestionAgendamiento_agendamiento').val();
                     //console.log(proximoSeguimiento);
                     var fechaSeguimiento = proximoSeguimiento.replace('/', '-');
