@@ -168,6 +168,13 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                     <option value="2">Seguimiento</option>
                                 </select>
                             </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                    <label for="">Observaciones</label>
+                                    <textarea name="GestionPresentaciontm[observaciones]" id="GestionPresentacion_observaciones" cols="30" rows="6"></textarea>
+                            </div>
                         </div>
                         <div class="cont-cedula" style="display:none;">
                             <div class="row">
@@ -186,13 +193,13 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                         
                                     </div>
                                 </div>
-                                <div class="row">
+                                <!--<div class="row">
                                     <div class="col-md-4">
                                         <label for="">Observaciones</label>
                                         <textarea name="GestionPresentaciontm[observaciones]" id="GestionPresentacion_observaciones" cols="30" rows="6"></textarea>
                                         <?php //echo $form->error($model, 'observacion'); ?> 
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                         <div class="row buttons">

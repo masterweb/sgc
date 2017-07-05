@@ -69,10 +69,7 @@ class GestionPresentaciontmController extends Controller
 
 		if(isset($_POST['GestionPresentaciontm']))
 		{
-	//		echo '<pre>';
-	//		print_r($_FILES);
-	//		echo '</pre>';
-	//		die();
+			
 			$model->attributes=$_POST['GestionPresentaciontm'];
 			date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
@@ -108,7 +105,7 @@ class GestionPresentaciontmController extends Controller
 
                          $this -> sendReturnNotification($gi->responsable, Yii::app()->user->getId(),
                         $_POST['GestionPresentaciontm']['id_informacion']);
-                        die();
+                       
 						break;
 					case '1':// cliente se presenta y sigue el proceso normal
 						# code...
@@ -245,7 +242,7 @@ class GestionPresentaciontmController extends Controller
                     <body>
                         <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
                             <tr>
-                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/mail_factura_03.jpg" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
+                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/headerMessage.png" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
                             </tr>
 
 
@@ -303,10 +300,10 @@ class GestionPresentaciontmController extends Controller
                      </body>';
                    
                   
-                $emailCliente = 'dandee_ds@hotmail.com';//$this->getAsesorEmail($jefeAgencia);
+                $emailCliente = $this->getAsesorEmail($jefeAgencia);
                 $id_asesor = Yii::app()->user->getId();
                $emailAsesor = $this->getAsesorEmail($id_asesor);
-               $asunto = 'CITA N O CONFIRMADA';           
+               $asunto = 'SGC-CITA NO GENERADA POR ASESOR COMERCIAL';           
                 sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
     }
 }

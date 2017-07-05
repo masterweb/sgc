@@ -3969,14 +3969,27 @@ La organización no asume responsabilidad sobre información, opiniones o criter
   }
 
   public function actionSendEmailTM(){
+    
     $id_informacion = isset($_POST["id_informacion"]) ? $_POST["id_informacion"] : "";
     $dealer_id = isset($_POST["dealer_id"]) ? $_POST["dealer_id"] : "";
+
     $nombreSolicitud = $this->getNombreCliente($id_informacion);
+
+
     $modelos = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc'));
     $nombreAuto = $this->getModel($modelos->modelo);
     $gv = GestionVersiones::model()->find(array('condition' => "id_versiones = {$modelos->version}"));
     $ficha_tecnica = $gv->pdf;
-    $asesor = Usuarios::model()->find(array('condition' => "id = {$id_informacion}"));
+   
+
+
+    $gi = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
+      $id_asesor = Yii::app()->user->getId();
+      $asesor =        Usuarios::model()->find(array('condition' => "id = {$id_asesor}"));
+   
+
+
+
     require_once 'email/mail_func.php';
 
     $body = '<style>
@@ -3994,7 +4007,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                                     Gracias por contactarnos. Ahora estás más cerca de tu nuevo '.utf8_encode($nombreAuto).'</td>
                                 </tr>
                                 <tr>
-                                    <td align="center"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/'.$ficha_tecnica.'" target="_blank"><img src="https://www.kia.com.ec/images/mailing/'.$form_cotizacion->id_modelos.'.jpg" width="570" height="240" alt="" style="display:block; border:none;"/></a></td>
+                                    <td align="center"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/'.$ficha_tecnica.'" target="_blank"><img src="https://www.kia.com.ec/images/mailing/'.$modelos->id_modelos.'.jpg" width="570" height="240" alt="" style="display:block; border:none;"/></a></td>
                                 </tr>
                                 <tr>
                                     <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Soy <strong>'.$asesor["nombres"]." ".$asesor["apellido"].'</strong>, me encargaré de preparar tu cotización,<br/>
@@ -4078,31 +4091,14 @@ La organización no asume responsabilidad sobre información, opiniones o criter
                
 
                 $emailCliente = $this->getEmailCliente($id_informacion);
-                $id_asesor = Yii::app()->user->getId();
+                
                $emailAsesor = $this->getAsesorEmail($id_asesor);
-               $asunto = 'Kia Motors Ecuador SGC TEST NO HAGA CASO A ESTE CORREO TEST';
+               $asunto = 'Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion';
                //echo sendEmailFunction('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $array_mails_us, $array_noms_us, html_entity_decode("Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion"), $body, /*$ccEmail_array*/$email, /*$ccEmail_array*/$email, 0);
                 
-                echo sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
-                die();            
-              /*  if (sendEmailFunction('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $array_mails_us, $array_noms_us, html_entity_decode("Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion"), $body, $ccEmail_array, $ccEmail_array, 0)) 
-                {
-                    alert('send');
-                }
-                else*/
-
-
-  }
-
-  public function actionSendMeetingNotification(){
-
-   echo 'wokig';
-   die();
-
-
-  }
-
-    
+               sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
+                         
+  }    
 }
 
 

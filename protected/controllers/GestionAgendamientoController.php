@@ -408,7 +408,7 @@ class GestionAgendamientoController extends Controller {
                     <body>
                         <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
                             <tr>
-                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/mail_factura_03.jpg" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
+                                <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/headerMessage.png" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
                             </tr>
 
 
@@ -500,10 +500,10 @@ class GestionAgendamientoController extends Controller {
                                     
                             </body>';
                    
-                $emailCliente = 'dandee_ds@hotmail.com';//$this->getAsesorEmail($jefeAgencia);
+                $emailCliente = $this->getAsesorEmail($jefeAgencia);
                 $id_asesor = Yii::app()->user->getId();
                $emailAsesor = $this->getAsesorEmail($id_asesor);
-               $asunto = 'TELEMERCADEO TEST NO HAGA CASO ESTE CORREO';           
+               $asunto = 'SGC NUEVA CITA GENERADA POR TELEMERCADERISTA';           
                 sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
     }
 

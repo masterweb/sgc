@@ -796,7 +796,11 @@ $id = $_GET['id'];
                                 ));
                                 $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
                                 ?>
-                                <?php echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php 
+
+                                    if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")
+                                        echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => false)); 
+                                    else echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
                                 <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));  ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
                             </div>
@@ -807,7 +811,12 @@ $id = $_GET['id'];
                                 $criteria2 = new CDbCriteria(array('condition' => "id={$city_id}", 'order' => 'name'));
                                 $ciudades = CHtml::listData(Dealercities::model()->findAll($criteria2), "id", "name");
                                 ?>
-                                <?php echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php 
+                                if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")    
+                                echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => false)); 
+
+                                else echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); 
+                                ?>
                                 <?php echo $form->error($model, 'ciudad_conc'); ?>
                             </div>
                         </div>
@@ -821,7 +830,13 @@ $id = $_GET['id'];
                                 $dealers = CHtml::listData(Dealers::model()->findAll($criteria3), "id", "name");
                                 ?>
                                 <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control')); ?>
-                                <?php echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); ?>
+                                <?php 
+                                  if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")   
+                                echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => false)); 
+
+                                else echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); 
+
+                                ?>
                                 <?php echo $form->error($model, 'concesionario'); ?>
                             </div>
                         </div>
