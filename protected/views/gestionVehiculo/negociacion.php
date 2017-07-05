@@ -1444,7 +1444,7 @@ if($fuente == 'web'){
         var idInfo = $('#GestionFinanciamiento_id_informacion').val();
         var idVec = $('#GestionFinanciamiento_id_vehiculo').val();
         var fuente = $('#fuente').val();
-        var grupo = '<?php echo (int) Yii::app()->user->getState('grupo_id'); ?>'; 
+        var grupo = '<?php echo (int) Yii::app()->user->getState('grupo_id'); ?>';
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/sendProforma"); ?>',
             beforeSend: function (xhr) {
@@ -1461,15 +1461,17 @@ if($fuente == 'web'){
                 }
                 
                 $('#btnsendprof').hide();//$('#btnagendamiento').hide();
-                if(fuente == 'web' &&(grupo == 2 || grupo == 3)){
+                if(fuente == 'web' &&(grupo == '2' || grupo == '3')){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
                     $(location).attr('href', urld);
+                    return false;
                 }
-                if(fuente == 'web' &&(grupo != 2 || grupo != 3)){
+                if(fuente == 'web' &&(grupo != '2' || grupo != '3')){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimientobdc"); ?>';
                     $(location).attr('href', urld);
+                    return false;
                 }
                 $('#bg_negro').hide();
             }
