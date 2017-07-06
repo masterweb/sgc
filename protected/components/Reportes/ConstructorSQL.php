@@ -74,13 +74,19 @@ class ConstructorSQL {
         if ($tipo == 'externas') {
             $innerExternas = " INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id ";
             $whereExt = " AND gc.order = 1 ";
-            if((int) Yii::app()->user->getState('cargo_id') == 89)
+            $date_fecha = "gi";
+            if((int) Yii::app()->user->getState('cargo_id') == 89) {
                 $whereExt = " AND (gc.order = 1 AND gc.tw = 1)";
+                $date_fecha = "gi";
+            }
+          
+
             $fuente_contacto = "gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web'";
             $fuente_prospeccion = "";
             $fuente_contacto_historial = " gd.fuente_contacto = 'web' OR gd.fuente_contacto_historial = 'web'";
-            $date_fecha = "gc";
+          //  $date_fecha = "gc";
         }
+
         $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1")->queryAll();
         $CKDsRender = '';
         foreach ($CKDs as $key => $value) {
@@ -123,8 +129,9 @@ class ConstructorSQL {
         $trafico_mes_anterior = $this->SQLconstructor(
                 'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gv.orden = 1" . $whereExt, $group_ext
+                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . " 23:59:59') AND ({$fuente_contacto}) AND gv.orden = 1" . $whereExt, $group_ext
         );
+
         //echo 'traf mes anterior: '.$trafico_mes_anterior[0]['COUNT(*)'];
     //    echo '<pre>';
     //    print_r($trafico_mes_anterior);
@@ -137,10 +144,18 @@ class ConstructorSQL {
         $trafico_mes_actual = $this->SQLconstructor(
                 'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt, $group_ext
+                " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . " 23:59:59') AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt, $group_ext
         );
         $trafico_mes_actual = count($trafico_mes_actual);
-        //$trafico_mes_actual = $trafico_mes_actual[0]['DISTINCT gi.id, gv.version'];
+
+      //  echo '<pre>';
+     //  print_r( $id_persona.' OR gi.responsable_origen '/* . $consultaBDC . $modelos . $versiones . $consulta_gp*/);
+   // echo '</pre>';
+     //   die();
+     // die( 'DISTINCT gi.id, gv.version ' . $select_ext.'gestion_informacion gi'.$join_ext . $INERmodelos .
+             //   ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas.$id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
+           //    " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . " 23:59:59') AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt. $group_ext);
+       // $trafico_mes_actual = $trafico_mes_actual[0]['DISTINCT gi.id, gv.version'];
 
         if ($tipo != 'externas') {
              $retorno['trafico_mes_anterior'] = $trafico_mes_anterior;
@@ -409,12 +424,6 @@ class ConstructorSQL {
             $vcont_mes_actual = $vcont_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
             $retorno['vcont_mes_actual'] = $vcont_mes_actual;
 
-
-
-
-
-
-
             $vcred_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
@@ -424,13 +433,18 @@ class ConstructorSQL {
             $retorno['vcred_mes_actual'] = $vcred_mes_actual;
 
 
-          //  print_r($retorno);
-
+            
              /*echo $vcont_mes_anterior.'-'.$vcred_mes_anterior;
-            die();*/
+            */
         /**/
 
         return $retorno;
+
+
+
+
+
+
     }
 
 }
