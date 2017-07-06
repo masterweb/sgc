@@ -495,7 +495,7 @@ if (isset($id)) {
                                                                                                      
                                                     ?> 
                                                 </td>
-                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-01-06-20171.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
+                                                <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/LISTA-DE-PRECIOS-KIA-05-07-20171.pdf" target="_blank" class="btn btn-xs btn-default">Ver Precios</a></td>
                                             </tr>
                                             <?php
                                         endforeach;
@@ -680,7 +680,12 @@ if (isset($id)) {
                 </div>
                 <div class="col-md-4">
                     <?php echo $form->labelEx($agendamiento, 'observaciones'); ?>
+                    <?php if($cargo_id == 89): ?>
+                    <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Seguimiento' => 'Seguimiento', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                    <?php else: ?>
                     <?php echo $form->dropDownList($agendamiento, 'observaciones', array('' => '--Seleccione--', 'Cita' => 'Cita','Seguimiento' => 'Seguimiento','Falta de tiempo' => 'Falta de tiempo', 'Llamada de emergencia' => 'Llamada de emergencia', 'Busca solo precio' => 'Busca solo precio', 'Desiste' => 'Desiste', 'Otro' => 'Otro'), array('class' => 'form-control')); ?>
+                    <?php endif; ?>
+                    
                     <?php echo $form->error($agendamiento, 'observaciones'); ?>
                 </div>
                 <div class="col-md-4 agendamiento">
