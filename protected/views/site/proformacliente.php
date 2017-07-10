@@ -4,6 +4,7 @@
 //echo '</pre>';
 //echo 'num proforma: '.$id_hoja;
 $id_asesor = $this->getResponsableId($id_informacion);
+$responsable_id=$this->getResponsableId($id_informacion);
 $cargo_id = $this->getCargo($responsable_id);
 $grupo_id = $this->getGrupoUsuario($responsable_id);
 //die('cargo id: '.$cargo_id.', grupo id: '.$grupo_id);
@@ -12,7 +13,10 @@ $id_informacion = $_GET['id_informacion'];
 //$id_asesor = Yii::app()->user->getId();
 $id_vehiculo = $_GET['id_vehiculo'];
 $emailAsesor = $this->getAsesorEmail($responsable_id);
-$concesionarioid = $this->getConcesionarioDealerId($responsable_id);
+//$concesionarioid = $this->getConcesionarioDealerId($responsable_id);
+
+$concesionarioid = $this->getConcesionarioDealerIdIngresado($id_informacion);
+//die($concesionarioid);
 //die('concesionario id: '.$concesionarioid);
 
 $telefono = $this->getAsesorTelefono($responsable_id);
@@ -47,29 +51,34 @@ $fecha_proforma = explode(' ', $fecha->fecha);
         <div class="row title">
             <div class="col-xs-3"><img class="img-logo" src="<?php echo Yii::app()->request->baseUrl ?>/images/logo_pdf2.png" alt=""></div>
             <div class="col-xs-8" style="border-left:1px solid #888890;">
-                
-                <?php if($cargo_id == 86 && $grupo_id == 2): ?>
+                    <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
+               <!-- <?php if($cargo_id == 86 && $grupo_id == 2): ?>
                     <h4>ASIAUTO S.A. / Concesionario Kia Motors Ecuador</h4>
                 <?php elseif ($cargo_id == 86 && $grupo_id == 3): ?>
                     <h4>KMOTOR S.A. / Concesionario Kia Motors Ecuador</h4>
                 <?php else: ?>
                         <h4><?php echo strtoupper($this->getNombreConcesionario($concesionarioid)); ?></h4>
-                <?php endif; ?>
+                <?php endif; ?>-->
                 <div class="target">
 
                     <div class="col-xs-12"><p><?php echo $nombre_responsable; ?></p></div>
-                    <?php if($cargo_id == 86 && $grupo_id == 2): ?>
-<!--                    <div class="col-xs-12"><strong>Dirección: Av. 6 de Diciembre y Sta Lucia</strong></div>-->
+                   
+
+                     <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccionById($concesionarioid); ?></strong></div>
+
+
+                 <!--  <?php if($cargo_id == 86 && $grupo_id == 2): ?>
                     <?php elseif($cargo_id == 86 && $grupo_id == 3): ?>
                         <div class="col-xs-12"><strong>Dirección: <?php echo $this->getDireccionKmotor($id_asesor) ?></strong></div>
                     <?php else: ?>
                         <div class="col-xs-12"><strong>Dirección: <?php echo $this->getConcesionarioDireccion($id_asesor); ?></strong></div>
                     <?php endif; ?>
-                    <div class="col-xs-5"><p><strong>T </strong> <?php echo $telefono; ?></p></div>
+                    
+                </div>-->
+                <div class="col-xs-5"><p><strong>T </strong> <?php echo $telefono; ?></p></div>
                     <div class="col-xs-5"><p><strong>M </strong> <?php echo $celular; ?></p></div>
                     <div class="col-xs-5"><p><strong>E </strong><?php echo $emailAsesor; ?> </p></div>
                     <div class="col-xs-5"><p><strong>W </strong> www.kia.com.ec</p></div>
-                </div>
             </div>
         </div>
     </div>

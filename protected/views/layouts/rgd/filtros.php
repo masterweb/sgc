@@ -116,6 +116,7 @@ $id_responsable = Yii::app()->user->getId();
                     if($cargo_id == 89 && $grupo_id == 2){ // SI ES ASESOR TELEMARKETING WEB Y GRUPO ASIAUTO
                         echo '<option value="reasignados_tw">Reasignados solicitudes web</option>';
                         echo '<option value="devueltos_tw">Devueltos solicitudes web</option>';
+                        echo '<option value="devueltos_tw">Nuevas solicitudes web</option>';
                     }
                      ?>
                     

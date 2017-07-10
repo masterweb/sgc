@@ -259,7 +259,7 @@ class ReportesController extends Controller {
                     $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 89:// asesor TELEMARKETING WEB------> TRABAJAR
-                $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+                $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
                 break;    
         }
 

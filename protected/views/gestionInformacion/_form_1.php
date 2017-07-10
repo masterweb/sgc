@@ -256,6 +256,19 @@ $id = $_GET['id'];
             });
         });
 
+
+        $('#comboProvincias').val(<?php echo $model->provincia_conc ?>);
+        changeProvincia(<?php echo $model->provincia_conc ?>);
+
+
+        
+            // $('#GestionInformacion_concesionario').val(<?php echo $model->concesionario; ?>);
+
+        //changeCiudad(<?php echo $city_id ?>);
+
+        //$('#comboConcesionarios').val(<?php echo $dealer_id ?>);
+
+
     });
     function sendSeg() {
         var observaciones = $('#GestionProspeccionPr_pregunta').val();
@@ -268,6 +281,8 @@ $id = $_GET['id'];
         }
     }
     function sendInfo() {
+
+
         //console.log('enter send info');
         var tipo = $('#GestionInformacion_tipo').val();
         if (tipo == 'gestion' || tipo == 'trafico') {
@@ -285,6 +300,7 @@ $id = $_GET['id'];
                     'GestionInformacion[telefono_oficina]': {required: 'Ingrese el teléfono'}, 'GestionInformacion[telefono_casa]': {required: 'Ingrese el teléfono'}
                 },
                 submitHandler: function (form) {
+                    
                     form.submit();
                 }
             });
@@ -547,6 +563,71 @@ $id = $_GET['id'];
                 }
             }
         }
+
+
+        function changeProvincia(value){
+
+           
+              $.ajax({
+                url: '<?php echo Yii::app()->createAbsoluteUrl("dealercities/getcities"); ?>',
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    $('#info5').show();  // #info must be defined somehwere
+                },
+                data: {
+                    id: value
+                },
+                type: 'post',
+                success: function (data) {
+                   
+                    $('#GestionInformacion_ciudad_conc').html(data.options);
+                     $('#GestionInformacion_concesionario').html('<option>Seleccione Concesionario</option>');
+                   
+                     $('#GestionInformacion_ciudad_conc').val(<?php echo $model->ciudad_conc ?>);
+                    changeCiudad(<?php echo $model->ciudad_conc ?>);
+
+                    $('#info5').hide();
+
+                            
+                    
+                    
+                }
+            });
+
+              
+              
+        }
+        function changeCiudad(value)
+        {
+
+                
+           $.ajax({
+            url: '<?php echo Yii::app()->createAbsoluteUrl("dealers/getdealers"); ?>',
+
+            dataType: "json",
+            beforeSend: function (xhr) {
+                $('#info6').show();  // #info must be defined somehwere
+            },
+            data: {
+                id: value
+            },
+            type: 'post',
+            success: function (data) {
+               
+                $('#GestionInformacion_concesionario').html(data.options);
+
+                    $('#GestionInformacion_concesionario').val(<?php echo $model->concesionario ?>);
+                
+
+                $('#info6').hide();
+            },
+            error:function(data){
+              //  alert(JSON.stringify(data));
+            }
+
+        });
+        }
+
 </script>
 <div role="tabpanel">
 
@@ -794,12 +875,29 @@ $id = $_GET['id'];
                                     'condition' => "estado='s'",
                                     'order' => 'nombre'
                                 ));
-                                $provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
+                                //$provincias = CHtml::listData(Provincias::model()->findAll($criteria), "id_provincia", "nombre");
+
+                                $provincias = Provincias::model()->findAll($criteria);
+                              
                                 ?>
                                 <?php 
-
+                                // echo '<pre>'.print_r($provincias).'</pre>';
+                                    //echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true));
                                     if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")
-                                        echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => false)); 
+                                     {
+                             
+
+
+                                        $data='<select id="comboProvincias" name="GestionInformacion[provincia_conc]" class="form-control" onchange="changeProvincia(this.value)">';
+                                            foreach ($provincias as $prov){
+
+                                                //$data=$data.'<option value="1">1</option>';   
+                                                    $data=$data.'<option value="'.$prov['id_provincia'].'">'.$prov['nombre'].'</option>';
+                                            }
+                                        $data= $data.'</select>';
+                                        //echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => false)); 
+                                        echo $data;
+                                     }   
                                     else echo $form->dropDownList($model, 'provincia_conc', $provincias, array('class' => 'form-control', 'empty' => 'Selecciona una provincia', 'options' => array($provincia_id => array('selected' => true)), 'disabled' => true)); ?>
                                 <?php //echo $form->textField($model,'provincia_conc',array('class' => 'form-control','value' => $provincia_id));  ?>
                                 <?php echo $form->error($model, 'provincia_conc'); ?>
@@ -813,7 +911,11 @@ $id = $_GET['id'];
                                 ?>
                                 <?php 
                                 if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")    
-                                echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => false)); 
+                                {
+                                     echo '<select class="form-control" id="GestionInformacion_ciudad_conc" name="GestionInformacion[ciudad_conc]" onchange="changeCiudad(this.value)"><option>Seleccione Ciudad</option></select>';
+                                    //echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control','options' => array($city_id => array('selected' => true)), 'disabled' => false)); 
+                                }
+                                
 
                                 else echo $form->dropDownList($model, 'ciudad_conc', $ciudades, array('class' => 'form-control', 'options' => array($city_id => array('selected' => true)), 'disabled' => true)); 
                                 ?>
@@ -831,8 +933,11 @@ $id = $_GET['id'];
                                 ?>
                                 <?php //echo $form->dropDownList($model, 'concesionario', array('' => 'Concesionario'), array('class' => 'form-control')); ?>
                                 <?php 
-                                  if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")   
-                                echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => false)); 
+                                  if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")   {
+                                    //echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => false)); 
+                                     echo '<select class="form-control" id="GestionInformacion_concesionario" name="GestionInformacion[concesionario]" ><option>Seleccione Concesionario</option></select>';
+                                  }
+                               
 
                                 else echo $form->dropDownList($model, 'concesionario', $dealers, array('class' => 'form-control', 'options' => array($dealer_id => array('selected' => true)), 'disabled' => true)); 
 
@@ -1143,3 +1248,4 @@ $id = $_GET['id'];
     </div>
 
 </div>
+

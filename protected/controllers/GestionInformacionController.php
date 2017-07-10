@@ -550,8 +550,36 @@ class GestionInformacionController extends Controller {
             $model->attributes = $_POST['GestionInformacion'];
             $model->provincia_domicilio = $_POST['GestionInformacion']['provincia_domicilio'];
             $model->ciudad_domicilio = $_POST['GestionInformacion']['ciudad_domicilio'];
+
+            /*cambia el concesionario verificando si es diferente solo teleweb*/
+
+           
+
+           
+
+
+
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             if ($model->save()) {
+
+                
+
+
+                 if($this->mailgetAsesorCodigo((int)Yii::app()->user->getId())=="0354")
+                    {
+                        $con = Yii::app()->db;
+                        $sql = "UPDATE gestion_informacion SET provincia_conc = {$_POST['GestionInformacion']['provincia_conc']}, 
+                        ciudad_conc = {$_POST['GestionInformacion']['ciudad_conc']}, 
+                        concesionario={$_POST['GestionInformacion']['concesionario']},
+                            dealer_id={$_POST['GestionInformacion']['concesionario']}
+                         WHERE id = {$id}";
+                       
+                       $request = $con->createCommand($sql)->execute();
+                    
+                    }    
+
+
+
                 $gestionId = $this->getIdGestion($id);
                 $gestionrp = new GestionProspeccionRp;
                 if ($_POST['GestionInformacion']['tipo'] == 'prospeccion') {

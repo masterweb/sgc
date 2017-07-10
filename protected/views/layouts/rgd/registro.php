@@ -36,7 +36,7 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>';
             }
-            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'ventas' && $cargo_adicional == 0){ // asesor ventas
+            if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'ventas' && ($cargo_adicional == 0 ||$cargo_adicional == 89)  ){ // asesor ventas
                 $tipo_array =  array('' => '--Seleccione--',
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',

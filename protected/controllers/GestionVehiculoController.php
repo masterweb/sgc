@@ -1116,18 +1116,21 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
     public function actionProforma($id_informacion, $id_vehiculo) {
         $this->layout = '//layouts/call-print';
         $id_asesor = Yii::app()->user->getId();
-        $responsable_id = $this->getResponsableId($id_informacion);
-        $nombre_responsable = $this->getResponsableNombres($responsable_id);
-        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
-        $nombre_cliente = $this->getNombreCliente($id_informacion);
+        
+        $responsable_id = null;//$this->getResponsableId($id_informacion);
+       
 
-        $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+        $nombre_responsable = null;//$this->getResponsableNombres($responsable_id);
+        //$nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
+        //$nombre_cliente = $this->getNombreCliente($id_informacion);
+
+        //$concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
         //die('conc id: '.$concesionarioid);
-        $telefono = $this->getAsesorTelefono($id_asesor);
-        $celular = $this->getAsesorCelular($id_asesor);
-        $codigo_asesor = $this->getAsesorCodigo($id_asesor);
+       // $telefono = $this->getAsesorTelefono($id_asesor);
+        //$celular = $this->getAsesorCelular($id_asesor);
+        //$codigo_asesor = $this->getAsesorCodigo($id_asesor);
 //echo $this->getResponsable($id_asesor);
         //die('enter prof');
         $con = Yii::app()->db;
@@ -1337,8 +1340,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente registrado
+        //die('email clientes: '.$email);
         //$email = 'alkanware@gmail.com'; //email administrador
         $send = sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, html_entity_decode($asunto), $codigohtml);
+        //die('send: '.$send);
         if ($send) {
             // GRABAR PROFORMA ENVIADA A BASE DE DATOS
             $proforma = new GestionProformasEnviadas;

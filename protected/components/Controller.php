@@ -587,6 +587,7 @@ class Controller extends CController {
 
     public function getResponsableInformacion($id_informacion){
         $responsableid = GestionInformacion::model()->findByPk($id_informacion);
+       
         if (!is_null($responsableid) && !empty($responsableid)) {
             return $this->getResponsable($responsableid->responsable);
         } else {
@@ -1226,6 +1227,27 @@ class Controller extends CController {
                     . '<div id="' . $in . '" style="width:auto;display: none;"><img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $value['img'] . '"/></div>';
             $in++;
         }
+        return $data;
+    }
+
+
+    public function getImagenReasignacion($img) {
+        //echo 'id informacion: '.$id_informacion.', id vehiculo: '.$id_vehiculo;
+        $data = '';
+      //  $test = GestionDemostracion::model()->findAll(array('condition' => "id_informacion={$id_informacion} AND id_vehiculo = {$id_vehiculo} AND preg1 = 'No'"));
+
+       
+       // $in = 1;
+
+        $data = '<div class="btn-group" role="group" aria-label="..."><a class="fancybox btn btn-success btn-xs" href="#' . $img . '">Imagen</a>'
+                    . '</div><br /><br />'
+                    . '<div id="' . $img . '" style="width:auto;display: none;"><img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $img . '"/></div>';
+
+       /* foreach ($test as $value) {
+            
+            
+            $in++;
+        }*/
         return $data;
     }
 

@@ -490,7 +490,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                         if ($agen5 > 0) {
                             ?>
                             <div class="col-md-8">
-                                <h4 class="text-danger">Historial</h4>
+                                <h4 class="text-danger">Historial de agendamiento</h4>
                             </div>
                             <div class="col-md-12">
                                 <table class="table table-striped">
@@ -509,7 +509,45 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                 </table>
                             </div>
                     </div>
-                </div><!--  END OF HIGHLIGHT -->
+                    <!-- agregado para el historial de reasignaciones -->
+                    <div class="row">
+                        <?php
+                        $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id}"));
+                        $numHistorial = GestionPresentaciontm::model()->count($crit5);
+
+                        $historial = GestionPresentaciontm::model()->findAll($crit5);
+                        if ($numHistorial > 0) {
+                            ?>
+                            <div class="col-md-8">
+                                <h4 class="text-danger">Historial de reasignaciones</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead> <tr><th>Status</th><th>Fecha</th> <th>Observación</th> <th>Imagen</th></tr> </thead>
+                                    <tbody>
+                            <?php } foreach ($historial as $a) { ?>
+                                        <tr>
+                                            <td><?php if($a['presentacion'])  echo 'SI'; else echo 'NO'; ?></td>
+                                            <td><?php echo $a['fecha']; ?></td>
+                                            <td><?php echo $a['observaciones']; ?></td>
+                                            
+
+                                            <td><?php if($a['img']!="" && $a['img']!=null) echo $this->getImagenReasignacion($a['img']);// '<a class="fancybox btn btn-success btn-xs" href="#' . $a['img'] . '" >Imagen</a><div id="' . $a['img'] . '" style="width:auto;display: none;"><img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $a['img'] . '"/></div>';  /*Yii::app()->request->baseUrl . '/images/uploads/' .$a['img']; */
+                                                        else echo "";
+
+                                                    
+                                            ?></td>
+
+
+                                           <!-- <img src="' . $value['img'] . '"/>-->
+                                        </tr>
+
+                            <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div><!--  END OF historial de reasignaciones -->
                 <br />
                 <div class="highlight">
                     <div class="row">

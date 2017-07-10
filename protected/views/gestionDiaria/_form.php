@@ -607,6 +607,8 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         <?php } ?>
                     </div>
                     <?php
+                   
+
                     $art2 = GestionPresentacion::model()->findAll(array('condition' => "id_informacion=:match ",'params' => array(':match' => $_GET['id'])));
                     foreach ($art2 as $c){
                     ?>
@@ -618,7 +620,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     $ag5 = GestionAgendamiento::model()->findAll($crit5);
                     if ($agen5 > 0) {
                         ?>
-                        <div class="col-md-8"><h4 class="tl-agen">Agendamientos</h4></div>
+                        <div class="col-md-8"><h4 class="tl-agen">Historial de Agendamientos</h4></div>
                         <?php
 
                         foreach ($ag5 as $a) {
@@ -637,6 +639,38 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     } // endforeach
                 } //End - Paso 5 - Presentación
                 ?>
+
+                     <!-- agregado para el historial de reasignaciones -->
+                <div class="row">
+                        <?php
+                        $crit5 = new CDbCriteria(array('condition' => "id_informacion={$id}"));
+                        $numHistorial = GestionPresentaciontm::model()->count($crit5);
+
+                        $historial = GestionPresentaciontm::model()->findAll($crit5);
+                        if ($numHistorial > 0) {
+                            ?>
+                            <div class="col-md-8">
+                                <h4 class="text-danger">Historial de reasignaciones</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-striped">
+                                    <thead> <tr><th>Status</th><th>Fecha</th> <th>Observación</th> <th>Imagen</th></tr> </thead>
+                                    <tbody>
+                            <?php } foreach ($historial as $a) { ?>
+                                        <tr>
+                                            <td><?php if($a['presentacion'])  echo 'SI'; else echo 'NO'; ?></td>
+                                            <td><?php echo $a['fecha']; ?></td>
+                                            <td><?php echo $a['observaciones']; ?></td>
+                                            <td><?php echo $a['img']; ?></td>
+                                        </tr>
+
+                            <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                    </div>
+                </div><!--  END OF historial de reasignaciones -->
+
             <?php if ($this->getAnswer(4, $id) > 0){ ?>
                     <div class="col-md-10" id="demostracion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/demostracion_on.png" alt=""></span> - Paso 6 - Demostración</h3></div>
                 <?php     $criteria8 = new CDbCriteria(array(
@@ -678,7 +712,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                         
                 <?php } // End - Paso 6 - Demostración ?>
                 <?php if ($this->getAnswer(5, $id) > 0) { ?>
-                    <?php $art4 = GestionFinanciamiento::model()->findAll(array('condition' => "id_informacion={$_GET['id']}")); ?>
+                    <?php $art4 = GestionFinanciamiento::model()->findAll(array('condition' => "id_informacion={$_GET['id']}")); echo 'cantidad: '.count($art4);?>
                     <div class="col-md-10" id="negociacion"><h3 class="tl_seccion_rf"><span><img src="/intranet/ventas/images/negociacion_on.png" alt=""></span> - Paso 7 - Negociación</h3></div>
                     <div class="col-md-10">
                         <table class="table table-striped">
