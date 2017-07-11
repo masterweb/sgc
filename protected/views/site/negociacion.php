@@ -525,28 +525,55 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                 <table class="table table-striped">
                                     <thead> <tr><th>Status</th><th>Fecha</th> <th>Observación</th> <th>Imagen</th></tr> </thead>
                                     <tbody>
-                            <?php } foreach ($historial as $a) { ?>
+                            <?php } $i=0; foreach ($historial as $a) { ?>
                                         <tr>
                                             <td><?php if($a['presentacion'])  echo 'SI'; else echo 'NO'; ?></td>
                                             <td><?php echo $a['fecha']; ?></td>
                                             <td><?php echo $a['observaciones']; ?></td>
                                             
 
-                                            <td><?php if($a['img']!="" && $a['img']!=null) echo $this->getImagenReasignacion($a['img']);// '<a class="fancybox btn btn-success btn-xs" href="#' . $a['img'] . '" >Imagen</a><div id="' . $a['img'] . '" style="width:auto;display: none;"><img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $a['img'] . '"/></div>';  /*Yii::app()->request->baseUrl . '/images/uploads/' .$a['img']; */
-                                                        else echo "";
+                                            <td><?php if($a['img']!="" && $a['img']!=null) {
 
-                                                    
+                                                    echo '<button type="button" class="fancybox btn btn-success btn-xs" data-toggle="modal" data-target="#'.$i.'">Imagen</button>';
+                                                            $i++;
+                                                    }   
+                                                    //else echo ""; 
                                             ?></td>
-
-
-                                           <!-- <img src="' . $value['img'] . '"/>-->
                                         </tr>
-
                             <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
                     </div>
+
+
+                        <!-- modals  -->
+
+                        <?php $i=0; foreach ($historial as $a) {
+                                      
+                                    if($a['img']!="" && $a['img']!=null) {
+                                        echo '
+                                                    <div id="'.$i.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                          <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-body">
+                                                                    <img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $a['img'] . '" class="img-responsive"/>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>';
+                                                        $i++;
+                                           
+                                   }
+
+
+
+
+                             } ?>
+                                
+
+
                 </div><!--  END OF historial de reasignaciones -->
                 <br />
                 <div class="highlight">

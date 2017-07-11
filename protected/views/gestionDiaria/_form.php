@@ -656,19 +656,58 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                                 <table class="table table-striped">
                                     <thead> <tr><th>Status</th><th>Fecha</th> <th>Observación</th> <th>Imagen</th></tr> </thead>
                                     <tbody>
-                            <?php } foreach ($historial as $a) { ?>
+                            <?php } $k=0; foreach ($historial as $a) { ?>
                                         <tr>
                                             <td><?php if($a['presentacion'])  echo 'SI'; else echo 'NO'; ?></td>
                                             <td><?php echo $a['fecha']; ?></td>
                                             <td><?php echo $a['observaciones']; ?></td>
-                                            <td><?php echo $a['img']; ?></td>
+                                            <td>
+                                                    <?php if($a['img']!="" && $a['img']!=null) {
+
+                                                            echo '<button type="button" class=" btn btn-success btn-xs" data-toggle="modal" data-target="#'.$k.'">Imagen</button>';
+                                                             $k++;
+                                                            }   
+                                                         
+                                                    ?>
+
+
+                                            </td>
                                         </tr>
 
                             <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
+                           
+                                
+
+                            
+                                   
+
                     </div>
+
+                     <?php $k=0; foreach ($historial as $a) {
+                                                                  
+                                    if($a['img']!="" && $a['img']!=null) {
+                                        echo '
+                                              <div id="'.$k.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                               <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                 <div class="modal-body">
+                                                        <img src="' . Yii::app()->request->baseUrl . '/images/uploads/' . $a['img'] . '" class="img-responsive"/>
+                                                                                            
+                                                 </div>
+                                                 </div>
+                                                   </div>
+                                                  </div>';
+                                                   $k++;
+                                                                       
+                                    }
+
+
+
+
+                            } ?>
                 </div><!--  END OF historial de reasignaciones -->
 
             <?php if ($this->getAnswer(4, $id) > 0){ ?>

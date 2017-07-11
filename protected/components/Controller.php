@@ -4501,6 +4501,10 @@ class Controller extends CController {
                 $criteria->addCondition("u.cargo_id IN (85,86)");
                 $criteria->addCondition("gi.responsable = {$id_responsable}");
                 $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'prospeccion'");
+                break;
+
+                case 89: // ASESORES TELEWEB
+                $criteria->condition = "gi.responsable = {$id_responsable}";
                 break;    
             default:
                 break;
@@ -4848,6 +4852,10 @@ class Controller extends CController {
         }
         if($_GET['GestionDiaria']['status'] == 'devueltos_tw'){
             $stat = 'Devueltos TeleMercadeo Web';
+        }
+
+        if($_GET['GestionDiaria']['status'] == 'nuevos_tw'){
+            $stat = 'Nuevos TeleMercadeo Web';
         }
         else if($_GET['GestionDiaria']['modelo']==999){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
@@ -6477,7 +6485,11 @@ class Controller extends CController {
                 break;  
             case 'devueltos_tw':
                 $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 2)";
-                break;           
+                break;
+
+            case 'nuevos_tw':
+                $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 0)";
+                break;                
             default:
                 break;
         }
