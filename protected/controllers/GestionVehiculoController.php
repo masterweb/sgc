@@ -1117,14 +1117,14 @@ WHERE ge.id_informacion = {$id_informacion} ORDER BY ge.id DESC limit 1";
         $this->layout = '//layouts/call-print';
         $id_asesor = Yii::app()->user->getId();
         
-        $responsable_id = null;//$this->getResponsableId($id_informacion);
+        $responsable_id = $this->getResponsableId($id_informacion);
        
 
-        $nombre_responsable = null;//$this->getResponsableNombres($responsable_id);
-        //$nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
-        //$nombre_cliente = $this->getNombreCliente($id_informacion);
+        $nombre_responsable = $this->getResponsableNombres($responsable_id);
+        $nombre_responsable = mb_convert_case($nombre_responsable, MB_CASE_UPPER, "UTF-8");
+        $nombre_cliente = $this->getNombreCliente($id_informacion);
 
-        //$concesionarioid = $this->getConcesionarioDealerId($id_asesor);
+        $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
         $nombreproforma = $this->getNombreProforma($concesionarioid);
         $ruc = $this->getConcesionarioGrupoRuc($responsable_id);
         //die('conc id: '.$concesionarioid);
@@ -1142,6 +1142,7 @@ INNER JOIN gestion_informacion gi ON gi.id =  gf.id_informacion
 INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo 
 WHERE gf.id_informacion = {$id_informacion} AND gf.id_vehiculo = {$id_vehiculo} ORDER BY gf.id DESC LIMIT 1";
 //die('sql:'.$sql);
+       
         $request = $con->createCommand($sql)->queryAll();
 
         $num_proforma = $this->getLastProforma($id_informacion, $id_vehiculo);
