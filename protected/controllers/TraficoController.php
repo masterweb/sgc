@@ -25,7 +25,7 @@ class TraficoController extends Controller {
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
                 'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo',
-                    'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario'),
+                    'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario','getDetalleTotal','getConcesionariosProvincia'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -1332,13 +1332,10 @@ class TraficoController extends Controller {
                     break;  
                 case 21:
                     $data_sorento = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
-                    break;
-                case 22:
-                    $data_nuevo_rio = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
-                    break;
-                case 23:
-                    $data_nuevo_cerato = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
-                    break;          
+                    break; 
+            //    case 10000:
+            //        $data_total = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
+            //        break;     
                 default:
                     break;
             }
@@ -1348,9 +1345,7 @@ class TraficoController extends Controller {
             'data_cerato_koup' => $data_cerato_koup, 'data_cerato_r' => $data_cerato_r, 'data_grand_carnival' => $data_grand_carnival,
             'data_k3000' => $data_k3000, 'data_optima' => $data_optima, 'data_rio_sedan' => $data_rio_sedan, 'data_rio_hb' => $data_rio_hb,
             'data_soul_ev' => $data_soul_ev, 'data_soul_r' => $data_soul_r, 'data_sportage_active' => $data_sportage_active,
-            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd, 
-            'data_sportage_xline' => $data_sportage_xline, 'data_niro_xline' => $data_niro_xline,  'data_sorento' => $data_sorento,
-            'data_nuevo_rio' => $data_nuevo_rio,  'data_nuevo_cerato' => $data_nuevo_cerato);
+            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd, 'data_sportage_xline' => $data_sportage_xline, 'data_niro_xline' => $data_niro_xline,  'data_sorento' => $data_sorento);
         echo json_encode($options);
         /* for ($i = 1; $i <= $dia; $i++) {
           $d = $i;
@@ -1781,52 +1776,25 @@ class TraficoController extends Controller {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $area_id = (int) Yii::app()->user->getState('area_id');
         $con = Yii::app()->db;
-        if($dealer_id!=1000)
-        {
-            switch ($tipo) {
-                case 'exo':
-                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-                case 'showroom':
-                case 'prospeccion':
-                case 'exhibicion':
-                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-                case 'web':
-                    //$sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (85,86) ORDER BY nombres ASC";
-                    $sql = "SELECT u.* FROM usuarios u
-                            INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id
-                            WHERE (cargo_id IN (85,86) OR cargo_adicional IN (86)) AND gr.concesionario_id = {$dealer_id}  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
+        switch ($tipo) {
+            case 'exo':
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) AND estado = 'ACTIVO' ORDER BY nombres ASC";
+                break;
+            case 'showroom':
+            case 'prospeccion':
+            case 'exhibicion':
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
+                break;
+            case 'web':
+                //$sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (85,86) ORDER BY nombres ASC";
+                $sql = "SELECT u.* FROM usuarios u
+                        INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id
+                        WHERE (cargo_id IN (85,86) OR cargo_adicional IN (86)) AND gr.concesionario_id = {$dealer_id}  AND estado = 'ACTIVO' ORDER BY nombres ASC";
+                break;
 
-                default:
-                    $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-            }
-        }
-        else{
-
-            switch ($tipo) {
-                case 'exo':
-                    $sql = "SELECT * FROM usuarios WHERE cargo_id IN (75) AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-                case 'showroom':
-                case 'prospeccion':
-                case 'exhibicion':
-                    $sql = "SELECT * FROM usuarios WHERE cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-                case 'web':
-                   
-                    $sql = "SELECT u.* FROM usuarios u
-                            INNER JOIN grupoconcesionariousuario gr ON gr.usuario_id = u.id
-                            WHERE (cargo_id IN (85,86) OR cargo_adicional IN (86))  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-
-                default:
-                    $sql = "SELECT * FROM usuarios WHERE cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
-                    break;
-            }
-
+            default:
+                $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (71,70)  AND estado = 'ACTIVO' ORDER BY nombres ASC";
+                break;
         }
         
 
@@ -1837,7 +1805,7 @@ class TraficoController extends Controller {
         //die($sql);
         $requestr1 = $con->createCommand($sql);
         $requestr1 = $requestr1->queryAll();
-        $data = '<option value="">--Seleccione Asesor--</option><option value="10000">TODOS</option>';
+        $data = '<option value="">--Seleccione Asesor--</option><option value="10000">Todos</option>';
         //$data .= '<option value="all">Todos</option>';
         foreach ($requestr1 as $value) {
           //  $data .= '<option value="' . $value['id'] . '">';
@@ -1882,18 +1850,26 @@ class TraficoController extends Controller {
             case 'showroom':
                 $fuente = " AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')";
                 $bdc = " AND gi.bdc = 0";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " AND gv.orden = 1 ";
                 break;
             case 'web':
                 $fuente = " AND (gd.fuente_contacto = 'web')";
                 $bdc = " AND gi.bdc = 1";
+                $distint = "SELECT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             case 'prospeccion':
                 $fuente = " AND (gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion')";
                 $bdc = " ";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             case 'exhibicion':
                 $fuente = " AND (gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd')";
                 $bdc = " AND gi.bdc = 0";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
                 break;
             default:
                 break;
@@ -1901,8 +1877,9 @@ class TraficoController extends Controller {
         switch ($tipo_reporte) {
             case 1: // TRAFICO
                 $from = " FROM gestion_informacion gi";
-                $select_ini = "SELECT d.`name`, gi.id, ";
-                $select_fin = " gi.fecha, gv.version, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television";
+                $select_ini = $distint;
+                $select_fin = " gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, 
+                gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
                 $inner = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
 INNER JOIN modelos m ON m.id_modelos = gv.modelo 
@@ -1911,16 +1888,16 @@ INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";
                 $date = "gi";
                 $and = "";
-                $group_order = " GROUP BY gi.id";
+                $group_order = $version;
                 $titulo_reporte = 'Reporte Tráfico desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break;
             case 2: // PROFORMAS
                 $from = " FROM gestion_financiamiento gf";
                 $select_ini = "SELECT d.`name`, gv.id, ";
-                $select_fin = " gf.fecha, gv.version";
+                $select_fin = " gf.fecha ";
                 $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
 INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
-INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
 INNER JOIN dealers d ON d.id = gi.dealer_id 
 INNER JOIN modelos m ON m.id_modelos = gv.modelo 
 LEFT JOIN versiones v ON v.id_versiones = gv.version";
@@ -1932,7 +1909,7 @@ LEFT JOIN versiones v ON v.id_versiones = gv.version";
             case 3: // TESTDRIVE
                 $from = " FROM gestion_test_drive gt";
                 $select_ini = "SELECT d.`name`, gi.id, ";
-                $select_fin = " gt.fecha, gt.test_drive, gv.version";
+                $select_fin = " gt.fecha, gt.test_drive ";
                 $inner = " INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
 LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
 INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
@@ -1947,10 +1924,11 @@ LEFT JOIN versiones v ON v.id_versiones = gv.version";
             case 4: // VENTAS
                 $from = " FROM gestion_factura gf";
                 $select_ini = "SELECT DISTINCT(gf.id_vehiculo),d.`name`, gi.id, ";
-                $select_fin = " gf.fecha, gv.version, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable";
+                $select_fin = " gf.fecha, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, 
+                gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
                 $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
 INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
-INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo 
 INNER JOIN dealers d ON d.id = gi.dealer_id 
 INNER JOIN modelos m ON m.id_modelos = gv.modelo 
 LEFT JOIN versiones v ON v.id_versiones = gv.version 
@@ -1989,7 +1967,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         $params1 = trim($params[0]);
         $params2 = trim($params[1]);
         $sql = $select_ini;
-        $sql .= " gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, gi.bdc, m.nombre_modelo, v.nombre_version, gd.fuente_contacto, ";
+        $sql .= " gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, gi.bdc, m.nombre_modelo, v.nombre_version, ";
         $sql .= $select_fin;
         $sql .= $from;
         $sql .= $inner;
@@ -2001,7 +1979,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         $sql .= $bdc;
         $sql .= $and;
         $sql .= $group_order;
-        //die('sql '.$sql);
+//        die('sql '.$sql);
         $post = Yii::app()->db->createCommand($sql)->queryAll();
         $data['posts'] = $post;
         $data['titulo_reporte'] = $titulo_reporte.$titulo_rep;
@@ -3357,61 +3335,44 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                     ->setCellValue('N2', 'nombre_modelo')
                     ->setCellValue('O2', 'nombre_version');
 
-
-
             switch($_GET['GestionDiaria']['tipo_reporte']){
                 case 1: // TRAFICO
                     $objPHPExcel->setActiveSheetIndex(0) 
-                    ->setCellValue('P2', 'version')
-                    ->setCellValue('Q2', 'nombre')
-                    ->setCellValue('R2', 'apellido')
-                    ->setCellValue('S2', 'pregunta')
-                    ->setCellValue('T2', 'opcion_recomendaron')
-                    ->setCellValue('U2', 'medio_prensa')
-                    ->setCellValue('V2', 'medio_television')
-                    ->setCellValue('W2', 'fuente_contacto');
+                    ->setCellValue('P2', 'nombre')
+                    ->setCellValue('Q2', 'apellido')
+                    ->setCellValue('R2', 'pregunta')
+                    ->setCellValue('S2', 'opcion_recomendaron')
+                    ->setCellValue('T2', 'medio_prensa')
+                    ->setCellValue('U2', 'medio_television')
+                    ->setCellValue('V2', 'marca_kia')
+                    ->setCellValue('W2', 'marca_kia_recomendacion');
                     $name_file = "Reporte Trafico";
                     break;
                 case 2: // PROFORMAS
-                    $objPHPExcel->setActiveSheetIndex(0) 
-                    ->setCellValue('P2', 'version')
-                    ->setCellValue('Q2', 'fuente_contacto');
+                //    $objPHPExcel->setActiveSheetIndex(0) 
+                //    ->setCellValue('P2', 'version')
+                //    ->setCellValue('Q2', 'fuente_contacto');
                     $name_file = "Reporte Proformas";
                     break;
                 case 3: // TESTDRIVE
                     $objPHPExcel->setActiveSheetIndex(0) 
-                    ->setCellValue('P2', 'test_drive')
-                    ->setCellValue('Q2', 'version')
-                    ->setCellValue('R2', 'fuente_contacto');
+                    ->setCellValue('P2', 'test_drive');
                     $name_file = "Reporte TestDrive";
                     break;
                 case 4: // VENTAS
-                    /*$objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', $tituloReporte) // Titulo del reporte
-                    ->setCellValue('A2', 'id_vehiculo')    
-                    ->setCellValue('B2', 'Nombre')
-                    ->setCellValue('C2', 'id')
-                    ->setCellValue('D2', 'nombres')
-                    ->setCellValue('E2', 'apellidos')
-                    ->setCellValue('F2', 'cedula')
-                    ->setCellValue('G2', 'ruc')
-                    ->setCellValue('H2', 'pasaporte')
-                    ->setCellValue('I2', 'email')
-                    ->setCellValue('J2', 'celular')
-                    ->setCellValue('K2', 'telefono_casa')
-                    ->setCellValue('L2', 'fecha')
-                    ->setCellValue('M2', 'direccion')
-                    ->setCellValue('N2', 'bdc')
-                    ->setCellValue('O2', 'nombre_modelo')
-                    ->setCellValue('P2', 'nombre_version');*/
+                   
                     $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('P2', 'id_vehiculo') 
-                    ->setCellValue('Q2', 'version')
-                    ->setCellValue('R2', 'status')
-                    ->setCellValue('S2', 'cierre')
-                    ->setCellValue('T2', 'Nombres')
-                    ->setCellValue('U2', 'Apellidos')
-                    ->setCellValue('V2', 'fuente_contacto');
+                    ->setCellValue('Q2', 'status')
+                    ->setCellValue('R2', 'cierre')
+                    ->setCellValue('S2', 'Nombres')
+                    ->setCellValue('T2', 'Apellidos')
+                    ->setCellValue('U2', 'pregunta')
+                    ->setCellValue('V2', 'opcion_recomendaron')
+                    ->setCellValue('W2', 'medio_prensa')
+                    ->setCellValue('X2', 'medio_television')
+                    ->setCellValue('Y2', 'marca_kia')
+                    ->setCellValue('Z2', 'marca_kia_recomendacion');
                     $name_file = "Reporte Ventas";
                     break;
                 
@@ -3441,56 +3402,44 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                 switch($_GET['GestionDiaria']['tipo_reporte']){
                     case 1: // TRAFICO
                         $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('P' . $i, $row['version'])
-                        ->setCellValue('Q' . $i, $row['nombre_responsable'])
-                        ->setCellValue('R' . $i, $row['apellido_responsable'])
-                        ->setCellValue('S' . $i, $row['pregunta'])
-                        ->setCellValue('T' . $i, $row['opcion_recomendacion'])
-                        ->setCellValue('U' . $i, $row['medio_prensa'])
-                        ->setCellValue('V' . $i, $row['medio_television'])
-                        ->setCellValue('W' . $i, $row['fuente_contacto']);
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['pregunta'])
+                        ->setCellValue('S' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('T' . $i, $row['medio_prensa'])
+                        ->setCellValue('U' . $i, $row['medio_television'])
+                        ->setCellValue('V' . $i, $row['marca_kia'])
+                        ->setCellValue('W' . $i, $row['marca_kia_recomendacion']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->applyFromArray($estiloTituloColumnas);
                         break;
                     case 2: // PROFORMAS
-                        $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('P' . $i, $row['version'])
-                        ->setCellValue('Q' . $i, $row['fuente_contacto']);
+                    //    $objPHPExcel->setActiveSheetIndex(0)
+                    //    ->setCellValue('P' . $i, $row['version'])
+                    //    ->setCellValue('Q' . $i, $row['fuente_contacto']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
                         break;
                     case 3: // TESTDRIVE
                         $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('P' . $i, $row['test_drive'])
-                        ->setCellValue('Q' . $i, $row['version'])
-                        ->setCellValue('R' . $i, $row['fuente_contacto']);
+                        ->setCellValue('P' . $i, $row['test_drive']);
+                    //    ->setCellValue('Q' . $i, $row['version'])
+                    //    ->setCellValue('R' . $i, $row['fuente_contacto']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
                         break;
                     case 4: // VENTAS
-                        /*$objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('A' . $i, $row['id_vehiculo'])
-                        ->setCellValue('B' . $i, $row['name'])
-                        ->setCellValue('C' . $i, $row['id'])
-                        ->setCellValue('D' . $i, $row['nombres'])
-                        ->setCellValue('E' . $i, $row['apellidos'])
-                        ->setCellValue('F' . $i, $row['cedula'])
-                        ->setCellValue('G' . $i, $row['ruc'])
-                        ->setCellValue('H' . $i, $row['pasaporte'])
-                        ->setCellValue('I' . $i, $row['email'])
-                        ->setCellValue('J' . $i, $row['celular'])
-                        ->setCellValue('K' . $i, $row['telefono_casa'])
-                        ->setCellValue('L' . $i, $row['fecha'])
-                        ->setCellValue('M' . $i, $row['direccion'])
-                        ->setCellValue('N' . $i, $row['bdc'])
-                        ->setCellValue('O' . $i, $row['nombre_modelo'])
-                        ->setCellValue('P' . $i, $row['nombre_version']);*/
+                        
                         $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('P' . $i, $row['id_vehiculo'])
-                        ->setCellValue('Q' . $i, $row['version'])
-                        ->setCellValue('R' . $i, $row['status'])
-                        ->setCellValue('S' . $i, $row['cierre'])
-                        ->setCellValue('T' . $i, $row['nombre_responsable'])
-                        ->setCellValue('U' . $i, $row['apellido_responsable'])
-                        ->setCellValue('V' . $i, $row['fuente_contacto']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:V2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('Q' . $i, $row['status'])
+                        ->setCellValue('R' . $i, $row['cierre'])
+                        ->setCellValue('S' . $i, $row['nombre_responsable'])
+                        ->setCellValue('T' . $i, $row['apellido_responsable'])
+                        ->setCellValue('U' . $i, $row['pregunta'])
+                        ->setCellValue('V' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('W' . $i, $row['medio_prensa'])
+                        ->setCellValue('X' . $i, $row['medio_television'])
+                        ->setCellValue('Y' . $i, $row['marca_kia'])
+                        ->setCellValue('Z' . $i, $row['marca_kia_recomendacion']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Z2')->applyFromArray($estiloTituloColumnas);
                         break;
                 }
                 
@@ -3532,6 +3481,9 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
             $objPHPExcel->getActiveSheet()->getColumnDimension("U")->setAutoSize('136');
             $objPHPExcel->getActiveSheet()->getColumnDimension("V")->setAutoSize(true);
             $objPHPExcel->getActiveSheet()->getColumnDimension("W")->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension("X")->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension("Y")->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension("Z")->setAutoSize(true);
             // rename worksheet
             $objPHPExcel->getActiveSheet()->setTitle('Reporte de casos');
 
@@ -3650,6 +3602,25 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         echo json_encode($options);
     }
 
+    public function actionGetConcesionariosProvincia(){
+        $provincia_id =  isset($_POST['provincia_id']) ? $_POST["provincia_id"] : "";
+        $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
+
+        $data = '<option value="">--Seleccione concesionario--</option><option value="1000">Todos</option>';
+        
+        $conc = GrConcesionarios::model()->findAll(array("condition" => "provincia = {$provincia_id}"));
+
+        foreach ($conc as $value) {
+            $data .= '<option value="'.$value['dealer_id'].'"';
+            if($value['dealer_id'] == $dealer_id){
+                $data .= ' selected';
+            }
+            $data .= '>'.$value['nombre'].'</option>';
+        }
+        $options = array('options' => $data);
+        echo json_encode($options);
+    }
+
     public function actionGetResponsablesConcecionario(){
         $dealer_id =  isset($_POST['dealer_id']) ? $_POST["dealer_id"] : "";
         $responsable = isset($_POST['responsable']) ? $_POST["responsable"] : "";
@@ -3667,4 +3638,196 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
         echo json_encode($options);
     }
 
+    public function actionGetDetalleTotal(){
+        $i = isset($_POST["i"]) ? $_POST["i"] : "";
+        $id = isset($_POST["id"]) ? $_POST["id"] : "";
+        $dia_inicial = isset($_POST["dia_inicial"]) ? $_POST["dia_inicial"] : "";
+        $dia_actual = isset($_POST["dia_actual"]) ? $_POST["dia_actual"] : "";
+        $year_actual = isset($_POST["year"]) ? $_POST["year"] : "";
+        $mes = isset($_POST["mes"]) ? $_POST["mes"] : "";
+        $categoria = isset($_POST["categoria"]) ? $_POST["categoria"] : "";
+        $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+        $id_responsable = Yii::app()->user->getId();
+        $where = isset($_POST["where"]) ? $_POST["where"] : "";
+        $dealer_id = $this->getDealerId(Yii::app()->user->getId());
+        $colspan = $dia_actual + 1;
+
+        $fmes = $this->getNombreMes($mes);
+        $search_array = array();
+        $search_array['fecha'] = FALSE;
+        $search_array['where'] = $where;
+        if ($dia_inicial != '01') {
+            $search_array['fecha'] = TRUE;
+            $search_array['dia_anterior'] = $dia_inicial;
+            $search_array['dia_actual'] = $dia_actual;
+        }
+
+        # OBTENER TRAFICO TOTAL
+
+        $button = '<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closetotal('.$mes.',\'' . $i . '\',\'' . $id . '\');"><span aria-hidden="true">×</span></button>';
+        //$button = '';
+        $data .= "<table class='det_" . $mes . "'>";
+        $data .= "<tr class='odd-mh' style='font-size:13px;' bgcolor='#888888'><td colspan='" . $colspan . "' class='cir-{$id_modelo}'>Detalle total desde el " . $dia_inicial . "-" . $fmes . "-" . $year_actual . " al " . $dia_actual . "-" . $fmes . "-" . $year_actual . " " . $button . "</td></tr>";
+        $data .= "<tr class='odd-mt'><td>Funnel</td>";
+        $names = array('Tráfico Acumulado', 'Tráfico', 'Proforma', 'Test Drive', 'Ventas', 'Tasa de Test Drive', 'Tasa de Cierre');
+
+        // ARMAR MESES Y DIAS 
+        for ($i = $dia_inicial; $i <= $dia_actual; $i++) {
+            $d = $i;
+            if ($i < 10) {
+                $d = '0' . $i;
+            }
+            $data .= '<td>' . $d . '-' . $fmes . '</td>';
+        }
+        $data .= "</tr>";
+
+        // SACAR TITULOS DE LAS FILAS array $names
+        for ($i = 1; $i <= 7; $i++) {
+
+            $data .= "<tr class='odd-desc'><td>" . $names[$i - 1] . "</td>";
+            //echo 'dia inicial: '.$dia_inicial.', dia actual; '.$dia_actual;
+            for ($j = $dia_inicial; $j <= $dia_actual; $j++) {
+                $d = $j;
+                if ($j < 10) {
+                    $d = '0' . $j;
+                }
+                switch ($i) {
+                    case 1:
+                        //$datatr = $this->getDataDia($versiones, $year, $mes, $d);
+                        // $datatr = count($this->getTraficoDetalleTotal($dia_inicial, $dia_actual, $year_actual, $mes, $search_array, $categoria));
+                        $datatr = count($this->getTraficoVersion($mes, 'all', $year_actual, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable));
+                        $trafico_diario[] = $datatr;
+                        $datata = $datata + $datatr;
+                        $data .= "<td>" . $datata . "</td>";
+                        break;
+                    case 2:
+                        //$datatr = $this->getDataDia($versiones, $year, $mes, $d);
+                        //$trafico[] = $datatr;
+                        $data .= "<td>" . $trafico_diario[$j - $dia_inicial] . "</td>";
+                        break;
+                    case 3:
+                        //$datapf = $this->getDataProforma($versiones, $year, $mes, $d);
+                        $datapf = $this->getProformaVersion($mes, 'all', $year_actual, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable);
+                        $data .= "<td>" . $datapf . "</td>";
+                        break;
+                    case 4:
+                        //$datatd = $this->getDataTestDrive($versiones, $year, $mes, $d);
+                        $datatd = $this->getTestDriveVersion($mes, 'all', $year_actual, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable);
+                        $testdrive[] = $datatd;
+                        $data .= "<td>" . $datatd . "</td>";
+                        break;
+                    case 5:
+                        //$datavt = $this->getDataVentas($versioneds, $year, $mes, $d);
+                        $datavt = $this->getVentasVersion($mes, 'all', $year_actual, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable);
+                        $ventas[] = $datavt;
+                        $data .= "<td>" . $datavt . "</td>";
+                        break;
+                    case 6:
+                        $data .= "<td>" . $this->getTasaTD($testdrive[$j - 1], $trafico_diario[$j - 1]) . "</td>";
+                        break;
+                    case 7:
+                        $data .= "<td>" . $this->getTasaCierre($ventas[$j - 1], $trafico_diario[$j - 1]) . "</td>";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            $data .= "</tr>";
+        }
+        $data .= "<tr><td>&nbsp;</td></tr>";
+        $data .= "</table>";
+        $options = array('data_total' => $data);
+        echo json_encode($options);
+
+
+    }
+
+    public function getTraficoDetalleTotal($dia_inicial, $dia_actual, $year_actual, $mes, $search, $categoria){
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+
+        $criteria = new CDbCriteria;
+        $criteria->select = "DISTINCT gi.id, gv.version";
+        $criteria->alias = 'gi';    
+        $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gi.fecha) = '" . $year_actual . "-" . $mes . "-" . $dia . "' ");
+        }
+        /*switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }*/
+        
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>';
+        $count = GestionInformacion::model()->findAll($criteria);
+        
+        //return $cogit stautunt.', versiones: '.$versiones;
+        return $count;
+    }
+
+    public function getProformaDetalleTotal($dia_inicial, $dia_actual, $year, $mes, $search, $categoria){
+        if($search['fecha'])    
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        //echo 'srf: '.$srf;
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        $criteria->select = "COUNT(DISTINCT gf.id)";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id   ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }
+        $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+            
+        $count = GestionFinanciamiento::model()->count($criteria);
+        return $count;
+    }
 }
