@@ -89,7 +89,7 @@ $(document).ready(function() {
 		<div class="col-md-4">
 			<?php echo $form->labelEx($model,'tipo'); ?>
 			<?php echo $form->dropDownList($model,'tipo',array('1' => 'Libros de Producto', '2' => 'Presentación de Producto', '3' => 
-			'Proceso de Ventas', '4' => 'Precios de Mercado', '5' => 'Cuadros Comparativos Competencia'), array('class' => 'form-control')); ?>
+			'Proceso de Ventas', '4' => 'Precios de Mercado', '5' => 'Cuadros Comparativos Competencia','6' => 'Porta Precios', '7' => 'Catálogo Producto'), array('class' => 'form-control')); ?>
 			<?php echo $form->error($model,'tipo'); ?>
 		</div>
 	</div>
