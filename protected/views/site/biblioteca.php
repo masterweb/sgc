@@ -11,7 +11,7 @@
     <ul class="menu">
         <li class="wrapper">
             <div class="forma">
-                <a href="<?php echo Yii::app()->createUrl('gestionFiles/admin', array('tipo' => '1')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/libro_prod.png" width="46" height="56"></div>
+                <a href="<?php echo Yii::app()->createUrl('gestionFiles/libros'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/libro_prod.png" width="46" height="56"></div>
                     <div class="txt_menu">Libros de Producto</div></a>
             </div>
         </li>
@@ -29,8 +29,14 @@
                     </li>-->
         <li class="wrapper">
             <div class="forma">
-                <a href="<?php echo Yii::app()->createUrl('gestionFiles/admin', array('tipo' => '4')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/prec_mercado.png" width="46" height="56"></div>
+                <a href="<?php echo Yii::app()->createUrl('gestionFiles/mercado'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/prec_mercado.png" width="46" height="56"></div>
                     <div class="txt_menu">Información de Mercado</div></a>
+            </div>
+        </li>
+        <li class="wrapper">
+            <div class="forma">
+                <a href="<?php echo Yii::app()->createUrl('gestionFiles/admin', array('tipo' => '8')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/prec_mercado.png" width="46" height="56"></div>
+                    <div class="txt_menu">Paleta de Colores</div></a>
             </div>
         </li>
         <!--<li class="wrapper">

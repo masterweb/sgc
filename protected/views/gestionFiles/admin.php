@@ -1,7 +1,13 @@
 <?php
 /* @var $this GestionFilesController */
 /* @var $model GestionFiles */
-$bl = GestionFiles::model()->findAll(array('condition' => "tipo = {$tipo}",'order' => 'fecha_actualizacion DESC'));
+if($tipo == '1'){
+
+	$bl = GestionFiles::model()->findAll(array('condition' => "tipo = {$tipo} AND mes = '{$mes}'",'order' => 'fecha_actualizacion DESC'));
+}else{
+	$bl = GestionFiles::model()->findAll(array('condition' => "tipo = {$tipo}",'order' => 'fecha_actualizacion DESC'));
+}
+
 
 /*$this->breadcrumbs=array(
 	'Gestion Files'=>array('index'),

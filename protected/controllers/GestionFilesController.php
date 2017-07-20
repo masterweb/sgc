@@ -32,7 +32,7 @@ class GestionFilesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','producto'),
+				'actions'=>array('create','update','admin','producto','libros','mercado'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -148,7 +148,7 @@ class GestionFilesController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin($tipo = null)
+	public function actionAdmin($tipo = null, $mes = null)
 	{
 		$model=new GestionFiles('search');
 		$model->unsetAttributes();  // clear any default values
@@ -156,7 +156,7 @@ class GestionFilesController extends Controller
 			$model->attributes=$_GET['GestionFiles'];
 
 		$this->render('admin',array(
-			'model'=>$model, 'tipo' => $tipo
+			'model'=>$model, 'tipo' => $tipo, 'mes' => $mes
 		));
 	}
 
@@ -190,5 +190,13 @@ class GestionFilesController extends Controller
 
 	public function actionProducto(){
 		$this->render('producto');
+	}
+
+	public function actionLibros(){
+		$this->render('libros');
+	}
+
+	public function actionMercado(){
+		$this->render('mercado');
 	}
 }
