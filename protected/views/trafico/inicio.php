@@ -138,6 +138,8 @@ $(document).ready(function() {
     .cir-19{background-color: #FF0000;}
     .cir-20{background-color: #7F00FF;}
     .cir-21{background-color: #D2322D;}
+    .cir-22{background-color: #90C84B;}
+    .cir-23{background-color: #FFAB72;}
     .odd-mh > td.cir-1{background-color: #FB0A2A;}
     .odd-mh > td.cir-2{background-color:#4080FF;}
     .odd-mh > td.cir-3{background-color: #33cc00;}
@@ -603,8 +605,11 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     <tr>
                         <td>Tasa de Test Drive</td>
                         <?php
+                        //echo '<pre>';
+                        //print_r($vartrf['trafico_suma_total']);
+                        //echo '</pre>';
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $this->getTasaTD($vartrf['testdrive_nacional_total'][$i], $vartrf['trafico_nacional_total'][$i]) . '</td>';
+                            echo '<td>' . $this->getTasaTD($vartrf['testdrive_suma_total'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
                         }
                         ?>
                         <td><?php echo $this->getTasaTD($vartrf['testdrive_nacional'], $vartrf['trafico_nacional']); ?></td>
@@ -613,7 +618,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         <td>Tasa de Cierre</td>
                         <?php
                         for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-                            echo '<td>' . $this->getTasaCierre($vartrf['venta_nacional_total'][$i], $vartrf['trafico_nacional_total'][$i]) . '</td>';
+                            echo '<td>' . $this->getTasaCierre($vartrf['venta_suma_total'][$i], $vartrf['trafico_suma_total'][$i]) . '</td>';
                         }
                         ?>
                         <td><?php echo $this->getTasaCierre($vartrf['ventas_nacional'], $vartrf['trafico_nacional']); ?></td>
