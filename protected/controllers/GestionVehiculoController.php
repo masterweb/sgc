@@ -1250,7 +1250,9 @@ WHERE gi.id = {$id_informacion} AND gv.id = {$id_vehiculo} ORDER BY gf.id DESC L
         require_once 'email/mail_func.php';
         $emailCliente = $this->getEmailCliente($id_informacion);
         $id_modelo = $this->getIdModelo($id_vehiculo);
-        $ficha_tecnica = $this->getPdf($id_modelo);
+        $vr = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id_informacion} AND id = {$id_vehiculo}"));
+        $version = $vr->version;
+        $ficha_tecnica = $this->getPdf($id_modelo, $version);
         $nombre_cliente = $this->getNombresInfo($id_informacion) . ' ' . $this->getApellidosInfo($id_informacion);
         $id_asesor = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_asesor);
@@ -1382,6 +1384,8 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id_asesor = Yii::app()->user->getId();
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
+       
+
         $asunto = 'Kia Motors Ecuador SGC - Proforma ID Cliente # ' . $this->getNumProforma($id_vehiculo);
         $general = '<body style="margin: 10px;">
                         <div style="width:600px; margin:0 auto; font-family:Arial, Helvetica, sans-serif; font-size: 11px;">
@@ -1434,7 +1438,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         //$email = 'gansaldo72@hotmail.com';
         $emailAsesor = $this->getAsesorEmail($id_asesor);
 
-        $send = sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);
+        if($cargo_id!=89)          
+            $send = sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, $emailAsesor, html_entity_decode($asunto), $codigohtml);    
+        else        
+            $send = sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $email, "", html_entity_decode($asunto), $codigohtml);
+
+          
+        
     }
 
     /**
