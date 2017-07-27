@@ -10,7 +10,14 @@
 <script type="text/javascript">
   
     $(document).ready(function() {
-        
+        vaciar();
+         var prov = '<?php echo $varView['provincia'] ; ?>';
+            if(prov!="" && prov!=null){
+                $('#reporte_provincia').val(prov);
+                getGrupos(prov); 
+            }
+            
+            
     });
     function detailmedios(tipo_medio, fecha_inicial, fecha_final,fecha_anterior_inicial, fecha_anterior_final, provincia,obj,obj_sign,obj_row){
 
@@ -29,7 +36,7 @@
                         },
                         type: 'POST',
                         dataType: 'json',
-                        data: {tipo_medio:tipo_medio, fecha_inicial:fecha_inicial,fecha_final:fecha_final,provincia:provincia},
+                        data: {tipo_medio:tipo_medio, fecha_inicial:fecha_inicial,fecha_final:fecha_final,provincia:$('#reporte_provincia').val(), concesionario: $('#reporte_concesionario').val(), responsable:$('#reporte_responsable').val(),grupo:$('#reporte_grupo').val()},
                         success: function (data) {
                             
                             var contadorActual=data.data.length;
@@ -44,7 +51,7 @@
                                 },
                                 type: 'POST',
                                 dataType: 'json',
-                                data: {tipo_medio:tipo_medio, fecha_inicial:fecha_anterior_inicial,fecha_final:fecha_anterior_final,provincia:provincia},
+                                data: {tipo_medio:tipo_medio, fecha_inicial:fecha_anterior_inicial,fecha_final:fecha_anterior_final,provincia:$('#reporte_provincia').val(), concesionario: $('#reporte_concesionario').val(), responsable:$('#reporte_responsable').val(),grupo:$('#reporte_grupo').val()},
                                 success: function (data1) {
                                     detalleAnterior=data1.data;
                                     contadorAnterior=data1.data.length;
@@ -138,7 +145,7 @@
                         },
                         type: 'POST',
                         dataType: 'json',
-                        data: {tipo_considera:tipo_considera, fecha_inicial:fecha_inicial,fecha_final:fecha_final,provincia:provincia},
+                        data: {tipo_considera:tipo_considera, fecha_inicial:fecha_inicial,fecha_final:fecha_final,provincia:$('#reporte_provincia').val(), concesionario: $('#reporte_concesionario').val(), responsable:$('#reporte_responsable').val(),grupo:$('#reporte_grupo').val()},
                         success: function (data) {
                             
                             var contadorActual=data.data.length;
@@ -153,7 +160,7 @@
                                 },
                                 type: 'POST',
                                 dataType: 'json',
-                                data: {tipo_considera:tipo_considera, fecha_inicial:fecha_anterior_inicial,fecha_final:fecha_anterior_final,provincia:provincia},
+                                data: {tipo_considera:tipo_considera, fecha_inicial:fecha_anterior_inicial,fecha_final:fecha_anterior_final,provincia:$('#reporte_provincia').val(), concesionario: $('#reporte_concesionario').val(), responsable:$('#reporte_responsable').val(),grupo:$('#reporte_grupo').val()},
                                 success: function (data1) {
                                     detalleAnterior=data1.data;
                                     contadorAnterior=data1.data.length;
@@ -207,28 +214,9 @@
         }
     }
      function tabletoExcel(table, name) {
-        var tab_text = '<table border="1px" style="font-size:14px" ">';
-        var tab = document.getElementById('main_info_1'); // id of table
-        var lines = tab.rows.length;
-        //tab_text = tab_text + template;
-        // the first headline of the table
-        if (lines > 0) {
-            tab_text = tab_text + '<tr bgcolor="#DFDFDF">' + tab.rows[0].innerHTML + '</tr>';
-        }
-
-        // table data lines, loop starting from 1
-        for (j = 1 ; j < lines; j++) {     
-            tab_text = tab_text + "<tr>" + tab.rows[j].innerHTML + "</tr>";
-        }
-
-        tab_text = tab_text + "</table>";
-        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");             //remove if u want links in your table
-        tab_text = tab_text.replace(/<img[^>]*>/gi,"");                 // remove if u want images in your table
-        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, "");    // reomves input params
-        // console.log(tab_text); // aktivate so see the result (press F12 in browser)
         var uri = 'data:application/vnd.ms-excel;base64,'
     , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><?xml version="1.0" encoding="UTF-8" standalone="yes"?><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(tab_text))) }
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
     , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
   
       if (!table.nodeType) table = document.getElementById(table)
@@ -236,6 +224,97 @@
         window.location.href = uri + base64(format(template, ctx));
 
     }
+    /* $('#reporte_provincia').change(function(){
+       
+        
+    });*/
+    function getGrupos(idProvincia){
+        vaciar();
+        var value = idProvincia;
+        
+        $.ajax({
+            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionMedios/getGrupos"); ?>',
+            beforeSend: function (xhr) {
+                
+            },
+            type: 'POST', dataType: 'json', data: {id: value},
+            success: function (data) {
+               
+               $('#trafico_grupo').html(data.responseText);
+            },
+            error:function(data){
+                 $('#reporte_grupo').html(data.responseText);
+                 var grupo='<?php echo $varView['grupo'] ; ?>';
+                 if(grupo!="" && grupo!=null) {
+                    $('#reporte_grupo').val(grupo);
+                    getConcesionarios(grupo);
+                }  
+
+            }
+        });
+    }
+    function getConcesionarios(idGrupo){
+
+        vaciarConcesionario();
+        $.ajax({
+            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionMedios/getConcesionarios"); ?>',
+            beforeSend: function (xhr) {
+                
+            },
+            type: 'POST', dataType: 'json', data: {idProvincia: $('#reporte_provincia').val(), idGrupo:idGrupo},
+            success: function (data) {
+               
+               
+              
+            },
+            error:function(data){
+                $('#reporte_concesionario').html(data.responseText);
+                 var concesionario='<?php echo $varView['concesionario'] ; ?>';
+                if(concesionario!="" && concesionario!=null){
+                     $('#reporte_concesionario').val(concesionario); 
+                     getResponsable(concesionario);
+                }
+                 /*alert('error: '+data.responseText);*/
+
+            }
+        });
+
+    }
+    function getResponsable(idConcesionario){
+
+        $('#reporte_responsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+
+         $.ajax({
+            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionMedios/getResponsables"); ?>',
+            beforeSend: function (xhr) {
+                
+            },
+            type: 'POST', dataType: 'json', data: {idConcesionario:idConcesionario},
+            success: function (data) {
+            },
+            error:function(data){
+                $('#reporte_responsable').html(data.responseText);
+                 var responsable='<?php echo $varView['responsable'] ; ?>';
+                if(responsable!="" && responsable!=null) 
+                {
+                    $('#reporte_responsable').val(responsable); 
+                }
+            }
+        });
+
+    }
+     function vaciar(){
+       $('#reporte_grupo').find('option').remove().end().append('<option value="">--Grupo--</option>').val('');
+        $('#reporte_concesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
+        $('#reporte_responsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+        //$("#GestionInformacionGrupo option:selected").prop("selected", false);
+        //$("#GestionInformacionProvincias option:selected").prop("selected", false);
+    }
+    function vaciarConcesionario(){
+         $('#reporte_concesionario').find('option').remove().end().append('<option value="">--Concesionario--</option>').val('');
+        $('#reporte_responsable').find('option').remove().end().append('<option value="">--Responsable--</option>').val('');
+    }
+   
 </script>
 <style type="text/css">
     .tl_seccion_gris{margin-left: 0px;}
@@ -270,6 +349,43 @@
                     <i class="fa fa-calendar glyphicon glyphicon-calendar cal_out"></i>
          </div>
 
+        
+          <div class="col-md-6">
+               
+            <label for="lbl_provincia">Provincia</label>
+            <select name="GI[provincia]" id="reporte_provincia" class="form-control" onchange="getGrupos(this.value)">
+                            <?php echo $this->getAllProvincias(); ?>
+            </select>
+                 
+        </div>
+
+        <div class="col-md-6">
+            <label for="">Grupo</label>
+            <div id="info5" style="display: none;"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader.gif" alt=""></div>
+                        
+            <select name="GI[grupo]" id="reporte_grupo" class="form-control" onchange="getConcesionarios(this.value)">
+             
+            </select>
+
+        </div>
+        <hr />
+        <div class="col-md-6">
+            <label for="">Concesionario</label>
+            <select name="GI[concesionario]" id="reporte_concesionario" class="form-control" onchange="getResponsable(this.value)">
+                           
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="">Responsable</label>
+            <select name="GI[responsable]" id="reporte_responsable" class="form-control">
+                        
+            </select>
+                        
+        </div>
+       
+        <hr />
+
         <div class="col-md-6">
             <input class="btn btn-primary" type="submit" name="yt0"  id="generarReporteGestionMedios" value="Buscar">
         </div>
@@ -277,7 +393,7 @@
     </div>
             
     <?php $this->endWidget(); ?>
-    
+    <div class="tittle"><?php echo $varView['titleBusqueda']; ?></div>
     <div class="row">
         <h3>¿Por qué medio tuvo información de nuestra marca que motivó su visita?</h3>   
         <div class="col-md-12">
