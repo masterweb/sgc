@@ -157,11 +157,11 @@ if($fuente == 'web'){
 
                                         <?php
                                         if ($countp > 0):?>
-                                            <td><a  href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-xs btn-success btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" usados="<?php echo $c['id']; ?>">Catálogo</a>
+                                            <td><a  href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo'],$c['version']); ?>" class="btn btn-xs btn-success btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" usados="<?php echo $c['id']; ?>">Catálogo</a>
                                             </td>
                                             <td><a  href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-xs btn-pres  btn-success" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a></td>
                                         <?php else:     ?>
-                                            <td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-primary btn-xs btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" onclick="cat(<?php echo $c['id']; ?>)" usados="<?php echo $c['id']; ?>">Catálogo</a></td>
+                                            <td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo'],$c['version']); ?>" class="btn btn-primary btn-xs btn-cat<?php echo $c['id']; ?> btn-cat" target="_blank" id="btn-cat" onclick="cat(<?php echo $c['id']; ?>)" usados="<?php echo $c['id']; ?>">Catálogo</a></td>
                                             <td><a href="<?php echo Yii::app()->createUrl('gestionPresentacion/create', array('id_informacion' => $id, 'id_vehiculo' => $c['id'])); ?>" class="btn btn-danger btn-xs btn-pres" disabled="disabled" id="btn-pres<?php echo $c['id']; ?>" usados="<?php echo $c['id']; ?>">Presentación</a></td>
                                         <?php endif; ?>
 
@@ -178,7 +178,7 @@ if($fuente == 'web'){
                                           echo '<td><a href="' . Yii::app()->createUrl('gestionTestDrive/create', array('id_informacion' => $c['id_informacion'], 'id' => $c['id'])) . '" class="btn btn-xs btn-warning">Observación</a></td>';
                                           } */
                                         ?>
-                                        <!--<td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo']); ?>" class="btn btn-info btn-xs" target="_blank">Accesorios</a>-->
+                                        <!--<td><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/<?php echo $this->getPdf($c['modelo'],$c['version']); ?>" class="btn btn-info btn-xs" target="_blank">Accesorios</a>-->
                                         
                                         <td><a href="<?php echo Yii::app()->request->baseUrl; ?>/images/Noticias-Kia-Enero-2016-(2).pdf" target="_blank" class="btn btn-xs btn-default">Ver Noticias</a></td>
                                     </tr>

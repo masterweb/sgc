@@ -1112,9 +1112,9 @@ class Controller extends CController {
      *  @param integer $id the ID of the vehicle
      *  @return name of pdf file
      */
-    public function getPdf($id) {
+    public function getPdf($id_modelo, $id_vehiculo) {
         $criteria = new CDbCriteria(array(
-            'condition' => "id_modelos={$id}",
+            'condition' => "id_modelos={$id_modelo} AND id_versiones = {$id_vehiculo} and status=1",
             'limit' => 1,
         ));
         $pdf = Versiones::model()->find($criteria);
@@ -4417,7 +4417,7 @@ class Controller extends CController {
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
         $criteria->join .= ' INNER JOIN usuarios u ON u.id = gi.responsable';
-        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio' || $_GET['GestionDiaria']['status'] == 'exhibicion_automundo_gye'){
+        if($_GET['GestionDiaria']['status'] == 'exhibicion_automundo_uio' || $_GET['GestionDiaria']['status'] == 'exhibicion_automundo_gye' || ($_GET['GestionDiaria']['modelo'] != '' && $_GET['GestionDiaria']['modelo'] !=999)){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }  
        
@@ -4467,6 +4467,10 @@ class Controller extends CController {
                     $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
                 }
                 $dealerList = implode(', ', $array_dealers);
+
+
+                
+
                 $criteria->condition = "gi.dealer_id IN ({$dealerList})";
                 if($cargo_adicional == 85){
                     $criteria->addCondition("(u.cargo_id IN(71,70,85,86))");
@@ -4504,7 +4508,7 @@ class Controller extends CController {
                 break;
 
                 case 89: // ASESORES TELEWEB
-                $criteria->condition = "gi.responsable = {$id_responsable}";
+                $criteria->condition = "(gi.responsable = {$id_responsable} OR gi.responsable_origen_tm = {$id_responsable})";
                 break;    
             default:
                 break;
@@ -4549,10 +4553,7 @@ class Controller extends CController {
 
 
         $search_type = 0;   
-    //    echo '<pre>';
-    //    print_r($criteria);
-    //    echo '</pre>';
-    //    die();
+        
 
         //die('search type combined: '.$search_type);
         // BUSQUEDA GENERAL CEDULA, NOMBRES, ID
@@ -4648,11 +4649,7 @@ class Controller extends CController {
         if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
             $fechaPk2 = 1;
         }
-        //echo '<br />fechaPk: '.$fechaPk.', fechaPk2: '.$fechaPk2;
-        // STATUS - CATEGORIZACION
-        if ($_GET['busqueda_general'] == 0 && $_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 0 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
-            $search_type = 20;
-        }
+        //echo '<br />fechaPk: 1
         // STATUS - CATEGORIZACION - RESPONSABLE
         if ($_GET['categorizacion'] == 1 && $_GET['status'] == 1 && $_GET['responsable'] == 1 && $fechaPk == 1 && $_GET['seguimiento_rgd'] == 0 && $fechaPk2 == 1) {
             $search_type = 21;
@@ -4857,7 +4854,7 @@ class Controller extends CController {
         if($_GET['GestionDiaria']['status'] == 'nuevos_tw'){
             $stat = 'Nuevos TeleMercadeo Web';
         }
-        else if($_GET['GestionDiaria']['modelo']==999){
+         if($_GET['GestionDiaria']['modelo']==999){
             $criteria->join .= ' INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }
         if (!empty($_GET['GestionDiaria']['version']) && $_GET['GestionDiaria']['version']>0 && $_GET['GestionDiaria']['version']!=999)
@@ -4871,57 +4868,20 @@ class Controller extends CController {
 
             case 0:
                 $title = "No existen resultados. Para realizar la búsqueda utilice sólo uno de los filtros";
-                $data['title'] = $title;
-                $data['users'] = $users = array();
-                return $data;
                 break;
             case 1: // BUSQUEDA GENERAL POR NOMBRES, APELLIDOS, CEDULA, ID
                 $count = 0;
-                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.id = '{$_GET['GestionDiaria']['general']}')", 'AND');
-                
+                $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.cedula LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.ruc LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.pasaporte LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.id = '{$_GET['GestionDiaria']['general']}')", 'AND');               
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-//              echo '<pre>';
-//              print_r($criteria);
-//              echo '</pre>';
-//              die();
-
-                $count = $pages->itemCount;
-                //die('before render nombre:'.$count);
-                if ($count > 0) {
-                    //die('fef');
-                    $title = "Busqueda general por apellidos, nombres, cedula, ruc, pasaporte o id: <strong>{$_GET['GestionDiaria']['general']}</strong>";
-                    $data['title'] = $title;
-                    $data['users'] = $users;
-                    $data['pages'] = $pages;
-                    return $data;
-                    //die('after data');-
-                }
-                if ($count == 0) { // no existen resultados para ninguna opcion
-                    $title = "No existen resultados para: <strong>{$_GET['GestionDiaria']['general']}</strong>";
-                    $data['title'] = $title;
-                    $data['users'] = $users = array();
-                    return $data;
-                }
+                $title = "Busqueda general por apellidos, nombres, cedula, ruc, pasaporte o id: <strong>{$_GET['GestionDiaria']['general']}</strong>";
                 break;
             case 2: // BUSQUEDA POR CATEGORIZACION
                 $sql .= $sql_cargos;
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'");
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 3: // BUSQUEDA POR STATUS
                 
@@ -4930,21 +4890,7 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-                //$title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['status']}</strong>";
                 $title = "Busqueda por Status: <strong>".$stat."</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                //echo print_r($data['pages']);
-                return $data;
                 break;
             case 4: // BUSQUEDA POR FECHA
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
@@ -4953,33 +4899,12 @@ class Controller extends CController {
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                //die($sql);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-                //  die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 5: // BUSQUEDA POR FUENTE
                 
                 $criteria->addCondition(" gn.fuente = '{$_GET['GestionDiaria']['fuente']}'", 'AND');
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Status: <strong>{$_GET['GestionDiaria']['fuente']}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 6: // BUSQUEDA POR RESPONSABLE JEFE SUCURSAL
                 
@@ -5024,19 +4949,7 @@ class Controller extends CController {
                     $criteria->addCondition('gi.bdc = 1', 'AND');
                     $criteria->order = "gi.id DESC";
                 }
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-                //die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title .= ". <strong> Total: </strong>".(GestionInformacion::model()->count($criteria));
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 7:
                 break;
@@ -5078,20 +4991,7 @@ class Controller extends CController {
                 $criteria->addCondition('gd.desiste = 0', 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
-                //die($sql);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Concesionario: <strong>{$nombre_concesionario}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 13: // BUSQUEDA POR RESPONSABLE
                 
@@ -5122,15 +5022,7 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 14: // BUSQUEDA POR GRUPO SUPER ADMINISTRADOR
                 
@@ -5191,18 +5083,6 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                //die($sql);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
-
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 15: // BUSQUEDA POR CAMPOS VACIOS
                 $criteria = new CDbCriteria;
@@ -5246,18 +5126,6 @@ class Controller extends CController {
                           $version=$_GET['GestionDiaria']['version'];   
                         $criteria->addCondition("gv.version = {$version} ");
                     }  
-
-
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-
-                //$request = $con->createCommand($sql);
-                //$users = $request->queryAll();
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 16:
                 //die('get array: '.$get_array);
@@ -5409,19 +5277,6 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                //die($sql);
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 17: // BUSQUEDA POR RESPONSABLE AEKIA
                 if ($_GET['GestionDiaria']['responsable'] == 'all') {
@@ -5456,16 +5311,6 @@ class Controller extends CController {
                     $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
                 }
                 $title = "Busqueda por Responsable: <strong>{$responsable}</strong>";
-                //die($sql);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
 
             case 18: // BUSQUEDA POR FECHA
@@ -5475,19 +5320,7 @@ class Controller extends CController {
                 
                 $criteria->addCondition("gd.fecha BETWEEN '{$params1}' AND '{$params2}'");
                 $criteria->group = "gi.cedula, gi.ruc, gi.pasaporte";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Busqueda por Fecha: Entre <strong>{$params1} y {$params2}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 19: // SEARCH BY SEGUIMIENTO
                 $fecha_actual = (string) date("Y/m/d");
@@ -5513,41 +5346,13 @@ class Controller extends CController {
                 }
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-                //die('fecha actual: '.$fecha_actual);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
                 break;
             case 20: // SEARCH BY CATEGORIZACION AND STATUS
                 $condition = self::setStatusCriteria($_GET['GestionDiaria']['status']);
                 $criteria->addCondition($condition);
                 $criteria->addCondition("gc.preg7 = '{$_GET['GestionDiaria']['categorizacion']}'", 'AND');
-                
-
-                
-
-
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
-
                 break;
             case 21: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
@@ -5573,15 +5378,7 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
 
@@ -5608,21 +5405,8 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong> y Responsable: <strong>{$responsable}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
-
                 break;
             case 23: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
@@ -5666,21 +5450,8 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
-
                 break;
             case 24: // SEARCH BY CATEGORIZACION, RESPONSABLE AND SEGUIMIENTO WITH RANGE DATE
                 $criteria->condition = "gi.responsable = {$_GET['GestionDiaria']['responsable']}";
@@ -5724,15 +5495,7 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 25: // SEARCH BY CATEGORIZACION AND FECHA DE REGISTRO
@@ -5745,15 +5508,7 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 26: // SEARCH BY STATUS AND FECHA DE REGISTRO
@@ -5765,19 +5520,7 @@ class Controller extends CController {
                 $criteria->addCondition("DATE(gi.fecha) BETWEEN '{$params1}' AND '{$params2}'", 'AND');
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha: <strong>{$_GET['GestionDiaria']['fecha']}</strong>- <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 27: // SEARCH BY CATEGORIZACION, RESPONSABLE AND REGISTER DATE
@@ -5807,20 +5550,8 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Categorización: <strong>{$_GET['GestionDiaria']['categorizacion']}</strong>, Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 28: // SEARCH BY RESPONSABLE AND SEGUIMIENTO
@@ -5866,20 +5597,8 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 29: // SEARCH BY RESPONSABLE, SEGUIMIENTO AND DATE RANGE
@@ -5923,20 +5642,8 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
                 $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
 
                 break;
             case 33: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO Y RESPONSABLE
@@ -5957,18 +5664,12 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+        
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+           
                 break;
             case 34: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS Y RESPONSABLE
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
@@ -5980,18 +5681,12 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+          
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+               
                 break;
             case 35: // SEARCH BY BUSQUEDA GENERAL, GRUPO , CONCESIONARIO, STATUS, RESPONSABLE AND FECHA DE REGISTRO
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
@@ -6007,18 +5702,12 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+            
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong> ,Responsable: <strong>{$responsable}</strong>, {$title_ag} - <strong>Cantidad: ".$pages->itemCount."</strong> ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+              
                 break;
             case 36: // SEARCH BY GRUPO , CONCESIONARIO AND STATUS
                 // SEARCH BY ONE MONTH BESIDE
@@ -6029,18 +5718,12 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+              
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".$pages->itemCount."</strong> ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+              
                 break;
             case 38: // SEARCH BY FECHA DE REGISTRO, GRUPO AND CONCESIONARIO
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
@@ -6053,15 +5736,9 @@ class Controller extends CController {
                 
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+              
                 $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+              
 
                 break;
             case 39: // SEARCH BY FECHA DE REGISTRO, GRUPO, CONCESIONARIO AND RESPONSABLE
@@ -6077,15 +5754,9 @@ class Controller extends CController {
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+              
                 $title = "Búsqueda por Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Responsable <strong>{$responsable}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+      
 
                 break;
             case 40: // SEARCH BY BUSQUEDA GENERAL, GRUPO AND CONCESIONARIO
@@ -6109,18 +5780,12 @@ class Controller extends CController {
                 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+           
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+         
                 break;
             case 41: // SEARCH BY BUSQUEDA GENERAL AND GRUPO
                 $criteria->addCondition("(gi.nombres LIKE '%{$_GET['GestionDiaria']['general']}%' OR gi.apellidos LIKE '%{$_GET['GestionDiaria']['general']}%')", 'AND');
@@ -6139,18 +5804,12 @@ class Controller extends CController {
                 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+           
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Grupo: <strong>{$grupo}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+        
                 break;
             case 42: // SEARCH BY GRUPO , CONCESIONARIO, STATUS AND RESPONSABLE
                 // SEARCH BY ONE MONTH BESIDE
@@ -6162,18 +5821,12 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+      
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".$pages->itemCount."</strong> ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+          
                 break; 
             case 43: // SEARCH BY STATUS, FECHA DE REGISTRO, GRUPO AND CONCESIONARIO
                 $params = explode('-', $_GET['GestionDiaria']['fecha']);
@@ -6188,18 +5841,9 @@ class Controller extends CController {
                 
                 $grupo = $this->getNombreGrupo($_GET['GestionDiaria']['grupo']);
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';s
-//                print_r($criteria);
-//                echo '</pre>';
+         
                 $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Grupo: <strong>{$grupo}</strong>, Concesionario: <strong>{$concesionario}</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+           
 
                 break;
             case 44: // SEARCH BY RESPONSABLE AND REGISTER DATE
@@ -6228,20 +5872,11 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
-//                die();
+
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+    
                 $title = "Búsqueda por Responsable: <strong>{$responsable}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+          
 
                 break;
             case 45: // SEARCH BY CATEGORIZACION, STATUS AND RESPONSABLE
@@ -6250,19 +5885,11 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-//                echo '<pre>';
-//                print_r($criteria);
-//                echo '</pre>';
+
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+     
                 $title = "Búsqueda por Status: <strong>{$stat}</strong>, Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+      
 
                 break;
             case 46: // SEARCH BY STATUS, FECHA DE REGISTRO, CONCESIONARIO
@@ -6278,18 +5905,9 @@ class Controller extends CController {
                 
                 
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
-//                echo '<pre>';s
-//                print_r($criteria);
-//                echo '</pre>';
+          
                 $title = "Búsqueda por Status: <strong>{$stat}</strong>, Fecha de Registro: <strong>{$_GET['GestionDiaria']['fecha']}</strong>, Concesionario: <strong>{$concesionario}</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+       
 
                 break;
             case 47: // SEARCH BY CONCESIONARIO AND STATUS
@@ -6301,17 +5919,11 @@ class Controller extends CController {
                 $criteria->addCondition($condition);
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+            
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} - <strong>Cantidad: ".$pages->itemCount."</strong> ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+           
                 break;
             case 48: // SEARCH BY CONCESIONARIO, STATUS AND RESPONSABLE 
                 // SEARCH BY ONE MONTH BESIDE
@@ -6324,17 +5936,11 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+            
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Status: <strong>{$stat}</strong>, {$title_ag} Responsable: <strong>{$responsable}</strong> - <strong>Cantidad: ".$pages->itemCount."</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+            
                 break;
             case 49: // SEGUIMIENTO - CONCESIONARIO
                 $criteria->addCondition("gi.dealer_id = {$_GET['GestionDiaria']['concesionario']}", 'AND');
@@ -6364,15 +5970,9 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+             
                 $title = "Búsqueda por ".$title_ag.", Concesionario: <strong>{$concesionario}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+         
 
                 break;
             case 50: // SEARCH BY BUSQUEDA GENERAL AND CONCESIONARIO
@@ -6396,17 +5996,11 @@ class Controller extends CController {
 
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+            
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Busqueda general : <strong>{$_GET['GestionDiaria']['general']}</strong>, Concesionario: <strong>{$concesionario}</strong>";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+             
                 break;
                 
             case 51: // SEARCH BY BUSQUEDA GENERAL, CONCESIONARIO Y RESPONSABLE - GERENTE COMERCIAL
@@ -6422,21 +6016,30 @@ class Controller extends CController {
                 $criteria->group = "gi.id";
                 $criteria->order = "gi.id DESC";
                 $responsable = $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
-                $pages = new CPagination(GestionInformacion::model()->count($criteria));
-                $pages->pageSize = 10;
-                $pages->applyLimit($criteria);
-                $users = GestionInformacion::model()->findAll($criteria);
+            
                 $concesionario = $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
 
                 $title = "Búsqueda por Concesionario: <strong>{$concesionario}</strong>, Responsable: <strong>{$responsable}</strong>, {$title_ag} ";
-                $data['title'] = $title;
-                $data['users'] = $users;
-                $data['pages'] = $pages;
-                return $data;
+             
                 break;    
             default:
                 break;
         }
+       
+        $pages = new CPagination(GestionInformacion::model()->count($criteria));
+        $pages->pageSize = 10;
+        $pages->applyLimit($criteria);
+        $users = GestionInformacion::model()->findAll($criteria);
+        $data['title'] = $title;
+        $data['users'] = $users;
+        $data['pages'] = $pages;
+
+              // echo '<pre>';
+              //  print_r($criteria);
+               // echo '</pre>';
+               //die();
+
+        return $data;            
 
 
     }
@@ -6488,7 +6091,12 @@ class Controller extends CController {
                 break;
 
             case 'nuevos_tw':
-                $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 0)";
+
+                $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+                if($cargo_id!=70)
+                    $condition = "(gd.medio_contacto = 'web' AND gi.reasignado_tm = 0)";
+                else 
+                    $condition = "(gd.fuente_contacto = 'web' OR gd.fuente_contacto_historial = 'web')";
                 break;                
             default:
                 break;
@@ -6670,5 +6278,8 @@ class Controller extends CController {
         $name_model = $this->getModel($modelo->modelo);
         return $name_model;
     }
+
+
+    
 
 }
