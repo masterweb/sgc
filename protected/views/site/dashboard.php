@@ -99,6 +99,15 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
             </div>
         </li>
         <?php endif; ?>
+        <?php $aekia = ['14','13','12','4'];
+        if(in_array($area_id, $aekia)): ?>
+            <li class="wrapper">
+                <div class="forma">
+                    <a href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'tw')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
+                        <div class="txt_menu">Reportes Web Asiauto</div></a>
+                </div>
+            </li>
+        <?php endif; ?>
         <?php 
         $restricted_reportes = ['74', '76', '77','86','85','59','83','82','87','89'];
         if(!in_array($cargo_id, $restricted_reportes)):?>
@@ -170,6 +179,12 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                         <div class="txt_menu">Base de Datos</div></a>
                 </div>
             </li>   
+            <li class="wrapper">
+                <div class="forma">
+                    <a href="<?php echo Yii::app()->createUrl('gestionMedios/reportes'); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="46" height="56"></div>
+                        <div class="txt_menu">Reportes Medios</div></a>
+                </div>
+            </li>  
             <?php endif; ?>
             <?php
     }

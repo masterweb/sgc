@@ -184,8 +184,6 @@ class GestionMediosController extends Controller {
     		//die();
     		
 
-		
-
 
         date_default_timezone_set('America/Guayaquil');
         $dt = time();

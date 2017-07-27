@@ -70,10 +70,10 @@
                                                 cantidadAnterior="";
                                             }
                                             if(i % 2 != 0){
-                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#cccccc; text-align:center">'+medioActual+'</td><td style="background-color:#cccccc;">'+cantidadActal+'</td><td style="background-color:#cccccc; text-align:center">'+medioAnterior+'</td><td style="background-color:#cccccc;">'+cantidadAnterior+'</td></tr>';
+                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#cccccc; text-align:center">'+getMediaName(medioActual)+'</td><td style="background-color:#cccccc;">'+cantidadActal+'</td><td style="background-color:#cccccc; text-align:center">'+getMediaName(medioAnterior)+'</td><td style="background-color:#cccccc;">'+cantidadAnterior+'</td></tr>';
                                             }
                                             if(i % 2 == 0){
-                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#999999; text-align:center">'+medioActual+'</td><td style="background-color:#999999;">'+cantidadActal+'</td><td style="background-color:#999999; text-align:center">'+medioAnterior+'</td><td style="background-color:#999999;">'+cantidadAnterior+'</td></tr>';
+                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#999999; text-align:center">'+getMediaName(medioActual)+'</td><td style="background-color:#999999;">'+cantidadActal+'</td><td style="background-color:#999999; text-align:center">'+getMediaName(medioAnterior)+'</td><td style="background-color:#999999;">'+cantidadAnterior+'</td></tr>';
                                             }
 
                                             
@@ -98,7 +98,29 @@
                 $(obj_sign).html('+');    
         }
     }
+    function getMediaName(medio){
+        switch(medio){
+            case "calidad_de_producto":
+                return "Calidad de producto";
+            break
+            case "diseno":
+                return "Diseño";
+            break
+             case "atencion":
+                return "Atención";
+            break
+            case "garantia":
+                return "Garantía";
+            break
+            case "facilidades_credito":
+                return "Facilidades de crédito";
+            break
+            default:
+                return medio
+                break;
 
+        }
+    }   
     function detailConsidera(tipo_considera, fecha_inicial, fecha_final,fecha_anterior_inicial, fecha_anterior_final, provincia,obj,obj_sign,obj_row){
 
         var sign = $(obj_sign).html();
@@ -157,10 +179,10 @@
                                                 cantidadAnterior="";
                                             }
                                             if(i % 2 != 0){
-                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#cccccc; text-align:center">'+medioActual+'</td><td style="background-color:#cccccc;">'+cantidadActal+'</td><td style="background-color:#cccccc; text-align:center">'+medioAnterior+'</td><td style="background-color:#cccccc;">'+cantidadAnterior+'</td></tr>';
+                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#cccccc; text-align:center">'+getMediaName(medioActual)+'</td><td style="background-color:#cccccc;">'+cantidadActal+'</td><td style="background-color:#cccccc; text-align:center">'+getMediaName(medioAnterior)+'</td><td style="background-color:#cccccc;">'+cantidadAnterior+'</td></tr>';
                                             }
                                             if(i % 2 == 0){
-                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#999999; text-align:center">'+medioActual+'</td><td style="background-color:#999999;">'+cantidadActal+'</td><td style="background-color:#999999; text-align:center">'+medioAnterior+'</td><td style="background-color:#999999;">'+cantidadAnterior+'</td></tr>';
+                                                cadena+='<tr class="'+obj.replace('#','')+'"><td style="background-color:#999999; text-align:center">'+getMediaName(medioActual)+'</td><td style="background-color:#999999;">'+cantidadActal+'</td><td style="background-color:#999999; text-align:center">'+getMediaName(medioAnterior)+'</td><td style="background-color:#999999;">'+cantidadAnterior+'</td></tr>';
                                             }
                                             
                                     }
