@@ -1068,7 +1068,7 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                     <?php
 
 
-                    if ($_GET['fuente'] == 'web' && $re > 0){
+                    if ($_GET['fuente'] == 'web' && $re > 0 && $cargo_id != 89) {
 
 
                     if(($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14)){
@@ -1123,6 +1123,62 @@ $area_id = (int) Yii::app()->user->getState('area_id');
                             break;
                     }
                     }
+                    }
+                    else if ($cargo_id != 89){
+
+                                    if(($area_id != 4 &&  $area_id != 12 &&  $area_id != 13 &&  $area_id != 14)){
+                        switch ($_GET['paso']) {
+                            case '1-2':
+                                $status = $this->getStatusGD($_GET['id_gt']);
+                                if ($status == 1) {
+                                    $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
+                                    //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'gestion'));
+                                    echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                } 
+                                if ($status == 3 || $status == 4) {
+                                    $url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'prospeccion'));
+                                    echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                }
+                                if(empty($status) && $_GET['fuente'] == 'prospeccion'){
+                                    $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
+                                    //$url = Yii::app()->createUrl('gestionInformacion/update', array('id' => $_GET['id'], 'tipo' => 'gestion'));
+                                    echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                }
+                                break;
+                            case '3':
+                                $url = Yii::app()->createUrl('site/consulta', array('id_informacion' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'prospeccion')); 
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            case '4':
+                                if($_GET['fuente'] == 'web'){
+                                    $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id'], 'tipo' => 'gestion', 'fuente' => 'web')); 
+                                }else{
+                                    $url = Yii::app()->createUrl('gestionVehiculo/create', array('id' => $_GET['id']));
+                                }
+                                
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            case '5':
+                                $url = Yii::app()->createUrl('site/presentacion', array('id' => $_GET['id']));
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            case '6':
+                                $url = Yii::app()->createUrl('site/demostracion', array('id' => $_GET['id']));
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            case '7':
+                                $url = Yii::app()->createUrl('site/negociacion', array('id' => $_GET['id']));
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            case '9':
+                                $url = Yii::app()->createUrl('site/cierre', array('id' => $_GET['id']));
+                                echo '<div class="col-md-2"><a href="' . $url . '" type="button" class="btn btn-warning">Continuar</a></div>';
+                                break;
+                            default:
+                                break;
+                        }
+                        }
+
                     }
                     ?>
 
