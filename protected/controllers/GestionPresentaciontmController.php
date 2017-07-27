@@ -103,12 +103,16 @@ class GestionPresentaciontmController extends Controller
 	                        }
                         }
 
-                         $this -> sendReturnNotification($gi->responsable, Yii::app()->user->getId(),
-                        $_POST['GestionPresentaciontm']['id_informacion']);
-                       
+                         
+
+                        	$this -> sendReturnNotification($gi->responsable, Yii::app()->user->getId(),
+                        	 $_POST['GestionPresentaciontm']['id_informacion']);
+                       	$this->redirect(array('gestionInformacion/seguimiento'));
+                       	
 						break;
 					case '1':// cliente se presenta y sigue el proceso normal
 						# code...
+						$this->redirect(array('/site/negociacion/' . $_POST['GestionPresentaciontm']['id_informacion']));						
 						break;	
 					
 					default:
@@ -116,7 +120,7 @@ class GestionPresentaciontmController extends Controller
 						break;
 				}
 			}
-				$this->redirect(array('gestionInformacion/seguimiento'));
+				
 		}
 
 		$this->render('create',array(
@@ -215,7 +219,7 @@ class GestionPresentaciontmController extends Controller
 			Yii::app()->end();
 		}
 	}
-
+	
 	public function sendReturnNotification($jefeAgencia, $telemercadista,$id_informacion){
        
         
@@ -228,7 +232,14 @@ class GestionPresentaciontmController extends Controller
         $nameTelemercadista = $this->getAsesorName($telemercadista);
 
         $nombreCliente = $this->getNombreCliente($id_informacion);
-        $nombreConcecionario = $this->getConcesionario($this->getAsesorDealersId($jefeAgencia));
+
+        //$dealerId= $this->getAsesorDealersId($jefeAgencia);
+
+
+        $dealerId= $this->getConcesionarioId($id_informacion);
+        
+
+        $nombreConcecionario = $this->getConcesionario($dealerId);
         
        
 
@@ -304,6 +315,10 @@ class GestionPresentaciontmController extends Controller
                 $id_asesor = Yii::app()->user->getId();
                $emailAsesor = $this->getAsesorEmail($id_asesor);
                $asunto = 'SGC-CITA NO GENERADA POR ASESOR COMERCIAL';           
+                
+
+               
+
                 sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
     }
 }

@@ -5,6 +5,7 @@
 <?php
 $id_asesor = Yii::app()->user->getId();
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$area_id = (int) Yii::app()->user->getState('area_id');
 if($cargo_id != 46){
 $concesionarioid = $this->getConcesionarioDealerId($id_asesor);
 $nombreConcesionario = urlencode($this->getNameConcesionarioById($concesionarioid));
@@ -31,6 +32,10 @@ $gf = GestionFinanciamiento::model()->count($crit5);
 $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"));
 ?>
 <script type="text/javascript">
+
+
+
+ 
     $(function () {
         $('#GestionAgendamiento_agendamiento').datetimepicker({
             lang: 'es',
@@ -56,9 +61,27 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
             switch(value){
                 case '0':
                     $('.cont-cedula').hide();
+                    $('#div-observaciones').show();
+                    $('#presentacion-buttons').show(); 
                 break;
                 case '1':
                     $('.cont-cedula').show();
+                    $('#div-observaciones').show();
+                    $('#presentacion-buttons').show(); 
+                break;
+                 case '2':
+                 $('html, body').animate({
+                          scrollTop: $("#seguimiento-section").offset().top
+                     },1000);
+                    $('.cont-cedula').hide();
+                    $('#div-observaciones').hide();
+                    $('#presentacion-buttons').hide();     
+                break;
+                default:
+                     $('.cont-cedula').hide();
+                    $('#div-observaciones').hide();
+                    $('#presentacion-buttons').hide();     
+             
                 break;
                 
             }
@@ -98,38 +121,83 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
         });
     }
 
+
 </script>
 
 
 <div class="container">
     <div role="tabpanel">
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">            
-            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
+        <ul class="nav nav-tabs" role="tablist">   
+
+
             <?php
             $criteria = new CDbCriteria(array(
                 'condition' => "id={$id}"
             ));
+            $criteriaPresentacion = new CDbCriteria(array(
+                'condition' => "id_informacion={$id} and presentacion=1"
+            ));
             $info = GestionInformacion::model()->count($criteria);
+            $gestion_informacion = GestionInformacion::model()->find($criteria);
+
+            $presentacion = GestionPresentaciontm::model()->findAll($criteriaPresentacion);
+                
+
             ?>
-            <?php if ($info > 0): ?>
-                <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/update/', array('id' => $id, 'tipo' => 'gestion')); ?>"  aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
-            <?php else: ?>
-                <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
-            <?php endif; ?>
-            <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
-            <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
-            <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>
-            <li role="presentation">
+                
+            <?php if(($fuente == 'web' && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)<1) { ?> 
+                                  
+
+                     <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
+           
+
+                    <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
+
+
+                    <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+                    
+                    <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
+
+
+                     <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
+                     <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>
+                     <li role="presentation">
+                
+                    <a aria-controls="messages" role="tab">    
+                   
+                    <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cierre.png" alt="" /></span> Cierre</a></li>
+                     <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/entrega.png" alt="" /></span> Entrega</a></li>
+                     <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/seguimiento.png" alt="" /></span>Seguimiento</a></li>
+                                       
+                                  
+            <?php } else { ?>
+
+            <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
+           
+
+
+
+
+                    <?php if ($info > 0): ?>
+                     <li role="presentation"><a href="<?php echo Yii::app()->createUrl('gestionInformacion/update/', array('id' => $id, 'tipo' => 'gestion')); ?>"  aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
+                     <?php else: ?>
+                      <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/recepcion.png" alt="" /></span> Recepción</a></li>
+                   <?php endif; ?>
+                   <li role="presentation"><a href="<?php echo $urlConsulta; ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/consulta.png" alt="" /></span> Consulta</a></li>
+                   <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/presentacion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/presentacion.png" alt="" /></span> Presentación</a></li>
+                    <li role="presentation"><a href="<?php echo Yii::app()->createUrl('site/demostracion/' . $id); ?>" aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/demostracion.png" alt="" /></span> Demostración</a></li>
+                   <li role="presentation" class="active"><a aria-controls="settings" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/negociacion_on.png" alt="" /></span> Negociación</a></li>
+                  <li role="presentation">
                 <?php if($gf > 0){ ?>
                 <a href="<?php echo Yii::app()->createUrl('site/cierre/' . $id); ?>" aria-controls="messages" role="tab">
                 <?php }else{ ?> 
                 <a aria-controls="messages" role="tab">    
                 <?php } ?>    
                     <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cierre.png" alt="" /></span> Cierre</a></li>
-            <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/entrega.png" alt="" /></span> Entrega</a></li>
-            <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/seguimiento.png" alt="" /></span>Seguimiento</a></li>
+                <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/entrega.png" alt="" /></span> Entrega</a></li>
+                 <li role="presentation"><a aria-controls="messages" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/seguimiento.png" alt="" /></span>Seguimiento</a></li>
+            <?php } ?>
         </ul>
         <!-- Tab panels -->
         <div class="tab-content">
@@ -141,7 +209,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                 <div class="row">
                     <h1 class="tl_seccion">Presentación Cliente</h1>
                 </div>
-                <div class="highlight">
+                <div class="highlight" style="display: flex;">
                     
                     <div class="form">
                         <?php $agendamiento = new GestionAgendamiento; ?>
@@ -158,6 +226,40 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                         ));
                         ?>
                         <?php //echo $form->errorSummary($agendamiento);   ?>
+                        
+                      
+                         <div class="row">   
+                                 <div class="col-md-6">
+                                       
+                                        <span class="label label-warning">
+                                              
+                                        Es obligatorio confirmar si el cliente llegó o no a la cita.</span>
+                                        
+                                </div>
+                        </div> 
+                        <div class="row"> 
+                                 <div class="col-md-6">      
+                                        <span class="label label-info">Si coloca <span class="badge">NO</span> el cliente regresará al perfil del telemecaderista y desaparecerá de su RGD.
+
+                                        </span>
+                                 </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-6">            
+                                        <span class="label label-info">Si coloca <span class="badge">SI</span> está confirmando que el cliente se presentó al concesionario para continuar el proceso de compra del vehículo.
+
+                                        </span>
+                                </div>
+                        </div>
+                        <div class="row">
+                                 <div class="col-md-6">    <p>       
+                                        <span class="label label-info">Si coloca <span class="badge">SEGUIMIENTO</span> deberá agendar una nueva cita para que el cliente se acerque al concesionario, y una vez que el cliente se acerque, <br/> obligatoriamente deberá notificar si llegó.
+
+                                        </span></p>
+                                        
+                                </div>            
+                         </div>           
+                
                         <div class="row">
                             <div class="col-md-4">
                                 <label for="">Se presentó el cliente:</label>
@@ -168,14 +270,14 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                     <option value="2">Seguimiento</option>
                                 </select>
                             </div>
-                            
                         </div>
-                        <div class="row">
+                        <div id="div-observaciones" class="row" style="display: none">
                             <div class="col-md-4">
                                     <label for="">Observaciones</label>
                                     <textarea name="GestionPresentaciontm[observaciones]" id="GestionPresentacion_observaciones" cols="30" rows="6"></textarea>
-                            </div>
+                            </div>  
                         </div>
+                        
                         <div class="cont-cedula" style="display:none;">
                             <div class="row">
                                 <div class="row cont-img">
@@ -202,15 +304,37 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                                 </div>-->
                             </div>
                         </div>
-                        <div class="row buttons">
+
+                        <div id="div-img-visita" style="display:none;">
+
+                           <div class="col-md-4">
+
+                             <button type="button" class="fancybox btn btn-success btn-xs" data-toggle="modal" data-target="#imagen-visita-container">Imagen</button>   
+
+                            </div>
+                        </div>
+
+                        <div id="imagen-visita-container" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                 <img id="imagen-visita" class="img-responsive"/>
+                                                                
+                                             </div>
+                                        </div>
+                                    </div>
+                              </div>
+
+
+                        <div id="presentacion-buttons" class="row buttons" style="display: none">
                             <input type="hidden" name="GestionPresentaciontm[id_informacion]" id="GestionPresentacion_id_informacion" value="<?php echo $id; ?>">
                             <div class="col-md-2">
                             <input class="btn btn-danger" onclick="sendTM();" type="submit" name="yt0" value="Grabar">
                             </div>
                         </div>
                     <?php $this->endWidget(); ?>
-                    </div><!-- END FORM  -->
 
+                    </div><!-- END FORM  -->
                 </div><!--  END OF HIGHLIGHT -->
                 <div class="row">
                     
@@ -333,7 +457,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                     'condition' => "id_informacion={$id}"
                 ));
                 $sl = GestionSolicitudCredito::model()->count($criteria5);
-                if ($sl > 0 || $gf > 0):
+                if ((($sl > 0 || $gf > 0) && $gestion_informacion ->reasignado_tm == 0)||(($fuente == 'web' && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)>0)){
                 ?>
                     <div class="row"></div>
                     <br />
@@ -342,7 +466,11 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                             <a href="<?php echo Yii::app()->createUrl('site/cierre/' . $id); ?>" class="btn btn-danger">Continuar</a>
                         </div>
                     </div>
-                <?php endif; ?>
+                <?php } ?>
+
+
+
+
 
                 <?php //if ($gf > 216546): ?>
 <!--                    <div class="row"></div>
@@ -355,7 +483,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
                 <?php //endif; ?>
                 <div class="row"></div>
                 <br />
-                <div class="highlight">
+                <div id="seguimiento-section" class="highlight">
                     <div class="row">
                         <h1 class="tl_seccion_green">Categorización</h1>
                     </div>
@@ -620,3 +748,31 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/inhabilitarBoton.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/css/jasny-bootstrap.css" rel="stylesheet"/>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/bootstrap/js/jasny-bootstrap.js"></script>
+<script type="text/javascript">
+
+$( document ).ready(function() {
+   
+    
+
+    <?php 
+            if(($fuente == 'web' && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)>0){?>
+                $( "#GestionPresentacion_presentacion" ).val(<?php echo $presentacion[0]->presentacion ?>);
+                $( "#GestionPresentacion_presentacion" ).prop('disabled',true);               
+                $( "#GestionPresentacion_observaciones" ).val('<?php echo $presentacion[0]->observaciones ?>');
+                $( "#GestionPresentacion_observaciones" ).prop('disabled',true);
+                $('#div-observaciones').show();
+
+                $('#div-img-visita').show();
+
+                $('#imagen-visita').attr("src", "<?php echo Yii::app()->request->baseUrl . '/images/uploads/' . $presentacion[0]->img ?>")
+
+                            
+                      
+
+                
+    <?php } ?>
+   // alert('');
+});
+
+
+</script>

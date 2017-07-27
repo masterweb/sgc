@@ -22,6 +22,7 @@ $total_accesorios1 = $model->total_accesorios;
         
         
 $id_modelo = $this->getIdModelo($id_vehiculo);
+
 //echo 'id modelo: '.$id_modelo;
 $tipo = $this->getFinanciamiento($id_informacion, $id_vehiculo);
 //echo 'TIPO FINANCIAMIENTO: '.$tipo;
@@ -847,7 +848,6 @@ if ($fi == 2) {
                 // asignamos al contador de formularios el valor del click edit() del formulario
                 counter = $('#GestionFinanciamiento_mod').val();
             }
-            //console.log('counter: '+counter);
             
             var tipoFinanciamiento = $('#GestionFinanciamiento_tipo_financiamiento').val();
             var accesorioscont = $('#accesorioscont').val();
@@ -2029,6 +2029,8 @@ if ($fi == 2) {
         var idVec = $('#GestionFinanciamiento_id_vehiculo').val();
         var fuente = $('#fuente').val();
         var grupo = '<?php echo (int) Yii::app()->user->getState('grupo_id'); ?>';
+        var cargo_id = '<?php echo (int) Yii::app()->user->getState('cargo_id'); ?>';
+
         $.ajax({
             url: '<?php echo Yii::app()->createAbsoluteUrl("gestionVehiculo/sendProforma"); ?>',
             beforeSend: function (xhr) {
@@ -2044,17 +2046,17 @@ if ($fi == 2) {
                     alert('Email enviado satisfactoriamente');
                 }
                 $('#btnsendprof').show();
-                if(fuente == 'web' &&(grupo == '2' || grupo == '3')){
+
+               
+                if(fuente == 'web' &&(grupo == 2 || grupo == 3) && cargo_id!=89){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimiento"); ?>';
                     $(location).attr('href', urld);
-                    return false;
                 }
-                if(fuente == 'web' &&(grupo != '2' || grupo != '3')){
+                if(fuente == 'web' &&(grupo != 2 || grupo != 3)){
                     // redireccionar al RGD
                     urld = '<?php echo Yii::app()->createAbsoluteUrl("gestionInformacion/seguimientobdc"); ?>';
                     $(location).attr('href', urld);
-                    return false;
                 }
                 $('#bg_negro').hide();
                 
@@ -3163,7 +3165,7 @@ if ($fi == 2) {
     }
     
     function setContadoPrecio(secure, counter, accesorio2,tipo){
-    console.log('secure: '+secure + ', counter: '+ counter + ', accesorios: ' + accesorio2 + ', tipo: '+ tipo);
+    //console.log('secure: '+secure);
         if(counter == 2){
             counter = '';
         }else{
@@ -3175,11 +3177,9 @@ if ($fi == 2) {
                 case '':
                 case '0':
                     precionuevo = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val())+ parseInt(accesorio2);
-                    sumacontado = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val()) + parseInt(accesorio2);
-                    console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
-                    console.log('precionuevo suma: '+precionuevo);
+                    //console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
+                    //console.log('precionuevo suma: '+precionuevo);
                     $('#GestionFinanciamiento_precio_contado'+counter).val(format2(precionuevo, '$'));
-                    $('#GestionFinanciamiento_precio_contado'+counter).val(format2(sumacontado, '$'));
                     //alert('pone nuevo valor a precio contado');
                     break;
                 case '1':
@@ -3188,13 +3188,9 @@ if ($fi == 2) {
                 case '4':
                 case '5':
                     precionuevo = formatnumber($('#GestionFinanciamiento_precio_contado_total'+counter).val())+ parseInt(accesorio2);
-                    // sumar accesorios al precio de contado
-                    sumacontado = formatnumber($('#GestionFinanciamiento_precio_contado'+counter).val()) + parseInt(accesorio2);
-                    console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
-                    console.log('precionuevo suma: '+precionuevo);
+                    //console.log('precionuevo: '+ '#GestionFinanciamiento_precio_contado_total'+counter);
+                    //console.log('precionuevo suma: '+precionuevo);
                     $('#GestionFinanciamiento_precio_contado_total'+counter).val(format2(precionuevo, '$'));
-                    $('#GestionFinanciamiento_precio_contado'+counter).val(format2(sumacontado, '$'));
-
                     //alert('pone nuevo valor a precio contado');
                     break;
                 default:
@@ -3658,7 +3654,6 @@ if ($fi == 2) {
                                                         <option value="ISSA" <?php if($model->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                         <option value="Originarsa" <?php if($model->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                         <option value="Produbanco" <?php if($model->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
-                                                        <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                         <option value="Unifinsa" <?php if($model->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
@@ -3775,7 +3770,6 @@ if ($fi == 2) {
                                                             <option value="ISSA" <?php if($fin1->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                             <option value="Originarsa" <?php if($fin1->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                             <option value="Produbanco" <?php if($fin1->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
-                                                            <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                             <option value="Unifinsa" <?php if($fin1->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                         </select>
                                                     </div>
@@ -3918,7 +3912,6 @@ if ($fi == 2) {
                                                         <option value="ISSA" <?php if($fin2->entidad_financiera == 'ISSA'){echo "selected";} ?>>ISSFA</option>
                                                         <option value="Originarsa" <?php if($fin2->entidad_financiera == 'Originarsa'){echo "selected";} ?>>Originarsa</option>
                                                         <option value="Produbanco" <?php if($fin2->entidad_financiera == 'Produbanco'){echo "selected";} ?>>Produbanco</option>
-                                                        <option value="Portcoll" <?php if($model->entidad_financiera == 'Portcoll'){echo "selected";} ?>>Portcoll S.A.</option>
                                                         <option value="Unifinsa" <?php if($fin2->entidad_financiera == 'Unifinsa'){echo "selected";} ?>>Unifinsa</option>
                                                     </select>
                                                 </div>
