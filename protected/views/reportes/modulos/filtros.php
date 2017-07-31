@@ -131,6 +131,7 @@
                     <select name="GI[grupo]" id="GestionInformacionGrupo" class="form-control">
                         <option value="">--Seleccione Grupo--</option>
                         <?php
+                        //print_r($varView['lista_grupo']);
                         if($varView['lista_grupo']){
                             foreach ($varView['lista_grupo'] as $value) {
                                 echo '<option value="' . $value['id'] . '"';
@@ -322,6 +323,7 @@
             <input type="submit" name="" id="" value="Buscar" class="btn btn-danger"/>
             <input type="hidden" name="GI[tipo]" value="<?php echo $tipo;0 ?>" id="GI_tipo" />
             <input type="hidden" name="tipo_grupo" value="<?php echo $tipo_grupo;  ?>" id="tipo_grupo" />
+            <input type="hidden" name="tipo_search" value="<?php echo $_GET['tipo']; ?>" id="tipo_search" />
         </div>
     </div>
     <?php $this->endWidget(); ?>

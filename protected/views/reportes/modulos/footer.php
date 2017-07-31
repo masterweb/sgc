@@ -14,6 +14,8 @@
     responsable = '<?php echo $varView["js_responsable"]; ?>';
     dealer = '<?php echo $varView["js_dealer"]; ?>';
     cargo_id = '<?= $varView["cargo_id"] ?>';
+    tipo = '<?php echo $_GET["tipo"]; ?>';
+    
 <?php
 switch ($varView['cargo_id']) {
     case 4: // GERENTE GENERAL

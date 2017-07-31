@@ -19,7 +19,7 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 //print_r($varView['fecha_inicial_actual']);
 //echo '</pre>';
 //echo '<pre>';
-//print_r($varView['flag_search']);
+//print_r($varView['lista_grupo']);
 //echo '</pre>';
 //echo 'flag_search: '.$varView['flag_search']
 //die();
@@ -105,7 +105,10 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                     <?php } 
                     }?>
                     <!-- ACCESO PARA REPORTE DIARIO DE TODOS LOS USUARIOS -->
-                    <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/inicio'); ?>">Reporte Diario</a>
+                    <?php if ($tipo != 'tw') { ?>
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/inicio'); ?>">Reporte Diario</a>
+                    <?php } ?>
+                    
                     <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
                     </form>

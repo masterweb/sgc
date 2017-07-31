@@ -3,6 +3,7 @@ $(function () {
     tipo_b = $(".tipo_busqueda").val();
     tipo_grupo = $('#tipo_grupo').val();
     //console.log('tipo grupo: '+tipo_b);
+    //alert('activar_dealer: '+activar_dealer);
 
     //selectro tipo provincia o grupo
     $(".tipo_busqueda").change(function () {
@@ -80,6 +81,8 @@ $(function () {
            loadresponsables($('#GestionInformacionConcesionario'));
         }
     });
+
+    // CARGA DE GRUPOS, PROVINCIAS Y RESPONSABLES
     if(activar_dealer == 'si'){ 
         $('#GestionInformacionGrupo').change(function () {loaddealers($(this), 'g');});
         $('#GestionInformacionProvincias').change(function () {loaddealers($(this), 'p');});
@@ -204,6 +207,8 @@ $(function () {
         //if(e.attr('value') != ''){
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
+            var tipo_search = $('#tipo_search').attr('value');
+            //alert('tipo_search:' + tipo_search);
             active = e.attr('value');
 
             $.ajax({
@@ -215,7 +220,8 @@ $(function () {
                     fecha1: fecha1, 
                     fecha2: fecha2,
                     active: active,
-                    tipo_b: tipo_b
+                    tipo_b: tipo_b,
+                    tipo_search : tipo_search
                 },
                 success: function (data) {
                     e.html(data); 
@@ -280,6 +286,7 @@ $(function () {
             var value = e.attr('value');
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
+            var tipo_search = $('#tipo_search').attr('value');
             $.ajax({
                 url: url_footer_var_asesores,
                 beforeSend: function (xhr) {
@@ -291,7 +298,8 @@ $(function () {
                     fecha1: fecha1, 
                     fecha2: fecha2,
                     tipo_b: tipo_b,
-                    tipo_grupo: tipo_grupo
+                    tipo_grupo: tipo_grupo,
+                    tipo_search: tipo_search
                 },
                 success: function (data) {
                     $('#GestionDiariaresponsable').html(data);

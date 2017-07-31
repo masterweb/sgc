@@ -50,6 +50,8 @@ class ReportesController extends Controller {
         if(!is_null($tipo)){
             $tipo = $tipo;
         }
+
+
         $GF = new GlobalFunctions;
        
         date_default_timezone_set('America/Guayaquil');
@@ -65,6 +67,10 @@ class ReportesController extends Controller {
         //$varView['cargo_adicional'] = 85;
         $varView['id_responsable'] = Yii::app()->user->getId();
         $varView['dealer_id'] = $this->getDealerId($varView['id_responsable']);
+
+
+         
+
         //echo 'dealer id: '.$varView['dealer_id'];
         $varView['nombre_usuario'] = Usuarios::model()->findByPk($varView['id_responsable']);
         $varView['provincia_id'] = $varView['nombre_usuario']->provincia_id;
@@ -145,7 +151,7 @@ class ReportesController extends Controller {
         $tit_init = 'Búsqueda entre ';
         $varView['AEKIA'] = false;
         $bdcfalse = ' AND gi.bdc = 0 ';
-        if($tipo == 'externas'){
+        if($tipo == 'externas' || $tipo == 'tw'){
             $bdcfalse = ' AND gi.bdc = 1 ';
             $INERmodelos = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }
@@ -171,9 +177,18 @@ class ReportesController extends Controller {
             case 58: // JEFE DE PRODUCTO MARKETING
             case 60: // GERENTE VENTAS
             case 61: // JEFE DE RED VENTAS
+               // $id_persona = "gd.desiste = 0 ";
+                //break;   
+
+
             case 62: // SUBGERENTE DE FLOTAS VENTAS
                 $id_persona = 'gi.responsable ';
-                $varView['lista_grupo'] = Grupo::model()->findAll();
+                if($tipo == 'tw'){
+                    $varView['lista_grupo'] = Grupo::model()->findAll(array('condition' => "id = 2"));
+                }else{
+                    $varView['lista_grupo'] = Grupo::model()->findAll();
+                }
+                
                 $varView['lista_provincias'] = Provincias::model()->findAll();
                 $varView['lista_conce'] = 'null';
                 $varView['AEKIA'] = true;
@@ -196,6 +211,9 @@ class ReportesController extends Controller {
                 if($tipo == 'prospeccionweb'){
                     $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
                     $id_persona = " u.cargo_id = 86 "; 
+                }
+                if($tipo == 'tw'){
+                   // $id_persona = " AND gd.desiste = 0";
                 }
                    
                 break;
@@ -224,7 +242,10 @@ class ReportesController extends Controller {
 
                     if($tipo == 'externas')
                         $id_persona = "gi.dealer_id IN (" . $dealerList . ") AND (u.cargo_id = 86 OR u.cargo_adicional = 86 ) ";
+                   
+
                 }
+              
                 //die('id persona case: '.$id_persona);
                 break;
             case 71: // asesor de ventas TERMINADO------>
@@ -259,6 +280,8 @@ class ReportesController extends Controller {
                     $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 89:// asesor TELEMARKETING WEB------> TRABAJAR
+               // $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+
                 $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
                 break;    
         }
@@ -266,7 +289,39 @@ class ReportesController extends Controller {
         // procesamos las variables de busqueda del filtro
         $varView['js_responsable'] = 'null';
         $consultaBDC = '';
+
         if ($_GET['GI']) {
+        //    echo '<pre>';
+        //    print_r($_GET);
+        //    echo '</pre>';
+        //    die();
+
+            if($varView['cargo_id']==61 && $_GET['GI']['grupo']==2){/*agrega todos los asesores teleweb a la busqueda*/
+
+
+                /*$array_teleweb = array();
+                //$array_teleweb = Usuarios::model()->findAll(array("condition" => 'cargo_id = 89'));
+                $criteria = new CDbCriteria(array(
+                    'condition' => "cargo_id = 89"
+                ));
+
+                $teleweb = Usuarios::model()->findAll($criteria);
+                 $counter = 0;
+                foreach ($teleweb as $value) {
+                    $array_teleweb[$counter] = $value['id'];
+                    $counter++;
+                }
+       
+                    $telewebList = implode(', ', $array_teleweb);
+                   
+                    $id_persona .= " AND ( 
+                        gi.responsable IN ({$telewebList}) OR 
+                        gi.responsable_origen IN ({$telewebList}) OR 
+                        gi.responsable_origen_tm IN ({$telewebList}) 
+                        )";    */    
+            }
+
+
             if ($_GET['GI']['fecha1'] != '') {
                 //echo('fecha1');
                 $gi_fecha1 = explode(" - ", $_GET['GI']['fecha1']);
@@ -293,6 +348,8 @@ class ReportesController extends Controller {
                 }
                 $varView['id_responsable'] = $_GET['GI']['responsable'];
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
+                if($tipo == 'tw')
+                   $id_persona = "(gi.responsable IN({$varView['id_responsable']}) OR gi.responsable_origen IN({$varView['id_responsable']}) OR gi.responsable_origen_tm IN({$varView['id_responsable']})) AND gd.desiste = 0"; 
                 if($varView['id_responsable'] == 1000)
                     $id_persona = "gi.dealer_id = " . $_GET['GI']['concesionario'];
                 $varView['js_responsable'] = $varView['id_responsable'];
@@ -313,6 +370,7 @@ class ReportesController extends Controller {
                 if($varView['cargo_id'] == 85 && ($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && $varView['$concesionario'] != 1000){
                    $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
                 }
+
                 $varView['flag_search'] = 4;
             }
             //echo('get tipo t: '.$_GET['GI']['tipo_t'].', get grupo: '.$_GET['GI']['grupo']).'<br />';
@@ -341,7 +399,8 @@ class ReportesController extends Controller {
                     $varView["js_dealer"] = $_GET['GI']['concesionario'];
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
-                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                    //$grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE dealer_id = " . $_GET['GI']['concesionario'];
                 }
                 if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['responsable'] == 1000){
                     $varView['flag_search'] = 52;
@@ -361,7 +420,7 @@ class ReportesController extends Controller {
                     $varView['id_grupo'] = $_GET['GI']['grupo'];
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
-                }else{
+                }elseif($_GET['tipo'] != 'tw'){
                     $varView['flag_search'] = 54;
                     $varView['$concesionario'] = $_GET['GI']['concesionario'];
                     $varView['checked_g'] = true;
@@ -370,6 +429,7 @@ class ReportesController extends Controller {
                     $varView["js_dealer"] = $_GET['GI']['concesionario'];
                     $grupos_sql = "SELECT * from gr_concesionarios";
                 }
+                //die('sql: '.$grupos_sql);
                 
                 $request_sql = $con->createCommand($grupos_sql)->queryAll();
 
@@ -382,6 +442,7 @@ class ReportesController extends Controller {
                 //die();
                 //$varView['flag_search'] = 5;
             }
+            //die('flag_search: '.$varView['flag_search']);
 
             if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['provincias'] != '') {
                 //die('enter provincia');
@@ -406,7 +467,8 @@ class ReportesController extends Controller {
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
                     $cond_conce = 'provincia';
                     $id_busqueda = $varView['id_provincia'];
-                    $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                    //$grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE dealer_id = " . $_GET['GI']['concesionario'];
                 }
                 if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['responsable'] == 1000){
                     $varView['checked_p'] = true;
@@ -424,15 +486,15 @@ class ReportesController extends Controller {
                     $id_busqueda = $varView['id_provincia'];
                     $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
                 }
-                else{ # BUQUEDA POR DEFECTO AL DAR CLICK EN TODOS
+                /*else{ # BUQUEDA POR DEFECTO AL DAR CLICK EN TODOS
                     $varView['$concesionario'] = $_GET['GI']['concesionario'];
                     $varView['checked_p'] = true;
                     $varView['checked_g'] = false;
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
                     $grupos_sql = "SELECT * from gr_concesionarios";
-                }
+                }*/
                 
-
+                //die('grupos sql: '.$grupos_sql);
                 $request_sql = $con->createCommand($grupos_sql);
                 $request_sql = $request_sql->queryAll();
 
@@ -670,8 +732,12 @@ class ReportesController extends Controller {
 
             $constructor = new ConstructorSQL;
           
+
+            if($_GET['GI']['grupo']==2 && $_GET['GI']['concesionario']=="")$conc=2;
+            else $conc=$_GET['GI']['concesionario'];
+
             $retorno = $constructor->buscar(
-                    $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], $varView['concesionario'], $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
+                    $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], /*$varView['concesionario']*/$conc, $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
             );
 
         //    echo '<pre>';
@@ -692,28 +758,16 @@ class ReportesController extends Controller {
             $varView['traficocbu1'] = $retorno['traficocbu1'];
             $varView['traficockd2'] = $retorno['traficockd2'];
             $varView['traficocbu2'] = $retorno['traficocbu2'];
-            if($tipo == 'externas'||$tipo == ''){
+            if($tipo == 'externas'||$tipo == 'tw'){
                 $varView['trafico_mes_anterior'] = $retorno['trafico_mes_anterior'];
                 $varView['trafico_mes_actual'] = $retorno['trafico_mes_actual'];
                 $varView['trafico_citas_mes_anterior'] = $retorno['trafico_citas_mes_anterior'];
                 $varView['trafico_citas_mes_actual'] = $retorno['trafico_citas_mes_actual'];
-               
-              /*
-               $varView['vcont_mes_anterior'] = $retorno[26];
-                $varView['vcred_mes_anterior'] = $retorno[27];
-                $varView['vcont_mes_actual'] = $retorno[28];
-                $varView['vcred_mes_actual'] = $retorno[29];*/
+                $varView['trafico_citas_concretadas_mes_anterior'] = $retorno['trafico_citas_concretadas_mes_anterior'];
+                $varView['trafico_citas_concretadas_mes_actual'] = $retorno['trafico_citas_concretadas_mes_actual'];
 
             }
-           /* else{
-                
 
-                 $varView['vcont_mes_anterior'] = $retorno[32];
-                $varView['vcred_mes_anterior'] = $retorno[33];
-                $varView['vcont_mes_actual'] = $retorno[34];
-                $varView['vcred_mes_actual'] = $retorno[35];
-            }*/
-           
             $varView['proforma_mes_anterior'] = $retorno['proforma_mes_anterior'];
             $varView['proforma_mes_actual'] = $retorno['proforma_mes_actual'];
             $varView['proformackd1'] = $retorno['proformackd1'];
@@ -740,14 +794,11 @@ class ReportesController extends Controller {
             $varView['proformas_enviadas_anterior'] = $retorno['proformas_enviadas_anterior'];
             $varView['proformas_enviadas_actual'] = $retorno['proformas_enviadas_actual'];
 
-
-
-
              $cont=count($retorno)-1;   
              $varView['vcont_mes_anterior'] = $retorno['vcont_mes_anterior'];
-                $varView['vcred_mes_anterior'] = $retorno['vcred_mes_anterior'];
-                $varView['vcont_mes_actual'] = $retorno['vcont_mes_actual'];
-                $varView['vcred_mes_actual'] = $retorno['vcred_mes_actual'];
+             $varView['vcred_mes_anterior'] = $retorno['vcred_mes_anterior'];
+             $varView['vcont_mes_actual'] = $retorno['vcont_mes_actual'];
+             $varView['vcred_mes_actual'] = $retorno['vcred_mes_actual'];
 
         }
 
@@ -780,8 +831,13 @@ class ReportesController extends Controller {
         $varView['dif_cred'] = $GF->DIFconstructor($varView['vcred_mes_actual'], $varView['vcred_mes_anterior'], 'dif');
 
 
-         $varView['var_cont'] = $GF->DIFconstructor($varView['vcont_mes_actual'], $varView['vcont_mes_anterior'], 'var');
+        $varView['var_cont'] = $GF->DIFconstructor($varView['vcont_mes_actual'], $varView['vcont_mes_anterior'], 'var');
         $varView['dif_cont'] = $GF->DIFconstructor($varView['vcont_mes_actual'], $varView['vcont_mes_anterior'], 'dif');
+
+        $varView['var_citas_generadas'] = $GF->DIFconstructor($varView['trafico_citas_mes_actual'], $varView['trafico_citas_mes_anterior'], 'var');
+        $varView['dif_citas_generadas'] = $GF->DIFconstructor($varView['trafico_citas_mes_actual'], $varView['trafico_citas_mes_anterior'], 'dif');
+        $varView['var_citas_concretadas'] = $GF->DIFconstructor($varView['trafico_citas_concretadas_mes_actual'], $varView['trafico_citas_concretadas_mes_anterior'], 'var');
+        $varView['dif_citas_concretadas'] = $GF->DIFconstructor($varView['trafico_citas_concretadas_mes_actual'], $varView['trafico_citas_concretadas_mes_anterior'], 'dif');        
 
 
 
@@ -841,6 +897,15 @@ class ReportesController extends Controller {
         $varView['tasa_pr_dif_cbu'] = rtrim($varView['tasa_proforma_cbu_m1'], "%") - rtrim($varView['tasa_proforma_cbu_m2'], "%");
         $varView['tasa_cierre_dif_ckd'] = rtrim($varView['tasa_cierre_ckd_m1'], "%") - rtrim($varView['tasa_cierre_ckd_m2'], "%");
         $varView['tasa_cierre_dif_cbu'] = rtrim($varView['tasa_cierre_cbu_m1'], "%") - rtrim($varView['tasa_cierre_cbu_m2'], "%");
+
+        // tasa de testdrive teleweb
+        $varView['tasa_td_tw_actual'] = $GF->tasa($varView['trafico_citas_concretadas_mes_actual'], $varView['td_mes_actual']);
+        $varView['tasa_td_tw_anterior'] = $GF->tasa($varView['trafico_citas_concretadas_mes_anterior'], $varView['td_mes_anterior']); 
+        
+        // tasa de cierre ventas teleweb
+        $varView['tasa_cierre_tw_actual'] = $GF->tasa($varView['trafico_citas_concretadas_mes_actual'], $varView['vh_mes_actual']);
+        $varView['tasa_cierre_tw_anterior'] = $GF->tasa($varView['trafico_citas_concretadas_mes_anterior'], $varView['vh_mes_anterior']); 
+               
 
         $this->render('inicio', array('varView' => $varView, 'tipo' => $tipo));
     }
@@ -948,6 +1013,34 @@ class ReportesController extends Controller {
 
         $traficoAcumulado = new traficoAcumulado;
         $traficoAcumulado->modelos2TA($fecha1, $fecha2, $model_info);
+    }
+
+    public function validateEmailSending($dealerId){/*valida si cliente es de asiauto para envio de email de notificacion, si no es de asiauto no envia correo de notificacion*/
+
+        switch ($dealerId) {
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+            case 14:
+            case 20:
+            case 38:
+            case 60:
+            case 62:
+            case 63:
+            case 65:
+            case 76:
+            case 82:
+            case 83:
+            case 84:
+                return true;
+                break;
+            
+            default:
+                return false;
+                break;
+        }
+
     }
 
 }

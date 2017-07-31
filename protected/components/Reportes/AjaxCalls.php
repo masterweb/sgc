@@ -149,6 +149,8 @@ class AjaxCalls{
         $resposable = isset($_POST["responsable"]) ? $_POST["responsable"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
         $tipo_grupo = isset($_POST["tipo_grupo"]) ? $_POST["tipo_grupo"] : "";
+        $tipo = isset($_POST["tipo_search"]) ? $_POST["tipo_search"] : "";
+        //die('tipo: '.$tipo);
 
         //FECHAS RENDER
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
@@ -177,7 +179,7 @@ class AjaxCalls{
             $responsable = 'responsable';
         }
         $sql_asesores_act = "SELECT distinct ".$responsable." FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        //die ('sql asesores actuales: '.$sql_asesores_act);
+        //sdie ('sql asesores actuales: '.$sql_asesores_act);
         //die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
@@ -226,6 +228,9 @@ class AjaxCalls{
             }
             else{
                 $active_cargo = '70, 71, 72, 73, 75, 76, 77';
+            }
+            if($tipo == 'tw'){
+                $active_cargo = '89';
             }
 
             if( $cargo_id == 69 || 
@@ -413,6 +418,7 @@ class AjaxCalls{
         $active  = isset($_POST["active"]) ? $_POST["active"] : "";
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
+        $tipo = isset($_POST["tipo_search"]) ? $_POST["tipo_search"] : "";
         $fecha1 = explode(" - ", $fecha1);
 
         $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
@@ -432,10 +438,20 @@ class AjaxCalls{
         }elseif($tipo_b == 'general'){
             $extra_where = " tipo_form_web IS NULL AND bdc = 0 AND ";
         }
+        // SACAR PROVINCIAS SOLO DEL GRUPO ASIAUTO
+        if($tipo == 'tw'){
+            $pr = GrConcesionarios::model()->findAll(array('condition' => "id_grupo = 2"));
+            $prov = '';
+            foreach ($pr as $value) {
+                $prov.= $value['provincia'].', ';
+            }
+            $prov = rtrim($prov, ", ");
+            $extra_where = " provincia_conc IN ({$prov}) AND ";
+        }
 
         $con = Yii::app()->db;
         $sql = "SELECT distinct provincia_conc FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        echo $sql;
+        //echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 
@@ -462,7 +478,7 @@ class AjaxCalls{
                 $cargo_id == 61 ||
                 $cargo_id == 62){
                 $sql = "SELECT * FROM provincias WHERE id_provincia IN (".$provincias.") ORDER BY nombre ASC";
-                echo $sql;
+                //echo $sql;
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
 
@@ -497,7 +513,10 @@ class AjaxCalls{
         $fecha1 = explode(" - ", $fecha1);
 
         $fecha2 = isset($_POST["fecha2"]) ? $_POST["fecha2"] : "";
+        $tipo = isset($_POST["tipo_search"]) ? $_POST["tipo_search"] : "";
         $fecha2 = explode(" - ", $fecha2);
+        //die('tipo: '.$tipo);
+
 
         //GET concesionarios activos en rango de fechas
 
@@ -516,7 +535,7 @@ class AjaxCalls{
 
         $con = Yii::app()->db;
         $sql = "SELECT distinct dealer_id FROM gestion_informacion WHERE".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        echo $sql;
+        //echo $sql;
         $request = $con->createCommand($sql);
         $request = $request->queryAll();
 
@@ -556,7 +575,12 @@ class AjaxCalls{
                 $cargo_id == 60 ||
                 $cargo_id == 61 ||
                 $cargo_id == 62){
-                $sql = "SELECT * FROM gr_grupo WHERE id IN (".$grupos.") ORDER BY nombre_grupo ASC";
+                if($tipo == 'tw'){
+                    $sql = "SELECT * FROM gr_grupo WHERE id  = 2 ORDER BY nombre_grupo ASC";
+                }else{
+                    $sql = "SELECT * FROM gr_grupo WHERE id IN (".$grupos.") ORDER BY nombre_grupo ASC";
+                }
+                
             
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();
