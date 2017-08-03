@@ -570,7 +570,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <label for="">Gastos Arriendo: </label>
         </div>
         <div class="col-xs-6">
-            <?php echo '$. ' . number_format($value['gastos_arriendo']); ?>
+            <?php echo (empty($value['gastos_arriendo'])) ? '$. 0 ' : number_format($value['gastos_arriendo']); ?>
         </div>
         <div class="col-xs-4">
             <label for="">Gastos Alimentación, Otros: </label>
