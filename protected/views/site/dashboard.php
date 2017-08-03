@@ -61,7 +61,6 @@ if (!empty($modulos)) {
     foreach ($modulos as $key) {
         array_push($vectorModulos, $key->modulo_id);
     }
-
     $criteria = new CDbCriteria();
     $criteria->addInCondition('id', $vectorModulos);
     $result = Modulo::model()->findAll($criteria);
