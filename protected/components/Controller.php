@@ -1773,7 +1773,7 @@ class Controller extends CController {
     }
 
     public function getFechaRegistroAgendamiento($id_informacion){
-        $ag = GestionAgendamiento::model()->find(array('condition' => "id_informacion = {$id_informacion}",'limit' => "1"));
+        $ag = GestionAgendamiento::model()->find(array('condition' => "id_informacion = {$id_informacion}",'limit' => "1", 'order' => 'fecha DESC'));
         return $ag->fecha;
     }
 
@@ -4150,6 +4150,71 @@ class Controller extends CController {
         $count = GestionFactura::model()->count($criteria);
         return $count;
     }
+
+
+
+    public function getVentasVersionTipo($mes, $versiones, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $tipo) {
+       //obtiene las ventas a contado o credito
+
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        
+        
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gd.cierre = 1 AND gf.status = 'ACTIVO'");
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }
+        //$criteria->addCondition("DATE(gf.fecha) ".$srf);
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+
+      
+        $criteria->addCondition("gv.tipo_credito = '{$tipo}'");
+
+      
+
+
+    //    echo '<pre>';
+    //    print_r($criteria);
+    //    echo '</pre>'; 
+        $count = GestionFactura::model()->count($criteria);
+        return $count;
+    }
+
+
+
     
     /**
      * Returns count of sales vehicle's version in date range
@@ -4215,12 +4280,85 @@ class Controller extends CController {
             else
                 return 0;
         } 
-//        echo '<pre>';
-//        print_r($criteria);
-//        echo '</pre>'; 
+       // echo '<pre>';
+        //print_r($criteria);
+        //echo '</pre>'; 
         $count = GestionFactura::model()->count($criteria);
         return $count;
     }
+
+
+    public function getVentasVersionTotalTipo($mes, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable, $ckd, $categoria,$tipo) {
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+        // SELECT COUNT(*)  from gestion_financiamiento gf INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+        //WHERE gi.responsable = 406 AND (gi.bdc = 1 OR gi.bdc = 0)  AND (DATE(gf.fecha) BETWEEN '2016-11-01' AND '2016-11-15') AND ((gv.modelo IN (21, 24, 95)) OR gi.modelo IN (21, 24, 95)) AND (gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico')
+        $criteria = new CDbCriteria;
+        $criteria->select = "COUNT(DISTINCT gf.id_vehiculo)";
+        $criteria->alias = 'gf';
+        $criteria->join = "INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ";
+        $criteria->join .= "INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo ";
+        $criteria->join .= "INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        
+        
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        $criteria->addCondition("gd.cierre = 1 AND gf.status = 'ACTIVO'");
+        if($flag){
+            $criteria->addCondition("DATE(gf.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gf.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }
+        $criteria->addCondition("gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico'");
+        if($ckd == 1){
+            if($categoria == 5)
+                $categoria = '1,2,3,4';
+            $CKDs = Yii::app()->db->createCommand()->select('id_modelos')->from('modelos')->where("ensamblaje = 'CKD' AND active = 1 AND id_categoria IN ({$categoria})")->queryAll();
+            $CKDsRender = '';
+            foreach ($CKDs as $key => $value) {
+                $CKDsRender .= $value['id_modelos'] . ', ';
+            }
+            $CKDsRender = rtrim($CKDsRender, ", ");
+            if(count($CKDs) > 0)
+                $criteria->addCondition("(gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")");
+            else
+                return 0;
+        } 
+
+
+        $criteria->addCondition("gv.tipo_credito = '{$tipo}'");
+
+
+            //    echo '<pre>';
+       // print_r($criteria);
+      //  echo '</pre>'; 
+
+
+
+        $count = GestionFactura::model()->count($criteria);
+        return $count;
+    }
+
+
     
     /**
      * Returns count of sales vehicle's version in date range
@@ -6278,7 +6416,7 @@ class Controller extends CController {
         $name_model = $this->getModel($modelo->modelo);
         return $name_model;
     }
-
+   
 
     
 

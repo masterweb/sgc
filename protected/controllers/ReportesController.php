@@ -245,7 +245,21 @@ class ReportesController extends Controller {
                    
 
                 }
-              
+                /*if($varView['cargo_adicional'] == 89){
+                    if($tipo == 'externas'){
+
+                        $tw = Usuarios::model()->findAll(array('condition' => "cargo_id = 89"));
+                        $counter = 0;
+                        foreach ($tw as $val) {
+                                //echo 'asdasd'.$value['concesionario_id'];
+                                $array_tw[$counter] = $val['id'];
+                                $counter++;
+                        }
+                        $usuarioList = implode(', ', $array_tw);
+                        $id_persona .= " AND gi.responsable_origen_tm IN (" . $usuarioList . ")";
+                    }
+                }  */
+
                 //die('id persona case: '.$id_persona);
                 break;
             case 71: // asesor de ventas TERMINADO------>
@@ -280,9 +294,10 @@ class ReportesController extends Controller {
                     $INERProspeccion = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ';
                 break;
             case 89:// asesor TELEMARKETING WEB------> TRABAJAR
-               // $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+               $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
 
-                $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+                //$id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+            //$id_persona = "(gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
                 break;    
         }
 
@@ -731,6 +746,10 @@ class ReportesController extends Controller {
             }
 
             $constructor = new ConstructorSQL;
+
+            if($_GET['GI']['grupo']==2 && $_GET['GI']['concesionario']=="")$conc=2;
+            else $conc=$_GET['GI']['concesionario'];
+            
           
 
             if($_GET['GI']['grupo']==2 && $_GET['GI']['concesionario']=="")$conc=2;
@@ -763,8 +782,10 @@ class ReportesController extends Controller {
                 $varView['trafico_mes_actual'] = $retorno['trafico_mes_actual'];
                 $varView['trafico_citas_mes_anterior'] = $retorno['trafico_citas_mes_anterior'];
                 $varView['trafico_citas_mes_actual'] = $retorno['trafico_citas_mes_actual'];
+
                 $varView['trafico_citas_concretadas_mes_anterior'] = $retorno['trafico_citas_concretadas_mes_anterior'];
                 $varView['trafico_citas_concretadas_mes_actual'] = $retorno['trafico_citas_concretadas_mes_actual'];
+
 
             }
 
@@ -1013,34 +1034,6 @@ class ReportesController extends Controller {
 
         $traficoAcumulado = new traficoAcumulado;
         $traficoAcumulado->modelos2TA($fecha1, $fecha2, $model_info);
-    }
-
-    public function validateEmailSending($dealerId){/*valida si cliente es de asiauto para envio de email de notificacion, si no es de asiauto no envia correo de notificacion*/
-
-        switch ($dealerId) {
-            case 2:
-            case 5:
-            case 6:
-            case 7:
-            case 14:
-            case 20:
-            case 38:
-            case 60:
-            case 62:
-            case 63:
-            case 65:
-            case 76:
-            case 82:
-            case 83:
-            case 84:
-                return true;
-                break;
-            
-            default:
-                return false;
-                break;
-        }
-
     }
 
 }
