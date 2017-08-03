@@ -7,7 +7,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-//        echo '<pre>'.$sql_cons.'</pre>';
+        //echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -95,7 +95,7 @@ class ConstructorSQL {
                 }   
             }
             
-            if($tipo == 'tw' ){
+            if($tipo == 'tw' || ($tipo == 'externas' && $cargo_adicional==89)){
                 //$con = new Controller;
                 //$array_dealers = $con->getDealerGrupoConc(2);
                 $innerTw = ' INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id ';
@@ -170,11 +170,16 @@ class ConstructorSQL {
         }*/
 
         // BUSQUEDA POR TRAFICO - PROSPECCION========================================================================================================================================
-        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERProspeccion . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+     //  die($id_persona);
+
+       if($cargo_id==89) $idPersona='(gi.responsable ='. $id_responsable.' OR gi.responsable_origen= '.$id_responsable.' OR gi.responsable_origen_tm = '.$id_responsable.') AND gd.desiste = 0 AND gi.bdc = 1';
+       else $idPersona=$id_persona;
+
+        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERProspeccion . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $idPersona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ".$whereTw, $group_ext);
         $prospeccion_mes_anterior = $prospeccion_mes_anterior[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_anterior'] = $prospeccion_mes_anterior;
-        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERProspeccion . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERProspeccion . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $idPersona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ".$whereTw, $group_ext);
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_actual'] = $prospeccion_mes_actual;
