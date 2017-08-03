@@ -179,7 +179,7 @@ class AjaxCalls{
             $responsable = 'responsable';
         }
         $sql_asesores_act = "SELECT distinct ".$responsable." FROM gestion_informacion WHERE ".$extra_where." (DATE(fecha) BETWEEN '".$fecha1[0]."' AND '".$fecha1[1]."' OR DATE(fecha) BETWEEN '".$fecha2[0]."' AND '".$fecha2[1]."')";           
-        //sdie ('sql asesores actuales: '.$sql_asesores_act);
+        //die ('sql asesores actuales: '.$sql_asesores_act);
         //die();
         $request_aa = $con_aa->createCommand($sql_asesores_act);
         $request_aa = $request_aa->queryAll();
@@ -229,7 +229,7 @@ class AjaxCalls{
             else{
                 $active_cargo = '70, 71, 72, 73, 75, 76, 77';
             }
-            if($tipo == 'tw'){
+            if($tipo == 'tw' && $cargo_id != 70){
                 $active_cargo = '89';
             }
 
@@ -256,6 +256,7 @@ class AjaxCalls{
                 if($tipo_grupo == 0){
                     $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (".$active_cargo.") AND id IN (".$asesores_aa.") ORDER BY nombres ASC";
                 }
+
                 //echo $sql; die();
                 $request = $con->createCommand($sql);
                 $request = $request->queryAll();

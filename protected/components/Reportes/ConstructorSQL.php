@@ -7,7 +7,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-        //echo '<pre>'.$sql_cons.'</pre>';
+    //    echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -118,7 +118,37 @@ class ConstructorSQL {
                 }
                 $usuarioList = implode(', ', $array_tw);
                 if(empty($_GET['GI']['responsable'])){
-                    $whereTw = " AND gi.dealer_id IN ({$dealerList}) ";
+                    switch ($cargo_id) {
+                        case 4: // GERENTE GENERAL
+                        case 45: // SUBGERENCIA GENERAL
+                        case 46: // SUPER ADMINISTRADOR
+                        case 48: // GERENTE MARKETING
+                        case 57: // INTELIGENCIA DE MERCADO MARKETING
+                        case 58: // JEFE DE PRODUCTO MARKETING
+                        case 60: // GERENTE VENTAS
+                        case 61: // JEFE DE RED VENTAS
+                            $whereTw = " AND gi.dealer_id IN ({$dealerList}) ";
+                            break;
+                        case 70:
+                            $sq = "SELECT gc.* FROM grupoconcesionariousuario gc
+                            INNER JOIN usuarios u ON u.id = gc.usuario_id 
+                            WHERE cargo_id = 89 and gc.concesionario_id = {$value['dealer_id']}";
+                            $conc1 = Yii::app()->db->createCommand($sq)->queryAll();
+                            $counter = 0;
+                            foreach ($conc1 as $val) {
+                                //echo 'asdasd'.$value['concesionario_id'];
+                                $array_tw[$counter] = $val['usuario_id'];
+                                $counter++;
+                            }
+                            $usuarioList = implode(', ', $array_tw);
+                            $whereTw .= " AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN({$usuarioList})) AND gd.desiste = 0";
+                            break;    
+                        
+                        default:
+                            # code...
+                            break;
+                    }
+                    
                     $whereObs = " AND ga.observaciones = 'Cita'";
                     if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14)
                         $whereTw .= " AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN({$usuarioList})) AND gd.desiste = 0";
@@ -191,7 +221,7 @@ class ConstructorSQL {
         $validateAsiauto=$this->validateAsiautoDealer($concesionario);
         //die('validateAsiauto: '.$validateAsiauto);
 
-        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 89) ){/*reportes web para los jefes de agencia y AEKIA*/
+        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 89) || ($cargo_adicional == 89) ){/*reportes web para los jefes de agencia y AEKIA*/
                 
             $trafico_mes_anterior = $this->SQLconstructor(
               'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
