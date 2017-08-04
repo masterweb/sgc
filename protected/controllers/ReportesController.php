@@ -296,8 +296,8 @@ class ReportesController extends Controller {
             case 89:// asesor TELEMARKETING WEB------> TRABAJAR
               // $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
 
-              //  $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
-            $id_persona = "(gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+            $id_persona = "(gi.responsable = " . $varView['id_responsable'] . " OR gi.responsable_origen= ".$varView['id_responsable']." OR gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
+            //$id_persona = "(gi.responsable_origen_tm = " . $varView['id_responsable'] . ") AND gd.desiste = 0";
                 break;    
         }
 
