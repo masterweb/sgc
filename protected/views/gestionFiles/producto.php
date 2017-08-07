@@ -11,6 +11,12 @@
     <ul class="menu">
         <li class="wrapper">
             <div class="forma">
+                <a href="<?php echo Yii::app()->createUrl('gestionFiles/admin', array('tipo' => '10')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/libro_prod.png" width="46" height="56"></div>
+                <div class="txt_menu">Lista de Precios</div></a>
+            </div>
+        </li>
+        <li class="wrapper">
+            <div class="forma">
                 <a href="<?php echo Yii::app()->createUrl('gestionFiles/admin', array('tipo' => '2')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/usuarios/libro_prod.png" width="46" height="56"></div>
                 <div class="txt_menu">Presentación de Producto</div></a>
             </div>
