@@ -33,7 +33,40 @@
         $('#trafico_grupo').change(function(){var value = $(this).attr('value');if ($(this).val() != ''){$('#grupo').val(1);} else{$('#grupo').val(0);}});
         $('#trafico_concesionario').change(function(){var value = $(this).attr('value');if ($(this).val() != ''){$('#concesionario').val(1);} else{$('#concesionario').val(0);}});
         $('#trafico_responsable').change(function(){if ($(this).val() != ''){$('#responsable').val(1);} else{$('#responsable').val(0);}});
-        $('#trafico_fuente_contacto').change(function(){if ($(this).val() != ''){$('#fuente_contacto').val(1);} else{$('#fuente_contacto').val(0);}});
+        $('#trafico_fuente_contacto').change(function(){
+            if ($(this).val() != ''){$('#fuente_contacto').val(1);} else{$('#fuente_contacto').val(0);}
+            var value = $('#trafico_fuente_contacto option:selected').val();
+            var options = '';
+            switch(value){
+                case 'showroom':
+                case 'exhibicion':
+                    options += `<option value="">--Seleccione tipo--</option>
+                                <option value="1" selected="">Trafico</option>
+                                <option value="2">Proformas</option>
+                                <option value="3">TestDrive</option>
+                                <option value="4">Ventas</option>`;
+                break;
+                case 'web':
+                    options += `<option value="">--Seleccione tipo--</option>
+                                <option value="5" selected="">Solicitudes Web</option>
+                                <option value="6">Proformas</option>
+                                <option value="7">Citas</option>
+                                <option value="8">TestDrive</option>
+                                <option value="9">Ventas</option>`;
+                break;
+                case 'asiautoweb':
+                options += `<option value="">--Seleccione tipo--</option>
+                                <option value="10" selected="">Solicitudes Recibidas</option>
+                                <option value="11">Proformas Enviadas</option>
+                                <option value="12">Citas Generadas</option>
+                                <option value="13">Citas Concretadas</option>
+                                <option value="14">TestDrive</option>
+                                <option value="15">Ventas</option>`;
+                break;
+            }
+            $('#trafico_tipo_reporte').html(options);
+
+        });
         $('#send-excel').click(function(){
             var fecha = $('#fecha').val();
             var grupo = $('#grupo').val();
@@ -156,7 +189,8 @@
                                 <option value="">--Seleccione fuente--</option>
                                 <option value="showroom" selected="">Showroom</option>
                                 <!--<option value="prospeccion">Prospección</option>-->
-                                <option value="web">Web</option>
+                                <option value="web">Web Nacional</option>
+                                <option value="asiautoweb">Web Asiauto</option>
                                 <option value="exhibicion">Exhibicion</option>
                             </select>
                         </div>

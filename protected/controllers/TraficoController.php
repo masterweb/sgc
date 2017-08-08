@@ -1523,7 +1523,7 @@ class TraficoController extends Controller {
         $data .= "<table class='det_" . $mes . "'>";
         $data .= "<tr class='odd-mh' style='font-size:13px;' bgcolor='".$bgcolor."'><td colspan='" . $colspan . "' class='cir-{$id_modelo}'>Detalle de: " . $nombre_modelo . ", Fecha: Desde el " . $dia_inicial . "-" . $fmes . "-" . $year . " al " . $dia_actual . "-" . $fmes . "-" . $year . " " . $button . "</td></tr>";
         $data .= "<tr class='odd-mt'><td>Funnel</td>";
-        $names = array('Tráfico Acumulado', 'Tráfico', 'Proforma', 'Test Drive', 'Ventas', 'Tasa de Test Drive', 'Tasa de Cierre');
+        $names = array('Tráfico Acumulado', 'Tráfico', 'Proforma', 'Test Drive', 'Ventas', 'Ventas Contado', 'Ventas Crédito', 'Tasa de Test Drive', 'Tasa de Cierre');
         // ARMAR MESES Y DIAS 
         for ($i = $dia_inicial; $i <= $dia_actual; $i++) {
             $d = $i;
@@ -1574,10 +1574,27 @@ class TraficoController extends Controller {
                         $ventas[] = $datavt;
                         $data .= "<td>" . $datavt . "</td>";
                         break;
+
+
+
+
                     case 6:
-                        $data .= "<td>" . $this->getTasaTD($testdrive[$j - 1], $trafico_diario[$j - 1]) . "</td>";
+                         $datavtc = $this->getVentasVersionTipo($mes, $versiones, $year, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable,'0');
+                        //$ventasc[] = $datavtc;
+                        $data .= "<td>" . $datavtc . "</td>";
                         break;
                     case 7:
+                         $datavtcr = $this->getVentasVersionTipo($mes, $versiones, $year, $d, 0, $search_array, $cargo_id, $dealer_id, $id_responsable,'1');
+                       // $ventascr[] = $datavtcr;
+                        $data .= "<td>" . $datavtcr . "</td>";
+                        break;    
+
+
+
+                    case 8:
+                        $data .= "<td>" . $this->getTasaTD($testdrive[$j - 1], $trafico_diario[$j - 1]) . "</td>";
+                        break;
+                    case 9:
                         $data .= "<td>" . $this->getTasaCierre($ventas[$j - 1], $trafico_diario[$j - 1]) . "</td>";
                         break;
                     default:
@@ -1783,6 +1800,7 @@ class TraficoController extends Controller {
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $area_id = (int) Yii::app()->user->getState('area_id');
         $con = Yii::app()->db;
+
         switch ($tipo) {
             case 'exo':
                 $sql = "SELECT * FROM usuarios WHERE dealers_id = {$dealer_id} AND cargo_id IN (75) AND estado = 'ACTIVO' ORDER BY nombres ASC";
@@ -1851,6 +1869,27 @@ class TraficoController extends Controller {
      * return array 
      */
     public function getReporteTrafico($fecha, $grupo, $concesionario, $responsable, $fuente_contacto, $tipo_reporte) {
+        //$dealer_id = (int) Yii::app()->user->getState('dealer_id');
+        $sq = "SELECT * from usuarios where cargo_id = 89";
+        $conc1 = Yii::app()->db->createCommand($sq)->queryAll();
+        $counter = 0;
+        foreach ($conc1 as $val) {
+            //echo 'asdasd'.$value['concesionario_id'];
+            $array_tw[$counter] = $val['id'];
+            $counter++;
+        }
+        $usuarioList = implode(', ', $array_tw);
+
+
+        $dealers = GrConcesionarios::model()->findAll(array("condition" => "id_grupo = 2"));
+        $counter = 0;
+        foreach ($dealers as $value) {
+           //echo 'asdasd'.$value['concesionario_id'];
+           $array_dealers[$counter] = $value['dealer_id'];
+           $counter++;
+        }
+        $dealerList = implode(', ', $array_dealers);
+
         ini_set('memory_limit', '512M');
         $data = array();
         switch ($fuente_contacto) {
@@ -1866,6 +1905,12 @@ class TraficoController extends Controller {
                 $distint = "SELECT d.`name`, gi.id, ";
                 $version = " ";
                 break;
+            case 'asiautoweb':
+                $fuente = " AND (gd.fuente_contacto = 'web')";
+                $bdc = " AND gi.bdc = 1";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
+                break;    
             case 'prospeccion':
                 $fuente = " AND (gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion')";
                 $bdc = " ";
@@ -1945,6 +1990,192 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                 $group_order = " GROUP BY gf.id_vehiculo";
                 $titulo_reporte = 'Reporte Ventas desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break;
+             case 5: // SOLICITUDES WEB
+                $from = " FROM gestion_informacion gi";
+                $select_ini = $distint;
+                $select_fin = " gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, 
+                gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
+                $inner = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+LEFT JOIN usuarios u ON u.id = gi.responsable";
+                $date = "gi";
+                $and = " AND gv.orden = 1";
+                $group_order = $version;
+                $titulo_reporte = 'Reporte Solicitudes Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break; 
+             case 6: // PROFORMAS WEB
+                $from = " FROM gestion_financiamiento gf";
+                $select_ini = "SELECT d.`name`, gv.id, ";
+                $select_fin = " gf.fecha ";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                $date = "gf";
+                $and = "";
+                $group_order = " GROUP BY gf.id ORDER BY gf.fecha";
+                $titulo_reporte = 'Reporte Proformas Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;  
+             case 7: // CITAS WEB
+                $from = " FROM gestion_informacion gi";
+                $select_ini = "SELECT DISTINCT d.`name`, gi.id, ";
+                $select_fin = " u.nombres AS nombre_responsable, u.apellido AS apellido_responsable";
+                $inner = " LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version
+LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id  
+INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id 
+INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id
+INNER JOIN dealers d ON d.id = gi.dealer_id
+LEFT JOIN usuarios u ON u.id = gi.responsable";  
+                $date = "ga";
+                $and = " AND gv.orden = 1 AND gc.order = 1 AND gd.desiste = 0 AND gi.bdc = 1 AND ga.observaciones = 'Cita' ";
+                $titulo_reporte = 'Citas Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;    
+             case 8: // TESTDRIVE WEB
+                $from = " FROM gestion_test_drive gt";
+                $select_ini = "SELECT d.`name`, gi.id, ";
+                $select_fin = " gt.fecha, gt.test_drive ";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
+LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                $date = "gt";
+                $and = " AND gt.test_drive = 1 AND gt.`order` = 1";
+                $group_order = " GROUP BY gt.id_vehiculo";
+                $titulo_reporte = 'Reporte TestDrive Web Nacional desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;
+             case 9: // VENTAS WEB
+                $from = " FROM gestion_factura gf";
+                $select_ini = "SELECT DISTINCT(gf.id_vehiculo),d.`name`, gi.id, ";
+                $select_fin = " gf.fecha, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, 
+                gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo 
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version 
+INNER JOIN usuarios u ON u.id = gi.responsable";
+                $date = "gf";
+                $and = " AND gd.cierre = 1 AND gf.status = 'ACTIVO'";
+                $group_order = " GROUP BY gf.id_vehiculo";
+                $titulo_reporte = 'Reporte Ventas Web Nacional desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;        
+             case 10: // SOLICITUDES RECIBIDAS - INICIO
+                $from = " FROM gestion_informacion gi";
+                $select_ini = $distint;
+                $select_fin = " u.nombres as nombre_responsable, u.apellido as apellido_responsable ";
+                $inner = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+LEFT JOIN usuarios u ON (u.id = gi.responsable OR u.id = gi.responsable_origen_tm)";
+                $date = "gi";
+                $and = " AND gi.dealer_id IN ({$dealerList}) 
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList)) AND gd.desiste = 0 ";
+                $group_order = " GROUP BY gi.id ";
+                $titulo_reporte = 'Reporte Solicitudes Recibidas desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break; 
+             case 11: // PROFORMAS ENVIADAS WEB
+                $from = " FROM gestion_financiamiento gf";
+                $select_ini = "SELECT d.`name`, gv.id, ";
+                $select_fin = " gf.fecha ";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion  
+INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                $date = "gf";
+                $and = " AND gi.dealer_id IN ({$dealerList}) 
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList)) AND gd.desiste = 0 ";
+                $group_order = "";
+                $titulo_reporte = 'Reporte Proformas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+
+             break; 
+             case 12: // CITAS GENERADAS ASIAUTO
+                $from = " FROM gestion_informacion gi";
+                $select_ini = "SELECT DISTINCT d.`name`, gi.id, ";
+                $select_fin = " u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, (SELECT nombres FROM usuarios WHERE id = gi.responsable_origen_tm) as nombre_teleweb, 
+(SELECT apellido FROM usuarios WHERE id = gi.responsable_origen_tm) as apellido_teleweb,
+(SELECT agendamiento FROM gestion_agendamiento WHERE id_informacion = gi.id AND paso = 7 and observaciones = 'Cita' LIMIT 1) as fecha_agendamiento ";
+                $inner = " LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version
+LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id  
+INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id 
+INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id
+INNER JOIN dealers d ON d.id = gi.dealer_id
+LEFT JOIN usuarios u ON u.id = gi.responsable";  
+                $date = "ga";
+                $and = " AND gv.orden = 1 and gi.reasignado_tm = 1 AND gc.order = 1 AND gc.tw = 1 AND gd.desiste = 0 AND gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND ga.observaciones = 'Cita'";
+                $titulo_reporte = 'Citas Generadas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+             break;    
+             case 13: // CITAS CONCRETADAS ASIAUTO
+                $from = " FROM gestion_informacion gi";
+                $select_ini = "SELECT DISTINCT d.`name`, gi.id, ";
+                $select_fin = " gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gtm.fecha as fecha_presentacion, 
+                (SELECT nombres FROM usuarios WHERE id = gi.responsable_origen_tm) as nombre_teleweb, 
+(SELECT apellido FROM usuarios WHERE id = gi.responsable_origen_tm) as apellido_teleweb ";
+                $inner = " LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version
+LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id
+INNER JOIN dealers d ON d.id = gi.dealer_id
+LEFT JOIN usuarios u ON u.id = gi.responsable";  
+                $date = "gtm";
+                $and = " AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gd.desiste = 0 AND gi.bdc = 1 
+                AND gi.dealer_id IN ({$dealerList}) 
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
+                $titulo_reporte = 'Citas Concretadas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+             break; 
+             case 14: // TESTDRIVE ASIAUTO WEB
+                $from = " FROM gestion_test_drive gt";
+                $select_ini = "SELECT d.`name`, gi.id, ";
+                $select_fin = " gt.fecha, gt.test_drive ";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion  
+INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id 
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                $date = "gt";
+                $and = " AND gi.bdc = 1 AND gt.test_drive = 1 AND gt.`order` = 1 AND gd.desiste = 0  
+                AND gi.dealer_id IN ({$dealerList}) 
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
+                $group_order = " GROUP BY gt.id_vehiculo";
+                $titulo_reporte = 'Reporte TestDrive Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;
+             case 15: // VENTAS WEB
+                $from = " FROM gestion_factura gf";
+                $select_ini = "SELECT DISTINCT(gf.id_vehiculo),d.`name`, gi.id, ";
+                $select_fin = " gf.fecha, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, 
+                (SELECT nombres FROM usuarios WHERE id = gi.responsable_origen_tm) as nombre_teleweb, 
+(SELECT apellido FROM usuarios WHERE id = gi.responsable_origen_tm) as apellido_teleweb";
+                $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
+INNER JOIN dealers d ON d.id = gi.dealer_id 
+INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+LEFT JOIN versiones v ON v.id_versiones = gv.version 
+INNER JOIN usuarios u ON u.id = gi.responsable";
+                $date = "gf";
+                $and = " AND gi.bdc = 1 AND gd.cierre = 1 AND gf.status = 'ACTIVO' 
+                AND gi.dealer_id IN ({$dealerList}) 
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
+                $group_order = " GROUP BY gf.id_vehiculo";
+                $titulo_reporte = 'Reporte Ventas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;        
 
             default:
                 break;
@@ -3287,6 +3518,7 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                 $tituloReporte = $data['titulo_reporte'];
                 $flag_search = 8;
             }
+            //die('flag search: '.$flag_search);
             
             
             Yii::import('ext.phpexcel.XPHPExcel');
@@ -3382,7 +3614,98 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                     ->setCellValue('Z2', 'marca_kia_recomendacion');
                     $name_file = "Reporte Ventas";
                     break;
-                
+                case 5: // SOLICITUDES WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre')
+                    ->setCellValue('Q2', 'apellido')
+                    ->setCellValue('R2', 'pregunta')
+                    ->setCellValue('S2', 'opcion_recomendaron')
+                    ->setCellValue('T2', 'medio_prensa')
+                    ->setCellValue('U2', 'medio_television')
+                    ->setCellValue('V2', 'marca_kia')
+                    ->setCellValue('W2', 'marca_kia_recomendacion');
+                    $name_file = "Reporte Solicitudes Web";
+                    break; 
+                case 6: // PROFORMAS WEB
+                //    $objPHPExcel->setActiveSheetIndex(0) 
+                //    ->setCellValue('P2', 'version')
+                //    ->setCellValue('Q2', 'fuente_contacto');
+                    $name_file = "Reporte Proformas Web";
+                    break; 
+                case 7: // CITAS WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre_responsable')
+                    ->setCellValue('Q2', 'apellido_responsable');
+                    $name_file = "Citas Web";
+                    break;
+                case 8: // TESTDRIVE WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'test_drive');
+                    $name_file = "Reporte TestDrive Web Nacional";
+                    break;    
+                case 9: // VENTAS WEB
+                   
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'id_vehiculo') 
+                    ->setCellValue('Q2', 'status')
+                    ->setCellValue('R2', 'cierre')
+                    ->setCellValue('S2', 'Nombres')
+                    ->setCellValue('T2', 'Apellidos')
+                    ->setCellValue('U2', 'pregunta')
+                    ->setCellValue('V2', 'opcion_recomendaron')
+                    ->setCellValue('W2', 'medio_prensa')
+                    ->setCellValue('X2', 'medio_television')
+                    ->setCellValue('Y2', 'marca_kia')
+                    ->setCellValue('Z2', 'marca_kia_recomendacion');
+                    $name_file = "Reporte Ventas Web Nacional";
+                    break;  
+                case 10: // SOLICITUDES RECIBIDAS ASIAUTO WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre_responsable')
+                    ->setCellValue('Q2', 'apellido_responsable');
+                    $name_file = "Reporte Solicitudes Recibidas";
+                break;
+                case 11: // PROFORMAS ASIAUTO WEB
+                //    $objPHPExcel->setActiveSheetIndex(0) 
+                //    ->setCellValue('P2', 'version')
+                //    ->setCellValue('Q2', 'fuente_contacto');
+                    $name_file = "Reporte Proformas Asiauto Web";
+                break;
+                case 12: // CITAS GENERADAS ASIAUTO WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre_responsable')
+                    ->setCellValue('Q2', 'apellido_responsable')
+                    ->setCellValue('R2', 'nombre_teleweb')
+                    ->setCellValue('S2', 'apellido_teleweb')
+                    ->setCellValue('T2', 'fecha_agendamiento');
+                    $name_file = "Citas Generadas Asiauto Web";
+                break;
+                case 13: // CITAS CONCRETADAS ASIAUTO WEB
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'nombre_responsable')
+                    ->setCellValue('Q2', 'apellido_responsable')
+                    ->setCellValue('R2', 'fecha_presentacion')
+                    ->setCellValue('S2', 'nombre_teleweb')
+                    ->setCellValue('T2', 'apellido_teleweb');
+                    $name_file = "Citas Concretadas Asiauto Web";
+                break;
+                case 14: // TESTDRIVE
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'test_drive');
+                    $name_file = "Reporte TestDrive Asiauto Web";
+                break;
+                case 15: // VENTAS WEB
+                   
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'id_vehiculo') 
+                    ->setCellValue('Q2', 'status')
+                    ->setCellValue('R2', 'cierre')
+                    ->setCellValue('S2', 'nombre_responsable')
+                    ->setCellValue('T2', 'apellido_responsable')
+                    ->setCellValue('U2', 'nombre_teleweb')
+                    ->setCellValue('V2', 'apellido_teleweb');
+                    $name_file = "Reporte Ventas Asiauto Web";
+                break;  
             }
             
 
@@ -3448,6 +3771,104 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
                         ->setCellValue('Z' . $i, $row['marca_kia_recomendacion']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:Z2')->applyFromArray($estiloTituloColumnas);
                         break;
+                    case 5: // SOLICITUDES WEB
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['pregunta'])
+                        ->setCellValue('S' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('T' . $i, $row['medio_prensa'])
+                        ->setCellValue('U' . $i, $row['medio_television'])
+                        ->setCellValue('V' . $i, $row['marca_kia'])
+                        ->setCellValue('W' . $i, $row['marca_kia_recomendacion']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->applyFromArray($estiloTituloColumnas);
+                        break; 
+                    case 6: // PROFORMAS WEB
+                    //    $objPHPExcel->setActiveSheetIndex(0)
+                    //    ->setCellValue('P' . $i, $row['version'])
+                    //    ->setCellValue('Q' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas); 
+                        break;
+                    case 7: // CITAS WEB
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                    break; 
+                    case 8: // TESTDRIVE WEB
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['test_drive']);
+                    //    ->setCellValue('Q' . $i, $row['version'])
+                    //    ->setCellValue('R' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
+                        break;
+                    case 9: // VENTAS WEB
+                        
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['id_vehiculo'])
+                        ->setCellValue('Q' . $i, $row['status'])
+                        ->setCellValue('R' . $i, $row['cierre'])
+                        ->setCellValue('S' . $i, $row['nombre_responsable'])
+                        ->setCellValue('T' . $i, $row['apellido_responsable'])
+                        ->setCellValue('U' . $i, $row['pregunta'])
+                        ->setCellValue('V' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('W' . $i, $row['medio_prensa'])
+                        ->setCellValue('X' . $i, $row['medio_television'])
+                        ->setCellValue('Y' . $i, $row['marca_kia'])
+                        ->setCellValue('Z' . $i, $row['marca_kia_recomendacion']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Z2')->applyFromArray($estiloTituloColumnas);
+                        break; 
+                    case 10: // SOLICITUDES RECIBIDAS ASIAUTO WEB
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                        break;       
+                    case 11: // PROFORMAS ASIAUTO WEB
+                    //    $objPHPExcel->setActiveSheetIndex(0)
+                    //    ->setCellValue('P' . $i, $row['version'])
+                    //    ->setCellValue('Q' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                        break; 
+                    case 12: // CITAS GENERADAS ASIAUTO
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['nombre_teleweb'])
+                        ->setCellValue('S' . $i, $row['apellido_teleweb'])
+                        ->setCellValue('T' . $i, $row['fecha_agendamiento']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:T2')->applyFromArray($estiloTituloColumnas);
+                    break;   
+                    case 13: // CITAS CONCRETADAS ASIAUTO
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['fecha_presentacion'])
+                        ->setCellValue('S' . $i, $row['nombre_teleweb'])
+                        ->setCellValue('T' . $i, $row['apellido_teleweb']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:T2')->applyFromArray($estiloTituloColumnas);
+                    break;  
+                    case 14: // TESTDRIVE WEB
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['test_drive']);
+                    //    ->setCellValue('Q' . $i, $row['version'])
+                    //    ->setCellValue('R' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
+                    break;  
+                    case 15: // VENTAS WEB
+                        
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['id_vehiculo'])
+                        ->setCellValue('Q' . $i, $row['status'])
+                        ->setCellValue('R' . $i, $row['cierre'])
+                        ->setCellValue('S' . $i, $row['nombre_responsable'])
+                        ->setCellValue('T' . $i, $row['apellido_responsable'])
+                        ->setCellValue('U' . $i, $row['nombre_teleweb'])
+                        ->setCellValue('V' . $i, $row['apellido_teleweb']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:V2')->applyFromArray($estiloTituloColumnas);
+                    break;  
+
+
                 }
                 
                 $objPHPExcel->getActiveSheet()->setCellValueExplicit('E' . $i, $row['cedula'], PHPExcel_Cell_DataType::TYPE_STRING);
