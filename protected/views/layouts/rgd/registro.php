@@ -144,7 +144,13 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
     <div class="row exh-cont" style="display: none;">
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Lugar</label>
-            <input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="Exhibicion Ibarra">
+            <!--<input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="Exhibicion Ibarra">-->
+            <select name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" class="form-control">
+                <option value="exh_mall_de_los_andes">Mall de Los Andes</option>
+                <option value="exh_mall_del_sol">Mall del Sol</option>
+                <option value="exh_mall_el_jardin">Mall El Jardin</option>
+                <option value="exh_cc_el_recreo">Centro Comercial El Recreo</option>
+            </select>
         </div>
     </div>
     <div class="row otro-cont" style="display: none;">

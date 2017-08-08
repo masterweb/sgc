@@ -537,11 +537,9 @@ $(document).ready(function () {
         var dataprospeccion = '<option value="">--Seleccione--</option>\n\
 <option value="Nuevo">Nuevo</option>';
         var data = '<option value="">--Seleccione--</option>\n\
-<option value="Nuevo">Nuevo</option>\n\
-<option value="Usado">Usado</option>';
+<option value="Nuevo">Nuevo</option>';
         var datatrafico = '<option value="">--Seleccione--</option>\n\
 <option value="Nuevo">Nuevo</option>\n\
-<option value="Usado">Usado</option>\n\
 ';
         switch (value) {
             case 'showroom':
@@ -647,7 +645,9 @@ $(document).ready(function () {
         });
     });
     $('#GestionInformacion_provincia_conc').change(function () {
+
         var value = $(this).attr('value');
+        alert(value);
         $.ajax({
             url: 'https://www.kia.com.ec/intranet/usuario/index.php/dealercities/getcities',
             dataType: "json",
@@ -666,8 +666,11 @@ $(document).ready(function () {
         });
     });
 
+
+
     $('#Casos_identificacion').change(function () {
         var value = $(this).attr('value');
+        alert(value);
         switch (value) {
             case 'ci':
                 $('.cedula-cont').show();
