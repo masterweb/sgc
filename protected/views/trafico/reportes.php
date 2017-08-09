@@ -37,6 +37,15 @@
             if ($(this).val() != ''){$('#fuente_contacto').val(1);} else{$('#fuente_contacto').val(0);}
             var value = $('#trafico_fuente_contacto option:selected').val();
             var options = '';
+            var options_grupo = `<option value="">--Seleccione Grupo--</option>
+                                <option value="1000">TODOS</option>
+                                <option value="6">AUTHESA</option>
+                                <option value="2">GRUPO ASIAUTO</option>
+                                <option value="5">GRUPO EMPROMOTOR</option>
+                                <option value="3">GRUPO KMOTOR</option>
+                                <option value="8">GRUPO MERQUIAUTO</option>
+                                <option value="9">GRUPO MOTRICENTRO</option>
+                                <option value="4">IOKARS</option>`;
             switch(value){
                 case 'showroom':
                 case 'exhibicion':
@@ -62,9 +71,11 @@
                                 <option value="13">Citas Concretadas</option>
                                 <option value="14">TestDrive</option>
                                 <option value="15">Ventas</option>`;
+                options_grupo = `<option value="">--Seleccione Grupo--</option>
+                                <option value="2">GRUPO ASIAUTO</option>`;                
                 break;
             }
-            $('#trafico_tipo_reporte').html(options);
+            $('#trafico_tipo_reporte').html(options);$('#trafico_grupo').html(options_grupo);
 
         });
         $('#send-excel').click(function(){
