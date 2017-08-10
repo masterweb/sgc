@@ -2153,7 +2153,7 @@ LEFT JOIN versiones v ON v.id_versiones = gv.version";
                 $and = " AND gi.bdc = 1 AND gt.test_drive = 1 AND gt.`order` = 1 AND gd.desiste = 0  
                 AND gi.dealer_id IN ({$dealerList}) 
 AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
-                $group_order = " GROUP BY gt.id_vehiculo";
+                $group_order = " GROUP BY gv.id";
                 $titulo_reporte = 'Reporte TestDrive Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break;
              case 15: // VENTAS WEB
