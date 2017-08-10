@@ -1035,7 +1035,7 @@ if ($cargo_id != 46 && $cargo_adicional != 0 && $cargo_id != 70) {
                                     echo $form->dropDownList($vehiculo, 'modelo', array(
                                         "" => "--Escoja un Modelo--",
                                         "84" => "Picanto R",
-                                        "85" => "Rio R",
+                                        //"85" => "Rio R",
                                         "100" => "Nuevo Rio",
                                         //"91" => "Rio Taxi",
                                         "24" => "Cerato Forte",

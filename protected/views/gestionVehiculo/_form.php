@@ -319,7 +319,7 @@ if (isset($id)) {
                                             echo $form->dropDownList($model, 'modelo', array(
                                                 "" => "--Escoja un Modelo--",
                                                 "84" => "Picanto R",
-                                                "85" => "Rio R",
+                                                //"85" => "Rio R",
                                                 "100" => "Nuevo Rio",
                                                 //"91" => "Rio Taxi",
                                                 "24" => "Cerato Forte",
@@ -382,7 +382,7 @@ if (isset($id)) {
                                         <select class="form-control" name="GestionVehiculo2[modelo]" id="GestionVehiculo_modelo2">
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
-                                            <option value="85">Rio R</option>
+                                            <!--<option value="85">Rio R</option>-->
                                             <option value="100">Nuevo Rio</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="94">Cerato Koup</option>
@@ -520,7 +520,7 @@ if (isset($id)) {
                                         <select class="form-control" name="GestionVehiculo[modelo]" id="GestionVehiculo_modelo">
                                             <option value="" selected="selected">--Escoja un Modelo--</option>
                                             <option value="84">Picanto R</option>
-                                            <option value="85">Rio R</option>
+                                            <!--<option value="85">Rio R</option>-->
                                             <option value="100">Nuevo Rio</option>
                                             <option value="24">Cerato Forte</option>
                                             <option value="94">Cerato Koup</option>
