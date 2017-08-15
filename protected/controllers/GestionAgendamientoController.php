@@ -66,10 +66,10 @@ class GestionAgendamientoController extends Controller {
 
         if (isset($_POST['GestionAgendamiento'])) {
             //die('enter agendamiento');
-      //      echo '<pre>';
-         //   print_r($_POST);
-        //   echo '</pre>';
-       //     die();
+    //     echo '<pre>';
+    //     print_r($_POST);
+    //     echo '</pre>';
+    //       die();
             $model->attributes = $_POST['GestionAgendamiento'];
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->fecha = date("Y-m-d H:i:s");
@@ -125,7 +125,7 @@ class GestionAgendamientoController extends Controller {
                     $fuente = $this->getFuenteSGC($_POST['GestionAgendamiento']['id_informacion']);
                     // SI ES WEB PARA ASESORES TELEMERCADEO WEB
                     // REASIGNAR AL JEFE DE AGENCIA CORRESPONDIENTE
-                    if($fuente == 'web' && (Yii::app()->user->getState('cargo_id') == 89 && (GestionFinanciamiento::model()->count(array('condition' => "id_informacion = {$_POST['GestionAgendamiento']['id_informacion']}")) > 0))){
+                    if( ($fuente == 'web' || $fuente == 'web_espectaculo') && (Yii::app()->user->getState('cargo_id') == 89 && (GestionFinanciamiento::model()->count(array('condition' => "id_informacion = {$_POST['GestionAgendamiento']['id_informacion']}")) > 0))){
                         $jefe_agencia_id = $this->getJefeAgenciaTW($_POST['GestionAgendamiento']['id_informacion']);
                         $fin = GestionInformacion::model()->find(array('condition' => "id = {$_POST['GestionAgendamiento']['id_informacion']}"));
                         $fin->responsable = $jefe_agencia_id;
@@ -504,7 +504,7 @@ class GestionAgendamientoController extends Controller {
                 $id_asesor = Yii::app()->user->getId();
                $emailAsesor = $this->getAsesorEmail($id_asesor);
                $asunto = 'SGC NUEVA CITA GENERADA POR TELEMERCADERISTA';           
-                sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente, $emailAsesor, html_entity_decode($asunto), $body);
+                sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", "", $emailAsesor, html_entity_decode($asunto), $body);
     }
 
 }

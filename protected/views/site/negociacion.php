@@ -146,7 +146,7 @@ $ex = GestionDiaria::model()->find(array('condition' => "id_informacion={$id}"))
 
             ?>
                 
-            <?php if(($fuente == 'web' && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)<1) { ?> 
+            <?php if(( ($fuente == 'web' || $fuente == 'web_espectaculo') && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)<1) { ?> 
                                   
 
                      <li role="presentation"><a aria-controls="profile" role="tab"><span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/prospeccion.png" alt="" /></span> Prospección / <span><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/cita.png" alt="" /></span> Cita</a></li>
@@ -756,7 +756,7 @@ $( document ).ready(function() {
     
 
     <?php 
-            if(($fuente == 'web' && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)>0){?>
+            if((  ($fuente == 'web' || $fuente == 'web_espectaculo') && ($gestion_informacion ->reasignado_tm == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14) && count($presentacion)>0){?>
                 $( "#GestionPresentacion_presentacion" ).val(<?php echo $presentacion[0]->presentacion ?>);
                 $( "#GestionPresentacion_presentacion" ).prop('disabled',true);               
                 $( "#GestionPresentacion_observaciones" ).val('<?php echo $presentacion[0]->observaciones ?>');

@@ -993,14 +993,14 @@ $count = count($users);
                                             <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <?php if((($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' || $fuente_contacto == 'web_espectaculo') && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     
 
    <!-- <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>            -->
 
-                                    <?php if(($fuente_contacto == 'web' && ($c['reasignado_tm'] == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <?php if((($fuente_contacto == 'web' || $fuente_contacto == 'web_espectaculo') && ($c['reasignado_tm'] == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                    <!--<a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>     -->        
 
                                      <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="continuarTw('<?php echo $url ?>');">Continuartw</a>            
