@@ -993,7 +993,7 @@ $count = count($users);
                                             <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' || $fuente_contacto == 'web_espectaculo' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     
