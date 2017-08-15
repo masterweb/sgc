@@ -24,27 +24,10 @@ $count = count($users);
 //echo '</pre>';
 ?>
 <script>
-    function sendtm(url,id_informacion, dealer_id){
-        $.ajax({
-                url: '<?php echo Yii::app()->createAbsoluteUrl("site/sendEmailTM"); ?>',
-                beforeSend: function (xhr) {
-                //$('#info-3').show();  // #bg_negro must be defined somewhere
-                },
-                type: 'POST',
-                //dataType: 'json', 
-                data: {id_informacion: id_informacion, dealer_id: dealer_id },
-                success: function (data) {
-
-                    alert(data);
-                    
-                }
-            });
-        
-        //alert(id_informacion+' '+dealer_id);
-
+  
+  
+    function continuarTw(url){
         $(location).attr('href', url);
-
-
     }
     function validateruc(e)  {
         if (e.val().length < 13) {
@@ -463,12 +446,11 @@ $count = count($users);
                     $('#bg_negro').show();  // #bg_negro must be defined somewhere
                 },
                 type: 'POST', dataType: 'json', data: {id: id, checkboxvalues: checkboxvalues, comentario:textreasignar},
-                success: function (data) {
-                   
+                success: function (data) {  
                     if (data.result == true) {
+                        
                         location.reload();
                     }
-
                 }
             });
         }
@@ -1011,7 +993,7 @@ $count = count($users);
                                             <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
+                                    <?php if(($fuente_contacto == 'prospeccion' || $fuente_contacto == 'web' || $fuente_contacto == 'web_espectaculo' && ($c['reasignado_tm'] == 0 || $c['reasignado_tm'] == 2)) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
                                     <a href="<?php echo $url; ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>            
                                     <?php } ?>
                                     
@@ -1019,7 +1001,11 @@ $count = count($users);
    <!-- <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>            -->
 
                                     <?php if(($fuente_contacto == 'web' && ($c['reasignado_tm'] == 1 ) && $cargo_id != 89) && ($area_id != 4 && $area_id != 12 && $area_id != 13 && $area_id != 14)){ ?> 
-                                    <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>            
+                                   <!--<a href="#" class="btn btn-primary btn-xs btn-warning" onclick="sendtm('<?php echo $url ?>','<?php echo $c['id'] ?>','<?php echo $c['dealer_id']; ?>');">Continuartw</a>     -->        
+
+                                     <a href="#" class="btn btn-primary btn-xs btn-warning" onclick="continuarTw('<?php echo $url ?>');">Continuartw</a>            
+                                  
+
                                     <?php } ?>
                                     <?php if($fuente_contacto == 'exhibicion'){ ?> 
                                     <a href="<?php echo Yii::app()->createUrl('gestionVehiculo/create', array('id' => $c['id'])); ?>" class="btn btn-primary btn-xs btn-warning">Continuar</a>           
