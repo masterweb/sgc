@@ -200,7 +200,7 @@ if($fuente == 'web'){
                 <br />
                 <?php                
                 //echo $continuar_status.' = '.count($vec);
-                if ($continuar_status == count($vec) || $ex->fuente_contacto == 'exhibicion' || $ex->fuente_contacto == 'web' || $ex->fuente_contacto == 'exhibicion quierounkiatd' || $ex->fuente_contacto == 'exhibicion quierounkia' || $ex->fuente_contacto == 'exhibicion_automundo_uio' || $ex->fuente_contacto == 'exhibicion_automundo_gye'):
+                if ($continuar_status == count($vec) || $ex->fuente_contacto == 'exhibicion' || $ex->fuente_contacto == 'web' || $ex->fuente_contacto == 'web_espectaculo'  ||  $ex->fuente_contacto == 'exhibicion quierounkiatd' || $ex->fuente_contacto == 'exhibicion quierounkia' || $ex->fuente_contacto == 'exhibicion_automundo_uio' || $ex->fuente_contacto == 'exhibicion_automundo_gye'):
                     ?>
                     <div class="row">
                         <div class="col-md-3">
