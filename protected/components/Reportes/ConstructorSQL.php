@@ -165,10 +165,10 @@ class ConstructorSQL {
                 
             }
 
-            $fuente_contacto = "gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web'";
+            $fuente_contacto = "gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo'";
 
             $fuente_prospeccion = "";
-            $fuente_contacto_historial = " gd.fuente_contacto = 'web' OR gd.fuente_contacto_historial = 'web'";
+            $fuente_contacto_historial = " gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo' OR gd.fuente_contacto_historial = 'web'";
           //  $date_fecha = "gc";
         }
        /* if($tipo == 'tw'){

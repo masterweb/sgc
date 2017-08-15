@@ -1900,13 +1900,13 @@ class TraficoController extends Controller {
                 $version = " AND gv.orden = 1 ";
                 break;
             case 'web':
-                $fuente = " AND (gd.fuente_contacto = 'web')";
+                $fuente = " AND (gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo')";
                 $bdc = " AND gi.bdc = 1";
                 $distint = "SELECT d.`name`, gi.id, ";
                 $version = " ";
                 break;
             case 'asiautoweb':
-                $fuente = " AND (gd.fuente_contacto = 'web')";
+                $fuente = " AND (gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo')";
                 $bdc = " AND gi.bdc = 1";
                 $distint = "SELECT DISTINCT d.`name`, gi.id, ";
                 $version = " ";
@@ -2206,7 +2206,7 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
         $params2 = trim($params[1]);
         $sql = $select_ini;
         $sql .= " gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, gi.bdc, m.nombre_modelo, v.nombre_version, ";
-        $sql .= $select_fin;
+        $sql .= $select_fin.", gd.fuente_contacto";
         $sql .= $from;
         $sql .= $inner;
         $sql .= " WHERE (DATE(".$date.".fecha) BETWEEN '{$params1}' AND '{$params2}') ";
@@ -3623,24 +3623,27 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('T2', 'medio_prensa')
                     ->setCellValue('U2', 'medio_television')
                     ->setCellValue('V2', 'marca_kia')
-                    ->setCellValue('W2', 'marca_kia_recomendacion');
+                    ->setCellValue('W2', 'marca_kia_recomendacion')
+                    ->setCellValue('X2', 'fuente_contacto');
                     $name_file = "Reporte Solicitudes Web";
                     break; 
                 case 6: // PROFORMAS WEB
-                //    $objPHPExcel->setActiveSheetIndex(0) 
+                    $objPHPExcel->setActiveSheetIndex(0) 
                 //    ->setCellValue('P2', 'version')
-                //    ->setCellValue('Q2', 'fuente_contacto');
+                    ->setCellValue('P2', 'fuente_contacto');
                     $name_file = "Reporte Proformas Web";
                     break; 
                 case 7: // CITAS WEB
                     $objPHPExcel->setActiveSheetIndex(0) 
                     ->setCellValue('P2', 'nombre_responsable')
-                    ->setCellValue('Q2', 'apellido_responsable');
+                    ->setCellValue('Q2', 'apellido_responsable')
+                    ->setCellValue('R2', 'fuente_contacto');
                     $name_file = "Citas Web";
                     break;
                 case 8: // TESTDRIVE WEB
                     $objPHPExcel->setActiveSheetIndex(0) 
-                    ->setCellValue('P2', 'test_drive');
+                    ->setCellValue('P2', 'test_drive')
+                    ->setCellValue('Q2', 'fuente_contacto');
                     $name_file = "Reporte TestDrive Web Nacional";
                     break;    
                 case 9: // VENTAS WEB
@@ -3656,19 +3659,21 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('W2', 'medio_prensa')
                     ->setCellValue('X2', 'medio_television')
                     ->setCellValue('Y2', 'marca_kia')
-                    ->setCellValue('Z2', 'marca_kia_recomendacion');
+                    ->setCellValue('Z2', 'marca_kia_recomendacion')
+                    ->setCellValue('AA2', 'fuente_contacto');
                     $name_file = "Reporte Ventas Web Nacional";
                     break;  
                 case 10: // SOLICITUDES RECIBIDAS ASIAUTO WEB
                     $objPHPExcel->setActiveSheetIndex(0) 
                     ->setCellValue('P2', 'nombre_responsable')
-                    ->setCellValue('Q2', 'apellido_responsable');
+                    ->setCellValue('Q2', 'apellido_responsable')
+                    ->setCellValue('R2', 'fuente_contacto');
                     $name_file = "Reporte Solicitudes Recibidas";
                 break;
                 case 11: // PROFORMAS ASIAUTO WEB
-                //    $objPHPExcel->setActiveSheetIndex(0) 
+                    $objPHPExcel->setActiveSheetIndex(0) 
                 //    ->setCellValue('P2', 'version')
-                //    ->setCellValue('Q2', 'fuente_contacto');
+                    ->setCellValue('P2', 'fuente_contacto');
                     $name_file = "Reporte Proformas Asiauto Web";
                 break;
                 case 12: // CITAS GENERADAS ASIAUTO WEB
@@ -3677,7 +3682,8 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('Q2', 'apellido_responsable')
                     ->setCellValue('R2', 'nombre_teleweb')
                     ->setCellValue('S2', 'apellido_teleweb')
-                    ->setCellValue('T2', 'fecha_agendamiento');
+                    ->setCellValue('T2', 'fecha_agendamiento')
+                    ->setCellValue('U2', 'fuente_contacto');
                     $name_file = "Citas Generadas Asiauto Web";
                 break;
                 case 13: // CITAS CONCRETADAS ASIAUTO WEB
@@ -3686,12 +3692,14 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('Q2', 'apellido_responsable')
                     ->setCellValue('R2', 'fecha_presentacion')
                     ->setCellValue('S2', 'nombre_teleweb')
-                    ->setCellValue('T2', 'apellido_teleweb');
+                    ->setCellValue('T2', 'apellido_teleweb')
+                    ->setCellValue('U2', 'fuente_contacto');
                     $name_file = "Citas Concretadas Asiauto Web";
                 break;
                 case 14: // TESTDRIVE
                     $objPHPExcel->setActiveSheetIndex(0) 
-                    ->setCellValue('P2', 'test_drive');
+                    ->setCellValue('P2', 'test_drive')
+                    ->setCellValue('Q2', 'fuente_contacto');
                     $name_file = "Reporte TestDrive Asiauto Web";
                 break;
                 case 15: // VENTAS WEB
@@ -3703,7 +3711,8 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('S2', 'nombre_responsable')
                     ->setCellValue('T2', 'apellido_responsable')
                     ->setCellValue('U2', 'nombre_teleweb')
-                    ->setCellValue('V2', 'apellido_teleweb');
+                    ->setCellValue('V2', 'apellido_teleweb')
+                    ->setCellValue('W2', 'fuente_contacto');
                     $name_file = "Reporte Ventas Asiauto Web";
                 break;  
             }
@@ -3780,24 +3789,27 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         ->setCellValue('T' . $i, $row['medio_prensa'])
                         ->setCellValue('U' . $i, $row['medio_television'])
                         ->setCellValue('V' . $i, $row['marca_kia'])
-                        ->setCellValue('W' . $i, $row['marca_kia_recomendacion']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('W' . $i, $row['marca_kia_recomendacion'])
+                        ->setCellValue('X' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:X2')->applyFromArray($estiloTituloColumnas);
                         break; 
                     case 6: // PROFORMAS WEB
-                    //    $objPHPExcel->setActiveSheetIndex(0)
+                        $objPHPExcel->setActiveSheetIndex(0)
                     //    ->setCellValue('P' . $i, $row['version'])
-                    //    ->setCellValue('Q' . $i, $row['fuente_contacto']);
+                        ->setCellValue('p' . $i, $row['fuente_contacto']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas); 
                         break;
                     case 7: // CITAS WEB
                         $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('P' . $i, $row['nombre_responsable'])
-                        ->setCellValue('Q' . $i, $row['apellido_responsable']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
                     break; 
                     case 8: // TESTDRIVE WEB
                         $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('P' . $i, $row['test_drive']);
+                        ->setCellValue('P' . $i, $row['test_drive'])
+                        ->setCellValue('Q' . $i, $row['fuente_contacto']);
                     //    ->setCellValue('Q' . $i, $row['version'])
                     //    ->setCellValue('R' . $i, $row['fuente_contacto']);
                         $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
@@ -3815,20 +3827,22 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         ->setCellValue('W' . $i, $row['medio_prensa'])
                         ->setCellValue('X' . $i, $row['medio_television'])
                         ->setCellValue('Y' . $i, $row['marca_kia'])
-                        ->setCellValue('Z' . $i, $row['marca_kia_recomendacion']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:Z2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('Z' . $i, $row['marca_kia_recomendacion'])
+                        ->setCellValue('AA' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:AA2')->applyFromArray($estiloTituloColumnas);
                         break; 
                     case 10: // SOLICITUDES RECIBIDAS ASIAUTO WEB
                         $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('P' . $i, $row['nombre_responsable'])
-                        ->setCellValue('Q' . $i, $row['apellido_responsable']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
                         break;       
                     case 11: // PROFORMAS ASIAUTO WEB
-                    //    $objPHPExcel->setActiveSheetIndex(0)
+                        $objPHPExcel->setActiveSheetIndex(0)
                     //    ->setCellValue('P' . $i, $row['version'])
-                    //    ->setCellValue('Q' . $i, $row['fuente_contacto']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('P' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:P2')->applyFromArray($estiloTituloColumnas);
                         break; 
                     case 12: // CITAS GENERADAS ASIAUTO
                         $objPHPExcel->setActiveSheetIndex(0)
@@ -3836,8 +3850,9 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         ->setCellValue('Q' . $i, $row['apellido_responsable'])
                         ->setCellValue('R' . $i, $row['nombre_teleweb'])
                         ->setCellValue('S' . $i, $row['apellido_teleweb'])
-                        ->setCellValue('T' . $i, $row['fecha_agendamiento']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:T2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('T' . $i, $row['fecha_agendamiento'])
+                        ->setCellValue('U' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:U2')->applyFromArray($estiloTituloColumnas);
                     break;   
                     case 13: // CITAS CONCRETADAS ASIAUTO
                         $objPHPExcel->setActiveSheetIndex(0)
@@ -3845,15 +3860,17 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         ->setCellValue('Q' . $i, $row['apellido_responsable'])
                         ->setCellValue('R' . $i, $row['fecha_presentacion'])
                         ->setCellValue('S' . $i, $row['nombre_teleweb'])
-                        ->setCellValue('T' . $i, $row['apellido_teleweb']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:T2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('T' . $i, $row['apellido_teleweb'])
+                        ->setCellValue('U' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:U2')->applyFromArray($estiloTituloColumnas);
                     break;  
                     case 14: // TESTDRIVE WEB
                         $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue('P' . $i, $row['test_drive']);
+                        ->setCellValue('P' . $i, $row['test_drive'])
+                        ->setCellValue('Q' . $i, $row['fuente_contacto']);
                     //    ->setCellValue('Q' . $i, $row['version'])
                     //    ->setCellValue('R' . $i, $row['fuente_contacto']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:R2')->applyFromArray($estiloTituloColumnas);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
                     break;  
                     case 15: // VENTAS WEB
                         
@@ -3864,8 +3881,9 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         ->setCellValue('S' . $i, $row['nombre_responsable'])
                         ->setCellValue('T' . $i, $row['apellido_responsable'])
                         ->setCellValue('U' . $i, $row['nombre_teleweb'])
-                        ->setCellValue('V' . $i, $row['apellido_teleweb']);
-                        $objPHPExcel->getActiveSheet()->getStyle('A2:V2')->applyFromArray($estiloTituloColumnas);
+                        ->setCellValue('V' . $i, $row['apellido_teleweb'])
+                        ->setCellValue('W' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->applyFromArray($estiloTituloColumnas);
                     break;  
 
 
