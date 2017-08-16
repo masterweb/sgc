@@ -290,6 +290,12 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <?php echo $value['empresa_trabajo']; ?>
         </div>
         <div class="col-xs-4">
+            <label for="">Sector: </label>
+        </div>
+        <div class="col-xs-6">
+            <?php echo ucfirst($value['sector']); ?>
+        </div>
+        <div class="col-xs-4">
             <label for="">Teléfonos Trabajo: </label>
         </div>
          <div class="col-xs-6">
@@ -406,6 +412,12 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
                 <?php echo $value['empresa_trabajo_conyugue']; ?>
             </div>
             <div class="col-xs-4">
+                <label for="">Sector: </label>
+            </div>
+            <div class="col-xs-6">
+                <?php echo ucfirst($value['sector_conyugue']); ?>
+            </div>
+            <div class="col-xs-4">
                 <label for="">Teléfono Trabajo Cónyugue: </label>
             </div>
             <div class="col-xs-6">
@@ -488,7 +500,7 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
             <?php echo $value['barrio']; ?>
         </div>
         <div class="col-xs-4">
-            <label for="">Barrio: </label>
+            <label for="">Número: </label>
         </div>
          <div class="col-xs-6">
             <?php echo $value['numero']; ?>
@@ -498,12 +510,15 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
 
 
     <div class="row">
-        <div class="col-xs-4">
-            <label for="">Referencia Domicilio: </label>
-        </div>
-        <div class="col-xs-6">
-            <?php echo $value['referencia_domicilio']; ?>
-        </div>
+        <?php if(!empty($value['referencia_domicilio'])): ?>
+            <div class="col-xs-4">
+                <label for="">Referencia Domicilio: </label>
+            </div>
+            <div class="col-xs-6">
+                <?php echo $value['referencia_domicilio']; ?>
+            </div>
+        <?php endif; ?>
+        
         <div class="col-xs-4">
             <label for="">Teléfono Residencia: </label>
         </div>

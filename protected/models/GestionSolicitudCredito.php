@@ -136,7 +136,7 @@ class GestionSolicitudCredito extends CActiveRecord {
         // will receive user inputs.
         return array(
             array('modelo, valor, monto_financiar, entrada, plazo, taza, cuota_mensual,'
-                . ' apellido_paterno, empresa_trabajo, telefonos_trabajo, tiempo_trabajo, cargo,'
+                . ' apellido_paterno, empresa_trabajo, sector, telefonos_trabajo, tiempo_trabajo, cargo,'
                 . ' direccion_empresa, tipo_relacion_laboral, email, actividad_empresa, year,'
                 . ' sueldo_mensual,estado_civil,fecha_nacimiento,'
                 . 'calle,telefono_residencia, celular', 'required'),
@@ -148,7 +148,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             array('fecha_nacimiento, telefonos_trabajo', 'length', 'max' => 75),
             array('estado_civil, direccion_empresa_conyugue', 'length', 'max' => 120),
             array('direccion_empresa, direccion_activo1, direccion_sector1, direccion_activo2, direccion_sector2, email_laboral, interseccion', 'length', 'max' => 200),
-            array('actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, ruc_conyugue, pasaporte_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, calle, barrio, referencia_domicilio, institucion_inversion, valor_inversion', 'length', 'max' => 80),
+            array('actividad_empresa, apellido_paterno_conyugue, apellido_materno_conyugue, nombres_conyugue, cedula_conyugue, ruc_conyugue, pasaporte_conyugue, nacionalidad_conyugue, empresa_trabajo_conyugue, sector_conyugue, calle, barrio, referencia_domicilio, institucion_inversion, valor_inversion', 'length', 'max' => 80),
             array('fecha_nacimiento_conyugue', 'length', 'max' => 85),
             array('domicilio_actual, habita, referencia_personal1, referencia_personal2, manzana,descripcion_otros_ingresos', 'length', 'max' => 150),
             array('celular', 'length', 'max' => 10),
@@ -198,6 +198,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'nacionalidad' => 'Nacionalidad',
             'estado_civil' => 'Estado Civil',
             'empresa_trabajo' => 'Empresa Trabajo',
+            'sector' => 'Sector',
             'telefonos_trabajo' => 'Teléfonos Trabajo',
             'tiempo_trabajo' => 'Años de Trabajo',
             'cargo' => 'Cargo',
@@ -216,6 +217,7 @@ class GestionSolicitudCredito extends CActiveRecord {
             'fecha_nacimiento_conyugue' => 'Fecha Nacimiento Cónyugue',
             'nacionalidad_conyugue' => 'Nacionalidad Cónyugue',
             'empresa_trabajo_conyugue' => 'Empresa Trabajo',
+            'sector_conyugue' => 'Sector',
             'telefono_trabajo_conyugue' => 'Teléfono Trabajo',
             'tiempo_trabajo_conyugue' => 'Años de Trabajo',
             'cargo_conyugue' => 'Cargo Cónyugue',

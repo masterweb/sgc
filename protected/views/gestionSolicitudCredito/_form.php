@@ -556,6 +556,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -618,6 +619,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -723,6 +725,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -883,6 +886,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -1025,6 +1029,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -1128,6 +1133,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
                                 $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
                                 $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_sector_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_sector_conyugue_error').show();
+                                $('#GestionSolicitudCredito_sector_conyugue').focus().addClass('error');
                                 error++;
                             }
                             if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
@@ -1271,6 +1281,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -1375,6 +1386,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -1511,6 +1523,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 $('#GestionSolicitudCredito_fecha_nacimiento_conyugue').val('');
                 $('#GestionSolicitudCredito_conyugue_trabaja').val('');
                 $('#GestionSolicitudCredito_empresa_trabajo_conyugue').val('');
+                $('#GestionSolicitudCredito_sector_conyugue').val('');
                 $('#GestionSolicitudCredito_telefono_trabajo_conyugue').val('');
                 $('#GestionSolicitudCredito_tiempo_trabajo_conyugue').val('');
                 $('#GestionSolicitudCredito_meses_trabajo_conyugue').val('');
@@ -1555,6 +1568,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
                         $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
                         $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                        error++;
+                    }
+                    if ($('#GestionSolicitudCredito_sector_conyugue').val() == '') {
+                        $('#GestionSolicitudCredito_sector_conyugue_error').show();
+                        $('#GestionSolicitudCredito_sector_conyugue').focus().addClass('error');
                         error++;
                     }
                     if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
@@ -1662,6 +1680,7 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                 'GestionSolicitudCredito[estado_civil]': {required: true},
                 'GestionSolicitudCredito[fecha_nacimiento]': {required: true},
                 'GestionSolicitudCredito[empresa_trabajo]': {required: true},
+                'GestionSolicitudCredito[sector]': {required: true},
                 'GestionSolicitudCredito[telefonos_trabajo]': {required: true},
                 'GestionSolicitudCredito[tiempo_trabajo]': {required: true},
                 'GestionSolicitudCredito[cargo]': {required: true},
@@ -1768,6 +1787,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                             if ($('#GestionSolicitudCredito_empresa_trabajo_conyugue').val() == '') {
                                 $('#GestionSolicitudCredito_empresa_trabajo_conyugue_error').show();
                                 $('#GestionSolicitudCredito_empresa_trabajo_conyugue').focus().addClass('error');
+                                error++;
+                            }
+                            if ($('#GestionSolicitudCredito_sector_conyugue').val() == '') {
+                                $('#GestionSolicitudCredito_sector_conyugue_error').show();
+                                $('#GestionSolicitudCredito_sector_conyugue').focus().addClass('error');
                                 error++;
                             }
                             if ($('#GestionSolicitudCredito_telefono_trabajo_conyugue').val() == '') {
@@ -2589,6 +2613,11 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                 <?php echo $form->textField($model, 'empresa_trabajo', array('size' => 60, 'maxlength' => 100, 'class' => 'form-control','value' => $vartrf['nombreempleador'])); ?>
                                 <?php echo $form->error($model, 'empresa_trabajo'); ?></div>
                             <div class="col-md-2">
+                                <?php echo $form->labelEx($model, 'sector'); ?>
+                                <?php echo $form->dropDownList($model, 'sector', array('' => '--Seleccione--', 'publico' => 'Público' , 'privado' => "Privado"), array('class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'sector'); ?>
+                            </div>    
+                            <div class="col-md-2">
                                 <?php echo $form->labelEx($model, 'telefonos_trabajo'); ?>
                                 <?php echo $form->textField($model, 'telefonos_trabajo', array('size' => 60, 'maxlength' => 9, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)','value' => $vartrf['telefonoempleador'])); ?>
                                 <label class="error" id="telefonos_trabajo_error" style="display: none;">Ingrese un número vállido.</label>
@@ -3044,6 +3073,12 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                     <?php echo $form->error($model, 'empresa_trabajo_conyugue'); ?>
                                     <label for="" generated="true" class="error" id="GestionSolicitudCredito_empresa_trabajo_conyugue_error" style="display: none;">Este campo es requerido.</label>
                                 </div>
+                                <div class="col-md-2">
+                                <?php echo $form->labelEx($model, 'sector_conyugue'); ?>
+                                <?php echo $form->dropDownList($model, 'sector_conyugue', array('' => '--Seleccione--', 'publico' => 'Público' , 'privado' => "Privado"), array('class' => 'form-control')); ?>
+                                <?php echo $form->error($model, 'sector_conyugue'); ?>
+                                <label for="" generated="true" class="error" id="GestionSolicitudCredito_sector_conyugue_error" style="display: none;">Este campo es requerido.</label>
+                            </div>  
                                 <div class="col-md-2">
                                     <?php echo $form->labelEx($model, 'telefono_trabajo_conyugue'); ?>
                                     <?php echo $form->textField($model, 'telefono_trabajo_conyugue', array('size' => 50, 'maxlength' => 10, 'class' => 'form-control', 'onkeypress' => 'return validateNumbers(event)')); ?>
@@ -3613,7 +3648,8 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                     <div class="row">
                         <?php
                         $criteria4 = new CDbCriteria(array(
-                            'condition' => "id_informacion={$id_informacion}"
+                            'condition' => "id_informacion={$id_informacion}",
+                            'limit' => 1
                         ));
                         $art = GestionConsulta::model()->findAll($criteria4);
                         foreach ($art as $c):

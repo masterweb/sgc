@@ -718,30 +718,59 @@ $sol = GestionSolicitudCredito::model()->findAll($criteria);
         <?php endif; ?>
     </div>
     <div class="row">
-        <?php if($value['vehiculo_marca2']): ?>
+        <?php if($value['vehiculo_marca1']): ?>
         <div class="col-xs-4">
             <label for="">Vehículo: Marca</label>
         </div>
         <div class="col-xs-6">
-            <p><?php echo $value['vehiculo_marca1']; ?>
+            <?php echo $value['vehiculo_marca1']; ?>
         </div>
         <div class="col-xs-4">
             <label for="">Modelo:</label>
         </div>
         <div class="col-xs-6">
-            <p><?php echo $value['vehiculo_modelo1']; ?>
+            <?php echo $value['vehiculo_modelo1']; ?>
         </div>
         <div class="col-xs-4">
             <label for="">Año:</label>
         </div>
         <div class="col-xs-6">
-            <p><?php echo $value['vehiculo_year1']; ?>
+            <?php echo $value['vehiculo_year1']; ?>
         </div>
         <div class="col-xs-4">
             <label for="">Valor Comercial:</label>
         </div>
         <div class="col-xs-6">
-            <p><?php echo $value['vehiculo_valor1']; ?>
+            <?php echo $value['vehiculo_valor1']; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+    <br />
+    <div class="row">
+        <?php if($value['vehiculo_marca2']): ?>
+        <div class="col-xs-4">
+            <label for="">Vehículo: Marca</label>
+        </div>
+        <div class="col-xs-6">
+            <p><?php echo $value['vehiculo_marca2']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Modelo:</label>
+        </div>
+        <div class="col-xs-6">
+            <p><?php echo $value['vehiculo_modelo2']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Año:</label>
+        </div>
+        <div class="col-xs-6">
+            <p><?php echo $value['vehiculo_year2']; ?>
+        </div>
+        <div class="col-xs-4">
+            <label for="">Valor Comercial:</label>
+        </div>
+        <div class="col-xs-6">
+            <p><?php echo $value['vehiculo_valor2']; ?>
         </div>
         <?php endif; ?>
     </div>
