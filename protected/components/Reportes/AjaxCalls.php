@@ -313,6 +313,7 @@ class AjaxCalls{
         $active  = isset($_POST["dealer"]) ? $_POST["dealer"] : "";
         $tipo  = isset($_POST["tipo"]) ? $_POST["tipo"] : "";
         $tipo_b = isset($_POST["tipo_b"]) ? $_POST["tipo_b"] : "";
+        $tipo_search = isset($_POST["tipo_search"]) ? $_POST["tipo_search"] : "";
         $con = Yii::app()->db;
         //FECHAS RENDER
         $fecha1 = isset($_POST["fecha1"]) ? $_POST["fecha1"] : "";
@@ -366,6 +367,10 @@ class AjaxCalls{
             }
         }
         $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios ".$join." WHERE ".$where.$concesionario." ORDER BY nombre ASC";
+        if($tipo_search == 'tw')
+            $sql = "SELECT distinct nombre, dealer_id FROM gr_concesionarios WHERE id_grupo = 2 ORDER BY nombre ASC";
+        
+            
         //die ('sql 2:'.$sql);
         $request = $con->createCommand($sql);
         $request = $request->queryAll();

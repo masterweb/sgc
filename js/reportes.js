@@ -248,6 +248,7 @@ $(function () {
 
             var fecha1 = $('#fecha-range1').attr('value');
             var fecha2 = $('#fecha-range2').attr('value');
+            var tipo_search = $('#tipo_search').attr('value');
             $.ajax({
                 url: url_footer_var_dealers,
                 beforeSend: function (xhr) {
@@ -259,7 +260,8 @@ $(function () {
                     tipo: t, 
                     fecha1: fecha1, 
                     fecha2: fecha2,
-                    tipo_b: tipo_b
+                    tipo_b: tipo_b,
+                    tipo_search: tipo_search
                 },
                 success: function (data) {
                     $('#GestionInformacionConcesionario').html(data);

@@ -405,7 +405,7 @@ class ReportesController extends Controller {
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
                 }*/
-                if($_GET['GI']['concesionario'] != 1000){
+                if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['concesionario'] != ''){
                     $varView['flag_search'] = 51;
                     $varView['$concesionario'] = $_GET['GI']['concesionario'];
                     $varView['checked_g'] = true;
@@ -435,7 +435,27 @@ class ReportesController extends Controller {
                     $varView['id_grupo'] = $_GET['GI']['grupo'];
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
-                }elseif($_GET['tipo'] != 'tw'){
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE id_grupo = " . $varView['id_grupo'];
+                }
+                if($_GET['GI']['grupo'] == 1000 && $_GET['GI']['concesionario'] == '' && $_GET['tipo'] == 'tw'){
+                    $varView['flag_search'] = 56;
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE id_grupo = 2";
+                }
+                if($_GET['GI']['grupo'] != 1000 && $_GET['GI']['concesionario'] == 1000){
+                    $varView['flag_search'] = 55;
+                    $varView['checked_g'] = true;
+                    $varView['checked_p'] = false;
+                    $varView['id_grupo'] = $_GET['GI']['grupo'];
+                    $cond_conce = 'id_grupo';
+                    $id_busqueda = $varView['id_grupo'];
+                    $grupos_sql = "SELECT * from gr_concesionarios WHERE id_grupo = " . $varView['id_grupo'];
+                }
+                elseif($_GET['tipo'] != 'tw'){
                     $varView['flag_search'] = 54;
                     $varView['$concesionario'] = $_GET['GI']['concesionario'];
                     $varView['checked_g'] = true;
