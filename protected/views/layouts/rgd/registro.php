@@ -41,15 +41,15 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
                     'exhibicion' => 'Exhibición',
-                    'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD',
+                //    'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD',
                     //'exhibicion_automundo_uio' => 'Exhibición Automundo UIO'
                     );
-                if($grupo_id == 3 || $grupo_id == 4){
-                    $tipo_array['exhibicion_automundo_gye'] = 'Exhibición Automundo GYE';
-                }
-                if($grupo_id == 2){
-                    $tipo_array['exhibicion_automundo_uio'] = 'Exhibición Automundo UIO';
-                }
+                //if($grupo_id == 3 || $grupo_id == 4){
+                //    $tipo_array['exhibicion_automundo_gye'] = 'Exhibición Automundo GYE';
+                //}
+                //if($grupo_id == 2){
+                //    $tipo_array['exhibicion_automundo_uio'] = 'Exhibición Automundo UIO';
+                //}
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <!--<option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
@@ -63,12 +63,12 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     //'exhibicion_automundo_uio' => 'Exhibición Automundo UIO'
                     //'exhibicion' => 'Exhibición'
                     );
-                if($grupo_id == 3 || $grupo_id == 4){
+                /*if($grupo_id == 3 || $grupo_id == 4){
                     $tipo_array['exhibicion_automundo_gye'] = 'Exhibición Automundo GYE';
                 }
                 if($grupo_id == 2){
                     $tipo_array['exhibicion_automundo_uio'] = 'Exhibición Automundo UIO';
-                }
+                }*/
                 $data_tipo = '<option value="">--Seleccione--</option><option value="Nuevo">Nuevo</option>
                 <!--<option value="Usado">Usado</option>
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
