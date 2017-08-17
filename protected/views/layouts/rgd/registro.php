@@ -41,7 +41,7 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                     'prospeccion' => 'Prospección',
                     'showroom' => 'Tráfico',
                     'exhibicion' => 'Exhibición',
-                //    'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD',
+                    'exhibicion quierounkiatd' => 'Yo Quiero un Kia TD',
                     //'exhibicion_automundo_uio' => 'Exhibición Automundo UIO'
                     );
                 //if($grupo_id == 3 || $grupo_id == 4){
