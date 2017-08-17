@@ -2003,7 +2003,7 @@ INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";
                 $date = "gi";
                 $and = " AND gv.orden = 1";
-                $group_order = $version;
+                $group_order = " GROUP BY gi.id";
                 $titulo_reporte = 'Reporte Solicitudes Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
                 break; 
              case 6: // PROFORMAS WEB
