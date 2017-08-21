@@ -298,8 +298,9 @@ class Controller extends CController {
                 if($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14){
                     return 'Todos';
                 }else{
-                    $dealer = GrGrupo::model()->find(array("condition" => "id={$grupo_id}"));
-                    return $dealer->nombre_grupo;
+                    //$dealer = GrGrupo::model()->find(array("condition" => "id={$grupo_id}"));
+                   // $dealer = GrGrupo::model()->find(array("condition" => "id={$id}"));
+                    return "";//$dealer->nombre_grupo;
                 }
 
                 
@@ -439,6 +440,7 @@ class Controller extends CController {
     }
 
     public function getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id) {
+        //die('grupo_id: '.$grupo_id.', dealer_id: '.$dealer_id.', cargo_id: '.$cargo_id);
 
         $tipo_grupo = 1; // GRUPOS ASIAUTO, KMOTOR POR DEFECTO
         if ($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 7 || $grupo_id == 8 || $grupo_id == 9) {
@@ -489,6 +491,32 @@ class Controller extends CController {
                 }
 
                 break;
+            case '70':
+                if ($tipo_grupo == 1) {
+                    $us = Usuarios::model()->find(array('condition' => "cargo_id = 70 AND dealers_id = {$dealer_id} AND status_asesor = 'ACTIVO'"));
+                    if (count($us) > 0) {
+                        return $us->correo;
+                    } else {
+                        $sql = "SELECT gr.*, u.correo FROM grupoconcesionariousuario gr 
+            INNER JOIN usuarios u ON u.id = gr.usuario_id 
+            WHERE gr.concesionario_id = {$dealer_id}
+            AND u.cargo_id = 70 AND status_asesor = 'ACTIVO'";
+
+                        $con = Yii::app()->db;
+                        $request = $con->createCommand($sql)->query();
+                        //die('count request: '.count($request));
+                        foreach ($request as $value) {
+                            return $value['correo'];
+                        }
+                    }
+                } 
+                if ($tipo_grupo == 0) {
+                    $us = Usuarios::model()->find(array('condition' => "(cargo_id = 70 OR cargo_adicional = 85) AND dealers_id = {$dealer_id} AND status_asesor = 'ACTIVO'"));
+                    if (count($us) > 0) {
+                        return $us->correo;
+                    } 
+                }
+            break;    
 
             default:
                 break;
