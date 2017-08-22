@@ -180,6 +180,21 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
     //getIngresosTotal();
     //getEgresosTotal();
     $(document).ready(function () {
+        $('#GestionSolicitudCredito_cidentificacion').change(function(){
+            var iden = $(this).attr('value');
+            
+            switch(iden){
+                case 'cedula':
+                case 'ruc':
+                case 'pasaporte':
+                    $('#change_identificacion').attr({'disabled': false});
+                break;
+                case '':
+                    $('#change_identificacion').attr({'disabled': true});
+                break;
+            }
+            //cambiar_identificacion(iden);
+        });
         $.each(['#f00', '#ff0', '#0f0', '#0ff', '#00f', '#f0f', '#000', '#fff'], function () {
                 $('#colors_demo .tools').append("<a href='#colors_sketch' data-color='" + this + "' style='width: 10px; background: " + this + ";'></a> ");
             });
@@ -2037,6 +2052,17 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
         //La cédula es válida
         return true;
     }
+    function validateruc(e)  {
+        if (e.length < 13) {
+            return false;
+        } else {
+            if (e.substr(e.length - 3) == '001') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
     function format2(n, currency) {
         return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
@@ -2050,6 +2076,106 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
             }
         }
         return true
+    }
+    function cambiar_identificacion(iden){
+        var tipo_ident = $('#GestionSolicitudCredito_cidentificacion').attr('value');
+        var id_informacion = $('#GestionSolicitudCredito_id_informacion').val(); 
+        switch(tipo_ident){
+            case 'cedula':
+                if($('#GestionSolicitudCredito_ruc').val() != null)
+                    identificacion = $('#GestionSolicitudCredito_ruc').val();
+                if($('#GestionSolicitudCredito_pasaporte').val() != null)
+                    identificacion = $('#GestionSolicitudCredito_pasaporte').val();
+                // validar cedula
+                if(confirm('Desea cambiar la identificación del cliente?')){
+
+                    if(CedulaValida(identificacion)){
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/setIdentificacion"); ?>',
+                            //dataType: "json",
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show(); // #info must be defined somehwere
+                            },
+                            type: 'post',
+                            data: {
+                                id_informacion: id_informacion,
+                                tipo_ident : tipo_ident,
+                                identificacion : identificacion
+                            },
+                            success: function (data) {
+                                //alert(data.options)
+                                $(location).attr('href', '<?php echo $url_load; ?>');
+                            }
+                        });
+                    }else{
+                        alert("Ingrese número de cédula válido");
+                        return false;
+                    }
+                }
+            break;
+            case 'ruc':
+
+                if($('#GestionSolicitudCredito_cedula').val() != null){ 
+                    identificacion = $('#GestionSolicitudCredito_cedula').val();
+                }
+                if($('#GestionSolicitudCredito_pasaporte').val() != null){ 
+                    identificacion = $('#GestionSolicitudCredito_pasaporte').val();
+                }
+                //alert('identificacion: '+identificacion);
+                if(confirm('Desea cambiar la identificación del cliente?')){
+                // validar ruc
+                    if(validateruc(identificacion)){
+                        $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/setIdentificacion"); ?>',
+                            //dataType: "json",
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show(); // #info must be defined somehwere
+                            },
+                            type: 'post',
+                            data: {
+                                id_informacion: id_informacion,
+                                tipo_ident : tipo_ident,
+                                identificacion : identificacion
+                            },
+                            success: function (data) {
+                                //alert(data.options)
+                                $(location).attr('href', '<?php echo $url_load; ?>');
+                            }
+                        });
+                    }else{
+                        alert('Por favor ingrese correctamente el RUC.');
+                        return false;
+                    }
+                }
+            break;
+            case 'pasaporte':
+                if($('#GestionSolicitudCredito_cedula').val() != null){ 
+                    identificacion = $('#GestionSolicitudCredito_cedula').val();
+                }
+                if($('#GestionSolicitudCredito_ruc').val() != null){ 
+                    identificacion = $('#GestionSolicitudCredito_ruc').val();
+                }
+                if(confirm('Desea cambiar la identificación del cliente?')){
+                    $.ajax({
+                            url: '<?php echo Yii::app()->createAbsoluteUrl("gestionSolicitudCredito/setIdentificacion"); ?>',
+                            //dataType: "json",
+                            beforeSend: function (xhr) {
+                                $('#bg_negro').show(); // #info must be defined somehwere
+                            },
+                            type: 'post',
+                            data: {
+                                id_informacion: id_informacion,
+                                tipo_ident : tipo_ident,
+                                identificacion : identificacion
+                            },
+                            success: function (data) {
+                                //alert(data.options)
+                                $(location).attr('href', '<?php echo $url_load; ?>');
+                            }
+                        });
+                }
+            break;
+        }
     }
 </script>
 <div class="container">
@@ -2290,7 +2416,33 @@ $nombre_concesionario = $this->getNameConcesionarioById($dealer_id);
                                         <?php echo $form->error($model, 'pasaporte'); ?>
                                     </div>
                                 <?php } ?>
-
+                                <div class="col-md-3">
+                                    <label for="">Cambiar identificación</label>
+                                     <select name="GestionSolicitudCredito[cidentificacion]" id="GestionSolicitudCredito_cidentificacion" class="form-control">
+                                         <?php if ($val['cedula'] != '') { ?>
+                                                <option value="">--Seleccione--</option>
+                                                <option value="pasaporte">Pasaporte</option>
+                                                <option value="ruc">Ruc</option>
+                                            <?php } ?>
+                                            <?php if ($val['ruc'] != '') { ?>
+                                                <option value="">--Seleccione--</option>
+                                                <option value="cedula">Cédula</option>
+                                                 <option value="pasaporte">Pasaporte</option>
+                                                 
+                                            <?php } ?>
+                                            <?php if ($val['pasaporte'] != '') { ?>
+                                                <option value="">--Seleccione--</option>
+                                                <option value="cedula">Cédula</option>
+                                                 <option value="ruc">Ruc</option>
+                                                 
+                                            <?php } ?>
+                                         
+                                     </select>         
+                                    
+                                    <div class="row">
+                                        <button class="btn btn-danger btn-xs" id="change_identificacion" onclick="cambiar_identificacion();" disabled='true'>Cambiar</button>
+                                    </div>
+                                </div>    
                                 <div class="col-md-3">
                                     <?php echo $form->labelEx($model, 'fecha_nacimiento'); ?>
                                     <?php //if($valid_cedula){ ?>

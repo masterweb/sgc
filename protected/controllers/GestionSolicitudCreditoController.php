@@ -30,7 +30,8 @@ class GestionSolicitudCreditoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'createAjax', 'cotizacion', 'admin', 'aprobar', 'aprobarhj', 'status','fyi'),
+                'actions' => array('create', 'update', 'createAjax', 'cotizacion', 'admin', 'aprobar',
+                 'aprobarhj', 'status','fyi','setIdentificacion'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -375,6 +376,8 @@ class GestionSolicitudCreditoController extends Controller {
             $nombre_cliente = $this->getNombresInfo($_POST['GestionSolicitudCredito']['id_informacion']) . ' ' . $this->getApellidosInfo($_POST['GestionSolicitudCredito']['id_informacion']);
             $id_asesor = Yii::app()->user->getId();
             $dealer_id = $this->getConcesionarioDealerId($id_asesor);
+            $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+            $grupo_id = (int) Yii::app()->user->getState('grupo_id');
             $result = FALSE;
             date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
             $model->attributes = $_POST['GestionSolicitudCredito'];
@@ -534,6 +537,7 @@ class GestionSolicitudCreditoController extends Controller {
             if ($model->save()) {
                 require_once 'email/mail_func.php';
                 //---- SEND EMAIL ASESOR DE CREDITO
+                //die('name concesionario: '.$this->getNameConcesionario($id_asesor));
                 $asunto = 'Kia Motors Ecuador SGC - Solicitud de Crédito ';
 
 
@@ -570,13 +574,18 @@ class GestionSolicitudCreditoController extends Controller {
                 $codigohtml = $general;
                 $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
                 $headers .= 'Content-type: text/html' . "\r\n";
-                if(Yii::app()->user->getState('cargo_id') != 87){
+                
+
+                if((Yii::app()->user->getState('cargo_id') != 87) && (GestionFirma::model()->count(array('condition' => "id_informacion = {$_POST['GestionSolicitudCredito']['id_informacion']}"))) > 0){
                     $emailAsesorCredito = $this->getEmailAsesorCredito($dealer_id);
+                    $emailJefeSucursal = $this->getEmailJefeConcesion($cargo_id, $grupo_id, $dealer_id);
                     //die('email asesor: '.$emailAsesorCredito);
                     sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailAsesorCredito, html_entity_decode($asunto), $codigohtml);
+                    ## ENVIO DE EMAIL A JEFE DE SUCURSAL
+                    sendEmailInfo('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailJefeSucursal, html_entity_decode($asunto), $codigohtml);
                 }
                 
-                //die('enter save');
+                //die('enter save');    
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -939,6 +948,55 @@ class GestionSolicitudCreditoController extends Controller {
         
         //$exh = $con->createCommand($sql)->queryAll($sql);
         $this->render('fyi', array('exh' => $exh, 'pages' => $pages));
+    }
+
+    public function actionSetIdentificacion(){
+        $id_informacion =  isset($_POST['id_informacion']) ? $_POST["id_informacion"] : "";
+        $tipo_ident = isset($_POST['tipo_ident']) ? $_POST["tipo_ident"] : "";
+        $identificacion = isset($_POST['identificacion']) ? $_POST["identificacion"] : "";
+        $info = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
+        switch ($tipo_ident) {
+            case 'cedula':
+                $info->ruc = '';
+                $info->pasaporte = '';
+                $info->cedula = $identificacion;
+                if(count($sc = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion}"))) > 0 ){
+                    $sc->cedula = $identificacion;
+                    $sc->pasaporte = '';
+                    $sc->ruc = '';
+                    $sc->update();
+                }
+                break;
+            case 'ruc':
+                $info->ruc = $identificacion;
+                $info->pasaporte = '';
+                $info->cedula = '';
+                if(count($sc = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion}"))) > 0 ){
+                    $sc->cedula = '';
+                    $sc->pasaporte = '';
+                    $sc->ruc = $identificacion;
+                    $sc->update();
+                }
+                break;
+            case 'pasaporte':
+                $info->ruc = '';
+                $info->pasaporte = $identificacion;
+                $info->cedula = '';
+                if(count($sc = GestionSolicitudCredito::model()->find(array('condition' => "id_informacion = {$id_informacion}"))) > 0 ){
+                    //die('qweqweqwe');
+                    $sc->cedula = '';
+                    $sc->pasaporte = $identificacion;
+                    $sc->ruc = '';
+                    $sc->update();
+                }
+                break;        
+            
+            default:
+                # code...
+                break;
+        }
+        $info->update();
+
     }
 
 }

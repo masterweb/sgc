@@ -1522,21 +1522,11 @@ class Controller extends CController {
         //die('id: '.$id);
         $dealer = Usuarios::model()->findByPk(array('condition' => "id={$id}"));
         if ($dealer->concesionario_id == 0) {
-            //die('enter no conc');
-            $criteria2 = new CDbCriteria(array(
-                'condition' => "usuario_id={$id}"
-            ));
-            $usuario = Grupoconcesionariousuario::model()->findByPk($criteria2);
-            $cri = new CDbCriteria(array(
-                'condition' => "id={$usuario->concesionario_id}"
-            ));
-            $deal = Dealers::model()->findAll($cri);
+            $usuario = Grupoconcesionariousuario::model()->find(array('condition' => "usuario_id={$id}"));
+            $deal = Dealers::model()->find(array('condition' => "id={$usuario->concesionario_id}"));
             return $deal->name;
         } else {
-            $criteria2 = new CDbCriteria(array(
-                'condition' => "id={$dealer->concesionario_id}"
-            ));
-            $deal = Dealers::model()->find($criteria2);
+            $deal = Dealers::model()->find(array('condition' => "id={$dealer->concesionario_id}"));
             return $deal->name;
         }
 
