@@ -165,67 +165,67 @@ $(document).ready(function() {
     .close {font-size: 19px;font-weight: normal;}
     #bg_black {background-color: #fff;bottom: 0;left: 0;opacity: 0.7;position: fixed;right: 0;top: 0;z-index: 1040;}
     .cssload-aim{
-	position: fixed;
-	width: 20px;
-	height: 20px;
-	left: 35%;
-	left: calc(50% - 42px);
-		left: -o-calc(50% - 42px);
-		left: -ms-calc(50% - 42px);
-		left: -webkit-calc(50% - 42px);
-		left: -moz-calc(50% - 42px);
-	left: calc(50% - 42px);
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    left: 35%;
+    left: calc(50% - 42px);
+        left: -o-calc(50% - 42px);
+        left: -ms-calc(50% - 42px);
+        left: -webkit-calc(50% - 42px);
+        left: -moz-calc(50% - 42px);
+    left: calc(50% - 42px);
         top: calc(50% - 42px);
         right: 0;
-	border-radius: 18px;
-	/*background-color: rgb(255,255,255);*/
-	border-width: 18px;
-	border-style: double;
-	border-color:transparent rgb(170, 31, 44);
-	box-sizing:border-box;
-		-o-box-sizing:border-box;
-		-ms-box-sizing:border-box;
-		-webkit-box-sizing:border-box;
-		-moz-box-sizing:border-box;
-	transform-origin:	50% 50%;
-		-o-transform-origin:	50% 50%;
-		-ms-transform-origin:	50% 50%;
-		-webkit-transform-origin:	50% 50%;
-		-moz-transform-origin:	50% 50%;
-	animation: cssload-aim 1.3s linear infinite;
-		-o-animation: cssload-aim 1.3s linear infinite;
-		-ms-animation: cssload-aim 1.3s linear infinite;
-		-webkit-animation: cssload-aim 1.3s linear infinite;
-		-moz-animation: cssload-aim 1.3s linear infinite;
+    border-radius: 18px;
+    /*background-color: rgb(255,255,255);*/
+    border-width: 18px;
+    border-style: double;
+    border-color:transparent rgb(170, 31, 44);
+    box-sizing:border-box;
+        -o-box-sizing:border-box;
+        -ms-box-sizing:border-box;
+        -webkit-box-sizing:border-box;
+        -moz-box-sizing:border-box;
+    transform-origin:   50% 50%;
+        -o-transform-origin:    50% 50%;
+        -ms-transform-origin:   50% 50%;
+        -webkit-transform-origin:   50% 50%;
+        -moz-transform-origin:  50% 50%;
+    animation: cssload-aim 1.3s linear infinite;
+        -o-animation: cssload-aim 1.3s linear infinite;
+        -ms-animation: cssload-aim 1.3s linear infinite;
+        -webkit-animation: cssload-aim 1.3s linear infinite;
+        -moz-animation: cssload-aim 1.3s linear infinite;
         z-index: 1040;        
-	
+    
 }
 
 
 
 @keyframes cssload-aim{
-		0%{transform:rotate(0deg);}
-		100%{transform:rotate(360deg);}
+        0%{transform:rotate(0deg);}
+        100%{transform:rotate(360deg);}
 }
 
 @-o-keyframes cssload-aim{
-		0%{-o-transform:rotate(0deg);}
-		100%{-o-transform:rotate(360deg);}
+        0%{-o-transform:rotate(0deg);}
+        100%{-o-transform:rotate(360deg);}
 }
 
 @-ms-keyframes cssload-aim{
-		0%{-ms-transform:rotate(0deg);}
-		100%{-ms-transform:rotate(360deg);}
+        0%{-ms-transform:rotate(0deg);}
+        100%{-ms-transform:rotate(360deg);}
 }
 
 @-webkit-keyframes cssload-aim{
-		0%{-webkit-transform:rotate(0deg);}
-		100%{-webkit-transform:rotate(360deg);}
+        0%{-webkit-transform:rotate(0deg);}
+        100%{-webkit-transform:rotate(360deg);}
 }
 
 @-moz-keyframes cssload-aim{
-		0%{-moz-transform:rotate(0deg);}
-		100%{-moz-transform:rotate(360deg);}
+        0%{-moz-transform:rotate(0deg);}
+        100%{-moz-transform:rotate(360deg);}
 }
     
 </style>
@@ -267,9 +267,9 @@ $vartrf['testdrive_nacional_categoria'] = array();
     <h1 class="tl_seccion">Reporte de Tráfico Diario</h1>
 </div>
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-12">
         <a href="<?php echo Yii::app()->createUrl('trafico/graficos', array())?>" class="btn btn-danger">Gráficos</a>
-
+        <a href="<?php echo Yii::app()->createUrl('Reportes/inicio'); ?>" class="btn btn-danger">Regresar</a>
     </div>
     <div class="col-md-12"><hr /></div>
 
@@ -416,10 +416,14 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $vartrf['proforma_suma'] = 0;
                     $vartrf['testdrive_suma'] = 0;
                     $vartrf['ventas_suma'] = 0;
+                    $vartrf['ventas_suma_contado'] = 0;
+                    $vartrf['ventas_suma_credito'] = 0;
                     $vartrf['trafico'] = array();
                     $vartrf['proforma'] = array();
                     $vartrf['testdrive'] = array();
                     $vartrf['ventas'] = array();
+                     $vartrf['ventas_contado'] = array();
+                      $vartrf['ventas_credito'] = array();
                     
                     ?>
                     <tr bgcolor="#848485">
@@ -470,6 +474,10 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         ?>
                         <td><?php echo $vartrf['testdrive_suma']; ?></td>
                     </tr>
+                   
+
+
+
                     <tr class="odd">
                         <td>Ventas</td>
                         <?php
@@ -482,6 +490,41 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         ?>
                         <td><?php echo $vartrf['ventas_suma']; ?></td>
                     </tr>
+
+
+
+
+
+                     <tr>
+                        <td>Ventas Contado</td>
+                        <?php
+                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                            $vartrf['ventas_contado'][] = $this->getVentasVersionTipo($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],'0');
+                            $vartrf['ventas_suma_contado'] += $vartrf['ventas_contado'][$i];
+                            $vartrf['venta_suma_total_contado'][$i] += $vartrf['ventas_contado'][$i];
+                            echo '<td>' . $vartrf['ventas_contado'][$i] . '</td>';
+                        }
+                        ?>
+                        <td><?php echo $vartrf['ventas_suma_contado']; ?></td>
+                    </tr>
+
+
+                     <tr class="odd">
+                        <td>Ventas Crédito</td>
+                        <?php
+                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                            $vartrf['ventas_credito'][] = $this->getVentasVersionTipo($i, $vartrf['versiones'][$flag], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],'1');
+                            $vartrf['ventas_suma_credito'] += $vartrf['ventas_credito'][$i];
+                            $vartrf['venta_suma_total_credito'][$i] += $vartrf['ventas_credito'][$i];
+                            echo '<td>' . $vartrf['ventas_credito'][$i] . '</td>';
+                        }
+                        ?>
+                        <td><?php echo $vartrf['ventas_suma_credito']; ?></td>
+                    </tr>
+
+
+
+
                     <tr>
                         <td>Tasa de Test Drive</td>
                         <?php
@@ -602,6 +645,60 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         ?>
                         <td><?php echo $vartrf['ventas_nacional']; ?></td>
                     </tr>
+
+
+
+
+                    <tr>
+                        <td>Ventas Contado</td>
+                        <?php
+                        //if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                        //    for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                        //        $vartrf['venta_nacional_total'][$i] = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],0,5);
+                        //        echo '<td>' . $vartrf['venta_nacional_total'][$i] . '</td>';
+                        //        $vartrf['ventas_nacional'] += $vartrf['venta_nacional_total'][$i];
+                        //    }
+                        //}else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['venta_suma_total_contado'][$i] . '</td>';
+                                $vartrf['ventas_nacional_contado'] += $vartrf['venta_suma_total_contado'][$i];
+                            }
+                        //}
+                        
+                        ?>
+                        <td><?php echo $vartrf['ventas_nacional_contado']; ?></td>
+                    </tr>
+
+
+
+
+
+
+                    <tr class="odd">
+                        <td>Ventas Crédito</td>
+                        <?php
+                        //if($vartrf['categoria'] == 5){// si es categoria todos suma todos los modelos
+                        //    for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                        //        $vartrf['venta_nacional_total'][$i] = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],0,5);
+                        //        echo '<td>' . $vartrf['venta_nacional_total'][$i] . '</td>';
+                        //        $vartrf['ventas_nacional'] += $vartrf['venta_nacional_total'][$i];
+                        //    }
+                        //}else{
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                                echo '<td>' . $vartrf['venta_suma_total_credito'][$i] . '</td>';
+                                $vartrf['ventas_nacional_credito'] += $vartrf['venta_suma_total_credito'][$i];
+                            }
+                        //}
+                        
+                        ?>
+                        <td><?php echo $vartrf['ventas_nacional_credito']; ?></td>
+                    </tr>
+
+
+
+
+
+
                     <tr>
                         <td>Tasa de Test Drive</td>
                         <?php
@@ -643,7 +740,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         }
                         ?>
                     </tr>
-
+                <!-- Ensamblado nacional -->
                     <tr class="odd">
                         <td>TRÁFICO</td>
                         <?php
@@ -705,6 +802,110 @@ $vartrf['testdrive_nacional_categoria'] = array();
                             
                         }
                         ?>
+                    </tr>
+
+                    <tr class="odd">
+                        <td>VENTAS CONTADO</td>
+                        <?php
+                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {;
+                            $ventasContadockd1 = $this->getVentasVersionTotalTipo($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria'],'0');
+                            if($ventasContadockd1 == 0){
+                                echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $ventasContadocbu1 = $vartrf['venta_suma_total_contado'][$i] - $ventasContadockd1;
+                            echo '<td><table class="ens"><tr><td>'.$ventasContadockd1.'</td><td>'.$ventasContadocbu1.'</td></tr></table></td>';
+                        }
+                            
+                        }
+                        ?>
+                    </tr>
+
+                    <tr>
+                        <td>VENTAS CRÉDITO</td>
+                        <?php
+                        for ($i = 0; $i < $vartrf['mes_actual']; $i++) {;
+                            $ventasCreditockd1 = $this->getVentasVersionTotalTipo($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria'],'1');
+                            if($ventasCreditockd1 == 0){
+                                echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                            }else{
+                                $ventasCreditocbu1 = $vartrf['venta_suma_total_credito'][$i] - $ventasCreditockd1;
+                            echo '<td><table class="ens"><tr><td>'.$ventasCreditockd1.'</td><td>'.$ventasCreditocbu1.'</td></tr></table></td>';
+                        }
+                            
+                        }
+                        ?>
+                    </tr>
+                    <tr class="odd">
+                         <td>TASA DE TEST DRIVE</td>
+                           <?php
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                               
+
+
+                                 $traficockd1 = count($this->getTraficoVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']));    
+
+
+
+                                $testdriveckd1 =  $this->getTestDriveVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);    
+
+
+
+                                if($testdriveckd1 == 0 || $traficockd1==0){
+                                    echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                                }else{
+                                    
+                                    $traficocbu1 = $vartrf['trafico_suma_total'][$i] - $traficockd1;   
+                                    $testdrivecbu1 = $vartrf['testdrive_suma_total'][$i] - $testdriveckd1;
+                                   // $tasaTd = ($testdriveckd1/$traficockd1)*100;
+                                   //  $tasaTdCbu =    
+                                     echo '<td><table class="ens"><tr><td>'.number_format((($testdriveckd1/$traficockd1)*100),2,".",",").'%</td><td>'.number_format((($testdrivecbu1/$traficocbu1)*100),2,".",",").'%</td></tr></table></td>';
+                                }  
+                            
+                            }
+                            
+                        
+                        ?>  
+
+                    </tr>
+                     <tr>
+                    
+                        <td>TASA DE CIERRE</td>
+
+                        <?php
+                            for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
+                               
+
+
+                                 $traficockd1 = count($this->getTraficoVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1,$vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']));    
+
+
+
+                            
+
+                             $ventasckd1 = $this->getVentasVersionTotal($i, $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'],1,$vartrf['categoria']);
+
+                               
+
+
+
+                                if($ventasckd1 == 0 || $traficockd1==0){
+                                    echo '<td><table class="ens"><tr><td>0</td><td>0</td></tr></table></td>';
+                                }else{
+                                    
+                                  
+
+                                    $traficocbu1 = $vartrf['trafico_suma_total'][$i] - $traficockd1;   
+                                     $ventascbu1 = $vartrf['venta_suma_total'][$i] - $ventasckd1;
+                                   // $tasaTd = ($testdriveckd1/$traficockd1)*100;
+                                   //  $tasaTdCbu =    
+                                     echo '<td><table class="ens"><tr><td>'.number_format((($ventasckd1/$traficockd1)*100),2,".",",").'%</td><td>'.number_format((($ventascbu1/$traficocbu1)*100),2,".",",").'%</td></tr></table></td>';
+                                }  
+                            
+                            }
+                            
+                        
+                        ?>  
+
                     </tr>
             </table>
             
@@ -826,9 +1027,9 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-23').append(data.data_nuevo_cerato);
                     $('#bg_black').hide();
                     var enlace  = $('#cid_'+id);
-		    $('html, body').animate({
-		        scrollTop: $(enlace).offset().top
-		    }, 1000);
+            $('html, body').animate({
+                scrollTop: $(enlace).offset().top
+            }, 1000);
                     //$("body").css("overflow", "hidden");
                 }
             });

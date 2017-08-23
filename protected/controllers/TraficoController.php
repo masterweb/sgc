@@ -319,10 +319,16 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['grupo'] = TRUE;
                 $vartrf['search']['concesionario'] = TRUE;
+                
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
                 $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
-                if($_GET['GestionDiaria']['responsable'] ==  10000){
+               
+
+                if($_GET['GestionDiaria']['responsable'] ==  10000 || $_GET['GestionDiaria']['responsable'] ==  '' ){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
+
+
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Todos';
@@ -343,15 +349,15 @@ class TraficoController extends Controller {
                 $vartrf['search']['grupo'] = TRUE;
                 $vartrf['search']['concesionario'] = TRUE;
                 
-                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] !=  10000){
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] !=  10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] ==  1000 && $_GET['GestionDiaria']['responsable'] ==  10000){
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] ==  1000 && $_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                     $dealerList = implode(', ', $array_dealers);
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
                 }
-                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] ==  10000){
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
                 /*if($_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['concesionario'] ==  1000){
@@ -379,19 +385,19 @@ class TraficoController extends Controller {
                 $vartrf['search']['grupo'] = TRUE;
                 $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                 $dealerList = implode(', ', $array_dealers);
-                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000){
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                     $dealerList = implode(', ', $array_dealers);
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
 
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable']!= /*1000*/10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable']!= /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
                 
@@ -545,7 +551,9 @@ class TraficoController extends Controller {
                     $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
                 }
                 $vartrf['search']['concesionario'] = TRUE;
-                $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+
+
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
 
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
@@ -574,7 +582,7 @@ class TraficoController extends Controller {
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
                 $vartrf['search']['grupo'] = TRUE;
                 $vartrf['search']['concesionario'] = TRUE;
-                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
@@ -630,18 +638,18 @@ class TraficoController extends Controller {
                 $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                 $dealerList = implode(', ', $array_dealers);
 
-                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                     $dealerList = implode(', ', $array_dealers);
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
                 
@@ -672,18 +680,18 @@ class TraficoController extends Controller {
                 $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                 $dealerList = implode(', ', $array_dealers);
 
-                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                     $dealerList = implode(', ', $array_dealers);
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
                 
@@ -760,10 +768,10 @@ class TraficoController extends Controller {
                 }
                 $vartrf['search']['grupo'] = TRUE;
                 $vartrf['search']['concesionario'] = TRUE;
-                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000) {
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000 && $_GET['GestionDiaria']['responsable']!='') {
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000/*1000*/) {
+                if($_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000/*1000*/ && $_GET['GestionDiaria']['responsable'] != '') {
                     $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                     $dealerList = implode(', ', $array_dealers);
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
@@ -818,7 +826,12 @@ class TraficoController extends Controller {
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
                 }
-                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+               
+
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                 $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+               
+
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
                 $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
                 $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
@@ -847,8 +860,9 @@ class TraficoController extends Controller {
                     $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
                     $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
                 }
-               
-                if($_GET['GestionDiaria']['responsable']!=10000)
+            
+
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
                  $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                
 
@@ -871,7 +885,8 @@ class TraficoController extends Controller {
                 $vartrf['search']['fecha'] = true;
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
-                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
@@ -890,7 +905,8 @@ class TraficoController extends Controller {
                 $vartrf['search']['fecha'] = true;
                 $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
                 $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
-                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
                 $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
                 $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
@@ -996,7 +1012,8 @@ class TraficoController extends Controller {
                 $vartrf['search']['grupo'] = TRUE;
                 $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                 $dealerList = implode(', ', $array_dealers);
-                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
                 $vartrf['flag_search'] = 30;
                
@@ -1154,16 +1171,16 @@ class TraficoController extends Controller {
                 $vartrf['search']['grupo'] = TRUE;
                 $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
                 $dealerList = implode(', ', $array_dealers);
-                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000){
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
                 }
-                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000){
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
                     $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
                 }
                 
