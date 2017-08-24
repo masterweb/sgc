@@ -257,7 +257,7 @@ Señor(a)<br>
                         KIA MOTORS ECUADOR</tr></td></table>
 			<table cellpadding="0" cellspacing="0" style="display: block; border: none;">
 				<tr>
-					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_36.jpg" width="650" height="87" alt="" style="display: block; border: none;"/></td>
+					<td><img src="https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_36a.jpg" width="650" height="87" alt="" style="display: block; border: none;"/></td>
 				</tr>
 			</table>
 		</div>
@@ -267,7 +267,7 @@ Señor(a)<br>
         $headers = 'From: servicioalcliente@kiamail.com.ec' . "\r\n";
         $headers .= 'Content-type: text/html' . "\r\n";
         $email = $emailCliente; //email cliente
-        //$email = 'alkanware@gmail.com'; //email cliente
+        $email = 'alkanware@gmail.com'; //email cliente
 
         $ccarray = array('gansaldo72@hotmail.com');
         //die('img: https://www.kia.com.ec'.Yii::app()->request->baseUrl.'/images/mail/mail_36.jpg');
