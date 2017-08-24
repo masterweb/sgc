@@ -20,7 +20,7 @@ $id_responsable = Yii::app()->user->getId();
         <div class="cont-form-manejo col-md-8" style="">
             <div class="row">
                 <div class="col-xs-12">
-                    <img src=   "<?php echo Yii::app()->request->baseUrl; ?>/images/header-test.jpg" alt="" />
+                    <img src=   "<?php echo Yii::app()->request->baseUrl; ?>/images/header2.png" alt="" />
                 </div>
             </div>
             <div class="row">
@@ -165,7 +165,7 @@ $id_responsable = Yii::app()->user->getId();
         <?php endforeach; ?>
         <div class="row">
             <div class="col-xs-12">
-                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/footer-ext.jpg" alt="" />
+                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/footer2.png" alt="" />
             </div>
         </div>
     </div>
