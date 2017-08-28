@@ -812,10 +812,10 @@ class GestionInformacionController extends Controller {
 
         if (isset($_GET['GestionDiaria2'])) {
             //die('enter gestion diaria2');
-//            echo '<pre>';
-//            print_r($_GET);
-//            echo '</pre>';
-//            die();
+    //        echo '<pre>';
+    //        print_r($_GET);
+    //        echo '</pre>';
+    //        die();
             $criteria = new CDbCriteria;
             $criteria->select = "gi.id, gi.nombres, gi.apellidos, gi.cedula, gi.celular, gi.direccion, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha,gi.bdc, gi.dealer_id, gi.id_cotizacion,
@@ -835,8 +835,14 @@ class GestionInformacionController extends Controller {
             if (($fechaActual == trim($params[0])) && ($fechaActual == trim($params[1]))) {
                 $fechaPk = 1;
             }
+            $params2 = explode('-', $_GET['GestionDiaria2']['rango_fecha']);
+            $fechaPk2 = 0;
+            if (($fechaActual == trim($params2[0])) && ($fechaActual == trim($params2[1]))) {
+                $fechaPk2 = 1;
+            }
             $search = 0;
             //die('fechaPk: '.$fechaPk);
+            //die('fechaPk2: '.$fechaPk2);
             /* BUSQUEDA EN CAMPOS VACIOS GERENTE COMERCIAL */
             if (empty($_GET['GestionDiaria2']['general']) &&
                     empty($_GET['GestionDiaria2']['categorizacion']) &&
@@ -872,16 +878,17 @@ class GestionInformacionController extends Controller {
             }
 
             /* BUSQUEDA EN CAMPOS VACIOS */
+
             if (empty($_GET['GestionDiaria2']['general']) &&
-                    $fechaPk == 0 &&
+                    $fechaPk == 1 &&
                     empty($_GET['GestionDiaria2']['categorizacion']) &&
                     empty($_GET['GestionDiaria2']['status']) &&
                     empty($_GET['GestionDiaria2']['responsable']) &&
-                    empty($_GET['GestionDiaria2']['fecha']) &&
                     empty($_GET['GestionDiaria2']['fuente']) &&
                     empty($_GET['GestionDiaria2']['grupo']) &&
-                    empty($_GET['GestionDiaria2']['concesionario'])) {
-                //echo('enter busqueda general jefe almacen');
+                    empty($_GET['GestionDiaria2']['concesionario']) &&
+                    empty($_GET['GestionDiaria2']['seguimiento']) && $fechaPk2 == 1) {
+                //die('enter busqueda general jefe almacen');
                 $search = 2;
                 $title_busqueda = 'Búsqueda General: ';
                 if ($cargo_id == 70) { // jefe de almacen
@@ -1962,7 +1969,7 @@ class GestionInformacionController extends Controller {
 
         // Redirect output to a client's web browser (Excel5)
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename=' . $name_file . '');
+        header('Content-Disposition: attachment;filename=' . $name_file );
         header('Cache-Control: max-age=0');
         //      If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
@@ -2084,7 +2091,7 @@ class GestionInformacionController extends Controller {
                 $criteria->order = "gi.id DESC";
                 break;
             case 70: // JEFE DE SUCURSAL
-                if($cargo_adicional == 0){ // CON UN SOLO CARGO
+                if($cargo_adicional == 0 || $cargo_adicional == 89){ // CON UN SOLO CARGO O TELEWEB
                     $array_dealers = $this->getResponsablesVariosConc(1);
                     if(count($array_dealers) == 0){
                         $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
@@ -2286,6 +2293,9 @@ class GestionInformacionController extends Controller {
                 }
             }
             $posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, $get_array, $tipo_search);
+            
+           
+
             $this->render('seguimiento', array('users' => $posts['users'], 'getParams' => '', 'title' => $posts['title'], 'model' => $model, 'pages' => $posts['pages'], 'tipo_seg' => $tipo_search));
             exit();
         }
@@ -2307,6 +2317,7 @@ class GestionInformacionController extends Controller {
     public function actionSeguimientoBdc($tipo_seg = NULL) {
         //$this->layout = '//layouts/callventas';
         //echo 'TIPO SEG: '.$tipo_seg;
+        ini_set('memory_limit', '1024M');/*AGREGADO PARA QUE NO SE PRESENTE EL ERROR DE LIMIT SIZE*/
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
@@ -2325,10 +2336,12 @@ class GestionInformacionController extends Controller {
         $model = new GestionNuevaCotizacion;
         $con = Yii::app()->db;
         $criteria = new CDbCriteria;
-        $criteria->select = "gi.id , gi.nombres, gi.apellidos, gi.cedula, 
+        $criteria->select = "distinct(gi.id), gi.nombres, gi.apellidos, gi.cedula, 
             gi.ruc,gi.pasaporte,gi.email, gi.responsable,gi.tipo_form_web,gi.fecha, gi.bdc, gi.dealer_id, gi.id_cotizacion,
             gi.reasignado,gi.responsable_cesado,gi.id_comentario";
         $criteria->alias = 'gi';
+
+
         $criteria->join = 'INNER JOIN gestion_diaria gd ON gi.id = gd.id_informacion';
         $criteria->join .= ' LEFT JOIN gestion_consulta gc ON gi.id = gc.id_informacion';
         $criteria->join .= ' INNER JOIN gestion_nueva_cotizacion gn ON gn.id = gi.id_cotizacion';
@@ -2395,11 +2408,15 @@ class GestionInformacionController extends Controller {
             //die('else: '.$sql);
         }
         //die($sql);
-    //    echo '<pre>';
-    //    print_r($criteria);
-    //    echo '</pre>';
+        //echo '<pre>';
+       // print_r($criteria);
+      //  echo '</pre>';
         $users = GestionInformacion::model()->findAll($criteria);
         $tipo = '';
+
+       // echo '<pre>';
+        //print_r($users);
+      //  echo '</pre>';
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -5923,15 +5940,237 @@ GROUP BY gv.id_informacion";
             //$request3 = $con->createCommand($sqlSC)->execute();
            
 
-                      
+
+              $dealerId= $this->getConcesionarioId($param[0]); 
 
 
-            $this -> sendReasignNotification($id,$param[0],$comentario);
+             if($this ->validateEmailSending($dealerId)){ 
+
+                $this -> sendEmailTM ($param[0]);
+
+                
+
+                $this -> sendReasignNotification($id,$param[0],$comentario);
+            }
+            else $result=true; 
+            
           
         }
+
+
         $options = array('result' => $result);
         echo json_encode($options);
     }
+
+    public function validateEmailSending($dealerId){/*valida si cliente es asiauto para envio de correo de notificacion tanto a cliente como a asesor reaisgnado*/
+
+        switch ($dealerId) {
+            case 2:
+            case 5:
+            case 6:
+            case 7:
+            case 14:
+            case 20:
+            case 38:
+            case 60:
+            case 62:
+            case 63:
+            case 65:
+            case 76:
+            case 82:
+            case 83:
+            case 84:
+                return true;
+                break;
+            
+            default:
+                return false;
+                break;
+        }
+
+
+    }
+
+public function sendEmailTM($id_informacion){
+
+ 
+    $dealer_id = $this->getConcesionarioId($id_informacion);
+   $count = GestionEmailsEnviados::model()->count(array('condition' => "id_informacion = {$id_informacion}"));
+     if($count<1)
+     {
+        $nombreSolicitud = $this->getNombreCliente($id_informacion);
+
+      
+        $modelos = GestionVehiculo::model()->find(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc'));
+
+       
+
+        $nombreAuto = $this->getModel($modelos->modelo);
+
+       
+        $cita = GestionCita::model()->find(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc', 'limit' => '1'));
+
+
+        $gv = GestionVersiones::model()->find(array('condition' => "id_versiones = {$modelos->version}"));
+        $ficha_tecnica = $gv->pdf;
+        $gi = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
+          $id_asesor = $gi->responsable; 
+          $asesor =        Usuarios::model()->find(array('condition' => "id = {$id_asesor}"));
+       
+        $dealer=Dealers::model()->find(array('condition' => "id = {$dealer_id}"));    
+
+       $direccion=$dealer->direccion;
+     
+
+              require_once 'email/mail_func.php';
+
+              $body = '<style>
+                                body {margin: 0; padding: 0; min-width: 100%!important;}
+                            </style>
+                        </head>
+
+                        <body>
+                            <table cellpadding="0" cellspacing="0" width="650" align="center" border="0">
+                                <tr>
+                                    <td align="center"><a href="https://www.kia.com.ec" target="_blank"><img src="images/mailing/mail_factura_03.jpg" width="569" height="60" alt="" style="display:block; border:none;"/></a></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Hola <strong>'.$nombreSolicitud.'</strong>,<br/>
+                                        Gracias por contactarnos. Ahora estás más cerca de tu nuevo '.utf8_encode($nombreAuto).'</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center"><a href="https://www.kia.com.ec/images/Fichas_Tecnicas/'.$ficha_tecnica.'" target="_blank"><img src="https://www.kia.com.ec/images/mailing/'.$modelos->modelo.'.jpg" width="570" height="240" alt="" style="display:block; border:none;"/></a></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-family:Arial, sans-serif; font-size:16px; color:#5e5e5e; text-align:center; padding-top:15px; padding-bottom:15px;">Soy <strong>'.$asesor["nombres"]." ".$asesor["apellido"].'</strong>,<br/>
+                                            el asesor comercial que te recibirá en tu visita a nuestro concesionario <strong>'.$dealer->name.'</strong>.</td>
+                                        </tr>
+                                        <tr>
+
+
+                                            <td>
+                                                <table cellpadding="0" cellspacing="0" align="center">
+                                                    <tr>
+                                                        <td>
+                                                            <table cellpadding="0" cellspacing="0" width="300">
+                                                               
+
+
+                                                                 <tr>
+                                                                    <td style="padding-bottom:10px;">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td rowspan="2"><img src="images/cita_on.png" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Fecha y hora de la cita:</strong></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;">'.$cita["fecha"].'</td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+
+
+
+                                                                <tr>
+                                                                    <td style="padding-bottom:10px;">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td rowspan="2"><img src="images/mailing/mail_factura_11.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Teléfono:</strong></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;">'.$asesor["telefono"].'</td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                    <td style="padding-bottom:10px;">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td rowspan="2"><img src="images/mailing/mail_factura_16.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Dirección:</strong></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;">'.$direccion.'</td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                              
+
+                                                                <tr>
+                                                                    <td style="padding-bottom:10px;">
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td rowspan="2"><img src="images/mailing/mail_factura_14.jpg" width="31" height="29" alt="" style="display:block; border:none;"/></td>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><strong>Email:</strong></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="font-family:Arial, sans-serif; font-size:14px; color:#5e5e5e; text-align:left;"><a href="mailto:'.$asesor["correo"].'" style="color:#5e5e5e;">'.$asesor["correo"].'</a></td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                
+                                                            </table>
+                                                        </td>
+                                                        <td><a href="http://www.kia.com/ec/shopping-tools/find-a-dealer.html" target="_blank"><img src="images/mailing/mail_factura_09.jpg" width="256" height="226" alt=""/></a></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-top:15px;">
+                                                <table cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td><img src="images/mailing/mail_factura_19.jpg" width="56" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><img src="images/mailing/mail_factura_20.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><img src="images/mailing/mail_factura_21.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><a href="https://www.kia.com.ec/usuarios/registro.html" target="_blank"><img src="images/mailing/mail_factura_22.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                        <td><img src="images/mailing/mail_factura_23.jpg" width="14" height="160" alt="" style="display:block; border:none;"/></td>
+                                                        <td><a href="https://www.kia.com.ec/Atencion-al-Cliente/prueba-de-manejo.html" target="_blank"><img src="images/mailing/mail_factura_24.jpg" width="178" height="160" alt="" style="display:block; border:none;"/></a></td>
+                                                        <td><img src="images/mailing/mail_factura_25.jpg" width="67" height="160" alt="" style="display:block; border:none;"/></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="https://www.kia.com.ec/" target="_blank"><img src="images/mailing/mail_factura_26.jpg" width="685" height="130" alt="" style="display:block; border:none;"/></a></td>
+                                        </tr>
+                                    </table>
+                                </body>';
+                   
+
+                    $emailCliente = $this->getEmailCliente($id_informacion);
+                 
+                   $asunto = 'Formulario enviado desde Kia.com.ec: Solicitud de Cotizacion';
+                    
+                    $resp=sendEmailInfoTestDrive('servicioalcliente@kiamail.com.ec', "Kia Motors Ecuador", $emailCliente,  "", html_entity_decode($asunto), $body);
+                    
+                    if ($resp) {
+                        // GRABAR DATOS DE EMAIL ENVIADO A BASE DE DATOS
+                        // CONCESIONARIOS DE GRUPO ASIAUTO Y KMOTOR
+                       $enviado = new GestionEmailsEnviados;
+                        $enviado->user_id = $id_asesor;
+                        $enviado->id_concesionario = $asesor->dealers_id;
+                        $enviado->id_informacion = $id_informacion;
+                        $enviado->modelo = $modelos->modelo;
+                        $enviado->version = $modelos->version;
+                        $enviado->fecha = date("Y-m-d H:i:s");
+                        $enviado->save();                       
+                    }  
+
+                    
+                   
+
+        }
+       
+            
+  }   
 
     public function actionGetresponsable() {
         $id = isset($_POST["id"]) ? $_POST["id"] : "";
