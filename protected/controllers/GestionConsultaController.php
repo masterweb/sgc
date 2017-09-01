@@ -401,10 +401,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['GestionConsulta'])) {
-//            echo '<pre>';
-//            print_r($_POST);
-//            echo '</pre>';
-//            die();
+    //        echo '<pre>';
+    //        print_r($_POST);
+    //        echo '</pre>';
+    //        die();
             $currencys = array("$", ".");
             $id_info = $_POST['GestionInformacion']['id_informacion'];
             //die('id info: '.$id_info);
@@ -714,6 +714,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             if($_POST['GestionInformacion']['fuente'] == 'prospeccion'){
                 $con = Yii::app()->db;
                 $sql = "UPDATE gestion_diaria SET fuente_contacto = 'showroom', fuente_contacto_historial = 'prospeccion' WHERE id_informacion = {$_POST['GestionInformacion']['id_informacion']}";
+                $request = $con->createCommand($sql)->execute();
+
+                # CAMBIAR EN TABLA gestion_informacion bdc = 0
+                $sql = "UPDATE gestion_informacion SET bdc = 0 WHERE id = {$_POST['GestionInformacion']['id_informacion']}";
                 $request = $con->createCommand($sql)->execute();
             }
             //die($_POST['GestionInformacion']['fuente']);
