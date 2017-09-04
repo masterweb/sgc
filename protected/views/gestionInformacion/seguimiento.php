@@ -501,6 +501,7 @@ $count = count($users);
     .txtasignamiento{position: absolute;top: -20px;color: #C21930;font-style: italic;}
     .group-asignamiento{position: relative !important;}
     .tooltip{white-space: normal;}
+    .panel-cliente{background-color: #5cb85c !important; color:white !important;}
 </style>
 
 <?php $this->widget('application.components.Notificaciones'); ?>

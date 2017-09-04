@@ -1617,6 +1617,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     public function actionGetCedula() {
+      //die('enter cedula');
         $model = new GestionNuevaCotizacion;
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
@@ -1643,7 +1644,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $result = TRUE;
             $data .= '<div class="panel-group">
                     <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading panel-cliente">
                         <h4 class="panel-title">
                           <a data-toggle="collapse" href="#cliente">Cliente existente</a>
                         </h4>
@@ -1715,7 +1716,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
 
             // LLAMADA A FUNCION DE CREATEC 
-            //$data_createc = $this->Createc($id, 0, 'cedula');
+            $data_createc = $this->Createc($id, 0, 'cedula');
             $data .= '</table></div></div></div></div></div></div></div></div>';
         }
         if ($ced == 0) {
@@ -1726,7 +1727,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            //$data_createc = $this->Createc($id, $id_nueva_cotizacion, 'cedula');
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'cedula');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
             $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
@@ -1767,13 +1768,13 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $result = FALSE;
         $ced = GestionInformacion::model()->count($criteria);
         $cd = GestionInformacion::model()->findAll($criteria);
-        //die('ced: '.$ced);
+        //die('ced find: '.$ced);
         if ($ced > 0) {
             //die('enter ruc');
             $result = TRUE;
             $data .= '<div class="panel-group">
                     <div class="panel panel-default">
-                    <div class="panel-heading">
+                    <div class="panel-heading panel-cliente">
                         <h4 class="panel-title">
                           <a data-toggle="collapse" href="#cliente">Cliente existente</a>
                         </h4>
@@ -1852,7 +1853,7 @@ La organización no asume responsabilidad sobre información, opiniones o criter
             $id_nueva_cotizacion = $model->id;
 
             // LLAMADA A FUNCION DE CREATEC 
-            //$data_createc = $this->Createc($id, $id_nueva_cotizacion, 'ruc');
+            $data_createc = $this->Createc($id, $id_nueva_cotizacion, 'ruc');
             $gn = GestionNuevaCotizacion::model()->findByPk($id_nueva_cotizacion);
             $gn->datos_cliente = implode(',', $data_createc['data_save']);
             $gn->update();
@@ -1962,6 +1963,10 @@ La organización no asume responsabilidad sobre información, opiniones o criter
     }
 
     private function Createc($id, $id_nueva_cotizacion, $tipo_identificacion) {
+        ini_set('soap.wsdl_cache_enabled', 0);
+        ini_set('soap.wsdl_cache_ttl', 900);
+        ini_set('default_socket_timeout', 10);
+
         $id_responsable = Yii::app()->user->getId();
         $dealer_id = $this->getDealerId($id_responsable);
         // BUSQUEDA EN CREATEC==================================================================================
@@ -1969,7 +1974,26 @@ La organización no asume responsabilidad sobre información, opiniones o criter
         $id_modeloInformacion = 0;
         $uriservicio = "http://200.31.10.92/wsa/wsa1/wsdl?targetURI=urn:aekia";
         //die('after uri');
-        $client = new SoapClient(@$uriservicio, array('trace' => 1));
+        $options = array(
+          'uri'=>'http://schemas.xmlsoap.org/soap/envelope/',
+          'style'=>SOAP_RPC,
+          'use'=>SOAP_ENCODED,
+          'soap_version'=>SOAP_1_1,
+          'cache_wsdl'=>WSDL_CACHE_NONE,
+          'connection_timeout'=>15,
+          'trace'=>true,
+          'encoding'=>'UTF-8',
+          'exceptions'=>true,
+        );
+        try{
+          $client = new SoapClient(@$uriservicio, $options);
+        }
+        catch(Exception $e) {
+          die('exception message: '.$e->getMessage());
+        }
+        //var_dump($data);
+        //die('after var dump');
+        
         $response = $client->pws01_01_cl("{$id}", '');
 
         $result = FALSE;
@@ -4314,4 +4338,58 @@ La organización no asume responsabilidad sobre información, opiniones o criter
 
 
   } */
+
+   public function actionTest(){
+
+   // require_once( '/protected/controllers/excel/PHPExcel/PHPExcel.php');
+    require_once 'excel/PHPExcel/Classes/PHPExcel.php';
+     $objPHPExcel = new PHPExcel();
+     $objPHPExcel->getProperties()->setCreator("Codedrinks") // Nombre del autor
+    ->setLastModifiedBy("Codedrinks") //Ultimo usuario que lo modificó
+    ->setTitle("Reporte Excel con PHP y MySQL") // Titulo
+    ->setSubject("Reporte Excel con PHP y MySQL") //Asunto
+    ->setDescription("Reporte de alumnos") //Descripción
+    ->setKeywords("reporte alumnos carreras") //Etiquetas
+    ->setCategory("Reporte excel"); //Categorias
+    $tituloReporte = "Relación de alumnos por carrera";
+    $titulosColumnas = array('NOMBRE', 'FECHA DE NACIMIENTO', 'SEXO', 'CARRERA');
+    $objPHPExcel->setActiveSheetIndex(0)
+    ->mergeCells('A1:D1');
+    $objPHPExcel->setActiveSheetIndex(0)
+    ->setCellValue('A1',$tituloReporte) // Titulo del reporte
+    ->setCellValue('A3',  $titulosColumnas[0])  //Titulo de las columnas
+    ->setCellValue('B3',  $titulosColumnas[1])
+    ->setCellValue('C3',  $titulosColumnas[2])
+    ->setCellValue('D3',  $titulosColumnas[3]);
+
+
+      $objPHPExcel->setActiveSheetIndex(0)
+         ->setCellValue('A4', 'Diego')
+         ->setCellValue('B4', '14-10-1988')
+         ->setCellValue('C4', 'M')
+         ->setCellValue('D4', 'Ingeniero en sistemas');
+
+         // Se asigna el nombre a la hoja
+          $objPHPExcel->getActiveSheet()->setTitle('Alumnos');
+           
+          // Se activa la hoja para que sea la que se muestre cuando el archivo se abre
+          $objPHPExcel->setActiveSheetIndex(0);
+           
+          // Inmovilizar paneles
+          //$objPHPExcel->getActiveSheet(0)->freezePane('A4');
+          $objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0,4);
+
+          header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+          header('Content-Disposition: attachment;filename="Reportedealumnos.xlsx"');
+          header('Cache-Control: max-age=0');
+          $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+          $objWriter->save('php://output');
+          die('excel done');
+          exit;
+
+
+    //require_once '../extensions/phpexcel/XPHPExcel.php';
+     // require_once '/excel/PHPExcel/PHPExcel.php';
+       // die('excel done');
+  }
 }
