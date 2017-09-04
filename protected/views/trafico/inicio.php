@@ -20,19 +20,27 @@ $(document).ready(function() {
     $('#trafico_year').change(function(){if($(this).val()!=''){$('#year').val(1);}else{$('#year').val(0);}});
     $('#trafico_fecha1').change(function(){if($(this).val()!=''){$('#fecha1').val(1);}else{$('#fecha1').val(0);}});
     $('#trafico_fecha2').change(function(){if($(this).val()!=''){$('#fecha2').val(1);}else{$('#fecha2').val(0);}})
+    
+
     var today = new Date();
-    var startDate = new Date(today.getFullYear(), 02, 1);
-    var endDate = new Date(today.getFullYear(), 02, 31);
+    var startDate = new Date(today.getFullYear(), 2, 1);
+    var endDate = new Date(today.getFullYear(), 2, 31);
+    //alert(today.getFullYear());
+   // alert(startDate+' '+endDate);
+
+
     $("#trafico_fecha1").datepicker({
        dateFormat: 'dd',
        startDate: startDate,
        endDate: endDate,
+       defaultDate:'-1m',
        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
     });
     $("#trafico_fecha2").datepicker({
        dateFormat: 'dd',
        startDate: startDate,
        endDate: endDate,
+       defaultDate:'-1m',
        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
     });
     
