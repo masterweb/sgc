@@ -7,7 +7,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-    //   echo '<pre>'.$sql_cons.'</pre>';
+     //  echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -16,7 +16,7 @@ class ConstructorSQL {
 
     function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP = null, $tipo = NULL) {
 
-        //die($concesionario);
+        //die($cargo_id);
         if (!empty($carros['modelos']) || !empty($carros['versiones']) && $tipo!='super'  ) {
             $datos_solo_modelos = $this->renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion, $consultaBDC, $condicion_GP, $tipo);
             if ($_GET['todos']) {
@@ -1056,14 +1056,14 @@ class ConstructorSQL {
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_actual'] = $prospeccion_mes_actual;
 
-        //echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
+       // echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
 
         //BUSQUEDA POR TRAFICO O CITAS WEB=====================================================================================================================================       
        
         $validateAsiauto=$this->validateAsiautoDealer($concesionario);
         //die('validateAsiauto: '.$validateAsiauto);
-
-        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw'))  ){/*reportes web para los jefes de agencia y AEKIA*/
+        //die($cargo_id);
+        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 70 && ($tipo == 'externas'))  ){/*reportes web para los jefes de agencia y AEKIA*/
             $date_tw = 'ga';    
            
             $trafico_mes_anterior = $this->SQLconstructor(
@@ -1085,7 +1085,7 @@ class ConstructorSQL {
             if($tipo == 'tw'){
                 // CITAS CONCRETADAS================================================================================================================================================
 
-               //echo "<h4>BUSQUEDA POR citas concretadas</h4>";
+             //  echo "<h4>BUSQUEDA POR citas concretadas</h4>";
 
 
 
