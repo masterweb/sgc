@@ -155,7 +155,7 @@ class ReportesController extends Controller {
             $bdcfalse = ' AND gi.bdc = 1 ';
             $INERmodelos = ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id';
         }
-        if($tipo == 'prospeccionweb')
+        if($tipo == 'prospeccionweb' /*|| $tipo == 'super'*/)
             $bdcfalse = ' AND gi.bdc = 1 ';
         // GRUPO ASIAUTO Y KMOTOR CON CARGO JEFE VENTAS WEB O CARGO ADICIONAL ASESOR VENTAS WEB. SUMA AL EMBUDO BDC = 1
         if(($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && ($varView['cargo_id'] == 85 || $varView['cargo_id'] == 86)){
@@ -356,22 +356,28 @@ class ReportesController extends Controller {
                 $varView['flag_search'] = 2;
             }
             if ($_GET['GI']['responsable'] != '') {
+
+
                 $cargo = $this->getCargo($_GET['GI']['responsable']);
                 // SI EL USUARIO TIENE DOBLE CARGO, ASESOR VENTAS Y ASESOR WEB
-                if($cargo == 71 || $cargo == 86){
+                if($cargo == 71 || $cargo == 86 || $tipo=='super'){
                     $bdcfalse = '';
                 }
                 $varView['id_responsable'] = $_GET['GI']['responsable'];
                 $id_persona = "gi.responsable = " . $varView['id_responsable'];
                 if($tipo == 'tw')
                    $id_persona = "(gi.responsable IN({$varView['id_responsable']}) OR gi.responsable_origen IN({$varView['id_responsable']}) OR gi.responsable_origen_tm IN({$varView['id_responsable']})) AND gd.desiste = 0"; 
-                if($varView['id_responsable'] == 1000)
+                if($varView['id_responsable'] == 1000 && $_GET['GI']['concesionario']!='')
                     $id_persona = "gi.dealer_id = " . $_GET['GI']['concesionario'];
                 $varView['js_responsable'] = $varView['id_responsable'];
                 $varView['flag_search'] = 3;
             }
             if ($_GET['GI']['concesionario'] != '') {
+
+
                 $varView['$concesionario'] = $_GET['GI']['concesionario'];
+
+
                 $varView["js_dealer"] = $_GET['GI']['concesionario'];
                 if ($_GET['GI']['responsable'] == '') {
                     $id_persona = "gi.dealer_id = " . $varView['$concesionario'];
@@ -385,6 +391,10 @@ class ReportesController extends Controller {
                 if($varView['cargo_id'] == 85 && ($varView['grupo_id'] == 2 || $varView['grupo_id'] == 3) && $varView['$concesionario'] != 1000){
                    $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
                 }
+
+              /*  if($tipo='super'){
+                     $id_persona .= " AND gi.dealer_id = " . $varView['$concesionario']; 
+                }*/
 
                 $varView['flag_search'] = 4;
             }
@@ -455,7 +465,9 @@ class ReportesController extends Controller {
                     $id_busqueda = $varView['id_grupo'];
                     $grupos_sql = "SELECT * from gr_concesionarios WHERE id_grupo = " . $varView['id_grupo'];
                 }
-                elseif($_GET['tipo'] != 'tw'){
+                elseif($_GET['tipo'] == 'tw'){
+
+                    //die('here');
                     $varView['flag_search'] = 54;
                     $varView['$concesionario'] = $_GET['GI']['concesionario'];
                     $varView['checked_g'] = true;
@@ -479,7 +491,7 @@ class ReportesController extends Controller {
             }
             //die('flag_search: '.$varView['flag_search']);
 
-            if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['provincias'] != '') {
+            if ($_GET['GI']['tipo_t'] != '' AND $_GET['GI']['provincias'] != '' AND $_GET['GI']['provincias'] != 1000) {
                 //die('enter provincia');
                 $con = Yii::app()->db;
                 /*if ($_GET['GI']['tipo_t'] == 'provincias') {
@@ -496,7 +508,7 @@ class ReportesController extends Controller {
                     $cond_conce = 'id_grupo';
                     $id_busqueda = $varView['id_grupo'];
                 }*/
-                if($_GET['GI']['concesionario'] != 1000){
+                if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['concesionario'] != ''){
                     $varView['checked_p'] = true;
                     $varView['checked_g'] = false;
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
@@ -506,14 +518,16 @@ class ReportesController extends Controller {
                     $grupos_sql = "SELECT * from gr_concesionarios WHERE dealer_id = " . $_GET['GI']['concesionario'];
                 }
                 if($_GET['GI']['concesionario'] != 1000 && $_GET['GI']['responsable'] == 1000){
+
                     $varView['checked_p'] = true;
                     $varView['checked_g'] = false;
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
                     $cond_conce = 'provincia';
                     $id_busqueda = $varView['id_provincia'];
                     $grupos_sql = "SELECT * from gr_concesionarios WHERE " . $cond_conce . " = " . $id_busqueda;
+
                 }
-                if($_GET['GI']['concesionario'] == 1000){
+                if($_GET['GI']['concesionario'] == 1000 || $_GET['GI']['concesionario'] == ''){
                     $varView['checked_p'] = true;
                     $varView['checked_g'] = false;
                     $varView['id_provincia'] = $_GET['GI']['provincias'];
@@ -775,9 +789,11 @@ class ReportesController extends Controller {
             if($_GET['GI']['grupo']==2 && $_GET['GI']['concesionario']=="")$conc=2;
             else $conc=$_GET['GI']['concesionario'];
 
-            $retorno = $constructor->buscar(
-                    $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], /*$varView['concesionario']*/$conc, $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
-            );
+            
+           /*if($tipo!='super')*/
+                $retorno = $constructor->buscar(
+                        $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], /*$varView['concesionario']*/$conc, $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
+                );
 
         //    echo '<pre>';
         //    print_r($retorno);
