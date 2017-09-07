@@ -1064,6 +1064,8 @@ class ConstructorSQL {
         //die('validateAsiauto: '.$validateAsiauto);
         //die($cargo_id);
         if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 70 && ($tipo == 'externas'))  ){/*reportes web para los jefes de agencia y AEKIA*/
+
+            
             $date_tw = 'ga';    
            
             $trafico_mes_anterior = $this->SQLconstructor(
