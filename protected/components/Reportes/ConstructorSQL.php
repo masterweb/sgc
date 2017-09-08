@@ -7,7 +7,7 @@ class ConstructorSQL {
         $con = Yii::app()->db;
         $sql_cons = "SELECT {$selection} from {$table} {$join}
         WHERE {$where} {$group}";
-     //  echo '<pre>'.$sql_cons.'</pre>';
+      // echo '<pre>'.$sql_cons.'</pre>';
 
         $request_cons = $con->createCommand($sql_cons);
         return $request_cons->queryAll();
@@ -16,7 +16,7 @@ class ConstructorSQL {
 
     function buscar($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP = null, $tipo = NULL) {
 
-        //die($cargo_id);
+        
         if (!empty($carros['modelos']) || !empty($carros['versiones']) && $tipo!='super'  ) {
             $datos_solo_modelos = $this->renderBusqueda($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion, $consultaBDC, $condicion_GP, $tipo);
             if ($_GET['todos']) {
@@ -50,6 +50,7 @@ class ConstructorSQL {
             }
         } 
         else if($tipo=='super'){
+           // die($join_ext);
              $varView = $this->renderBusquedaSuper($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario, $tipos, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo);
         }
         else {
@@ -193,6 +194,7 @@ class ConstructorSQL {
     }
      function renderBusquedaSuper($cargo_id, $id_responsable, $select_ext, $join_ext, $id_persona, $group_ext, $fecha_inicial_anterior, $fecha_anterior, $fecha_inicial_actual, $fecha_actual, $concesionario = 0, $tipos = null, $carros, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $consulta_gp = null, $tipo) {
 
+
          $retorno = array();
          $fuente_prospeccion = " gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion'";
          $fuente_contacto_historial = "";
@@ -323,17 +325,17 @@ class ConstructorSQL {
             
        //     echo "<h4>BUSQUEDA POR citas concretadas</h4>";
 
-
+/*aqui muere*/
             $trafico_citas_concretadas_mes_anterior = $this->SQLconstructor(
-                  'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', /*$join_ext .*/ $INERmodelos .
+                  'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                   ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id' , /*$id_persona*/str_replace("gi.bdc = 0","gi.bdc = 1",$id_persona) . $consultaBDC . $modelos . $versiones . $consulta_gp .
                   " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . " 23:59:59') AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gd.desiste = 0 AND gi.bdc = 1 "/* . $whereExt.$whereTw*/, $group_ext
                 );
                 $trafico_citas_concretadas_mes_anterior = count($trafico_citas_concretadas_mes_anterior);
-               
+             //  die('here2');
                        
                 $trafico_citas_concretadas_mes_actual = $this->SQLconstructor(
-                  'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', /*$join_ext .*/ $INERmodelos .
+                  'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                   ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id' , /*$id_persona*/str_replace("gi.bdc = 0","gi.bdc = 1",$id_persona) . $consultaBDC . $modelos . $versiones . $consulta_gp .
                   " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . " 23:59:59') AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gd.desiste = 0 AND gi.bdc = 1 "/*. $whereExt.$whereTw*/, $group_ext
                 );
@@ -346,6 +348,8 @@ class ConstructorSQL {
 
          //   echo "<h4>BUSQUEDA POR proformas showroom</h4>";
             $innerGestionDiaria = " INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+
+            
 
             $proforma_mes_anterior_showroom = $this->SQLconstructor(
                     'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
@@ -1065,7 +1069,7 @@ class ConstructorSQL {
         //die($cargo_id);
         if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 70 && ($tipo == 'externas'))  ){/*reportes web para los jefes de agencia y AEKIA*/
 
-            
+
             $date_tw = 'ga';    
            
             $trafico_mes_anterior = $this->SQLconstructor(
@@ -1494,7 +1498,7 @@ class ConstructorSQL {
             default:
 
                 $area_id = (int) Yii::app()->user->getState('area_id');
-                if($area_id == 14 || $area_id == 17)
+                if($area_id == 13 || $area_id == 14 || $area_id == 17)
                     return true;
                 else
                     return false;
