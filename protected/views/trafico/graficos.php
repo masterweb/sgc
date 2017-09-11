@@ -5,9 +5,10 @@ ini_set('display_errors', 1);
 //print_r($vartrf['fechas_activas']);
 //echo '</pre>';
 //echo 'flag search: '.$vartrf['flag_search'];
-//echo 'mes actual: '.$vartrf['mes_actual'].'<br />';
-//echo 'mes anterior: '.$vartrf['mes_anterior'];
-//die ($vartrf['mes_actual']);
+//echo 'mes inicial: '.$vartrf['mes_inicial'].'<br />';
+//echo 'mes actual: '.$vartrf['mes_actual'];
+//$vartrf['mes_actual'] = 9;
+//die ('mes inicial: '.$vartrf['mes_inicial']);
 $trafico0 = array();
 $trafico1 = array();
 $trafico2 = array();
@@ -20,6 +21,9 @@ $trafico8 = array();
 $trafico9 = array();
 $trafico10 = array();
 $trafico11 = array();
+$trafico12 = array();
+$trafico13 = array();
+$trafico14 = array();
 
 $ventas0 = array();
 $ventas1 = array();
@@ -33,6 +37,9 @@ $ventas8 = array();
 $ventas9 = array();
 $ventas10 = array();
 $ventas11 = array();
+$ventas12 = array();
+$ventas13 = array();
+$ventas14 = array();
 
 $tasacierre0 = array();
 $tasacierre1 = array();
@@ -46,18 +53,30 @@ $tasacierre8 = array();
 $tasacierre9 = array();
 $tasacierre10 = array();
 $tasacierre11 = array();
+$tasacierre12 = array();
+$tasacierre13 = array();
+$tasacierre14 = array();
 
 $count = 0;
 //echo 'count modelos: '.count($vartrf['modelos']);
 $flag = 0;
+//echo 'mes actual: '.$vartrf['mes_actual'];
+//die();
+//echo '<pre>';
+//print_r($vartrf['modelos']);
+//echo '</pre>';
+//die();
 foreach ($vartrf['modelos'] as $val){
     for ($i = 0; $i < $vartrf['mes_actual']; $i++) {
-        ${"trafico" . $i}[] = $this->getTraficoVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
+        ${"trafico" . $i}[] = count($this->getTraficoVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']));
         ${"ventas" . $i}[] = $this->getVentasVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']);
-        ${"tasacierre". $i}[] = $this->getTasaCierreNormal($this->getVentasVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']), $this->getTraficoVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']));
+        ${"tasacierre". $i}[] = $this->getTasaCierreNormal($this->getVentasVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']), count($this->getTraficoVersion($i, $val['id_versiones'], $vartrf['year_actual'], $vartrf['dia_actual'], 1, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'])));
         }
 }
 
+//echo 'count: '.count($trafico0);
+
+//die();
 
 $trafico_total0 = array_sum($trafico0);
 $trafico_total1 = array_sum($trafico1);
@@ -71,6 +90,9 @@ $trafico_total8 = array_sum($trafico8);
 $trafico_total9 = array_sum($trafico9);
 $trafico_total10 = array_sum($trafico10);
 $trafico_total11 = array_sum($trafico11);
+$trafico_total12 = array_sum($trafico12);
+$trafico_total13 = array_sum($trafico13);
+$trafico_total14 = array_sum($trafico14);
 
 $ventas_total0 = array_sum($ventas0);
 $ventas_total1 = array_sum($ventas1);
@@ -84,7 +106,19 @@ $ventas_total8 = array_sum($ventas8);
 $ventas_total9 = array_sum($ventas9);
 $ventas_total10 = array_sum($ventas10);
 $ventas_total11 = array_sum($ventas11);
-//echo $trafico_total11;
+$ventas_total12 = array_sum($ventas12);
+$ventas_total13 = array_sum($ventas13);
+$ventas_total14 = array_sum($ventas14);
+/*echo '<pre>';
+print_r($ventas_total0);
+echo '</pre>';
+echo '<pre>';
+print_r($ventas_total1);
+echo '</pre>';
+echo '<pre>';
+print_r($ventas_total2);
+echo '</pre>';
+die();*/
 
 //echo '</pre>';
 $k = 0;
@@ -110,7 +144,7 @@ foreach ($vartrf['modelos'] as $val) {
                 $d = '0' . $i;
         }
         //echo 'id: '.$val['id'].'<br>';
-        ${"traficodetalle_mes_anterior_".$val['id']}[] = $this->getTraficoVersion($vartrf['mes_anterior'], $vartrf['versiones'][$flag], $vartrf['year_actual1'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']); 
+        ${"traficodetalle_mes_anterior_".$val['id']}[] = count($this->getTraficoVersion($vartrf['mes_anterior'], $vartrf['versiones'][$flag], $vartrf['year_actual1'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'])); 
         //echo 'Antes de la suma: '.${"traficodetalle_mes_anterior_".$val['id']}[$j].'<br>';
         if($j > 0){
             ${"traficodetalle_mes_anterior_".$val['id']}[$j] =  ${"traficodetalle_mes_anterior_".$val['id']}[$j] +  ${"traficodetalle_mes_anterior_".$val['id']}[$j-1];
@@ -129,7 +163,7 @@ foreach ($vartrf['modelos'] as $val) {
         if ($i < 10) {
                 $d = '0' . $i;
         }
-        ${"traficodetalle_mes_actual_".$val['id']}[] = $this->getTraficoVersion($vartrf['mes_actual'], $vartrf['versiones'][$flag], $vartrf['year_actual'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable']); 
+        ${"traficodetalle_mes_actual_".$val['id']}[] = count($this->getTraficoVersion($vartrf['mes_actual'], $vartrf['versiones'][$flag], $vartrf['year_actual'], $d, 0, $vartrf['search'],$vartrf['cargo_id'], $vartrf['dealer_id'], $vartrf['id_responsable'])); 
         if($j > 0){
             ${"traficodetalle_mes_actual_".$val['id']}[$j] =  ${"traficodetalle_mes_actual_".$val['id']}[$j] +  ${"traficodetalle_mes_actual_".$val['id']}[$j-1];
         }
@@ -144,6 +178,7 @@ foreach ($vartrf['modelos'] as $val) {
 //echo '</pre>';
 //die();
 ?>
+ 
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/highcharts/highcharts.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/highcharts/highcharts-3d.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/highcharts/modules/exporting.js"></script>
@@ -398,12 +433,12 @@ foreach ($vartrf['modelos'] as $val) {
             }]
         });
         <?php $k++; } ?>
-        <?php $k = 0;
+        <?php $l = 0;
         foreach ($vartrf['modelos'] as $val) { ?>
-        Highcharts.chart('containerh'+<?php echo $k; ?>, {
-            /*chart: {
+        Highcharts.chart('containerx'+<?php echo $l; ?>, {
+            chart: {
                 type: 'spline'
-            },*/
+            },
             colors: [
                 '#2f7ed8','#0d233a','#8bbc21'
             ],
@@ -464,7 +499,7 @@ foreach ($vartrf['modelos'] as $val) {
                 ]
             }]
         });    
-        <?php $k++; } ?>    
+        <?php $l++; } ?>    
     });
 </script>
 <style type="text/css">
@@ -631,6 +666,7 @@ foreach ($vartrf['modelos'] as $val) {
     </div>
     <div class="row">
         <div class="col-md-6">
+
             <?php for ($i = $vartrf['mes_inicial']; $i < $vartrf['mes_actual']; $i++) {
                 echo '<div id="container'.$i.'" class="panel-body"></div>'; 
             } ?>
@@ -646,23 +682,27 @@ foreach ($vartrf['modelos'] as $val) {
 	</div>
 	<div class="row">
             <div class="col-md-6">
-                <div id="containerh0" class="panel-body"></div>
-                <div id="containerh1" class="panel-body"></div>
-                <div id="containerh2" class="panel-body"></div>
-                <div id="containerh3" class="panel-body"></div>
-                <div id="containerh4" class="panel-body"></div>
-                <div id="containerh5" class="panel-body"></div>
-                <div id="containerh6" class="panel-body"></div>
-                <div id="containerh7" class="panel-body"></div>
-                <div id="containerh8" class="panel-body"></div>
-                <div id="containerh9" class="panel-body"></div>
-                <div id="containerh10" class="panel-body"></div>
-                <div id="containerh11" class="panel-body"></div>
-                <div id="containerh12" class="panel-body"></div>
-                <div id="containerh13" class="panel-body"></div>
-                <div id="containerh14" class="panel-body"></div>
-                <div id="containerh15" class="panel-body"></div>
-                <div id="containerh16" class="panel-body"></div>
+                <div id="containerx0" class="panel-body"></div>
+                <div id="containerx1" class="panel-body"></div>
+                <div id="containerx2" class="panel-body"></div>
+                <div id="containerx3" class="panel-body"></div>
+                <div id="containerx4" class="panel-body"></div>
+                <div id="containerx5" class="panel-body"></div>
+                <div id="containerx6" class="panel-body"></div>
+                <div id="containerx7" class="panel-body"></div>
+                <div id="containerx8" class="panel-body"></div>
+                <div id="containerx9" class="panel-body"></div>
+                <div id="containerx10" class="panel-body"></div>
+                <div id="containerx11" class="panel-body"></div>
+                <div id="containerx12" class="panel-body"></div>
+                <div id="containerx13" class="panel-body"></div>
+                <div id="containerx14" class="panel-body"></div>
+                <div id="containerx15" class="panel-body"></div>
+                <div id="containerx16" class="panel-body"></div>
+                <div id="containerx17" class="panel-body"></div>
+                <div id="containerx18" class="panel-body"></div>
+                <div id="containerx19" class="panel-body"></div>
+                <div id="containerx20" class="panel-body"></div>
             </div>
             <div class="col-md-6">
                 <div id="containerg0" class="panel-body"></div>
@@ -682,6 +722,10 @@ foreach ($vartrf['modelos'] as $val) {
                 <div id="containerg14" class="panel-body"></div>
                 <div id="containerg15" class="panel-body"></div>
                 <div id="containerg16" class="panel-body"></div>
+                <div id="containerg17" class="panel-body"></div>
+                <div id="containerg18" class="panel-body"></div>
+                <div id="containerg19" class="panel-body"></div>
+                <div id="containerg20" class="panel-body"></div>
             </div>
 	</div>  
 </div>
