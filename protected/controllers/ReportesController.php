@@ -218,10 +218,22 @@ class ReportesController extends Controller {
                    
                 break;
             case 69: // GERENTE COMERCIAL EN CURSO TERMINADO----->
-                $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
-                $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
-                $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
-                $varView['consecionario_usuario'] = '<b>Grupo:</b> ' . $this->getNombreGrupo($varView['grupo_id']);
+                //die('here');
+
+                if($tipo == 'super'){
+                    $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
+                    $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
+                    $varView['consecionario_usuario'] = '<b>Grupo:</b> ' . $this->getNombreGrupo($varView['grupo_id']);
+                   $conces= $this->getDealerGrupoConcUsuario($varView['id_responsable'],0); 
+                   $dealerList = implode(', ', $conces);
+                    $id_persona = "gi.responsable AND gi.dealer_id IN (".$dealerList.")  ";
+                }
+                else{
+                    $join_ext = ' INNER JOIN usuarios u ON u.id = gi.responsable ';
+                    $id_persona = 'u.grupo_id = ' . $varView['grupo_id'];
+                    $varView['lista_conce'] = $GF->getConcecionario($varView['grupo_id']);
+                    $varView['consecionario_usuario'] = '<b>Grupo:</b> ' . $this->getNombreGrupo($varView['grupo_id']);
+                }
                 break;
             case 70: // jefe de sucursal TERMINADO------>
                 $id_persona = "gi.dealer_id = " . $varView['dealer_id'];
@@ -789,7 +801,7 @@ class ReportesController extends Controller {
             if($_GET['GI']['grupo']==2 && $_GET['GI']['concesionario']=="")$conc=2;
             else $conc=$_GET['GI']['concesionario'];
 
-            
+           // die($id_persona.' '.$join_ext);
            /*if($tipo!='super')*/
                 $retorno = $constructor->buscar(
                         $varView['cargo_id'], $varView['id_responsable'], $select_ext, $join_ext, $id_persona, $group_ext, $varView['fecha_inicial_anterior'], $varView['fecha_anterior'], $varView['fecha_inicial_actual'], $varView['fecha_actual'], /*$varView['concesionario']*/$conc, $tipos, $SQLmodelos, $INERmodelos, $INERmodelos_td, $INERProspeccion,$consultaBDC, $condicion_GP, $tipo
@@ -814,15 +826,19 @@ class ReportesController extends Controller {
             $varView['traficockd2'] = $retorno['traficockd2'];
             $varView['traficocbu2'] = $retorno['traficocbu2'];
             if($tipo == 'externas'||$tipo == 'tw'){
-                $varView['trafico_mes_anterior'] = $retorno['trafico_mes_anterior'];
-                $varView['trafico_mes_actual'] = $retorno['trafico_mes_actual'];
+               
+
+                $varView['trafico_mes_anterior'] = $retorno['trafico_mes_anterior'];//$retorno['prospeccion_mes_anterior'];
+                $varView['trafico_mes_actual'] = $retorno['prospeccion_mes_actual'];//$retorno['trafico_mes_actual'];
+              
+
                 $varView['trafico_citas_mes_anterior'] = $retorno['trafico_citas_mes_anterior'];
                 $varView['trafico_citas_mes_actual'] = $retorno['trafico_citas_mes_actual'];
 
                 $varView['trafico_citas_concretadas_mes_anterior'] = $retorno['trafico_citas_concretadas_mes_anterior'];
                 $varView['trafico_citas_concretadas_mes_actual'] = $retorno['trafico_citas_concretadas_mes_actual'];
 
-
+                
             }
 
             $varView['proforma_mes_anterior'] = $retorno['proforma_mes_anterior'];
@@ -900,8 +916,10 @@ class ReportesController extends Controller {
 
         $varView['titulo'] = $tit_init . $fecha_inicial_actual . ' / ' . $fecha_actual . ', y ' . $fecha_inicial_anterior . ' / ' . $fecha_anterior . $tit_ext;
 
+
         //set Tasas
         //tasa proformas
+
         $varView['tasa_proforma_actual'] = $GF->tasa($varView['trafico_mes_actual'], $varView['proforma_mes_actual']);
         $varView['tasa_proforma_anterior'] = $GF->tasa($varView['trafico_mes_anterior'], $varView['proforma_mes_anterior']);
         $varView['tasa_dif_proforma'] = $GF->tasa_dif($varView['tasa_proforma_actual'], $varView['tasa_proforma_anterior']);

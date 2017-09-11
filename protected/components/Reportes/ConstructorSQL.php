@@ -235,10 +235,10 @@ class ConstructorSQL {
                 $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ".$whereTw, $group_ext);
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(DISTINCT(gi.id))'];
         
-          //   echo "PROSPECCION ".$prospeccion_mes_actual;
+         //    echo "PROSPECCION ".$prospeccion_mes_actual;
 
 
-   //     echo "<h4>BUSQUEDA POR CITAS</h4>";
+      //  echo "<h4>BUSQUEDA POR CITAS</h4>";
 
 
          $fuente_contacto_web = "gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo'";
@@ -275,10 +275,10 @@ class ConstructorSQL {
             $retorno['prospeccion_mes_anterior'] = $prospeccion_mes_anterior + $trafico_mes_anterior;
             $retorno['prospeccion_mes_actual'] = $prospeccion_mes_actual+ $trafico_mes_actual; 
 
-         //   echo "citas concreatas ".$trafico_mes_actual;
+            //echo "citas concreatas ".$trafico_mes_actual;
 
 
-     //   echo "<h4>BUSQUEDA POR trafico ehibicion</h4>";
+       // echo "<h4>BUSQUEDA POR trafico ehibicion</h4>";
 
         $date_fecha = "gi";
         $fuente_contacto_exhibicion = "gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'";
@@ -937,7 +937,7 @@ class ConstructorSQL {
                 $whereCita = " AND gv.orden = 1 AND gi.reasignado_tm = 1  AND gc.order = 1 AND gc.tw = 1 AND gd.desiste = 0 AND gi.bdc = 1 AND ga.observaciones = 'Cita'";
             }
             
-            if($tipo == 'tw' || ($tipo == 'externas' && $cargo_adicional == 89)){
+            if($tipo == 'tw' || ($tipo == 'externas' && $cargo_adicional == 89) ){
                 //$con = new Controller;
                 //$array_dealers = $con->getDealerGrupoConc(2);
                 //$innerTw = ' INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id ';
@@ -1060,14 +1060,14 @@ class ConstructorSQL {
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_actual'] = $prospeccion_mes_actual;
 
-       // echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
+    //    echo "<h4>BUSQUEDA POR TRAFICO O CITAS WEB</h4>";
 
         //BUSQUEDA POR TRAFICO O CITAS WEB=====================================================================================================================================       
        
         $validateAsiauto=$this->validateAsiautoDealer($concesionario);
         //die('validateAsiauto: '.$validateAsiauto);
         //die($cargo_id);
-        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 70 && ($tipo == 'externas'))  ){/*reportes web para los jefes de agencia y AEKIA*/
+        if(($cargo_id == 70 && $cargo_adicional==89 && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 61 && $validateAsiauto==true && ($tipo == 'externas' || $tipo == 'tw')) || (($cargo_id == 89 || $cargo_adicional == 89 || $cargo_id == 86) && ($tipo == 'externas' || $tipo == 'tw')) || ($cargo_id == 70 && ($tipo == 'externas'))|| ($cargo_id == 85 && ($tipo == 'externas'))  ){/*reportes web para los jefes de agencia y AEKIA*/
 
 
             $date_tw = 'ga';    
@@ -1121,7 +1121,7 @@ class ConstructorSQL {
 
 
             $trafico_mes_anterior = count($trafico_mes_anterior);
-                   
+                  
             $trafico_mes_actual = $this->SQLconstructor(
                 'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                 ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
@@ -1498,7 +1498,7 @@ class ConstructorSQL {
             default:
 
                 $area_id = (int) Yii::app()->user->getState('area_id');
-                if($area_id == 13 || $area_id == 14 || $area_id == 17)
+                if($area_id == 14 || $area_id == 17)
                     return true;
                 else
                     return false;

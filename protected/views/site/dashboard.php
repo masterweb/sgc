@@ -117,6 +117,18 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 </div>
             </li>
         <?php endif ?>
+
+
+        <?php if($cargo_id == 61 || $cargo_id == 70 || $cargo_id == 69): ?>
+        <li class="wrapper">
+            <div class="forma">
+                <a href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'super')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
+                    <div class="txt_menu">Super Embudo</div></a>
+            </div>
+        </li>
+        <?php endif; ?>
+
+
         <?php
         if ($result) {
             foreach ($result as $r) {
