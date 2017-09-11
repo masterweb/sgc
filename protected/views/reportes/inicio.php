@@ -104,8 +104,8 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                     <!--<a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'externas')); ?>">Ventas Web</a>-->
                     <?php } 
                     }?>
-                    <!-- ACCESO PARA REPORTE DIARIO DE TODOS LOS USUARIOS -->
-                    <?php if ($tipo != 'tw') { ?>
+                    <!-- ACCESO PARA REPORTE DIARIO DE TODOS LOS USUARIOS, se exceptua para el super embudo -->
+                    <?php if ($tipo != 'tw' && $tipo != 'super') { ?>
                         <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/inicio'); ?>">Reporte Diario</a>
                     <?php } ?>
                     
@@ -119,7 +119,12 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                 </div>  
             </div>
             <br />
-            <?= $this->renderPartial('//reportes/modulos/embudo', array('varView' => $varView,'tipo' => $tipo));?>
+            <?php
+                if($cargo_id == 61 && $tipo == 'super')
+                   $this->renderPartial('//reportes/modulos/superEmbudo', array('varView' => $varView,'tipo' => $tipo)); 
+                else 
+                     $this->renderPartial('//reportes/modulos/embudo', array('varView' => $varView,'tipo' => $tipo));    
+            ?>  
         </div>
         <!-- FIN EMBUDO -->
     </div>
