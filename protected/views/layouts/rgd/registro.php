@@ -1,5 +1,5 @@
 <?php 
-
+$dealer_id = (int) $this->getDealerId(Yii::app()->user->getId());
 $grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $area_id = (int) Yii::app()->user->getState('area_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id'); 
@@ -74,6 +74,15 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
                 <option value="Exonerado Conadis">Exonerado Conadis</option>
                 <option value="Exonerado Diplomatico">Exonerado Diplomático</option>
                 <option value="Flota">Flota</option>-->';
+                if($dealer_id == 74){
+                    $tipo_array =  array('' => '--Seleccione--',
+                    'prospeccion' => 'Prospección',
+                    'showroom' => 'Tráfico',
+                    //'exhibicion_automundo_uio' => 'Exhibición Automundo UIO'
+                    'exhibicion' => 'Exhibición'
+                    );
+
+                }
             }
             if(($cargo_id == 71 || $cargo_id == 70) && $tipo == 'bdc' && $cargo_adicional == 0){ // asesor ventas externas
                 $tipo_array =  array('' => '--Seleccione--',
@@ -145,14 +154,21 @@ $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Lugar</label>
             <!--<input size="40" maxlength="80" class="form-control" name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" type="text" value="Exhibicion Ibarra">-->
+            <?php if($dealer_id == 74) :?>
+            <select name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" class="form-control">
+                <option value="exh_quevedo">Feria Quevedo</option>
+            </select>
+            <?php else: ?>
             <select name="GestionNuevaCotizacion[lugar]" id="GestionNuevaCotizacion_lugar" class="form-control">
                 <option value="exh_mall_de_los_andes">Mall de Los Andes</option>
                 <option value="exh_mall_del_sol">Mall del Sol</option>
                 <option value="exh_mall_el_jardin">Mall El Jardin</option>
                 <option value="exh_cc_el_recreo">Centro Comercial El Recreo</option>
             </select>
+            <?php endif; ?>
         </div>
     </div>
+
     <div class="row otro-cont" style="display: none;">
         <div class="col-md-12">
             <label for="GestionNuevaCotizacion_fuente">Otro</label>
