@@ -215,7 +215,7 @@
                                 <option value="web">Web Nacional</option>
                                 <option value="asiautoweb">Web Asiauto</option>
                                 <option value="exhibicion">Exhibicion</option>
-                                <option value="super">Super Embudo</option>
+                                <option value="super">Súper Embudo</option>
                             </select>
                         </div>
                         <div class="col-md-6">
