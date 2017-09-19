@@ -74,6 +74,18 @@
                 options_grupo = `<option value="">--Seleccione Grupo--</option>
                                 <option value="2">GRUPO ASIAUTO</option>`;                
                 break;
+
+
+                case 'super':
+                    options += `<option value="">--Seleccione tipo--</option>
+                                <option value="16" selected="">Prospección</option>
+                                <option value="17">Trafico</option>
+                                <option value="18">Proformas</option>
+                                <option value="19">TestDrive</option>
+                                <option value="20">Ventas</option>`;
+                break;
+
+
             }
             $('#trafico_tipo_reporte').html(options);$('#trafico_grupo').html(options_grupo);
 
@@ -203,6 +215,7 @@
                                 <option value="web">Web Nacional</option>
                                 <option value="asiautoweb">Web Asiauto</option>
                                 <option value="exhibicion">Exhibicion</option>
+                                <option value="super">Super Embudo</option>
                             </select>
                         </div>
                         <div class="col-md-6">

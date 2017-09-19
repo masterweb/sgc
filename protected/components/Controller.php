@@ -770,6 +770,18 @@ class Controller extends CController {
         }
     }
 
+    /*public function getPrecioVersionPrecios($id_vehiculo, $id_modelo){
+
+        $modelo = GestionVehiculo::model()->find(array("condition" => "id = {$id_vehiculo}"));
+        $version = $modelo->version;
+
+        $user_id = Yii::app()->user->getId();
+        $user = Usuarios::model()->findByPk($user_id);
+        $vp = VersionesPrecios::model()->find('condition' => "id_version = {$modelo->version} AND id_modelo = {$id_modelo} LIKE '%".$user->provincia_id."%'");
+        
+    }*/
+
+
     public function getinformacion($id) {
         $criteria = new CDbCriteria(array(
             "condition" => "id = {$id}",
@@ -1992,6 +2004,14 @@ class Controller extends CController {
             "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo}",
         ));
         $version = GestionSolicitudCredito::model()->find($criteria);
+        return $version->id;
+    }
+
+    public function getIdSolicitudCodeudor($id_informacion, $id_vehiculo, $numero_solicitud) {
+        $criteria = new CDbCriteria(array(
+            "condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo} AND numero_solicitud = {$numero_solicitud}",
+        ));
+        $version = GestionSolicitudCodeudor::model()->find(array("condition" => "id_informacion = {$id_informacion} AND id_vehiculo = {$id_vehiculo} AND numero_solicitud = {$numero_solicitud}"));
         return $version->id;
     }
 
@@ -3766,6 +3786,117 @@ class Controller extends CController {
         //return $cogit stautunt.', versiones: '.$versiones;
         return $count;
     }
+
+
+    public function getProspeccionVersion($mes, $versiones, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+     
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+       
+        
+        $criteria = new CDbCriteria;
+        $criteria->select = "DISTINCT gi.id, gv.version";
+        $criteria->alias = 'gi';
+        $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 0 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }
+        //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
+        # SI NO ES VERSION PARA SUMATORIA TOTAL DETALLE
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial  = 'prospeccion'");
+        $criteria->addCondition("gv.orden = 1");
+
+        $count = GestionInformacion::model()->findAll($criteria);
+        
+        return $count;
+    }
+
+
+    public function getCitasGeneradasVersion($mes, $versiones, $year, $dia, $flag, $search, $cargo_id, $dealer_id, $id_responsable) {
+     
+        if($search['fecha'])
+           $srf = $this->getBetweenfecha($mes, $year, $search['dia_anterior'], $search['dia_actual']); 
+        else
+           $srf = $this->getBetweenfecha($mes, $year, '01',$dia);
+       
+        
+        $criteria = new CDbCriteria;
+        $criteria->select = "DISTINCT gi.id, gv.version";
+        $criteria->alias = 'gi';
+        $criteria->join = "INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id ";
+        $criteria->join .= "LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ";
+
+         $criteria->join .= "INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id ";
+
+            $criteria->join .= "INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id ";
+
+        if($search['grupo']){
+            
+        }
+        $criteria->condition = "gi.bdc = 1 ".$search['where'];
+        if($flag){
+            $criteria->addCondition("DATE(gi.fecha) ".$srf);
+        }else{
+            $criteria->addCondition("DATE(gi.fecha) = '" . $year . "-" . $mes . "-" . $dia . "' ");
+        }
+        switch ($cargo_id) {
+            case 71: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.responsable = {$id_responsable}");
+                break;
+            case 70: // JEFE DE ALMACEN
+                $criteria->addCondition("gi.dealer_id = {$dealer_id}");
+                break;
+            case 69: // JEFE CONCESION O GERENTE COMERCIAL
+                $array_dealers = $this->getDealerGrupoConcUsuario($id_responsable,1);
+                $dealerList = implode(', ', $array_dealers);
+                $criteria->addCondition("gi.dealer_id IN ({$dealerList})");
+                break;
+            default:
+                break;
+        }
+        //$criteria->addCondition("DATE(gi.fecha) BETWEEN '2016-05-01' AND '2016-05-15' ");
+        # SI NO ES VERSION PARA SUMATORIA TOTAL DETALLE
+        if($versiones != 'all')
+            $criteria->addCondition("gv.version IN (".$versiones.")");
+        $criteria->addCondition("gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo'");
+        $criteria->addCondition("gv.orden = 1 AND gc.order = 1 AND gd.desiste = 0 AND ga.observaciones = 'Cita'");
+
+        echo '<pre>';
+        print_r($criteria);
+        echo '</pre>';
+
+        $count = GestionInformacion::model()->findAll($criteria);
+        
+        return $count;
+    }
+
+
     
     /**
      * Returns count of vehicle's version in date range

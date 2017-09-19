@@ -24,7 +24,7 @@ class TraficoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('inicio', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo',
+                'actions' => array('inicio','super', 'getAsesores', 'getGrupos', 'graficos', 'getTraficoDiario', 'prueba', 'reportes', 'getNombreGrupo',
                     'getNombreConcesionario','getTitulo','getConcesionariosGrupo','getResponsablesConcecionario','getDetalleTotal','getConcesionariosProvincia'),
                 'users' => array('@'),
             ),
@@ -43,6 +43,7 @@ class TraficoController extends Controller {
     }
 
     public function actionInicio() {
+
         date_default_timezone_set('America/Guayaquil');
         $dt = time();
         setlocale(LC_TIME, 'es_ES.UTF-8');
@@ -1287,12 +1288,13 @@ class TraficoController extends Controller {
             }
 
          //   die($vartrf['flag_search']);
-
+          //  die('<pre>'.print_r($vartrf).'</pre>');
             $this->render('inicio', array('vartrf' => $vartrf));
             exit();
 
             //$posts = $this->searchSql($cargo_id, $grupo_id, $id_responsable, $fechaPk, 'seg', '');
         }
+        // die('<pre>'.print_r($vartrf).'</pre>');
         $this->render('inicio', array('vartrf' => $vartrf));
     }
 
@@ -1963,6 +1965,22 @@ class TraficoController extends Controller {
                 $version = " ";
                 break;
             default:
+            case 'super':
+                $fuente = " AND (gd.fuente_contacto = 'prospeccion' OR gd.fuente_contacto_historial = 'prospeccion')";
+
+                $fuente_web = " AND (gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web' OR gd.fuente_contacto = 'web_espectaculo')";
+
+                $fuente_exhibicion = " AND (gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd')";
+
+                $fuente_show_exhibicion = " AND ((gd.fuente_contacto = 'showroom' OR gd.fuente_contacto = 'trafico') or(gd.fuente_contacto = 'exhibicion' OR gd.fuente_contacto = 'exhibicion quierounkia' OR gd.fuente_contacto = 'exhibicion quierounkiatd'))";
+
+                $bdc = " AND gi.bdc = 0";
+                $bdc_web = " AND gi.bdc = 1";
+                $distint = "SELECT DISTINCT d.`name`, gi.id, ";
+                $version = " ";
+                break;
+            default:
+
                 break;
         }
         switch ($tipo_reporte) {
@@ -2018,12 +2036,12 @@ LEFT JOIN versiones v ON v.id_versiones = gv.version";
                 $select_fin = " gf.fecha, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, 
                 gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
                 $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
-INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
-INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo 
-INNER JOIN dealers d ON d.id = gi.dealer_id 
-INNER JOIN modelos m ON m.id_modelos = gv.modelo 
-LEFT JOIN versiones v ON v.id_versiones = gv.version 
-INNER JOIN usuarios u ON u.id = gi.responsable";
+                INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo 
+                INNER JOIN dealers d ON d.id = gi.dealer_id 
+                INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+                LEFT JOIN versiones v ON v.id_versiones = gv.version 
+                INNER JOIN usuarios u ON u.id = gi.responsable";
                 $date = "gf";
                 $and = " AND gd.cierre = 1 AND gf.status = 'ACTIVO'";
                 $group_order = " GROUP BY gf.id_vehiculo";
@@ -2214,7 +2232,132 @@ INNER JOIN usuarios u ON u.id = gi.responsable";
 AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
                 $group_order = " GROUP BY gf.id_vehiculo";
                 $titulo_reporte = 'Reporte Ventas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
-                break;        
+                break;    
+
+                case 16: //prospeccion super embudo
+
+
+                     $from = " FROM gestion_informacion gi";
+                    $select_ini = $distint;
+                    $select_fin = " u.nombres as nombre_responsable, u.apellido as apellido_responsable ";
+                    $inner = " LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                    LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
+                    LEFT JOIN modelos m ON m.id_modelos = gv.modelo 
+                    LEFT JOIN versiones v ON v.id_versiones = gv.version
+                    LEFT JOIN dealers d ON d.id = gi.dealer_id 
+                    LEFT JOIN usuarios u ON (u.id = gi.responsable OR u.id = gi.responsable_origen_tm)";
+                    $inner_web=" INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id ";
+                    $date = "gi";
+                    $date_web = "ga";
+                    $and = " AND gi.responsable ";
+                    $and_prospeccion = " AND ga.observaciones = 'Cita' AND gv.orden = 1 AND gc.order = 1 AND gd.desiste = 0";
+                    $group_order = " GROUP BY gi.id ";
+                    $titulo_reporte = 'Reporte Prospección -Super Embudo- desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+
+                 //   $union = "";
+
+                break;
+
+                case 17: //trafico super embudo
+                    
+                     $from = " FROM gestion_informacion gi";
+                    $select_ini = $distint;
+                    
+
+                    //$select_fin = " u.nombres as nombre_responsable, u.apellido as apellido_responsable ";
+                    $select_fin = " gi.fecha, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, gi.medio as pregunta, 
+                gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
+
+
+                    $inner = " LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                    INNER JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id
+                    LEFT JOIN modelos m ON m.id_modelos = gv.modelo 
+                    LEFT JOIN versiones v ON v.id_versiones = gv.version
+                    LEFT JOIN dealers d ON d.id = gi.dealer_id 
+                    LEFT JOIN usuarios u ON (u.id = gi.responsable OR u.id = gi.responsable_origen_tm)
+                    ";
+
+                    $inner_web=" INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id ";
+
+
+                    $date = "gi";
+                    $date_web = "gtm";
+                    $and = " AND gi.responsable ";
+                    $and_prospeccion="AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gd.desiste = 0";
+                    $fuente=$fuente_show_exhibicion;
+                    $group_order = " GROUP BY gi.id ";
+                    $titulo_reporte = 'Reporte Tráfico -Super Embudo- desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+
+                break;
+
+
+                 case 18:
+                    
+                    $from = " FROM gestion_financiamiento gf";
+                    $select_ini = "SELECT d.`name`, gv.id, ";
+                    $select_fin = " gf.fecha ";
+                    $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id
+                    INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo
+                    INNER JOIN dealers d ON d.id = gi.dealer_id 
+                    INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+                    LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                    $date = "gf";
+                  
+                    $and = "";
+                    
+                    $fuente=$fuente_show_exhibicion;
+                    $group_order = " GROUP BY gf.id";
+                    $titulo_reporte = 'Reporte Proformas -Super Embudo- desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+
+
+
+                break;
+
+
+
+                case 19: // TESTDRIVE super embudo
+                    $from = " FROM gestion_test_drive gt";
+                    $select_ini = "SELECT d.`name`, gi.id, ";
+                    $select_fin = " gt.fecha, gt.test_drive ";
+                    $inner = " INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion 
+                    LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                    INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo 
+                    INNER JOIN dealers d ON d.id = gi.dealer_id 
+                    INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+                    LEFT JOIN versiones v ON v.id_versiones = gv.version";
+                    $inner_web=" ";
+                    $date = "gt";
+                    $date_web = "gt";
+                    $and = " AND gt.test_drive = 1 AND gt.`order` = 1";
+                    $fuente=$fuente_show_exhibicion;
+                    $group_order = " GROUP BY gt.id_vehiculo";
+                    $titulo_reporte = 'Reporte TestDrive -Super Embudo- desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;
+
+
+                 case 20: // VENTAS super embudo
+                    $from = " FROM gestion_factura gf";
+                    $select_ini = "SELECT DISTINCT(gf.id_vehiculo),d.`name`, gi.id, ";
+                    $select_fin = " gf.fecha, gf.`status`, gd.cierre, u.nombres AS nombre_responsable, u.apellido AS apellido_responsable, 
+                    gi.medio as pregunta, gi.recomendaron AS opcion_recomendacion, gi.medio_prensa, gi.medio_television, gi.considero as marca_kia, gi.considero_recomendaron as marca_kia_recomendacion";
+                    $inner = " INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion 
+                    INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id 
+                    INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo 
+                    INNER JOIN dealers d ON d.id = gi.dealer_id 
+                    INNER JOIN modelos m ON m.id_modelos = gv.modelo 
+                    LEFT JOIN versiones v ON v.id_versiones = gv.version 
+                    INNER JOIN usuarios u ON u.id = gi.responsable";
+                      $inner_web=" ";
+                    $date = "gf";
+                     $date_web = "gf";
+                    $and = " AND gd.cierre = 1 AND gf.status = 'ACTIVO'";
+                    $fuente=$fuente_show_exhibicion;
+                    $group_order = " GROUP BY gf.id_vehiculo";
+                    $titulo_reporte = 'Reporte Ventas -Super Embudo- desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
+                break;
+
+
 
             default:
                 break;
@@ -2247,17 +2390,50 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
         $sql .= " gi.nombres, gi.apellidos, gi.cedula, gi.ruc, gi.pasaporte, gi.email, gi.celular, gi.telefono_casa, gi.direccion, gi.bdc, m.nombre_modelo, v.nombre_version, ";
         $sql .= $select_fin.", gd.fuente_contacto";
         $sql .= $from;
+
+        
+
         $sql .= $inner;
+
+         $sql_web = " UNION ". $sql;
+
+       $sql_web .= $inner_web;
+
         $sql .= " WHERE (DATE(".$date.".fecha) BETWEEN '{$params1}' AND '{$params2}') ";
+       
+        $sql_web .= " WHERE (DATE(".$date_web.".fecha) BETWEEN '{$params1}' AND '{$params2}') ";
+       
         $sql .= $grupo_sql;
         $sql .= $concesionario;
         $sql .= $responsable;
+
+        $sql_web .= $grupo_sql;
+        $sql_web .= $concesionario;
+        $sql_web .= $responsable;
+       
+
+
         $sql .= $fuente;
         $sql .= $bdc;
+
+        $sql_web .= $fuente_web;
+        $sql_web .= $bdc_web;
+
+
         $sql .= $and;
         $sql .= $group_order;
+
+        $sql_web .= $and.$and_prospeccion;
+        $sql_web .= $group_order;
+
+        /*
+                se agrega sql_web para realizar el union necesario para el reporte del super embudo
+        */
+      
 //        die('sql '.$sql);
-        $post = Yii::app()->db->createCommand($sql)->queryAll();
+        if( !($fuente_contacto=="super" && $tipo_reporte!=18))$sql_web=""; /*para que no se realice el union*/
+        // die($sql.$sql_web);
+        $post = Yii::app()->db->createCommand($sql.$sql_web)->queryAll();
         $data['posts'] = $post;
         $data['titulo_reporte'] = $titulo_reporte.$titulo_rep;
         return $data;
@@ -3494,10 +3670,13 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
 //            die();
             // BUSQUEDA POR DEFECTO SHOWROOM, PROSPECCION, WEB, EXHIBICION
             if ($_GET['fecha'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['fuente_contacto'] == 1 && $_GET['tipo_reporte'] == 1) {
+                
+                
                 $data = $this->getReporteTrafico($_GET['GestionDiaria']['fecha'], $_GET['GestionDiaria']['grupo'], $_GET['GestionDiaria']['concesionario'], $_GET['GestionDiaria']['responsable'], $_GET['GestionDiaria']['fuente_contacto'], $_GET['GestionDiaria']['tipo_reporte']);
                 $posts = $data['posts'];
                 $tituloReporte = $data['titulo_reporte'];
                 $flag_search = 1;
+
             }
             
             // BUSQUEDA POR FECHAS
@@ -3754,6 +3933,74 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                     ->setCellValue('W2', 'fuente_contacto');
                     $name_file = "Reporte Ventas Asiauto Web";
                 break;  
+
+                 case 16: // prospeccion super embudo
+                   
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'fuente_contacto');                    
+                    $name_file = "Reporte Prospección Super Embudo";
+                break;  
+
+
+                case 17: // trafico super embudo
+                   
+
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'nombre')
+                    ->setCellValue('Q2', 'apellido')
+                    ->setCellValue('R2', 'pregunta')
+                    ->setCellValue('S2', 'opcion_recomendaron')
+                    ->setCellValue('T2', 'medio_prensa')
+                    ->setCellValue('U2', 'medio_television')
+                    ->setCellValue('V2', 'marca_kia')
+                    ->setCellValue('W2', 'marca_kia_recomendacion')
+                    ->setCellValue('X2', 'fuente_contacto'); 
+                                       
+                    $name_file = "Reporte Tráfico Super Embudo";
+                break;  
+
+                case 18: // proformas super embudo
+                   
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'fuente_contacto');                    
+                    $name_file = "Reporte Proformas Super Embudo";
+                break;  
+
+
+                case 19: // test drive super embudo
+
+                    $objPHPExcel->setActiveSheetIndex(0) 
+                    ->setCellValue('P2', 'test_drive')
+                    ->setCellValue('Q2', 'fuente_contacto');
+                   
+                                      
+                    $name_file = "Reporte Test Drive Super Embudo";
+
+
+
+                break;  
+
+                case 20: // ventas super embudo
+                    $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('P2', 'id_vehiculo') 
+                    ->setCellValue('Q2', 'status')
+                    ->setCellValue('R2', 'cierre')
+                    ->setCellValue('S2', 'Nombres')
+                    ->setCellValue('T2', 'Apellidos')
+                    ->setCellValue('U2', 'pregunta')
+                    ->setCellValue('V2', 'opcion_recomendaron')
+                    ->setCellValue('W2', 'medio_prensa')
+                    ->setCellValue('X2', 'medio_television')
+                    ->setCellValue('Y2', 'marca_kia')
+                    ->setCellValue('Z2', 'marca_kia_recomendacion')
+                    ->setCellValue('AA2', 'fuente_contacto');
+
+                 
+                    $name_file = "Reporte de Ventas Super Embudo";
+                break;  
+
+
+
             }
             
 
@@ -3925,6 +4172,61 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
                         $objPHPExcel->getActiveSheet()->getStyle('A2:W2')->applyFromArray($estiloTituloColumnas);
                     break;  
 
+                     case 16: // prospeccion super embudo
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:P2')->applyFromArray($estiloTituloColumnas);
+                       
+                    break;  
+
+                    case 17:
+                             
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['nombre_responsable'])
+                        ->setCellValue('Q' . $i, $row['apellido_responsable'])
+                        ->setCellValue('R' . $i, $row['pregunta'])
+                        ->setCellValue('S' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('T' . $i, $row['medio_prensa'])
+                        ->setCellValue('U' . $i, $row['medio_television'])
+                        ->setCellValue('V' . $i, $row['marca_kia'])
+                        ->setCellValue('W' . $i, $row['marca_kia_recomendacion'])
+                        ->setCellValue('X' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:X2')->applyFromArray($estiloTituloColumnas);
+                    break;
+
+                    case 18: 
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:P2')->applyFromArray($estiloTituloColumnas);
+                       
+                    break; 
+
+                    case 19:
+
+                          $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['test_drive'])
+                        ->setCellValue('Q' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:Q2')->applyFromArray($estiloTituloColumnas);
+
+                    break;
+
+                    case 20:
+                        $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('P' . $i, $row['id_vehiculo'])
+                        ->setCellValue('Q' . $i, $row['status'])
+                        ->setCellValue('R' . $i, $row['cierre'])
+                        ->setCellValue('S' . $i, $row['nombre_responsable'])
+                        ->setCellValue('T' . $i, $row['apellido_responsable'])
+                        ->setCellValue('U' . $i, $row['pregunta'])
+                        ->setCellValue('V' . $i, $row['opcion_recomendacion'])
+                        ->setCellValue('W' . $i, $row['medio_prensa'])
+                        ->setCellValue('X' . $i, $row['medio_television'])
+                        ->setCellValue('Y' . $i, $row['marca_kia'])
+                        ->setCellValue('Z' . $i, $row['marca_kia_recomendacion'])
+                        ->setCellValue('AA' . $i, $row['fuente_contacto']);
+                        $objPHPExcel->getActiveSheet()->getStyle('A2:AA2')->applyFromArray($estiloTituloColumnas);
+
+                    break;
 
                 }
                 
@@ -4315,4 +4617,1215 @@ AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList
         $count = GestionFinanciamiento::model()->count($criteria);
         return $count;
     }
+
+
+
+
+    public function actionSuper() {
+
+        date_default_timezone_set('America/Guayaquil');
+        $dt = time();
+        setlocale(LC_TIME, 'es_ES.UTF-8');
+        $vartrf = array();
+        $vartrf['area_id'] = (int) Yii::app()->user->getState('area_id');
+        $vartrf['grupo_id'] = (int) Yii::app()->user->getState('grupo_id');
+        $vartrf['cargo_id'] = (int) Yii::app()->user->getState('cargo_id');
+        $vartrf['cargo_adicional'] = (int) Yii::app()->user->getState('cargo_adicional');
+        //$varView['cargo_adicional'] = 85;
+        $vartrf['id_responsable'] = Yii::app()->user->getId();
+        $vartrf['dealer_id'] = $this->getDealerId($vartrf['id_responsable']);
+        // SACAR MES ACTUAL
+        $vartrf['year_actual'] = date("Y");
+        $vartrf['mes_actual'] = date('n');
+        //echo $vartrf['mes_actual'];
+        $vartrf['dia_inicial'] = '01';
+        $vartrf['dia_actual'] = date("d");
+        $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['dia_inicial'], $vartrf['dia_actual']);
+        $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+        $vartrf['modelos'] = $this->getModelosTrafico(5);
+        $vartrf['versiones'] = $this->getModelosTraficoVersion(5);
+        $vartrf['id_modelos'] = array();
+        foreach ($vartrf['modelos'] as $value) {
+            $vartrf['id_modelos'][] = $value['id'];
+        }
+        $vartrf['trafico_suma_total'] = array();
+        $vartrf['proforma_suma_total'] = array();
+        $vartrf['testdrive_suma_total'] = array();
+        $vartrf['venta_suma_total'] = array();
+        $vartrf['tasa_td_total'] = array();
+        $vartrf['tasa_cierre_total'] = array();
+        $vartrf['trafico_nacional'] = 0;
+        $vartrf['testdrive_nacional'] = 0;
+        $vartrf['proforma_nacional'] = 0;
+        $vartrf['ventas_nacional'] = 0;
+        $vartrf['search'] = array();
+        $vartrf['search']['fecha'] = false; // busqueda por fecha predeterminada
+        $vartrf['dia_inicial'] = '01';
+        $vartrf['search']['dia_anterior'] = '01';
+        $vartrf['search']['titulo'] = ' Búsqueda por Defecto Categoría: Todos';
+        $vartrf['search']['categoria'] = 5;
+        $vartrf['categoria'] = 5;
+        $vartrf['flag_search'] = 0;
+        if (isset($_GET['GestionDiaria'])) {
+//            echo '<pre>';
+//            print_r($_GET);
+//            echo '</pre>';
+//            die();
+            date_default_timezone_set('America/Guayaquil'); // Zona horaria de Guayaquil Ecuador
+            $fechaActual = date("Y/m/d");
+
+          //  die($_GET['fecha2']);
+            // BUSQUEDA POR CATEGORIA========================================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['categoria'] = $_GET['GestionDiaria']['categoria'];
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                $vartrf['flag_search'] = 1;
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+           
+            }
+
+            // BUSQUEDA POR FECHAS ========================================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+
+
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . ' al ' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Categoría: Autos';
+                $vartrf['flag_search'] = 2;
+              
+            }
+            // BUSQUEDA POR FECHAS - PROVINCIA ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                if($_GET['GestionDiaria']['provincia'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 3;
+          
+            }
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: Todos';
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000){
+                    $vartrf['search']['titulo'] = 'Búsqueda por Fechas0 - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: Todos, Categoría: Todos';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'] . ' AND gi.dealer_id IN(' . $dealerList . ')';
+                    $vartrf['search']['titulo'] = 'Búsqueda por Fechas1 - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: Todos';
+                }
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] == 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'] ;
+                    $vartrf['search']['titulo'] = 'Búsqueda por Fechas2 - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: Todos, Categoría: Todos';
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                
+                $vartrf['flag_search'] = 4;
+             
+            }
+            // BUSQUEDA POR FECHAS - GRUPO
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                //die('fecha grupo');
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 5;
+              
+            }
+
+            // BUSQUEDA POR GRUPO
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                //die('fecha grupo');
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                
+                //$vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 6;
+           
+            }
+            // BUSQUEDA POR CONCESIONARIO
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                if($_GET['GestionDiaria']['concesionario'] == 1000){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                //$vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por '.$tit.' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 7;
+             
+            }
+
+            // BUSQUEDA POR FECHA - CONCESIONARIO
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                if($_GET['GestionDiaria']['concesionario'] == 1000){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: Todos';
+               $vartrf['flag_search'] = 8;
+          
+            }
+
+            // BUSQUEDA POR FECHAS - RESPONSABLE
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                //echo 'enter responsable';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+               
+
+                if($_GET['GestionDiaria']['responsable'] ==  10000 || $_GET['GestionDiaria']['responsable'] ==  '' ){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+
+
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 9;
+             
+            }
+
+            // BUSQUEDA POR RESPONSABLE
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                //echo 'enter responsable';
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] !=  10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] ==  1000 && $_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['grupo'] !=  1000 && $_GET['GestionDiaria']['concesionario'] !=  1000 && $_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                /*if($_GET['GestionDiaria']['responsable'] ==  10000 && $_GET['GestionDiaria']['concesionario'] ==  1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }*/
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por '.$tit.' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 10;
+          
+            }
+
+
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable']!= /*1000*/10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 11;
+               
+                $flag_search = 3;
+                
+            }
+            // BUSQUEDA POR FECHAS Y CATEGORIA========================================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . ' al ' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                $vartrf['flag_search'] = 12;
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+           
+            }
+
+            // BUSQUEDA POR FECHAS - PROVINCIA - CATEGORIA ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                if($_GET['GestionDiaria']['provincia'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 13;
+           
+            }
+
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CATEGORIA ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'] . ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 14;
+            
+            }
+
+            // BUSQUEDA POR FECHAS - GRUPO - CATEGORIA
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                //die('fecha grupo');
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 15;
+          
+            }
+
+            // BUSQUEDA POR CONCESIONARIO - CATEGORIA
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['concesionario'] = TRUE;
+
+
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 16;
+          
+            }
+
+            // BUSQUEDA POR FECHA - RESPONSABLE - CATEGORIA
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                //echo 'enter responsable';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                switch ($vartrf['cargo_id']) {
+                    case 69:
+                        $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    case 70:
+                        $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    case 71:
+                        $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+
+                    default:
+                        break;
+                }
+                switch ($vartrf['area_id']) {
+                    case 4:
+                    case 12:
+                    case 13:
+                    case 14:
+                        $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    default:
+                        break;
+                }
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 17;
+            
+            }
+
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestiodnDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 18;
+         
+            }
+
+            // BUSQUEDA POR PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por '.$tit.'Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 19;
+          
+            }
+
+
+            // BUSQUEDA POR PROVINCIA - GRUPO - CONCESIONARIO - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                //die('enter sin fecha');
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000) {
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000) {
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000) {
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . 'Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 20;
+          
+            }
+
+            // BUSQUEDA POR RESPONSABLE - CATEGORIA
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                //echo 'enter responsable';
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['concesionario'] = TRUE;
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != /*1000*/10000 && $_GET['GestionDiaria']['responsable']!='') {
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000/*1000*/ && $_GET['GestionDiaria']['responsable'] != '') {
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+
+                
+                switch ($vartrf['cargo_id']) {
+                    case 69:
+                        $vartrf['search']['titulo'] = 'Búsqueda por defecto - Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    case 70:
+                        $vartrf['search']['titulo'] = 'Búsqueda por defecto - Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    case 71:
+                        $vartrf['search']['titulo'] = 'Búsqueda por defecto - Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+
+                    default:
+                        break;
+                }
+                switch ($vartrf['area_id']) {
+                    case 4:
+                    case 12:
+                    case 13:
+                    case 14:
+                        $vartrf['search']['titulo'] = 'Búsqueda por defecto - Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                        break;
+                    default:
+                        break;
+                }
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 21;
+            
+            }
+            // BUSQUEDA POR CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+               
+
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                 $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+               
+
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 22;
+          
+            }
+            // BUSQUEDA POR CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+
+
+                   // die('here in busqueda concesionario responsable');
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+            
+
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                 $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+               
+
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']);
+                
+                $vartrf['flag_search'] = 23;
+              
+            }
+            // BUSQUEDA POR FECHAS - CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+
+               // die('here');
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
+                $vartrf['flag_search'] = 24;
+             
+            }
+            // BUSQUEDA POR FECHAS - CONCESIONARIO - RESPONSABLE - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 1) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 25;
+             
+            }
+            // BUSQUEDA POR FECHAS - CONCESIONARIO - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 26;
+            
+            }
+            //BUSQUEDA POR CONCESIONARIO Y AÑO
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0 && $_GET['year'] == 1) {
+                $vartrf['mes_actual'] = 12;
+                $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                $vartrf['search']['concesionario'] = TRUE;
+                $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Defecto - Año: ' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getConcesionario($_GET['GestionDiaria']['concesionario']) . ', Categoría: Autos';
+                $vartrf['flag_search'] = 27;
+        
+            }
+            // BUSQUEDA POR FECHAS - CONCESIONARIO ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+               
+
+
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['flag_search'] = 28;
+    
+            }
+            //BUSQUEDA POR AÑO
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0 && $_GET['year'] == 1) {
+                $vartrf['mes_actual'] = 12;
+                $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por Defecto - Año: ' . $_GET['GestionDiaria']['year'] . ', Categoría: Autos';
+                $vartrf['flag_search'] = 29;
+            }
+
+            // BUSQUEDA POR GRUPO - CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['responsable']!=10000 && $_GET['GestionDiaria']['responsable']!='')
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
+                $vartrf['flag_search'] = 30;
+               
+                $flag_search = 28;
+            }
+            // BUSQUEDA POR PROVINCIA - CATEGORIA ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                if($_GET['GestionDiaria']['provincia'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
+                }
+                
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 31;
+            }
+            // BUSQUEDA POR PROVINCIA - GRUPO ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'] . ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] == 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'] . ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                
+                //$vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . 'Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['flag_search'] = 32;
+            }
+            // BUSQUEDA POR PROVINCIA - GRUPO - CONCESIONARIO============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                //die('enter sin fecha');
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']);
+
+                $vartrf['flag_search'] = 33;
+            }
+            // BUSQUEDA POR FECHAS - PROVINCIA - GRUPO - CONCESIONARIO ============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                    $dealerList = implode(', ', $array_dealers);
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . '-' . $_GET['GestionDiaria']['year'] . ', Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: Autos';
+                $vartrf['flag_search'] = 34;
+            }
+            // BUSQUEDA POR PROVINCIA - GRUPO - CONCESIONARIO - RESPONSABLE ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 1 && $_GET['categoria'] == 0) {
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] != 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.responsable = ' . $_GET['GestionDiaria']['responsable'];
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $dealerList . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] == 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['provincia'] != 1000 && $_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] == 1000 && $_GET['GestionDiaria']['responsable'] == 10000 && $_GET['GestionDiaria']['responsable'] != ''){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Responsable: ' . $this->getResponsableNombres($_GET['GestionDiaria']['responsable']) . ', Categoría: Autos';
+                $vartrf['flag_search'] = 35;
+            }
+            // BUSQUEDA POR  GRUPO - CONCESIONARIO - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                //die('enter sin fecha');
+                $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $vartrf['dia_inicial'];
+                    $vartrf['search']['dia_actual'] = $vartrf['dia_actual'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['search']['grupo'] = TRUE;
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por ' . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 36;
+            }
+            // BUSQUEDA POR FECHAS - GRUPO - CONCESIONARIO - CATEGORIA============================================================================================
+            if ($_GET['fecha1'] == 1 && $_GET['fecha2'] == 1 && $_GET['provincia'] == 0 && $_GET['grupo'] == 1 && $_GET['concesionario'] == 1 && $_GET['responsable'] == 0 && $_GET['categoria'] == 1) {
+                //die('enter sin fecha');
+                $tit = '- Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $vartrf['search']['fecha'] = true;
+                    $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                    $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                    $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                    $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['dia_actual']);
+                    $tit = '- Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                $vartrf['dia_inicial'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['search']['grupo'] = TRUE;
+                $vartrf['search']['fecha'] = true;
+                $vartrf['search']['dia_anterior'] = $_GET['GestionDiaria']['fecha1'];
+                $vartrf['search']['dia_actual'] = $_GET['GestionDiaria']['fecha2'];
+                $vartrf['fechas'] = $this->getNumeroMeses($vartrf['mes_actual'], $vartrf['search']['dia_anterior'], $vartrf['search']['dia_actual']);
+                $array_dealers = $this->getDealerGrupoConc($_GET['GestionDiaria']['grupo']);
+                $dealerList = implode(', ', $array_dealers);
+                if($_GET['GestionDiaria']['grupo'] != 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                if($_GET['GestionDiaria']['grupo'] == 1000 && $_GET['GestionDiaria']['concesionario'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.dealer_id IN(' . $_GET['GestionDiaria']['concesionario'] . ')';
+                }
+                
+                $vartrf['search']['titulo'] = 'Búsqueda por Fechas - Desde ' . $_GET['GestionDiaria']['fecha1'] . '-' . $_GET['GestionDiaria']['fecha2'] . $tit . ' Grupo: ' . $this->getNombreGrupo($_GET['GestionDiaria']['grupo']) . ', Concesionario: ' . $this->getNameConcesionarioById($_GET['GestionDiaria']['concesionario']) . ', Categoría: ' . $this->getNameCategoria($_GET['GestionDiaria']['categoria']);
+                $vartrf['modelos'] = $this->getModelosTrafico($_GET['GestionDiaria']['categoria']);
+                $vartrf['versiones'] = $this->getModelosTraficoVersion($_GET['GestionDiaria']['categoria']);
+                $vartrf['id_modelos'] = array();
+                $vartrf['categoria'] = $_GET['GestionDiaria']['categoria'];
+                foreach ($vartrf['modelos'] as $value) {
+                    $vartrf['id_modelos'][] = $value['id'];
+                }
+                $vartrf['flag_search'] = 37;
+            }
+            // BUSQUEDA POR PROVINCIA ============================================================================================
+            if ($_GET['fecha1'] == 0 && $_GET['fecha2'] == 0 && $_GET['provincia'] == 1 && $_GET['grupo'] == 0 && $_GET['concesionario'] == 0 && $_GET['responsable'] == 0 && $_GET['categoria'] == 0) {
+                 $tit = ' defecto - Año: 2017, ';
+                if ($_GET['year'] == 1) {
+                    $vartrf['mes_actual'] = 12;
+                    $vartrf['year_actual'] = $_GET['GestionDiaria']['year'];
+                    $tit = ' defecto - Año: ' . $_GET['GestionDiaria']['year'] . ',';
+                }
+                
+                if($_GET['GestionDiaria']['provincia'] != 1000){
+                    $vartrf['search']['where'] = ' AND gi.provincia_conc = ' . $_GET['GestionDiaria']['provincia'];
+                }
+                $vartrf['fechas_date'] = $this->getNumeroMesesDate($vartrf['mes_actual'], $vartrf['search']['dia_actual']);
+                $vartrf['search']['titulo'] = 'Búsqueda por por ' . $tit.' Provincia: ' . $this->getProvincia($_GET['GestionDiaria']['provincia']) . ', Categoría: Todos';
+                $vartrf['flag_search'] = 38;
+            }
+            die('<pre>'.print_r($vartrf).'</pre>');
+           //$this->render('super', array('vartrf' => $vartrf));
+            //exit();
+        }
+         //die('<pre>'.print_r($vartrf).'</pre>');
+       
+        $this->render('super', array('vartrf' => $vartrf));
+    }
+
+
+
 }
