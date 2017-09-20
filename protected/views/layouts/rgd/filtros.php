@@ -111,8 +111,10 @@ $id_responsable = Yii::app()->user->getId();
                     }
                     // SI ES ASESOR COMERCIAL CON DOBLE CARGO TELEMARKETING WEB Y GRUPO ASIAUTO
                     // SI ES JEFE DE ALMACEN Y GRUPO ASIAUTO
-                    if(($cargo_id == 70 || $cargo_id == 71 || $cargo_adicional == 89) && $grupo_id == 2)
+                    if(($cargo_id == 70 || $cargo_id == 71 || $cargo_adicional == 89) && $grupo_id == 2){
                         echo '<option value="reasignados_tw">Reasignados solicitudes web</option>';
+                        
+                    }    
                     if($cargo_id == 89 && $grupo_id == 2){ // SI ES ASESOR TELEMARKETING WEB Y GRUPO ASIAUTO
                         echo '<option value="reasignados_tw">Reasignados solicitudes web</option>';
                         echo '<option value="devueltos_tw">Devueltos solicitudes web</option>';
@@ -217,7 +219,7 @@ $id_responsable = Yii::app()->user->getId();
                     <select name="GestionDiaria[modelo]" id="GestionDiaria_modelo" class="form-control" onchange="get_version(this.value)">
                       
                         <?php
-                                        $all_models = Modelos::model()->findAll();
+                                        $all_models = Modelos::model()->findAll(array('condition' => 'active = 1', 'order' => 'nombre_modelo'));
                                        
                                         if(!empty($all_models)){
                                             echo ' <option value="">--Seleccione modelo--</option>';
