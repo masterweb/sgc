@@ -526,7 +526,7 @@ $count = count($users);
         <h1 class="tl_seccion">Sistema de Gestión Comercial</h1>
     </div>
     <div class="row">
-<?php if ($cargo_id != 69) { ?>
+<?php if ($cargo_id != 69 && $cargo_id != 89) { ?>
     <?=
     $this->renderPartial('//layouts/rgd/registro', array('formaction' => 'gestionNuevaCotizacion/create', 'model' => $model, 'identificacion' => $identificacion, 'tipo' => 'ventas'));
 }
