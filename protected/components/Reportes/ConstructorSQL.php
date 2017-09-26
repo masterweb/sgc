@@ -1557,7 +1557,8 @@ class ConstructorSQL {
 
         /**/
         $innerExternas = " INNER JOIN gestion_cita gc ON gc.id_informacion = gi.id ";
-        $whereCita = " AND gi.reasignado_tm = 1  AND gc.order = 1 AND gc.tw = 1 AND gd.desiste = 0 AND gi.bdc = 1 AND ga.observaciones = 'Cita'";
+        
+        $whereCita = " AND gi.reasignado_tm = 1  AND gc.order = 1 AND gc.tw = 1 AND gi.bdc = 1 AND ga.observaciones = 'Cita'";
 
 
 
@@ -1626,7 +1627,7 @@ class ConstructorSQL {
 
       
         
-        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext  . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona ." AND gi.bdc = 1 AND gd.desiste=0". $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+        $prospeccion_mes_anterior = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext  . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona ." AND gi.bdc = 1". $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ".$whereTw, $group_ext);
         $prospeccion_mes_anterior = $prospeccion_mes_anterior[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_anterior'] = $prospeccion_mes_anterior;
@@ -1634,7 +1635,7 @@ class ConstructorSQL {
 
         
 
-        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext  . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona." AND gi.bdc = 1 AND gd.desiste=0" . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
+        $prospeccion_mes_actual = $this->SQLconstructor('COUNT(DISTINCT(gi.id)) ' . $select_ext, 'gestion_informacion gi', $join_ext  . ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id ', $id_persona." AND gi.bdc = 1" . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gi.fecha) BETWEEN '" .
                 $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND (" . $fuente_prospeccion . $fuente_contacto_historial . " ) ".$whereTw, $group_ext);
         $prospeccion_mes_actual = $prospeccion_mes_actual[0]['COUNT(DISTINCT(gi.id))'];
         $retorno['prospeccion_mes_actual'] = $prospeccion_mes_actual;
@@ -1676,7 +1677,7 @@ class ConstructorSQL {
                 $trafico_citas_concretadas_mes_anterior = $this->SQLconstructor(
                   'DISTINCT gi.id' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                   ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id' , $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                  " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . " 23:59:59') AND ({$fuente_contacto}) and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gi.bdc = 1 AND gd.desiste = 0  " . $whereExt.$whereTw, $group_ext
+                  " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . " 23:59:59') AND ({$fuente_contacto}) and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gi.bdc = 1  " . $whereExt.$whereTw, $group_ext
                 );
                 $trafico_citas_concretadas_mes_anterior = count($trafico_citas_concretadas_mes_anterior);
                 $retorno['trafico_citas_concretadas_mes_anterior'] = $trafico_citas_concretadas_mes_anterior;
@@ -1684,7 +1685,7 @@ class ConstructorSQL {
                 $trafico_citas_concretadas_mes_actual = $this->SQLconstructor(
                   'DISTINCT gi.id' . $select_ext, 'gestion_informacion gi', $join_ext . $INERmodelos .
                   ' LEFT JOIN gestion_diaria gd ON gd.id_informacion = gi.id INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id' , $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                  " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . " 23:59:59') AND ({$fuente_contacto}) and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gi.bdc = 1 AND gd.desiste = 0  " . $whereExt.$whereTw, $group_ext
+                  " AND (DATE(gtm.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . " 23:59:59') AND ({$fuente_contacto}) and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gi.bdc = 1  " . $whereExt.$whereTw, $group_ext
                 );
                 $trafico_citas_concretadas_mes_actual = count($trafico_citas_concretadas_mes_actual);
                 $retorno['trafico_citas_concretadas_mes_actual'] = $trafico_citas_concretadas_mes_actual;
@@ -1698,7 +1699,7 @@ class ConstructorSQL {
            $proforma_mes_anterior = $this->SQLconstructor(
                     'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
                     $innerGestionDiaria . 'INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
-                    $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0" . $whereTw, $group_ext
+                    $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereTw, $group_ext
             );
             $proforma_mes_anterior = $proforma_mes_anterior[0]['COUNT(DISTINCT gf.id)'];
             $retorno['proforma_mes_anterior'] = $proforma_mes_anterior;
@@ -1706,7 +1707,7 @@ class ConstructorSQL {
             $proforma_mes_actual = $this->SQLconstructor(
                     'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion ' . $join_ext .
                     $innerGestionDiaria . 'INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" .
-                    $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0" . $whereTw, $group_ext
+                    $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereTw, $group_ext
             );
             $proforma_mes_actual = $proforma_mes_actual[0]['COUNT(DISTINCT gf.id)'];
             $retorno['proforma_mes_actual'] = $proforma_mes_actual;
@@ -1718,14 +1719,14 @@ class ConstructorSQL {
        
         $td_mes_anterior = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext . $innerGestionDiaria . $INERmodelos_td, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
-                $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "')AND ({$fuente_contacto})  AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "')AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $td_mes_anterior = $td_mes_anterior[0]['COUNT(*)'];
         $retorno['td_mes_anterior'] = $td_mes_anterior;
 
         $td_mes_actual = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion ' . $join_ext . $innerGestionDiaria . $INERmodelos_td, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
-                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto})  AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $td_mes_actual = $td_mes_actual[0]['COUNT(*)'];
         $retorno['td_mes_actual'] = $td_mes_actual;
@@ -1737,7 +1738,7 @@ class ConstructorSQL {
        $vh_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
 
 
@@ -1747,7 +1748,7 @@ class ConstructorSQL {
         $vh_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $vh_mes_actual = $vh_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
         $retorno['vh_mes_actual'] = $vh_mes_actual;
@@ -1758,7 +1759,7 @@ class ConstructorSQL {
              $vcont_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gv.tipo_credito=0 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gv.tipo_credito=0 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
             );
 
 
@@ -1770,7 +1771,7 @@ class ConstructorSQL {
             $vcont_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gv.tipo_credito=0 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gv.tipo_credito=0 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
             );
             $vcont_mes_actual = $vcont_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
             $retorno['vcont_mes_actual'] = $vcont_mes_actual;
@@ -1783,7 +1784,7 @@ class ConstructorSQL {
             $vcred_mes_anterior = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gv.tipo_credito=1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gv.tipo_credito=1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
             );
 
 
@@ -1798,7 +1799,7 @@ class ConstructorSQL {
             $vcred_mes_actual = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $join_ext .
                 'INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo', $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gv.tipo_credito=1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gv.tipo_credito=1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
             );
             $vcred_mes_actual = $vcred_mes_actual[0]['COUNT(DISTINCT gf.id_vehiculo)'];
             $retorno['vcred_mes_actual'] = $vcred_mes_actual;
@@ -1812,7 +1813,7 @@ class ConstructorSQL {
         $traficockd1 = $this->SQLconstructor(
                 'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext .
                 ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_anterior .
-                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 AND gd.desiste = 0 " . $whereExt.$whereTw, $group_ext
+                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt.$whereTw, $group_ext
         );
         $traficockd1 = count($traficockd1);
        
@@ -1823,7 +1824,7 @@ class ConstructorSQL {
         $traficockd2 = $this->SQLconstructor(
                 'DISTINCT gi.id, gv.version ' . $select_ext, 'gestion_informacion gi', $join_ext .
                 ' LEFT JOIN gestion_vehiculo gv ON gv.id_informacion = gi.id  INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' . $innerExternas, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(".$date_fecha.".fecha) BETWEEN '" . $fecha_inicial_actual .
-                "' AND '" . $fecha_actual . "')  AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 AND gd.desiste = 0 " . $whereExt.$whereTw, $group_ext
+                "' AND '" . $fecha_actual . "')  AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gv.orden = 1 " . $whereExt.$whereTw, $group_ext
         );
         $traficockd2 = count($traficockd2);
      
@@ -1836,28 +1837,28 @@ class ConstructorSQL {
 
         // echo "<h4> ckd test drive</h4>";
         $tdckd1 = $this->SQLconstructor(
-                'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ' . $join_ext . $innerGestionDiaria, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 ".$whereTw, $group_ext
+                'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ' . $join_ext . $innerGestionDiaria, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) ".$whereTw, $group_ext
         );
         $tdckd1 = $tdckd1[0]['COUNT(*)'];
         $retorno['tdckd1'] = $tdckd1;
 
         $tdcbu1 = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ' . $join_ext . $innerGestionDiaria, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
-                $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $tdcbu1 = ($tdcbu1[0]['COUNT(*)'] - $tdckd1);
         $retorno['tdcbu1'] = $tdcbu1;
 
         $tdckd2 = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ' . $join_ext . $innerGestionDiaria, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
-                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $tdckd2 = $tdckd2[0]['COUNT(*)'];
         $retorno['tdckd2'] = $tdckd2;
 
         $tdcbu2 = $this->SQLconstructor(
                 'COUNT(*) ', 'gestion_test_drive  gt', 'INNER JOIN gestion_informacion gi ON gi.id = gt.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gt.id_vehiculo ' . $join_ext . $innerGestionDiaria, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gt.test_drive = 1 AND gt.order = 1 AND (DATE(gt.fecha) BETWEEN '" .
-                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $tdcbu2 = ($tdcbu2[0]['COUNT(*)'] - $tdckd2);
         $retorno['tdcbu2'] = $tdcbu2;
@@ -1869,14 +1870,14 @@ class ConstructorSQL {
         $vhckd1 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo  INNER JOIN  gestion_diaria gd ON gd.id_informacion = gi.id ' .
                 $join_ext, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp .
-                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $vhckd1 = $vhckd1[0]['COUNT(DISTINCT gf.id_vehiculo)'];
         $retorno['vhckd1'] = $vhckd1;
 
         $vhcbu1 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' .
-                $join_ext . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $join_ext . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior . "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $vhcbu1 = ($vhcbu1[0]['COUNT(DISTINCT gf.id_vehiculo)'] - $vhckd1);
         $retorno['vhcbu1'] = $vhcbu1;
@@ -1885,7 +1886,7 @@ class ConstructorSQL {
 
         $vhckd2 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id  = gf.id_vehiculo INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' .
-                $join_ext, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $join_ext, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND gf.status = 'ACTIVO' AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $vhckd2 = $vhckd2[0]['COUNT(DISTINCT gf.id_vehiculo)'];
         $retorno['vhckd2'] = $vhckd2;
@@ -1895,7 +1896,7 @@ class ConstructorSQL {
 
         $vhcbu2 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id_vehiculo) ', 'gestion_factura gf ', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_diaria gd ON gd.id_informacion = gi.id ' .
-                $join_ext . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $join_ext . $INERmodelos, $id_persona . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND gd.cierre = 1 AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" . $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $vhcbu2 = ($vhcbu2[0]['COUNT(DISTINCT gf.id_vehiculo)'] - $vhckd2);
         $retorno['vhcbu2'] = $vhcbu2;
@@ -1908,7 +1909,7 @@ class ConstructorSQL {
         $proformackd1 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ' .
                 $join_ext . $innerGestionDiaria, $id_persona_pro  . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior .
-                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                "' AND '" . $fecha_anterior . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
             );
             $proformackd1 = $proformackd1[0]['COUNT(DISTINCT gf.id)'];
             $retorno['proformackd1'] = $proformackd1;
@@ -1919,7 +1920,7 @@ class ConstructorSQL {
             $proformacbu1 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ' .
                 $join_ext . $innerGestionDiaria, $id_persona_pro . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_anterior .
-                "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                "' AND '" . $fecha_anterior . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $proformacbu1 = ($proformacbu1[0]['COUNT(DISTINCT gf.id)'] - $proformackd1);
         $retorno['proformacbu1'] = $proformacbu1;
@@ -1928,7 +1929,7 @@ class ConstructorSQL {
         $proformackd2 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ' .
                 $join_ext . $innerGestionDiaria, $id_persona_pro . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual .
-                "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                "' AND '" . $fecha_actual . "') AND ((gv.modelo IN (" . $CKDsRender . ")) OR gi.modelo IN (" . $CKDsRender . ")) AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $proformackd2 = $proformackd2[0]['COUNT(DISTINCT gf.id)'];
         $retorno['proformackd2'] = $proformackd2;
@@ -1936,7 +1937,7 @@ class ConstructorSQL {
         $proformacbu2 = $this->SQLconstructor(
                 'COUNT(DISTINCT gf.id) ' . $select_ext, 'gestion_financiamiento gf', 'INNER JOIN gestion_informacion gi ON gi.id = gf.id_informacion INNER JOIN gestion_vehiculo gv ON gv.id = gf.id_vehiculo ' .
                 $join_ext . $innerGestionDiaria, $id_persona_pro . $consultaBDC . $modelos . $versiones . $consulta_gp . " AND (DATE(gf.fecha) BETWEEN '" . $fecha_inicial_actual . "' AND '" .
-                $fecha_actual . "') AND ({$fuente_contacto}) AND gd.desiste = 0 " . $whereExh.$whereTw, $group_ext
+                $fecha_actual . "') AND ({$fuente_contacto}) " . $whereExh.$whereTw, $group_ext
         );
         $proformacbu2 = ($proformacbu2[0]['COUNT(DISTINCT gf.id)'] - $proformackd2);
         $retorno['proformacbu2'] = $proformacbu2;
