@@ -107,14 +107,23 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
                     <!-- ACCESO PARA REPORTE DIARIO DE TODOS LOS USUARIOS, se exceptua para el super embudo -->
                     <?php if ($tipo != 'tw' && $tipo != 'super') { ?>
                         <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/inicio'); ?>">Reporte Diario</a>
-                    <?php } ?>
+                    <?php } else if ($tipo == 'super') {?>
+
+                        <a class="btn btn-warning" href="<?php echo Yii::app()->createUrl('trafico/super'); ?>">Reporte Diario</a>
+
+                     <?php } ?>
                     
                     <form id="excel_form" method="post" class="pull-right">
                         <input type="submit" name="" value="Exportar a Excel" class="btn btn-warning" id="get_excel"/>
                     </form>
                     <div class="resultados_embudo bg-danger"></div>
                     <div class="highlight filtrosReportes">
-                        <?= $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView,'tipo' => $tipo,'tipo_grupo' => $tipo_grupo));?>
+                        <?= 
+
+                            $this->renderPartial('//reportes/modulos/filtros', array('varView' => $varView,'tipo' => $tipo,'tipo_grupo' => $tipo_grupo,'grupo' => $grupo,'teleweb'=> $teleweb));
+
+
+                        ?>
                     </div>        
                 </div>  
             </div>

@@ -1,6 +1,7 @@
 <?php
 $area_id = (int) Yii::app()->user->getState('area_id');
 $cargo_id = (int) Yii::app()->user->getState('cargo_id');
+$grupo_id = (int) Yii::app()->user->getState('grupo_id');
 $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
 //$con = Yii::app()->db;
 //if ($cargo_id == 71644) {  // SOLO SE APLICA EL ASIGNAMIENTO A LOS ASESORES DE VENTAS
@@ -99,7 +100,8 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         </li>
         <?php endif; ?>
         <?php $aekia = ['60','61','62','89'];
-        if(in_array($cargo_id, $aekia) || in_array($cargo_adicional, $aekia)): ?>
+
+        if( (in_array($cargo_id, $aekia) || in_array($cargo_adicional, $aekia)) && $grupo_id!=3): ?>
             <li class="wrapper">
                 <div class="forma">
                     <a href="<?php echo Yii::app()->createUrl('Reportes/inicio',array('tipo' => 'tw')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
@@ -107,6 +109,22 @@ $cargo_id = (int) Yii::app()->user->getState('cargo_id');
                 </div>
             </li>
         <?php endif; ?>
+
+        <!-- web kmotor -->
+        <?php 
+             $aekia = ['60','61','62','89'];
+            // die($cargo_id.' - '.$cargo_adicional);
+        if( (in_array($cargo_id, $aekia) || in_array($cargo_adicional, $aekia)) && $grupo_id!=2): ?>
+            <li class="wrapper">
+                <div class="forma">
+                    <a href="<?php echo Yii::app()->createUrl('Reportes/teleweb',array('tipo' => 'tw','grupo' => '3')); ?>"><div><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/reportes_2.jpg" width="50"></div>
+                        <div class="txt_menu">Reportes Web KMotor</div></a>
+                </div>
+            </li>
+        <?php endif; ?>
+
+
+
         <?php 
         $restricted_reportes = ['74', '76', '77','86','85','59','83','82','87','89'];
         if(!in_array($cargo_id, $restricted_reportes)):?>

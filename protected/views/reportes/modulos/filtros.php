@@ -1,6 +1,7 @@
 <?php //echo 'tipo: '.$tipo; ?>
 <div class="form">
     <?php
+
     $filtro_exh = '';
     if($tipo == 'exhibicion'){
        $filtro_exh = 'exhibicion'; 
@@ -15,11 +16,15 @@
         $usuariosJafeBDCyExonerados = array(72,85);
         $usuariosAekia = array(4, 45, 46, 48, 57, 58, 60, 61, 62);
         $usuariosWeb = array(85,86);// VENTAS WEB Y JEFE DE VENTAS WEB
+        
+        if($teleweb) $url='Reportes/teleweb';
+        else $url='Reportes/inicio';
+
 
         $form = $this->beginWidget('CActiveForm', array(
             'id' => 'gestion-nueva-cotizacion-form',
             'method' => 'get',
-            'action' => Yii::app()->createUrl('Reportes/inicio',array('tipo' => $tipo)),
+            'action' => Yii::app()->createUrl($url,array('tipo' => $tipo,'grupo' => $grupo)),
             'enableAjaxValidation' => false,
             'htmlOptions' => array(
                 'class' => 'form-horizontal form-search',

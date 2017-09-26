@@ -2043,14 +2043,19 @@ class GestionInformacionController extends Controller {
     public function actionSeguimiento($tipo_seg = NULL) {
         //$this->layout = '//layouts/callventas';
         //echo 'TIPO SEG: '.$tipo_seg;
+
+
         $cargo = Yii::app()->user->getState('usuario');
         $cargo_id = (int) Yii::app()->user->getState('cargo_id');
         $cargo_adicional = (int) Yii::app()->user->getState('cargo_adicional');
         $grupo_id = (int) Yii::app()->user->getState('grupo_id');
         $doble_concesionario = (int) Yii::app()->user->getState('doble_concesionario');
         $tipo_grupo = 1; // GRUPOS KMOTOR POR DEFECTO
-        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 ){
+        if($grupo_id == 4 || $grupo_id == 5 || $grupo_id == 6 || $grupo_id == 2 || $grupo_id == 8 || $grupo_id == 9 
+            || $grupo_id == 3
+        ){
             $tipo_grupo = 0; // GRUPOS IOKARS, EMPROMOTOR, AUTHESA, ASIAUTO, MERQUIAUTO, MOTRICENTRO
+                                // agregado kmotor por teleweb
         }
         $area_id = (int) Yii::app()->user->getState('area_id');
         //die('cargo id:'.$cargo_id);
@@ -2211,7 +2216,7 @@ class GestionInformacionController extends Controller {
                     $criteria->addCondition("(gi.responsable = {$id_responsable} OR gi.responsable_origen_tm = {$id_responsable})");
                     //$criteria->addCondition("gi.bdc = 0");
                     $criteria->addCondition("u.cargo_id IN (89)");
-                    $criteria->addCondition("u.grupo_id = 2");
+                    $criteria->addCondition("u.grupo_id IN (2,3)");
                     $criteria->group = 'gi.id';
                     $criteria->order = "gi.id DESC";
             break;    
@@ -5982,6 +5987,18 @@ GROUP BY gv.id_informacion";
             case 84:
                 return true;
                 break;
+
+                /*todos los concesionarios de kmmotor*/
+             case 72:
+            case 77:
+            case 81:
+            case 10:
+            case 80:
+                return true;
+                break;
+                
+
+                
             
             default:
                 return false;
@@ -6010,16 +6027,19 @@ public function sendEmailTM($id_informacion){
        
         $cita = GestionCita::model()->find(array('condition' => "id_informacion = {$id_informacion}", 'order' => 'id desc', 'limit' => '1'));
 
-
-        $gv = GestionVersiones::model()->find(array('condition' => "id_versiones = {$modelos->version}"));
-        $ficha_tecnica = $gv->pdf;
+        $ficha_tecnica = '';
+        if(!empty($modelos)){
+            $gv = GestionVersiones::model()->find(array('condition' => "id_versiones = {$modelos->version}"));
+            $ficha_tecnica = $gv->pdf;
+        }
+        
         $gi = GestionInformacion::model()->find(array('condition' => "id = {$id_informacion}"));
-          $id_asesor = $gi->responsable; 
-          $asesor =        Usuarios::model()->find(array('condition' => "id = {$id_asesor}"));
+        $id_asesor = $gi->responsable; 
+        $asesor =        Usuarios::model()->find(array('condition' => "id = {$id_asesor}"));
        
         $dealer=Dealers::model()->find(array('condition' => "id = {$dealer_id}"));    
 
-       $direccion=$dealer->direccion;
+        $direccion=$dealer->direccion;
      
 
               require_once 'email/mail_func.php';
@@ -6291,7 +6311,8 @@ public function sendEmailTM($id_informacion){
                    
                 $emailCliente = $this->getAsesorEmail($asesorComercial);
                
-               
+            
+
                 $id_asesor = Yii::app()->user->getId();
                $emailAsesor = $this->getAsesorEmail($id_asesor);
                $asunto = 'SGC-CLIENTE WEB REASIGNADO POR JEFE DE AGENCIA';           
