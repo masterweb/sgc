@@ -1375,11 +1375,14 @@ class TraficoController extends Controller {
                     $data_sorento = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
                     break;
                 case 22:
-                    $data_nuevo_rio = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
+                    $data_nuevo_rio_sedan = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
                     break;
                 case 23:
                     $data_nuevo_cerato = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
-                    break;         
+                    break;  
+                case 24:
+                    $data_nuevo_rio_hb = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
+                    break;            
             //    case 10000:
             //        $data_total = $this->getDataTableDiario($dia_inicial, $dia_actual, $versiones[$flag], $year, $mes, $value['nombre_modelo'], $i, $where, $value['id']);
             //        break;     
@@ -1392,8 +1395,9 @@ class TraficoController extends Controller {
             'data_cerato_koup' => $data_cerato_koup, 'data_cerato_r' => $data_cerato_r, 'data_grand_carnival' => $data_grand_carnival,
             'data_k3000' => $data_k3000, 'data_optima' => $data_optima, 'data_rio_sedan' => $data_rio_sedan, 'data_rio_hb' => $data_rio_hb,
             'data_soul_ev' => $data_soul_ev, 'data_soul_r' => $data_soul_r, 'data_sportage_active' => $data_sportage_active,
-            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd, 'data_sportage_xline' => $data_sportage_xline, 'data_niro_xline' => $data_niro_xline,  'data_sorento' => $data_sorento,
-            'data_nuevo_rio' => $data_nuevo_rio,  'data_nuevo_cerato' => $data_nuevo_cerato);
+            'data_sportage_r' => $data_sportage_r, 'data_sportage_gt' => $data_sportage_gt, 'data_sportage_r_ckd' => $data_sportage_r_ckd,
+             'data_sportage_xline' => $data_sportage_xline, 'data_niro_xline' => $data_niro_xline,  'data_sorento' => $data_sorento,
+            'data_nuevo_rio_sedan' => $data_nuevo_rio_sedan,  'data_nuevo_cerato' => $data_nuevo_cerato, 'data_nuevo_rio_hb' => $data_nuevo_rio_hb);
         echo json_encode($options);
         /* for ($i = 1; $i <= $dia; $i++) {
           $d = $i;
@@ -2154,7 +2158,7 @@ INNER JOIN modelos m ON m.id_modelos = gv.modelo
 LEFT JOIN versiones v ON v.id_versiones = gv.version";
                 $date = "gf";
                 $and = " AND gi.dealer_id IN ({$dealerList}) 
-AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList)) AND gd.desiste = 0 ";
+AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
                 $group_order = "";
                 $titulo_reporte = 'Reporte Proformas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
 
@@ -2174,7 +2178,7 @@ INNER JOIN gestion_agendamiento ga ON ga.id_informacion = gi.id
 INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";  
                 $date = "ga";
-                $and = " AND gv.orden = 1 and gi.reasignado_tm = 1 AND gc.order = 1 AND gc.tw = 1 AND gd.desiste = 0 AND gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND ga.observaciones = 'Cita'";
+                $and = " AND gv.orden = 1 and gi.reasignado_tm = 1 AND gc.order = 1 AND gc.tw = 1 AND gi.bdc = 1 AND gi.dealer_id IN ({$dealerList}) AND ga.observaciones = 'Cita'";
                 $titulo_reporte = 'Citas Generadas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
              break;    
              case 13: // CITAS CONCRETADAS ASIAUTO
@@ -2191,7 +2195,7 @@ INNER JOIN gestion_presentaciontm gtm ON gtm.id_informacion = gi.id
 INNER JOIN dealers d ON d.id = gi.dealer_id
 LEFT JOIN usuarios u ON u.id = gi.responsable";  
                 $date = "gtm";
-                $and = " AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gd.desiste = 0 AND gi.bdc = 1 
+                $and = " AND gv.orden = 1 and gi.reasignado_tm=1 AND gtm.presentacion = 1 AND gi.bdc = 1 
                 AND gi.dealer_id IN ({$dealerList}) 
 AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
                 $titulo_reporte = 'Citas Concretadas Asiauto Web desde el ' . $_GET['GestionDiaria']['fecha'] . ' - ' . $_GET['GestionDiaria']['fuente_contacto'];
@@ -2207,7 +2211,7 @@ INNER JOIN dealers d ON d.id = gi.dealer_id
 INNER JOIN modelos m ON m.id_modelos = gv.modelo 
 LEFT JOIN versiones v ON v.id_versiones = gv.version";
                 $date = "gt";
-                $and = " AND gi.bdc = 1 AND gt.test_drive = 1 AND gt.`order` = 1 AND gd.desiste = 0  
+                $and = " AND gi.bdc = 1 AND gt.test_drive = 1 AND gt.`order` = 1   
                 AND gi.dealer_id IN ({$dealerList}) 
 AND (gi.responsable IN({$usuarioList}) OR gi.responsable_origen IN({$usuarioList}) OR gi.responsable_origen_tm IN($usuarioList))";
                 $group_order = " GROUP BY gv.id";

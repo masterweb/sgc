@@ -148,6 +148,7 @@ $(document).ready(function() {
     .cir-21{background-color: #D2322D;}
     .cir-22{background-color: #90C84B;}
     .cir-23{background-color: #FFAB72;}
+    .cir-24{background-color: #FFAB83;}
     .odd-mh > td.cir-1{background-color: #FB0A2A;}
     .odd-mh > td.cir-2{background-color:#4080FF;}
     .odd-mh > td.cir-3{background-color: #33cc00;}
@@ -251,7 +252,7 @@ if ($area_id == 4 || $area_id == 12 || $area_id == 13 || $area_id == 14) { // AE
 
 //echo 'meses: '.$vartrf['mes_actual'];
 //echo '<pre>';
-//echo print_r($vartrf['versiones']);
+//echo print_r($vartrf['modelos']);
 //echo '</pre>';
 //die();
 $where = $vartrf['search']['where'];
@@ -1031,8 +1032,9 @@ $vartrf['testdrive_nacional_categoria'] = array();
                     $('.cer-19').append(data.data_sportage_xline);
                     $('.cer-20').append(data.data_niro_xline);
                     $('.cer-21').append(data.data_sorento);
-                    $('.cer-22').append(data.data_nuevo_rio);
+                    $('.cer-22').append(data.data_nuevo_rio_sedan);
                     $('.cer-23').append(data.data_nuevo_cerato);
+                    $('.cer-24').append(data.data_nuevo_rio_hb);
                     $('#bg_black').hide();
                     var enlace  = $('#cid_'+id);
             $('html, body').animate({
@@ -1136,6 +1138,7 @@ $vartrf['testdrive_nacional_categoria'] = array();
         return (sa);
     } 
     function setSelectedOption(){
+
         var fecha1 = '<?php echo isset($_GET['GestionDiaria']['fecha1']) ? $_GET['GestionDiaria']['fecha1'] : ''; ?>';
         var fecha2 = '<?php echo isset($_GET['GestionDiaria']['fecha2']) ? $_GET['GestionDiaria']['fecha2'] : ''; ?>';
         var provincia = '<?php echo isset($_GET['GestionDiaria']['provincia']) ? $_GET['GestionDiaria']['provincia'] : ''; ?>';
@@ -1143,6 +1146,10 @@ $vartrf['testdrive_nacional_categoria'] = array();
         var concesionario = '<?php echo isset($_GET['GestionDiaria']['concesionario']) ? $_GET['GestionDiaria']['concesionario'] : ''; ?>';
         var responsable = '<?php echo isset($_GET['GestionDiaria']['responsable']) ? $_GET['GestionDiaria']['responsable'] : ''; ?>';
         var categoria = '<?php echo isset($_GET['GestionDiaria']['categoria']) ? $_GET['GestionDiaria']['categoria'] : ''; ?>';
+
+        //alert(provincia);
+
+
         if(fecha1 !='' && fecha2 !=''){
             $('#trafico_fecha1').val(fecha1);$('#trafico_fecha2').val(fecha2);
             $('#fecha1').val(1);$('#fecha2').val(1);
@@ -1175,12 +1182,28 @@ $vartrf['testdrive_nacional_categoria'] = array();
                         $('#trafico_concesionario').html(data.options);
                     }
                 });*/
+
+
+                   
+
+
+
+
             }
 
             
             $('#provincia').val(1);
+
+
+
+
+
+
+
+
         }
         if(grupo != ''){
+           // alert(grupo);
             $("#trafico_grupo option").each(function(){
                 //console.log('value: -----' + $(this).val());
                 if($(this).val() ==  grupo){$(this).prop("selected", true);}

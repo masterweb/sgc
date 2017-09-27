@@ -3603,7 +3603,20 @@ class Controller extends CController {
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
                 }
-            }else{ // otros modelos
+            }
+            elseif($value['id_modelo'] == 100 && $value['tipo'] == 0){ // nuevo rio sedan
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status` IN(1,3) AND tipo = 0 AND orden = 4"));
+                foreach ($vrh as $valh) {
+                    $str_versiones .= $valh['id_versiones'].',';
+                }
+            }
+            elseif($value['id_modelo'] == 100 && $value['tipo'] == 1){ // nuevo rio hb
+                $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3) AND tipo = 1 AND orden = 5"));
+                foreach ($vrh as $valh) {
+                    $str_versiones .= $valh['id_versiones'].',';
+                }
+            }
+            else{ // otros modelos
                 $vrh = Versiones::model()->findAll(array("condition" => "id_modelos = {$value['id_modelo']} AND `status`  IN(1,3)"));
                 foreach ($vrh as $valh) {
                     $str_versiones .= $valh['id_versiones'].',';
