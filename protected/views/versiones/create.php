@@ -13,6 +13,8 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Versiones</h1>
+<div class="container">
+	<h1 class="tl_seccion">Crear Nueva Version </h1>
+	<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+</div>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
